@@ -1,17 +1,15 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
-  fetchMineReports,
-  fetchReports,
-  deleteMineReport,
-  createMineReport,
-  updateMineReport,
-} from "@common/actionCreators/reportActionCreator";
+  fetchMineReportComments,
+  createMineReportComment,
+  updateMineReportComment,
+  deleteMineReportComment,
+} from "@common/actionCreators/reportCommentActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import * as Strings from "@common/constants/strings";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -27,17 +25,16 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe("`fetchMineReports` action creator", () => {
+describe("`fetchMineReportComments` action creator", () => {
   const mineGuid = "1234567";
-  const reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports;
-
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, reportsType)}`;
+  const mineReportGuid = "13214";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineReports(
+    return fetchMineReportComments(
       mineGuid,
-      reportsType
+      mineReportGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -47,7 +44,7 @@ describe("`fetchMineReports` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchMineReports(mineGuid)(dispatch).then(() => {
+    return fetchMineReportComments(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -55,38 +52,22 @@ describe("`fetchMineReports` action creator", () => {
   });
 });
 
-describe("`fetchReports` action creator", () => {
-  const url = `${ENVIRONMENT.apiUrl}${API.REPORTS()}`;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchReports()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchReports()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`deleteMineReport` action creator", () => {
+describe("`deleteMineReportComment` action creator", () => {
   const mineGuid = "12345-6789";
   const mineReportGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`;
+  const mineReportCommentGuid = "4123513";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENT(
+    mineGuid,
+    mineReportGuid,
+    mineReportCommentGuid
+  )}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return deleteMineReport(
+    return deleteMineReportComment(
       mineGuid,
-      mineReportGuid
+      mineReportGuid,
+      mineReportCommentGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -96,7 +77,45 @@ describe("`deleteMineReport` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-    return deleteMineReport(
+    return deleteMineReportComment(
+      mineGuid,
+      mineReportGuid,
+      mineReportCommentGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateMineReportComment` action creator", () => {
+  const mineReportGuid = "523456314";
+  const mineGuid = "12345-6789";
+  const mineReportCommentGuid = "412351235";
+  const url = `${ENVIRONMENT.apiUrl +
+    API.MINE_REPORT_COMMENT(mineGuid, mineReportGuid, mineReportCommentGuid)}`;
+  const mockPayLoad = {
+    mine_guid: mineGuid,
+  };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockMineResponse = { success: true, mine_guid: mineGuid };
+    mockAxios.onPut(url, mockPayLoad).reply(200, mockMineResponse);
+    return updateMineReportComment(
+      mineGuid,
+      mineReportGuid,
+      mineReportCommentGuid,
+      mockPayLoad
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateMineReportComment(
       mineGuid,
       mineReportGuid
     )(dispatch).catch(() => {
@@ -107,17 +126,17 @@ describe("`deleteMineReport` action creator", () => {
   });
 });
 
-describe("`updateMineReport` action creator", () => {
-  const mineReportGuid = "523456314";
+describe("`createMineReportComment` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl + API.MINE_REPORT(mineGuid, mineReportGuid)}`;
+  const mineReportGuid = "12353451";
+  const url = ENVIRONMENT.apiUrl + API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid);
   const mockPayLoad = {
     mine_guid: mineGuid,
   };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockMineResponse = { success: true, mine_guid: mineGuid };
-    mockAxios.onPut(url, mockPayLoad).reply(200, mockMineResponse);
-    return updateMineReport(
+    mockAxios.onPost(url, mockPayLoad).reply(200, mockMineResponse);
+    return createMineReportComment(
       mineGuid,
       mineReportGuid,
       mockPayLoad
@@ -129,40 +148,8 @@ describe("`updateMineReport` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateMineReport(
-      mineGuid,
-      mineReportGuid
-    )(dispatch).catch(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`createMineReport` action creator", () => {
-  const mineGuid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_REPORTS(mineGuid);
-  const mockPayLoad = {
-    mine_guid: mineGuid,
-  };
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockMineResponse = { success: true, mine_guid: mineGuid };
-    mockAxios.onPost(url, mockPayLoad).reply(200, mockMineResponse);
-    return createMineReport(
-      mineGuid,
-      mockPayLoad
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMineReport(mineGuid)(dispatch).catch(() => {
+    return createMineReportComment(mineGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

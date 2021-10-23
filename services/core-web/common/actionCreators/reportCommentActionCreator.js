@@ -1,5 +1,6 @@
 import { notification } from "antd";
 import { request, success, error } from "../actions/genericActions";
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineReportActions from "../actions/mineReportActions";
 import * as API from "../constants/API";
@@ -9,6 +10,7 @@ import CustomAxios from "../customAxios";
 
 export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORT_COMMENTS));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -19,11 +21,13 @@ export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) 
       dispatch(mineReportActions.storeMineReportComments(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_COMMENTS)));
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_COMMENTS)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT_COMMENT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -38,7 +42,8 @@ export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (d
       dispatch(success(reducerTypes.CREATE_MINE_REPORT_COMMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT_COMMENT)));
+    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT_COMMENT)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateMineReportComment = (
@@ -48,6 +53,7 @@ export const updateMineReportComment = (
   payload
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_REPORT_COMMENT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENT(
@@ -66,13 +72,15 @@ export const updateMineReportComment = (
       dispatch(success(reducerTypes.UPDATE_MINE_REPORT_COMMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_REPORT_COMMENT)));
+    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_REPORT_COMMENT)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const deleteMineReportComment = (mineGuid, mineReportGuid, mineReportCommentGuid) => (
   dispatch
 ) => {
   dispatch(request(reducerTypes.DELETE_MINE_REPORT_COMMENT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENT(
@@ -90,5 +98,6 @@ export const deleteMineReportComment = (mineGuid, mineReportGuid, mineReportComm
       dispatch(success(reducerTypes.DELETE_MINE_REPORT_COMMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_MINE_REPORT_COMMENT)));
+    .catch(() => dispatch(error(reducerTypes.DELETE_MINE_REPORT_COMMENT)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
