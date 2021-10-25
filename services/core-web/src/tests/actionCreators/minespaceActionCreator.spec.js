@@ -4,6 +4,7 @@ import {
   createMinespaceUser,
   fetchMinespaceUsers,
   deleteMinespaceUser,
+  fetchMinespaceUserMines,
 } from "@common/actionCreators/minespaceActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -41,6 +42,29 @@ describe("`fetchMinespaceUsers` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchMinespaceUsers()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMinespaceUserMines` action creator", () => {
+  const mine_guids = ["5324632q46", "1436124361"];
+  const url = ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, { mine_guids }).reply(200, mockResponse);
+    return fetchMinespaceUserMines(mine_guids)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchMinespaceUserMines(mine_guids)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
