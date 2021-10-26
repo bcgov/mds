@@ -6229,14 +6229,3 @@ export const MINE_EPIC_INFO = {
     },
   },
 };
-
-export const NOW_APPLICATION_DELAY = [
-  {
-      "now_application_delay_guid": "c68dfefb-af11-48c5-8d36-39704b8385fc",
-      "delay_type_code": "OAB",
-      "start_comment": "mock delay",
-      "start_date": "2021-10-26T18:05:19.380715+00:00",
-      "end_comment": "mock stopping coment",
-      "end_date": "2021-10-26T18:05:56.475794+00:00"
-  }
-]

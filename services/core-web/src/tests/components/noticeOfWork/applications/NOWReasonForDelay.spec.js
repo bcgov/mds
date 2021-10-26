@@ -1,12 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { NOWReasonForDelay } from "@/components/noticeOfWork/applications/NOWReasonForDelay";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as NOWMocks from "@/tests/mocks/noticeOfWorkMocks";
 
 const reducerProps = {};
 
 const setupReducerProps = () => {
-  [reducerProps.applicationDelay] = MOCK.NOW_APPLICATION_DELAY;
+  [reducerProps.applicationDelay] = NOWMocks.NOW_APPLICATION_DELAY;
   reducerProps.delayTypeOptionsHash = {};
 };
 
