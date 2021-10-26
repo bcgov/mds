@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitPackage renders properly 1`] = `
+<withRouter(Connect(NOWActionWrapper))
+  permission="role_edit_permits"
+>
+  <Button
+    block={false}
+    ghost={true}
+    htmlType="button"
+    loading={false}
+    onClick={[Function]}
+    size="small"
+    type="primary"
+  >
+    <img
+      alt="Edit document"
+      name="remove"
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+    />
+  </Button>
+</withRouter(Connect(NOWActionWrapper))>
+`;
