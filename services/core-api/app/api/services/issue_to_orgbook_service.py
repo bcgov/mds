@@ -15,7 +15,7 @@ class OrgBookIssuerService():
     issuer_controller_url = Config.VCR_ISSUER_URL    #FROM DeployConfig
     issuer_secret_key = Config.VCR_ISSUER_SECRET_KEY #FROM SECRET
     vc_schema_name = "bcgov-mines-act-permit.bcgov-mines-permitting"
-    vc_schema_version = "0.2.0"
+    vc_schema_version = "0.2.1"
     issuer_controller_ready = False
 
     def __init__(self):
