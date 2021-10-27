@@ -1,6 +1,6 @@
 import { notification } from "antd";
-import { request, success, error } from "../actions/genericActions";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineReportActions from "../actions/mineReportActions";
 import * as API from "../constants/API";
