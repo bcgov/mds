@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultContact renders properly 1`] = `
+<Card
+  bordered={false}
+  title={
+    <div
+      className="inline-flex between wrap"
+    >
+      <div>
+        <h3>
+          Permittee
+        </h3>
+        <p>
+          Permittee since
+        </p>
+      </div>
+      <div
+        className="right"
+      >
+        <ForwardRef
+          to="/dashboard/3124624567/history/PMT"
+        >
+          <ForwardRef(InternalButton)
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            style={
+              Object {
+                "marginRight": "0",
+              }
+            }
+          >
+            See History
+          </ForwardRef(InternalButton)>
+        </ForwardRef>
+      </div>
+    </div>
+  }
+>
+  <div>
+    <h4>
+      <Link
+        style={
+          Object {
+            "fontSize": "1.5rem",
+            "fontWeight": "bold",
+          }
+        }
+        to="/dashboard/253462/profile"
+      />
+    </h4>
+    <br />
+    <h6>
+      Email Address
+    </h6>
+    <span>
+      N/A
+    </span>
+    <br />
+    <br />
+    <h6>
+      Phone Number
+    </h6>
+     
+    <br />
+    <br />
+    <h6>
+      Permittee
+       Since
+    </h6>
+    <span>
+      Unknown
+    </span>
+  </div>
+  <Component />
+  <div
+    className="right"
+  />
+</Card>
+`;
