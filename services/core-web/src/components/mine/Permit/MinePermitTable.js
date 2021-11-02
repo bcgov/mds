@@ -5,6 +5,7 @@ import {
   PlusOutlined,
   PlusSquareFilled,
   SafetyCertificateOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -50,6 +51,7 @@ const propTypes = {
   handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditSitePropertiesModal: PropTypes.func.isRequired,
+  openViewConditionModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -455,10 +457,29 @@ const childColumns = [
             </Menu.Item>
           </AuthorizationWrapper>
           <Menu.Item key="1">
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  record.openViewConditionModal(
+                    event,
+                    record.conditions,
+                    record.amendmentNumber,
+                    record.permit.permit_no
+                  )
+                }
+              >
+                <ReadOutlined className="padding-md--right icon-sm violet" />
+                View Permit Conditions
+              </button>
+            </div>
+          </Menu.Item>
+          <Menu.Item key="2">
             <DownloadAllDocuments documents={record.permitAmendmentDocuments} />
           </Menu.Item>
-          <Menu.Item key="2">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
-          <Menu.Item key="3">{renderVerifyCredentials(text, record)}</Menu.Item>
+          <Menu.Item key="3">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
+          <Menu.Item key="4">{renderVerifyCredentials(text, record)}</Menu.Item>
         </Menu>
       );
       return (
@@ -536,7 +557,8 @@ const transformChildRowData = (
   openEditAmendmentModal,
   handleDeletePermitAmendment,
   handlePermitAmendmentIssueVC,
-  permitAmendmentTypeOptionsHash
+  permitAmendmentTypeOptionsHash,
+  openViewConditionModal
 ) => ({
   amendmentNumber,
   isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
@@ -546,6 +568,7 @@ const transformChildRowData = (
   description: amendment.description || Strings.EMPTY_FIELD,
   isAssociatedWithNOWApplicationImportedToCore: "",
   openEditAmendmentModal,
+  openViewConditionModal,
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
@@ -595,7 +618,8 @@ export const MinePermitTable = (props) => {
         props.openEditAmendmentModal,
         props.handleDeletePermitAmendment,
         props.handlePermitAmendmentIssueVC,
-        props.permitAmendmentTypeOptionsHash
+        props.permitAmendmentTypeOptionsHash,
+        props.openViewConditionModal
       )
     );
 

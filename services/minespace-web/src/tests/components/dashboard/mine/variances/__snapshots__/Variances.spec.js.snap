@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Variances renders properly 1`] = `
-<Row
-  gutter={0}
->
+<Row>
   <Col
     span={24}
   >
@@ -21,10 +19,7 @@ exports[`Variances renders properly 1`] = `
       }
       type="primary"
     >
-      <Icon
-        theme="filled"
-        type="plus-circle"
-      />
+      <ForwardRef(PlusCircleFilled) />
       Apply for a Variance
     </Button>
     <Title

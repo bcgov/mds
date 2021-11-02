@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Row, Col, Popconfirm, Button, Descriptions, Typography, Badge, Tooltip, Icon } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Row, Col, Popconfirm, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 import { dateNotBeforeOther, dateNotAfterOther, date } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -57,7 +58,7 @@ export const AddMineWorkInformationForm = (props) => {
                     placement="right"
                     mouseEnterDelay={0.3}
                   >
-                    <Icon type="info-circle" className="padding-sm" />
+                    <InfoCircleOutlined className="padding-sm" />
                   </Tooltip>
                   Work Start Date
                 </>
@@ -99,7 +100,7 @@ export const AddMineWorkInformationForm = (props) => {
                     placement="right"
                     mouseEnterDelay={0.3}
                   >
-                    <Icon type="info-circle" className="padding-sm" />
+                    <InfoCircleOutlined className="padding-sm" />
                   </Tooltip>
                   Work Stop Date
                 </>

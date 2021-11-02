@@ -1,8 +1,7 @@
 import React from "react";
-import { Result, Row, Col, Typography, Icon } from "antd";
+import { StopOutlined } from "@ant-design/icons";
+import { Result, Row, Col, Typography } from "antd";
 import * as Strings from "@/constants/strings";
-
-const { Paragraph, Text } = Typography;
 
 const NotFoundNotice = () => (
   <Row>
@@ -10,14 +9,16 @@ const NotFoundNotice = () => (
       <Result
         title="Mine Not Found"
         status="error"
-        subTitle={<Text>It appears the mine you are requesting does not exist.</Text>}
-        icon={<Icon type="stop" />}
+        subTitle={
+          <Typography.Text>It appears the mine you are requesting does not exist.</Typography.Text>
+        }
+        icon={<StopOutlined />}
         extra={
-          <Paragraph>
+          <Typography.Paragraph>
             Please contact&nbsp;
             <a href={Strings.MDS_EMAIL}>{Strings.MDS_EMAIL}</a>
             &nbsp;for assistance.
-          </Paragraph>
+          </Typography.Paragraph>
         }
       />
     </Col>

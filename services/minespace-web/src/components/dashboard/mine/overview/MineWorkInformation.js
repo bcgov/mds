@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
-import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip, Icon } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 
 import {
   fetchMineWorkInformations,
@@ -27,8 +28,6 @@ const propTypes = {
 };
 
 const defaultProps = {};
-
-const { Paragraph, Title } = Typography;
 
 export class MineWorkInformation extends Component {
   state = { isEditMode: false, isLoaded: true };
@@ -57,24 +56,22 @@ export class MineWorkInformation extends Component {
     const title = info ? "Update Mine Work Information" : "Add Mine Work Information";
     return (
       <div className="work-information-container ">
+        <div className="inline-flex between">
+          <Typography.Title level={4}>Work Information</Typography.Title>
+          {!this.state.isEditMode && (
+            <span>
+              <Button type="link" onClick={() => this.editWorkInformation()}>
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </span>
+          )}
+        </div>
         <Row gutter={5}>
-          <div className="inline-flex between">
-            <Title level={4}>Work Information</Title>
-            {!this.state.isEditMode && (
-              <span style={{ float: "right" }}>
-                <Button type="link" onClick={() => this.editWorkInformation()}>
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              </span>
-            )}
-          </div>
-        </Row>
-        <Row gutter={5}>
-          <Paragraph>
+          <Typography.Paragraph>
             Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health,
             Safety & Reclamation Code apply to any person doing any work (mining activity) at, on,
             or about the mine site.
-          </Paragraph>
+          </Typography.Paragraph>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
@@ -125,7 +122,7 @@ export class MineWorkInformation extends Component {
                                       placement="right"
                                       mouseEnterDelay={0.3}
                                     >
-                                      <Icon type="info-circle" className="padding-sm" />
+                                      <InfoCircleOutlined className="padding-sm" />
                                     </Tooltip>
                                     Work Start Date
                                   </>
@@ -161,7 +158,7 @@ export class MineWorkInformation extends Component {
                                       placement="right"
                                       mouseEnterDelay={0.3}
                                     >
-                                      <Icon type="info-circle" className="padding-sm" />
+                                      <InfoCircleOutlined className="padding-sm" />
                                     </Tooltip>
                                     Work Stop Date
                                   </>

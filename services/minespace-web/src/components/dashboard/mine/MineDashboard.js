@@ -17,12 +17,10 @@ import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import Bonds from "@/components/dashboard/mine/bonds/Bonds";
+import Tailings from "@/components/dashboard/mine/tailings/Tailings";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
-
-const { Title } = Typography;
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -105,10 +103,12 @@ export class MineDashboard extends Component {
           <Col span={24}>
             <Row gutter={[0, 48]}>
               <Col span={24}>
-                <Title style={{ marginBottom: 8 }}>{mine.mine_name || Strings.UNKNOWN}</Title>
-                <Title level={4} style={{ margin: 0 }}>
+                <Typography.Title style={{ marginBottom: 8 }}>
+                  {mine.mine_name || Strings.UNKNOWN}
+                </Typography.Title>
+                <Typography.Title level={4} style={{ margin: 0 }}>
                   Mine Number: {mine.mine_no || Strings.UNKNOWN}
-                </Title>
+                </Typography.Title>
               </Col>
             </Row>
             <Row gutter={[0, 48]}>
@@ -119,27 +119,30 @@ export class MineDashboard extends Component {
                   onChange={this.handleTabChange}
                   type="card"
                 >
-                  <TabPane tab="Overview" key={initialTab}>
+                  <Tabs.TabPane tab="Overview" key={initialTab}>
                     <Overview mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Permits" key="permits">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Permits" key="permits">
                     <Permits mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Inspections" key="inspections">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Inspections" key="inspections">
                     <Inspections mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Incidents" key="incidents">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Incidents" key="incidents">
                     <Incidents mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Variances" key="variances">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Variances" key="variances">
                     <Variances mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Reports" key="reports">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Reports" key="reports">
                     <Reports mine={mine} match={this.props.match} />
-                  </TabPane>
-                  <TabPane tab="Bonds" key="bonds">
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Bonds" key="bonds">
                     <Bonds mine={mine} match={this.props.match} />
-                  </TabPane>
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Tailings" key="tailings">
+                    <Tailings mine={mine} match={this.props.match} />
+                  </Tabs.TabPane>
                 </Tabs>
               </Col>
             </Row>

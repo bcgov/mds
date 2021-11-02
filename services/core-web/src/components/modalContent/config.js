@@ -47,6 +47,7 @@ import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
+import ViewAllConditionsModal from "./ViewAllConditionsModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -86,6 +87,7 @@ export const modalConfig = {
   NOW_STATUS_REASON_MODAL: NOWStatusReasonModal,
   NOW_DELAY_MODAL: NOWDelayModal,
   VIEW_CONDITION_MODAL: ViewConditionModal,
+  VIEW_ALL_CONDITION_MODAL: ViewAllConditionsModal,
   GENERATE_PERMIT_NUMBER_MODAL: GeneratePermitNumberModal,
   START_DRAFT_PERMIT_MODAL: StartDraftPermitModal,
   ADD_ADMIN_AMENDMENT_MODAL: AddAdministrativeAmendmentModal,

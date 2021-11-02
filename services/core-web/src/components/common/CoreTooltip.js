@@ -1,11 +1,12 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Tooltip } from "antd";
-import { INFO_CIRCLE } from "@/constants/assets";
-import { WarningOutlined } from "@ant-design/icons";
+import { COLOR } from "@/constants/styles";
+import { WarningOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
 const propTypes = {
   title: PropTypes.string,
+  iconColor: PropTypes.string,
 };
 
 const defaultProps = {
@@ -16,6 +17,7 @@ const OriginalValuePropTypes = {
   originalValue: PropTypes.string.isRequired,
   isVisible: PropTypes.bool.isRequired,
   style: PropTypes.objectOf(PropTypes.string),
+  iconColor: COLOR.violet,
 };
 
 const OriginalValueDefaultProps = { style: {} };
@@ -27,7 +29,7 @@ export const CoreTooltip = (props) => (
     mouseEnterDelay={0.3}
     overlayClassName="core-tooltip"
   >
-    <img src={INFO_CIRCLE} alt="Info" className="info-tooltip" />
+    <InfoCircleOutlined className="info-tooltip icon-sm" style={{ color: props.iconColor }} />
   </Tooltip>
 );
 

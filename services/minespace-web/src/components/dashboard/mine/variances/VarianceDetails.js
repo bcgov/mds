@@ -54,13 +54,11 @@ export const VarianceDetails = (props) => {
         <Descriptions.Item label="Description">
           {props.variance.note || Strings.EMPTY_FIELD}
         </Descriptions.Item>
-        <Descriptions.Item>
-          <DocumentTable
-            documents={props.variance.documents}
-            documentCategoryOptionsHash={props.documentCategoryOptionsHash}
-          />
-        </Descriptions.Item>
       </Descriptions>
+      <DocumentTable
+        documents={props.variance.documents}
+        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
+      />
       <Descriptions size="small">
         <Descriptions.Item label="Created By" size="small">
           {props.variance.created_by || Strings.EMPTY_FIELD}

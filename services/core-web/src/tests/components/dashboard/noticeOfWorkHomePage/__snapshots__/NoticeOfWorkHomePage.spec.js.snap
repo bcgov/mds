@@ -32,6 +32,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
         searchParams={
           Object {
             "application_type": "NOW",
+            "issuing_inspector_name": undefined,
             "lead_inspector_name": undefined,
             "mine_name": undefined,
             "mine_region": "SW,NE",
@@ -55,6 +56,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             defaultParams={
               Object {
                 "application_type": "NOW",
+                "issuing_inspector_name": undefined,
                 "lead_inspector_name": undefined,
                 "mine_name": undefined,
                 "mine_region": Array [],
@@ -102,6 +104,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             searchParams={
               Object {
                 "application_type": "NOW",
+                "issuing_inspector_name": undefined,
                 "lead_inspector_name": undefined,
                 "mine_name": undefined,
                 "mine_region": "SW,NE",

@@ -12,8 +12,6 @@ import InspectionsTable from "@/components/dashboard/mine/inspections/Inspection
 import TableSummaryCard from "@/components/common/TableSummaryCard";
 import * as Strings from "@/constants/strings";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo.isRequired,
@@ -43,14 +41,14 @@ export class Inspections extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Title level={4}>Inspections</Title>
-          <Paragraph>
+          <Typography.Title level={4}>Inspections</Typography.Title>
+          <Typography.Paragraph>
             This table shows your mine&apos;s&nbsp;
-            <Text className="color-primary" strong>
+            <Typography.Text className="color-primary" strong>
               inspection history
-            </Text>
+            </Typography.Text>
             &nbsp;since March 2018. Each row represents an individual order.
-          </Paragraph>
+          </Typography.Paragraph>
           {this.state.isLoaded && this.props.mineComplianceInfo && (
             <Row type="flex" justify="space-around" gutter={[16, 16]}>
               <Col sm={24} md={10} lg={6}>
@@ -90,8 +88,8 @@ export class Inspections extends Component {
                         {formatDate(this.props.mineComplianceInfo.last_inspection)}
                       </div>
                     ) : (
-                        Strings.EMPTY_FIELD
-                      )
+                      Strings.EMPTY_FIELD
+                    )
                   }
                   icon="file-text"
                   type="info"

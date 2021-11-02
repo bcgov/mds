@@ -16,12 +16,11 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
       <Descriptions
         colon={false}
         column={5}
-        size="default"
       >
         <DescriptionsItem
           label={
             <React.Fragment>
-              <Tooltip
+              <ForwardRef
                 arrowPointAtCenter={false}
                 autoAdjustOverflow={true}
                 mouseEnterDelay={0.3}
@@ -49,11 +48,10 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 }
                 transitionName="zoom-big-fast"
               >
-                <Icon
+                <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
-                  type="info-circle"
                 />
-              </Tooltip>
+              </ForwardRef>
               Work Start Date
             </React.Fragment>
           }
@@ -80,7 +78,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
         <DescriptionsItem
           label={
             <React.Fragment>
-              <Tooltip
+              <ForwardRef
                 arrowPointAtCenter={false}
                 autoAdjustOverflow={true}
                 mouseEnterDelay={0.3}
@@ -108,11 +106,10 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 }
                 transitionName="zoom-big-fast"
               >
-                <Icon
+                <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
-                  type="info-circle"
                 />
-              </Tooltip>
+              </ForwardRef>
               Work Stop Date
             </React.Fragment>
           }
@@ -140,10 +137,6 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
           label="Work Status"
         >
           <Badge
-            count={null}
-            dot={false}
-            overflowCount={99}
-            showZero={false}
             status="default"
             text="N/A"
           />
@@ -175,15 +168,10 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -203,7 +191,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile margin-small"

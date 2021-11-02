@@ -3,37 +3,35 @@ import PropTypes from "prop-types";
 import { Typography } from "antd";
 import * as Strings from "@/constants/strings";
 
-const { Paragraph, Text } = Typography;
-
 const propTypes = {
   contact: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const MinistryContactItem = (props) => (
-  <Paragraph className="ministry-contact-item">
-    <Text strong className="ministry-contact-title">
+  <Typography.Paragraph className="ministry-contact-item">
+    <Typography.Text strong className="ministry-contact-title">
       {props.contact.title || Strings.UNKNOWN}
       <br />
-    </Text>
+    </Typography.Text>
     {props.contact.name && (
-      <Text>
+      <Typography.Text>
         {props.contact.name}
         <br />
-      </Text>
+      </Typography.Text>
     )}
     {props.contact.phone && (
-      <Text>
+      <Typography.Text>
         {props.contact.phone}
         <br />
-      </Text>
+      </Typography.Text>
     )}
     {props.contact.email && (
-      <Text>
+      <Typography.Text>
         <a href={`mailto:${props.contact.email}`}>{props.contact.email}</a>
         <br />
-      </Text>
+      </Typography.Text>
     )}
-  </Paragraph>
+  </Typography.Paragraph>
 );
 
 MinistryContactItem.propTypes = propTypes;

@@ -1,6 +1,7 @@
 import React from "react";
-import { Link, Redirect, Route, Switch } from "react-router-dom";
-import { Result, Button, Typography, Icon } from "antd";
+import { Link, Route, Switch } from "react-router-dom";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Result, Button, Typography } from "antd";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 
@@ -8,7 +9,7 @@ const Routes = () => (
   <Switch>
     {/* PUBLIC ROUTES */}
     <Route exact path={routes.HOME.route} component={routes.HOME.component} />
-    <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} /> */}
+    <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} />
     {/* PRIVATE ROUTES */}
     <Route
       exact
@@ -31,8 +32,10 @@ const Routes = () => (
         <Result
           title="Page Not Found"
           status="warning"
-          subTitle={<Typography.Text>Sorry, the page you requested does not exist.</Typography.Text>}
-          icon={<Icon type="exclamation-circle" />}
+          subTitle={
+            <Typography.Text>Sorry, the page you requested does not exist.</Typography.Text>
+          }
+          icon={<ExclamationCircleOutlined />}
           extra={
             <Link to={routes.HOME.route}>
               <Button>Home</Button>

@@ -6,7 +6,9 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Popconfirm, List, Typography } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, yearNotInFuture } from "@common/utils/Validate";
@@ -22,8 +24,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
-
-const { Paragraph, Text } = Typography;
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -163,7 +163,9 @@ export class AddReportForm extends Component {
               ))}
             </List>
           ) : (
-            <Paragraph>Select the report type and name to view the required codes.</Paragraph>
+            <Typography.Paragraph>
+              Select the report type and name to view the required codes.
+            </Typography.Paragraph>
           )}
         </Form.Item>
         <Field
@@ -172,10 +174,10 @@ export class AddReportForm extends Component {
           label={
             <span>
               <div style={{ paddingBottom: 8 }}>Report Compliance Year/Period*</div>
-              <Text>
+              <Typography.Text>
                 Select the year for which the report is being submitted. Depending on the report,
                 this may not be the current calendar year.
-              </Text>
+              </Typography.Text>
             </span>
           }
           component={renderConfig.YEAR}

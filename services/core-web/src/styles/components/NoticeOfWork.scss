@@ -232,6 +232,7 @@
   padding-bottom: 5px;
   width: 25px;
   height: 25px;
+  color: $violet;
 }
 
 .fee-determination--block {
@@ -353,4 +354,27 @@
 
 .template-letter-content .ant-typography {
   padding-top: 10px;
+}
+
+.condition-menu-container {
+  background-color: $violet;
+  padding: 5px;
+  position: fixed;
+  top: 65px;
+  left: 20px;
+  z-index: 1001;
+  box-shadow: $default-box-shadow !important;
+  border-radius: 5px;
+
+  h4 {
+    color: $white;
+  }
+}
+
+.variable-menu {
+  margin: 10px;
+}
+
+.variable-item.ant-menu-item-selected {
+  background-color: white !important;
 }

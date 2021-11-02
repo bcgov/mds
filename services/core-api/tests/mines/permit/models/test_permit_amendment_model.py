@@ -25,6 +25,15 @@ def test_permit_amendment_model_find_by_permit_id(db_session):
     assert all(pa.permit_id == permit_id for pa in permit_amendments)
 
 
+def test_permit_amendment_model_find_last_amendment_by_permit_id(db_session):
+    batch_size = 3
+    mine, permit = create_mine_and_permit(num_permit_amendments=batch_size)
+    permit_id = mine.mine_permit[0].permit_id
+
+    permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(permit_id)
+    assert permit_amendment.permit_id == permit_id
+
+
 def test_permit_amendment_model_validate_status_code():
     with pytest.raises(AssertionError) as e:
         PermitAmendment(
