@@ -217,10 +217,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                     permit_contacts = permit_contacts + mp.permit_appointments
                 else:
                     for pa in mp.permit_appointments:
-                        if pa.end_date is None or (
-                            (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
-                                and pa.end_date >= datetime.utcnow().date()):
-                            permit_contacts.append(pa)
+                        if pa.deleted_ind == False:
+                            if pa.end_date is None or (
+                                (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
+                                    and pa.end_date >= datetime.utcnow().date()):
+                                permit_contacts.append(pa)
             results = results + permit_contacts
         return results
 
