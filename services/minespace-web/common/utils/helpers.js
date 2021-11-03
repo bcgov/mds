@@ -374,16 +374,20 @@ export const getDurationTextInDays = (duration) => {
   if (Math.sign(duration._milliseconds) === -1) {
     return "N/A";
   }
+  const years = duration.years();
+  const months = duration.months();
   const days = duration.days();
   const hours = duration.hours();
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
+  const yearsText = getDurationTextOrDefault(years, "Year");
+  const monthsText = getDurationTextOrDefault(months, "Month");
   const daysText = getDurationTextOrDefault(days, "Day");
   const hourText = getDurationTextOrDefault(hours, "Hour");
   const minuteText = getDurationTextOrDefault(minutes, "Minute");
   const secondText = getDurationTextOrDefault(seconds, "Second");
-  const value = `${daysText} ${hourText} ${minuteText} ${secondText}`;
+  const value = `${yearsText} ${monthsText} ${daysText} ${hourText} ${minuteText} ${secondText}`;
   return value;
 };
 
