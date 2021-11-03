@@ -17,7 +17,7 @@ import {
   fetchStandardPermitConditions,
 } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";

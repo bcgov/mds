@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import {
   DownOutlined,
   ClockCircleOutlined,

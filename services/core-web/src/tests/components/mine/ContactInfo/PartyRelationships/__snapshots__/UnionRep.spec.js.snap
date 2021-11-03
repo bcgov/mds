@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnionRep renders properly 1`] = `
+<DefaultContact
+  editPermission="role_edit_parties"
+  partyRelationship={
+    Object {
+      "union_rep_company": "company name",
+    }
+  }
+  partyRelationshipSubTitle="company name"
+/>
+`;

@@ -4,7 +4,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import AddReportForm from "@/components/Forms/reports/AddReportForm";
 import ReportHistory from "@/components/Forms/reports/ReportHistory";
 import { SlidingForms } from "@/components/common/SlidingForms";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import * as Strings from "@common/constants/strings";
 import AddMinePermitRequiredForm from "../Forms/reports/AddMinePermitRequiredForm";
 

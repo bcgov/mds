@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWActionWrapper renders properly 1`] = `
+<Connect(AuthorizationWrapper)
+  allowAfterProcess={true}
+  applicationDelay={Object {}}
+  history={
+    Object {
+      "push": [MockFunction],
+    }
+  }
+  isDisabledReviewButton={true}
+  location={
+    Object {
+      "pathname": "mock path name",
+    }
+  }
+  noticeOfWork={
+    Object {
+      "application_type_code": "NOW",
+      "notice_of_work_type_code": "PLA",
+    }
+  }
+  progress={Object {}}
+  tab="application"
+>
+  <span />
+</Connect(AuthorizationWrapper)>
+`;

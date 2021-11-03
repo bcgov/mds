@@ -30,7 +30,7 @@ import { getSearchResults, getSearchSubsetResults } from "@common/selectors/sear
 import * as Strings from "@common/constants/strings";
 
 import Address from "@/components/common/Address";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {

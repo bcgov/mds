@@ -142,7 +142,7 @@
       "jest-canvas-mock"
     ],
     "collectCoverageFrom": [
-      "**/common/**/*.js",
+      "!**/common/**/*.js",
       "**/src/**/*.js",
       "!src/index.js",
       "!src/App.js",

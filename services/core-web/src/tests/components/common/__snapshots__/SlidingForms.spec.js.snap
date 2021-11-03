@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SlidingForms renders properly 1`] = `
+<div>
+  <Carousel
+    axis="horizontal"
+    centerSlidePercentage={80}
+    interval={3000}
+    labels={
+      Object {
+        "item": "slide item",
+        "leftArrow": "previous slide / item",
+        "rightArrow": "next slide / item",
+      }
+    }
+    onChange={[Function]}
+    onClickItem={[Function]}
+    onClickThumb={[Function]}
+    onSwipeEnd={[Function]}
+    onSwipeMove={[Function]}
+    onSwipeStart={[Function]}
+    renderArrowNext={[Function]}
+    renderArrowPrev={[Function]}
+    renderIndicator={[Function]}
+    renderItem={[Function]}
+    renderThumbs={[Function]}
+    selectedItem={1}
+    showArrows={false}
+    showIndicators={false}
+    showStatus={false}
+    showThumbs={false}
+    statusFormatter={[Function]}
+    stopOnHover={true}
+    swipeScrollTolerance={5}
+    swipeable={false}
+    transitionTime={350}
+    verticalSwipe="standard"
+    width="100%"
+  />
+</div>
+`;

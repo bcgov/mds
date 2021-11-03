@@ -45,7 +45,7 @@ import {
   SUCCESS_CHECKMARK,
   MINESPACE_ICON,
 } from "@/constants/assets";
-import RefreshButton from "@/components/common/RefreshButton";
+import RefreshButton from "@/components/common/buttons/RefreshButton";
 import * as router from "@/constants/routes";
 import MineComments from "@/components/mine/MineComments";
 import { CoreTooltip } from "@/components/common/CoreTooltip";

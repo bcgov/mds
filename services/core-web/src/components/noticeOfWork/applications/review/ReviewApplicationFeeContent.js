@@ -15,7 +15,7 @@ import {
   isPitsQuarriesAdjustmentFeeValid,
   isDateRangeValid,
 } from "@common/utils/helpers";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderRadioButtons renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <Memo(RadioGroup)
+    checked={[Function]}
+    defaultValue={null}
+    disabled={false}
+    id="1"
+    options={Array []}
+  />
+</FormItem>
+`;

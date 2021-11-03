@@ -2,6 +2,7 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
   createMineRecord,
+  updateMineRecord,
   fetchMineRecords,
   fetchMineRecordById,
   fetchMineNameList,
@@ -12,6 +13,7 @@ import {
   subscribe,
   unSubscribe,
   fetchMineVerifiedStatuses,
+  setMineVerifiedStatus,
   fetchMineComments,
   createMineComment,
   deleteMineComment,
@@ -64,6 +66,38 @@ describe("`createMineRecord` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createMineRecord(mineName)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateMineRecord` action creator", () => {
+  const mineName = "mock Mine";
+  const mineGuid = "12345-6789";
+  const url = `${ENVIRONMENT.apiUrl + API.MINE}/${mineGuid}`;
+  const mockPayLoad = {
+    name: mineName,
+    mine_guid: mineGuid,
+  };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockMineResponse = { success: true, mine_guid: mineGuid };
+    mockAxios.onPut(url, mockPayLoad).reply(200, mockMineResponse);
+    return updateMineRecord(
+      mineGuid,
+      mockPayLoad,
+      mineName
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateMineRecord(mineName)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -331,6 +365,40 @@ describe("`fetchMineVerifiedStatuses` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`setMineVerifiedStatus` action creator", () => {
+  const mineName = "mock Mine";
+  const mineGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.MINE_VERIFIED_STATUS(mineGuid);
+  const mockPayLoad = {
+    name: mineName,
+    mine_guid: mineGuid,
+  };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockMineResponse = { success: true, mine_guid: mineGuid };
+    mockAxios.onPut(url, mockPayLoad).reply(200, mockMineResponse);
+    return setMineVerifiedStatus(
+      mineGuid,
+      mockPayLoad
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return setMineVerifiedStatus(
+      mineGuid,
+      mockPayLoad
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });

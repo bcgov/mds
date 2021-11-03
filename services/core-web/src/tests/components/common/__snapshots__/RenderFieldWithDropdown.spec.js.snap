@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderFieldWithDropdown renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <div
+    className="inline-flex"
+  >
+    <label
+      className="nowrap"
+      htmlFor="mockID"
+      style={
+        Object {
+          "fontSize": "20px",
+          "paddingRight": "10px",
+        }
+      }
+    >
+      Mock Label
+    </label>
+    <Input
+      addonAfter={
+        <Select
+          bordered={true}
+          choiceTransitionName=""
+          disabled={false}
+          id="mockDropdownID"
+          style={
+            Object {
+              "width": 150,
+            }
+          }
+          transitionName="slide-up"
+          value={null}
+          virtual={false}
+        />
+      }
+      defaultValue="%"
+      disabled={false}
+      id="mockID"
+      placeholder="select from dropdown"
+      type="text"
+    />
+  </div>
+</FormItem>
+`;

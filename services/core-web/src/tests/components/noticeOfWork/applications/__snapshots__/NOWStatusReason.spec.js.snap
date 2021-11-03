@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWStatusReason renders properly 1`] = `
+<div>
+  <Descriptions
+    column={1}
+  >
+    <DescriptionsItem
+      label="Status"
+    >
+      N/A
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Reason for Status Change"
+    >
+      N/A
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Date of Status Change"
+    />
+  </Descriptions>
+</div>
+`;

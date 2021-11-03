@@ -33,7 +33,7 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,

@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Contact renders properly 1`] = `
+<Permittee
+  compact={false}
+  handleChange={[MockFunction]}
+  isEditable={false}
+  onSubmitEditPartyRelationship={[MockFunction]}
+  openEditPartyRelationshipModal={[MockFunction]}
+  otherDetails={Object {}}
+  partyRelationship={
+    Object {
+      "mine_party_appt_type_code": "PMT",
+    }
+  }
+  partyRelationshipTitle="Permittee"
+  permits={
+    Array [
+      Object {
+        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        "permit_guid": "6515d1bf-23a9-4f36-8f12-bacbca8b138d",
+        "permit_id": "25",
+        "permit_no": "SdT1PbJX0R8c",
+        "permit_status_code": "C",
+      },
+      Object {
+        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        "permit_guid": "44a7f4c6-313d-4040-97d5-7944665d9556",
+        "permit_id": "24",
+        "permit_no": "TSRWCIB7Czc9",
+        "permit_status_code": "C",
+      },
+      Object {
+        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        "permit_guid": "b2dfa766-3de5-40d0-92f9-f31d7f98a65f",
+        "permit_id": "23",
+        "permit_no": "6oB0VXBqtzC1",
+        "permit_status_code": "O",
+      },
+    ]
+  }
+  removePartyRelationship={[MockFunction]}
+/>
+`;

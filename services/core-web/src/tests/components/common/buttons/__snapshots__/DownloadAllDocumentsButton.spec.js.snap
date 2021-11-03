@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadAllDocumentsButton renders properly 1`] = `
+<div
+  className="custom-menu-item"
+>
+  <button
+    className="full add-permit-dropdown-button"
+    disabled={true}
+    onClick={[Function]}
+    type="button"
+  >
+    <ForwardRef(DownloadOutlined)
+      className="icon-sm padding-md--right violet"
+    />
+    Download All
+  </button>
+</div>
+`;

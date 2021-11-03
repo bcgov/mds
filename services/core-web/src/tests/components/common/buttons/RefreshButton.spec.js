@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RefreshButton from "@/components/common/RefreshButton";
+import RefreshButton from "@/components/common/buttons/RefreshButton";
 
 describe("RefreshButton", () => {
   it("renders properly", () => {

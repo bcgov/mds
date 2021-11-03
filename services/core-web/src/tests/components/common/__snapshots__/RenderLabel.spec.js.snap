@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderLabel renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+>
+  <Row
+    className="template-letter-content"
+  >
+    <Col
+      span={2}
+    >
+      <Paragraph
+        disabled={true}
+      >
+        test
+      </Paragraph>
+    </Col>
+    <Col
+      span={1}
+    >
+      <Divider
+        plain={true}
+        type="vertical"
+      />
+    </Col>
+    <Col
+      span={21}
+    >
+      <Paragraph
+        ellipsis={
+          Object {
+            "expandable": true,
+            "rows": 3,
+          }
+        }
+      />
+    </Col>
+  </Row>
+</FormItem>
+`;

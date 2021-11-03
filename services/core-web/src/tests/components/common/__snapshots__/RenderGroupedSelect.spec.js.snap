@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderGroupedSelect renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <Select
+    bordered={true}
+    choiceTransitionName=""
+    defaultValue=""
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    id="parties"
+    onChange={[MockFunction]}
+    onSelect={[Function]}
+    optionFilterProp="children"
+    placeholder=""
+    showSearch={true}
+    transitionName="slide-up"
+    virtual={false}
+  />
+</FormItem>
+`;

@@ -13,7 +13,7 @@ import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "../LinkButton";
+import LinkButton from "../buttons/LinkButton";
 
 const propTypes = {
   childProps: PropTypes.objectOf(PropTypes.any),
