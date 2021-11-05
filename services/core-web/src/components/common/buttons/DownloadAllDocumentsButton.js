@@ -1,5 +1,5 @@
 import React from "react";
-import { notification, Tooltip } from "antd";
+import { notification } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
@@ -28,7 +28,7 @@ const waitFor = (conditionFunction) => {
   return new Promise(poll);
 };
 
-export const DownloadAllDocuments = (props) => {
+export const DownloadAllDocumentsButton = (props) => {
   const hasDocuments = props.documents?.length > 0;
 
   const handleDownloadAll = () => {
@@ -75,4 +75,5 @@ export const DownloadAllDocuments = (props) => {
   );
 };
 
-export default DownloadAllDocuments;
+DownloadAllDocumentsButton.propTypes = propTypes;
+export default DownloadAllDocumentsButton;

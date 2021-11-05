@@ -29,7 +29,7 @@ const defaultProps = {
   onRemove: () => {},
 };
 
-const CommentPanel = (props) => (
+export const CommentPanel = (props) => (
   <React.Fragment>
     {!props.loading ? (
       <List
@@ -37,30 +37,32 @@ const CommentPanel = (props) => (
         itemLayout="horizontal"
         dataSource={props.comments}
         locale={{ emptyText: "No Data Yet" }}
-        renderItem={(item) => (
-          <li key={item.key}>
-            <div className="inline-flex">
-              <div className="flex-4">
-                <Comment author={item.author} datetime={item.datetime} actions={item.actions}>
-                  {item.content}
-                </Comment>
+        renderItem={(item) => {
+          return (
+            <li key={item.key}>
+              <div className="inline-flex">
+                <div className="flex-4">
+                  <Comment author={item.author} datetime={item.datetime} actions={item.actions}>
+                    {item.content}
+                  </Comment>
+                </div>
+                <AuthorizationWrapper permission={Permission.ADMIN}>
+                  <Popconfirm
+                    placement="topLeft"
+                    title="Are you sure you want to delete this comment?"
+                    onConfirm={() => props.onRemove(item.key)}
+                    okText="Delete"
+                    cancelText="Cancel"
+                  >
+                    <Button ghost type="primary">
+                      <img name="remove" src={TRASHCAN} alt="Remove User" />
+                    </Button>
+                  </Popconfirm>
+                </AuthorizationWrapper>
               </div>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this comment?"
-                  onConfirm={() => props.onRemove(item.key)}
-                  okText="Delete"
-                  cancelText="Cancel"
-                >
-                  <Button ghost type="primary">
-                    <img name="remove" src={TRASHCAN} alt="Remove User" />
-                  </Button>
-                </Popconfirm>
-              </AuthorizationWrapper>
-            </div>
-          </li>
-        )}
+            </li>
+          );
+        }}
       />
     ) : (
       <div className="center margin-xlarge">

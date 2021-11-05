@@ -16,7 +16,7 @@ const debouncePropTypes = {
   debounceTimeout: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
-function DebounceSelect(props) {
+export function DebounceSelect(props) {
   const [fetching, setFetching] = useState(false);
   const [options, setOptions] = useState([]);
   const fetchRef = useRef(0);
@@ -68,7 +68,7 @@ const defaultProps = {
   onSearchSubsetResultsChanged: () => {},
 };
 
-const RenderMultiSelectPartySearch = (props) => {
+export const RenderMultiSelectPartySearch = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchSubsetResults, setSearchSubsetResults] = useState([]);
   const [selectedPartySearchResults, setSelectedPartySearchResults] = useState([]);

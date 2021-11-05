@@ -10,6 +10,7 @@ import { PlusOutlined } from "@ant-design/icons";
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   children: PropTypes.any,
+  onClick: PropTypes.func.isRequired,
 };
 
 const defaultProps = {

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 
 const propTypes = {
   formContent: PropTypes.arrayOf(PropTypes.object).isRequired,

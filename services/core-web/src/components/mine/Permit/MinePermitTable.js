@@ -24,7 +24,7 @@ import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
-import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
+import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -476,7 +476,7 @@ const childColumns = [
             </div>
           </Menu.Item>
           <Menu.Item key="2">
-            <DownloadAllDocuments documents={record.permitAmendmentDocuments} />
+            <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
           </Menu.Item>
           <Menu.Item key="3">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
           <Menu.Item key="4">{renderVerifyCredentials(text, record)}</Menu.Item>

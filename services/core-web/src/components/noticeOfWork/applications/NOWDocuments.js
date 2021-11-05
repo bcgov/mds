@@ -23,7 +23,7 @@ import {
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";

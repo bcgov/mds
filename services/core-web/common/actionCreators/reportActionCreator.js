@@ -11,6 +11,7 @@ import CustomAxios from "../customAxios";
 
 export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_MINE_REPORT));
+  dispatch(showLoading());
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
@@ -27,11 +28,13 @@ export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
     .catch((err) => {
       dispatch(error(reducerTypes.DELETE_MINE_REPORT));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const createMineReport = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, payload, createRequestHeader())
     .then((response) => {
@@ -45,7 +48,8 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_MINE_REPORT));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchMineReports = (
@@ -80,6 +84,7 @@ export const fetchReports = (params = {}) => (dispatch) => {
 
 export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_REPORT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
@@ -97,5 +102,6 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_MINE_REPORT));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };

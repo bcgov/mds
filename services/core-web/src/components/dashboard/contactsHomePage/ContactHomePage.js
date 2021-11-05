@@ -23,7 +23,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import { PageTracker } from "@common/utils/trackers";
 
 /**

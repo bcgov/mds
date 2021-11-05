@@ -13,7 +13,7 @@ import {
 } from "@common/actionCreators/workInformationActionCreator";
 import * as Strings from "@common/constants/strings";
 import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { formatDate, formatDateTime } from "@common/utils/helpers";

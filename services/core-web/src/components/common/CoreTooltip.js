@@ -11,13 +11,13 @@ const propTypes = {
 
 const defaultProps = {
   title: null,
+  iconColor: COLOR.violet,
 };
 
 const OriginalValuePropTypes = {
   originalValue: PropTypes.string.isRequired,
   isVisible: PropTypes.bool.isRequired,
   style: PropTypes.objectOf(PropTypes.string),
-  iconColor: COLOR.violet,
 };
 
 const OriginalValueDefaultProps = { style: {} };

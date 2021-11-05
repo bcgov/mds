@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoreTable renders properly 1`] = `
+<div>
+  <div>
+    <Table
+      columns={Array []}
+      dataSource={Object {}}
+      locale={
+        Object {
+          "emptyText": "No Data Yet",
+        }
+      }
+      pagination={false}
+      rowClassName="fade-in"
+      rowKey="key"
+      tableLayout="auto"
+    />
+  </div>
+</div>
+`;

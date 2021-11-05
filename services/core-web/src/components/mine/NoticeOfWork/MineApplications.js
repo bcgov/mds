@@ -17,7 +17,7 @@ import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";

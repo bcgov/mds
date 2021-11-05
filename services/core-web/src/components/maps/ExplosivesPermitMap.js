@@ -45,7 +45,7 @@ const getMajorMinePermittedAreas = () => {
   return majorMinesSource.getLayer("pub:WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP");
 };
 
-class ExplosivesPermitMap extends Component {
+export class ExplosivesPermitMap extends Component {
   state = { containsPin: false };
 
   // if mine does not have a location, set a default to center the map
