@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Descriptions, Badge, Row, Col, Steps, Popover } from "antd";
+import {isNil} from "lodash";
+import { Descriptions, Badge, Row, Col, Steps, Popover, Button } from "antd";
 import { connect } from "react-redux";
 import {
   getNoticeOfWork,
@@ -20,6 +21,8 @@ import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
@@ -37,7 +40,7 @@ const propTypes = {
   totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const columns = [
+const delayColumns = [
   {
     title: "Reason for Delay",
     dataIndex: "reason",
@@ -63,6 +66,77 @@ const columns = [
     dataIndex: "end_comment",
     render: (text) => <div title="Comment">{text || "N/A"}</div>,
   },
+  {
+      title: "",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+           <AuthorizationWrapper>
+              <Button
+                type="secondary"
+                ghost
+                onClick={(event) => console.log(record)}
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    }
+];
+
+const progressColumns = [
+  {
+    title: "Step",
+    dataIndex: "application_progress_status_code",
+    render: (text) => <div title="Step">{text}</div>,
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    render: (text) => <div title="Status">{text}</div>,
+  },
+  {
+    title: "Date",
+    dataIndex: "dates",
+    render: (text) => <div title="Date">{text}</div>,
+  },
+  {
+    title: "Duration",
+    dataIndex: "duration",
+    render: (text) => <div title="Duration">{text}</div>,
+  },
+  {
+      title: "",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+          <AuthorizationWrapper>
+              <Button
+                type="secondary"
+                ghost
+                onClick={(event) => console.log(record)}
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    }
 ];
 
 const stepItem = (progress, progressStatus, delaysExist) => {
@@ -178,6 +252,22 @@ const transformRowData = (delays, delayTypeHash) => {
   return appDelays;
 };
 
+const transformProgressRowData = (progress, progressTypeHash) => {
+  const appDelays = progress.map((item) => {
+    const hasEnded = !isNil(delay.end_date);
+    const dateMessage = hasEnded ? formatDate(item.end_date) : "Present";
+    return {
+      key: item.application_progress_status_code,
+      reason: progressTypeHash[item.application_progress_status_code],
+      // duration: item.duration || "0 Minutes",
+      // dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
+      ...item,
+    };
+  });
+
+  return appDelays;
+};
+
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
   render() {
@@ -281,12 +371,13 @@ export class NOWProgressTable extends Component {
             this.props.applicationDelays,
             this.props.delayTypeOptionsHash
           )}
-          columns={columns}
+          columns={delayColumns}
           tableProps={{
             pagination: false,
           }}
         />
         <br />
+
         <Descriptions column={1}>
           <>
             <Descriptions.Item label="Total Time in Delay">
@@ -297,6 +388,19 @@ export class NOWProgressTable extends Component {
             </Descriptions.Item>
           </>
         </Descriptions>
+
+         <CoreTable
+          condition
+          dataSource={transformRowData(
+            this.props.noticeOfWork.application_progress,
+            this.props.progressStatusCodeHash
+          )}
+          columns={progressColumns}
+          tableProps={{
+            pagination: false,
+          }}
+        />
+        <br />
       </div>
     );
   }
