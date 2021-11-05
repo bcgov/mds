@@ -73,8 +73,14 @@ export const getNOWProgress = createSelector(
   (noticeOfWork, delayDurations) => {
     const today = new Date();
     let progress = {};
+    let status = "Not started";
     if (noticeOfWork.application_progress?.length > 0) {
       progress = noticeOfWork.application_progress.reduce((map, obj) => {
+        if (obj.start_date && !obj.end_date) {
+          status = "In Progress"
+        } else if (obj.start_date && obj.end_date) {
+          status = "Complete"
+        }
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
         // eslint-disable-next-line no-underscore-dangle
@@ -83,6 +89,7 @@ export const getNOWProgress = createSelector(
         return {
           [obj.application_progress_status_code]: {
             ...obj,
+            status,
             duration: getDurationTextInDays(duration),
             durationWithoutDelays: getDurationTextInDays(durationDifference),
           },

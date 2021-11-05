@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import moment from "moment";
-import {isNil} from "lodash";
+import { isNil } from "lodash";
 import { Descriptions, Badge, Row, Col, Steps, Popover, Button } from "antd";
 import { connect } from "react-redux";
 import {
@@ -33,6 +33,12 @@ import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
  */
 const noImportMeta = "Information not captured at time of Import";
 const clientDelayMessage = "Client delay exceeds time spent in progress.";
+
+const badgeColor = {
+  "In Progress": COLOR.blue,
+  Complete: COLOR.successGreen,
+  "Not Started": COLOR.mediumGrey,
+};
 const propTypes = {
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -42,7 +48,6 @@ const propTypes = {
   applicationDelays: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-
 
 const stepItem = (progress, progressStatus, delaysExist) => {
   if (!progress[progressStatus.application_progress_status_code])
@@ -157,106 +162,73 @@ const transformRowData = (delays, delayTypeHash) => {
   return appDelays;
 };
 
-const transformProgressRowData = (progress, progressTypeHash) => {
-  console.log(progressTypeHash)
-  const appDelays = progress.map((item) => {
-    const hasEnded = !isNil(item.end_date);
-    const dateMessage = hasEnded ? formatDate(item.end_date) : "Present";
-    return {
-      key: item.application_progress_status_code,
-      status_code: progressTypeHash[item.application_progress_status_code],
-      status: "In Progress",
-      duration: item.duration || "0 Minutes",
-      dates: `${formatDate(item.start_date)} - ${dateMessage}`,
-      ...item,
-    };
-  });
-
-  return appDelays;
+const transformProgressRowData = (
+  progress,
+  progressTypeHash,
+  progressStatusCodes,
+  noticeOfWork
+) => {
+  const applicationProgress = progressStatusCodes
+    .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+    .filter(({ application_progress_status_code }) =>
+      APPLICATION_PROGRESS_TRACKING[noticeOfWork.application_type_code].includes(
+        application_progress_status_code
+      )
+    )
+    .map((item) => {
+      const hasEnded = !isNil(progress[item.application_progress_status_code].end_date);
+      const dateMessage = hasEnded
+        ? formatDate(progress[item.application_progress_status_code].end_date)
+        : "Present";
+      return {
+        key: item.application_progress_status_code,
+        status_code: progressTypeHash[item.application_progress_status_code],
+        duration: item.duration || "0 Minutes",
+        dates: `${formatDate(
+          progress[item.application_progress_status_code].start_date
+        )} - ${dateMessage}`,
+        ...item,
+        ...progress[item.application_progress_status_code],
+      };
+    });
+  return applicationProgress;
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
-delayColumns = () => [
-  {
-    title: "Reason for Delay",
-    dataIndex: "reason",
-    render: (text) => <div title="Reason for Delay">{text}</div>,
-  },
-  {
-    title: "Comment",
-    dataIndex: "start_comment",
-    render: (text) => <div title="Last Verified On">{text}</div>,
-  },
-  {
-    title: "Date",
-    dataIndex: "dates",
-    render: (text) => <div title="Date">{text}</div>,
-  },
-  {
-    title: "Duration",
-    dataIndex: "duration",
-    render: (text) => <div title="Duration">{text}</div>,
-  },
-  {
-    title: "End Comment",
-    dataIndex: "end_comment",
-    render: (text) => <div title="Comment">{text || "N/A"}</div>,
-  },
-  {
+  delayColumns = () => [
+    {
+      title: "Reason for Delay",
+      dataIndex: "reason",
+      render: (text) => <div title="Reason for Delay">{text}</div>,
+    },
+    {
+      title: "Comment",
+      dataIndex: "start_comment",
+      render: (text) => <div title="Last Verified On">{text}</div>,
+    },
+    {
+      title: "Date",
+      dataIndex: "dates",
+      render: (text) => <div title="Date">{text}</div>,
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      render: (text) => <div title="Duration">{text}</div>,
+    },
+    {
+      title: "End Comment",
+      dataIndex: "end_comment",
+      render: (text) => <div title="Comment">{text || "N/A"}</div>,
+    },
+    {
       title: "",
       dataIndex: "edit",
       render: (text, record) => {
         return (
           <div title="" align="right">
-           <AuthorizationWrapper>
-              <Button
-                type="secondary"
-                ghost
-                 onClick={(event) => this.handleOpenDateModal(event, record)}
-              >
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  title="Edit"
-                  alt="Edit"
-                  className="padding-md--right"
-                />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    }
-];
-
-progressColumns = () => [
-  {
-    title: "Stage",
-    dataIndex: "status_code",
-    render: (text) => <div title="Stage">{text}</div>,
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    render: (text) => <div title="Status">{text}</div>,
-  },
-  {
-    title: "Date",
-    dataIndex: "dates",
-    render: (text) => <div title="Date">{text}</div>,
-  },
-  {
-    title: "Duration",
-    dataIndex: "duration",
-    render: (text) => <div title="Duration">{text}</div>,
-  },
-  {
-      title: "",
-      dataIndex: "edit",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-          <AuthorizationWrapper>
+            <AuthorizationWrapper>
               <Button
                 type="secondary"
                 ghost
@@ -273,21 +245,72 @@ progressColumns = () => [
           </div>
         );
       },
-    }
-];
+    },
+  ];
+
+  progressColumns = () => [
+    {
+      title: "Progress Stage",
+      dataIndex: "status_code",
+      render: (text) => <div title="Stage">{text}</div>,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (text) => (
+        <div title="Status">
+          <Badge color={badgeColor[text]} className="padding-sm--left progress-status" />
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "dates",
+      render: (text) => <div title="Date">{text}</div>,
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      render: (text) => <div title="Duration">{text}</div>,
+    },
+    {
+      title: "",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+            <AuthorizationWrapper>
+              <Button
+                type="secondary"
+                ghost
+                onClick={(event) => this.handleOpenDateModal(event, record)}
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    },
+  ];
 
   handleOpenDateModal = (event, record) => {
-event.preventDefault()
+    event.preventDefault();
     return this.props.openModal({
       props: {
         title: "Update Dates",
         onSubmit: console.log("submitting"),
-        initialValues: record
-      
+        initialValues: record,
       },
       content: modalConfig.UPDATE_NOW_DATE_MODAL,
     });
-  }
+  };
 
   render() {
     const firstProgress =
@@ -384,11 +407,14 @@ event.preventDefault()
         </Row>
         <br />
         <br />
-          <CoreTable
+        <h4>Application Progress</h4>
+        <CoreTable
           condition
           dataSource={transformProgressRowData(
-            this.props.noticeOfWork.application_progress,
-            this.props.progressStatusCodeHash
+            this.props.progress,
+            this.props.progressStatusCodeHash,
+            this.props.progressStatusCodes,
+            this.props.noticeOfWork
           )}
           columns={this.progressColumns()}
           tableProps={{
@@ -396,6 +422,8 @@ event.preventDefault()
           }}
         />
         <br />
+        <br />
+        <h4>Application Delays</h4>
         <CoreTable
           condition
           dataSource={transformRowData(

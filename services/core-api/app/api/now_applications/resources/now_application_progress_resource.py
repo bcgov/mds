@@ -63,6 +63,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def put(self, application_guid, application_progress_status_code):
+
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
 
         if identity.now_application is None:
