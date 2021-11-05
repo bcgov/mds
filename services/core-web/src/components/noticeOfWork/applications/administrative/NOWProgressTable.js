@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
 import moment from "moment";
 import {isNil} from "lodash";
 import { Descriptions, Badge, Row, Col, Steps, Popover, Button } from "antd";
@@ -15,6 +16,7 @@ import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { ClockCircleOutlined, CheckCircleOutlined, StopOutlined } from "@ant-design/icons";
 import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
@@ -22,6 +24,7 @@ import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
@@ -40,104 +43,6 @@ const propTypes = {
   totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const delayColumns = [
-  {
-    title: "Reason for Delay",
-    dataIndex: "reason",
-    render: (text) => <div title="Reason for Delay">{text}</div>,
-  },
-  {
-    title: "Comment",
-    dataIndex: "start_comment",
-    render: (text) => <div title="Last Verified On">{text}</div>,
-  },
-  {
-    title: "Date",
-    dataIndex: "dates",
-    render: (text) => <div title="Date">{text}</div>,
-  },
-  {
-    title: "Duration",
-    dataIndex: "duration",
-    render: (text) => <div title="Duration">{text}</div>,
-  },
-  {
-    title: "End Comment",
-    dataIndex: "end_comment",
-    render: (text) => <div title="Comment">{text || "N/A"}</div>,
-  },
-  {
-      title: "",
-      dataIndex: "edit",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-           <AuthorizationWrapper>
-              <Button
-                type="secondary"
-                ghost
-                onClick={(event) => console.log(record)}
-              >
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  title="Edit"
-                  alt="Edit"
-                  className="padding-md--right"
-                />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    }
-];
-
-const progressColumns = [
-  {
-    title: "Step",
-    dataIndex: "application_progress_status_code",
-    render: (text) => <div title="Step">{text}</div>,
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    render: (text) => <div title="Status">{text}</div>,
-  },
-  {
-    title: "Date",
-    dataIndex: "dates",
-    render: (text) => <div title="Date">{text}</div>,
-  },
-  {
-    title: "Duration",
-    dataIndex: "duration",
-    render: (text) => <div title="Duration">{text}</div>,
-  },
-  {
-      title: "",
-      dataIndex: "edit",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-          <AuthorizationWrapper>
-              <Button
-                type="secondary"
-                ghost
-                onClick={(event) => console.log(record)}
-              >
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  title="Edit"
-                  alt="Edit"
-                  className="padding-md--right"
-                />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    }
-];
 
 const stepItem = (progress, progressStatus, delaysExist) => {
   if (!progress[progressStatus.application_progress_status_code])
@@ -253,14 +158,16 @@ const transformRowData = (delays, delayTypeHash) => {
 };
 
 const transformProgressRowData = (progress, progressTypeHash) => {
+  console.log(progressTypeHash)
   const appDelays = progress.map((item) => {
-    const hasEnded = !isNil(delay.end_date);
+    const hasEnded = !isNil(item.end_date);
     const dateMessage = hasEnded ? formatDate(item.end_date) : "Present";
     return {
       key: item.application_progress_status_code,
-      reason: progressTypeHash[item.application_progress_status_code],
-      // duration: item.duration || "0 Minutes",
-      // dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
+      status_code: progressTypeHash[item.application_progress_status_code],
+      status: "In Progress",
+      duration: item.duration || "0 Minutes",
+      dates: `${formatDate(item.start_date)} - ${dateMessage}`,
       ...item,
     };
   });
@@ -270,6 +177,118 @@ const transformProgressRowData = (progress, progressTypeHash) => {
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
+delayColumns = () => [
+  {
+    title: "Reason for Delay",
+    dataIndex: "reason",
+    render: (text) => <div title="Reason for Delay">{text}</div>,
+  },
+  {
+    title: "Comment",
+    dataIndex: "start_comment",
+    render: (text) => <div title="Last Verified On">{text}</div>,
+  },
+  {
+    title: "Date",
+    dataIndex: "dates",
+    render: (text) => <div title="Date">{text}</div>,
+  },
+  {
+    title: "Duration",
+    dataIndex: "duration",
+    render: (text) => <div title="Duration">{text}</div>,
+  },
+  {
+    title: "End Comment",
+    dataIndex: "end_comment",
+    render: (text) => <div title="Comment">{text || "N/A"}</div>,
+  },
+  {
+      title: "",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+           <AuthorizationWrapper>
+              <Button
+                type="secondary"
+                ghost
+                 onClick={(event) => this.handleOpenDateModal(event, record)}
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    }
+];
+
+progressColumns = () => [
+  {
+    title: "Stage",
+    dataIndex: "status_code",
+    render: (text) => <div title="Stage">{text}</div>,
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    render: (text) => <div title="Status">{text}</div>,
+  },
+  {
+    title: "Date",
+    dataIndex: "dates",
+    render: (text) => <div title="Date">{text}</div>,
+  },
+  {
+    title: "Duration",
+    dataIndex: "duration",
+    render: (text) => <div title="Duration">{text}</div>,
+  },
+  {
+      title: "",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+          <AuthorizationWrapper>
+              <Button
+                type="secondary"
+                ghost
+                onClick={(event) => this.handleOpenDateModal(event, record)}
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    }
+];
+
+  handleOpenDateModal = (event, record) => {
+event.preventDefault()
+    return this.props.openModal({
+      props: {
+        title: "Update Dates",
+        onSubmit: console.log("submitting"),
+        initialValues: record
+      
+      },
+      content: modalConfig.UPDATE_NOW_DATE_MODAL,
+    });
+  }
+
   render() {
     const firstProgress =
       this.props.noticeOfWork.application_progress.length > 0
@@ -365,13 +384,25 @@ export class NOWProgressTable extends Component {
         </Row>
         <br />
         <br />
+          <CoreTable
+          condition
+          dataSource={transformProgressRowData(
+            this.props.noticeOfWork.application_progress,
+            this.props.progressStatusCodeHash
+          )}
+          columns={this.progressColumns()}
+          tableProps={{
+            pagination: false,
+          }}
+        />
+        <br />
         <CoreTable
           condition
           dataSource={transformRowData(
             this.props.applicationDelays,
             this.props.delayTypeOptionsHash
           )}
-          columns={delayColumns}
+          columns={this.delayColumns()}
           tableProps={{
             pagination: false,
           }}
@@ -388,19 +419,6 @@ export class NOWProgressTable extends Component {
             </Descriptions.Item>
           </>
         </Descriptions>
-
-         <CoreTable
-          condition
-          dataSource={transformRowData(
-            this.props.noticeOfWork.application_progress,
-            this.props.progressStatusCodeHash
-          )}
-          columns={progressColumns}
-          tableProps={{
-            pagination: false,
-          }}
-        />
-        <br />
       </div>
     );
   }
@@ -416,6 +434,15 @@ const mapStateToProps = (state) => ({
   delayTypeOptionsHash: getDelayTypeOptionsHash(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openModal,
+      closeModal,
+    },
+    dispatch
+  );
+
 NOWProgressTable.propTypes = propTypes;
 
-export default connect(mapStateToProps, null)(NOWProgressTable);
+export default connect(mapStateToProps, mapDispatchToProps)(NOWProgressTable);
