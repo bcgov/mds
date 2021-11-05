@@ -16,7 +16,7 @@ import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
 

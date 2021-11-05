@@ -23,7 +23,7 @@ const propTypes = {
   fixedTop: PropTypes.bool.isRequired,
 };
 
-const NoticeOfWorkPageHeader = (props) => {
+export const NoticeOfWorkPageHeader = (props) => {
   const nowNumber = props.noticeOfWork.now_number || Strings.EMPTY_FIELD;
   const nowLeadInspectorName =
     props.inspectorsHash[props.noticeOfWork.lead_inspector_party_guid] || Strings.UNASSIGNED;

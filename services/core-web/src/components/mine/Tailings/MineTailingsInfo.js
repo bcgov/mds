@@ -30,7 +30,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import MineTailingsMap from "@/components/maps/MineTailingsMap";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 

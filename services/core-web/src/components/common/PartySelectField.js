@@ -12,7 +12,7 @@ import { fetchSearchResults } from "@common/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import RenderLargeSelect from "./RenderLargeSelect";
 

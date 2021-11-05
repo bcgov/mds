@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import { CONSULTATION_TAB_CODE } from "@/constants/NOWConditions";

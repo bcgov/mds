@@ -109,6 +109,7 @@ exports[`MineExplosivesPermitTable renders properly 1`] = `
         "title": <span>
           Explosive Quantity
           <CoreTooltip
+            iconColor="#5e46a1"
             title="Total Explosive Quantity: This is the total quantity stored on site. Click to view more details"
           />
         </span>,
@@ -121,6 +122,7 @@ exports[`MineExplosivesPermitTable renders properly 1`] = `
         "title": <span>
           Detonator Quantity
           <CoreTooltip
+            iconColor="#5e46a1"
             title="Total Detonator Quantity: This is the total quantity stored on site. Click to view more details"
           />
         </span>,

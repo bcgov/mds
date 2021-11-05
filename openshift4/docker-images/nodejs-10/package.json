@@ -180,7 +180,9 @@
       "!src/App.js",
       "!src/fetchEnv.js",
       "!src/assetsTransformer.js",
-      "!src/setupTests.js"
+      "!src/setupTests.js",
+      "!src/components/modalContent/config.js",
+      "!src/manualReporting/renderReport.js"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",

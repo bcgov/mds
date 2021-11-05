@@ -106,6 +106,7 @@ exports[`VariableConditionMenu renders properly 1`] = `
       >
         Regional Mine Inbox
         <CoreTooltip
+          iconColor="#5e46a1"
           title="Defaults to the region associated with the Mine."
         />
       </MenuItem>

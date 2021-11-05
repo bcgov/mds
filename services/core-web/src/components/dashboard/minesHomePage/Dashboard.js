@@ -42,7 +42,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.

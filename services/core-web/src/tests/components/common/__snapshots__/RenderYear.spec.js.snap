@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderYear renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label="Time"
+  validateStatus=""
+>
+  <Picker
+    disabled={false}
+    format="YYYY"
+    id={1}
+    mode="year"
+    onChange={[Function]}
+    onOpenChange={[Function]}
+    onPanelChange={[Function]}
+    open={false}
+    placeholder=""
+    value={null}
+  />
+</FormItem>
+`;
