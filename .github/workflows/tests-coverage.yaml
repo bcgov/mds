@@ -51,6 +51,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yaml up -d backend
           docker-compose -f docker-compose.ci.yaml up -d frontend
+          docker-compose -f docker-compose.ci.yaml up -d frontend-minespace
 
       #### Group generation ####
       - name: Generate backend coverage reports
@@ -64,6 +65,13 @@ jobs:
           docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
           docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
+ 
+      # During this, rewrite frontend minespace report from docker context path to runner paths
+      - name: Generate frontend MineSpace coverage reports
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T frontend_minespace npm run test:coverage
+          docker cp mds_frontend_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
+          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
 
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
@@ -76,6 +84,11 @@ jobs:
         run: |
           cd services/core-web/
           ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
+
+      - name: Format frontend minespace reports
+        run: |
+          cd services/minespace-web/
+          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/minespace-web/ -o ../../coverage/frontend-minespace-codeclimate.json clover.xml
 
       #### Group collection ####
       - name: Collect coverage reports
