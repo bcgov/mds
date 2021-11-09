@@ -18,7 +18,7 @@ from app.api.incidents.models.mine_incident_recommendation import MineIncidentRe
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.services.email_service import EmailService
 from app.config import Config
-from app.api.constants import INCIDENTS_EMAIL
+from app.api.constants import INCIDENTS_EMAIL, MDS_EMAIL
 
 
 def getYear():
@@ -205,7 +205,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         return reported_timestamp
 
     def send_incidents_email(self):
-        recipients = [INCIDENTS_EMAIL]
+        recipients = [INCIDENTS_EMAIL, MDS_EMAIL]
 
         subject = f'Incident Notification for {self.mine_table.mine_name}'
         body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
