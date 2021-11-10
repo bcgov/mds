@@ -48,6 +48,10 @@ from app.api.mines.permits.permit_conditions.resources.permit_condition_type_res
 from app.api.mines.work_information.resources.work_information_list import MineWorkInformationListResource
 from app.api.mines.work_information.resources.work_information import MineWorkInformationResource
 from app.api.mines.external_authorizations.resources.epic_resource import EPICResource
+from app.api.mines.project_summary.resources.project_summary import ProjectSummaryResource
+from app.api.mines.project_summary.resources.project_summary_list import ProjectSummaryListResource
+from app.api.mines.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
+from app.api.mines.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -179,6 +183,12 @@ api.add_resource(MinePartyApptDocumentUploadResource,
 api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
 api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')
 
-api.add_resource(
-    EPICResource,
-    '/<string:mine_guid>/epic')
+api.add_resource(EPICResource, '/<string:mine_guid>/epic')
+
+api.add_resource(ProjectSummaryResource,
+                 '/<string:mine_guid>/project-summaries/<string:project_summary_guid>')
+api.add_resource(ProjectSummaryListResource, '/<string:mine_guid>/project-summaries')
+api.add_resource(ProjectSummaryDocumentTypeResource,
+                 '/project-summary-document-types/<string:document_type>')
+api.add_resource(ProjectSummaryStatusCodeResource,
+                 '/project-summary-status-codes/<string:status_code>')
