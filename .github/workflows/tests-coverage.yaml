@@ -70,8 +70,7 @@ jobs:
       - name: Generate frontend MineSpace coverage reports
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T frontend_minespace npm run test:coverage
-          docker-compose -f docker-compose.ci.yaml exec -T frontend_minespace cat /app/coverage/clovare.xml
-
+          
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
       - name: Format backend reports
