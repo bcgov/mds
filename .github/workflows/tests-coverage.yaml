@@ -70,8 +70,7 @@ jobs:
       - name: Generate frontend MineSpace coverage reports
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T frontend_minespace npm run test:coverage
-          docker cp mds_frontend_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
-          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
+          docker-compose -f docker-compose.ci.yaml exec -T frontend_minespace cat /app/coverage/clovare.xml
 
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
