@@ -21,6 +21,8 @@ const initialState = {
   incidentCategoryCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  projectSummaryStatusCodes: [],
+  projectSummaryDocumentTypes: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
@@ -90,6 +92,9 @@ export const getIncidentCategoryCodeOptions = (state) =>
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 export const getVarianceDocumentCategoryOptions = (state) =>
   state[STATIC_CONTENT].varianceDocumentCategoryOptions;
+export const getProjectSummaryStatusCodes = (state) => state[STATIC_CONTENT].projectSummaryStatusCodes;
+export const getProjectSummaryDocumentTypes = (state) =>
+  state[STATIC_CONTENT].projectSummaryDocumentTypes;
 export const getMineReportDefinitionOptions = (state) =>
   state[STATIC_CONTENT].mineReportDefinitionOptions;
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;

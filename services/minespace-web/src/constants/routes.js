@@ -4,6 +4,7 @@ import MinesPage from "@/components/pages/MinesPage";
 import UsersPage from "@/components/pages/UsersPage";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/pages/ReturnPage";
+import ProjectSummaryPage from "@/components/pages/ProjectSummaryPage";
 
 export const HOME = {
   route: "/",
@@ -24,6 +25,11 @@ export const USERS = {
   route: "/users",
   component: UsersPage,
 };
+
+export const PROJECT_SUMMARY = {
+  route: "/mines/:id/project-summary",
+  component: ProjectSummaryPage
+}
 
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
