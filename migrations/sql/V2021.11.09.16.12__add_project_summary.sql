@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS project_summary (
     status_code                     character varying(3)                     NOT NULL,
 
     mine_guid                       uuid                                     NOT NULL,
-    project_summary_lead            uuid                                             ,
+    project_summary_lead_guid       uuid                                             ,
     
     create_user                     character varying(60)                    NOT NULL,
     create_timestamp                timestamp with time zone DEFAULT now()   NOT NULL,
