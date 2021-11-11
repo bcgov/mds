@@ -21,7 +21,7 @@ class ProjectSummaryListResource(Resource, UserMixin):
         required=True,
     )
     parser.add_argument(
-        'project_summary_lead',
+        'project_summary_lead_party_guid',
         type=str,
         store_missing=False,
         required=False,

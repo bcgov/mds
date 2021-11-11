@@ -16,7 +16,8 @@ PROJECT_SUMMARY_MODEL = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'status_code': fields.String,
-        'project_summary_lead': fields.String,
+        'project_summary_lead_party_guid': fields.String,
+        'project_summary_lead_name': fields.String,
         'documents': fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)
     })
 

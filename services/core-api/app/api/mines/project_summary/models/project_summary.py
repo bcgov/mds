@@ -13,6 +13,7 @@ from app.api.utils.include.user_info import User
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.parties.party.models.party import Party
 
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
@@ -23,13 +24,19 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     project_summary_description = db.Column(db.String, nullable=False)
     project_summary_date = db.Column(db.DateTime, nullable=False)
-    project_summary_lead = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    project_summary_lead_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     status_code = db.Column(
         db.String,
         db.ForeignKey('project_summary_status_code.project_summary_status_code'),
         nullable=False)
+
+    project_summary_lead = db.relationship(
+        'Party',
+        lazy='select',
+        primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
 
     # Note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('ProjectSummaryDocumentXref', lazy='select')
@@ -48,6 +55,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_id}'
+
+    @hybrid_property
+    def project_summary_lead_name(self):
+        if self.project_summary_lead_party_guid:
+            party = Party.find_by_party_guid(self.project_summary_lead_party_guid)
+            return party.name
+        return None
 
     @classmethod
     def find_by_project_summary_guid(cls, _id):
@@ -70,13 +84,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                mine,
                project_summary_date,
                project_summary_description,
-               project_summary_lead,
+               project_summary_lead_party_guid,
                documents=[],
                add_to_session=True):
         project_summary = cls(
             project_summary_date=project_summary_date,
             project_summary_description=project_summary_description,
-            project_summary_lead=project_summary_lead,
+            project_summary_lead_party_guid=project_summary_lead_party_guid,
             mine_guid=mine.mine_guid,
             status_code='O')
 
