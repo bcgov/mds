@@ -1,9 +1,16 @@
+/* eslint-disable */
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
-import { isProponent } from "@/selectors/authenticationSelectors";
-
+import { startCase, camelCase } from "lodash";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
+import {
+  detectDevelopmentEnvironment,
+  detectProdEnvironment,
+} from "@common/utils/environmentUtils";
+import { Tooltip } from "antd";
+import * as Permission from "@/constants/permissions";
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
  * if the role passed in matches the user permissions.
@@ -34,39 +41,71 @@ import { isProponent } from "@/selectors/authenticationSelectors";
  */
 
 const propTypes = {
+  permission: PropTypes.string,
+  isMajorMine: PropTypes.bool,
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
   ]),
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showToolTip: PropTypes.bool,
 };
 
 const defaultProps = {
+  isMajorMine: undefined,
   inDevelopment: undefined,
   inTesting: undefined,
+  permission: undefined,
+  showToolTip: true,
 };
 
 export const AuthorizationWrapper = (props) => {
-  const checkDev = props.inDevelopment && detectDevelopmentEnvironment();
-  const checkTest = props.inTesting && !detectProdEnvironment();
+  const inDevCheck =
+    props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
+  const inTestCheck =
+    props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
+  const permissionCheck =
+    props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
   // do not show any actions if the user is not a proponents, unless in the development
-  if (!props.isProponent && !detectDevelopmentEnvironment()) {
-    return <span />;
-  } else {
-    if (props.inDevelopment === undefined && props.inTesting === undefined) {
-      return <span>{props.children}</span>;
-    } else if (checkDev || checkTest) {
-      return <span>{props.children}</span>;
-    }
-  }
+  const title = () => {
+    const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
+    const inTest = props.inTesting ? "Not Visible in Production" : "";
+    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    return (
+      <ul style={{ listStyle: "none", marginBottom: "0" }}>
+        {permission && <li>{startCase(camelCase(permission))}</li>}
+        {inTest && <li>{inTest}</li>}
+        {majorMine && <li>{majorMine}</li>}
+      </ul>
+    );
+  };
+
+  return (
+    (isAdmin || (inDevCheck && inTestCheck && permissionCheck)) && (
+      <Tooltip
+        title={isAdmin && props.showToolTip ? title() : ""}
+        placement="left"
+        mouseEnterDelay={1.7}
+        mouseLeaveDelay={0}
+        arrowPointAtCenter
+        overlayClassName="tooltip__admin"
+        style={{ zIndex: 100000 }}
+        trigger={["hover"]}
+        destroyTooltipOnHide
+      >
+        {React.createElement("span", null, props.children)}
+      </Tooltip>
+    )
+  );
 };
-
-const mapStateToProps = (state) => ({
-  isProponent: isProponent(state),
-});
-
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
+
+const mapStateToProps = (state) => ({
+  userRoles: getUserAccessData(state),
+});
 
 export default connect(mapStateToProps)(AuthorizationWrapper);
