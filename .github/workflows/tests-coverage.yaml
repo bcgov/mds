@@ -69,7 +69,6 @@ jobs:
       # During this, rewrite frontend minespace report from docker context path to runner paths
       - name: Generate frontend MineSpace coverage reports
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm test -- -u
           docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm run test:coverage
           docker cp mds_frontend_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
