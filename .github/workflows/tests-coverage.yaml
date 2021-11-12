@@ -52,7 +52,6 @@ jobs:
           docker-compose -f docker-compose.ci.yaml up -d backend
           docker-compose -f docker-compose.ci.yaml up -d frontend
           docker-compose -f docker-compose.ci.yaml up -d frontend-minespace
-          docker ps -a
 
       #### Group generation ####
       - name: Generate backend coverage reports
@@ -70,9 +69,9 @@ jobs:
       # During this, rewrite frontend minespace report from docker context path to runner paths
       - name: Generate frontend MineSpace coverage reports
         run: |
-          docker ps -a
           docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm run test:coverage
-          docker ps -a
+          docker cp mds_frontend_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
+          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
 
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
