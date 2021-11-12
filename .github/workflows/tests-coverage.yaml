@@ -52,6 +52,7 @@ jobs:
           docker-compose -f docker-compose.ci.yaml up -d backend
           docker-compose -f docker-compose.ci.yaml up -d frontend
           docker-compose -f docker-compose.ci.yaml up -d frontend-minespace
+          docker ps -a
 
       #### Group generation ####
       - name: Generate backend coverage reports
@@ -70,7 +71,7 @@ jobs:
       - name: Generate frontend MineSpace coverage reports
         run: |
           docker ps -a
-          docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
+          docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm run test:coverage
           docker ps -a
 
       #### Group formatting ####
