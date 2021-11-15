@@ -16,6 +16,12 @@ import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import {
+  updateNoticeOfWorkApplicationProgress,
+  updateApplicationDelay,
+  fetchApplicationDelay,
+  fetchNoticeOfWorkApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { ClockCircleOutlined, CheckCircleOutlined, StopOutlined } from "@ant-design/icons";
 import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
@@ -25,19 +31,25 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
+import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
  */
+
+const delayCode = "DEL";
+const progressCode = "PRO";
 const noImportMeta = "Information not captured at time of Import";
 const clientDelayMessage = "Client delay exceeds time spent in progress.";
 
 const badgeColor = {
   "In Progress": COLOR.blue,
   Complete: COLOR.successGreen,
+  Verified: COLOR.successGreen,
   "Not Started": COLOR.mediumGrey,
+  "Application Processed": COLOR.successGreen,
 };
 const propTypes = {
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -191,6 +203,26 @@ const transformProgressRowData = (
         ...progress[item.application_progress_status_code],
       };
     });
+
+  const verificationData = {
+    key: noticeOfWork.now_application_guid,
+    status_code: "Imported to Core",
+    status: "Verified",
+    duration: "N/A",
+    dates: formatDate(noticeOfWork.imported_date),
+  };
+
+  applicationProgress.unshift(verificationData);
+
+  // const decisionData = {
+  //   key: noticeOfWork.now_application_guid,
+  //   status_code: "Decision",
+  //   status: "Application Processed",
+  //   duration: "N/A",
+  //   dates: formatDate(noticeOfWork.imported_date),
+  // };
+
+  // applicationProgress.pop(decisionData);
   return applicationProgress;
 };
 
@@ -203,9 +235,9 @@ export class NOWProgressTable extends Component {
       render: (text) => <div title="Reason for Delay">{text}</div>,
     },
     {
-      title: "Comment",
+      title: "Start Comment",
       dataIndex: "start_comment",
-      render: (text) => <div title="Last Verified On">{text}</div>,
+      render: (text) => <div title="Start Comment">{text}</div>,
     },
     {
       title: "Date",
@@ -220,7 +252,7 @@ export class NOWProgressTable extends Component {
     {
       title: "End Comment",
       dataIndex: "end_comment",
-      render: (text) => <div title="Comment">{text || "N/A"}</div>,
+      render: (text) => <div title="End Comment">{text || "N/A"}</div>,
     },
     {
       title: "",
@@ -228,11 +260,19 @@ export class NOWProgressTable extends Component {
       render: (text, record) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
               <Button
                 type="secondary"
                 ghost
-                onClick={(event) => this.handleOpenDateModal(event, record)}
+                onClick={(event) =>
+                  this.handleOpenDateModal(
+                    event,
+                    record,
+                    this.handleUpdateDelayDates,
+                    `Update Dates for delay - ${record.reason}`,
+                    delayCode
+                  )
+                }
               >
                 <img
                   src={EDIT_OUTLINE_VIOLET}
@@ -280,11 +320,19 @@ export class NOWProgressTable extends Component {
       render: (text, record) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
               <Button
                 type="secondary"
                 ghost
-                onClick={(event) => this.handleOpenDateModal(event, record)}
+                onClick={(event) =>
+                  this.handleOpenDateModal(
+                    event,
+                    record,
+                    this.handleUpdateProgressDates,
+                    `Update Dates for ${record.status_code}`,
+                    progressCode
+                  )
+                }
               >
                 <img
                   src={EDIT_OUTLINE_VIOLET}
@@ -300,13 +348,50 @@ export class NOWProgressTable extends Component {
     },
   ];
 
-  handleOpenDateModal = (event, record) => {
+  handleUpdateProgressDates = (values) => {
+    this.props
+      .updateNoticeOfWorkApplicationProgress(
+        this.props.noticeOfWork.now_application_guid,
+        values.application_progress_status_code,
+        values,
+        `Successfully Updated dates for the ${values.status_code} Process.`
+      )
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
+        this.props.closeModal();
+      });
+  };
+
+  handleUpdateDelayDates = (values) => {
+    const payload = {
+      ...values,
+    };
+    this.props
+      .updateApplicationDelay(
+        this.props.noticeOfWork.now_application_guid,
+        values.now_application_delay_guid,
+        payload
+      )
+      .then(() => {
+        this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.closeModal();
+      });
+  };
+
+  // handleUpdateNoWDates = (values) => {
+  //   console.log(values)
+  // }
+
+  handleOpenDateModal = (event, record, onSubmit, title, type) => {
+    console.log(record);
     event.preventDefault();
     return this.props.openModal({
       props: {
-        title: "Update Dates",
-        onSubmit: console.log("submitting"),
+        title,
+        onSubmit,
         initialValues: record,
+        showCommentFields: type === delayCode,
+        importedDate: this.props.noticeOfWork.imported_date,
       },
       content: modalConfig.UPDATE_NOW_DATE_MODAL,
     });
@@ -467,6 +552,10 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
+      updateNoticeOfWorkApplicationProgress,
+      updateApplicationDelay,
+      fetchApplicationDelay,
+      fetchNoticeOfWorkApplication,
     },
     dispatch
   );

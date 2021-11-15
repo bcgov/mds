@@ -1,5 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from flask import request, current_app
 from sqlalchemy.orm import validates
 from datetime import datetime, timezone
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -56,11 +57,14 @@ class NOWApplicationProgress(Base, AuditMixin):
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
 
-    @validates('end_date')
-    def validate_end_date(self, key, end_date):
-        if end_date is not None:
-            if isinstance(end_date, str):
-                end_date = dateutil.parser.isoparse(end_date)
-            if end_date < self.start_date:
-                raise AssertionError('end_date cannot be before start_date')
-        return end_date
+    # @validates('end_date')
+    # def validate_end_date(self, key, end_date):
+    #     if end_date is not None:
+    #         current_app.logger.debug(self.start_date)
+    #         current_app.logger.debug(start_date)
+    #         current_app.logger.debug(end_date)
+    #         if isinstance(end_date, str):
+    #             end_date = dateutil.parser.isoparse(end_date)
+    #         if end_date < self.start_date:
+    #             raise AssertionError('end_date cannot be before start_date')
+    #     return end_date

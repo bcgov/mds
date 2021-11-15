@@ -28,7 +28,7 @@ const defaultProps = {
 
 const RenderDate = (props) => (
   <Form.Item
-    label={props.label}
+    label={`${props.label} (UTC)`}
     validateStatus={
       props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
     }
@@ -44,7 +44,7 @@ const RenderDate = (props) => (
       {...props.input}
       placeholder={props.placeholder}
       onChange={(date, dateString) => props.input.onChange(dateString || null)}
-      value={props.input.value ? moment(props.input.value) : null}
+      value={props.input.value ? moment.utc(props.input.value) : null}
       showTime={props.showTime && { format: "HH:mm" }}
       format={props.showTime && "YYYY-MM-DD HH:mm"}
     />

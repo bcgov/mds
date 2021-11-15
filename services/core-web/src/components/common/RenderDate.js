@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { DatePicker } from "antd";
+import { DatePicker, Tooltip } from "antd";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @constant RenderDate  - Ant Design `DatePicker` component for redux-form.
@@ -28,7 +29,7 @@ const defaultProps = {
 
 const RenderDate = (props) => (
   <Form.Item
-    label={props.label}
+    label={`${props.label}`}
     validateStatus={
       props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
     }
@@ -44,7 +45,7 @@ const RenderDate = (props) => (
       {...props.input}
       placeholder={props.placeholder}
       onChange={(date, dateString) => props.input.onChange(dateString || null)}
-      value={props.input.value ? moment(props.input.value) : null}
+      value={props.input.value ? moment.utc(props.input.value) : null}
       showTime={props.showTime && { format: "HH:mm" }}
       format={props.showTime && "YYYY-MM-DD HH:mm"}
     />

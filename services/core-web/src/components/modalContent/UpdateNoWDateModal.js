@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UpdateprogressDateForm from "@/components/Forms/noticeOfWork/UpdateprogressDateForm";
+import UpdateNOWDateForm from "@/components/Forms/noticeOfWork/UpdateNOWDateForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -13,7 +13,7 @@ const defaultProps = {
 
 export const UpdateNoWDateModal = (props) => (
   <div>
-    <UpdateprogressDateForm {...props} />
+    <UpdateNOWDateForm {...props} />
   </div>
 );
 

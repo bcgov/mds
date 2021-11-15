@@ -1,8 +1,12 @@
+import dateutil.parser
 from datetime import datetime, timezone
 from flask import request, current_app
+from datetime import datetime
+from dateutil.tz import UTC
+
 from sqlalchemy.orm import validates
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_edit_permit, can_edit_now_dates
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from flask_restplus import Resource, reqparse
@@ -13,8 +17,18 @@ from app.api.now_applications.response_models import NOW_APPLICATION_PROGRESS
 
 class NOWApplicationProgressResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
+    # parser.add_argument(
+    #     'end_date', help='The date when that stage of NOW processing was complete', location='json')
     parser.add_argument(
-        'end_date', help='The date when that stage of NOW processing was complete', location='json')
+        'start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,
+        help='The date when that stage of NOW processing was started',
+        location='json')
+    parser.add_argument(
+        'end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,
+        help='The date when that stage of NOW processing was complete',
+        location='json')
 
     @api.doc(
         description=
@@ -63,6 +77,9 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def put(self, application_guid, application_progress_status_code):
+        current_app.logger.debug("WE'RE EDITING DATA????:")
+        current_app.logger.debug(application_progress_status_code)
+        data = request.json
 
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
 
@@ -76,7 +93,17 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
 
-        existing_now_progress.end_date = datetime.now(tz=timezone.utc)
+        start_date = data.get("start_date", None)
+        end_date = data.get("end_date", None)
+        my_time = datetime.min.time()
+        current_app.logger.debug(dateutil.parser.isoparse(start_date).astimezone(UTC))
+        current_app.logger.debug(dateutil.parser.isoparse(end_date).astimezone(UTC))
+        current_app.logger.debug(can_edit_now_dates())
+        if can_edit_now_dates():
+            existing_now_progress.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
+            existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(UTC)
+        else:
+            existing_now_progress.end_date = datetime.now(tz=timezone.utc)
         existing_now_progress.save()
 
         # update application status if referral/consultation/Public Comment are all complete.

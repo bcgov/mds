@@ -68,6 +68,7 @@ class NOWApplicationDelayResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
     def put(self, now_application_guid, now_application_delay_guid):
+        current_app.logger.debug("WE'RE EDITING DATA????:")
         now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
             raise NotFound('Notice of Work Application not found')
@@ -79,6 +80,8 @@ class NOWApplicationDelayResource(Resource, UserMixin):
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
+
+        current_app.logger.debug("WE'RE EDITING DATA????:", request.json)
         now_delay.end_date = datetime.now(tz=timezone.utc)
         now_delay.save()
 
