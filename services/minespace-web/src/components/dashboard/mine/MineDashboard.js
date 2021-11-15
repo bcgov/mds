@@ -21,7 +21,6 @@ import Tailings from "@/components/dashboard/mine/tailings/Tailings";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
-// import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -132,11 +131,9 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Incidents" key="incidents">
                     <Incidents mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  {/* <AuthorizationWrapper inDevelopment={true}> */}
                   <Tabs.TabPane tab="Variances" key="variances">
                     <Variances mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  {/* </AuthorizationWrapper> */}
                   <Tabs.TabPane tab="Reports" key="reports">
                     <Reports mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
