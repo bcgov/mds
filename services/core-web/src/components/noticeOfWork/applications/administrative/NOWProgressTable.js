@@ -199,6 +199,7 @@ const transformProgressRowData = (
         dates: `${formatDate(
           progress[item.application_progress_status_code].start_date
         )} - ${dateMessage}`,
+        recordType: "PRO",
         ...item,
         ...progress[item.application_progress_status_code],
       };
@@ -210,6 +211,7 @@ const transformProgressRowData = (
     status: "Verified",
     duration: "N/A",
     dates: formatDate(noticeOfWork.imported_date),
+    recordType: "VER",
   };
 
   applicationProgress.unshift(verificationData);
@@ -330,7 +332,8 @@ export class NOWProgressTable extends Component {
                     record,
                     this.handleUpdateProgressDates,
                     `Update Dates for ${record.status_code}`,
-                    progressCode
+                    progressCode,
+                    record.recordType
                   )
                 }
               >
@@ -382,7 +385,7 @@ export class NOWProgressTable extends Component {
   //   console.log(values)
   // }
 
-  handleOpenDateModal = (event, record, onSubmit, title, type) => {
+  handleOpenDateModal = (event, record, onSubmit, title, type, recordType = null) => {
     console.log(record);
     event.preventDefault();
     return this.props.openModal({
@@ -392,6 +395,7 @@ export class NOWProgressTable extends Component {
         initialValues: record,
         showCommentFields: type === delayCode,
         importedDate: this.props.noticeOfWork.imported_date,
+        recordType,
       },
       content: modalConfig.UPDATE_NOW_DATE_MODAL,
     });

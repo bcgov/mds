@@ -107,6 +107,26 @@ const UpdateNOWDateForm = (props) => {
           </Col>
         </Row>
 
+        {props.recordType === "VER" && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="end_date"
+                  name="verified_date"
+                  label="Verified Date"
+                  component={renderConfig.DATE}
+                  validate={[
+                    dateNotInFuture,
+                    dateNotBeforeOther(props.formValues.start_date),
+                    date,
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
+
         {props.showCommentFields && (
           <Row gutter={16}>
             <Col span={24}>
