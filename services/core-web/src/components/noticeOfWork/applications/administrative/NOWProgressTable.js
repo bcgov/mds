@@ -330,7 +330,9 @@ export class NOWProgressTable extends Component {
                   this.handleOpenDateModal(
                     event,
                     record,
-                    this.handleUpdateProgressDates,
+                    record.recordType === "VER"
+                      ? console.lot("use different onsubmit")
+                      : this.handleUpdateProgressDates,
                     `Update Dates for ${record.status_code}`,
                     progressCode,
                     record.recordType
