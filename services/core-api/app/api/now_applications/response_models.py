@@ -478,6 +478,8 @@ NOW_APPLICATION_MODEL = api.model(
         Date,
         'received_date':
         Date,
+        'verified_date':
+        Date,
         'latitude':
         fields.Fixed(decimals=7),
         'longitude':

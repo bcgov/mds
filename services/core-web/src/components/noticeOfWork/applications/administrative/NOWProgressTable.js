@@ -18,6 +18,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkApplicationProgress,
+  updateNoticeOfWorkApplication,
   updateApplicationDelay,
   fetchApplicationDelay,
   fetchNoticeOfWorkApplication,
@@ -188,7 +189,7 @@ const transformProgressRowData = (
       )
     )
     .map((item) => {
-      const hasEnded = !isNil(progress[item.application_progress_status_code].end_date);
+      const hasEnded = !isNil(progress[item.application_progress_status_code]?.end_date);
       const dateMessage = hasEnded
         ? formatDate(progress[item.application_progress_status_code].end_date)
         : "Present";
@@ -197,7 +198,7 @@ const transformProgressRowData = (
         status_code: progressTypeHash[item.application_progress_status_code],
         duration: item.duration || "0 Minutes",
         dates: `${formatDate(
-          progress[item.application_progress_status_code].start_date
+          progress[item.application_progress_status_code]?.start_date
         )} - ${dateMessage}`,
         recordType: "PRO",
         ...item,
@@ -210,7 +211,7 @@ const transformProgressRowData = (
     status_code: "Imported to Core",
     status: "Verified",
     duration: "N/A",
-    dates: formatDate(noticeOfWork.imported_date),
+    dates: formatDate(noticeOfWork.verified_date),
     recordType: "VER",
   };
 
@@ -331,7 +332,7 @@ export class NOWProgressTable extends Component {
                     event,
                     record,
                     record.recordType === "VER"
-                      ? console.lot("use different onsubmit")
+                      ? this.handleUpdateVerifiedDate
                       : this.handleUpdateProgressDates,
                     `Update Dates for ${record.status_code}`,
                     progressCode,
@@ -360,6 +361,20 @@ export class NOWProgressTable extends Component {
         values.application_progress_status_code,
         values,
         `Successfully Updated dates for the ${values.status_code} Process.`
+      )
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
+        this.props.closeModal();
+      });
+  };
+
+  handleUpdateVerifiedDate = (values) => {
+    const payload = { ...this.props.noticeOfWork, ...values };
+    this.props
+      .updateNoticeOfWorkApplication(
+        payload,
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully Updated verified date.`
       )
       .then(() => {
         this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
@@ -396,7 +411,7 @@ export class NOWProgressTable extends Component {
         onSubmit,
         initialValues: record,
         showCommentFields: type === delayCode,
-        importedDate: this.props.noticeOfWork.imported_date,
+        importedDate: this.props.noticeOfWork.verified_date,
         recordType,
       },
       content: modalConfig.UPDATE_NOW_DATE_MODAL,
@@ -408,7 +423,7 @@ export class NOWProgressTable extends Component {
       this.props.noticeOfWork.application_progress.length > 0
         ? this.props.noticeOfWork.application_progress[0]
         : { start_date: "", application_progress_status_code: "" };
-    const hasImportMeta = this.props.noticeOfWork.imported_date;
+    const hasImportMeta = this.props.noticeOfWork.verified_date;
     const getDuration = (date) =>
       firstProgress?.start_date && hasImportMeta
         ? getDurationTextInDays(
@@ -434,10 +449,10 @@ export class NOWProgressTable extends Component {
                             {this.props.noticeOfWork.imported_by || noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Import Date">
-                            {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
+                            {formatDate(this.props.noticeOfWork.verified_date) || noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Duration until Progress">
-                            {getDuration(this.props.noticeOfWork.imported_date) ||
+                            {getDuration(this.props.noticeOfWork.verified_date) ||
                               Strings.EMPTY_FIELD}
                           </Descriptions.Item>
                           <Descriptions.Item label="First stage In Progress">
@@ -559,6 +574,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateNoticeOfWorkApplicationProgress,
+      updateNoticeOfWorkApplication,
       updateApplicationDelay,
       fetchApplicationDelay,
       fetchNoticeOfWorkApplication,
