@@ -12,14 +12,16 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: PowerBI
+  - name: TAG
+    value: manual
 objects:
   - kind: CronJob
     apiVersion: batch/v1beta1
     metadata:
       name: cj-${NAME}
-      namespace: 4c2ba9-${TAG}
+      namespace: 4c2ba9-dev
     spec:
-      schedule: 00 03 * * *
+      schedule: 00 05 * * *
       concurrencyPolicy: Replace
       suspend: false
       jobTemplate:
@@ -35,17 +37,50 @@ objects:
               labels:
                 parent: cj-${NAME}
             spec:
+              volumes:
+                - name: mds-db-backup-data
+                  persistentVolumeClaim:
+                    claimName: mds-db-backup-data
               containers:
                 - name: ${NAME}-job
                   image: >-
                     image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/s3-upload:${TAG}
                   resources:
                     limits:
-                      cpu: 512m
+                      cpu: 200m
                       memory: 2Gi
                     requests:
-                      cpu: 256m
-                      memory: 1Gi
+                      cpu: 50m
+                      memory: 512Mi
+                  volumeMounts:
+                    - name: mds-db-backup-data
+                      mountPath: /backups/
+                  env:
+                    - name: S3_ACTION
+                      valueFrom:
+                        secretKeyRef:
+                          name: aws-s3-upload
+                          key: s3-action
+                    - name: AWS_REGION
+                      valueFrom:
+                        secretKeyRef:
+                          name: aws-s3-upload
+                          key: aws-region
+                    - name: AWS_ACCESS_KEY_ID
+                      valueFrom:
+                        secretKeyRef:
+                          name: aws-s3-upload
+                          key: aws-access-id
+                    - name: AWS_SECRET_ACCESS_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          name: aws-s3-upload
+                          key: aws-access-key
+                    - name: ROLE_TO_ASSUME
+                      valueFrom:
+                        secretKeyRef:
+                          name: aws-s3-upload
+                          key: role-to-assume
                   terminationMessagePath: /dev/termination-log
                   terminationMessagePolicy: File
                   imagePullPolicy: IfNotPresent

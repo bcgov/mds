@@ -61,9 +61,9 @@ objects:
           name: ${NAME}:${TAG}
       resources:
         limits:
-          cpu: 1024m
+          cpu: 100m
           memory: 2Gi
         requests:
-          cpu: 512m
-          memory: 1Gi
+          cpu: 20m
+          memory: 256Mi
       nodeSelector: null
