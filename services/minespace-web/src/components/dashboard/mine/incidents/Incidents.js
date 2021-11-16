@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { destroy } from "redux-form";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Button } from "antd";
+import { PlusCircleFilled } from "@ant-design/icons";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -14,6 +15,7 @@ import {
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
@@ -87,15 +89,16 @@ export class Incidents extends Component {
     return (
       <Row>
         <Col span={24}>
-          {/* Disabled new Incident button, until getting confirmation to enable it. */}
-          {/* <Button
-            style={{ display: "inline", float: "right" }}
-            type="primary"
-            onClick={(event) => this.openCreateIncidentModal(event)}
-          >
-            <PlusCircleFilled />
-            Record a mine incident
-          </Button> */}
+          <AuthorizationWrapper inTesting>
+            <Button
+              style={{ display: "inline", float: "right" }}
+              type="primary"
+              onClick={(event) => this.openCreateIncidentModal(event)}
+            >
+              <PlusCircleFilled />
+              Record a mine incident
+            </Button>
+          </AuthorizationWrapper>
           <Typography.Title level={4}>Incidents</Typography.Title>
           <Typography.Paragraph>
             This table shows your mine&apos;s history of&nbsp;
