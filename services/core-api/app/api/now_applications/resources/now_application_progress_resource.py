@@ -29,6 +29,10 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,
         help='The date when that stage of NOW processing was complete',
         location='json')
+    parser.add_argument(
+        'date_override',
+        type=bool,
+        help='Indicates if the Progress dates are being manually edited via a secondary flow.')
 
     @api.doc(
         description=
@@ -95,13 +99,17 @@ class NOWApplicationProgressResource(Resource, UserMixin):
 
         start_date = data.get("start_date", None)
         end_date = data.get("end_date", None)
+        date_override = data.get("date_override", False)
         my_time = datetime.min.time()
         current_app.logger.debug(dateutil.parser.isoparse(start_date).astimezone(UTC))
         current_app.logger.debug(dateutil.parser.isoparse(end_date).astimezone(UTC))
         current_app.logger.debug(can_edit_now_dates())
-        if can_edit_now_dates():
-            existing_now_progress.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
-            existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(UTC)
+        if can_edit_now_dates() and date_override:
+            if start_date is not None:
+                existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(
+                    UTC)
+            if end_date is not None:
+                existing_now_progress.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
         else:
             existing_now_progress.end_date = datetime.now(tz=timezone.utc)
         existing_now_progress.save()
@@ -119,7 +127,8 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 identity.now_application.now_application_status_code = "RCO"
                 identity.save()
 
-        if application_progress_status_code == 'REV':
+        # only trigger if the technical review is updated via the standard flow and not via the manual editing flow
+        if application_progress_status_code == 'REV' and date_override:
             identity.now_application.add_now_form_to_fap(
                 "This document was automatically created when Technical Review was completed.")
 

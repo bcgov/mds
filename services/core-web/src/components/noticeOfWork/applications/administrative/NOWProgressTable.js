@@ -215,16 +215,6 @@ const transformProgressRowData = (
   };
 
   applicationProgress.unshift(verificationData);
-
-  // const decisionData = {
-  //   key: noticeOfWork.now_application_guid,
-  //   status_code: "Decision",
-  //   status: "Application Processed",
-  //   duration: "N/A",
-  //   dates: formatDate(noticeOfWork.imported_date),
-  // };
-
-  // applicationProgress.pop(decisionData);
   return applicationProgress;
 };
 
@@ -331,7 +321,7 @@ export class NOWProgressTable extends Component {
                     event,
                     record,
                     record.recordType === "VER"
-                      ? console.lot("use different onsubmit")
+                      ? console.log("use different onsubmit")
                       : this.handleUpdateProgressDates,
                     `Update Dates for ${record.status_code}`,
                     progressCode,
@@ -354,11 +344,12 @@ export class NOWProgressTable extends Component {
   ];
 
   handleUpdateProgressDates = (values) => {
+    const payload = { ...values, date_override: true };
     this.props
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         values.application_progress_status_code,
-        values,
+        payload,
         `Successfully Updated dates for the ${values.status_code} Process.`
       )
       .then(() => {
