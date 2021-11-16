@@ -1,5 +1,3 @@
-aws sts assume-role --role-arn $ROLE_TO_ASSUME --role-session-name s3-cronjob
-
 JSON=$(aws sts assume-role --role-arn $ROLE_TO_ASSUME --role-session-name s3-cronjob)
 
 STS_KEY_ID=$(echo $JSON | jq -r '.Credentials.AccessKeyId' -)
@@ -12,4 +10,4 @@ export AWS_SESSION_TOKEN=$STS_TOKEN
 
 aws sts get-caller-identity
 
-aws s3 cp test_file.txt s3://mds-backups-dev/backups/test_file.txt
+aws s3 $S3_ACTION

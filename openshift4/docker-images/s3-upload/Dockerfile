@@ -14,4 +14,4 @@ RUN chown -R 1001:0 /aws/
 USER 1001
 
 ENTRYPOINT ["/usr/bin/sh"]
-# CMD ["./run_upload.sh"]
+CMD ["./run_upload.sh"]
