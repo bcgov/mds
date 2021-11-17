@@ -38,20 +38,17 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         'consequence_classification_status_code',
         type=str,
         trim=True,
-        help='Risk Severity Classification',
-        required=True)
+        help='Risk Severity Classification')
     parser.add_argument(
         'tsf_operating_status_code',
         type=str,
         trim=True,
-        help='Operating Status of the storage facility',
-        required=True)
+        help='Operating Status of the storage facility')
     parser.add_argument(
         'itrb_exemption_status_code', 
         type=str, 
         trim=True, 
-        help='Risk Severity Classification', 
-        required=True)
+        help='Risk Severity Classification')
     parser.add_argument(
         'eor_party_guid',
         type=str,

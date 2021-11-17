@@ -43,11 +43,10 @@ exports[`AddTailingsForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="latitude"
-          label="Latitude*"
+          label="Latitude"
           name="latitude"
           validate={
             Array [
-              [Function],
               [Function],
               [Function],
               [Function],
@@ -66,11 +65,10 @@ exports[`AddTailingsForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="longitude"
-          label="Longitude*"
+          label="Longitude"
           name="longitude"
           validate={
             Array [
-              [Function],
               [Function],
               [Function],
               [Function],
@@ -94,13 +92,8 @@ exports[`AddTailingsForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           id="consequence_classification_status_code"
-          label="Consequence Classification*"
+          label="Consequence Classification"
           name="consequence_classification_status_code"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>
@@ -115,13 +108,8 @@ exports[`AddTailingsForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           id="tsf_operating_status_code"
-          label="Operating Status*"
+          label="Operating Status"
           name="tsf_operating_status_code"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>
@@ -140,9 +128,14 @@ exports[`AddTailingsForm renders properly 1`] = `
           allowAddingParties={true}
           allowNull={true}
           id="eor_party_guid"
-          label="Engineer of Record"
+          label="Engineer of Record*"
           name="eor_party_guid"
           partyLabel="EoR"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
@@ -157,13 +150,8 @@ exports[`AddTailingsForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           id="itrb_exemption_status_code"
-          label="Has Independent Tailings Review Board?*"
+          label="Has Independent Tailings Review Board?"
           name="itrb_exemption_status_code"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>
