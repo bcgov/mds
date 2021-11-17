@@ -63,6 +63,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         auth_end_date = data.get('auth_end_date')
         status_reason = data.get('status_reason')
         description = data.get('description')
+        decision_by_user_date = data.get('decision_by_user_date', None)
         now_application_status_code = data.get('now_application_status_code')
         exemption_fee_status_code = data.get('exemption_fee_status_code')
         exemption_fee_status_note = data.get('exemption_fee_status_note')
@@ -78,6 +79,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         if now_application_status_code is None or current_status == now_application_status_code:
             return 200
 
+        # if now_application_status_code == 'AIA' or now_application_status_code == 'REJ' or now_application_status_code == 'WDN' or now_application_status_code == 'NPR':
+        #     decision_by_user_date = datetime.utcnow()
         # Handle approved status
         if now_application_status_code == 'AIA':
             permit = Permit.find_by_now_application_guid(application_guid)
@@ -322,6 +325,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 delay.end_date = datetime.now(tz=timezone.utc)
 
         # Update the status code
+        now_application_identity.decision_by_user_date = datetime.utcnow()
         now_application_identity.now_application.status_updated_date = datetime.utcnow()
         now_application_identity.now_application.previous_application_status_code = current_status
         now_application_identity.now_application.now_application_status_code = now_application_status_code

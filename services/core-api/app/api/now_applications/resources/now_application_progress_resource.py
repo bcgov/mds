@@ -1,7 +1,6 @@
 import dateutil.parser
 from datetime import datetime, timezone
 from flask import request, current_app
-from datetime import datetime
 from dateutil.tz import UTC
 
 from sqlalchemy.orm import validates
@@ -81,8 +80,6 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def put(self, application_guid, application_progress_status_code):
-        current_app.logger.debug("WE'RE EDITING DATA????:")
-        current_app.logger.debug(application_progress_status_code)
         data = request.json
 
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
@@ -101,14 +98,12 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         end_date = data.get("end_date", None)
         date_override = data.get("date_override", False)
         my_time = datetime.min.time()
-        current_app.logger.debug(dateutil.parser.isoparse(start_date).astimezone(UTC))
-        current_app.logger.debug(dateutil.parser.isoparse(end_date).astimezone(UTC))
-        current_app.logger.debug(can_edit_now_dates())
         if can_edit_now_dates() and date_override:
             if start_date is not None:
                 existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(
                     UTC)
             if end_date is not None:
+                current_app.logger.debug("AM I HERE???")
                 existing_now_progress.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
         else:
             existing_now_progress.end_date = datetime.now(tz=timezone.utc)

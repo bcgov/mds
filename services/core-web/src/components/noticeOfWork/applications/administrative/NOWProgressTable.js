@@ -15,9 +15,11 @@ import {
   getDelayTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
+  getNoticeOfWorkApplicationStatusOptionsHash
 } from "@common/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkApplicationProgress,
+  updateNoticeOfWorkApplication,
   updateApplicationDelay,
   fetchApplicationDelay,
   fetchNoticeOfWorkApplication,
@@ -50,6 +52,10 @@ const badgeColor = {
   Verified: COLOR.successGreen,
   "Not Started": COLOR.mediumGrey,
   "Application Processed": COLOR.successGreen,
+  "Withdrawn": COLOR.errorRed,
+  "Rejected": COLOR.errorRed,
+  "Approved": COLOR.successGreen,
+  "No Permit Required": COLOR.errorRed,
 };
 const propTypes = {
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -178,8 +184,12 @@ const transformProgressRowData = (
   progress,
   progressTypeHash,
   progressStatusCodes,
-  noticeOfWork
+  noticeOfWork,
+  noticeOfWorkApplicationStatusOptionsHash
 ) => {
+  const isProcessed = ["AIA", "REJ", "WDN", "NPR"].includes(
+      noticeOfWork.now_application_status_code
+    );
   const applicationProgress = progressStatusCodes
     .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
     .filter(({ application_progress_status_code }) =>
@@ -188,7 +198,7 @@ const transformProgressRowData = (
       )
     )
     .map((item) => {
-      const hasEnded = !isNil(progress[item.application_progress_status_code].end_date);
+      const hasEnded = !isNil(progress[item.application_progress_status_code]?.end_date);
       const dateMessage = hasEnded
         ? formatDate(progress[item.application_progress_status_code].end_date)
         : "Present";
@@ -197,7 +207,7 @@ const transformProgressRowData = (
         status_code: progressTypeHash[item.application_progress_status_code],
         duration: item.duration || "0 Minutes",
         dates: `${formatDate(
-          progress[item.application_progress_status_code].start_date
+          progress[item.application_progress_status_code]?.start_date
         )} - ${dateMessage}`,
         recordType: "PRO",
         ...item,
@@ -210,11 +220,28 @@ const transformProgressRowData = (
     status_code: "Imported to Core",
     status: "Verified",
     duration: "N/A",
-    dates: formatDate(noticeOfWork.imported_date),
+    dates: formatDate(noticeOfWork.verified_by_user_date),
+    verified_by_user_date: noticeOfWork.verified_by_user_date,
+    progress: noticeOfWork.application_progress,
     recordType: "VER",
   };
 
+  const decisionData = {
+    key: noticeOfWork.now_application_status_code,
+    status_code: "Application Decision",
+    status: noticeOfWorkApplicationStatusOptionsHash[noticeOfWork.now_application_status_code],
+    duration: "N/A",
+    dates: formatDate(noticeOfWork.decision_by_user_date),
+    decision_by_user_date: noticeOfWork.decision_by_user_date,
+    progress: noticeOfWork.application_progress,
+    recordType: "DEC",
+  };
+
   applicationProgress.unshift(verificationData);
+  if (isProcessed) {
+  applicationProgress.push(decisionData)
+  }
+
   return applicationProgress;
 };
 
@@ -320,8 +347,8 @@ export class NOWProgressTable extends Component {
                   this.handleOpenDateModal(
                     event,
                     record,
-                    record.recordType === "VER"
-                      ? console.log("use different onsubmit")
+                    record.recordType === "VER" || record.recordType === "DEC"
+                      ? this.handleUpdateVerifiedDate
                       : this.handleUpdateProgressDates,
                     `Update Dates for ${record.status_code}`,
                     progressCode,
@@ -358,8 +385,25 @@ export class NOWProgressTable extends Component {
       });
   };
 
+  handleUpdateVerifiedDate = (values) => {
+    const updateDate = values.recordType === "VER" ? {verified_by_user_date: values.verified_by_user_date} : {decision_by_user_date: values.decision_by_user_date}
+    const message = values.recordType === "VER" ? "Successfully Updated verified date." : "Successfully Updated decision date."
+    const payload = { ...this.props.noticeOfWork, ...updateDate};
+    this.props
+      .updateNoticeOfWorkApplication(
+        payload,
+        this.props.noticeOfWork.now_application_guid,
+        message
+      )
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
+        this.props.closeModal();
+      });
+  };
+
   handleUpdateDelayDates = (values) => {
     const payload = {
+      date_override: true,
       ...values,
     };
     this.props
@@ -374,9 +418,6 @@ export class NOWProgressTable extends Component {
       });
   };
 
-  // handleUpdateNoWDates = (values) => {
-  //   console.log(values)
-  // }
 
   handleOpenDateModal = (event, record, onSubmit, title, type, recordType = null) => {
     console.log(record);
@@ -387,7 +428,7 @@ export class NOWProgressTable extends Component {
         onSubmit,
         initialValues: record,
         showCommentFields: type === delayCode,
-        importedDate: this.props.noticeOfWork.imported_date,
+        importedDate: this.props.noticeOfWork.verified_by_user_date,
         recordType,
       },
       content: modalConfig.UPDATE_NOW_DATE_MODAL,
@@ -399,7 +440,7 @@ export class NOWProgressTable extends Component {
       this.props.noticeOfWork.application_progress.length > 0
         ? this.props.noticeOfWork.application_progress[0]
         : { start_date: "", application_progress_status_code: "" };
-    const hasImportMeta = this.props.noticeOfWork.imported_date;
+    const hasImportMeta = this.props.noticeOfWork.verified_by_user_date;
     const getDuration = (date) =>
       firstProgress?.start_date && hasImportMeta
         ? getDurationTextInDays(
@@ -425,10 +466,10 @@ export class NOWProgressTable extends Component {
                             {this.props.noticeOfWork.imported_by || noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Import Date">
-                            {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
+                            {formatDate(this.props.noticeOfWork.verified_by_user_date) || noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Duration until Progress">
-                            {getDuration(this.props.noticeOfWork.imported_date) ||
+                            {getDuration(this.props.noticeOfWork.verified_by_user_date) ||
                               Strings.EMPTY_FIELD}
                           </Descriptions.Item>
                           <Descriptions.Item label="First stage In Progress">
@@ -496,7 +537,8 @@ export class NOWProgressTable extends Component {
             this.props.progress,
             this.props.progressStatusCodeHash,
             this.props.progressStatusCodes,
-            this.props.noticeOfWork
+            this.props.noticeOfWork,
+            this.props.noticeOfWorkApplicationStatusOptionsHash
           )}
           columns={this.progressColumns()}
           tableProps={{
@@ -542,6 +584,7 @@ const mapStateToProps = (state) => ({
   applicationDelays: getApplicationDelaysWithDuration(state),
   totalApplicationDelayDuration: getTotalApplicationDelayDuration(state),
   delayTypeOptionsHash: getDelayTypeOptionsHash(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -550,6 +593,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateNoticeOfWorkApplicationProgress,
+      updateNoticeOfWorkApplication,
       updateApplicationDelay,
       fetchApplicationDelay,
       fetchNoticeOfWorkApplication,

@@ -56,19 +56,26 @@ const UpdateNOWDateForm = (props) => {
       />
       <br />
       <Form layout="vertical" onSubmit={props.handleSubmit}>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item>
-              <Field
-                id="start_date"
-                name="start_date"
-                label="Start Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture, dateNotBeforeOther(props.importedDate), date]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {(props.recordType !== "VER" && props.recordType !== "DEC") && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="start_date"
+                  name="start_date"
+                  label="Start Date*"
+                  component={renderConfig.DATE}
+                  validate={[
+                    required,
+                    dateNotInFuture,
+                    dateNotBeforeOther(props.importedDate),
+                    date,
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         {props.showCommentFields && (
           <Row gutter={16}>
             <Col span={24}>
@@ -84,37 +91,59 @@ const UpdateNOWDateForm = (props) => {
           </Row>
         )}
 
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item>
-              <Field
-                id="end_date"
-                name="end_date"
-                label={props.initialValues.end_date ? "End Date*" : "End Date"}
-                component={renderConfig.DATE}
-                validate={
-                  props.initialValues.end_date
-                    ? [
-                        required,
-                        dateNotInFuture,
-                        dateNotBeforeOther(props.formValues.start_date),
-                        date,
-                      ]
-                    : [dateNotInFuture, dateNotBeforeOther(props.formValues.start_date), date]
-                }
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {(props.recordType !== "VER" && props.recordType !== "DEC") && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="end_date"
+                  name="end_date"
+                  label={props.initialValues.end_date ? "End Date*" : "End Date"}
+                  component={renderConfig.DATE}
+                  validate={
+                    props.initialValues.end_date
+                      ? [
+                          required,
+                          dateNotInFuture,
+                          dateNotBeforeOther(props.formValues.start_date),
+                          date,
+                        ]
+                      : [dateNotInFuture, dateNotBeforeOther(props.formValues.start_date), date]
+                  }
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
 
         {props.recordType === "VER" && (
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item>
                 <Field
-                  id="end_date"
-                  name="verified_date"
-                  label="Verified Date"
+                  id="verified_by_user_date"
+                  name="verified_by_user_date"
+                  label="Verification/Import Date"
+                  component={renderConfig.DATE}
+                  validate={[
+                    dateNotInFuture,
+                    dateNotBeforeOther(props.formValues.start_date),
+                    date,
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
+
+        {props.recordType === "DEC" && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="decision_by_user_date"
+                  name="decision_by_user_date"
+                  label="Decision Date"
                   component={renderConfig.DATE}
                   validate={[
                     dateNotInFuture,
