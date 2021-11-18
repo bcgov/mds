@@ -15,6 +15,7 @@ from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
 from app.api.constants import *
+from app.api.utils.access_decorators import is_minespace_user
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -226,7 +227,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_mine_name(cls, term=None, major=None):
-        MINE_LIST_RESULT_LIMIT = 50
+        MINE_LIST_RESULT_LIMIT = None if is_minespace_user() else 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
@@ -235,7 +236,11 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
         if major is not None:
             mines_q = mines_q.filter_by(major_mine_ind=major)
-        return mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
+
+        response = mines_q.limit(
+            MINE_LIST_RESULT_LIMIT).all() if MINE_LIST_RESULT_LIMIT else mines_q.all()
+
+        return response
 
     @classmethod
     def find_by_name_no_permit(cls, term=None, major=None):
