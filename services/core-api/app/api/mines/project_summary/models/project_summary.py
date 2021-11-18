@@ -19,9 +19,10 @@ from app.api.parties.party.models.party import Party
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
 
-    project_summary_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     project_summary_guid = db.Column(
-        UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    project_summary_id = db.Column(
+        db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_summary_description = db.Column(db.String, nullable=False)
     project_summary_date = db.Column(db.DateTime, nullable=False)
     project_summary_lead_party_guid = db.Column(
@@ -45,7 +46,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         secondary='project_summary_document_xref',
         secondaryjoin=
-        'and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        'and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
     mine_table = db.relationship('Mine', lazy='joined')
@@ -84,18 +85,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                mine,
                project_summary_date,
                project_summary_description,
-               project_summary_lead_party_guid,
                documents=[],
                add_to_session=True):
         project_summary = cls(
             project_summary_date=project_summary_date,
             project_summary_description=project_summary_description,
-            project_summary_lead_party_guid=project_summary_lead_party_guid,
             mine_guid=mine.mine_guid,
             status_code='O')
 
         for doc in documents:
-            project_summary_document_type_code = doc.get('project_summary_document_type_code')
             mine_doc = MineDocument(
                 mine_guid=mine.mine_guid,
                 document_name=doc.get('document_name'),
@@ -103,7 +101,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary_doc = ProjectSummaryDocumentXref(
                 mine_document_guid=mine_doc.mine_document_guid,
                 project_summary_id=project_summary.project_summary_id,
-                project_summary_document_type_code=project_summary_document_type_code)
+                project_summary_document_type_code='GEN')
             project_summary_doc.mine_document = mine_doc
             project_summary.documents.append(project_summary_doc)
 
@@ -111,51 +109,50 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.save(commit=False)
         return project_summary
 
+    @classmethod
     def update(self,
                project_summary_date,
                project_summary_description,
-               project_summary_lead,
                documents=[],
                add_to_session=True):
 
         # Update simple properties.
         self.project_summary_date = project_summary_date
         self.project_summary_description = project_summary_description
-        self.project_summary_lead = project_summary_lead
 
         # Get the GUIDs of the updated documents.
         updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
 
         # Delete deleted documents.
-        # for doc in self.documents:
-        #     if str(doc.mine_document_guid) not in updated_document_guids:
-        #         self.mine_documents.remove(doc.mine_document)
-        #         doc.mine_document.delete(commit=False)
+        for doc in self.documents:
+            if str(doc.mine_document_guid) not in updated_document_guids:
+                self.mine_documents.remove(doc.mine_document)
+                doc.mine_document.delete(commit=False)
 
         # Create or update existing documents.
-        # for doc in documents:
-        #     project_summary_document_type_code = doc.get('project_summary_document_type_code')
-        #     mine_document_guid = doc.get('mine_document_guid')
-        #     if mine_document_guid:
-        #         project_summary_doc = ProjectSummaryDocumentXref.find_by_mine_document_guid(
-        #             mine_document_guid)
-        #         project_summary_doc.project_summary_document_type_code = project_summary_document_type_code
-        #     else:
-        #         mine_doc = MineDocument(
-        #             mine_guid=self.mine_guid,
-        #             document_name=doc.get('document_name'),
-        #             document_manager_guid=doc.get('document_manager_guid'))
-        #         project_summary_doc = ProjectSummaryDocumentXref(
-        #             mine_document_guid=mine_doc.mine_document_guid,
-        #             project_summary_id=self.project_summary_id,
-        #             project_summary_document_type_code=project_summary_document_type_code)
-        #         project_summary_doc.mine_document = mine_doc
-        #         self.documents.append(project_summary_doc)
+        for doc in documents:
+            mine_document_guid = doc.get('mine_document_guid')
+            if mine_document_guid:
+                project_summary_doc = ProjectSummaryDocumentXref.find_by_mine_document_guid(
+                    mine_document_guid)
+                project_summary_doc.project_summary_document_type_code = 'GEN'
+            else:
+                mine_doc = MineDocument(
+                    mine_guid=self.mine_guid,
+                    document_name=doc.get('document_name'),
+                    document_manager_guid=doc.get('document_manager_guid'))
+                project_summary_doc = ProjectSummaryDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    project_summary_id=self.project_summary_id,
+                    project_summary_document_type_code='GEN')
+                project_summary_doc.mine_document = mine_doc
+                self.documents.append(project_summary_doc)
 
         if add_to_session:
             self.save(commit=False)
         return self
 
+    @classmethod
     def delete(self, commit=True):
         for doc in self.documents:
             self.mine_documents.remove(doc.mine_document)
