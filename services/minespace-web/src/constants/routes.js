@@ -26,9 +26,23 @@ export const USERS = {
   component: UsersPage,
 };
 
-export const PROJECT_SUMMARY = {
-  route: "/mines/:id/project-summary",
-  component: ProjectSummaryPage
+export const ADD_PROJECT_SUMMARY = {
+  route: "/mines/:mineGuid/project-summary/new",
+  dynamicRoute: (mineGuid) =>
+    `/mines/${mineGuid}/project-summary/new`,
+  component: ProjectSummaryPage,
+}
+
+export const EDIT_PROJECT_SUMMARY = {
+  route: "/mines/:mineGuid/project-summary/:projectSummaryGuid",
+  dynamicRoute: (mineGuid, projectSummaryGuid) =>
+    `/mines/${mineGuid}/project-summary/${projectSummaryGuid}`,
+  component: ProjectSummaryPage,
+}
+
+export const MINE_PROJECT_SUMMARIES = {
+  dynamicRoute: (mineGuid) =>
+    `/mines/${mineGuid}/projectSummaries`
 }
 
 export const MINE_DASHBOARD = {
