@@ -9,6 +9,9 @@ import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  documentParent: PropTypes.string.isRequired,
+  categoryDataIndex: PropTypes.string.isRequired,
+  uploadDateIndex: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -34,12 +37,12 @@ export const DocumentTable = (props) => {
     },
     {
       title: "Category",
-      dataIndex: "variance_document_category_code",
+      dataIndex: props.categoryDataIndex,
       render: (text) => <div title="Category">{props.documentCategoryOptionsHash[text]}</div>,
     },
     {
       title: "Upload Date",
-      dataIndex: "created_at",
+      dataIndex: props.uploadDateIndex,
       render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
     },
   ];
@@ -51,7 +54,7 @@ export const DocumentTable = (props) => {
         pagination={false}
         columns={columns}
         rowKey={(record) => record.mine_document_guid}
-        locale={{ emptyText: "This variance does not contain any documents." }}
+        locale={{ emptyText: `This ${props.documentParent} does not contain any documents.` }}
         dataSource={props.documents}
       />
     </div>
