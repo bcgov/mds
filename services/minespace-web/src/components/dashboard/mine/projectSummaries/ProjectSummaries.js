@@ -56,20 +56,6 @@ export class ProjectSummaries extends Component {
     });
   };
 
-  handleAddDocuments = (files, projectSummaryGuid) =>
-    Promise.all(
-      Object.entries(files).map(([document_manager_guid, document_name]) =>
-        this.props.addDocumentToProjectSummary(
-          { mineGuid: this.state.mine.mine_guid, projectSummaryGuid },
-          {
-            project_summary_document_category_code: "GEN",
-            document_manager_guid,
-            document_name,
-          }
-        )
-      )
-    );
-
   render() {
     return (
       <Row>
