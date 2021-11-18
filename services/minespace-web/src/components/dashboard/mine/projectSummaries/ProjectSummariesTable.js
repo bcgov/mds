@@ -34,15 +34,6 @@ export class ProjectSummariesTable extends Component {
       documents: projectSummary.documents,
     }));
 
-  handleOpenModal = (event, isEditable, variance) => {
-    event.preventDefault();
-    if (isEditable) {
-      this.props.openEditVarianceModal(variance);
-    } else {
-      this.props.openViewVarianceModal(variance);
-    }
-  };
-
   columns = () => [
     {
       title: "Project Summary No.",
@@ -116,7 +107,6 @@ export class ProjectSummariesTable extends Component {
         dataSource={this.transformRowData(
           this.props.projectSummaries,
           this.props.projectSummaryStatusCodesHash,
-          this.props.projectSummaryDocumentTypesHash,
         )}
         locale={{ emptyText: "This mine has no project summary data." }}
       />
