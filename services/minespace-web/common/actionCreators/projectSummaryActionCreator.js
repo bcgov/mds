@@ -27,14 +27,14 @@ export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateProjectSummary = ({ mineGuid, projectSummaryGuid, codeLabel }, payload) => (dispatch) => {
+export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully updated the project summary for: ${codeLabel}`,
+        message: "Successfully updated project summary",
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
