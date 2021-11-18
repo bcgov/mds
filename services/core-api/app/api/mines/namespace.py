@@ -52,6 +52,7 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
 from app.api.mines.project_summary.resources.project_summary_list import ProjectSummaryListResource
 from app.api.mines.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
 from app.api.mines.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
+from app.api.mines.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -187,6 +188,8 @@ api.add_resource(EPICResource, '/<string:mine_guid>/epic')
 
 api.add_resource(ProjectSummaryResource,
                  '/<string:mine_guid>/project-summaries/<string:project_summary_guid>')
+api.add_resource(ProjectSummaryDocumentUploadResource,
+                 '/<string:mine_guid>/project-summaries/<string:project_summary_guid>/documents')
 api.add_resource(ProjectSummaryListResource, '/<string:mine_guid>/project-summaries')
 api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-types')
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
