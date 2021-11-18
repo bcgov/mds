@@ -1,26 +1,20 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
+import { Table } from "antd";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
+import * as routes from "@/constants/routes";
+import { EDIT_PENCIL } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  openEditVarianceModal: PropTypes.func,
-  openViewVarianceModal: PropTypes.func,
-};
-
-const defaultProps = {
-  openEditVarianceModal: () => {},
-  openViewVarianceModal: () => {},
 };
 
 export class ProjectSummariesTable extends Component {
@@ -30,6 +24,8 @@ export class ProjectSummariesTable extends Component {
   projectSummaries.map((projectSummary) => ({
       key: projectSummary.project_summary_guid,
       projectSummary,
+      mine_guid: projectSummary.mine_guid,
+      project_summary_guid: projectSummary.project_summary_guid, 
       project_summary_id: projectSummary.project_summary_id,
       project_summary_lead_name: projectSummary.project_summary_lead_name,
       status_code: codeHash[projectSummary.status_code],
@@ -102,13 +98,9 @@ export class ProjectSummariesTable extends Component {
       dataIndex: "projectSummary",
       render: (text, record) => (
         <div title="" align="right">
-          <Button
-            type="primary"
-            size="small"
-            onClick={(event) => this.handleOpenModal(event, record.isEditable, record.projectSummary)}
-          >
-            Details
-          </Button>
+          <Link to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(record.mine_guid, record.project_summary_guid)}>
+            <img src={EDIT_PENCIL} alt="Edit" />
+          </Link>
         </div>
       ),
     },
@@ -133,6 +125,5 @@ export class ProjectSummariesTable extends Component {
 }
 
 ProjectSummariesTable.propTypes = propTypes;
-ProjectSummariesTable.defaultProps = defaultProps;
 
 export default ProjectSummariesTable;
