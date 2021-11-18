@@ -100,12 +100,11 @@ export const AddTailingsForm = (props) => (
           <PartySelectField
             id="eor_party_guid"
             name="eor_party_guid"
-            label="Engineer of Record*"
+            label="Engineer of Record"
             partyLabel="EoR"
             initialValues={props.initialPartyValue}
             allowNull
             allowAddingParties
-            validate={[required]}
           />
         </Form.Item>
       </Col>

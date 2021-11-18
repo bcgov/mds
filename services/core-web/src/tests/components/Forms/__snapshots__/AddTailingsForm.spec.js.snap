@@ -128,14 +128,9 @@ exports[`AddTailingsForm renders properly 1`] = `
           allowAddingParties={true}
           allowNull={true}
           id="eor_party_guid"
-          label="Engineer of Record*"
+          label="Engineer of Record"
           name="eor_party_guid"
           partyLabel="EoR"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>
