@@ -52,9 +52,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude*"
+            label="Latitude"
             component={RenderField}
-            validate={[number, maxLength(10), lat, required]}
+            validate={[number, maxLength(10), lat]}
           />
         </Form.Item>
       </Col>
@@ -63,9 +63,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude*"
+            label="Longitude"
             component={RenderField}
-            validate={[number, maxLength(12), lon, required]}
+            validate={[number, maxLength(12), lon]}
           />
         </Form.Item>
       </Col>
@@ -76,10 +76,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="consequence_classification_status_code"
             name="consequence_classification_status_code"
-            label="Consequence Classification*"
+            label="Consequence Classification"
             component={RenderSelect}
             data={props.consequenceClassificationStatusCodeOptions}
-            validate={[required]}
           />
         </Form.Item>
       </Col>
@@ -87,11 +86,10 @@ export const AddTailingsForm = (props) => (
         <Form.Item>
           <Field
             id="tsf_operating_status_code"
-            label="Operating Status*"
+            label="Operating Status"
             name="tsf_operating_status_code"
             component={RenderSelect}
             data={props.TSFOperatingStatusCodeOptions}
-            validate={[required]}
           />
         </Form.Item>
       </Col>
@@ -115,10 +113,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="itrb_exemption_status_code"
             name="itrb_exemption_status_code"
-            label="Has Independent Tailings Review Board?*"
+            label="Has Independent Tailings Review Board?"
             component={RenderSelect}
             data={props.itrbExemptionStatusCodeOptions}
-            validate={[required]}
           />
         </Form.Item>
       </Col>
