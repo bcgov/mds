@@ -31,12 +31,6 @@ class ProjectSummaryResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'project_summary_lead_party_guid',
-        type=str,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
         'project_summary_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
@@ -80,7 +74,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         data = self.parser.parse_args()
         project_summary.update(
             data.get('project_summary_date'), data.get('project_summary_description'),
-            data.get('project_summary_lead'), data.get('documents', []))
+            data.get('documents', []))
 
         project_summary.save()
         return project_summary
