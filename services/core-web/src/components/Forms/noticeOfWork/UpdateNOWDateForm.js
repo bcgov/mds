@@ -28,6 +28,76 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
+const recordTypeCodes = {
+  delay: "DEL",
+  progress: "PRO",
+  verification: "VER",
+  decision: "DEC",
+}
+
+const validateBusinessRules = (values) => {
+  // const isProcessed = values.isProcessed
+  const orderedProgressStartDate =  values?.progress?.length > 0 && values.progress.sort((a, b) => b.start_date - a.start_date)
+  const earliestProgressStartDate = orderedProgressStartDate[0]?.start_date
+  const earliestProgressStageCode = orderedProgressStartDate[0]?.description
+  const orderedDelayStartDates = values?.delays?.length > 0 && values.delays.sort((a, b) => b.start_date - a.start_date)
+  const earliestDelayStartDate = orderedDelayStartDates[0]?.start_date
+  // // const latestProgressEndDate = values.progress.length >0 && values.progress.sort((a, b) => b.end_date - a.end_date)
+  console.log(orderedDelayStartDates)
+  console.log(earliestDelayStartDate)
+  // // console.log(latestProgressEndDate)
+  // console.log(values)
+  // console.log(isProcessed)
+
+  const errors = {};
+  console.log(values);
+  if (values.recordType === recordTypeCodes.verification) {
+    if ((values.verified_by_user_date > values.decision_date) && values.isProcessed) {
+      errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${values.decision_date}`
+    } else if (values.verified_by_user_date > earliestProgressStartDate) {
+      errors.verified_by_user_date = `The Verification date cannot be after the ${earliestProgressStageCode} start date of ${earliestProgressStartDate}`
+    } else if (values.verified_by_user_date > earliestDelayStartDate) {
+      errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${earliestDelayStartDate}`
+    }
+    // } else if ("the verification date cannot come after the earliest progress start date of ${}") {
+    //   errors.verified_by_user_date = `The verification date cannot come after the earliest progress start date of ${values.decision_date}`
+    // } else if ("the verification date cannot come after the earliest delay start date of ${}") {
+    //   errors.verified_by_user_date = `The verification date cannot come after the earliest delay start date of ${values.decision_date}`
+    // if ()
+    // verification logic - cannot be after first progress
+  } else if (values.recordType === recordTypeCodes.decision) {
+    if (values.decision_by_user_date < values.verified_date) {
+      errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verified_date}`
+    }
+  }
+
+  // else if (values.recordType === recordTypeCodes.delay) {
+
+  // } else if (values.recordType === recordTypeCodes.progress) {
+  //   // verification logic - cannot be after first progress
+  // } else if (values.recordType === recordTypeCodes.decision) {
+  //   // verification logic - cannot be after first progress
+  //   if (values.decision_by_user_date > values.verification_date) {
+  //     errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verification_date}`
+  //   } else if (false) {
+  //     errors.decision_by_user_date = `The decision date cannot pre-date any progress or delay completion dates.`
+  //   }
+
+  // }
+
+  if (values.start_date > values.decision_date) {
+    errors.start_date = `Start date connot come after the decision date of ${values.decision_date}`;
+  } else if (values.start_date < values.verified_date) {
+    errors.start_date = `Start date connot pre-date the verification date of ${values.verified_date}`;
+  } else if ((values.end_date > values.decision_date) && values.isProcessed) {
+    errors.end_date = `End date connot come after the decision date of ${values.decision_date}`;
+  } else if (values.end_date < values.start_date) {
+    errors.end_date = `End date connot pre-date the the start date.`;
+  } 
+  return errors;
+};
+
+
 const UpdateNOWDateForm = (props) => {
   return (
     <div>
@@ -46,6 +116,7 @@ const UpdateNOWDateForm = (props) => {
                   If the application has been processed, dates cannot be set after the decision date
                 </li>
                 <li>Delay start and end dates cannot overlap with previous delays</li>
+
               </ul>
             </div>
           </>
@@ -68,7 +139,7 @@ const UpdateNOWDateForm = (props) => {
                   validate={[
                     required,
                     dateNotInFuture,
-                    dateNotBeforeOther(props.importedDate),
+                    // dateNotBeforeOther(props.importedDate),
                     date,
                   ]}
                 />
@@ -105,10 +176,10 @@ const UpdateNOWDateForm = (props) => {
                       ? [
                           required,
                           dateNotInFuture,
-                          dateNotBeforeOther(props.formValues.start_date),
+                          // dateNotBeforeOther(props.formValues.start_date),
                           date,
                         ]
-                      : [dateNotInFuture, dateNotBeforeOther(props.formValues.start_date), date]
+                      : [dateNotInFuture, date]
                   }
                 />
               </Form.Item>
@@ -127,7 +198,7 @@ const UpdateNOWDateForm = (props) => {
                   component={renderConfig.DATE}
                   validate={[
                     dateNotInFuture,
-                    dateNotBeforeOther(props.formValues.start_date),
+                    // dateNotBeforeOther(props.formValues.start_date),
                     date,
                   ]}
                 />
@@ -147,7 +218,7 @@ const UpdateNOWDateForm = (props) => {
                   component={renderConfig.DATE}
                   validate={[
                     dateNotInFuture,
-                    dateNotBeforeOther(props.formValues.start_date),
+                    // dateNotBeforeOther(props.formValues.start_date),
                     date,
                   ]}
                 />
@@ -202,6 +273,7 @@ export default compose(
   reduxForm({
     form: FORM.UPDATE_PROGRESS_DATE_FORM,
     onSubmitSuccess: resetForm(FORM.UPDATE_PROGRESS_DATE_FORM),
+    validate: validateBusinessRules,
     touchOnBlur: false,
   })
 )(UpdateNOWDateForm);

@@ -222,7 +222,6 @@ const transformProgressRowData = (
     duration: "N/A",
     dates: formatDate(noticeOfWork.verified_by_user_date),
     verified_by_user_date: noticeOfWork.verified_by_user_date,
-    progress: noticeOfWork.application_progress,
     recordType: "VER",
   };
 
@@ -233,7 +232,6 @@ const transformProgressRowData = (
     duration: "N/A",
     dates: formatDate(noticeOfWork.decision_by_user_date),
     decision_by_user_date: noticeOfWork.decision_by_user_date,
-    progress: noticeOfWork.application_progress,
     recordType: "DEC",
   };
 
@@ -422,11 +420,21 @@ export class NOWProgressTable extends Component {
   handleOpenDateModal = (event, record, onSubmit, title, type, recordType = null) => {
     console.log(record);
     event.preventDefault();
+    const initialValues = {
+      delays: this.props.applicationDelays, 
+      progress: this.props.noticeOfWork.application_progress,
+      isProcessed: ["AIA", "REJ", "WDN", "NPR"].includes(
+      this.props.noticeOfWork.now_application_status_code
+    ),
+    verified_date: this.props.noticeOfWork.verified_by_user_date,
+    decision_date: this.props.noticeOfWork.decision_by_user_date,
+      ...record
+    }
     return this.props.openModal({
       props: {
         title,
         onSubmit,
-        initialValues: record,
+        initialValues,
         showCommentFields: type === delayCode,
         importedDate: this.props.noticeOfWork.verified_by_user_date,
         recordType,
