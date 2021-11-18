@@ -106,6 +106,18 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
+// Project Summaries
+export const MINE_PROJECT_SUMMARIES = (mineGuid) => `/mines/${mineGuid}/project-summaries`;
+export const PROJECT_SUMMARIES = () => "/project-summaries";
+export const PROJECT_SUMMARY = (mineGuid, projectSummaryGuid) =>
+  `/mines/${mineGuid}/project-summaries/${projectSummaryGuid}`;
+export const PROJECT_SUMMARY_DOCUMENTS = (mineGuid, projectSummaryGuid) =>
+  `/mines/${mineGuid}/project-summaries/${projectSummaryGuid}/documents`;
+export const PROJECT_SUMMARY_DOCUMENT = (mineGuid, projectSummaryGuid, documentManagerGuid) =>
+  `/mines/${mineGuid}/project-summaries/${projectSummaryGuid}/documents/${documentManagerGuid}`;
+export const PROJECT_SUMMARY_STATUS_CODES = "/mines/project-summary-status-codes";
+export const PROJECT_SUMMARY_DOCUMENT_CATEGORY_OPTIONS = "/mines/project-summary-document-types";
+
 // Users
 export const CORE_USER = "/users/core";
 
