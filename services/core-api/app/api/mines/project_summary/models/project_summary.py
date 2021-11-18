@@ -1,15 +1,10 @@
-import uuid, datetime
-from flask.globals import current_app
-
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.utils.include.user_info import User
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -65,20 +60,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return None
 
     @classmethod
-    def find_by_project_summary_guid(cls, _id):
-        try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(project_summary_guid=_id, deleted_ind=False).one_or_none()
-        except ValueError:
-            return None
+    def find_by_project_summary_guid(cls, project_summary_guid):
+        return cls.query.filter_by(
+            project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
-    def find_by_mine_guid(cls, _id):
-        try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id, deleted_ind=False).all()
-        except ValueError:
-            return None
+    def find_by_mine_guid(cls, mine_guid):
+        return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
 
     @classmethod
     def create(cls,
@@ -109,7 +97,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.save(commit=False)
         return project_summary
 
-    @classmethod
     def update(self,
                project_summary_date,
                project_summary_description,
@@ -120,14 +107,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.project_summary_date = project_summary_date
         self.project_summary_description = project_summary_description
 
+        # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
-        updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
+        # updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
 
         # Delete deleted documents.
-        for doc in self.documents:
-            if str(doc.mine_document_guid) not in updated_document_guids:
-                self.mine_documents.remove(doc.mine_document)
-                doc.mine_document.delete(commit=False)
+        # for doc in self.documents:
+        #     if str(doc.mine_document_guid) not in updated_document_guids:
+        #         self.mine_documents.remove(doc.mine_document)
+        #         doc.mine_document.delete(commit=False)
 
         # Create or update existing documents.
         for doc in documents:
