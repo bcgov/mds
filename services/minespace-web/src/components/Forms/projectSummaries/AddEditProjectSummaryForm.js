@@ -1,3 +1,5 @@
+// TODO - Determine how to clear ProjectSummaryFileUpload state after successfully saving in edit mode
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -8,7 +10,6 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Typography } from "antd";
 import { required, maxLength } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -124,6 +125,5 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
     enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
   })
 )(AddEditProjectSummaryForm);

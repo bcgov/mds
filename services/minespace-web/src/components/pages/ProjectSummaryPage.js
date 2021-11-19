@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
+import { Link, Redirect } from "react-router-dom";
+import {  } from "react-router"
+import { getFormValues } from "redux-form";
 import { Row, Col, Typography } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
-import { required, maxLength } from "@common/utils/Validate";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
-import { renderConfig } from "@/components/common/config";
-import { MINE_PROJECT_SUMMARIES } from "@/constants/routes";
+import { MINE_PROJECT_SUMMARIES, EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/AddEditProjectSummaryForm";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
+import { resetForm } from "@common/utils/helpers";
+import * as routes from "@/constants/routes";
+
 import {
   getProjectSummaryDocumentTypesHash,
-  getProjectSummaryStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { 
   createProjectSummary, fetchProjectSummaryById, updateProjectSummary, addDocumentToProjectSummary
@@ -41,42 +41,25 @@ const defaultProps = {
 };
 
 export class ProjectSummaryPage extends Component {
+
   state = { 
     isLoaded: false,
     initialValues: {},
     isEditMode: false,
-    mineGuid: null,
-    projectSummaryGuid: null,
   };
 
   componentDidMount() {
-    const { mineGuid, projectSummaryGuid } = this.props.match?.params
-    this.setState({ mineGuid, projectSummaryGuid })
+    const { mineGuid, projectSummaryGuid } = this.props.match?.params;
     if (mineGuid && projectSummaryGuid) {
       return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid)
         .then(() => { 
           this.setState({ isLoaded: true, isEditMode: true });
         });
     }
-    this.setState({ isLoaded: true, mineGuid });
+    this.setState({ isLoaded: true });
   };
 
-  handleAddDocuments = (files, projectSummaryGuid) =>
-    Promise.all(
-      Object.entries(files).map(([document_manager_guid, document_name]) =>
-        this.props.addDocumentToProjectSummary(
-          { mineGuid: this.state.mineGuid, projectSummaryGuid },
-          {
-            project_summary_document_category_code: "GEN",
-            document_manager_guid,
-            document_name,
-          }
-        )
-      )
-    );
-
   handleSubmit = (form) => {
-    console.log('FORM: ', form)
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(form);
     }
@@ -91,10 +74,10 @@ export class ProjectSummaryPage extends Component {
         }, 
         form
       )
-    .then(async ({ data: { project_summary_guid } }) => {
-      await this.handleAddDocuments(files, project_summary_guid);
-    })
-    // .then(this.props.history.push(MINE_PROJECT_SUMMARIES.dynamicRoute(this.state.mineGuid)));
+    .then(({ data: { mine_guid, project_summary_guid } }) => {
+      this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
+      window.location.reload();
+    });
   };
 
   handleUpdateProjectSummary(form) {
@@ -110,27 +93,27 @@ export class ProjectSummaryPage extends Component {
         },
         form
       )
-    .then(async ({ data: { project_summary_guid } }) => {
-      await this.handleAddDocuments(files, project_summary_guid);
-    })
-    // .then(this.props.history.push(MINE_PROJECT_SUMMARIES.dynamicRoute(this.state.mineGuid)));
+    .then(({ data: { mine_guid, project_summary_guid } }) => {
+      this.props.fetchProjectSummaryById(mine_guid, project_summary_guid);
+    });
   };
 
   render() {
-    const title = this.state.isEditMode ? "Edit Project Summary" : "Create new Project Summary";
+    const title = this.state.isEditMode ? `Edit Project Summary #${this.props.projectSummary?.project_summary_id}` : "Create new Project Summary";
+    const { mineGuid } = this.props.match?.params;
     return (
       (this.state.isLoaded && (
         <Row>
           <Col span={24}>
             <Typography.Title>
-              <Link to={MINE_PROJECT_SUMMARIES.dynamicRoute(this.state.mineGuid)}><CaretLeftOutlined /></Link>
+              <Link to={MINE_PROJECT_SUMMARIES.dynamicRoute(mineGuid)}><CaretLeftOutlined /></Link>
               {title}
             </Typography.Title>
           </Col>
           <Col span={24}>
             <ProjectSummaryForm
-              initialValues={this.props.projectSummary}
-              mineGuid={this.state.mineGuid}
+              initialValues={this.state.isEditMode ? this.props.projectSummary : {}}
+              mineGuid={mineGuid}
               isEditMode={this.state.isEditMode}
               onSubmit={this.handleSubmit}
               projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
