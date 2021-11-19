@@ -58,9 +58,9 @@ export const VarianceDetails = (props) => {
       <DocumentTable
         documents={props.variance.documents}
         documentCategoryOptionsHash={props.documentCategoryOptionsHash}
-        documentParent={"variance"}
-        categoryDataIndex={"variance_document_category_code"}
-        uploadDateIndex={"created_at"}
+        documentParent="variance"
+        categoryDataIndex="variance_document_category_code"
+        uploadDateIndex="created_at"
       />
       <Descriptions size="small">
         <Descriptions.Item label="Created By" size="small">

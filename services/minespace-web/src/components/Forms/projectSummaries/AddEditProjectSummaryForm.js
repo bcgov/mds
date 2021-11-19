@@ -29,7 +29,6 @@ const propTypes = {
 export class AddEditProjectSummaryForm extends Component {
   state = {
     uploadedFiles: [],
-    documentNameGuidMap: {},
   };
 
   onFileLoad = (fileName, document_manager_guid) => {
