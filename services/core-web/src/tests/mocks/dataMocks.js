@@ -3367,6 +3367,29 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { variance_document_category_code: "REC", description: "Recommendation", active_ind: true },
     { variance_document_category_code: "DEC", description: "Decision", active_ind: true },
   ],
+  projectSummaryStatusCodes: [
+    { project_summary_status_code: "O", description: "Open", display_order: 10, active_ind: true },
+    {
+      project_summary_status_code: "C",
+      description: "Closed",
+      display_order: 20,
+      active_ind: true,
+    },
+    {
+      project_summary_status_code: "W",
+      description: "Withdrawn",
+      display_order: 30,
+      active_ind: true,
+    },
+  ],
+  projectSummaryDocumentTypes: [
+    {
+      project_summary_document_type_code: "GEN",
+      description: "General",
+      display_order: 10,
+      active_ind: true,
+    },
+  ],
   mineReportDefinitionOptions: [
     {
       mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
