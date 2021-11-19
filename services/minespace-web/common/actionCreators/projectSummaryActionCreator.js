@@ -31,7 +31,11 @@ export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) 
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .put(ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid), payload, createRequestHeader())
+    .put(
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
+      payload,
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({
         message: "Successfully updated project summary",
@@ -64,7 +68,10 @@ export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispat
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
   dispatch(showLoading("modal"));
   return CustomAxios({ errorToastMessage: Strings.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid), createRequestHeader())
+    .get(
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectSummaryActions.storeProjectSummary(response.data));
@@ -73,7 +80,9 @@ export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispat
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (dispatch) => {
+export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (
+  dispatch
+) => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
   return CustomAxios()
@@ -93,9 +102,11 @@ export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, pa
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const removeDocumentFromProjectSummary = (mineGuid, projectSummaryGuid, mineDocumentGuid) => (
-  dispatch
-) => {
+export const removeDocumentFromProjectSummary = (
+  mineGuid,
+  projectSummaryGuid,
+  mineDocumentGuid
+) => (dispatch) => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
@@ -131,7 +142,10 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
   dispatch(request(reducerTypes.DELETE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
-    .delete(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid)}`, createRequestHeader())
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid)}`,
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({
         message: "Successfully deleted project summary.",
