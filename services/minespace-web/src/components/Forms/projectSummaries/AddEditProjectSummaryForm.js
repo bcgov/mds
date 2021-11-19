@@ -58,7 +58,7 @@ export class AddEditProjectSummaryForm extends Component {
         <Field
           id="project_summary_description"
           name="project_summary_description"
-          label="Description"
+          label="Description of Work"
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(300)]}
         />
