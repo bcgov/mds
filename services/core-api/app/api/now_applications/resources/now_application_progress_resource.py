@@ -95,7 +95,6 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         start_date = data.get("start_date", None)
         end_date = data.get("end_date", None)
         date_override = data.get("date_override", False)
-        my_time = datetime.min.time()
         if can_edit_now_dates() and date_override:
             if start_date is not None:
                 existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(

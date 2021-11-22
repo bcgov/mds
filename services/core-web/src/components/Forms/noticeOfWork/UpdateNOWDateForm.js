@@ -31,7 +31,7 @@ const recordTypeCodes = {
   decision: "DEC",
 };
 
-const getPreviousDelayStartDate = (rowIndex, values) => {
+const getSurroundingDates = (rowIndex, values) => {
   const length = values.delays.length;
   const isCurrentLast = rowIndex + 1 === length;
   const isCurrentFirst = rowIndex === 0;
@@ -102,7 +102,7 @@ const validateBusinessRules = (values) => {
         )}`;
       }
     } else if (values.recordType === recordTypeCodes.delay) {
-      const surroundingDelayDates = getPreviousDelayStartDate(values.rowIndex, values);
+      const surroundingDelayDates = getSurroundingDates(values.rowIndex, values);
       if (
         surroundingDelayDates.prev_end_date &&
         values.start_date < surroundingDelayDates.prev_end_date

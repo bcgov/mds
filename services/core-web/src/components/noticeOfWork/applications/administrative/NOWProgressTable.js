@@ -172,7 +172,7 @@ const transformRowData = (delays, delayTypeHash) => {
     return {
       key: delay.now_application_delay_guid,
       reason: delayTypeHash[delay.delay_type_code],
-      duration: delay.duration || "0 Minutes",
+      duration: delay.duration === "  " ? "0 Days" : delay.duration,
       recordType: "DEL",
       dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
       ...delay,
@@ -209,7 +209,7 @@ const transformProgressRowData = (
       return {
         key: item.application_progress_status_code,
         status_code: progressTypeHash[item.application_progress_status_code],
-        duration: item.duration || "0 Minutes",
+        duration: item.duration || "0 Days",
         dates: `${formatDate(
           progress[item.application_progress_status_code]?.start_date
         )} - ${dateMessage}`,

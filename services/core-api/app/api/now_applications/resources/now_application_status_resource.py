@@ -63,7 +63,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         auth_end_date = data.get('auth_end_date')
         status_reason = data.get('status_reason')
         description = data.get('description')
-        decision_by_user_date = data.get('decision_by_user_date', None)
         now_application_status_code = data.get('now_application_status_code')
         exemption_fee_status_code = data.get('exemption_fee_status_code')
         exemption_fee_status_note = data.get('exemption_fee_status_note')
