@@ -53,7 +53,6 @@ export class AddEditProjectSummaryForm extends Component {
           label="Date"
           placeholder="Please select date"
           component={renderConfig.DATE}
-          validate={[required]}
         />
         <Field
           id="project_summary_description"

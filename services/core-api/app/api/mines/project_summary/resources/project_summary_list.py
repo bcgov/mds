@@ -18,13 +18,13 @@ class ProjectSummaryListResource(Resource, UserMixin):
         'project_summary_description',
         type=str,
         store_missing=False,
-        required=True,
+        required=False,
     )
     parser.add_argument(
         'project_summary_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
-        required=True,
+        required=False,
     )
     parser.add_argument(
         'documents',

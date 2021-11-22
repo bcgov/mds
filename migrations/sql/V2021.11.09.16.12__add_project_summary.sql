@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS project_summary (
     project_summary_guid            uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
     project_summary_id              serial                                   NOT NULL,
     project_summary_description     character varying(300)                           ,
-    project_summary_date            timestamp with time zone                 NOT NULL,
+    project_summary_date            timestamp with time zone                         ,
     deleted_ind                     boolean DEFAULT false                    NOT NULL,
     status_code                     character varying(3)                     NOT NULL,
 

@@ -18,8 +18,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     project_summary_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
-    project_summary_description = db.Column(db.String, nullable=False)
-    project_summary_date = db.Column(db.DateTime, nullable=False)
+    project_summary_description = db.Column(db.String, nullable=True)
+    project_summary_date = db.Column(db.DateTime, nullable=True)
     project_summary_lead_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
