@@ -155,6 +155,7 @@ export const importedNOWApplication = shape({
   directions_to_site: PropTypes.string,
   status_reason: PropTypes.string,
   status_updated_date: PropTypes.date,
+  decision_by_user_date: PropTypes.date,
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   blasting_operation: blasting,

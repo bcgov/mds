@@ -3,7 +3,7 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { Button, Popconfirm, Row, Col, Alert } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { resetForm, formatDate } from "@common/utils/helpers";
@@ -34,76 +34,97 @@ const recordTypeCodes = {
   progress: "PRO",
   verification: "VER",
   decision: "DEC",
-}
+};
 
 const getPreviousDelayStartDate = (rowIndex, values) => {
   const length = values.delays.length;
-  const isCurrentLast = rowIndex + 1 === length
-  const isCurrentFirst = rowIndex === 0
+  const isCurrentLast = rowIndex + 1 === length;
+  const isCurrentFirst = rowIndex === 0;
   let dates = {};
   if (length > 0) {
-  if  (isCurrentFirst && isCurrentLast) {
-    dates = {};
-  } else if (isCurrentFirst) {
-    dates = {prev_end_date: values.delays[values?.rowIndex + 1].end_date, next_start_date: null}
-  } else if (isCurrentLast) {
-     dates = {prev_end_date: null, next_start_date: values.delays[values?.rowIndex - 1].start_date}
-  } else {
-     dates = {prev_end_date: values.delays[values?.rowIndex + 1].end_date, next_start_date: values.delays[values?.rowIndex - 1].start_date}
-  }
+    if (isCurrentFirst && isCurrentLast) {
+      dates = {};
+    } else if (isCurrentFirst) {
+      dates = {
+        prev_end_date: values.delays[values?.rowIndex + 1].end_date,
+        next_start_date: null,
+      };
+    } else if (isCurrentLast) {
+      dates = {
+        prev_end_date: null,
+        next_start_date: values.delays[values?.rowIndex - 1].start_date,
+      };
+    } else {
+      dates = {
+        prev_end_date: values.delays[values?.rowIndex + 1].end_date,
+        next_start_date: values.delays[values?.rowIndex - 1].start_date,
+      };
+    }
   }
   return dates;
-}
+};
 
-const getDateWithoutTime = (date) => date && date.substring(0,10);
+const getDateWithoutTime = (date) => date && date.substring(0, 10);
 
 const validateBusinessRules = (values) => {
   const errors = {};
   if (!isEmpty(values)) {
-  const orderedProgressStartDate =  values?.progress?.length > 0 && values.progress.sort((a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date))
-  const earliestProgressStartDate = orderedProgressStartDate[0]?.start_date
+    const orderedProgressStartDate =
+      values?.progress?.length > 0 &&
+      values.progress.sort(
+        (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
+      );
+    const earliestProgressStartDate = orderedProgressStartDate[0]?.start_date;
 
-  const earliestProgressStageDescription = values.progressCodeHash[orderedProgressStartDate[0]?.application_progress_status_code];
-  const orderedDelayStartDates = values?.delays?.length > 0 && values.delays.sort((a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date))
+    const earliestProgressStageDescription =
+      values.progressCodeHash[orderedProgressStartDate[0]?.application_progress_status_code];
+    const orderedDelayStartDates =
+      values?.delays?.length > 0 &&
+      values.delays.sort(
+        (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
+      );
 
-  const earliestDelayStartDate = orderedDelayStartDates[0]?.start_date
+    const earliestDelayStartDate = orderedDelayStartDates[0]?.start_date;
 
-  const surroundingDelayDates = getPreviousDelayStartDate(values.rowIndex, values)
+    const surroundingDelayDates = getPreviousDelayStartDate(values.rowIndex, values);
 
-  if (values.recordType === recordTypeCodes.verification) {
-    if ((values.verified_by_user_date > values.decisionDate) && values.isProcessed) {
-      errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${values.decisionDate}`
-    } else if (values.verified_by_user_date > earliestProgressStartDate) {
-      errors.verified_by_user_date = `The Verification date cannot be after the ${earliestProgressStageDescription} start date of ${earliestProgressStartDate}`
-    } else if (values.verified_by_user_date > earliestDelayStartDate) {
-      errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${earliestDelayStartDate}`
+    if (values.recordType === recordTypeCodes.verification) {
+      if (values.verified_by_user_date > values.decisionDate && values.isProcessed) {
+        errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${values.decisionDate}`;
+      } else if (values.verified_by_user_date > earliestProgressStartDate) {
+        errors.verified_by_user_date = `The Verification date cannot be after the ${earliestProgressStageDescription} start date of ${earliestProgressStartDate}`;
+      } else if (values.verified_by_user_date > earliestDelayStartDate) {
+        errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${earliestDelayStartDate}`;
+      }
+    } else if (values.recordType === recordTypeCodes.decision) {
+      if (values.decision_by_user_date < values.verifiedDate) {
+        errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verifiedDate}`;
+      }
+    } else if (values.recordType === recordTypeCodes.delay) {
+      if (
+        surroundingDelayDates.prev_end_date &&
+        values.start_date < surroundingDelayDates.prev_end_date
+      ) {
+        errors.start_date = `Delays cannot overlap. The start date must be after the previous delays end date of ${surroundingDelayDates.prev_end_date}`;
+      } else if (
+        surroundingDelayDates.next_start_date &&
+        values.end_date > surroundingDelayDates.next_start_date
+      )
+        errors.end_date = `Delays cannot overlap. The end date must be before the next delays start date of ${surroundingDelayDates.next_start_date}`;
     }
 
-
-  } else if (values.recordType === recordTypeCodes.decision) {
-    if (values.decision_by_user_date < values.verifiedDate) {
-      errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verifiedDate}`
+    if (values.start_date > values.decisionDate && values.isProcessed) {
+      errors.start_date = `Start date connot come after the decision date of ${values.decisionDate}`;
+    } else if (values.start_date < values.verifiedDate) {
+      errors.start_date = `Start date connot pre-date the verification date of ${values.verifiedDate}`;
+    } else if (values.end_date > values.decisionDate && values.isProcessed) {
+      errors.end_date = `End date connot come after the decision date of ${values.decisionDate}`;
+    } else if (values.end_date < values.start_date) {
+      errors.end_date = `End date connot pre-date the the start date.`;
     }
-  } else if (values.recordType === recordTypeCodes.delay) {
-    if (surroundingDelayDates.prev_end_date && values.start_date < surroundingDelayDates.prev_end_date) {
-      errors.start_date = `Delays cannot overlap. The start date must be after the previous delays end date of ${surroundingDelayDates.prev_end_date}`
-    } else if (surroundingDelayDates.next_start_date && values.end_date > surroundingDelayDates.next_start_date)
-      errors.end_date = `Delays cannot overlap. The end date must be before the next delays start date of ${surroundingDelayDates.next_start_date}`
-  }
-
-  if ((values.start_date > values.decisionDate)  && values.isProcessed) {
-    errors.start_date = `Start date connot come after the decision date of ${values.decisionDate}`;
-  } else if (values.start_date < values.verifiedDate) {
-    errors.start_date = `Start date connot pre-date the verification date of ${values.verifiedDate}`;
-  } else if ((values.end_date > values.decisionDate) && values.isProcessed) {
-    errors.end_date = `End date connot come after the decision date of ${values.decisionDate}`;
-  } else if (values.end_date < values.start_date) {
-    errors.end_date = `End date connot pre-date the the start date.`;
-  } 
   }
   return errors;
 };
-
 
 const UpdateNOWDateForm = (props) => {
   return (
@@ -123,7 +144,6 @@ const UpdateNOWDateForm = (props) => {
                   If the application has been processed, dates cannot be set after the decision date
                 </li>
                 <li>Delay start and end dates cannot overlap with previous delays</li>
-
               </ul>
             </div>
           </>
@@ -134,7 +154,7 @@ const UpdateNOWDateForm = (props) => {
       />
       <br />
       <Form layout="vertical" onSubmit={props.handleSubmit}>
-        {(props.recordType !== "VER" && props.recordType !== "DEC") && (
+        {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item>
@@ -143,12 +163,7 @@ const UpdateNOWDateForm = (props) => {
                   name="start_date"
                   label="Start Date*"
                   component={renderConfig.DATE}
-                  validate={[
-                    required,
-                    dateNotInFuture,
-                    // dateNotBeforeOther(props.importedDate),
-                    date,
-                  ]}
+                  validate={[required, dateNotInFuture, date]}
                 />
               </Form.Item>
             </Col>
@@ -169,7 +184,7 @@ const UpdateNOWDateForm = (props) => {
           </Row>
         )}
 
-        {(props.recordType !== "VER" && props.recordType !== "DEC") && (
+        {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item>
@@ -180,11 +195,7 @@ const UpdateNOWDateForm = (props) => {
                   component={renderConfig.DATE}
                   validate={
                     props.initialValues.end_date
-                      ? [
-                          required,
-                          dateNotInFuture,
-                          date,
-                        ]
+                      ? [required, dateNotInFuture, date]
                       : [dateNotInFuture, date]
                   }
                 />
@@ -202,11 +213,7 @@ const UpdateNOWDateForm = (props) => {
                   name="verified_by_user_date"
                   label="Verification/Import Date"
                   component={renderConfig.DATE}
-                  validate={[
-                    dateNotInFuture,
-                    required,
-                    date,
-                  ]}
+                  validate={[dateNotInFuture, required, date]}
                 />
               </Form.Item>
             </Col>
@@ -222,11 +229,7 @@ const UpdateNOWDateForm = (props) => {
                   name="decision_by_user_date"
                   label="Decision Date"
                   component={renderConfig.DATE}
-                  validate={[
-                    dateNotInFuture,
-                    required,
-                    date,
-                  ]}
+                  validate={[dateNotInFuture, required, date]}
                 />
               </Form.Item>
             </Col>

@@ -10,13 +10,13 @@ import {
   getNOWProgress,
   getApplicationDelaysWithDuration,
   getTotalApplicationDelayDuration,
-  getApplicationDelays
+  getApplicationDelays,
 } from "@common/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
-  getNoticeOfWorkApplicationStatusOptionsHash
+  getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkApplicationProgress,
@@ -53,9 +53,9 @@ const badgeColor = {
   Verified: COLOR.successGreen,
   "Not Started": COLOR.mediumGrey,
   "Application Processed": COLOR.successGreen,
-  "Withdrawn": COLOR.errorRed,
-  "Rejected": COLOR.errorRed,
-  "Approved": COLOR.successGreen,
+  Withdrawn: COLOR.errorRed,
+  Rejected: COLOR.errorRed,
+  Approved: COLOR.successGreen,
   "No Permit Required": COLOR.errorRed,
 };
 const propTypes = {
@@ -190,14 +190,15 @@ const transformProgressRowData = (
   noticeOfWorkApplicationStatusOptionsHash
 ) => {
   const isProcessed = ["AIA", "REJ", "WDN", "NPR"].includes(
-      noticeOfWork.now_application_status_code
-    );
+    noticeOfWork.now_application_status_code
+  );
   const applicationProgress = progressStatusCodes
     .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-    .filter(({ application_progress_status_code }) =>
-      APPLICATION_PROGRESS_TRACKING[noticeOfWork.application_type_code].includes(
-        application_progress_status_code
-      ) && progress[application_progress_status_code]?.start_date
+    .filter(
+      ({ application_progress_status_code }) =>
+        APPLICATION_PROGRESS_TRACKING[noticeOfWork.application_type_code].includes(
+          application_progress_status_code
+        ) && progress[application_progress_status_code]?.start_date
     )
     .map((item) => {
       const hasStarted = !isNil(progress[item.application_progress_status_code]?.start_date);
@@ -240,7 +241,7 @@ const transformProgressRowData = (
 
   applicationProgress.unshift(verificationData);
   if (isProcessed) {
-  applicationProgress.push(decisionData)
+    applicationProgress.push(decisionData);
   }
 
   return applicationProgress;
@@ -389,15 +390,17 @@ export class NOWProgressTable extends Component {
   };
 
   handleUpdateVerifiedDate = (values) => {
-    const updateDate = values.recordType === "VER" ? {verified_by_user_date: values.verified_by_user_date} : {decision_by_user_date: values.decision_by_user_date}
-    const message = values.recordType === "VER" ? "Successfully Updated verified date." : "Successfully Updated decision date."
-    const payload = { ...this.props.noticeOfWork, ...updateDate};
+    const updateDate =
+      values.recordType === "VER"
+        ? { verified_by_user_date: values.verified_by_user_date }
+        : { decision_by_user_date: values.decision_by_user_date };
+    const message =
+      values.recordType === "VER"
+        ? "Successfully Updated verified date."
+        : "Successfully Updated decision date.";
+    const payload = { ...this.props.noticeOfWork, ...updateDate };
     this.props
-      .updateNoticeOfWorkApplication(
-        payload,
-        this.props.noticeOfWork.now_application_guid,
-        message
-      )
+      .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
         this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();
@@ -421,24 +424,22 @@ export class NOWProgressTable extends Component {
       });
   };
 
-
-  handleOpenDateModal = (event, record, onSubmit, title, type, recordType, index=null) => {
+  handleOpenDateModal = (event, record, onSubmit, title, type, recordType, index = null) => {
     console.log(index);
     console.log(record);
     event.preventDefault();
     const initialValues = {
-      delays: this.props.delays, 
+      delays: this.props.delays,
       progress: this.props.noticeOfWork.application_progress,
       isProcessed: ["AIA", "REJ", "WDN", "NPR"].includes(
-      this.props.noticeOfWork.now_application_status_code
-    ),
-    progressCodeHash: this.props.progressStatusCodeHash,
-    verifiedDate: this.props.noticeOfWork.verified_by_user_date,
-    decisionDate: this.props.noticeOfWork.decision_by_user_date,
-    rowIndex: index,
-      ...record
-
-    }
+        this.props.noticeOfWork.now_application_status_code
+      ),
+      progressCodeHash: this.props.progressStatusCodeHash,
+      verifiedDate: this.props.noticeOfWork.verified_by_user_date,
+      decisionDate: this.props.noticeOfWork.decision_by_user_date,
+      rowIndex: index,
+      ...record,
+    };
     return this.props.openModal({
       props: {
         title,
@@ -483,7 +484,8 @@ export class NOWProgressTable extends Component {
                             {this.props.noticeOfWork.imported_by || noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Import Date">
-                            {formatDate(this.props.noticeOfWork.verified_by_user_date) || noImportMeta}
+                            {formatDate(this.props.noticeOfWork.verified_by_user_date) ||
+                              noImportMeta}
                           </Descriptions.Item>
                           <Descriptions.Item label="Duration until Progress">
                             {getDuration(this.props.noticeOfWork.verified_by_user_date) ||
