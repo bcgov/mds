@@ -11,7 +11,6 @@ import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchProjectSummariesByMine,
   createProjectSummary,
-  addDocumentToProjectSummary,
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import {
@@ -30,14 +29,9 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateProjectSummary: PropTypes.func.isRequired,
   fetchProjectSummariesByMine: PropTypes.func.isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  createProjectSummary: PropTypes.func.isRequired,
-  addDocumentToProjectSummary: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -104,7 +98,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectSummariesByMine,
       createProjectSummary,
       updateProjectSummary,
-      addDocumentToProjectSummary,
     },
     dispatch
   );

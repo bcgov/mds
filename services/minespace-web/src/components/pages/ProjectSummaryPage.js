@@ -13,14 +13,12 @@ import { MINE_PROJECT_SUMMARIES, EDIT_PROJECT_SUMMARY } from "@/constants/routes
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/AddEditProjectSummaryForm";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
-import { resetForm } from "@common/utils/helpers";
-import * as routes from "@/constants/routes";
 
 import {
   getProjectSummaryDocumentTypesHash,
 } from "@common/selectors/staticContentSelectors";
 import { 
-  createProjectSummary, fetchProjectSummaryById, updateProjectSummary, addDocumentToProjectSummary
+  createProjectSummary, fetchProjectSummaryById, updateProjectSummary
 } from "@common/actionCreators/projectSummaryActionCreator";
 
 const propTypes = {
@@ -137,7 +135,6 @@ const mapDispatchToProps = (dispatch) =>
       createProjectSummary,
       fetchProjectSummaryById,
       updateProjectSummary,
-      addDocumentToProjectSummary,
     }, 
     dispatch
   );
