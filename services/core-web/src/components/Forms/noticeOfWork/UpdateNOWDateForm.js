@@ -86,8 +86,6 @@ const validateBusinessRules = (values) => {
 
     const earliestDelayStartDate = orderedDelayStartDates[0]?.start_date;
 
-    const surroundingDelayDates = getPreviousDelayStartDate(values.rowIndex, values);
-
     if (values.recordType === recordTypeCodes.verification) {
       if (values.verified_by_user_date > values.decisionDate && values.isProcessed) {
         errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${values.decisionDate}`;
@@ -101,6 +99,7 @@ const validateBusinessRules = (values) => {
         errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verifiedDate}`;
       }
     } else if (values.recordType === recordTypeCodes.delay) {
+      const surroundingDelayDates = getPreviousDelayStartDate(values.rowIndex, values);
       if (
         surroundingDelayDates.prev_end_date &&
         values.start_date < surroundingDelayDates.prev_end_date
