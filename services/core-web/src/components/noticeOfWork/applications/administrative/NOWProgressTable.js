@@ -10,6 +10,7 @@ import {
   getNOWProgress,
   getApplicationDelaysWithDuration,
   getTotalApplicationDelayDuration,
+  getApplicationDelays
 } from "@common/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeOptionsHash,
@@ -172,6 +173,7 @@ const transformRowData = (delays, delayTypeHash) => {
       key: delay.now_application_delay_guid,
       reason: delayTypeHash[delay.delay_type_code],
       duration: delay.duration || "0 Minutes",
+      recordType: "DEL",
       dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
       ...delay,
     };
@@ -195,9 +197,10 @@ const transformProgressRowData = (
     .filter(({ application_progress_status_code }) =>
       APPLICATION_PROGRESS_TRACKING[noticeOfWork.application_type_code].includes(
         application_progress_status_code
-      )
+      ) && progress[application_progress_status_code]?.start_date
     )
     .map((item) => {
+      const hasStarted = !isNil(progress[item.application_progress_status_code]?.start_date);
       const hasEnded = !isNil(progress[item.application_progress_status_code]?.end_date);
       const dateMessage = hasEnded
         ? formatDate(progress[item.application_progress_status_code].end_date)
@@ -274,7 +277,7 @@ export class NOWProgressTable extends Component {
     {
       title: "",
       dataIndex: "edit",
-      render: (text, record) => {
+      render: (text, record, index) => {
         return (
           <div title="" align="right">
             <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
@@ -287,7 +290,9 @@ export class NOWProgressTable extends Component {
                     record,
                     this.handleUpdateDelayDates,
                     `Update Dates for delay - ${record.reason}`,
-                    delayCode
+                    delayCode,
+                    record.recordType,
+                    index
                   )
                 }
               >
@@ -417,18 +422,22 @@ export class NOWProgressTable extends Component {
   };
 
 
-  handleOpenDateModal = (event, record, onSubmit, title, type, recordType = null) => {
+  handleOpenDateModal = (event, record, onSubmit, title, type, recordType, index=null) => {
+    console.log(index);
     console.log(record);
     event.preventDefault();
     const initialValues = {
-      delays: this.props.applicationDelays, 
+      delays: this.props.delays, 
       progress: this.props.noticeOfWork.application_progress,
       isProcessed: ["AIA", "REJ", "WDN", "NPR"].includes(
       this.props.noticeOfWork.now_application_status_code
     ),
-    verified_date: this.props.noticeOfWork.verified_by_user_date,
-    decision_date: this.props.noticeOfWork.decision_by_user_date,
+    progressCodeHash: this.props.progressStatusCodeHash,
+    verifiedDate: this.props.noticeOfWork.verified_by_user_date,
+    decisionDate: this.props.noticeOfWork.decision_by_user_date,
+    rowIndex: index,
       ...record
+
     }
     return this.props.openModal({
       props: {
@@ -590,6 +599,7 @@ const mapStateToProps = (state) => ({
   progressStatusCodeHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   applicationDelays: getApplicationDelaysWithDuration(state),
+  delays: getApplicationDelays(state),
   totalApplicationDelayDuration: getTotalApplicationDelayDuration(state),
   delayTypeOptionsHash: getDelayTypeOptionsHash(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
