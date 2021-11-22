@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateNOWDateForm renders properly 1`] = `
+<div>
+  <Alert
+    closable={true}
+    description={
+      <React.Fragment>
+        <div>
+          <ul>
+            <li>
+              Start Date cannot be before verification date: 
+              Jan 01 0001
+            </li>
+            <li>
+              The start date must be before the end date
+            </li>
+            <li>
+              Dates cannot be set in the future
+            </li>
+            <li>
+              If the application has been processed, dates cannot be set after the decision date
+            </li>
+            <li>
+              Delay start and end dates cannot overlap with previous delays
+            </li>
+          </ul>
+        </div>
+      </React.Fragment>
+    }
+    message="Rules for editing progress and delay dates"
+    showIcon={true}
+    type="info"
+  />
+  <br />
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[MockFunction]}
+  >
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="verified_by_user_date"
+            label="Verification/Import Date"
+            name="verified_by_user_date"
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <div
+      className="right center-mobile"
+    >
+      <ForwardRef
+        cancelText="No"
+        disabled={false}
+        icon={<ForwardRef(ExclamationCircleFilled) />}
+        okText="Yes"
+        okType="primary"
+        onConfirm={[MockFunction]}
+        placement="topRight"
+        title="Are you sure you want to cancel?"
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </ForwardRef>
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_now_dates"
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="submit"
+          loading={false}
+          type="primary"
+        >
+          Update
+        </Button>
+      </Connect(AuthorizationWrapper)>
+    </div>
+  </Form>
+</div>
+`;

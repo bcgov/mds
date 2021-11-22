@@ -360,7 +360,6 @@ export const getDurationText = (startDate, endDate) => {
   const months = duration.months();
   const weeks = duration.weeks();
   const days = duration.subtract(weeks, "w").days();
-  const hours = duration.hours();
 
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");
@@ -377,17 +376,12 @@ export const getDurationTextInDays = (duration) => {
   const years = duration.years();
   const months = duration.months();
   const days = duration.days();
-  const hours = duration.hours();
-  const minutes = duration.minutes();
-  const seconds = duration.seconds();
 
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");
   const daysText = getDurationTextOrDefault(days, "Day");
-  const hourText = getDurationTextOrDefault(hours, "Hour");
-  const minuteText = getDurationTextOrDefault(minutes, "Minute");
-  const secondText = getDurationTextOrDefault(seconds, "Second");
-  const value = `${yearsText} ${monthsText} ${daysText} ${hourText} ${minuteText} ${secondText}`;
+
+  const value = `${yearsText} ${monthsText} ${daysText}`;
   return value;
 };
 

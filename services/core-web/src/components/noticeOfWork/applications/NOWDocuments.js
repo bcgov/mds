@@ -555,7 +555,7 @@ export class NOWDocuments extends Component {
         if (
           this.isInCompleteStatus() &&
           moment(record.upload_date, "YYYY-MM-DD") >
-            moment(this.props.noticeOfWork.status_updated_date, "YYYY-MM-DD")
+            moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
         ) {
           isPostDecision = true;
         }
