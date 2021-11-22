@@ -87,7 +87,7 @@ export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, pa
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARIES(mineGuid, projectSummaryGuid),
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_DOCUMENTS(mineGuid, projectSummaryGuid),
       payload,
       createRequestHeader()
     )
@@ -111,7 +111,7 @@ export const removeDocumentFromProjectSummary = (
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
     .delete(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid, mineDocumentGuid),
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_DOCUMENT(mineGuid, projectSummaryGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {
