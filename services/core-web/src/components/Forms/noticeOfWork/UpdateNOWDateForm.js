@@ -66,30 +66,31 @@ const validateBusinessRules = (values) => {
   if (!isEmpty(values)) {
     const orderedProgressStartDate =
       values?.progress?.length > 0 &&
-      values.progress.sort(
-        (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
-      );
+      values.progress.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
     const earliestProgressStartDate = orderedProgressStartDate[0]?.start_date;
     const earliestProgressStageDescription =
       values.progressCodeHash[orderedProgressStartDate[0]?.application_progress_status_code];
     const orderedDelayStartDates =
       values?.delays?.length > 0 &&
-      values.delays.sort(
-        (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
-      );
+      values.delays.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
     const earliestDelayStartDate =
       orderedDelayStartDates[orderedDelayStartDates.length - 1]?.start_date;
-
     if (values.recordType === recordTypeCodes.verification) {
       if (values.verified_by_user_date > values.decisionDate && values.isProcessed) {
         errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${getDateWithoutTime(
           values.decisionDate
         )}`;
-      } else if (values.verified_by_user_date > getDateWithoutTime(earliestProgressStartDate)) {
+      } else if (
+        getDateWithoutTime(values.verified_by_user_date) >
+        getDateWithoutTime(earliestProgressStartDate)
+      ) {
         errors.verified_by_user_date = `The Verification date cannot be after the ${earliestProgressStageDescription} start date of ${getDateWithoutTime(
           earliestProgressStartDate
         )}`;
-      } else if (values.verified_by_user_date > getDateWithoutTime(earliestDelayStartDate)) {
+      } else if (
+        getDateWithoutTime(values.verified_by_user_date) >
+        getDateWithoutTime(earliestDelayStartDate)
+      ) {
         errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${getDateWithoutTime(
           earliestDelayStartDate
         )}`;
