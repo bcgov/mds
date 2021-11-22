@@ -70,7 +70,6 @@ const validateBusinessRules = (values) => {
         (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
       );
     const earliestProgressStartDate = orderedProgressStartDate[0]?.start_date;
-
     const earliestProgressStageDescription =
       values.progressCodeHash[orderedProgressStartDate[0]?.application_progress_status_code];
     const orderedDelayStartDates =
@@ -78,19 +77,18 @@ const validateBusinessRules = (values) => {
       values.delays.sort(
         (a, b) => getDateWithoutTime(b.start_date) - getDateWithoutTime(a.start_date)
       );
-
-    const earliestDelayStartDate = orderedDelayStartDates[0]?.start_date;
+    const earliestDelayStartDate =
+      orderedDelayStartDates[orderedDelayStartDates.length - 1]?.start_date;
 
     if (values.recordType === recordTypeCodes.verification) {
       if (values.verified_by_user_date > values.decisionDate && values.isProcessed) {
         errors.verified_by_user_date = `The Verification date cannot be after the decision date of ${values.decisionDate}`;
-      } else if (values.verified_by_user_date > earliestProgressStartDate) {
+      } else if (values.verified_by_user_date > getDateWithoutTime(earliestProgressStartDate)) {
         errors.verified_by_user_date = `The Verification date cannot be after the ${earliestProgressStageDescription} start date of ${earliestProgressStartDate}`;
-      } else if (values.verified_by_user_date > earliestDelayStartDate) {
+      } else if (values.verified_by_user_date > getDateWithoutTime(earliestDelayStartDate)) {
         errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${earliestDelayStartDate}`;
       }
     } else if (values.recordType === recordTypeCodes.decision) {
-      console.log("values.verifiedDate", values.verifiedDate);
       if (values.decision_by_user_date < values.verifiedDate) {
         errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verifiedDate}`;
       }
@@ -109,13 +107,13 @@ const validateBusinessRules = (values) => {
     }
 
     if (values.start_date > values.decisionDate && values.isProcessed) {
-      errors.start_date = `Start date connot come after the decision date of ${values.decisionDate}`;
+      errors.start_date = `Start date cannot come after the decision date of ${values.decisionDate}`;
     } else if (values.start_date < values.verifiedDate) {
-      errors.start_date = `Start date connot pre-date the verification date of ${values.verifiedDate}`;
+      errors.start_date = `Start date cannot pre-date the verification date of ${values.verifiedDate}`;
     } else if (values.end_date > values.decisionDate && values.isProcessed) {
-      errors.end_date = `End date connot come after the decision date of ${values.decisionDate}`;
+      errors.end_date = `End date cannot come after the decision date of ${values.decisionDate}`;
     } else if (values.end_date < values.start_date) {
-      errors.end_date = `End date connot pre-date the the start date.`;
+      errors.end_date = `End date cannot pre-date the the start date.`;
     }
   }
   return errors;

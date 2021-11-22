@@ -360,7 +360,6 @@ export const getDurationText = (startDate, endDate) => {
   const months = duration.months();
   const weeks = duration.weeks();
   const days = duration.subtract(weeks, "w").days();
-  // const hours = duration.hours();
 
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");

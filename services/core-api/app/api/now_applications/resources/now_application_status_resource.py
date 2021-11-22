@@ -79,8 +79,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         if now_application_status_code is None or current_status == now_application_status_code:
             return 200
 
-        # if now_application_status_code == 'AIA' or now_application_status_code == 'REJ' or now_application_status_code == 'WDN' or now_application_status_code == 'NPR':
-        #     decision_by_user_date = datetime.utcnow()
         # Handle approved status
         if now_application_status_code == 'AIA':
             permit = Permit.find_by_now_application_guid(application_guid)

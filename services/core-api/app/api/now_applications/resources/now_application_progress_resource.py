@@ -1,6 +1,6 @@
 import dateutil.parser
 from datetime import datetime, timezone
-from flask import request, current_app
+from flask import request
 from dateutil.tz import UTC
 
 from sqlalchemy.orm import validates
@@ -101,7 +101,8 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 existing_now_progress.start_date = dateutil.parser.isoparse(start_date).astimezone(
                     UTC)
             if end_date is not None:
-                current_app.logger.debug("AM I HERE???")
+                if end_date < start_date:
+                    raise BadRequest("The end date must be after the start date.")
                 existing_now_progress.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
         else:
             existing_now_progress.end_date = datetime.now(tz=timezone.utc)
