@@ -14,7 +14,7 @@ from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 
 from app.api.services.email_service import EmailService
 from app.config import Config
-from app.api.constants import VARIANCE_APPLICATION_EMAIL
+from app.api.constants import VARIANCE_APPLICATION_EMAIL, MDS_EMAIL
 
 INVALID_GUID = 'Invalid guid.'
 INVALID_MINE_GUID = 'Invalid mine_guid.'
@@ -68,7 +68,7 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
-    
+
     def save(self, commit=True):
         self.updated_by = User().get_user_username()
         self.updated_timestamp = datetime.utcnow()
@@ -106,8 +106,8 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
             issue_date=issue_date,
             received_date=received_date,
             expiry_date=expiry_date,
-            created_by = User().get_user_username(),
-            created_timestamp = datetime.utcnow())
+            created_by=User().get_user_username(),
+            created_timestamp=datetime.utcnow())
         if add_to_session:
             new_variance.save(commit=False)
         return new_variance
@@ -174,7 +174,7 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
         return applicant_guid
 
     def send_variance_application_email(self):
-        recipients = [VARIANCE_APPLICATION_EMAIL]
+        recipients = [VARIANCE_APPLICATION_EMAIL, MDS_EMAIL]
 
         status_code = VarianceApplicationStatusCode.query.get(self.variance_application_status_code)
 

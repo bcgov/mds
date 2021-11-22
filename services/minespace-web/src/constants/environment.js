@@ -1,9 +1,9 @@
-import * as COMMON_ENV from "@common/constants/environment";
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
+  environment: "development",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
   keycloak_idpHint: "local",

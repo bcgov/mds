@@ -30,13 +30,13 @@ parameters:
     required: false
     value: template.nris-odb-credentials
   - name: CPU_LIMIT
-    value: 300m
+    value: 60m
   - name: MEMORY_LIMIT
     value: 1Gi
   - name: CPU_REQUEST
-    value: 100m
+    value: 20m
   - name: MEMORY_REQUEST
-    value: 400Mi
+    value: 256Mi
   - name: UWSGI_PROCESSES
     value: "2"
   - name: UWSGI_THREADS

@@ -12,13 +12,13 @@ parameters:
   - name: OBJECT_STORE_SECRET_NAME
     value: object-store-credentials
   - name: CPU_LIMIT
-    value: 200m
+    value: 30m
   - name: MEMORY_LIMIT
-    value: 512Mi
+    value: 96Mi
   - name: CPU_REQUEST
-    value: 100m
+    value: 10m
   - name: MEMORY_REQUEST
-    value: 256Mi
+    value: 32Mi
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: DOCUMENT_MANAGER_URL

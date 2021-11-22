@@ -14,7 +14,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
 from app.api.services.email_service import EmailService
 from app.config import Config
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL
 
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -102,9 +102,9 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return '<MineReport %r>' % self.mine_report_guid
 
     def send_report_update_email(self, is_edit):
-        recipients = [self.mine.region.regional_contact_office.email]
+        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
         if self.mine.major_mine_ind:
-            recipients = [MAJOR_MINES_OFFICE_EMAIL]
+            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
 
         subject_verb = 'Updated' if is_edit else 'Submitted'
         subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
