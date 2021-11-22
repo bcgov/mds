@@ -1,8 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
-import { isProponent } from "@/selectors/authenticationSelectors";
+import {
+  detectDevelopmentEnvironment,
+  detectProdEnvironment,
+} from "@common/utils/environmentUtils";
+import { isProponent, isAuthenticated } from "@/selectors/authenticationSelectors";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -36,6 +39,7 @@ import { isProponent } from "@/selectors/authenticationSelectors";
 const propTypes = {
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
+  isProponent: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
@@ -44,7 +48,9 @@ const propTypes = {
 
 const defaultProps = {
   inDevelopment: undefined,
+  isProponent: undefined,
   inTesting: undefined,
+  children: undefined,
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -53,17 +59,19 @@ export const AuthorizationWrapper = (props) => {
   // do not show any actions if the user is not a proponents, unless in the development
   if (!props.isProponent && !detectDevelopmentEnvironment()) {
     return <span />;
-  } else {
-    if (props.inDevelopment === undefined && props.inTesting === undefined) {
-      return <span>{props.children}</span>;
-    } else if (checkDev || checkTest) {
-      return <span>{props.children}</span>;
-    }
   }
+  if (props.inDevelopment === undefined && props.inTesting === undefined) {
+    return React.createElement("span", null, props.children);
+  }
+  if (checkDev || checkTest) {
+    return React.createElement("span", null, props.children);
+  }
+  return <span />;
 };
 
 const mapStateToProps = (state) => ({
   isProponent: isProponent(state),
+  isAuthenticated: isAuthenticated(state),
 });
 
 AuthorizationWrapper.propTypes = propTypes;

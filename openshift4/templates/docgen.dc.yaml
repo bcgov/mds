@@ -23,13 +23,13 @@ parameters:
     description: Environment for running node
     value: production
   - name: CPU_LIMIT
-    value: 250m
+    value: 50m
   - name: MEMORY_LIMIT
     value: 750Mi
   - name: CPU_REQUEST
-    value: 100m
+    value: 10m
   - name: MEMORY_REQUEST
-    value: 512Mi
+    value: 256Mi
   - name: REPLICA_MIN
     value: "1"
   - name: REPLICA_MAX
