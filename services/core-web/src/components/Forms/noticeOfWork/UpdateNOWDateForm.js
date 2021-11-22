@@ -90,6 +90,7 @@ const validateBusinessRules = (values) => {
         errors.verified_by_user_date = `The Verification date cannot be after a delay start date of ${earliestDelayStartDate}`;
       }
     } else if (values.recordType === recordTypeCodes.decision) {
+      console.log("values.verifiedDate", values.verifiedDate);
       if (values.decision_by_user_date < values.verifiedDate) {
         errors.decision_by_user_date = `The decision date cannot pre-date the verification date of ${values.verifiedDate}`;
       }

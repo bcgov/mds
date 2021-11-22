@@ -16,8 +16,6 @@ from app.api.now_applications.response_models import NOW_APPLICATION_PROGRESS
 
 class NOWApplicationProgressResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    # parser.add_argument(
-    #     'end_date', help='The date when that stage of NOW processing was complete', location='json')
     parser.add_argument(
         'start_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,

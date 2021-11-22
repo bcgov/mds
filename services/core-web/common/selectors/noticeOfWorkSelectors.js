@@ -77,9 +77,9 @@ export const getNOWProgress = createSelector(
     if (noticeOfWork.application_progress?.length > 0) {
       progress = noticeOfWork.application_progress.reduce((map, obj) => {
         if (obj.start_date && !obj.end_date) {
-          status = "In Progress"
+          status = "In Progress";
         } else if (obj.start_date && obj.end_date) {
-          status = "Complete"
+          status = "Complete";
         }
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
