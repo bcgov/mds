@@ -8,25 +8,20 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import PropTypes from "prop-types";
-import {
-  required,
-  dateNotInFuture,
-  dateNotAfterOther,
-  dateNotBeforeOther,
-  date,
-} from "@common/utils/Validate";
+import { required, dateNotInFuture, date } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   title: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  delayTypeOptions: CustomPropTypes.options.isRequired,
-  stage: PropTypes.string.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  showCommentFields: PropTypes.string.isRequired,
+  importedDate: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
+  recordType: PropTypes.string.isRequired,
 };
 
 const recordTypeCodes = {
@@ -125,7 +120,7 @@ const validateBusinessRules = (values) => {
   return errors;
 };
 
-const UpdateNOWDateForm = (props) => {
+export const UpdateNOWDateForm = (props) => {
   return (
     <div>
       <Alert
@@ -261,7 +256,7 @@ const UpdateNOWDateForm = (props) => {
               Cancel
             </Button>
           </Popconfirm>
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
             <Button htmlType="submit" type="primary">
               Update
             </Button>

@@ -425,8 +425,6 @@ export class NOWProgressTable extends Component {
   };
 
   handleOpenDateModal = (event, record, onSubmit, title, type, recordType, index = null) => {
-    console.log(index);
-    console.log(record);
     event.preventDefault();
     const initialValues = {
       delays: this.props.delays,
