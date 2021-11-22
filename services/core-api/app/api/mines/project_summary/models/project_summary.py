@@ -81,6 +81,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             mine_guid=mine.mine_guid,
             status_code='O')
 
+        mine.project_summaries.append(project_summary)
+
         for doc in documents:
             mine_doc = MineDocument(
                 mine_guid=mine.mine_guid,

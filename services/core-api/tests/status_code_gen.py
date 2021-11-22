@@ -15,6 +15,7 @@ from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
+from app.api.mines.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.compliance.models.compliance_article import ComplianceArticle
@@ -152,9 +153,9 @@ def RandomExplosivesPermitMagazineTypeCode():
         [x.explosives_permit_magazine_type_code for x in ExplosivesPermitMagazineType.get_all()])
 
 
-def RandomExplosivesPermitDocumentTypeCode():
+def RandomProjectSummaryDocumentTypeCode():
     return random.choice(
-        [x.explosives_permit_document_type_code for x in ExplosivesPermitDocumentType.get_all()])
+        [x.project_summary_document_type_code for x in ProjectSummaryDocumentType.get_all()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):
