@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import moment from "moment";
-import { isNil } from "lodash";
+import { isNil, isEmpty, trim } from "lodash";
 import { Descriptions, Badge, Row, Col, Steps, Popover, Button } from "antd";
 import { connect } from "react-redux";
 import {
@@ -170,12 +170,12 @@ const transformRowData = (delays, delayTypeHash) => {
     const hasEnded = delay.end_date !== null;
     const dateMessage = hasEnded ? formatDate(delay.end_date) : "Present";
     return {
+      ...delay,
       key: delay.now_application_delay_guid,
       reason: delayTypeHash[delay.delay_type_code],
-      duration: delay.duration === "  " ? "0 Days" : delay.duration,
+      duration: isEmpty(trim(delay.duration)) ? "0 Days" : delay.duration,
       recordType: "DEL",
       dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
-      ...delay,
     };
   });
 
@@ -335,7 +335,7 @@ export class NOWProgressTable extends Component {
     {
       title: "Duration",
       dataIndex: "duration",
-      render: (text) => <div title="Duration">{text}</div>,
+      render: (text) => <div title="Duration">{text || "O Days"}</div>,
     },
     {
       title: "",
