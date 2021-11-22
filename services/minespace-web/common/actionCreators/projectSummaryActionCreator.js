@@ -111,7 +111,8 @@ export const removeDocumentFromProjectSummary = (
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
     .delete(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_DOCUMENT(mineGuid, projectSummaryGuid, mineDocumentGuid),
+      ENVIRONMENT.apiUrl +
+        API.PROJECT_SUMMARY_DOCUMENT(mineGuid, projectSummaryGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {
