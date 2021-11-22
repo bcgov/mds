@@ -12,7 +12,7 @@ import CustomAxios from "../customAxios";
 export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
   const message = "Successfully created a new project summary";
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid), payload, createRequestHeader())
     .then((response) => {
@@ -24,12 +24,12 @@ export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
       dispatch(error(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
@@ -48,7 +48,7 @@ export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) 
       dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
@@ -66,7 +66,7 @@ export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
 
 export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(
       ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
@@ -77,13 +77,13 @@ export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispat
       dispatch(projectSummaryActions.storeProjectSummary(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARY)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (
   dispatch
 ) => {
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
   return CustomAxios()
     .put(
@@ -99,7 +99,7 @@ export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, pa
       dispatch(error(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const removeDocumentFromProjectSummary = (
@@ -107,7 +107,7 @@ export const removeDocumentFromProjectSummary = (
   projectSummaryGuid,
   mineDocumentGuid
 ) => (dispatch) => {
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
     .delete(
@@ -123,7 +123,7 @@ export const removeDocumentFromProjectSummary = (
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectSummaries = (payload) => (dispatch) => {
