@@ -121,7 +121,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 identity.save()
 
         # only trigger if the technical review is updated via the standard flow and not via the manual editing flow
-        if application_progress_status_code == 'REV' and date_override:
+        if application_progress_status_code == 'REV' and not date_override:
             identity.now_application.add_now_form_to_fap(
                 "This document was automatically created when Technical Review was completed.")
 
