@@ -56,7 +56,7 @@ parameters:
   - name: REPLICA_MIN
     value: "3"
   - name: REPLICA_MAX
-    value: "5"
+    value: "4"
   - name: ENVIRONMENT_NAME
     displayName: Environment Name (Environment Id)
     description: The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.
