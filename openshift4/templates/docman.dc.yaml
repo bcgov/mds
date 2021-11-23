@@ -57,9 +57,9 @@ parameters:
   - name: UWSGI_THREADS
     value: "6"
   - name: REPLICA_MIN
-    value: "3"
+    value: "2"
   - name: REPLICA_MAX
-    value: "4"
+    value: "3"
   - name: WORKER_CPU_REQUEST
     value: 40m
   - name: WORKER_MEMORY_LIMIT
@@ -269,14 +269,18 @@ objects:
                   path: ${BASE_PATH}/health
                   port: 5001
                   scheme: HTTP
-                initialDelaySeconds: 15
+                initialDelaySeconds: 60
                 timeoutSeconds: 3
-                periodSeconds: 10
+                periodSeconds: 30
               readinessProbe:
                 httpGet:
                   path: ${BASE_PATH}/health
                   port: 5001
                   scheme: HTTP
+                timeoutSeconds: 3
+                periodSeconds: 30
+                successThreshold: 1
+                failureThreshold: 3
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               volumeMounts:
