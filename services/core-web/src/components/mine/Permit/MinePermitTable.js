@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
@@ -25,6 +26,7 @@ import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
+import * as route from "@/constants/routes";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -133,6 +135,27 @@ const renderVerifyCredentials = (text, record) => {
           </button>
         </div>
       </Popconfirm>
+    </AuthorizationWrapper>
+  );
+};
+
+const renderEditPermitConditions = (text, record) => {
+  return (
+    <AuthorizationWrapper permission={Permission.ADMIN}>
+      <div className="custom-menu-item">
+        <Link to={route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.permit_amendment_guid)}>
+          <button 
+            type="button" 
+            className="full add-permit-dropdown-button">
+            <img
+              src={EDIT_OUTLINE_VIOLET}
+              alt="Edit"
+              className="icon-sm padding-sm--right violet"
+            />
+            Edit Permit Conditions
+          </button>
+        </Link>
+      </div>
     </AuthorizationWrapper>
   );
 };
@@ -475,11 +498,12 @@ const childColumns = [
               </button>
             </div>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
+          <Menu.Item key="3">
             <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
           </Menu.Item>
-          <Menu.Item key="3">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
-          <Menu.Item key="4">{renderVerifyCredentials(text, record)}</Menu.Item>
+          <Menu.Item key="4">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
+          <Menu.Item key="5">{renderVerifyCredentials(text, record)}</Menu.Item>
         </Menu>
       );
       return (

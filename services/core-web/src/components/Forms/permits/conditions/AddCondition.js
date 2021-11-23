@@ -55,9 +55,13 @@ export class AddCondition extends Component {
   state = { isEditing: false, conditionType: "SEC" };
 
   handleSubmit = (values) => {
-    const isAdminDashboard = this.props.location.pathname.includes(
+    const isAdminRoute = this.props.location.pathname.includes(
       "admin/permit-condition-management"
     );
+    const isEditPermitConditions = this.props.location.pathname.includes(
+      "edit-permit-conditions"
+    );
+    const isAdminDashboard = isAdminRoute || isEditPermitConditions;
     const payload = { ...values, condition_type_code: this.state.conditionType };
     if (isAdminDashboard) {
       return this.props

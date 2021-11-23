@@ -38,6 +38,7 @@ import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/Noti
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
+import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -315,6 +316,12 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/view-notice-of-work/app/${guid}/application`,
   hashRoute: (guid, tab, link) => `/dashboard/view-notice-of-work/app/${guid}/${tab}/${link}`,
   component: ViewNoticeOfWorkApplication,
+};
+
+export const EDIT_PERMIT_CONDITIONS = {
+  route: "/permit-amendment/:id/edit-permit-conditions",
+  dynamicRoute: (id) => `/permit-amendment/${id}/edit-permit-conditions`,
+  component: PermitConditionManagement,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
