@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {  } from "react-router"
 import { getFormValues } from "redux-form";
 import { Row, Col, Typography } from "antd";
@@ -42,7 +42,6 @@ export class ProjectSummaryPage extends Component {
 
   state = { 
     isLoaded: false,
-    initialValues: {},
     isEditMode: false,
   };
 
@@ -57,20 +56,20 @@ export class ProjectSummaryPage extends Component {
     this.setState({ isLoaded: true });
   };
 
-  handleSubmit = (form) => {
+  handleSubmit = (values) => {
     if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(form);
+      return this.handleCreateProjectSummary(values);
     }
-    return this.handleUpdateProjectSummary(form);
+    return this.handleUpdateProjectSummary(values);
   };
 
-  handleCreateProjectSummary(form) {
+  handleCreateProjectSummary(values) {
     return this.props
       .createProjectSummary(
         { 
           mineGuid: this.props.match.params?.mineGuid
         }, 
-        form
+        values
       )
     .then(({ data: { mine_guid, project_summary_guid } }) => {
       this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
@@ -78,18 +77,18 @@ export class ProjectSummaryPage extends Component {
     });
   };
 
-  handleUpdateProjectSummary(form) {
+  handleUpdateProjectSummary(values) {
     const {
       mine_guid,
       project_summary_guid,
-    } = form;
+    } = values;
     return this.props
       .updateProjectSummary(
         {
           mineGuid: mine_guid,
           projectSummaryGuid: project_summary_guid,
         },
-        form
+        values
       )
     .then(({ data: { mine_guid, project_summary_guid } }) => {
       this.props.fetchProjectSummaryById(mine_guid, project_summary_guid);
