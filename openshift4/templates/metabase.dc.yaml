@@ -4,11 +4,11 @@ metadata:
   name: mds-metabase-dc
 parameters:
   - name: CPU_LIMIT
-    value: 90m
+    value: 240m
   - name: MEMORY_LIMIT
     value: 2250Mi
   - name: CPU_REQUEST
-    value: 30m
+    value: 80m
   - name: MEMORY_REQUEST
     value: 1500Mi
   - name: ENVIRONMENT_NAME
