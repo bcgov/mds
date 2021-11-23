@@ -88,7 +88,7 @@ export class AddCondition extends Component {
   getPermitAmendmentId = () => {
     return (isAdminRoute ? 
       this.props.draftPermitAmendment.permit_amendment_guid : 
-      typeFromURL[this.props.match.params.id]);
+      this.props.match.params.id);
   };
 
   handleCancel = (value) => {
