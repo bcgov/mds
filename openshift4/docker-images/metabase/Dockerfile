@@ -17,4 +17,4 @@ RUN chmod -R 777 /app
 EXPOSE 3000
 
 # run it
-CMD ["java", "-jar", "metabase.jar"]
+CMD ["java", "-Xmx1G", "-jar", "metabase.jar"]

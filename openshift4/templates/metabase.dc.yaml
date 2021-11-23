@@ -10,7 +10,7 @@ parameters:
   - name: CPU_REQUEST
     value: 30m
   - name: MEMORY_REQUEST
-    value: 750Mi
+    value: 1500Mi
   - name: ENVIRONMENT_NAME
     value: dev
   - name: NAME
@@ -31,6 +31,9 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Metabase
+  - name: BASE_PATH
+    required: false
+    value: /api
 objects:
   - kind: Service
     apiVersion: v1
@@ -135,6 +138,22 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
+              livenessProbe:
+                httpGet:
+                  path: ${BASE_PATH}/health
+                  port: 3000
+                  scheme: HTTP
+                initialDelaySeconds: 160
+                timeoutSeconds: 15
+                periodSeconds: 30
+              readinessProbe:
+                httpGet:
+                  path: ${BASE_PATH}/health
+                  port: 3000
+                  scheme: HTTP
+                initialDelaySeconds: 160
+                timeoutSeconds: 15
+                periodSeconds: 30
               terminationMessagePath: /dev/termination-log
               imagePullPolicy: IfNotPresent
               capabilities: {}
