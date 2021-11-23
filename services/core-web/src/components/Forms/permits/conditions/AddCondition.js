@@ -73,7 +73,7 @@ export class AddCondition extends Component {
         });
     }
     return this.props
-      .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, payload)
+      .createPermitCondition(getPermitAmendmentId(), payload)
       .then(() => {
         this.setState({ isEditing: false });
         this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
@@ -83,6 +83,12 @@ export class AddCondition extends Component {
         );
         this.props.setEditingConditionFlag(false);
       });
+  };
+
+  getPermitAmendmentId = () => {
+    return (isAdminRoute ? 
+      this.props.draftPermitAmendment.permit_amendment_guid : 
+      typeFromURL[this.props.match.params.id]);
   };
 
   handleCancel = (value) => {
