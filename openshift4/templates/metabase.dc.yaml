@@ -143,17 +143,17 @@ objects:
                   path: ${BASE_PATH}/health
                   port: 3000
                   scheme: HTTP
-                initialDelaySeconds: 160
+                initialDelaySeconds: 240
                 timeoutSeconds: 15
-                periodSeconds: 30
+                periodSeconds: 60
               readinessProbe:
                 httpGet:
                   path: ${BASE_PATH}/health
                   port: 3000
                   scheme: HTTP
-                initialDelaySeconds: 160
+                initialDelaySeconds: 240
                 timeoutSeconds: 15
-                periodSeconds: 30
+                periodSeconds: 60
               terminationMessagePath: /dev/termination-log
               imagePullPolicy: IfNotPresent
               capabilities: {}
