@@ -151,6 +151,15 @@ export class HomePage extends Component {
                     EPIC (EAO)
                   </a>
                 </li>
+                <li>
+                  <a
+                    href="https://mines.qp.gov.bc.ca/mines/app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Mines Certification Registry
+                  </a>
+                </li>
               </ul>
             </div>
           </Col>
