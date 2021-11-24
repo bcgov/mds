@@ -47,7 +47,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @api.doc(
         description='Get a Project Summary.',
         params={
-            'mine_guid': 'The GUID of the mine the Explosives Permit belongs to.',
+            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
             'project_summary_guid': 'The GUID of the Project Summary to get.'
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
@@ -62,7 +62,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @api.doc(
         description='Update a Project Summary.',
         params={
-            'mine_guid': 'The GUID of the mine the Explosives Permit belongs to.',
+            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
             'project_summary_guid': 'The GUID of the Project Summary to update.'
         })
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
@@ -82,7 +82,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @api.doc(
         description='Delete a Project Summary.',
         params={
-            'mine_guid': 'The GUID of the mine the Explosives Permit belongs to.',
+            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
             'project_summary_guid': 'The GUID of the Project Summary to delete.'
         })
     @requires_any_of([MINE_ADMIN])
