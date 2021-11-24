@@ -38,6 +38,7 @@ import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/Noti
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
+import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -256,6 +257,11 @@ export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
   route: "/admin/permit-condition-management/:type",
   dynamicRoute: (type) => `/admin/permit-condition-management/${type}`,
   component: AdminPermitConditionManagement,
+};
+
+export const ADMIN_EMLI_CONTACT_MANAGEMENT = {
+  route: "/admin/minespace-emli-contact-management",
+  component: MineSpaceEMLIContactManagement,
 };
 
 export const ADMIN_VERIFIED_MINES = {
