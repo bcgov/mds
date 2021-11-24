@@ -40,11 +40,6 @@ export const EDIT_PROJECT_SUMMARY = {
   component: ProjectSummaryPage,
 }
 
-export const MINE_PROJECT_SUMMARIES = {
-  dynamicRoute: (mineGuid) =>
-    `/mines/${mineGuid}/projectSummaries`
-}
-
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
