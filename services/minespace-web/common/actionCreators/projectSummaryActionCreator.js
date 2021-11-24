@@ -80,28 +80,6 @@ export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispat
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addDocumentToProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (
-  dispatch
-) => {
-  dispatch(showLoading());
-  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
-  return CustomAxios()
-    .put(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_DOCUMENTS(mineGuid, projectSummaryGuid),
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_PROJECT_SUMMARY));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading()));
-};
-
 export const removeDocumentFromProjectSummary = (
   mineGuid,
   projectSummaryGuid,

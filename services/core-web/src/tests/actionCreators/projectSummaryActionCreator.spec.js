@@ -6,7 +6,6 @@ import {
   fetchProjectSummariesByMine,
   updateProjectSummary,
   deleteProjectSummary,
-  addDocumentToProjectSummary,
   removeDocumentFromProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import * as genericActions from "@common/actions/genericActions";
@@ -133,40 +132,6 @@ describe("`updateProjectSummary` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updateProjectSummary(
-      { mineGuid, projectSummaryGuid },
-      mockPayload
-    )(dispatch).catch(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`addDocumentToProjectSummary` action creator", () => {
-  const mineGuid = "1234567";
-  const mockPayload = {
-    document_manager_guid: "f6737c4f-2cf2-4efb-923a-3e010f8737c5",
-    document_name: "test.pdf",
-  };
-  const projectSummaryGuid = "23448594";
-  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_DOCUMENTS(mineGuid, projectSummaryGuid);
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url).reply(200, mockResponse);
-    return addDocumentToProjectSummary(
-      { mineGuid, projectSummaryGuid },
-      mockPayload
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return addDocumentToProjectSummary(
       { mineGuid, projectSummaryGuid },
       mockPayload
     )(dispatch).catch(() => {
