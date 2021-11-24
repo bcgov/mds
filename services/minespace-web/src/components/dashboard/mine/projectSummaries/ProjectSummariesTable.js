@@ -18,14 +18,13 @@ const propTypes = {
 };
 
 export class ProjectSummariesTable extends Component {
-
   transformRowData = (projectSummaries, codeHash, typeHash) =>
-  projectSummaries &&
-  projectSummaries.map((projectSummary) => ({
+    projectSummaries &&
+    projectSummaries.map((projectSummary) => ({
       key: projectSummary.project_summary_guid,
       projectSummary,
       mine_guid: projectSummary.mine_guid,
-      project_summary_guid: projectSummary.project_summary_guid, 
+      project_summary_guid: projectSummary.project_summary_guid,
       project_summary_id: projectSummary.project_summary_id,
       project_summary_lead_name: projectSummary.project_summary_lead_name,
       status_code: codeHash[projectSummary.status_code],
@@ -63,7 +62,7 @@ export class ProjectSummariesTable extends Component {
       title: "Lead By",
       dataIndex: "project_summary_lead_name",
       sorter: (a, b) => (a.project_summary_lead_name > b.project_summary_lead_name ? -1 : 1),
-      render: (text) => <div title="Lead">{text}</div>,
+      render: (text) => <div title="Lead">{text ? text : Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Documents",
@@ -89,7 +88,12 @@ export class ProjectSummariesTable extends Component {
       dataIndex: "projectSummary",
       render: (text, record) => (
         <div title="" align="right">
-          <Link to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(record.mine_guid, record.project_summary_guid)}>
+          <Link
+            to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+              record.mine_guid,
+              record.project_summary_guid
+            )}
+          >
             <img src={EDIT_PENCIL} alt="Edit" />
           </Link>
         </div>
@@ -106,7 +110,7 @@ export class ProjectSummariesTable extends Component {
         columns={this.columns()}
         dataSource={this.transformRowData(
           this.props.projectSummaries,
-          this.props.projectSummaryStatusCodesHash,
+          this.props.projectSummaryStatusCodesHash
         )}
         locale={{ emptyText: "This mine has no project summary data." }}
       />
