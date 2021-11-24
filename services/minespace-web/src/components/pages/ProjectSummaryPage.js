@@ -9,7 +9,7 @@ import { CaretLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
-import { MINE_PROJECT_SUMMARIES, EDIT_PROJECT_SUMMARY } from "@/constants/routes";
+import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/AddEditProjectSummaryForm";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
@@ -103,7 +103,7 @@ export class ProjectSummaryPage extends Component {
         <Row>
           <Col span={24}>
             <Typography.Title>
-              <Link to={MINE_PROJECT_SUMMARIES.dynamicRoute(mineGuid)}><CaretLeftOutlined /></Link>
+              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, 'projectSummaries')}><CaretLeftOutlined /></Link>
               {title}
             </Typography.Title>
           </Col>
