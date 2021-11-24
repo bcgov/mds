@@ -31,20 +31,20 @@ import { COLOR } from "@/constants/styles";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const propTypes = {
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  editingConditionFlag: PropTypes.bool.isRequired,
-  fetchStandardPermitConditions: PropTypes.func.isRequired,
-  setEditingConditionFlag: PropTypes.func.isRequired,
-  deleteStandardPermitCondition: PropTypes.func.isRequired,
-  updateStandardPermitCondition: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: {
-      type: PropTypes.string,
-    },
-  }).isRequired,
+  // openModal: PropTypes.func.isRequired,
+  // closeModal: PropTypes.func.isRequired,
+  // conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  // editingConditionFlag: PropTypes.bool.isRequired,
+  // fetchStandardPermitConditions: PropTypes.func.isRequired,
+  // setEditingConditionFlag: PropTypes.func.isRequired,
+  // deleteStandardPermitCondition: PropTypes.func.isRequired,
+  // updateStandardPermitCondition: PropTypes.func.isRequired,
+  // match: PropTypes.shape({
+  //   params: {
+  //     type: PropTypes.string,
+  //   },
+  // }).isRequired,
 };
 
 const typeFromURL = {
