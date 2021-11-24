@@ -7,7 +7,7 @@ exports[`ProjectSummaryPage renders properly 1`] = `
   >
     <Title>
       <Link
-        to="/mines/undefined/projectSummaries"
+        to="/mines/undefined/projectSummaries?"
       >
         <ForwardRef(CaretLeftOutlined) />
       </Link>
