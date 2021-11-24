@@ -6261,6 +6261,46 @@ export const PROJECT_SUMMARY = {
   documents: [],
 };
 
+export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
+  O: "Open",
+  C: "Closed",
+  W: "Withdrawn",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {
+  GEN: "General",
+};
+
+export const PROJECT_SUMMARY_STATUS_CODES_DROPDOWN = [
+  {
+    value: "C",
+    label: "Closed",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "O",
+    label: "Open",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "W",
+    label: "Withdrawn",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN = [
+  {
+    value: "GEN",
+    label: "General",
+    subType: null,
+    isActive: true,
+  },
+];
+
 export const MINE_EPIC_INFO = {
   records: {
     mine_info: {

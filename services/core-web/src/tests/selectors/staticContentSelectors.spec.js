@@ -69,6 +69,10 @@ import {
   getExplosivesPermitStatusOptionsHash,
   getExplosivesPermitMagazineTypeDropdownOptions,
   getExplosivesPermitMagazineTypeOptionsHash,
+  getProjectSummaryStatusCodesHash,
+  getProjectSummaryDocumentTypesHash,
+  getDropdownProjectSummaryStatusCodes,
+  getDropdownProjectSummaryDocumentTypes,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -450,6 +454,30 @@ describe("staticContentSelectors", () => {
   it("`getExplosivesPermitMagazineTypeOptionsHash` calls `staticContentReducer.getExplosivesPermitMagazineTypeOptionsHash`", () => {
     expect(getExplosivesPermitMagazineTypeOptionsHash(mockState)).toEqual(
       Mock.EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS_HASH
+    );
+  });
+
+  it("`getProjectSummaryStatusCodesHash` calls `staticContentReducer.getProjectSummaryStatusCodesHash`", () => {
+    expect(getProjectSummaryStatusCodesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_STATUS_CODES_HASH
+    );
+  });
+
+  it("`getProjectSummaryDocumentTypesHash` calls `staticContentReducer.getProjectSummaryDocumentTypesHash`", () => {
+    expect(getProjectSummaryDocumentTypesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH
+    );
+  });
+
+  it("`getDropdownProjectSummaryDocumentTypes` calls `staticContentReducer.getDropdownProjectSummaryDocumentTypes`", () => {
+    expect(getDropdownProjectSummaryDocumentTypes(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN
+    );
+  });
+
+  it("`getDropdownProjectSummaryStatusCodes` calls `staticContentReducer.getDropdownProjectSummaryStatusCodes`", () => {
+    expect(getDropdownProjectSummaryStatusCodes(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_STATUS_CODES_DROPDOWN
     );
   });
 });
