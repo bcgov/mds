@@ -83,6 +83,8 @@ class NOWApplication(Base, AuditMixin):
     imported_date = db.Column(db.DateTime)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
+    verified_by_user_date = db.Column(db.Date, nullable=False)
+    decision_by_user_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
     property_name = db.Column(db.String)

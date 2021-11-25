@@ -25,7 +25,7 @@ export const NOWStatusReason = (props) => (
         {props.noticeOfWork.status_reason || Strings.EMPTY_FIELD}
       </Descriptions.Item>
       <Descriptions.Item label="Date of Status Change">
-        {formatDate(props.noticeOfWork.status_updated_date)}
+        {formatDate(props.noticeOfWork.decision_by_user_date)}
       </Descriptions.Item>
     </Descriptions>
   </div>

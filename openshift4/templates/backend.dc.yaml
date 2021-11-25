@@ -44,11 +44,11 @@ parameters:
   - name: CPU_LIMIT
     value: 160m
   - name: MEMORY_LIMIT
-    value: 3Gi
+    value: 2Gi
   - name: CPU_REQUEST
     value: 40m
   - name: MEMORY_REQUEST
-    value: 1Gi
+    value: 512Mi
   - name: UWSGI_PROCESSES
     value: "2"
   - name: UWSGI_THREADS
@@ -56,7 +56,7 @@ parameters:
   - name: REPLICA_MIN
     value: "3"
   - name: REPLICA_MAX
-    value: "5"
+    value: "4"
   - name: ENVIRONMENT_NAME
     displayName: Environment Name (Environment Id)
     description: The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.
@@ -337,7 +337,7 @@ objects:
                   path: ${BASE_PATH}/health
                   port: 5000
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 160
                 timeoutSeconds: 15
                 periodSeconds: 30
               readinessProbe:
@@ -345,7 +345,7 @@ objects:
                   path: ${BASE_PATH}/health
                   port: 5000
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 160
                 timeoutSeconds: 15
                 periodSeconds: 30
               terminationMessagePath: /dev/termination-log

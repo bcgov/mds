@@ -20,10 +20,15 @@ MDS_ADMINISTRATIVE_USERS = "mds_administrative_users"
 EDIT_SUBMISSIONS = "core_edit_submissions"
 EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
 GIS = "core_gis"
+EDIT_NOW_DATES = "core_edit_now_dates"
 
 
 def is_minespace_user():
     return jwt.validate_roles([MINESPACE_PROPONENT])
+
+
+def can_edit_now_dates():
+    return jwt.validate_roles([EDIT_NOW_DATES])
 
 
 def requires_role_view_all(func):
@@ -76,6 +81,10 @@ def requires_role_edit_securities(func):
 
 def requires_role_mds_administrative_users(func):
     return _inner_wrapper(func, MDS_ADMINISTRATIVE_USERS)
+
+
+def requires_role_edit_now_dates(func):
+    return _inner_wrapper(func, EDIT_NOW_DATES)
 
 
 def requires_any_of(roles):

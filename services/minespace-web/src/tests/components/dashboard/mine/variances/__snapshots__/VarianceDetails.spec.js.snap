@@ -29,6 +29,8 @@ exports[`VarianceDetails renders properly 1`] = `
     </DescriptionsItem>
   </Descriptions>
   <DocumentTable
+    categoryDataIndex="variance_document_category_code"
+    documentParent="variance"
     documents={
       Array [
         Object {
@@ -40,6 +42,7 @@ exports[`VarianceDetails renders properly 1`] = `
         },
       ]
     }
+    uploadDateIndex="created_at"
   />
   <Descriptions
     size="small"
