@@ -22,6 +22,11 @@ endif
 
 lite:
 	@echo "+\n++ Building minimum topology for local dev ...\n+"
+	@docker-compose up -d frontend
+
+rebuild:
+	@echo "+\n++ Rebuilding your current in-use containers ...\n+"
+	@./bin/rebuild.sh
 
 all:
 	@echo "+\n++ Performing project build ...\n+"
@@ -32,6 +37,7 @@ backend:
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
+	@docker-compose up -d minespace docgen-api
 
 # Simply for legacy support, this command will be retired shortly
 fe:
@@ -42,36 +48,32 @@ fe:
 
 db:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build --parallel postgres flyway
+	@docker-compose up -d postgres flyway
 
 getdb:
 	@echo "+\n++ Getting database dump from test environment...\n+"
-	@sh ./bin/database-dump-from-test.sh 4c2ba9-test pgDump-test.sql
+	@sh ./bin/get-test-db.sh 4c2ba9-test test-postgres.sql
 
 seeddb:
 	@echo "+\n++ Seeding docker database...\n+"
 
 
 reglogin:
-	@echo "+\n++ Initiating registry login...\n+"
+	@echo "+\n++ Initiating Openshift registry login...\n+"
 	@./bin/registry-login.sh
 
-reglogin:
-	@echo "+\n++ Initiating registry login...\n+"
+env:
+	@echo "+\n++ Creating boilerplate local dev .env files...\n+"
 	@./bin/setenv.sh
 
 stop:
-	@echo "+\n++ Stopping backend and postgres...\n+"
+	@echo "+\n++ Stopping all containers...\n+"
 	@docker-compose down
 
-clean:
+clean: stop |
 	@echo "+\n++ Cleaning ...\n+"
 	@docker-compose rm -f -v -s
 	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
-	@docker volume rm mds_postgres_data -f
-
-cleandb: stop |
-	@docker rmi -f mds_flyway
 	@docker volume rm mds_postgres_data -f
 
 help:

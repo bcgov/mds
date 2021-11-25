@@ -1,7 +1,7 @@
 #!/bin/bash
 #========================================================================#
 # MDS Dev Environment Validation
-# Script used to check environment dependencies for development on MDS to help devs setup
+# Synopsis: Script used to check environment dependencies for development on MDS to help devs setup
 # ARGUMENTS
 OS=${1}
 #========================================================================#
@@ -19,6 +19,10 @@ CRESET="\e[0m"
 # Check Git
 # TODO: Write validation
 GIT_RESPONSE=$(ssh -T git@github.com)
+
+# Check idir
+# TODO: Write validation
+echo "Verify your idir has correct permissions via your PO"
 
 # Check OS
 if [ "$OS" = "windows" ];
@@ -60,7 +64,7 @@ OC_ACCESS=$(oc get project | grep 4c2ba9)
 if [ "$OC_CLI" = "" ];
 then
     echo -e "${CRED}FAILED OC INSTALL VALIDATION${CRESET}"
-    echo -e "${CRED}Have you downloaded and installed the OC cli bin from https://github.com/openshift/okd/releases ?${CRESET}"
+    echo -e "${CRED}Have you downloaded and installed the OC cli binary from https://github.com/openshift/okd/releases ?${CRESET}"
 else
     echo -e "${CGREEN}PASSED OC INSTALL VALIDATION${CRESET}"
 fi
@@ -68,7 +72,7 @@ fi
 if [ "$OC_ACCESS" = "" ];
 then
     echo -e "${CRED}FAILED OC ACCESS VALIDATION${CRESET}"
-    echo -e "${CRED}Have you requested access to the MDS project set with license plate 4c2ba9?${CRESET}"
+    echo -e "${CRED}Have you requested access to the MDS project set with license plate 4c2ba9 from your local DevOps?${CRESET}"
     echo -e "${CRED}If you're totally new to BCGov then you'll need to request access to the org via https://just-ask-web-bdec76-prod.apps.silver.devops.gov.bc.ca/${CRESET}"
     echo -e "${CRED}Are you logged into Openshift? Visit https://oauth-openshift.apps.silver.devops.gov.bc.ca/oauth/token/request and execute the oc command${CRESET}"
 else
@@ -76,7 +80,6 @@ else
 fi
 
 # Check env files
-PRESENT=1
 if [ -f "$SERVICES_PATH/core-api/.env" ] && \
    [ -f "$SERVICES_PATH/core-web/.env" ] && \
    [ -f "$SERVICES_PATH/document-manager/backend/.env" ] && \
