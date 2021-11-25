@@ -1,7 +1,7 @@
 #!/bin/bash
 #========================================================================#
 # MDS Help for usage
-# Spits out a help message and usage suggestions
+# Synopsis: Spits out a help message and usage suggestions
 #========================================================================#
 # Global config
 # Color codes

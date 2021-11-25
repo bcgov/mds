@@ -3,6 +3,7 @@
 # MDS Container rebuild
 # Synopsis: Script used to intelligently rebuild only what the dev is using
 #========================================================================#
+# TODO: allow passthrough to build specific container via do-nothing make target
 
 SERV_LIST=$(docker-compose ps --services --status running)
 SERV_LIST=$(echo "$SERV_LIST"|tr '\n' ' ') # trim newlines

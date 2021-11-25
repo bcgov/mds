@@ -2,7 +2,7 @@
 #========================================================================#
 # MDS Project Makefile
 # Synopsis: This makefile acts as the main entrypoint for working with MDS
-# Run 'make validate' to ensure your environment is configured correctly
+# Run 'make help' to start
 #========================================================================#
 
 # Determine OS
@@ -31,9 +31,11 @@ rebuild:
 all:
 	@echo "+\n++ Performing project build ...\n+"
 	@docker-compose build --force-rm --no-cache --parallel
+	@docker-compose up -d
 
 backend:
 	@echo "+\n++ Building only backend ...\n+"
+	@docker-compose up -d backend
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
