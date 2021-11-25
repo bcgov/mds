@@ -2,7 +2,7 @@
 #========================================================================#
 # MDS Dev Environment Validation
 # Synopsis: Script used to check environment dependencies for development on MDS to help devs setup
-# ARGUMENTS
+# ARGUMENTS:
 OS=${1}
 #========================================================================#
 # Global config
