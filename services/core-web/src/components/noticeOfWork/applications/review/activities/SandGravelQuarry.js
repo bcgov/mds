@@ -170,7 +170,7 @@ export const SandGravelQuarry = (props) => {
           <Field
             id="agri_lnd_rsrv_permit_application_number"
             name="agri_lnd_rsrv_permit_application_number"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>
