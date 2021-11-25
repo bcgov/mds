@@ -14,7 +14,6 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_description': fields.String,
         'project_summary_date': fields.DateTime,
         'mine_guid': fields.String,
-        'mine_name': fields.String,
         'status_code': fields.String,
         'project_summary_lead_party_guid': fields.String,
         'project_summary_lead_name': fields.String,
