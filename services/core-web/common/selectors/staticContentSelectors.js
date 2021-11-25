@@ -50,6 +50,8 @@ export const {
   getExplosivesPermitDocumentType,
   getExplosivesPermitStatus,
   getExplosivesPermitMagazineType,
+  getProjectSummaryStatusCodes,
+  getProjectSummaryDocumentTypes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -767,3 +769,25 @@ export const getExplosivesPermitMagazineTypeOptionsHash = createSelector(
 
 export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
   getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);
+
+export const getDropdownProjectSummaryStatusCodes = createSelectorWrapper(
+  getProjectSummaryStatusCodes,
+  createDropDownList,
+  ["description", "project_summary_status_code", "active_ind"]
+);
+
+export const getProjectSummaryStatusCodesHash = createSelector(
+  [getDropdownProjectSummaryStatusCodes],
+  createLabelHash
+);
+
+export const getDropdownProjectSummaryDocumentTypes = createSelectorWrapper(
+  getProjectSummaryDocumentTypes,
+  createDropDownList,
+  ["description", "project_summary_document_type_code", "active_ind"]
+);
+
+export const getProjectSummaryDocumentTypesHash = createSelector(
+  [getDropdownProjectSummaryDocumentTypes],
+  createLabelHash
+);

@@ -3,6 +3,7 @@ from flask_restplus import fields
 
 from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL, PERMIT_STATUS_CODE_MODEL, PERMIT_CONDITION_CATEGORY_MODEL, PERMIT_CONDITION_TYPE_MODEL, PERMIT_AMENDEMENT_TYPE_CODE_MODEL, GOVERNMENT_AGENCY_TYPE_MODEL, CONSEQUENCE_CLASSIFICATION_STATUS_MODEL, ITRB_EXEMPTION_STATUS_MODEL, TSF_OPERATING_STATUS_MODEL
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_STATUS_MODEL, EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL, EXPLOSIVES_PERMIT_MAGAZINE_TYPE_MODEL
+from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_STATUS_CODE_MODEL, PROJECT_SUMMARY_DOCUMENT_TYPE_MODEL
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE_INCIDENT_DETERMINATION_TYPE_MODEL, MINE_INCIDENT_STATUS_CODE_MODEL, MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL, PARTY_BUSINESS_ROLE
@@ -183,14 +184,25 @@ STATIC_CONTENT_MODEL = api.model(
             attribute='ConsequenceClassificationStatusCode'),
         'itrbExemptionStatusCodeOptions':
         fields.List(
-            fields.Nested(ITRB_EXEMPTION_STATUS_MODEL),
-            attribute='ITRBExemptionStatusCode'),
+            fields.Nested(ITRB_EXEMPTION_STATUS_MODEL), attribute='ITRBExemptionStatusCode'),
         'TSFOperatingStatusCodeOptions':
         fields.List(fields.Nested(TSF_OPERATING_STATUS_MODEL), attribute='TSFOperatingStatusCode'),
         'explosivesPermitStatus':
-        fields.List(fields.Nested(EXPLOSIVES_PERMIT_STATUS_MODEL), attribute='ExplosivesPermitStatus'),
+        fields.List(
+            fields.Nested(EXPLOSIVES_PERMIT_STATUS_MODEL), attribute='ExplosivesPermitStatus'),
         'explosivesPermitDocumentType':
-        fields.List(fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL), attribute='ExplosivesPermitDocumentType'),
+        fields.List(
+            fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL),
+            attribute='ExplosivesPermitDocumentType'),
         'explosivesPermitMagazineType':
-        fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_TYPE_MODEL), attribute='ExplosivesPermitMagazineType')
+        fields.List(
+            fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_TYPE_MODEL),
+            attribute='ExplosivesPermitMagazineType'),
+        'projectSummaryStatusCodes':
+        fields.List(
+            fields.Nested(PROJECT_SUMMARY_STATUS_CODE_MODEL), attribute='ProjectSummaryStatusCode'),
+        'projectSummaryDocumentTypes':
+        fields.List(
+            fields.Nested(PROJECT_SUMMARY_DOCUMENT_TYPE_MODEL),
+            attribute='ProjectSummaryDocumentType')
     })

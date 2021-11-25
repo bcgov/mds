@@ -12,12 +12,12 @@ exports[`DocumentTable renders properly 1`] = `
           "title": "File Name",
         },
         Object {
-          "dataIndex": "variance_document_category_code",
+          "dataIndex": undefined,
           "render": [Function],
           "title": "Category",
         },
         Object {
-          "dataIndex": "created_at",
+          "dataIndex": undefined,
           "render": [Function],
           "title": "Upload Date",
         },
@@ -36,7 +36,7 @@ exports[`DocumentTable renders properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "This variance does not contain any documents.",
+        "emptyText": "This undefined does not contain any documents.",
       }
     }
     pagination={false}

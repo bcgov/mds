@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSummariesTable renders properly 1`] = `
+<Table
+  columns={
+    Array [
+      Object {
+        "dataIndex": "project_summary_id",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Project Summary No.",
+      },
+      Object {
+        "dataIndex": "project_summary_date",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Submitted On",
+      },
+      Object {
+        "dataIndex": "status_code",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Status",
+      },
+      Object {
+        "dataIndex": "project_summary_description",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Description",
+      },
+      Object {
+        "dataIndex": "project_summary_lead_name",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Lead By",
+      },
+      Object {
+        "dataIndex": "documents",
+        "render": [Function],
+        "title": "Documents",
+      },
+      Object {
+        "dataIndex": "projectSummary",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "documents": Array [],
+        "key": "81324623978135",
+        "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+        "projectSummary": Object {
+          "documents": Array [],
+          "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+          "project_summary_date": "2021-11-19",
+          "project_summary_description": "Sample description.",
+          "project_summary_guid": "81324623978135",
+          "status_code": "O",
+        },
+        "project_summary_date": "Nov 19 2021",
+        "project_summary_description": "Sample description.",
+        "project_summary_guid": "81324623978135",
+        "project_summary_id": undefined,
+        "project_summary_lead_name": undefined,
+        "status_code": "Open",
+      },
+    ]
+  }
+  loading={true}
+  locale={
+    Object {
+      "emptyText": "This mine has no project summary data.",
+    }
+  }
+  pagination={false}
+  rowKey="key"
+  size="small"
+/>
+`;

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSummaries renders properly 1`] = `
+<Row>
+  <Col
+    span={24}
+  >
+    <Link
+      to="/mines/undefined/project-summary/new"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        style={
+          Object {
+            "display": "inline",
+            "float": "right",
+          }
+        }
+        type="primary"
+      >
+        <ForwardRef(PlusCircleFilled) />
+        Create a new Project Summary
+      </Button>
+    </Link>
+    <Title
+      level={4}
+    >
+      Project Summaries
+    </Title>
+    <Paragraph>
+      This table displays all of the 
+      <Text
+        className="color-primary"
+        strong={true}
+      >
+        project summaries 
+      </Text>
+      associated with this mine.
+    </Paragraph>
+    <ProjectSummariesTable
+      isLoaded={false}
+      mine={Object {}}
+      projectSummaries={
+        Array [
+          Object {
+            "documents": Array [],
+            "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+            "project_summary_date": "2021-11-19",
+            "project_summary_description": "Sample description.",
+            "project_summary_guid": "81324623978135",
+            "status_code": "O",
+          },
+        ]
+      }
+      projectSummaryStatusCodesHash={
+        Object {
+          "C": "Closed",
+          "O": "Open",
+          "W": "Withdrawn",
+        }
+      }
+    />
+  </Col>
+</Row>
+`;
