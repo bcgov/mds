@@ -1,12 +1,14 @@
 import requests
+import dateutil.parser
 from datetime import datetime
+from dateutil.tz import UTC
 
 from flask import request, current_app
 from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, can_edit_now_dates, VIEW_ALL, GIS
 
 from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
@@ -70,6 +72,17 @@ class NOWApplicationResource(Resource, UserMixin):
             )
 
         data = request.json
+
+        verified_by_user_date = data.get('verified_by_user_date', None)
+        decision_by_user_date = data.get('decision_by_user_date', None)
+        if can_edit_now_dates():
+            if verified_by_user_date is not None:
+                now_application_identity.now_application.verified_by_user_date = dateutil.parser.isoparse(
+                    verified_by_user_date).astimezone(UTC)
+            if decision_by_user_date is not None: 
+                now_application_identity.now_application.decision_by_user_date = dateutil.parser.isoparse(
+                    decision_by_user_date).astimezone(UTC)
+            
 
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
         if lead_inspector_party_guid:

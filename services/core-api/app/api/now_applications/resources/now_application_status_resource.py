@@ -322,6 +322,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 delay.end_date = datetime.now(tz=timezone.utc)
 
         # Update the status code
+        now_application_identity.now_application.decision_by_user_date = datetime.utcnow()
         now_application_identity.now_application.status_updated_date = datetime.utcnow()
         now_application_identity.now_application.previous_application_status_code = current_status
         now_application_identity.now_application.now_application_status_code = now_application_status_code

@@ -83,6 +83,7 @@ const simpleRender = () => {
     notice_of_work_type_code: "QIM",
     now_application_status_code: "RCO",
     status_updated_date: "2020-09-23",
+    decision_by_user_date: "2020-09-23",
     submitted_date: "2020-09-21",
     received_date: "2020-08-31",
     latitude: "-86.2280985",

@@ -56,4 +56,5 @@ export const USER_ROLES = {
   role_edit_securities: "core_edit_securities",
   role_edit_historical_amendments: "core_edit_historical_amendments",
   role_mds_administrative_users: "mds_administrative_users",
+  role_edit_now_dates: "core_edit_now_dates",
 };

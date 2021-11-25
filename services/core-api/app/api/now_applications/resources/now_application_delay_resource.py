@@ -1,10 +1,14 @@
-from flask_restplus import Resource
+import dateutil.parser
+from flask_restplus import Resource, reqparse
 from flask import request, current_app
 from datetime import datetime, timezone
 
+import dateutil.parser
+from dateutil.tz import UTC
+
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, can_edit_now_dates
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
@@ -64,10 +68,27 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
 
 
 class NOWApplicationDelayResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,
+        help='The date when that stage of NOW processing was started',
+        location='json')
+    parser.add_argument(
+        'end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z') if x else None,
+        help='The date when that stage of NOW processing was complete',
+        location='json')
+    parser.add_argument(
+        'date_override',
+        type=bool,
+        help='Indicates if the Progress dates are being manually edited via a secondary flow.')
+
     @api.doc(description='Get a list of all Notice of Work Delay Reasons.', params={})
-    @requires_role_view_all
+    @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
     def put(self, now_application_guid, now_application_delay_guid):
+        data = request.json
         now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
             raise NotFound('Notice of Work Application not found')
@@ -79,7 +100,19 @@ class NOWApplicationDelayResource(Resource, UserMixin):
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
-        now_delay.end_date = datetime.now(tz=timezone.utc)
+
+        start_date = data.get("start_date", None)
+        end_date = data.get("end_date", None)
+        date_override = data.get("date_override", False)
+        if can_edit_now_dates() and date_override:
+            if start_date is not None:
+                now_delay.start_date = dateutil.parser.isoparse(start_date).astimezone(UTC)
+            if end_date is not None:
+                if end_date < start_date:
+                    raise BadRequest("The end date must be after the start date.")
+                now_delay.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
+        else:
+            now_delay.end_date = datetime.now(tz=timezone.utc)
         now_delay.save()
 
         return now_delay
