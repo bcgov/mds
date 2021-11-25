@@ -5,7 +5,7 @@
 # Run 'make validate' to ensure your environment is configured correctly
 #========================================================================#
 
-
+# Determine OS
 ifneq ($(OS),Windows_NT)
 POSIXSHELL := 1
 else
@@ -20,27 +20,27 @@ else
 	@./bin/validate.sh windows
 endif
 
-buildlite:
-	@echo "+\n++ Building minimum topology for local ...\n+"
+lite:
+	@echo "+\n++ Building minimum topology for local dev ...\n+"
 
-buildall:
+all:
 	@echo "+\n++ Performing project build ...\n+"
 	@docker-compose build --force-rm --no-cache --parallel
 
-buildbackend:
+backend:
 	@echo "+\n++ Building only backend ...\n+"
 
-buildextra:
+extra:
 	@echo "+\n++ Building tertiary services ...\n+"
 
 # Simply for legacy support, this command will be retired shortly
-buildfe:
+fe:
 	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
 	@docker-compose rm -f -v -s frontend
 	@rm -rf ./services/core-web/node_modules/
 	@cd ./services/core-web/; npm i; npm run serve; cd ..
 
-builddb:
+db:
 	@echo "+\n++ Performing postgres build ...\n+"
 	@docker-compose build --parallel postgres flyway
 
@@ -50,16 +50,15 @@ getdb:
 
 seeddb:
 	@echo "+\n++ Seeding docker database...\n+"
-	@docker cp pgDump-test.sql mds_postgres:/tmp/
-	@docker exec -it mds_postgres sh -c "dropdb --user=mds --if-exists mds" || true
-	@docker exec -it mds_postgres sh -c "createdb --user=mds mds" || true
-	@docker exec -it mds_postgres sh -c "psql -U mds -ac 'GRANT ALL ON DATABASE "mds" TO "mds";'"
-	@docker exec -it mds_postgres sh -c "gunzip -c  /tmp/pgDump-test.sql | psql -v -U mds -d mds" || true
-	@docker exec -it mds_postgres sh -c "psql -U mds -ac 'REASSIGN OWNED BY postgres TO mds;';"
+
 
 reglogin:
 	@echo "+\n++ Initiating registry login...\n+"
 	@./bin/registry-login.sh
+
+reglogin:
+	@echo "+\n++ Initiating registry login...\n+"
+	@./bin/setenv.sh
 
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
@@ -74,3 +73,6 @@ clean:
 cleandb: stop |
 	@docker rmi -f mds_flyway
 	@docker volume rm mds_postgres_data -f
+
+help:
+	@./bin/help.sh
