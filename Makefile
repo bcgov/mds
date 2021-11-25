@@ -52,10 +52,11 @@ db:
 
 getdb:
 	@echo "+\n++ Getting database dump from test environment...\n+"
-	@sh ./bin/get-test-db.sh 4c2ba9-test test-postgres.sql
+	@./bin/get-test-db.sh 4c2ba9-test test-postgres.sql
 
 seeddb:
-	@echo "+\n++ Seeding docker database...\n+"
+	@echo "+\n++ Seeding container database...\n+"
+	@./bin/seed-container-db.sh test-postgres.sql
 
 
 reglogin:

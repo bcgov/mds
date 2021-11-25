@@ -38,12 +38,12 @@ fi
 # Check docker & docker-compose
 DOCKERBIN=$(which docker)
 DOCKERCBIN=$(which docker-compose)
-if [ "$DOCKERBIN" = "" ] || [ "$DOCKERCBIN" = "" ];
+if [[ "$DOCKERBIN" == *bin\/docker ]] && [[ "$DOCKERCBIN" == *bin\/docker-compose ]];
 then
+    echo -e "${CGREEN}PASSED DOCKER VALIDATION${CRESET}"
+else
     echo -e "${CRED}FAILED DOCKER VALIDATION${CRESET}"
     echo -e "${CRED}Have you installed both docker and docker-compose?${CRESET}"
-else
-    echo -e "${CGREEN}PASSED DOCKER VALIDATION${CRESET}"
 fi  
 
 # Check NPM Version for non-container compliance
