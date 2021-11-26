@@ -24,7 +24,7 @@ const propTypes = {
   isEditMode: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   change: PropTypes.func.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  documents: PropTypes.arrayOf(PropTypes.object),
 };
 
 export class AddEditProjectSummaryForm extends Component {
