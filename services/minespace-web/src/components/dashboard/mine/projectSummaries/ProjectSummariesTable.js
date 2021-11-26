@@ -18,7 +18,7 @@ const propTypes = {
 };
 
 export class ProjectSummariesTable extends Component {
-  transformRowData = (projectSummaries, codeHash, typeHash) =>
+  transformRowData = (projectSummaries, codeHash) =>
     projectSummaries &&
     projectSummaries.map((projectSummary) => ({
       key: projectSummary.project_summary_guid,
@@ -62,7 +62,7 @@ export class ProjectSummariesTable extends Component {
       title: "Lead By",
       dataIndex: "project_summary_lead_name",
       sorter: (a, b) => (a.project_summary_lead_name > b.project_summary_lead_name ? -1 : 1),
-      render: (text) => <div title="Lead">{text ? text : Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Lead">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Documents",
