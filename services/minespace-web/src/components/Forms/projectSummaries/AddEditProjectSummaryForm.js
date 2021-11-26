@@ -27,6 +27,10 @@ const propTypes = {
   documents: PropTypes.arrayOf(PropTypes.object),
 };
 
+const defaultProps = {
+  documents: [],
+};
+
 export class AddEditProjectSummaryForm extends Component {
   state = {
     uploadedFiles: [],
@@ -90,6 +94,7 @@ export class AddEditProjectSummaryForm extends Component {
 }
 
 AddEditProjectSummaryForm.propTypes = propTypes;
+AddEditProjectSummaryForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
