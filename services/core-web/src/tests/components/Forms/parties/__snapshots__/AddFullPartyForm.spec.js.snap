@@ -23,6 +23,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
             defaultValue={true}
             onChange={[MockFunction]}
             size="large"
+            value={false}
           >
             <ForwardRef(RadioButton)
               value={true}
