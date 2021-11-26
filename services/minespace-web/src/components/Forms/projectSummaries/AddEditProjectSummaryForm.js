@@ -8,8 +8,8 @@ import { Field, reduxForm, change, arrayPush, formValueSelector } from "redux-fo
 import { remove } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Typography } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { Button, Typography } from "antd";
+import { maxLength } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -17,13 +17,14 @@ import DocumentTable from "@/components/common/DocumentTable";
 import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 
 const propTypes = {
-  initialValues: CustomPropTypes.projectSummary,
+  initialValues: CustomPropTypes.projectSummary.isRequired,
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  change: PropTypes.func.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export class AddEditProjectSummaryForm extends Component {
@@ -43,10 +44,7 @@ export class AddEditProjectSummaryForm extends Component {
 
   render() {
     return (
-      <Form
-        layout="vertical"
-        onSubmit={this.props.handleSubmit}
-      >
+      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Field
           id="project_summary_date"
           name="project_summary_date"
@@ -62,15 +60,15 @@ export class AddEditProjectSummaryForm extends Component {
           validate={[maxLength(300)]}
         />
         <Form.Item label="Attached Files">
-          {this.props.isEditMode &&
+          {this.props.isEditMode && (
             <DocumentTable
-              documents={this.props.initialValues.documents}
+              documents={this.props.initialValues?.documents}
               documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
-              documentParent={"project summary"}
-              categoryDataIndex={"project_summary_document_type_code"}
-              uploadDateIndex={"upload_date"}
+              documentParent="project summary"
+              categoryDataIndex="project_summary_document_type_code"
+              uploadDateIndex="upload_date"
             />
-          }
+          )}
           <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
           <Field
             id="documents"
@@ -82,23 +80,14 @@ export class AddEditProjectSummaryForm extends Component {
           />
         </Form.Item>
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button>Cancel</Button>
-          </Popconfirm>
           <Button type="primary" htmlType="submit" loading={this.props.submitting}>
-            {this.props.isEditMode ? 'Save' : 'Submit'}
+            {this.props.isEditMode ? "Save" : "Submit"}
           </Button>
         </div>
       </Form>
     );
   }
-};
+}
 
 AddEditProjectSummaryForm.propTypes = propTypes;
 
