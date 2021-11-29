@@ -162,6 +162,25 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading()));
 };
 
+export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMIT_AMENDMENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
+      return response.data;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const removePermitAmendmentDocument = (
   mineGuid,
   permitGuid,
