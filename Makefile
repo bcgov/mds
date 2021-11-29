@@ -33,7 +33,7 @@ all:
 	@docker-compose build --force-rm --no-cache --parallel
 	@docker-compose up -d
 
-backend:
+be:
 	@echo "+\n++ Building only backend ...\n+"
 	@docker-compose up -d backend
 
