@@ -28,9 +28,9 @@ parameters:
   - name: MEMORY_LIMIT
     value: 6Gi
   - name: CPU_REQUEST
-    value: 200m
+    value: 1000m
   - name: MEMORY_REQUEST
-    value: 2Gi
+    value: 3Gi
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: APPNAME
