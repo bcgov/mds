@@ -148,7 +148,8 @@ const renderEditPermitConditions = (text, record) => {
               route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit_amendment_guid)}>
               <button 
                 type="button" 
-                className="full add-permit-dropdown-button">
+                className="full add-permit-dropdown-button"
+                style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.65)" }}>
                 <img
                   src={EDIT_OUTLINE_VIOLET}
                   alt="Edit"
