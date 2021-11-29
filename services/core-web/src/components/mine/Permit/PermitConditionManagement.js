@@ -16,13 +16,21 @@ import {
   deletePermitCondition,
   updatePermitCondition,
   setEditingConditionFlag,
+  getPermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
+import {
+  fetchMineRecordById,
+} from "@common/actionCreators/mineActionCreator";
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
+import { Link } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import * as route from "@/constants/routes";
+import { formatDate } from "@common/utils/helpers";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -35,15 +43,39 @@ const propTypes = {
   deletePermitCondition: PropTypes.func.isRequired,
   updatePermitCondition: PropTypes.func.isRequired,
   hasSourceConditions: PropTypes.bool.isRequired,
+  getPermitAmendment: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
 };
 
 export class PermitConditionManagement extends Component {
   constructor(props) {
     super(props);
-    this.state = { submitting: false };
+    this.state = { 
+      submitting: false, 
+      permitNo: '', 
+      issuesDate: '', 
+      authEndDate: '',
+      mineName: ''
+    };
     this.fetchPermitConditions();
     props.setEditingConditionFlag(false);
   }
+  
+  componentDidMount = () =>{
+    this.props.fetchMineRecordById(this.props.match.params.mine_guid).then((response) => {
+      this.setState({ 
+        mineName: response.data.mine_name
+      });
+    });
+    this.props.getPermitAmendment(this.props.match.params.mine_guid, this.props.match.params.id)
+    .then((response) => {
+      this.setState({ 
+        permitNo: response.permit_no,
+        issuesDate: response.issue_date,
+        authEndDate: response.authorization_end_date
+      });
+    });
+  };
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.match.params.id !== this.props.match.params.id) {
@@ -123,7 +155,24 @@ export class PermitConditionManagement extends Component {
           <div className="landing-page__header">
             <Row>
               <Col sm={22} md={14} lg={12}>
-                <h1>Permit Conditions</h1>
+                <h1>
+                  Add/Edit Permit Conditions for {this.state.permitNo}
+                </h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={22} md={14} lg={12}>
+                <h1>
+                  ({formatDate(this.state.issuesDate)} - {formatDate(this.state.authEndDate)})
+                </h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={22} md={14} lg={12}>
+                <Link to={route.MINE_PERMITS.dynamicRoute(this.props.match.params.mine_guid)}>
+                  <ArrowLeftOutlined className="padding-sm--right" />
+                  Back to: {this.state.mineName} Permits
+                </Link>
               </Col>
             </Row>
           </div>
@@ -221,6 +270,8 @@ const mapDispatchToProps = (dispatch) =>
       setEditingConditionFlag,
       deletePermitCondition,
       updatePermitCondition,
+      getPermitAmendment,
+      fetchMineRecordById,
     },
     dispatch
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import {
   MinusSquareFilled,
@@ -141,22 +142,23 @@ const renderVerifyCredentials = (text, record) => {
 
 const renderEditPermitConditions = (text, record) => {
   return (
-    <AuthorizationWrapper permission={Permission.ADMIN}>
-      <div className="custom-menu-item">
-        <Link to={route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.permit_amendment_guid)}>
-          <button 
-            type="button" 
-            className="full add-permit-dropdown-button">
-            <img
-              src={EDIT_OUTLINE_VIOLET}
-              alt="Edit"
-              className="icon-sm padding-sm--right violet"
-            />
-            Edit Permit Conditions
-          </button>
-        </Link>
-      </div>
-    </AuthorizationWrapper>
+    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <div className="custom-menu-item">
+            <Link to={
+              route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit_amendment_guid)}>
+              <button 
+                type="button" 
+                className="full add-permit-dropdown-button">
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  alt="Edit"
+                  className="icon-sm padding-sm--right violet"
+                />
+                Edit Permit Conditions
+              </button>
+            </Link>
+          </div>
+        </AuthorizationWrapper>
   );
 };
 
@@ -498,7 +500,10 @@ const childColumns = [
               </button>
             </div>
           </Menu.Item>
-          <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
+          {
+            record.is_generated_in_core && 
+              <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
+          }
           <Menu.Item key="3">
             <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
           </Menu.Item>
@@ -582,7 +587,8 @@ const transformChildRowData = (
   handleDeletePermitAmendment,
   handlePermitAmendmentIssueVC,
   permitAmendmentTypeOptionsHash,
-  openViewConditionModal
+  openViewConditionModal,
+  mineGuid
 ) => ({
   amendmentNumber,
   isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
@@ -607,6 +613,7 @@ const transformChildRowData = (
     documentManagerGuid: doc.document_manager_guid,
     filename: doc.document_name,
   })),
+  mineGuid,
   ...amendment,
 });
 
@@ -643,7 +650,8 @@ export const MinePermitTable = (props) => {
         props.handleDeletePermitAmendment,
         props.handlePermitAmendmentIssueVC,
         props.permitAmendmentTypeOptionsHash,
-        props.openViewConditionModal
+        props.openViewConditionModal,
+        props.match.params.id
       )
     );
 
@@ -697,4 +705,4 @@ const mapStateToProps = (state) => ({
 MinePermitTable.propTypes = propTypes;
 MinePermitTable.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(MinePermitTable);
+export default withRouter(connect(mapStateToProps)(MinePermitTable));

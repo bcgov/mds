@@ -1765,3 +1765,5 @@ UPDATE document_template SET form_spec_json = '[
       "read-only": true
     }
 ]' WHERE document_template_code = 'ESL';
+
+UPDATE permit_amendment SET is_generated_in_core = true WHERE permit_conditions_last_updated_date IS NOT NULL;
