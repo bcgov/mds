@@ -24,7 +24,7 @@ parameters:
     name: VOLUME_CAPACITY
     value: 20Gi
   - name: CPU_LIMIT
-    value: 600m
+    value: 2000m
   - name: MEMORY_LIMIT
     value: 6Gi
   - name: CPU_REQUEST
@@ -347,11 +347,11 @@ objects:
                       - pg_ctl stop -D /var/lib/pgsql/data/userdata
               resources:
                 requests:
-                  cpu: ${CPU_REQUEST}
-                  memory: ${MEMORY_REQUEST}
+                  cpu: 100m
+                  memory: 1024Mi
                 limits:
-                  cpu: ${CPU_LIMIT}
-                  memory: ${MEMORY_LIMIT}
+                  cpu: 600m
+                  memory: 2Gi
               securityContext:
                 capabilities: {}
                 privileged: false

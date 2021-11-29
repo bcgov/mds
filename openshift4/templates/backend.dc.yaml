@@ -42,13 +42,13 @@ parameters:
   - name: CACHE_REDIS_HOST
     value: redis
   - name: CPU_LIMIT
-    value: 160m
+    value: 450m
   - name: MEMORY_LIMIT
     value: 2Gi
   - name: CPU_REQUEST
-    value: 40m
+    value: 150m
   - name: MEMORY_REQUEST
-    value: 512Mi
+    value: 1024Mi
   - name: UWSGI_PROCESSES
     value: "2"
   - name: UWSGI_THREADS
