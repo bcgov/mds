@@ -58,6 +58,8 @@ from app.api.mines.tailings.models.itrb_exemption_status_code import ITRBExempti
 from app.api.mines.explosives_permit.models.explosives_permit_status import ExplosivesPermitStatus
 from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
+from app.api.mines.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
+from app.api.mines.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
@@ -71,8 +73,9 @@ MODELS_GET_ACTIVE = [
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
-    ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus, ExplosivesPermitMagazineType,
-    ExplosivesPermitDocumentType
+    ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
+    ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
+    ProjectSummaryStatusCode
 ]
 
 
