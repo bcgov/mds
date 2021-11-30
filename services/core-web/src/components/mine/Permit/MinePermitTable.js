@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import {
   MinusSquareFilled,
@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
@@ -55,6 +55,7 @@ const propTypes = {
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditSitePropertiesModal: PropTypes.func.isRequired,
   openViewConditionModal: PropTypes.func.isRequired,
+  match: CustomPropTypes.PermitConditionManagement.match.isRequired,
 };
 
 const defaultProps = {
@@ -143,23 +144,28 @@ const renderVerifyCredentials = (text, record) => {
 const renderEditPermitConditions = (text, record) => {
   return (
     <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <div className="custom-menu-item">
-            <Link to={
-              route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit_amendment_guid)}>
-              <button 
-                type="button" 
-                className="full add-permit-dropdown-button"
-                style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.65)" }}>
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  alt="Edit"
-                  className="icon-sm padding-sm--right violet"
-                />
-                Edit Permit Conditions
-              </button>
-            </Link>
-          </div>
-        </AuthorizationWrapper>
+      <div className="custom-menu-item">
+        <Link
+          to={route.EDIT_PERMIT_CONDITIONS.dynamicRoute(
+            record.mineGuid,
+            record.permit_amendment_guid
+          )}
+        >
+          <button
+            type="button"
+            className="full add-permit-dropdown-button"
+            style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.65)" }}
+          >
+            <img
+              src={EDIT_OUTLINE_VIOLET}
+              alt="Edit"
+              className="icon-sm padding-sm--right violet"
+            />
+            Edit Permit Conditions
+          </button>
+        </Link>
+      </div>
+    </AuthorizationWrapper>
   );
 };
 
@@ -501,10 +507,9 @@ const childColumns = [
               </button>
             </div>
           </Menu.Item>
-          {
-            record.is_generated_in_core && 
-              <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
-          }
+          {!record.is_generated_in_core && (
+            <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
+          )}
           <Menu.Item key="3">
             <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
           </Menu.Item>

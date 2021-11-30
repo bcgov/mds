@@ -162,9 +162,7 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading()));
 };
 
-export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (
-  dispatch
-) => {
+export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
@@ -174,7 +172,7 @@ export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
-      return response.data;
+      return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));

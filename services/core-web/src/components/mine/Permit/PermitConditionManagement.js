@@ -3,8 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Collapse, Button, Row, Col } from "antd";
-import { flattenObject } from "@common/utils/helpers";
-import { ReadOutlined } from "@ant-design/icons";
+import { flattenObject, formatDate } from "@common/utils/helpers";
+import { ReadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -18,9 +18,7 @@ import {
   setEditingConditionFlag,
   getPermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
-import {
-  fetchMineRecordById,
-} from "@common/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
@@ -28,9 +26,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import { Link } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import * as route from "@/constants/routes";
-import { formatDate } from "@common/utils/helpers";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -42,39 +38,42 @@ const propTypes = {
   setEditingConditionFlag: PropTypes.func.isRequired,
   deletePermitCondition: PropTypes.func.isRequired,
   updatePermitCondition: PropTypes.func.isRequired,
-  hasSourceConditions: PropTypes.bool.isRequired,
   getPermitAmendment: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  match: CustomPropTypes.PermitConditionManagement.match.isRequired,
 };
 
 export class PermitConditionManagement extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      submitting: false, 
-      permitNo: '', 
-      issuesDate: '', 
-      authEndDate: '',
-      mineName: ''
+    this.state = {
+      submitting: false,
+      permitNo: "",
+      issuesDate: "",
+      authEndDate: "",
+      mineName: "",
+      mineGuid: this.props.match.params.mine_guid,
+      permitAmendmentGuid: this.props.match.params.id,
     };
     this.fetchPermitConditions();
     props.setEditingConditionFlag(false);
   }
-  
-  componentDidMount = () =>{
-    this.props.fetchMineRecordById(this.props.match.params.mine_guid).then((response) => {
-      this.setState({ 
-        mineName: response.data.mine_name
+
+  componentDidMount = () => {
+    this.props.fetchMineRecordById(this.state.mineGuid).then((response) => {
+      this.setState({
+        mineName: response.data.mine_name,
       });
     });
-    this.props.getPermitAmendment(this.props.match.params.mine_guid, this.props.match.params.id)
-    .then((response) => {
-      this.setState({ 
-        permitNo: response.permit_no,
-        issuesDate: response.issue_date,
-        authEndDate: response.authorization_end_date
+    this.props
+      .getPermitAmendment(this.state.mineGuid, this.state.permitAmendmentGuid)
+      .then((response) => {
+        this.setState({
+          permitNo: response.data.permit_no,
+          issuesDate: response.data.issue_date,
+          authEndDate: response.data.authorization_end_date,
+        });
       });
-    });
   };
 
   componentDidUpdate = (prevProps) => {
@@ -84,13 +83,13 @@ export class PermitConditionManagement extends Component {
   };
 
   fetchPermitConditions = () => {
-    this.props.fetchPermitConditions(this.props.match.params.id);
+    this.props.fetchPermitConditions(this.state.permitAmendmentGuid);
   };
 
   handleDelete = (condition) => {
     this.setState({ submitting: true });
     this.props
-      .deletePermitCondition(this.props.match.params.id, condition.permit_condition_guid)
+      .deletePermitCondition(this.state.permitAmendmentGuid, condition.permit_condition_guid)
       .then(() => {
         this.setState({ submitting: false });
         this.props.closeModal();
@@ -128,9 +127,9 @@ export class PermitConditionManagement extends Component {
 
   handleEdit = (values) => {
     return this.props
-      .updatePermitCondition(values.permit_condition_guid, this.props.match.params.id, values)
+      .updatePermitCondition(values.permit_condition_guid, this.state.permitAmendmentGuid, values)
       .then(() => {
-        this.props.fetchPermitConditions(this.props.match.params.id);
+        this.props.fetchPermitConditions(this.state.permitAmendmentGuid);
         this.props.setEditingConditionFlag(false);
       });
   };
@@ -138,9 +137,13 @@ export class PermitConditionManagement extends Component {
   reorderConditions = (condition, isMoveUp) => {
     condition.display_order = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
     return this.props
-      .updatePermitCondition(condition.permit_condition_guid, this.props.match.params.id, condition)
+      .updatePermitCondition(
+        condition.permit_condition_guid,
+        this.state.permitAmendmentGuid,
+        condition
+      )
       .then(() => {
-        this.props.fetchPermitConditions(this.props.match.params.id);
+        this.props.fetchPermitConditions(this.state.permitAmendmentGuid);
       });
   };
 
@@ -155,9 +158,7 @@ export class PermitConditionManagement extends Component {
           <div className="landing-page__header">
             <Row>
               <Col sm={22} md={14} lg={12}>
-                <h1>
-                  Add/Edit Permit Conditions for {this.state.permitNo}
-                </h1>
+                <h1>Add/Edit Permit Conditions for {this.state.permitNo}</h1>
               </Col>
             </Row>
             <Row>
@@ -169,7 +170,7 @@ export class PermitConditionManagement extends Component {
             </Row>
             <Row>
               <Col sm={22} md={14} lg={12}>
-                <Link to={route.MINE_PERMITS.dynamicRoute(this.props.match.params.mine_guid)}>
+                <Link to={route.MINE_PERMITS.dynamicRoute(this.state.mineGuid)}>
                   <ArrowLeftOutlined className="padding-sm--right" />
                   Back to: {this.state.mineName} Permits
                 </Link>
@@ -193,7 +194,7 @@ export class PermitConditionManagement extends Component {
                             (value) => value === "CON"
                           ).length
                         } conditions)`}
-                        <span onClick={(event) => event.stopPropagation()}>
+                        <span role="button" onClick={(event) => event.stopPropagation()}>
                           <Button
                             ghost
                             onClick={(event) =>
@@ -236,7 +237,7 @@ export class PermitConditionManagement extends Component {
                             ? 1
                             : maxBy(conditions, "display_order").display_order + 1,
                         parent_permit_condition_id: null,
-                        permit_amendment_id: this.props.match.params.id,
+                        permit_amendment_id: this.state.permitAmendmentGuid,
                         parent_condition_type_code: "SEC",
                         sibling_condition_type_code:
                           conditions.length === 0 ? null : conditions[0].condition_type_code,
