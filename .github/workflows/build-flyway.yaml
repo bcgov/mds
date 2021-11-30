@@ -1,7 +1,6 @@
 name: Build Flyway
 
 on:
-  pull_request: # remove after testing
   push:
     branches:
       - develop
