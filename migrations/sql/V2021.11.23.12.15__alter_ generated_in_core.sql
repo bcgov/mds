@@ -1,1 +1,0 @@
-ALTER TABLE permit_amendment ADD COLUMN IF NOT EXISTS is_generated_in_core boolean DEFAULT false NOT NULL;
