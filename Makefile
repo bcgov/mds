@@ -37,6 +37,10 @@ be:
 	@echo "+\n++ Building only backend ...\n+"
 	@docker-compose up -d backend
 
+ms:
+	@echo "+\n++ Building minespace ...\n+"
+	@docker-compose up -d minespace
+
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
 	@docker-compose up -d minespace docgen-api
@@ -59,7 +63,6 @@ getdb:
 seeddb:
 	@echo "+\n++ Seeding container database...\n+"
 	@./bin/seed-container-db.sh test-postgres.sql
-
 
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
