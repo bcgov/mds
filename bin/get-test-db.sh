@@ -1,17 +1,11 @@
 #!/bin/sh
-#
-# Dumps from the MDS database and stores locally.  Project namespace required.
-#
-# Based on mds process:
-#	https://github.com/bcgov/mds/blob/release/1.43.0/openshift/scripts/oc-dump.sh
-#
-# NOTE: You need to be logged in with a token, via:
-#       https://console.pathfinder.gov.bc.ca:8443/oauth/token/request
-
-# Parameters
-#
+#========================================================================#
+# MDS Test DB Dump extraction
+# Script used to pull a copy of the MDS test/staging database for local dev purposes
+# ARGUMENTS
 PROJECT=${1}
 SAVE_TO=${2}
+#========================================================================#
 
 # Show message if passed any params
 #
@@ -21,7 +15,7 @@ then
     echo "Dumps from a mds database to store locally"
     echo
 	echo "Provide a project name."
-	echo " './database-dump-from-test.sh <project_name> <optional:output_file>'"
+	echo " './get-test-db.sh <project_name> <optional:output_file>'"
 	echo
 	exit
 fi

@@ -221,7 +221,7 @@ objects:
           volumes:
             - name: odb-credentials
               configMap:
-                name: odb-wallet
+                name: 2021-odb-wallet
           restartPolicy: Always
           dnsPolicy: ClusterFirst
           securityContext: {}

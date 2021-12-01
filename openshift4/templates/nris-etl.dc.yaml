@@ -76,7 +76,7 @@ objects:
                   emptyDir: {}
                 - name: odb-credentials
                   configMap:
-                    name: odb-wallet
+                    name: 2021-odb-wallet
                     defaultMode: 420
               containers:
                 - name: ${NAME}-job
