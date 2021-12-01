@@ -55,7 +55,12 @@ const propTypes = {
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditSitePropertiesModal: PropTypes.func.isRequired,
   openViewConditionModal: PropTypes.func.isRequired,
-  match: CustomPropTypes.PermitConditionManagement.match.isRequired,
+  match: PropTypes.shape({
+    params: {
+      mine_guid: PropTypes.string,
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 const defaultProps = {

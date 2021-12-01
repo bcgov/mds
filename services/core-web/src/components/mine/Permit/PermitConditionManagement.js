@@ -40,7 +40,12 @@ const propTypes = {
   updatePermitCondition: PropTypes.func.isRequired,
   getPermitAmendment: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  match: CustomPropTypes.PermitConditionManagement.match.isRequired,
+  match: PropTypes.shape({
+    params: {
+      mine_guid: PropTypes.string,
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 export class PermitConditionManagement extends Component {

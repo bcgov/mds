@@ -43,12 +43,3 @@ export const preDraftForm = shape({
   is_exploration: PropTypes.bool,
   permit_guid: PropTypes.string,
 });
-
-export const PermitConditionManagement = shape({
-  match: PropTypes.shape({
-    params: {
-      mine_guid: PropTypes.string,
-      id: PropTypes.string,
-    },
-  }).isRequired,
-});
