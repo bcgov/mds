@@ -23,6 +23,10 @@ class PermitConditionsListResource(Resource, UserMixin):
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = get_permit_amendment(permit_amendment_guid)
 
+        if not (permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT" or 
+            permit_amendment.is_generated_in_core == False and permit_amendment.permit_amendment_status_code == "DFT"):
+            raise BadRequest('Permit Conditions cannot be edited if the permit was issued in Core and is no longer a draft.')
+
         request.json['permit_condition'][
             'permit_amendment_id'] = permit_amendment.permit_amendment_id
 
@@ -71,6 +75,10 @@ class PermitConditionsResource(Resource, UserMixin):
     def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
 
         permit_amendment = get_permit_amendment(permit_amendment_guid)
+
+        if not (permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT" or 
+            permit_amendment.is_generated_in_core == False and permit_amendment.permit_amendment_status_code == "DFT"):
+            raise BadRequest('Permit Conditions cannot be edited if the permit was issued in Core and is no longer a draft.')
 
         old_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
         old_display_order = old_condition.display_order
