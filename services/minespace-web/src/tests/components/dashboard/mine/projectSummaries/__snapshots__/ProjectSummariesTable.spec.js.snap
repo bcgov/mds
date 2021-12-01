@@ -8,13 +8,19 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "dataIndex": "project_summary_id",
         "render": [Function],
         "sorter": [Function],
-        "title": "Project Summary No.",
+        "title": "Project #",
       },
       Object {
-        "dataIndex": "project_summary_date",
+        "dataIndex": "update_user",
         "render": [Function],
         "sorter": [Function],
-        "title": "Submitted On",
+        "title": "Last Updated",
+      },
+      Object {
+        "dataIndex": "update_timestamp",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Last Updated By",
       },
       Object {
         "dataIndex": "status_code",
@@ -23,21 +29,9 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "title": "Status",
       },
       Object {
-        "dataIndex": "project_summary_description",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Description",
-      },
-      Object {
-        "dataIndex": "project_summary_lead_name",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Lead By",
-      },
-      Object {
         "dataIndex": "documents",
         "render": [Function],
-        "title": "Documents",
+        "title": "Files",
       },
       Object {
         "dataIndex": "projectSummary",
@@ -60,12 +54,11 @@ exports[`ProjectSummariesTable renders properly 1`] = `
           "project_summary_guid": "81324623978135",
           "status_code": "O",
         },
-        "project_summary_date": "Nov 19 2021",
-        "project_summary_description": "Sample description.",
         "project_summary_guid": "81324623978135",
         "project_summary_id": undefined,
-        "project_summary_lead_name": undefined,
         "status_code": "Open",
+        "update_timestamp": undefined,
+        "update_user": undefined,
       },
     ]
   }
