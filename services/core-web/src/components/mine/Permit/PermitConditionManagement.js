@@ -74,9 +74,9 @@ export class PermitConditionManagement extends Component {
       .getPermitAmendment(this.state.mineGuid, this.state.permitAmendmentGuid)
       .then((response) => {
         this.setState({
-          permitNo: response.data.permit_no,
-          issuesDate: response.data.issue_date,
-          authEndDate: response.data.authorization_end_date,
+          permitNo: response.permit_no,
+          issuesDate: response.issue_date,
+          authEndDate: response.authorization_end_date,
         });
       });
   };
@@ -169,7 +169,7 @@ export class PermitConditionManagement extends Component {
             <Row>
               <Col sm={22} md={14} lg={12}>
                 <h1>
-                  ({formatDate(this.state.issuesDate)} - {formatDate(this.state.authEndDate)})
+                  ({formatDate(this.state.issuesDate)} - {this.state.authEndDate ? formatDate(this.state.authEndDate) : 'Present'})
                 </h1>
               </Col>
             </Row>
