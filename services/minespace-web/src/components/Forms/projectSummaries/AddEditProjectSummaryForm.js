@@ -50,13 +50,6 @@ export class AddEditProjectSummaryForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Field
-          id="project_summary_date"
-          name="project_summary_date"
-          label="Date"
-          placeholder="Please select date"
-          component={renderConfig.DATE}
-        />
-        <Field
           id="project_summary_description"
           name="project_summary_description"
           label="Description of Work"
