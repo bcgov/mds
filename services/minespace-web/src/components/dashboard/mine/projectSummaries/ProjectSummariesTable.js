@@ -41,15 +41,15 @@ export class ProjectSummariesTable extends Component {
     },
     {
       title: "Last Updated",
-      dataIndex: "update_user",
-      sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
+      dataIndex: "update_timestamp",
+      sorter: dateSorter("update_timestamp"),
       render: (text) => <div title="Last Updated">{text}</div>,
     },
     {
       title: "Last Updated By",
-      dataIndex: "update_timestamp",
+      dataIndex: "update_user",
       render: (text) => <div title="Last Updated By">{text}</div>,
-      sorter: dateSorter("update_timestamp"),
+      sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
     },
     {
       title: "Status",
