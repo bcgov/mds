@@ -1,0 +1,2 @@
+ALTER TABLE now_submissions.application ALTER COLUMN sandgrvqryalrpermitnumber TYPE VARCHAR(4000);
+ALTER TABLE public.sand_gravel_quarry_operation ALTER COLUMN agri_lnd_rsrv_permit_application_number TYPE VARCHAR(4000);

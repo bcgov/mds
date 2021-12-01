@@ -42,6 +42,8 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
+from app.api.mines.project_summary.models.project_summary import ProjectSummary
+from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -244,6 +246,22 @@ class VarianceDocumentFactory(BaseFactory):
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     variance_id = factory.SelfAttribute('variance.variance_id')
     variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
+
+
+class ProjectSummaryDocumentFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummaryDocumentXref
+
+    class Params:
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+
+    project_summary_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
+    project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
 
 def RandomPermitNumber():
@@ -949,3 +967,33 @@ class ExplosivesPermitMagazineFactory(BaseFactory):
     distance_road = factory.Faker('pyint', min_value=10, max_value=100)
     distance_dwelling = factory.Faker('pyint', min_value=10, max_value=100)
     detonator_type = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+
+
+class ProjectSummaryFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummary
+
+    class Params:
+        mine = factory.SubFactory(MineFactory, minimal=True)
+        project_summary_lead = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+
+    project_summary_guid = GUID
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    project_summary_lead_party_guid = factory.SelfAttribute('project_summary_lead.party.party_guid')
+    project_summary_description = 'Sample test description.'
+    project_summary_date = TODAY
+    status_code = 'O'
+    deleted_ind = False
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ProjectSummaryDocumentFactory.create_batch(
+            size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)

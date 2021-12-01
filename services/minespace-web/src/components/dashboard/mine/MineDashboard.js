@@ -8,6 +8,7 @@ import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCre
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -18,6 +19,7 @@ import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import Bonds from "@/components/dashboard/mine/bonds/Bonds";
 import Tailings from "@/components/dashboard/mine/tailings/Tailings";
+import ProjectSummaries from "@/components/dashboard/mine/projectSummaries/ProjectSummaries";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
@@ -143,6 +145,11 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Tailings" key="tailings">
                     <Tailings mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
+                  {!IN_PROD() && (
+                    <Tabs.TabPane tab="Project Summaries" key="projectSummaries">
+                      <ProjectSummaries mine={mine} match={this.props.match} />
+                    </Tabs.TabPane>
+                  )}
                 </Tabs>
               </Col>
             </Row>

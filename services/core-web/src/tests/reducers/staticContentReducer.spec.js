@@ -50,6 +50,8 @@ const baseExpectedValue = {
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
   explosivesPermitMagazineType: [],
+  projectSummaryDocumentTypes: [],
+  projectSummaryStatusCodes: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
