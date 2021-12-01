@@ -172,7 +172,7 @@ export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (dispatch)
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
-      return response;
+      return response.data;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));
