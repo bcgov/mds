@@ -11,13 +11,13 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "title": "Project #",
       },
       Object {
-        "dataIndex": "update_user",
+        "dataIndex": "update_timestamp",
         "render": [Function],
         "sorter": [Function],
         "title": "Last Updated",
       },
       Object {
-        "dataIndex": "update_timestamp",
+        "dataIndex": "update_user",
         "render": [Function],
         "sorter": [Function],
         "title": "Last Updated By",
