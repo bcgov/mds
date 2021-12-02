@@ -41,8 +41,10 @@ def RandomMineRegionCode():
 
 
 def RandomEMLIContactTypeCode():
-    return random.choice(
-        [x.emli_contact_type_code for x in db.session.query(EMLIContactType).all()])
+    return random.choice([
+        x.emli_contact_type_code
+        for x in db.session.query(EMLIContactType).filter(EMLIContactType.active_ind == True).all()
+    ])
 
 
 def RandomPermitStatusCode():

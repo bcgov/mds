@@ -22,12 +22,6 @@ class EMLIContact(SoftDeleteMixin, Base):
     is_major_mine = db.Column(db.Boolean, nullable=False, default=False)
     is_general_contact = db.Column(db.Boolean, nullable=False, default=False)
 
-    emli_contact = db.relationship(
-        'EMLIContactType',
-        backref='emli_contact',
-        order_by='asc(EMLIContactType.display_order)',
-        lazy='joined')
-
     @classmethod
     def create(cls,
                emli_contact_type_code,
@@ -85,15 +79,12 @@ class EMLIContact(SoftDeleteMixin, Base):
 
         if is_major_mine == True:
             return cls.query.filter_by(
-                mine_region_code=mine_region_code, is_major_mine=is_major_mine).filter_by(
-                    deleted_ind=False).union(mmo_contact).union(general_contacts).all()
+                mine_region_code=mine_region_code,
+                is_major_mine=is_major_mine).filter_by(deleted_ind=False).union(mmo_contact).all()
         elif is_major_mine == False:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code, is_major_mine=is_major_mine).filter_by(
                     deleted_ind=False).union(general_contacts).all()
-        else:
-            return cls.query.filter_by(mine_region_code=mine_region_code).filter_by(
-                deleted_ind=False).union(general_contacts).all()
 
     @classmethod
     def find_EMLI_general_contacts(cls):

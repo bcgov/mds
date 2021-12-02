@@ -22,22 +22,3 @@ CREATE TABLE IF NOT EXISTS emli_contact
 ALTER TABLE emli_contact OWNER TO mds;
 
 COMMENT ON TABLE emli_contact IS 'Contains EMLI contacts information.';
-
---Create SEQUENCE
-DO
-$$
-BEGIN
-   EXECUTE format('
-   DROP SEQUENCE IF EXISTS public.emli_contact_id_seq CASCADE;
-   CREATE SEQUENCE IF NOT EXISTS public.emli_contact_id_seq
-   INCREMENT 1
-   START %1$s
-   MINVALUE %1$s
-   NO MAXVALUE
-   CACHE 1;'
- , (SELECT COALESCE ((SELECT MAX(contact_id) FROM emli_contact),1)));
-   ALTER SEQUENCE public.emli_contact_id_seq OWNER TO mds;
-   GRANT ALL ON SEQUENCE public.emli_contact_id_seq TO mds;
-   ALTER TABLE ONLY public.emli_contact ALTER COLUMN contact_id SET DEFAULT nextval('public.emli_contact_id_seq'::regclass);
-END
-$$;
