@@ -225,6 +225,20 @@ export class NavBar extends Component {
               </Col>
             </Row>
           </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.EDIT_EMLI_CONTACTS}>
+            <Row>
+              <Col span={24}>
+                <Link to={router.ADMIN_EMLI_CONTACT_MANAGEMENT.route}>
+                  <Button
+                    id={this.ifActiveButton(router.ADMIN_EMLI_CONTACT_MANAGEMENT.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    MineSpace EMLI Contacts
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
           <Row>
             <Col span={24}>
               <Link to={router.REPORTING_DASHBOARD.route}>
@@ -421,6 +435,13 @@ export class NavBar extends Component {
         <Menu.Item key="contact-management" className="navbar-dropdown-menu-item">
           <Link to={router.ADMIN_CONTACT_MANAGEMENT.dynamicRoute("Person")}>
             <button type="button">Contact Management</button>
+          </Link>
+        </Menu.Item>
+      </AuthorizationWrapper>
+      <AuthorizationWrapper permission={Permission.EDIT_EMLI_CONTACTS}>
+        <Menu.Item key="executive-dashboard" className="navbar-dropdown-menu-item">
+          <Link to={router.ADMIN_EMLI_CONTACT_MANAGEMENT.route}>
+            <button type="button">MineSpace EMLI Contacts</button>
           </Link>
         </Menu.Item>
       </AuthorizationWrapper>

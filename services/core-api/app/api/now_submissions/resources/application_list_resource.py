@@ -111,7 +111,7 @@ class ApplicationListResource(Resource, UserMixin):
     @api.doc(description='Save an application')
     @requires_role_edit_submissions
     @api.expect(APPLICATION)
-    @api.marshal_with(APPLICATION, code=201)
+    @api.marshal_with(APPLICATION, code=200)
     def post(self):
         current_app.logger.debug('Attempting to load application')
         current_app.logger.info("*****VFCBC Request Payload*****")
@@ -144,4 +144,4 @@ class ApplicationListResource(Resource, UserMixin):
         current_app.logger.debug('Attempting to Save')
         application.save()
 
-        return application, 201
+        return application

@@ -1,27 +1,30 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Typography } from "antd";
+import { getEMLIContactTypesHash } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
   contact: PropTypes.objectOf(PropTypes.any).isRequired,
+  EMLIContactTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const MinistryContactItem = (props) => (
   <Typography.Paragraph className="ministry-contact-item">
     <Typography.Text strong className="ministry-contact-title">
-      {props.contact.title || Strings.UNKNOWN}
+      {props.EMLIContactTypesHash[props.contact.emli_contact_type_code] || Strings.UNKNOWN}
       <br />
     </Typography.Text>
-    {props.contact.name && (
+    {props.contact.first_name && props.contact.last_name && (
       <Typography.Text>
-        {props.contact.name}
+        {props.contact.first_name} {props.contact.last_name}
         <br />
       </Typography.Text>
     )}
-    {props.contact.phone && (
+    {props.contact.phone_number && (
       <Typography.Text>
-        {props.contact.phone}
+        {props.contact.phone_number}
         <br />
       </Typography.Text>
     )}
@@ -36,4 +39,8 @@ export const MinistryContactItem = (props) => (
 
 MinistryContactItem.propTypes = propTypes;
 
-export default MinistryContactItem;
+const mapStateToProps = (state) => ({
+  EMLIContactTypesHash: getEMLIContactTypesHash(state),
+});
+
+export default connect(mapStateToProps)(MinistryContactItem);

@@ -49,6 +49,7 @@ import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 import ViewAllConditionsModal from "./ViewAllConditionsModal";
 import UpdateNoWDateModal from "./UpdateNoWDateModal";
+import EMLIContactModal from "./EMLIContactModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -102,6 +103,7 @@ export const modalConfig = {
   EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
   EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
   UPDATE_NOW_DATE_MODAL: UpdateNoWDateModal,
+  EMLI_CONTACT_MODAL: EMLIContactModal,
 };
 
 export default modalConfig;

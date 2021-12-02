@@ -665,7 +665,6 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'display_order': fields.Integer
 })
 
-
 STANDARD_PERMIT_CONDITION_MODEL = api.model(
     'StandardPermitCondition', {
         'standard_permit_condition_id': fields.Integer,
@@ -682,7 +681,6 @@ STANDARD_PERMIT_CONDITION_MODEL = api.model(
         'step': fields.String,
         'display_order': fields.Integer
     })
-
 
 GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
     'GovernmentAgencyType', {
