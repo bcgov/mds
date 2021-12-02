@@ -26,6 +26,7 @@ exports[`PermitConditionManagement renders properly 1`] = `
           <h1>
             (
              - 
+            Present
             )
           </h1>
         </Col>
