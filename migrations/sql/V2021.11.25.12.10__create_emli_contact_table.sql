@@ -14,6 +14,10 @@ CREATE TABLE IF NOT EXISTS emli_contact
 	is_major_mine                       boolean                    DEFAULT false NOT NULL,
     is_general_contact                  boolean                    DEFAULT false NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
+    create_user                         character varying(60)                   NOT NULL,
+    create_timestamp                    timestamp with time zone DEFAULT now()  NOT NULL,
+    update_user                         character varying(60)                   NOT NULL,
+    update_timestamp                    timestamp with time zone DEFAULT now()  NOT NULL,
     
     FOREIGN KEY (emli_contact_type_code)    REFERENCES emli_contact_type(emli_contact_type_code) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_region_code)              REFERENCES mine_region_code(mine_region_code) DEFERRABLE INITIALLY DEFERRED
