@@ -6,6 +6,7 @@ import {
   updatePermit,
   createPermitAmendment,
   updatePermitAmendment,
+  getPermitAmendment,
   removePermitAmendmentDocument,
   deletePermitAmendment,
   deletePermit,
@@ -228,6 +229,36 @@ describe("`updatePermitAmendment` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`getPermitAmendment` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitAmdendmentGuid = "12345-6789";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return getPermitAmendment(
+      mineGuid,
+      permitAmdendmentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
+    return getPermitAmendment(
+      mineGuid,
+      permitAmdendmentGuid
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

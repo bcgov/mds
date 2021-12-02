@@ -47,9 +47,14 @@ export class NOWActionWrapper extends Component {
 
   componentDidMount() {
     // allow all actions if component is being used on the Admin Dashboard (ie Standard PErmit Condition Management)
-    const isAdminDashboard = this.props.location.pathname.includes(
+    const isAdminRoute = this.props.location.pathname.includes(
       "admin/permit-condition-management"
     );
+    const isEditPermitConditions = this.props.location.pathname.includes(
+      "edit-permit-conditions"
+    );
+    const isAdminDashboard = isAdminRoute || isEditPermitConditions;
+
     if (isAdminDashboard) {
       this.setState({ disableTab: false, isAdminDashboard });
     } else {
@@ -76,9 +81,14 @@ export class NOWActionWrapper extends Component {
       nextProps.progress[this.props.tab],
       this.props.progress[this.props.tab]
     );
-    const isAdminDashboard = nextProps.location.pathname.includes(
+    const isAdminRoute = this.props.location.pathname.includes(
       "admin/permit-condition-management"
     );
+    const isEditPermitConditions = this.props.location.pathname.includes(
+      "edit-permit-conditions"
+    );
+    const isAdminDashboard = isAdminRoute || isEditPermitConditions;
+    
     if (!isAdminDashboard) {
       const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
         this.props.noticeOfWork.application_type_code
