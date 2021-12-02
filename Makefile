@@ -58,11 +58,11 @@ db:
 
 getdb:
 	@echo "+\n++ Getting database dump from test environment...\n+"
-	@./bin/get-test-db.sh 4c2ba9-test test-postgres.sql
+	@./bin/get-test-db.sh 4c2ba9-test test-postgres.pgCustom
 
 seeddb:
 	@echo "+\n++ Seeding container database...\n+"
-	@./bin/seed-container-db.sh test-postgres.sql
+	@./bin/seed-container-db.sh test-postgres.pgCustom
 
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
