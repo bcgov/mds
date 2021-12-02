@@ -52,6 +52,7 @@ const baseExpectedValue = {
   explosivesPermitMagazineType: [],
   projectSummaryDocumentTypes: [],
   projectSummaryStatusCodes: [],
+  EMLIContactTypes: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

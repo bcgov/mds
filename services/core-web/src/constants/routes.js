@@ -38,6 +38,7 @@ import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/Noti
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
+import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 
 const withoutDefaultParams = (params, defaults) => {
@@ -259,6 +260,11 @@ export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
   component: AdminPermitConditionManagement,
 };
 
+export const ADMIN_EMLI_CONTACT_MANAGEMENT = {
+  route: "/admin/minespace-emli-contact-management",
+  component: MineSpaceEMLIContactManagement,
+};
+
 export const ADMIN_VERIFIED_MINES = {
   route: "/admin/dashboard/mine-verification/:type",
   dynamicRoute: (type) => `/admin/dashboard/mine-verification/${type}`,
@@ -320,8 +326,7 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 
 export const EDIT_PERMIT_CONDITIONS = {
   route: "/:mine_guid/permit-amendment/:id/edit-permit-conditions",
-  dynamicRoute: (mine_guid, id) =>
-    `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
+  dynamicRoute: (mine_guid, id) => `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
   component: PermitConditionManagement,
 };
 

@@ -8,15 +8,16 @@ import {
   getMineRegionHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
+  getEMLIContactTypesHash,
 } from "@common/selectors/staticContentSelectors";
 import { getTransformedMineTypes } from "@common/selectors/mineSelectors";
+import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import * as Strings from "@/constants/strings";
-import * as Contacts from "@/constants/contacts";
 import Map from "@/components/common/Map";
 import MineWorkInformation from "./MineWorkInformation";
 
@@ -28,6 +29,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  EMLIcontactInfo: PropTypes.arrayOf(CustomPropTypes.EMLIContactInfo).isRequired,
 };
 
 const isPartyRelationshipActive = (pr) =>
@@ -43,12 +45,6 @@ const getMineManager = (partyRelationships) => {
   const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0] : null;
   return mineManager;
 };
-
-const getRegionalMineRegionalContacts = (region) =>
-  Object.values(Contacts.REGIONAL_MINE_REGIONAL_CONTACTS[region]);
-
-const getMajorMineRegionalContacts = (region) =>
-  Object.values(Contacts.MAJOR_MINE_REGIONAL_CONTACTS[region]);
 
 export const Overview = (props) => (
   <Row gutter={[0, 16]}>
@@ -125,26 +121,28 @@ export const Overview = (props) => (
         {(props.mine.major_mine_ind && (
           <Col span={24}>
             <Card title="Ministry Contacts">
-              <MinistryContactItem contact={Contacts.MM_OFFICE} />
-              <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
-              <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
-              {getMajorMineRegionalContacts(props.mine.mine_region).map((contact) => (
-                <MinistryContactItem contact={contact} key={contact.title} />
+              {props.EMLIcontactInfo.map((contact) => (
+                <MinistryContactItem contact={contact} key={contact.id} />
               ))}
             </Card>
           </Col>
         )) || [
           <Col span={24}>
             <Card title="Regional Ministry Contacts">
-              {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
-                <MinistryContactItem contact={contact} key={contact.title} />
-              ))}
+              {props.EMLIcontactInfo.filter(({ is_general_contact }) => !is_general_contact).map(
+                (contact) => (
+                  <MinistryContactItem contact={contact} key={contact.id} />
+                )
+              )}
             </Card>
           </Col>,
           <Col span={24}>
             <Card title="General Ministry Contacts">
-              <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
-              <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
+              {props.EMLIcontactInfo.filter(({ is_general_contact }) => is_general_contact).map(
+                (contact) => (
+                  <MinistryContactItem contact={contact} key={contact.id} />
+                )
+              )}
             </Card>
           </Col>,
         ]}
@@ -160,6 +158,8 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   partyRelationships: getPartyRelationships(state),
   transformedMineTypes: getTransformedMineTypes(state),
+  EMLIcontactInfo: getEMLIContactsByRegion(state),
+  EMLIContactTypesHash: getEMLIContactTypesHash(state),
 });
 
 Overview.propTypes = propTypes;

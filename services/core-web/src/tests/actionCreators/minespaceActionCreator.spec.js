@@ -5,6 +5,11 @@ import {
   fetchMinespaceUsers,
   deleteMinespaceUser,
   fetchMinespaceUserMines,
+  deleteEMLIContact,
+  updateEMLIContact,
+  createEMLIContact,
+  fetchEMLIContactsByRegion,
+  fetchEMLIContacts,
 } from "@common/actionCreators/minespaceActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -113,6 +118,134 @@ describe("`deleteMinespaceUser` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return deleteMinespaceUser("")(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchEMLIContacts` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchEMLIContacts()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchEMLIContacts()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchEMLIContactsByRegion` action creator", () => {
+  const region = "NE";
+  const isMajorMine = true;
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS_BY_REGION(region, isMajorMine);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchEMLIContactsByRegion(
+      region,
+      isMajorMine
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchEMLIContactsByRegion(
+      region,
+      isMajorMine
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deleteEMLIContact` action creator", () => {
+  const id = "2";
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return deleteEMLIContact(id)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+    return deleteEMLIContact(id)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createEMLIContact` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS;
+  const payload = { email: "mock_email" };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, payload).reply(200, mockResponse);
+    return createEMLIContact(payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createEMLIContact({})(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateEMLIContact` action creator", () => {
+  const id = 2;
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id);
+  const payload = { email: "mock_email" };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return updateEMLIContact(
+      id,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateEMLIContact(
+      id,
+      {}
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
