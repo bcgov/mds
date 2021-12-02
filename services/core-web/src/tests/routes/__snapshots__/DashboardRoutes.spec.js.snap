@@ -502,6 +502,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/view-notice-of-work/app/:id/:tab"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(PermitConditionManagement)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
+  />
+  <Route
     exact={true}
   />
   <Route

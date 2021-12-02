@@ -150,6 +150,7 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
         'has_permit_conditions': fields.Boolean,
+        'is_generated_in_core': fields.Boolean,
     })
 
 MINE_TYPE_DETAIL_MODEL = api.model(
@@ -174,6 +175,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
         fields.Integer,
+        'permit_no':
+        fields.String,
         'permit_amendment_guid':
         fields.String,
         'permit_amendment_status_code':
@@ -215,6 +218,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'has_permit_conditions':
         fields.Boolean,
         'conditions': fields.List(PermitCondition),
+        'is_generated_in_core': fields.Boolean,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})

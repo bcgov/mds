@@ -794,6 +794,7 @@ class PermitAmendmentFactory(BaseFactory):
     related_documents = []
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
     deleted_ind = False
+    is_generated_in_core = False
 
     @factory.post_generation
     def conditions(obj, create, extracted, **kwargs):

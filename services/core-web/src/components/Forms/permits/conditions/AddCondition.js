@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
 import { Menu, Dropdown } from "antd";
 import { withRouter } from "react-router-dom";
 import {
@@ -55,9 +56,14 @@ export class AddCondition extends Component {
   state = { isEditing: false, conditionType: "SEC" };
 
   handleSubmit = (values) => {
+    const isDraftPermit = !isEmpty(this.props.draftPermitAmendment);
+    const permitAmendmentGuid = isDraftPermit
+      ? this.props.draftPermitAmendment.permit_amendment_guid
+      : this.props.match.params.id;
     const isAdminDashboard = this.props.location.pathname.includes(
       "admin/permit-condition-management"
     );
+
     const payload = { ...values, condition_type_code: this.state.conditionType };
     if (isAdminDashboard) {
       return this.props
@@ -68,17 +74,17 @@ export class AddCondition extends Component {
           this.props.setEditingConditionFlag(false);
         });
     }
-    return this.props
-      .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, payload)
-      .then(() => {
-        this.setState({ isEditing: false });
-        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+    return this.props.createPermitCondition(permitAmendmentGuid, payload).then(() => {
+      this.setState({ isEditing: false });
+      this.props.fetchPermitConditions(permitAmendmentGuid);
+      if (isDraftPermit) {
         this.props.fetchDraftPermitByNOW(
           null,
           this.props.draftPermitAmendment.now_application_guid
         );
-        this.props.setEditingConditionFlag(false);
-      });
+      }
+      this.props.setEditingConditionFlag(false);
+    });
   };
 
   handleCancel = (value) => {
