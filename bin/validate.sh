@@ -9,6 +9,7 @@ OS=${1}
 # These values are checked for in validation
 LIC_PLATE="4c2ba9"
 DESIRED_NODE_VER="v14.8.0"
+DESIRED_DC_VER="v2.1.1"
 SERVICES_PATH="./services"
 # Start as valid
 VALID=1
@@ -45,6 +46,17 @@ else
     echo -e "${CGREEN}PASSED OS VALIDATION${CRESET}"
 fi
 
+# Check docker-compose version
+DC_VER=$(docker-compose version)
+if [[ "$DC_VER" == *"$DESIRED_DC_VER" ]];
+then
+    echo -e "${CGREEN}PASSED DOCKER COMPOSE V2 VALIDATION${CRESET}"
+else
+    VALID=0
+    echo -e "${CRED}FAILED DOCKER COMPOSE V2 VALIDATION${CRESET}"
+    echo -e "${CRED}Have you installed docker-compose V2?${CRESET}"
+fi
+
 # Check docker & docker-compose
 DOCKERBIN=$(which docker)
 DOCKERCBIN=$(which docker-compose)
@@ -55,7 +67,7 @@ else
     VALID=0
     echo -e "${CRED}FAILED DOCKER VALIDATION${CRESET}"
     echo -e "${CRED}Have you installed both docker and docker-compose?${CRESET}"
-fi  
+fi
 
 # Check NPM Version for non-container compliance
 NODE_VER=$(node --version)

@@ -26,7 +26,7 @@ if ! oc whoami
 then
     echo
     echo "Please use the oc CLI client to login and obtain a session token then re-run this command"
-	echo "https://console.pathfinder.gov.bc.ca:8443/console/project/empr-mds-dev/overview"
+	echo "https://oauth-openshift.apps.silver.devops.gov.bc.ca/oauth/token/request"
     exit
 fi
 

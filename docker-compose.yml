@@ -68,8 +68,8 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./services/core-api/:/app/
-      - core_api_logs:/var/log/core-api/
+      - ./services/core-api:/app
+      - core_api_logs:/var/log/core-api
     depends_on:
       - flyway
       - redis
@@ -95,7 +95,7 @@ services:
       context: services/core-web
     command: ["npm", "run", "serve"]
     volumes:
-      - ./services/core-web/src/:/app/src/
+      - ./services/core-web/src:/app/src
     ports:
       - 3000:3000
     depends_on:
@@ -109,7 +109,7 @@ services:
       context: services/minespace-web
     command: ["npm", "run", "serve"]
     volumes:
-      - ./services/minespace-web/src/:/app/src/
+      - ./services/minespace-web/src:/app/src
     ports:
       - 3020:3020
     depends_on:
@@ -125,7 +125,7 @@ services:
     ports:
       - 5500:5500
     volumes:
-      - ./services/nris-api/backend/:/app/
+      - ./services/nris-api/backend:/app
     depends_on:
       - flyway
       - redis
@@ -139,7 +139,7 @@ services:
       dockerfile: Dockerfile.migrate
       context: services/nris-api/backend
     volumes:
-      - ./services/nris-api/backend/:/app/
+      - ./services/nris-api/backend:/app
     depends_on:
       - flyway
       - redis
@@ -172,7 +172,7 @@ services:
     ports:
       - 5001:5001
     volumes:
-      - ./services/document-manager/backend/:/app/
+      - ./services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis
@@ -190,7 +190,7 @@ services:
     ports:
       - 5555:5555
     volumes:
-      - ./services/document-manager/backend/:/app/
+      - ./services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis
@@ -204,7 +204,7 @@ services:
       dockerfile: Dockerfile.migrate
       context: services/document-manager/backend
     volumes:
-      - ./services/document-manager/backend/:/app/
+      - ./services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis
