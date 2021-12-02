@@ -18,7 +18,7 @@ SERV_LIST=$(docker-compose ps --services --status running)
 DOWN_LIST=$(echo $SERV_LIST | sed "s/$CONTAINER//g")
 
 echo "Stopping other containers to close connections..."
-docker-compose kill $DOWN_LIST
+docker-compose stop $DOWN_LIST
 
 docker-compose cp $DUMPFILE $CONTAINER:/tmp/
 docker-compose exec $CONTAINER sh -c "dropdb --user=mds --if-exists mds" || true
