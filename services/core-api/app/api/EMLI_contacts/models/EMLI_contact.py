@@ -1,11 +1,11 @@
 from app.extensions import db
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import Base, AuditMixin
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import and_
 from app.api.utils.models_mixins import SoftDeleteMixin
 
 
-class EMLIContact(SoftDeleteMixin, Base):
+class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'emli_contact'
 
     contact_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
