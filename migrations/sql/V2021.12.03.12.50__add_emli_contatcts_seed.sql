@@ -49,3 +49,22 @@ VALUES
   ('ROE','SE',null, null, 'MMD-Cranbrook@gov.bc.ca','250 417-6134','','202-100 Cranbrook Street North','Cranbrook, B.C. V1C 3P9', false, false, false, 'system-mds', 'system-mds'),
   ('HSI','SE', 'Alan', 'Day','Alan.Day@gov.bc.ca','250-417-6013',null,null,null, true, false, false, 'system-mds', 'system-mds')
   ON CONFLICT DO NOTHING;
+
+  INSERT INTO emli_contact_type
+    (
+    emli_contact_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('ROE',  'Regional Office', 40, 'system-mds', 'system-mds'),
+	  ('MMO',  'Major Mines Office', 10, 'system-mds', 'system-mds'),
+	  ('CHI',  'Chief Inspector of Mines', 20, 'system-mds', 'system-mds'),
+	  ('CHP',  'Chief Permitting Officer', 30, 'system-mds', 'system-mds'),
+	  ('RDR',  'Regional Director', 50, 'system-mds', 'system-mds'),
+	  ('SHI',  'Senior Health, Safety and Environment Inspector', 60, 'system-mds', 'system-mds'),
+    ('SPI',  'Senior Permitting Inspector', 70, 'system-mds', 'system-mds'),
+    ('HSI',  'Health and Safety Inspector', 80, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
