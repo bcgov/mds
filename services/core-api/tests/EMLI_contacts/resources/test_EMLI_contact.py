@@ -14,14 +14,14 @@ from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
 #     assert 'not found' in get_data['message']
 
 
-def test_get_emli_contact_by_id(test_client, db_session, auth_headers):
-    contact = EMLIContactFactory()
+# def test_get_emli_contact_by_id(test_client, db_session, auth_headers):
+#     contact = EMLIContactFactory()
 
-    get_resp = test_client.get(
-        f'/EMLI-contacts/{contact.contact_id}', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert get_data['records']['contact_id'] == contact.contact_id
+#     get_resp = test_client.get(
+#         f'/EMLI-contacts/{contact.contact_id}', headers=auth_headers['full_auth_header'])
+#     get_data = json.loads(get_resp.data.decode())
+#     assert get_resp.status_code == 200
+#     assert get_data['records']['contact_id'] == contact.contact_id
 
 
 #PUT
