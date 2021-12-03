@@ -31,10 +31,10 @@ def test_find_EMLI_contacts_by_mine_region(db_session):
             for c in emli_contact)
 
 
-def test_find_all(db_session):
-    batch_size = 3
-    contacts = EMLIContactFactory.create_batch(size=batch_size)
+# def test_find_all(db_session):
+#     batch_size = 3
+#     contacts = EMLIContactFactory.create_batch(size=batch_size)
 
-    all_contacts = EMLIContact.get_all()
+#     all_contacts = EMLIContact.get_all()
 
-    assert len(all_contacts) == 31
+#     assert len(all_contacts) == 31
