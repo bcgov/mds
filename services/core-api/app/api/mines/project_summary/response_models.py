@@ -18,8 +18,8 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_lead_party_guid': fields.String,
         'project_summary_lead_name': fields.String,
         'documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
-        'update_user': fields.String,
-        'update_timestamp': fields.DateTime
+        'updated_by': fields.String,
+        'updated_timestamp': fields.DateTime
     })
 
 PROJECT_SUMMARY_STATUS_CODE_MODEL = api.model(

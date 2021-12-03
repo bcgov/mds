@@ -27,8 +27,8 @@ export class ProjectSummariesTable extends Component {
       project_summary_guid: projectSummary.project_summary_guid,
       project_summary_id: projectSummary.project_summary_id,
       status_code: codeHash[projectSummary.status_code],
-      update_user: projectSummary.update_user,
-      update_timestamp: formatDate(projectSummary.update_timestamp),
+      updated_by: projectSummary.updated_by,
+      updated_timestamp: formatDate(projectSummary.updated_timestamp),
       documents: projectSummary.documents,
     }));
 
@@ -41,15 +41,15 @@ export class ProjectSummariesTable extends Component {
     },
     {
       title: "Last Updated",
-      dataIndex: "update_timestamp",
-      sorter: dateSorter("update_timestamp"),
+      dataIndex: "updated_timestamp",
+      sorter: dateSorter("updated_timestamp"),
       render: (text) => <div title="Last Updated">{text}</div>,
     },
     {
       title: "Last Updated By",
-      dataIndex: "update_user",
+      dataIndex: "updated_by",
       render: (text) => <div title="Last Updated By">{text}</div>,
-      sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
+      sorter: (a, b) => (a.updated_by > b.updated_by ? -1 : 1),
     },
     {
       title: "Status",
