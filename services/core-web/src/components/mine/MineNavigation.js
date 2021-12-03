@@ -67,6 +67,11 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
+            <Menu.Item key="pre-applications">
+              <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                Pre-applications
+              </Link>
+            </Menu.Item>
             <Menu.Item key="notices-of-work">
               <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                 Applications
