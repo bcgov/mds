@@ -56,17 +56,15 @@ db:
 	@echo "+\n++ Performing postgres build ...\n+"
 	@docker-compose up -d postgres flyway
 
-getdb:
-	@echo "+\n++ Getting database dump from test environment...\n+"
-	@./bin/get-test-db.sh 4c2ba9-test test-postgres.sql
-
-seeddb:
-	@echo "+\n++ Seeding container database...\n+"
-	@./bin/seed-container-db.sh test-postgres.sql
-
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
 	@./bin/registry-login.sh
+
+mig:
+	@echo "+\n++ Applying migrations...\n+"
+	@docker-compose stop flyway
+	@docker-compose build --force-rm --no-cache flyway
+	@docker-compose up --always-recreate-deps --force-recreate -d flyway
 
 env:
 	@echo "+\n++ Creating boilerplate local dev .env files...\n+"

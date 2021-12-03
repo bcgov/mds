@@ -26,25 +26,30 @@ export class ProjectSummariesTable extends Component {
       mine_guid: projectSummary.mine_guid,
       project_summary_guid: projectSummary.project_summary_guid,
       project_summary_id: projectSummary.project_summary_id,
-      project_summary_lead_name: projectSummary.project_summary_lead_name,
       status_code: codeHash[projectSummary.status_code],
-      project_summary_date: formatDate(projectSummary.project_summary_date) || Strings.EMPTY_FIELD,
-      project_summary_description: projectSummary.project_summary_description,
+      update_user: projectSummary.update_user,
+      update_timestamp: formatDate(projectSummary.update_timestamp),
       documents: projectSummary.documents,
     }));
 
   columns = () => [
     {
-      title: "Project Summary No.",
+      title: "Project #",
       dataIndex: "project_summary_id",
       sorter: (a, b) => (a.project_summary_id > b.project_summary_id ? -1 : 1),
       render: (text) => <div title="Project Summary No.">{text}</div>,
     },
     {
-      title: "Submitted On",
-      dataIndex: "project_summary_date",
-      render: (text) => <div title="Submitted On">{text}</div>,
-      sorter: dateSorter("project_summary_date"),
+      title: "Last Updated",
+      dataIndex: "update_timestamp",
+      sorter: dateSorter("update_timestamp"),
+      render: (text) => <div title="Last Updated">{text}</div>,
+    },
+    {
+      title: "Last Updated By",
+      dataIndex: "update_user",
+      render: (text) => <div title="Last Updated By">{text}</div>,
+      sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
     },
     {
       title: "Status",
@@ -53,19 +58,7 @@ export class ProjectSummariesTable extends Component {
       sorter: (a, b) => (a.status_code > b.status_code ? -1 : 1),
     },
     {
-      title: "Description",
-      dataIndex: "project_summary_description",
-      render: (text) => <div title="Description">{text}</div>,
-      sorter: (a, b) => (a.project_summary_description > b.project_summary_description ? -1 : 1),
-    },
-    {
-      title: "Lead By",
-      dataIndex: "project_summary_lead_name",
-      sorter: (a, b) => (a.project_summary_lead_name > b.project_summary_lead_name ? -1 : 1),
-      render: (text) => <div title="Lead">{text || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Documents",
+      title: "Files",
       dataIndex: "documents",
       render: (text, record) => {
         return (
