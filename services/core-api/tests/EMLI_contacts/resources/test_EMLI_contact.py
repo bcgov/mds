@@ -1,17 +1,19 @@
-# import json, uuid
-# from datetime import datetime
+import json, uuid
+from datetime import datetime
 
-# from flask_restplus import marshal
-# from tests.factories import EMLIContactFactory
-# from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
+from flask_restplus import marshal
+from tests.factories import EMLIContactFactory
+from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
+
 
 #GET
-# def test_get_emli_contact_not_found(test_client, db_session, auth_headers):
-#     get_resp = test_client.get(f'/EMLI-contacts/0', headers=auth_headers['full_auth_header'])
-#     get_data = json.loads(get_resp.data.decode())
+def test_get_emli_contact_not_found(test_client, db_session, auth_headers):
+    get_resp = test_client.get(f'/EMLI-contacts/0', headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
 
-#     assert get_resp.status_code == 404
-#     assert 'not found' in get_data['message']
+    assert get_resp.status_code == 404
+    assert 'not found' in get_data['message']
+
 
 # def test_get_emli_contact_by_id(test_client, db_session, auth_headers):
 #     contact = EMLIContactFactory()
