@@ -1,4 +1,20 @@
-  INSERT INTO emli_contact_type
+INSERT INTO mine_region_code
+    (
+    mine_region_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('SW', 'South West', 10, 'system-mds', 'system-mds'),
+    ('SC', 'South Central', 20, 'system-mds', 'system-mds'),
+    ('NW', 'North West', 30, 'system-mds', 'system-mds'),
+    ('NE', 'North East', 40, 'system-mds', 'system-mds'),
+    ('SE', 'South East', 50, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO emli_contact_type
     (
     emli_contact_type_code,
     description,
