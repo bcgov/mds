@@ -26,8 +26,9 @@ def test_find_EMLI_contacts_by_mine_region(db_session):
 
     emli_contact = EMLIContact.find_EMLI_contacts_by_mine_region(contact.mine_region_code,
                                                                  contact.is_major_mine)
-    assert (region == contact.mine_region_code or region == None
-            for region in emli_contact[0].mine_region_code)
+    assert (c.mine_region == None
+            if c.emli_contact_type_code == 'MMO' else c.mine_region == contact.mine_region
+            for c in emli_contact)
 
 
 def test_find_all(db_session):
