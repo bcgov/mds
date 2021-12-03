@@ -19,8 +19,6 @@ Usage:\n
 \t    valid: checks your dev environment is setup correctly\n
 \t    lite: creates a minimum viable setup, use to start working asap\n
 \t    rebuild: rebuilds the containers you currently have in use\n
-\t    getdb: pulls a copy of the database in staging\n
-\t    seeddb: uses a pulled copy to insert into your containerized postgresql database\n
 \t    full: Stands up ALL services\n
 \n
 ... and check the Makefile directly for other commands\n
