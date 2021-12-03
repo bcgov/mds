@@ -30,8 +30,6 @@ def setup_static_data(Base):
                                     getattr(class_, pk.name, None)).filter_by(
                                         active_ind=True).all()
                             ]
-                            current_app.logger.debug(
-                                f'STATIC DATA*: { STATIC_DATA[class_.__name__]}')
 
                     # This section is specific to NoW_submissions. Some of the code values that NROS and vFCBC send are
                     # in long form so they are stored in the descriptions of the code tables so the descriptions of those

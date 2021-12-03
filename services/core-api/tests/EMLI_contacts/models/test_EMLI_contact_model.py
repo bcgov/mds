@@ -15,10 +15,10 @@ def test_find_EMLI_contact(db_session):
 
 
 def test_find_EMLI_contact_by_id(db_session):
-    contact_id = EMLIContactFactory().contact_id
+    contact = EMLIContactFactory()
 
-    emli_contact = EMLIContact.find_EMLI_contact_by_id(contact_id)
-    assert emli_contact.contact_id == contact_id
+    emli_contact = EMLIContact.find_EMLI_contact_by_id(contact.contact_id)
+    assert emli_contact.contact_id == contact.contact_id
 
 
 def test_find_EMLI_contacts_by_mine_region(db_session):
