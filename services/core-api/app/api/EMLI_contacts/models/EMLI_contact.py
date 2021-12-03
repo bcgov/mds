@@ -22,6 +22,12 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
     is_major_mine = db.Column(db.Boolean, nullable=False, default=False)
     is_general_contact = db.Column(db.Boolean, nullable=False, default=False)
 
+    emli_contact = db.relationship(
+        'EMLIContactType',
+        backref='emli_contact',
+        order_by='asc(EMLIContactType.display_order)',
+        lazy='joined')
+
     @classmethod
     def create(cls,
                emli_contact_type_code,
