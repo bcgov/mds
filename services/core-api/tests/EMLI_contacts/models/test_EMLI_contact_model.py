@@ -36,4 +36,4 @@ def test_find_all(db_session):
 
     all_contacts = EMLIContact.get_all()
 
-    assert len(all_contacts) == 3
+    assert len(all_contacts) == 31
