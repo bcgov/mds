@@ -1,12 +1,14 @@
 import json, uuid
 from datetime import datetime
 
+from flask_restplus import marshal
 from tests.factories import EMLIContactFactory
+from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
 
 
 #GET
 def test_get_emli_contact_not_found(test_client, db_session, auth_headers):
-    get_resp = test_client.get(f'/EMLI-contacts/1', headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get(f'/EMLI-contacts/90', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
     assert 'not found' in get_data['message']
@@ -33,18 +35,20 @@ def test_put_emli_contact_not_found(test_client, db_session, auth_headers):
 
 
 def test_put_emli_contact_success(test_client, db_session, auth_headers):
-    contact_id = EMLIContactFactory().contact_id
-    data = {
-        "first_name": "Mike",
-        "last_name": "Doe",
-        "phone_number": "111-333-4444",
-        "email": "mike.doe@contactme.com",
-        "fax_number": "250 000 000",
-        "mailing_address_line_1": "PO BOX 1234, Prov Test",
-        "mailing_address_line_2": "Vancouver, B.C. VVV VVV"
-    }
+    contact = EMLIContactFactory()
+    data = marshal(contact, EMLI_CONTACT_MODEL)
+    data['first_name'] = 'Mike'
+    data['last_name'] = 'Doe'
+    data['phone_number'] = '111-333-4444'
+    data['email'] = 'mike.doe@contactme.com'
+    data['fax_number'] = '250 000 000'
+    data['mailing_address_line_1'] = 'PO BOX 1234, Prov Test'
+    data['mailing_address_line_2'] = 'Vancouver, B.C. VVV VVV'
+    data['is_major_mine'] = False
+    data['is_general_contact'] = False
+
     put_resp = test_client.put(
-        f'/EMLI-contacts/{contact_id}', json=data, headers=auth_headers['full_auth_header'])
+        f'/EMLI-contacts/{contact.contact_id}', json=data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
     assert put_data['first_name'] == data['first_name']
@@ -54,6 +58,8 @@ def test_put_emli_contact_success(test_client, db_session, auth_headers):
     assert put_data['fax_number'] == data['fax_number']
     assert put_data['mailing_address_line_1'] == data['mailing_address_line_1']
     assert put_data['mailing_address_line_2'] == data['mailing_address_line_2']
+    assert put_data['is_major_mine'] == data['is_major_mine']
+    assert put_data['is_general_contact'] == data['is_general_contact']
 
 
 #DELETE

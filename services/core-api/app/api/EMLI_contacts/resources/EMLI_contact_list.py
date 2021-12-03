@@ -74,10 +74,11 @@ class EMLIContactListResource(Resource, UserMixin):
         chief_permitting = EMLIContact.find_EMLI_contact('CHP')
         roe_contact = EMLIContact.find_EMLI_contact('ROE', data.mine_region_code)
 
-        unique_by_region = roe_contact.emli_contact_type_code
+        unique_by_region = roe_contact.emli_contact_type_code if roe_contact else None
         unique_global = [
-            mmo_contact.emli_contact_type_code, chief_inspector.emli_contact_type_code,
-            chief_permitting.emli_contact_type_code
+            mmo_contact.emli_contact_type_code if mmo_contact is not None else None,
+            chief_inspector.emli_contact_type_code if chief_inspector is not None else None,
+            chief_permitting.emli_contact_type_code if chief_permitting is not None else None
         ]
 
         if unique_by_region and contact_type in unique_by_region:

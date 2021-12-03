@@ -38,17 +38,15 @@ def test_get_emli_contacts_by_mine_region_code(test_client, db_session, auth_hea
 
 def test_post_emli_contacts(test_client, db_session, auth_headers):
     data = {
-        "emli_contact_type_code": "RDR",
-        "mine_region_code": "SW",
-        "first_name": "Roger",
-        "last_name": "Wilson",
-        "email": "roger.wilson@contactme.com",
-        "phone_number": "250-885-9141",
-        "is_major_mine": True
+        'emli_contact_type_code': 'SHI',
+        'mine_region_code': 'SW',
+        'email': 'test@email.com',
+        'phone_number': '250-111-8888',
+        'major_mine': True
     }
-
     post_resp = test_client.post(
-        f'/EMLI-contacts', headers=auth_headers['full_auth_header'], json=data)
+        f'/EMLI-contacts', json=data, headers=auth_headers['full_auth_header'])
+
     assert post_resp.status_code == 200
 
 
