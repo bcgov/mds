@@ -11,13 +11,13 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "title": "Project #",
       },
       Object {
-        "dataIndex": "updated_timestamp",
+        "dataIndex": "update_timestamp",
         "render": [Function],
         "sorter": [Function],
         "title": "Last Updated",
       },
       Object {
-        "dataIndex": "updated_by",
+        "dataIndex": "update_user",
         "render": [Function],
         "sorter": [Function],
         "title": "Last Updated By",
@@ -57,8 +57,8 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "project_summary_guid": "81324623978135",
         "project_summary_id": undefined,
         "status_code": "Open",
-        "updated_by": undefined,
-        "updated_timestamp": undefined,
+        "update_timestamp": undefined,
+        "update_user": undefined,
       },
     ]
   }

@@ -54,20 +54,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return party.name
         return None
 
-    # Obfuscate audit fields until more common approach is found
-    @hybrid_property
-    def updated_by(self):
-        if self.update_user:
-            return self.update_user
-        return None
-
-    # Obfuscate audit fields until more common approach is found
-    @hybrid_property
-    def updated_timestamp(self):
-        if self.update_timestamp:
-            return self.update_timestamp
-        return None
-
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
         return cls.query.filter_by(
