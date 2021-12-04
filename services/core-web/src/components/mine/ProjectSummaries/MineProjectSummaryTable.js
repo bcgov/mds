@@ -23,7 +23,7 @@ export class MineProjectSummaryTable extends Component {
       status_code: projectSummary.status_code,
       documents: projectSummary.documents,
       project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
-      update_timestamp: formatDate(projectSummary.formatDate),
+      update_timestamp: formatDate(projectSummary.update_timestamp),
     }));
 
   render() {
@@ -31,13 +31,13 @@ export class MineProjectSummaryTable extends Component {
       {
         title: "Project ID",
         dataIndex: "project_summary_id",
-        sortField: "project_summary_id",
+        sorter: true,
         render: (text) => <div title="Project ID">{text}</div>,
       },
       {
         title: "Project stage",
         dataIndex: "status_code",
-        sortField: "status_code",
+        sorter: true,
         render: (text) => (
           <div title="Project stage">
             {this.props.projectSummaryStatusCodesHash[text] || Strings.EMPTY_FIELD}
@@ -47,8 +47,8 @@ export class MineProjectSummaryTable extends Component {
       {
         title: "Last updated",
         dataIndex: "update_timestamp",
-        sortField: "update_timestamp",
-        render: (text) => <div title="Submission Date">{text}</div>,
+        sorter: true,
+        render: (text) => <div title="Last updated">{text}</div>,
       },
       {
         title: "Files",
