@@ -2,19 +2,13 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-// import { Divider } from "antd";
-// import moment from "moment";
 import { fetchProjectSummariesByMine } from "@common/actionCreators/projectSummaryActionCreator";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
-// import * as Strings from "@common/constants/strings";
-// import * as ModalContent from "@/constants/modalContent";
-// import { modalConfig } from "@/components/modalContent/config";
-// import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-// import AddButton from "@/components/common/buttons/AddButton";
-// import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import MineProjectSummaryTable from "./MineProjectSummaryTable";
 
 const propTypes = {
@@ -42,6 +36,7 @@ export class MineProjectSummary extends Component {
       <div className="tab__content">
         <div>
           <h2>Pre-applications</h2>
+          <br />
         </div>
         <div>
           <MineProjectSummaryTable
@@ -73,4 +68,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineProjectSummary.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineProjectSummary);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthorizationGuard(Permission.IN_TESTING)(MineProjectSummary));
