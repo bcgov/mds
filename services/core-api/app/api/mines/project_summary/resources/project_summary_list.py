@@ -63,7 +63,7 @@ class ProjectSummaryListResource(Resource, UserMixin):
                                                 data.get('documents', []))
         project_summary.save()
 
-        # if is_minespace_user():
-        #         project_summary.send_project_summary_email_to_ministry()
+        if is_minespace_user():
+            project_summary.send_project_summary_email_to_ministry(mine)
 
         return project_summary, 201

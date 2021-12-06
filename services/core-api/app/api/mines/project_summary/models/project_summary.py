@@ -147,14 +147,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         super(ProjectSummary, self).delete(commit)
 
-    # def send_project_summary_email_to_ministry(self):
-    #     mine = find_by_mine_guid(self.mine_guid)
-    #     recipients = PROJECT_SUMMARY_EMAILS
+    def send_project_summary_email_to_ministry(self, mine):
+        recipients = PROJECT_SUMMARY_EMAILS
 
-    #     subject = f'Project Summary Notification for {mine.mine_name}'
-    #     body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Summary data in MineSpace</p>'
-    #     body += f'<p>Description: {self.project_summary_description}'
+        subject = f'Project Summary Notification for {mine.mine_name}'
+        # subject = f'Project Summary Notification for'
+        body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Summary data in MineSpace</p>'
+        # body = f'<p> (Mine no: ) has submitted Project Summary data in MineSpace</p>'
+        body += f'<p>Description: {self.project_summary_description}'
 
-    #     link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
-    #     body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-    #     EmailService.send_email(subject, recipients, body)
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
