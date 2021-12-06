@@ -3,7 +3,6 @@ import uuid, pytest
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 from tests.factories import EMLIContactFactory
 
-
 def test_find_EMLI_contact(db_session):
     contact = EMLIContactFactory()
 
@@ -14,11 +13,11 @@ def test_find_EMLI_contact(db_session):
     assert emli_contact.mine_region_code == contact.mine_region_code
 
 
-def test_find_EMLI_contact_by_id(db_session):
+def test_find_EMLI_contact_by_guid(db_session):
     contact = EMLIContactFactory()
 
-    emli_contact = EMLIContact.find_EMLI_contact_by_id(contact.contact_id)
-    assert emli_contact.contact_id == contact.contact_id
+    emli_contact = EMLIContact.find_EMLI_contact_by_guid(contact.contact_guid)
+    assert emli_contact.contact_guid == contact.contact_guid
 
 
 def test_find_EMLI_contacts_by_mine_region(db_session):

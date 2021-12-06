@@ -3,6 +3,7 @@ from flask_restplus import fields
 
 EMLI_CONTACT_MODEL = api.model(
     'EMLIContact', {
+        'contact_guid': fields.String,
         'contact_id': fields.Integer,
         'emli_contact_type_code': fields.String,
         'mine_region_code': fields.String,

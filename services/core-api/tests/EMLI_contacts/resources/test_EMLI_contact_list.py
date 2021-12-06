@@ -29,7 +29,8 @@ def test_get_emli_contacts_by_mine_region_code(test_client, db_session, auth_hea
     batch_size = 3
     contacts = EMLIContactFactory.create_batch(size=batch_size, mine_region_code='NE')
 
-    get_resp = test_client.get(f'/EMLI-contacts/NE', headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get(
+        f'/EMLI-contacts/NE/contacts', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert len(get_data['records']) == batch_size
