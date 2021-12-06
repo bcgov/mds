@@ -102,6 +102,8 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const isMajorMine = mine?.major_mine_ind;
+
     if (this.state.mineNotFound) {
       return <NotFoundNotice />;
     }
@@ -130,6 +132,11 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Overview" key={initialTab}>
                     <Overview mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
+                  {isMajorMine && !IN_PROD() && (
+                    <Tabs.TabPane tab="Applications" key="applications">
+                      <ProjectSummaries mine={mine} match={this.props.match} />
+                    </Tabs.TabPane>
+                  )}
                   <Tabs.TabPane tab="Permits" key="permits">
                     <Permits mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
@@ -151,11 +158,6 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Tailings" key="tailings">
                     <Tailings mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  {!IN_PROD() && (
-                    <Tabs.TabPane tab="Project Summaries" key="projectSummaries">
-                      <ProjectSummaries mine={mine} match={this.props.match} />
-                    </Tabs.TabPane>
-                  )}
                 </Tabs>
               </Col>
             </Row>

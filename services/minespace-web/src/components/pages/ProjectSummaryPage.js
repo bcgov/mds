@@ -105,7 +105,7 @@ export class ProjectSummaryPage extends Component {
         <Row>
           <Col span={24}>
             <Typography.Title>
-              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "projectSummaries")}>
+              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
                 <CaretLeftOutlined />
               </Link>
               {title}

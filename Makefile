@@ -56,14 +56,6 @@ db:
 	@echo "+\n++ Performing postgres build ...\n+"
 	@docker-compose up -d postgres flyway
 
-getdb:
-	@echo "+\n++ Getting database dump from test environment...\n+"
-	@./bin/get-test-db.sh 4c2ba9-test test-postgres.pgCustom
-
-seeddb:
-	@echo "+\n++ Seeding container database...\n+"
-	@./bin/seed-container-db.sh test-postgres.pgCustom
-
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
 	@./bin/registry-login.sh
