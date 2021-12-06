@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
@@ -10,78 +10,77 @@ import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.projectSummary).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
 
-export class MineProjectSummaryTable extends Component {
-  transformRowData = (projectSummaries) =>
-    projectSummaries.map((projectSummary) => ({
-      key: projectSummary.project_summary_guid,
-      projectSummary,
-      mine_guid: projectSummary.mine_guid,
-      status_code: projectSummary.status_code,
-      documents: projectSummary.documents,
-      project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
-      update_timestamp: formatDate(projectSummary.update_timestamp),
-    }));
+const transformRowData = (projectSummaries) =>
+  projectSummaries.map((projectSummary) => ({
+    key: projectSummary.project_summary_guid,
+    projectSummary,
+    mine_guid: projectSummary.mine_guid,
+    status_code: projectSummary.status_code,
+    documents: projectSummary.documents,
+    project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
+    update_timestamp: formatDate(projectSummary.update_timestamp),
+  }));
 
-  render() {
-    const columns = [
-      {
-        title: "Project ID",
-        dataIndex: "project_summary_id",
-        sorter: true,
-        render: (text) => <div title="Project ID">{text}</div>,
-      },
-      {
-        title: "Project stage",
-        dataIndex: "status_code",
-        sorter: true,
-        render: (text) => (
-          <div title="Project stage">
-            {this.props.projectSummaryStatusCodesHash[text] || Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "Last updated",
-        dataIndex: "update_timestamp",
-        sorter: true,
-        render: (text) => <div title="Last updated">{text}</div>,
-      },
-      {
-        title: "Files",
-        dataIndex: "documents",
-        render: (text, record) => (
-          <div title="Files">
-            {record.documents.length > 0
-              ? record.documents.map((file) => (
-                  <div key={file.mine_document_guid} title={file.document_name}>
-                    <DocumentLink
-                      documentManagerGuid={file.document_manager_guid}
-                      documentName={file.document_name}
-                    />
-                  </div>
-                ))
-              : Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-    ];
+export const MineProjectSummaryTable = (props) => {
+  const columns = [
+    {
+      title: "Project ID",
+      dataIndex: "project_summary_id",
+      sorter: true,
+      render: (text) => <div title="Project ID">{text}</div>,
+    },
+    {
+      title: "Project stage",
+      dataIndex: "status_code",
+      sorter: true,
+      render: (text) => (
+        <div title="Project stage">
+          {props.projectSummaryStatusCodesHash[text] || Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "Last updated",
+      dataIndex: "update_timestamp",
+      sorter: true,
+      render: (text) => <div title="Last updated">{text}</div>,
+    },
+    {
+      title: "Files",
+      dataIndex: "documents",
+      render: (text, record) => (
+        <div title="Files">
+          {record.documents.length > 0
+            ? record.documents.map((file) => (
+                <div key={file.mine_document_guid} title={file.document_name}>
+                  <DocumentLink
+                    documentManagerGuid={file.document_manager_guid}
+                    documentName={file.document_name}
+                  />
+                </div>
+              ))
+            : Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+  ];
 
-    return (
-      <CoreTable
-        condition={this.props.isLoaded}
-        columns={columns}
-        dataSource={this.transformRowData(this.props.projectSummaries)}
-        tableProps={{
-          align: "left",
-        }}
-      />
-    );
-  }
-}
+  return (
+    <CoreTable
+      condition={props.isLoaded}
+      columns={columns}
+      dataSource={transformRowData(props.projectSummaries)}
+      tableProps={{
+        align: "left",
+      }}
+    />
+  );
+};
 
 MineProjectSummaryTable.propTypes = propTypes;
 
