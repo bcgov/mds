@@ -26,7 +26,7 @@ def setup_static_data(Base):
                     if col.name == 'active_ind':
                         if type(pk.type) != UUID and pk.type.python_type == str:
                             STATIC_DATA[class_.__name__] = [
-                                a for a, in class_.query.with_entities(
+                                a for a, in class_.query.unbound_unsafe().with_entities(
                                     getattr(class_, pk.name, None)).filter_by(
                                         active_ind=True).all()
                             ]
@@ -35,19 +35,15 @@ def setup_static_data(Base):
                     # in long form so they are stored in the descriptions of the code tables so the descriptions of those
                     # tables are also added under a (class name)_description in STATIC_DATA.
                     if class_ in app_models.model_list and col.name == 'description':
-                        if type(
-                                pk.type
-                        ) != UUID and pk.type.python_type == str and pk.name != 'mine_incident_category_code':
+                        if type(pk.type) != UUID and pk.type.python_type == str:
                             STATIC_DATA[f'{class_.__name__}_description'] = [
-                                a for a, in class_.query.with_entities(
+                                a for a, in class_.query.unbound_unsafe().with_entities(
                                     getattr(class_, 'description', None)).filter_by(
                                         active_ind=True).all()
                             ]
 
             except Exception as e:
-                current_app.logger.error(f'pk.name: {pk.name}')
-                current_app.logger.error(f'pk.type: {pk.type}')
-                current_app.logger.error(f'class: {class_.__name__}')
+                current_app.logger.error(class_.__name__)
                 current_app.logger.error(str(e))
                 raise e
     current_app.logger.debug(STATIC_DATA)
