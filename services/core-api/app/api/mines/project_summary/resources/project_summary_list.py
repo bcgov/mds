@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
+from werkzeug.exceptions import InternalServerError
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
@@ -61,9 +62,16 @@ class ProjectSummaryListResource(Resource, UserMixin):
         project_summary = ProjectSummary.create(mine, data.get('project_summary_date'),
                                                 data.get('project_summary_description'),
                                                 data.get('documents', []))
-        project_summary.save()
 
-        if is_minespace_user():
-            project_summary.send_project_summary_email_to_ministry(mine)
+        try:
+            project_summary.save()
+            if is_minespace_user():
+                project_summary.send_project_summary_email_to_ministry(mine)
+        except Exception as e:
+            raise InternalServerError(f'Error when saving: {e}')
+        # project_summary.save()
+
+        # if is_minespace_user():
+        #     project_summary.send_project_summary_email_to_ministry(mine)
 
         return project_summary, 201

@@ -151,9 +151,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         recipients = PROJECT_SUMMARY_EMAILS
 
         subject = f'Project Summary Notification for {mine.mine_name}'
-        # subject = f'Project Summary Notification for'
         body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Summary data in MineSpace</p>'
-        # body = f'<p> (Mine no: ) has submitted Project Summary data in MineSpace</p>'
         body += f'<p>Description: {self.project_summary_description}'
 
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
