@@ -4,14 +4,14 @@ from datetime import datetime
 from tests.factories import EMLIContactFactory
 
 
-def test_get_all_emli_contacts(test_client, db_session, auth_headers):
-    batch_size = 3
-    contacts = EMLIContactFactory.create_batch(size=batch_size)
+# def test_get_all_emli_contacts(test_client, db_session, auth_headers):
+#     batch_size = 3
+#     contacts = EMLIContactFactory.create_batch(size=batch_size)
 
-    get_resp = test_client.get(f'/EMLI-contacts', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert len(get_data['records']) == batch_size
+#     get_resp = test_client.get(f'/EMLI-contacts', headers=auth_headers['full_auth_header'])
+#     get_data = json.loads(get_resp.data.decode())
+#     assert get_resp.status_code == 200
+#     assert len(get_data['records']) == batch_size
 
 
 def test_get_emli_contacts_major_mines(test_client, db_session, auth_headers):

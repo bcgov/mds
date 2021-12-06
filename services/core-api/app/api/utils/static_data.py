@@ -35,7 +35,9 @@ def setup_static_data(Base):
                     # in long form so they are stored in the descriptions of the code tables so the descriptions of those
                     # tables are also added under a (class name)_description in STATIC_DATA.
                     if class_ in app_models.model_list and col.name == 'description':
-                        if type(pk.type) != UUID and pk.type.python_type == str:
+                        if type(
+                                pk.type
+                        ) != UUID and pk.type.python_type == str and pk.name != 'mine_incident_category_code':
                             STATIC_DATA[f'{class_.__name__}_description'] = [
                                 a for a, in class_.query.with_entities(
                                     getattr(class_, 'description', None)).filter_by(
