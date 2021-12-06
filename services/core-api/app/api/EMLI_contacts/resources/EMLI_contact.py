@@ -35,8 +35,8 @@ class EMLIContactResource(Resource, UserMixin):
     @api.doc(description='Update an existing EMLI contact.')
     @api.marshal_with(EMLI_CONTACT_MODEL)
     @requires_role_edit_emli_contacts
-    def put(self, contact_id):
-        contact = EMLIContact.find_EMLI_contact_by_id(contact_id)
+    def put(self, contact_guid):
+        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
         if not contact:
             raise NotFound('Contact not found.')
 
@@ -52,8 +52,8 @@ class EMLIContactResource(Resource, UserMixin):
     @api.doc(description='Delete an EMLI contact.')
     @api.marshal_with(EMLI_CONTACT_MODEL)
     @requires_role_mine_admin
-    def delete(self, contact_id):
-        contact = EMLIContact.find_EMLI_contact_by_id(contact_id)
+    def delete(self, contact_guid):
+        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
         if not contact:
             raise NotFound('Contact not found.')
 
@@ -67,8 +67,8 @@ class EMLIContactResource(Resource, UserMixin):
     @api.doc(description='Fetch EMLI contact information for specific user.')
     @api.marshal_with(EMLI_CONTACT_MODEL, code=201, envelope='records')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    def get(self, contact_id):
-        contact = EMLIContact.find_EMLI_contact_by_id(contact_id)
+    def get(self, contact_guid):
+        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
 
         if not contact:
             raise NotFound('Contact not found.')

@@ -8,31 +8,37 @@ from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
 
 #GET
 def test_get_emli_contact_not_found(test_client, db_session, auth_headers):
-    get_resp = test_client.get(f'/EMLI-contacts/0', headers=auth_headers['full_auth_header'])
+    fake_guid = uuid.uuid4()
+    get_resp = test_client.get(
+        f'/EMLI-contacts/{fake_guid}', headers=auth_headers['full_auth_header'])
+
     get_data = json.loads(get_resp.data.decode())
 
     assert get_resp.status_code == 404
     assert 'not found' in get_data['message']
 
 
-def test_get_emli_contact_by_id(test_client, db_session, auth_headers):
+def test_get_emli_contact_by_guid(test_client, db_session, auth_headers):
     contact = EMLIContactFactory()
 
     get_resp = test_client.get(
-        f'/EMLI-contacts/{contact.contact_id}', headers=auth_headers['full_auth_header'])
+        f'/EMLI-contacts/{contact.contact_guid}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert get_data['records']['contact_id'] == contact.contact_id
+    assert get_data['records'].get('contact_guid', None) == str(contact.contact_guid)
 
 
 #PUT
 def test_put_emli_contact_not_found(test_client, db_session, auth_headers):
     data = {"first_name": "First", "last_name": "Last", "phone_number": "111-111-1111"}
+    fake_guid = uuid.uuid4()
+
     put_resp = test_client.put(
-        f'/EMLI-contacts/1', json=data, headers=auth_headers['full_auth_header'])
+        f'/EMLI-contacts/{fake_guid}', json=data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 404
     assert 'not found' in put_data['message']
+
 
 def test_put_emli_contact_success(test_client, db_session, auth_headers):
     contact = EMLIContactFactory()
@@ -48,7 +54,9 @@ def test_put_emli_contact_success(test_client, db_session, auth_headers):
     data['is_general_contact'] = False
 
     put_resp = test_client.put(
-        f'/EMLI-contacts/{contact.contact_id}', json=data, headers=auth_headers['full_auth_header'])
+        f'/EMLI-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
     assert put_data['first_name'] == data['first_name']
@@ -61,12 +69,13 @@ def test_put_emli_contact_success(test_client, db_session, auth_headers):
     assert put_data['is_major_mine'] == data['is_major_mine']
     assert put_data['is_general_contact'] == data['is_general_contact']
 
+
 #DELETE
-def test_soft_delete_emli_contact_by_id(test_client, db_session, auth_headers):
+def test_soft_delete_emli_contact_by_guid(test_client, db_session, auth_headers):
     contact = EMLIContactFactory()
 
     delete_resp = test_client.delete(
-        f'/EMLI-contacts/{contact.contact_id}', headers=auth_headers['full_auth_header'])
+        f'/EMLI-contacts/{contact.contact_guid}', headers=auth_headers['full_auth_header'])
 
     get_data = json.loads(delete_resp.data.decode())
 

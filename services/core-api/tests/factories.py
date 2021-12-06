@@ -1018,7 +1018,7 @@ class EMLIContactFactory(BaseFactory):
 
     class Params:
         major_mine = factory.Trait(
-            contact_id=factory.Sequence(lambda n: n),
+            contact_guid=GUID,
             emli_contact_type_code=factory.LazyFunction(RandomEMLIContactTypeCode),
             mine_region_code=factory.LazyFunction(RandomMineRegionCode),
             first_name=factory.Faker('first_name'),
@@ -1029,7 +1029,7 @@ class EMLIContactFactory(BaseFactory):
             is_general_contact=False,
             deleted_ind=False)
 
-    contact_id = factory.Sequence(lambda n: n)
+    contact_guid = GUID
     emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
     mine_region_code = factory.LazyFunction(RandomMineRegionCode)
     first_name = factory.Faker('first_name')

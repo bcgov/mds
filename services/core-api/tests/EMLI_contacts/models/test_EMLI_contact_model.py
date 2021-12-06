@@ -14,11 +14,11 @@ def test_find_EMLI_contact(db_session):
     assert emli_contact.mine_region_code == contact.mine_region_code
 
 
-def test_find_EMLI_contact_by_id(db_session):
+def test_find_EMLI_contact_by_guid(db_session):
     contact = EMLIContactFactory()
 
-    emli_contact = EMLIContact.find_EMLI_contact_by_id(contact.contact_id)
-    assert emli_contact.contact_id == contact.contact_id
+    emli_contact = EMLIContact.find_EMLI_contact_by_guid(contact.contact_guid)
+    assert emli_contact.contact_guid == contact.contact_guid
 
 
 def test_find_EMLI_contacts_by_mine_region(db_session):
@@ -26,9 +26,8 @@ def test_find_EMLI_contacts_by_mine_region(db_session):
 
     emli_contact = EMLIContact.find_EMLI_contacts_by_mine_region(contact.mine_region_code,
                                                                  contact.is_major_mine)
-    assert (c.mine_region == None
-            if c.emli_contact_type_code == 'MMO' else c.mine_region == contact.mine_region
-            for c in emli_contact)
+    assert (c.mine_region == None if c.emli_contact_type_code in ('MMO', 'CHP', 'CHI') else
+            c.mine_region == contact.mine_region for c in emli_contact)
 
 
 def test_find_all(db_session):

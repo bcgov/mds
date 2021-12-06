@@ -1,4 +1,5 @@
 from app.extensions import db
+from sqlalchemy.dialects.postgresql import UUID
 from app.api.utils.models_mixins import Base, AuditMixin
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import and_
@@ -8,7 +9,8 @@ from app.api.utils.models_mixins import SoftDeleteMixin
 class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'emli_contact'
 
-    contact_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    contact_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    contact_id = db.Column(db.Integer, nullable=False, unique=True, server_default=FetchedValue())
     emli_contact_type_code = db.Column(
         db.String(3), db.ForeignKey('emli_contact_type.emli_contact_type_code'))
     mine_region_code = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
@@ -75,8 +77,8 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).first()
 
     @classmethod
-    def find_EMLI_contact_by_id(cls, contact_id):
-        return cls.query.filter_by(contact_id=contact_id).filter_by(deleted_ind=False).first()
+    def find_EMLI_contact_by_guid(cls, contact_guid):
+        return cls.query.filter_by(contact_guid=contact_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_EMLI_contacts_by_mine_region(cls, mine_region_code, is_major_mine=None):
@@ -110,5 +112,4 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
                                                                cls.emli_contact_type_code).all()
 
     def __repr__(self):
-        return '<EMLIContact (%r,%r,%r)>' % (self.emli_contact_type_code, self.mine_region_code,
-                                             self.is_major_mine)
+        return '<EMLIContact %r>' % self.contact_guid

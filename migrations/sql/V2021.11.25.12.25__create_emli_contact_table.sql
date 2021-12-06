@@ -15,7 +15,8 @@ ALTER TABLE emli_contact_type OWNER TO mds;
 --Recreate regional_contact table as emli_contact with additional columns
 CREATE TABLE IF NOT EXISTS emli_contact
 (
-    contact_id                          SERIAL PRIMARY KEY,
+    contact_guid                        uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
+    contact_id                          SERIAL                                   NOT NULL,
 	emli_contact_type_code              character varying(3)                     NOT NULL,
     mine_region_code                    character varying(2)                             ,
 	first_name                          character varying(100)                           ,
