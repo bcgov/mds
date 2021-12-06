@@ -57,15 +57,15 @@ export class MineSpaceEMLIContactManagement extends Component {
   };
 
   handleUpdateContact = (values) => {
-    this.props.updateEMLIContact(values.contact_id, values).then(() => {
+    this.props.updateEMLIContact(values.contact_guid, values).then(() => {
       this.handleFetchEMLIContacts();
       this.props.closeModal();
     });
   };
 
-  handleDeleteContact = (id) => {
+  handleDeleteContact = (guid) => {
     this.setState({ isLoaded: false });
-    this.props.deleteEMLIContact(id).then(() => {
+    this.props.deleteEMLIContact(guid).then(() => {
       this.handleFetchEMLIContacts();
     });
   };

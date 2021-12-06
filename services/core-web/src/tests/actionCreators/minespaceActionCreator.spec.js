@@ -178,12 +178,12 @@ describe("`fetchEMLIContactsByRegion` action creator", () => {
 });
 
 describe("`deleteEMLIContact` action creator", () => {
-  const id = "2";
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id);
+  const guid = "2";
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return deleteEMLIContact(id)(dispatch).then(() => {
+    return deleteEMLIContact(guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -192,7 +192,7 @@ describe("`deleteEMLIContact` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-    return deleteEMLIContact(id)(dispatch).catch(() => {
+    return deleteEMLIContact(guid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -224,14 +224,14 @@ describe("`createEMLIContact` action creator", () => {
 });
 
 describe("`updateEMLIContact` action creator", () => {
-  const id = 2;
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id);
+  const guid = 2;
+  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid);
   const payload = { email: "mock_email" };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, payload).reply(200, mockResponse);
     return updateEMLIContact(
-      id,
+      guid,
       payload
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -243,7 +243,7 @@ describe("`updateEMLIContact` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updateEMLIContact(
-      id,
+      guid,
       {}
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
