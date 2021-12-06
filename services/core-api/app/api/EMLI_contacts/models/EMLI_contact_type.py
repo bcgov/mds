@@ -5,7 +5,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class EMLIContactType(AuditMixin, Base):
     __tablename__ = 'emli_contact_type'
-    emli_contact_type_code = db.Column(db.String(3), nullable=False, primary_key=True)
+    emli_contact_type_code = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
