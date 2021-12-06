@@ -130,11 +130,11 @@ export const updateEMLIContact = (id, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const deleteEMLIContact = (id) => (dispatch) => {
+export const deleteEMLIContact = (guid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_EMLI_CONTACT));
   dispatch(showLoading());
   return CustomAxios()
-    .delete(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id), createRequestHeader())
+    .delete(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), createRequestHeader())
     .then((response) => {
       notification.success({
         message: `Successfully deleted EMLI contact.`,

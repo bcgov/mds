@@ -45,7 +45,7 @@ export const PROVINCE_CODES = "/parties/sub-division-codes";
 export const EMLI_CONTACTS = "/EMLI-contacts";
 export const EMLI_CONTACTS_BY_REGION = (region, isMajorMine) =>
   `/EMLI-contacts/${region}?is_major_mine=${isMajorMine}`;
-export const EMLI_CONTACT = (id) => `/EMLI-contacts/${id}`;
+export const EMLI_CONTACT = (guid) => `/EMLI-contacts/${guid}`;
 
 export const MINE_VERIFIED_STATUSES = (params = {}) =>
   `/mines/verified-status?${queryString.stringify(params)}`;

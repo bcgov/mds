@@ -136,7 +136,7 @@ const columns = (
 const transformRowData = (contacts) =>
   contacts &&
   contacts.map((contact) => ({
-    key: contact.contact_id,
+    key: contact.contact_guid,
     name: contact.first_name ? `${contact.first_name} ${contact.last_name}` : "N/A",
     ...contact,
   }));
