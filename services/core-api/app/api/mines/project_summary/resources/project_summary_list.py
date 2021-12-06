@@ -69,9 +69,5 @@ class ProjectSummaryListResource(Resource, UserMixin):
                 project_summary.send_project_summary_email_to_ministry(mine)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
-        # project_summary.save()
-
-        # if is_minespace_user():
-        #     project_summary.send_project_summary_email_to_ministry(mine)
 
         return project_summary, 201
