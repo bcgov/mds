@@ -43,7 +43,9 @@ def setup_static_data(Base):
                             ]
 
             except Exception as e:
-                current_app.logger.error(class_.__name__)
+                current_app.logger.error(f'pk.name: {pk.name}')
+                current_app.logger.error(f'pk.type: {pk.type}')
+                current_app.logger.error(f'class: {class_.__name__}')
                 current_app.logger.error(str(e))
                 raise e
     current_app.logger.debug(STATIC_DATA)

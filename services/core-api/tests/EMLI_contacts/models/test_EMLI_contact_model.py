@@ -3,6 +3,7 @@ import uuid, pytest
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 from tests.factories import EMLIContactFactory
 
+
 def test_find_EMLI_contact(db_session):
     contact = EMLIContactFactory()
 
@@ -25,9 +26,8 @@ def test_find_EMLI_contacts_by_mine_region(db_session):
 
     emli_contact = EMLIContact.find_EMLI_contacts_by_mine_region(contact.mine_region_code,
                                                                  contact.is_major_mine)
-    assert (c.mine_region == None
-            if c.emli_contact_type_code == 'MMO' else c.mine_region == contact.mine_region
-            for c in emli_contact)
+    assert (c.mine_region == None if c.emli_contact_type_code in ('MMO', 'CHP', 'CHI') else
+            c.mine_region == contact.mine_region for c in emli_contact)
 
 
 def test_find_all(db_session):
