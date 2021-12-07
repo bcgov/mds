@@ -9,6 +9,9 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party.models.party import Party
+from app.api.constants import PROJECT_SUMMARY_EMAILS
+from app.api.services.email_service import EmailService
+from app.config import Config
 
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
@@ -143,3 +146,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.mine_documents.remove(doc.mine_document)
             doc.mine_document.delete(False)
         super(ProjectSummary, self).delete(commit)
+
+    def send_project_summary_email_to_ministry(self, mine):
+        recipients = PROJECT_SUMMARY_EMAILS
+
+        subject = f'Project Summary Notification for {mine.mine_name}'
+        body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Summary data in MineSpace</p>'
+        body += f'<p>Description: {self.project_summary_description}'
+
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
