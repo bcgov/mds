@@ -61,7 +61,7 @@ jobs:
     name: watch-rollout
     runs-on: ubuntu-20.04
     needs: grace-period
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       matrix:
         include:
