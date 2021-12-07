@@ -5,12 +5,12 @@ from app.extensions import api
 from flask import request
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_edit_emli_contacts, requires_role_mine_admin, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.emli_contacts.response_models import EMLI_CONTACT_MODEL
+from app.api.emli_contacts.models.emli_contact import emliContact
+from app.api.emli_contacts.models.emli_contact_type import emliContactType
 
 
-class EMLIContactResource(Resource, UserMixin):
+class emliContactResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str, trim=True, help='EMLI First name', location='json')
     parser.add_argument('last_name', type=str, trim=True, help='EMLI Last name.', location='json')
@@ -36,7 +36,7 @@ class EMLIContactResource(Resource, UserMixin):
     @api.marshal_with(EMLI_CONTACT_MODEL)
     @requires_role_edit_emli_contacts
     def put(self, contact_guid):
-        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
+        contact = emliContact.find_emli_contact_by_guid(contact_guid)
         if not contact:
             raise NotFound('Contact not found.')
 
@@ -53,7 +53,7 @@ class EMLIContactResource(Resource, UserMixin):
     @api.marshal_with(EMLI_CONTACT_MODEL)
     @requires_role_mine_admin
     def delete(self, contact_guid):
-        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
+        contact = emliContact.find_emli_contact_by_guid(contact_guid)
         if not contact:
             raise NotFound('Contact not found.')
 
@@ -64,12 +64,11 @@ class EMLIContactResource(Resource, UserMixin):
 
         return contact
 
-    
     @api.doc(description='Fetch EMLI contact information for specific user.')
     @api.marshal_with(EMLI_CONTACT_MODEL, code=201, envelope='records')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, contact_guid):
-        contact = EMLIContact.find_EMLI_contact_by_guid(contact_guid)
+        contact = emliContact.find_emli_contact_by_guid(contact_guid)
 
         if not contact:
             raise NotFound('Contact not found.')

@@ -6,7 +6,7 @@ from sqlalchemy import and_
 from app.api.utils.models_mixins import SoftDeleteMixin
 
 
-class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
+class emliContact(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'emli_contact'
 
     contact_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
@@ -25,9 +25,9 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
     is_general_contact = db.Column(db.Boolean, nullable=False, default=False)
 
     emli_contact = db.relationship(
-        'EMLIContactType',
+        'emliContactType',
         backref='emli_contact',
-        order_by='asc(EMLIContactType.display_order)',
+        order_by='asc(emliContactType.display_order)',
         lazy='joined')
 
     @classmethod
@@ -63,7 +63,7 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
         return new_contact
 
     @classmethod
-    def find_EMLI_contact(cls, emli_contact_type_code, mine_region_code=None, is_major_mine=None):
+    def find_emli_contact(cls, emli_contact_type_code, mine_region_code=None, is_major_mine=None):
         if is_major_mine and mine_region_code:
             return cls.query.filter_by(
                 emli_contact_type_code=emli_contact_type_code,
@@ -77,12 +77,12 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).first()
 
     @classmethod
-    def find_EMLI_contact_by_guid(cls, contact_guid):
+    def find_emli_contact_by_guid(cls, contact_guid):
         return cls.query.filter_by(contact_guid=contact_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_EMLI_contacts_by_mine_region(cls, mine_region_code, is_major_mine=None):
-        general_contacts = cls.find_EMLI_general_contacts()
+    def find_emli_contacts_by_mine_region(cls, mine_region_code, is_major_mine=None):
+        general_contacts = cls.find_emli_general_contacts()
         mmo_contact = cls.find_major_mine_office()
 
         if is_major_mine == True:
@@ -92,10 +92,10 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
         elif is_major_mine == False:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code, is_major_mine=is_major_mine).filter_by(
-                deleted_ind=False).union(general_contacts).all()
+                    deleted_ind=False).union(general_contacts).all()
 
     @classmethod
-    def find_EMLI_general_contacts(cls):
+    def find_emli_general_contacts(cls):
         return cls.query.filter_by(is_general_contact=True).filter_by(deleted_ind=False)
 
     @classmethod
@@ -112,4 +112,4 @@ class EMLIContact(SoftDeleteMixin, AuditMixin, Base):
                                                                cls.emli_contact_type_code).all()
 
     def __repr__(self):
-        return '<EMLIContact %r>' % self.contact_guid
+        return '<emliContact %r>' % self.contact_guid

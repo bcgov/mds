@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 EMLI_CONTACT_MODEL = api.model(
-    'EMLIContact', {
+    'emliContact', {
         'contact_guid': fields.String,
         'contact_id': fields.Integer,
         'emli_contact_type_code': fields.String,
@@ -19,8 +19,8 @@ EMLI_CONTACT_MODEL = api.model(
         'deleted_ind': fields.Boolean,
     })
 
-EMLI_CONTACT_TYPE = api.model('EMLIContactType', {
+EMLI_CONTACT_TYPE = api.model('emliContactType', {
     'emli_contact_type_code': fields.String,
     'description': fields.String,
     'active_ind': fields.Boolean
-}) 
+})

@@ -5,12 +5,12 @@ from flask import request
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_emli_contacts, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
+from app.api.emli_contacts.models.emli_contact import emliContact
+from app.api.emli_contacts.models.emli_contact_type import emliContactType
+from app.api.emli_contacts.response_models import EMLI_CONTACT_MODEL
 
 
-class EMLIContactListResource(Resource, UserMixin):
+class emliContactListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'emli_contact_type_code',
@@ -53,9 +53,9 @@ class EMLIContactListResource(Resource, UserMixin):
         is_major_mine = request.args.get('is_major_mine') == 'true'
 
         if mine_region_code:
-            return EMLIContact.find_EMLI_contacts_by_mine_region(mine_region_code, is_major_mine)
+            return emliContact.find_emli_contacts_by_mine_region(mine_region_code, is_major_mine)
 
-        return EMLIContact.get_all(is_major_mine)
+        return emliContact.get_all(is_major_mine)
 
     @api.doc(description='Create a EMLI contact.')
     @api.expect(parser)
@@ -67,12 +67,12 @@ class EMLIContactListResource(Resource, UserMixin):
         contact_type = data.get('emli_contact_type_code', None)
         is_major_mine = data.get('is_major_mine', None)
         is_general_contact = data.get('is_general_contact', None)
-        contact_desc = EMLIContactType.find_contact_type(contact_type)
+        contact_desc = emliContactType.find_contact_type(contact_type)
 
-        mmo_contact = EMLIContact.find_EMLI_contact('MMO')
-        chief_inspector = EMLIContact.find_EMLI_contact('CHI')
-        chief_permitting = EMLIContact.find_EMLI_contact('CHP')
-        roe_contact = EMLIContact.find_EMLI_contact('ROE', data.mine_region_code)
+        mmo_contact = emliContact.find_emli_contact('MMO')
+        chief_inspector = emliContact.find_emli_contact('CHI')
+        chief_permitting = emliContact.find_emli_contact('CHP')
+        roe_contact = emliContact.find_emli_contact('ROE', data.mine_region_code)
 
         unique_by_region = roe_contact.emli_contact_type_code if roe_contact else None
         unique_global = [
@@ -91,7 +91,7 @@ class EMLIContactListResource(Resource, UserMixin):
         elif is_major_mine == False and is_general_contact == True:
             raise BadRequest(f'Error: General contacts must be a major mine contact.')
 
-        contact = EMLIContact.create(
+        contact = emliContact.create(
             emli_contact_type_code=contact_type,
             mine_region_code=data.get('mine_region_code'),
             first_name=data.get('first_name', None),
@@ -110,4 +110,4 @@ class EMLIContactListResource(Resource, UserMixin):
 
         contact.save()
 
-        return contact 
+        return contact

@@ -3,7 +3,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
-class EMLIContactType(AuditMixin, Base):
+class emliContactType(AuditMixin, Base):
     __tablename__ = 'emli_contact_type'
     emli_contact_type_code = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String(100), nullable=False)
@@ -11,7 +11,7 @@ class EMLIContactType(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<EMLIContactType %r>' % self.emli_contact_type_code
+        return '<emliContactType %r>' % self.emli_contact_type_code
 
     @classmethod
     def get_all(cls):

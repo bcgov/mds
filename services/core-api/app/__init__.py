@@ -23,7 +23,7 @@ from app.api.document_generation.namespace import api as doc_gen_api
 from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
 from app.api.orgbook.namespace import api as orgbook_api
-from app.api.EMLI_contacts.namespace import api as EMLI_contacts_api
+from app.api.emli_contacts.namespace import api as emli_contacts_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -95,7 +95,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(securities_api)
     root_api_namespace.add_namespace(verify_api)
     root_api_namespace.add_namespace(orgbook_api)
-    root_api_namespace.add_namespace(EMLI_contacts_api)
+    root_api_namespace.add_namespace(emli_contacts_api)
 
     # Healthcheck endpoint
     @root_api_namespace.route('/health')

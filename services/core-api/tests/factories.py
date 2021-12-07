@@ -44,8 +44,8 @@ from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
 from app.api.mines.project_summary.models.project_summary import ProjectSummary
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.emli_contacts.models.emli_contact_type import emliContactType
+from app.api.emli_contacts.models.emli_contact import emliContact
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -1002,22 +1002,22 @@ class ProjectSummaryFactory(BaseFactory):
             size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
 
 
-class EMLIContactTypeFactory(BaseFactory):
+class emliContactTypeFactory(BaseFactory):
     class Meta:
-        model = EMLIContactType
+        model = emliContactType
 
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomemliContactTypeCode)
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
     active_ind = True
 
 
-class EMLIContactFactory(BaseFactory):
+class emliContactFactory(BaseFactory):
     class Meta:
-        model = EMLIContact
+        model = emliContact
 
     contact_guid = GUID
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomemliContactTypeCode)
     mine_region_code = factory.LazyFunction(RandomMineRegionCode)
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
