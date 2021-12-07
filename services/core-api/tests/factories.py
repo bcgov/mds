@@ -44,6 +44,8 @@ from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
 from app.api.mines.project_summary.models.project_summary import ProjectSummary
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -998,3 +1000,29 @@ class ProjectSummaryFactory(BaseFactory):
 
         ProjectSummaryDocumentFactory.create_batch(
             size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
+
+
+class EMLIContactTypeFactory(BaseFactory):
+    class Meta:
+        model = EMLIContactType
+
+    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    display_order = factory.Sequence(lambda n: n + 1)
+    active_ind = True
+
+
+class EMLIContactFactory(BaseFactory):
+    class Meta:
+        model = EMLIContact
+
+    contact_guid = GUID
+    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    mine_region_code = factory.LazyFunction(RandomMineRegionCode)
+    first_name = factory.Faker('first_name')
+    last_name = factory.Faker('last_name')
+    email = factory.Faker('email')
+    phone_number = factory.Faker('numerify', text='###-###-####')
+    is_major_mine = False
+    is_general_contact = False
+    deleted_ind = False
