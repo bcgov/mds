@@ -12,6 +12,11 @@ const MineDashboardRoutes = () => (
     <Route exact path={routes.MINE_VARIANCES.route} component={routes.MINE_VARIANCES.component} />
     <Route
       exact
+      path={routes.MINE_PRE_APPLICATIONS.route}
+      component={routes.MINE_PRE_APPLICATIONS.component}
+    />
+    <Route
+      exact
       path={routes.MINE_NOW_APPLICATIONS.route}
       component={routes.MINE_NOW_APPLICATIONS.component}
     />

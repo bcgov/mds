@@ -15,7 +15,7 @@ import { Table } from "antd";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dataSource: PropTypes.objectOf(PropTypes.any).isRequired,
+  dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
   condition: PropTypes.bool.isRequired,
   tableProps: PropTypes.objectOf(PropTypes.any),
 };
