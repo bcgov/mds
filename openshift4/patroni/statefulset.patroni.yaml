@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: patroni
+    cluster-name: patroni
+  name: patroni
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      statefulset: patroni
+  serviceName: patroni
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: patroni
+        statefulset: patroni
+        cluster-name: patroni
+        app.kubernetes.io/name: patroni
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: statefulset
+                    operator: In
+                    values:
+                      - patroni
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - env:
+            - name: PATRONI_KUBERNETES_USE_ENDPOINTS
+              value: 'true'
+            - name: PATRONI_KUBERNETES_POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: PATRONI_KUBERNETES_PORTS
+              value: '{[{"name": "postgresql", "port": 5432}]}'
+            - name: PATRONI_KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: PATRONI_KUBERNETES_LABELS
+              value: '{"cluster-name": "${NAME}", "app.kubernetes.io/name": "patroni"}'
+            - name: PATRONI_SUPERUSER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: superuser-username
+                  name: patroni-creds
+            - name: PATRONI_SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: superuser-password
+                  name: patroni-creds
+            - name: PATRONI_REPLICATION_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: replication-username
+                  name: patroni-creds
+            - name: PATRONI_REPLICATION_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: replication-password
+                  name: patroni-creds
+            - name: APP_USER
+              valueFrom:
+                secretKeyRef:
+                  key: app-db-username
+                  name: patroni-creds
+            - name: APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: app-db-password
+                  name: patroni-creds
+            - name: APP_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: app-db-name
+                  name: patroni-creds
+            - name: PATRONI_SCOPE
+              value: patroni
+            - name: PATRONI_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: PATRONI_LOG_LEVEL
+              value: WARNING
+            - name: PATRONI_POSTGRESQL_DATA_DIR
+              value: /home/postgres/pgdata/pgroot/data
+            - name: PATRONI_POSTGRESQL_PGPASS
+              value: /tmp/pgpass
+            - name: PATRONI_POSTGRESQL_LISTEN
+              value: 0.0.0.0:5432
+            - name: PATRONI_RESTAPI_LISTEN
+              value: 0.0.0.0:8008
+          # TODO: upgrade to 13/14?
+          image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
+          # Because we are using image reference to a tag, we need to always
+          # pull the image otherwise we end up with outdated/out-of-sync
+          # image depending on the node where it is running
+          imagePullPolicy: Always
+          name: patroni-postgresql
+          ports:
+            - containerPort: 8008
+              protocol: TCP
+            - containerPort: 5432
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 75m
+              memory: 256Mi
+            limits:
+              cpu: 75m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          livenessProbe:
+            initialDelaySeconds: 45
+            timeoutSeconds: 5
+            failureThreshold: 2
+            periodSeconds: 10
+            exec:
+              command:
+                - /usr/share/scripts/patroni/health_check.sh
+          readinessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 4
+            periodSeconds: 10
+            exec:
+              command:
+                - /usr/share/scripts/patroni/health_check.sh
+          volumeMounts:
+            - mountPath: /home/postgres/pgdata
+              name: patroni-postgresql
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccountName: patroni
+      terminationGracePeriodSeconds: 0
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - metadata:
+        annotations:
+          volume.beta.kubernetes.io/storage-class: netapp-file-standard
+        labels:
+          app: patroni
+        name: patroni-postgresql
+      spec:
+        storageClassName: netapp-file-standard
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
