@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: patroni
+    cluster-name: patroni
+  name: patroni-master
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cluster-name: patroni
+    role: master
+    app.kubernetes.io/name: patroni
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

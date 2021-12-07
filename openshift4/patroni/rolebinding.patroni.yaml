@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: patroni
+    cluster-name: patroni
+  name: patroni
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: patroni
+subjects:
+  - kind: ServiceAccount
+    name: patroni
