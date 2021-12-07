@@ -18,6 +18,7 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
+    const isMajorMine = this.props.mine?.major_mine_ind;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <Menu.SubMenu
@@ -68,7 +69,7 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
-            {!IN_PROD() && (
+            {isMajorMine && !IN_PROD() && (
               <Menu.Item key="pre-applications">
                 <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                   Pre-applications
