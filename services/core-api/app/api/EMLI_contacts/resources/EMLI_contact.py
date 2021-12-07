@@ -62,7 +62,7 @@ class EMLIContactResource(Resource, UserMixin):
 
         contact.save()
 
-        return contact
+        return (None, 204)
 
     @api.doc(description='Fetch EMLI contact information for specific user.')
     @api.marshal_with(EMLI_CONTACT_MODEL, code=201, envelope='records')
