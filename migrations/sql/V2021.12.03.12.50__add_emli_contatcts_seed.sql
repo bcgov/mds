@@ -58,7 +58,7 @@ VALUES
   ('RDR','NW','Howard','Davies','howard.davies@gov.bc.ca','250-876-8327',null,null,null, false, false, false, 'system-mds', 'system-mds'),
   ('ROE','NW',null, null,'MMD-Smithers@gov.bc.ca','250-847-7383','250-847-7603','2nd Floor, 3726 Alfred Avenue','Smithers, B.C. V0J 2N0', false, false, false, 'system-mds', 'system-mds'),
   ('HSI','NW','Megan', 'Frederick','Megan.Frederick@gov.bc.ca','250-847-7214',null,null,null, true, false, false, 'system-mds', 'system-mds'),
-  ('SPI','NW','Barry', 'MacCallum','Barry.MacCallum@gov.bc.ca','250-876-7041',null,null,null, true, false, false, 'system-mds', 'system-mds'),
+  ('SPI','NW','Barry', 'MacCallum','Barry.MacCallum@gov.bc.ca','250-876-7041',null,null,null, false, false, false, 'system-mds', 'system-mds'),
 
   ('SHI','SW','Chris','Crawford','chris.crawford@gov.bc.ca','236-478-2428',null,null,null,false, false, false, 'system-mds', 'system-mds'),
   ('SPI','SW', 'Don','Harrison','donald.harrison@gov.bc.ca','778-698-7014',null,null,null, false, false, false, 'system-mds', 'system-mds'),
