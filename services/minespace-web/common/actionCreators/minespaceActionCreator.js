@@ -113,11 +113,11 @@ export const createEMLIContact = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateEMLIContact = (id, payload) => (dispatch) => {
+export const updateEMLIContact = (guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_EMLI_CONTACT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .put(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(id), payload, createRequestHeader())
+    .put(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: `Successfully updated EMLI contact.`,

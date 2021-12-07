@@ -27,6 +27,7 @@ def test_get_emli_contacts_major_mines(test_client, db_session, auth_headers):
 
 def test_get_emli_contacts_by_mine_region_code(test_client, db_session, auth_headers):
     batch_size = 3
+
     contacts = EMLIContactFactory.create_batch(size=batch_size, mine_region_code='NE')
 
     get_resp = test_client.get(
