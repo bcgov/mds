@@ -4,19 +4,27 @@ from datetime import datetime
 from tests.factories import EMLIContactFactory
 
 
-# def test_get_all_emli_contacts(test_client, db_session, auth_headers):
-#     batch_size = 3
-#     contacts = EMLIContactFactory.create_batch(size=batch_size)
+def test_get_all_emli_contacts(test_client, db_session, auth_headers):
+    batch_size = 3
+    #contacts = EMLIContactFactory.create_batch(size=batch_size)
+    contacts = list()
 
-#     get_resp = test_client.get(f'/EMLI-contacts', headers=auth_headers['full_auth_header'])
-#     get_data = json.loads(get_resp.data.decode())
-#     assert get_resp.status_code == 200
-#     assert len(get_data['records']) == batch_size
+    for i in range(batch_size-1):
+        contacts.append(EMLIContactFactory())
+
+    get_resp = test_client.get(f'/EMLI-contacts', headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == batch_size
 
 
 def test_get_emli_contacts_major_mines(test_client, db_session, auth_headers):
     batch_size = 3
-    contacts = EMLIContactFactory.create_batch(size=batch_size, major_mine=True)
+    # contacts = EMLIContactFactory.create_batch(size=batch_size, major_mine=True)
+    contacts = list()
+
+    for i in range(batch_size-1):
+        contacts.append(EMLIContactFactory(major_mine=True))
 
     get_resp = test_client.get(
         f'/EMLI-contacts?is_major_mine=true', headers=auth_headers['full_auth_header'])
@@ -28,7 +36,11 @@ def test_get_emli_contacts_major_mines(test_client, db_session, auth_headers):
 def test_get_emli_contacts_by_mine_region_code(test_client, db_session, auth_headers):
     batch_size = 3
 
-    contacts = EMLIContactFactory.create_batch(size=batch_size, mine_region_code='NE')
+    # contacts = EMLIContactFactory.create_batch(size=batch_size, mine_region_code='NE')
+    contacts = list()
+
+    for i in range(batch_size-1):
+        contacts.append(EMLIContactFactory(mine_region_code='NE'))
 
     get_resp = test_client.get(
         f'/EMLI-contacts/NE/contacts', headers=auth_headers['full_auth_header'])
