@@ -37,6 +37,18 @@ be:
 	@echo "+\n++ Building only backend ...\n+"
 	@docker-compose up -d backend
 
+testbe:
+	@echo "+\n++ Running tests in backend container ...\n+"
+	@docker-compose exec backend pytest
+
+testfe:
+	@echo "+\n++ Running tests in frontend container ...\n+"
+	@docker-compose exec frontend npm run test
+
+testms:
+	@echo "+\n++ Running tests in minespace container ...\n+"
+	@docker-compose exec minespace npm run test
+
 ms:
 	@echo "+\n++ Building minespace ...\n+"
 	@docker-compose up -d minespace
@@ -56,6 +68,14 @@ db:
 	@echo "+\n++ Performing postgres build ...\n+"
 	@docker-compose up -d postgres flyway
 
+cleandb:
+	@echo "+\n++ Cleaning database ...\n+"
+	@docker-compose stop postgres flyway
+	@docker-compose rm -f -v -s postgres flyway
+	@docker rmi -f mds_postgres mds_flyway
+	@docker volume rm mds_postgres_data -f
+	@docker-compose up -d postgres flyway
+
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
 	@./bin/registry-login.sh
@@ -65,6 +85,11 @@ mig:
 	@docker-compose stop flyway
 	@docker-compose build --force-rm --no-cache flyway
 	@docker-compose up --always-recreate-deps --force-recreate -d flyway
+
+#TODO: unstable command - need to review relationship checks among factories
+seeddb:
+	@echo "+\n++ Seeding db with factory data...\n+"
+	@docker-compose exec -d backend bash -c "flask create-data 25;"
 
 env:
 	@echo "+\n++ Creating boilerplate local dev .env files...\n+"

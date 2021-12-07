@@ -6,6 +6,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -17,6 +18,7 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
+    const isMajorMine = this.props.mine?.major_mine_ind;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <Menu.SubMenu
@@ -67,6 +69,13 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
+            {isMajorMine && !IN_PROD() && (
+              <Menu.Item key="pre-applications">
+                <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Pre-applications
+                </Link>
+              </Menu.Item>
+            )}
             <Menu.Item key="notices-of-work">
               <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                 Applications

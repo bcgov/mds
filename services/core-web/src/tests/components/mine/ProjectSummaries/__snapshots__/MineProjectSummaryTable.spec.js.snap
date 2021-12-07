@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineProjectSummaryTable renders properly 1`] = `
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "project_summary_id",
+        "render": [Function],
+        "sorter": true,
+        "title": "Project ID",
+      },
+      Object {
+        "dataIndex": "status_code",
+        "render": [Function],
+        "sorter": true,
+        "title": "Project stage",
+      },
+      Object {
+        "dataIndex": "update_timestamp",
+        "render": [Function],
+        "sorter": true,
+        "title": "Last updated",
+      },
+      Object {
+        "dataIndex": "documents",
+        "render": [Function],
+        "title": "Files",
+      },
+    ]
+  }
+  condition={true}
+  dataSource={
+    Array [
+      Object {
+        "documents": Array [],
+        "key": "81324623978135",
+        "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+        "projectSummary": Object {
+          "documents": Array [],
+          "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+          "project_summary_date": "2021-11-19",
+          "project_summary_description": "Sample description.",
+          "project_summary_guid": "81324623978135",
+          "status_code": "O",
+        },
+        "project_summary_id": "N/A",
+        "status_code": "O",
+        "update_timestamp": undefined,
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+    }
+  }
+/>
+`;
