@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Tabs, Typography } from "antd";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import { bindActionCreators } from "redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -36,6 +38,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  fetchEMLIContactsByRegion: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -60,6 +63,9 @@ export class MineDashboard extends Component {
     }
     this.props
       .fetchMineRecordById(id)
+      .then(({ data }) => {
+        this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
+      })
       .then(() => {
         this.setState({ isLoaded: true });
       })
@@ -165,6 +171,7 @@ export class MineDashboard extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
+  EMLIContactsByRegion: getEMLIContactsByRegion(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -173,6 +180,7 @@ const mapDispatchToProps = (dispatch) => ({
     {
       fetchMineRecordById,
       fetchPartyRelationships,
+      fetchEMLIContactsByRegion,
     },
     dispatch
   ),

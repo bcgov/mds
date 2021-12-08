@@ -52,6 +52,7 @@ const initialState = {
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
   explosivesPermitMagazineType: [],
+  EMLIContactTypes: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -148,6 +149,7 @@ export const getExplosivesPermitDocumentType = (state) =>
 export const getExplosivesPermitStatus = (state) => state[STATIC_CONTENT].explosivesPermitStatus;
 export const getExplosivesPermitMagazineType = (state) =>
   state[STATIC_CONTENT].explosivesPermitMagazineType;
+export const getEMLIContactTypes = (state) => state[STATIC_CONTENT].EMLIContactTypes;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

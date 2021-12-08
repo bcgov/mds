@@ -73,6 +73,9 @@ import {
   getProjectSummaryDocumentTypesHash,
   getDropdownProjectSummaryStatusCodes,
   getDropdownProjectSummaryDocumentTypes,
+  getEMLIContactTypes,
+  getEMLIContactTypesHash,
+  getDropdownEMLIContactTypes,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -479,5 +482,17 @@ describe("staticContentSelectors", () => {
     expect(getDropdownProjectSummaryStatusCodes(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_STATUS_CODES_DROPDOWN
     );
+  });
+
+  it("`getDropdownEMLIContactTypes` calls `staticContentReducer.getDropdownEMLIContactTypes`", () => {
+    expect(getDropdownEMLIContactTypes(mockState)).toEqual(Mock.EMLI_TYPE_CODES_DROPDOWN);
+  });
+
+  it("`getEMLIContactTypes` calls `staticContentReducer.getEMLIContactTypes`", () => {
+    expect(getEMLIContactTypes(mockState)).toEqual(mockState[STATIC_CONTENT].EMLIContactTypes);
+  });
+
+  it("`getEMLIContactTypesHash` calls `staticContentReducer.getEMLIContactTypesHash`", () => {
+    expect(getEMLIContactTypesHash(mockState)).toEqual(Mock.EMLI_TYPE_CODES_HASH);
   });
 });
