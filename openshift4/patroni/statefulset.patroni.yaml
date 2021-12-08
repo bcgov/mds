@@ -34,22 +34,18 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - env:
-            - name: PATRONI_KUBERNETES_USE_ENDPOINTS
-              value: 'true'
-            - name: PATRONI_KUBERNETES_POD_IP
+            - name: POD_IP
               valueFrom:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: status.podIP
-            - name: PATRONI_KUBERNETES_PORTS
-              value: '{[{"name": "postgresql", "port": 5432}]}'
             - name: PATRONI_KUBERNETES_NAMESPACE
               valueFrom:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
             - name: PATRONI_KUBERNETES_LABELS
-              value: '{"cluster-name": "${NAME}", "app.kubernetes.io/name": "patroni"}'
+              value: '{"cluster-name": "patroni", "app.kubernetes.io/name": "patroni"}'
             - name: PATRONI_SUPERUSER_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -116,23 +112,23 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 75m
-              memory: 256Mi
+              cpu: 250m
+              memory: 512Mi
             limits:
-              cpu: 75m
-              memory: 256Mi
+              cpu: 1
+              memory: 512Mi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          livenessProbe:
-            initialDelaySeconds: 45
-            timeoutSeconds: 5
-            failureThreshold: 2
-            periodSeconds: 10
-            exec:
-              command:
-                - /usr/share/scripts/patroni/health_check.sh
+          # livenessProbe:
+          #   initialDelaySeconds: 300
+          #   timeoutSeconds: 5
+          #   failureThreshold: 2
+          #   periodSeconds: 10
+          #   exec:
+          #     command:
+          #       - /usr/share/scripts/patroni/health_check.sh
           readinessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: 45
             timeoutSeconds: 5
             failureThreshold: 4
             periodSeconds: 10
