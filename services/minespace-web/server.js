@@ -41,6 +41,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_url: process.env.KEYCLOAK_URL,
     siteminder_url: process.env.SITEMINDER_URL,
     environment: process.env.NODE_ENV,
+    vcauthn_pres_req_conf_id: process.env.VCAUTHN_PRES_REQ_CONF_ID
   });
 });
 
