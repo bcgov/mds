@@ -192,6 +192,12 @@ const columns = [
     render: (text, record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
   },
   {
+    title: "exemption_fee_status_code",
+    dataIndex: "exemption_fee_status_code",
+    key: "exemption_fee_status_code",
+    render: (text) => <div title="exemption_fee_status_code">{text}</div>,
+  },
+  {
     title: "Status",
     dataIndex: "status",
     key: "status",
@@ -567,6 +573,7 @@ const transformRowData = (
     key: permit.permit_guid,
     lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
+    exemption_fee_status_code: permit.exemption_fee_status_code,
     firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permittee: permit.current_permittee,
     permit_amendments: permit.permit_amendments.filter(
