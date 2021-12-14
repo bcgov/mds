@@ -3,18 +3,23 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: patroni
-    cluster-name: patroni
-  name: patroni-master
+    app: mds-patroni
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: mds-patroni
+    app.kubernetes.io/managed-by: template
+    app.kubernetes.io/name: patroni
+    cluster-name: mds-patroni
+    phase: deploy
+  name: mds-patroni-master
 spec:
   ports:
-    - port: 5432
-      protocol: TCP
-      targetPort: 5432
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
   selector:
-    cluster-name: patroni
-    role: master
     app.kubernetes.io/name: patroni
+    cluster-name: mds-patroni
+    role: master
   sessionAffinity: None
   type: ClusterIP
 status:

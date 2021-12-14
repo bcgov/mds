@@ -1,162 +1,164 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  creationTimestamp: null
   labels:
-    app: patroni
-    cluster-name: patroni
-  name: patroni
+    app: mds-patroni
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: mds-patroni
+    app.kubernetes.io/managed-by: template
+    app.kubernetes.io/name: patroni
+    cluster-name: mds-patroni
+    phase: deploy
+  name: mds-patroni
 spec:
   podManagementPolicy: OrderedReady
   replicas: 3
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      statefulset: patroni
-  serviceName: patroni
+      statefulset: mds-patroni
+  serviceName: mds-patroni
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: patroni
-        statefulset: patroni
-        cluster-name: patroni
+        app: mds-patroni
         app.kubernetes.io/name: patroni
+        cluster-name: mds-patroni
+        statefulset: mds-patroni
     spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: statefulset
-                    operator: In
-                    values:
-                      - patroni
-              topologyKey: "kubernetes.io/hostname"
+          - labelSelector:
+              matchExpressions:
+              - key: statefulset
+                operator: In
+                values:
+                - mds-patroni
+            topologyKey: kubernetes.io/hostname
       containers:
-        - env:
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: status.podIP
-            - name: PATRONI_KUBERNETES_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: PATRONI_KUBERNETES_LABELS
-              value: '{"cluster-name": "patroni", "app.kubernetes.io/name": "patroni"}'
-            - name: PATRONI_SUPERUSER_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: superuser-username
-                  name: patroni-creds
-            - name: PATRONI_SUPERUSER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: superuser-password
-                  name: patroni-creds
-            - name: PATRONI_REPLICATION_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: replication-username
-                  name: patroni-creds
-            - name: PATRONI_REPLICATION_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: replication-password
-                  name: patroni-creds
-            - name: APP_USER
-              valueFrom:
-                secretKeyRef:
-                  key: app-db-username
-                  name: patroni-creds
-            - name: APP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: app-db-password
-                  name: patroni-creds
-            - name: APP_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: app-db-name
-                  name: patroni-creds
-            - name: PATRONI_SCOPE
-              value: patroni
-            - name: PATRONI_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.name
-            - name: PATRONI_LOG_LEVEL
-              value: WARNING
-            - name: PATRONI_POSTGRESQL_DATA_DIR
-              value: /home/postgres/pgdata/pgroot/data
-            - name: PATRONI_POSTGRESQL_PGPASS
-              value: /tmp/pgpass
-            - name: PATRONI_POSTGRESQL_LISTEN
-              value: 0.0.0.0:5432
-            - name: PATRONI_RESTAPI_LISTEN
-              value: 0.0.0.0:8008
-          # TODO: upgrade to 13/14?
-          image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
-          # Because we are using image reference to a tag, we need to always
-          # pull the image otherwise we end up with outdated/out-of-sync
-          # image depending on the node where it is running
-          imagePullPolicy: Always
-          name: patroni-postgresql
-          ports:
-            - containerPort: 8008
-              protocol: TCP
-            - containerPort: 5432
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
-            limits:
-              cpu: 1
-              memory: 512Mi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          # livenessProbe:
-          #   initialDelaySeconds: 300
-          #   timeoutSeconds: 5
-          #   failureThreshold: 2
-          #   periodSeconds: 10
-          #   exec:
-          #     command:
-          #       - /usr/share/scripts/patroni/health_check.sh
-          readinessProbe:
-            initialDelaySeconds: 45
-            timeoutSeconds: 5
-            failureThreshold: 4
-            periodSeconds: 10
-            exec:
-              command:
-                - /usr/share/scripts/patroni/health_check.sh
-          volumeMounts:
-            - mountPath: /home/postgres/pgdata
-              name: patroni-postgresql
+      - env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: PATRONI_KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: PATRONI_KUBERNETES_LABELS
+          value: '{"cluster-name": "mds-patroni", "app.kubernetes.io/name": "patroni"}'
+        - name: PATRONI_SUPERUSER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: superuser-username
+              name: mds-patroni-creds
+        - name: PATRONI_SUPERUSER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: superuser-password
+              name: mds-patroni-creds
+        - name: PATRONI_REPLICATION_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: replication-username
+              name: mds-patroni-creds
+        - name: PATRONI_REPLICATION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: replication-password
+              name: mds-patroni-creds
+        - name: APP_USER
+          valueFrom:
+            secretKeyRef:
+              key: app-db-username
+              name: mds-patroni-creds
+        - name: APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: app-db-password
+              name: mds-patroni-creds
+        - name: APP_DATABASE
+          valueFrom:
+            secretKeyRef:
+              key: app-db-name
+              name: mds-patroni-creds
+        - name: PATRONI_SCOPE
+          value: mds-patroni
+        - name: PATRONI_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: PATRONI_LOG_LEVEL
+          value: WARNING
+        - name: PATRONI_POSTGRESQL_DATA_DIR
+          value: /home/postgres/pgdata/pgroot/data
+        - name: PATRONI_POSTGRESQL_PGPASS
+          value: /tmp/pgpass
+        - name: PATRONI_POSTGRESQL_LISTEN
+          value: 0.0.0.0:5432
+        - name: PATRONI_RESTAPI_LISTEN
+          value: 0.0.0.0:8008
+        image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
+        imagePullPolicy: Always
+        name: postgresql
+        ports:
+        - containerPort: 8008
+          protocol: TCP
+        - containerPort: 5432
+          protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: 300
+          timeoutSeconds: 5
+          failureThreshold: 4
+          periodSeconds: 10
+          exec:
+            command:
+              - /usr/share/scripts/patroni/health_check.sh
+        readinessProbe:
+          exec:
+            command:
+            - /usr/share/scripts/patroni/health_check.sh
+          failureThreshold: 4
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /home/postgres/pgdata
+          name: postgresql
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: patroni
+      serviceAccountName: mds-patroni
       terminationGracePeriodSeconds: 0
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
-    - metadata:
-        annotations:
-          volume.beta.kubernetes.io/storage-class: netapp-file-standard
-        labels:
-          app: patroni
-        name: patroni-postgresql
-      spec:
-        storageClassName: netapp-file-standard
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
+  - metadata:
+      annotations:
+        volume.beta.kubernetes.io/storage-class: netapp-file-standard
+      labels:
+        app: mds-patroni
+      name: postgresql
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: netapp-file-standard
