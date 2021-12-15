@@ -1,9 +1,9 @@
 ALTER TABLE now_submissions.application
 ADD COLUMN IF NOT EXISTS maxannualcubicmeters   numeric,
 ADD COLUMN IF NOT EXISTS proposedstartmonth     varchar(100),
-ADD COLUMN IF NOT EXISTS proposedstartday       varchar(300),
-ADD COLUMN IF NOT EXISTS proposedendmonth       varchar(300),
-ADD COLUMN IF NOT EXISTS proposedendday         varchar(300),
+ADD COLUMN IF NOT EXISTS proposedstartday       varchar(100),
+ADD COLUMN IF NOT EXISTS proposedendmonth       varchar(100),
+ADD COLUMN IF NOT EXISTS proposedendday         varchar(100),
 ADD COLUMN IF NOT EXISTS minepurpose            varchar(100);
 
 
