@@ -128,6 +128,7 @@ class Application(Base):
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
     nameofproperty = db.Column(db.String)
+    minepurpose = db.Column(db.String)
     tenurenumbers = db.Column(db.String)
     crowngrantlotnumbers = db.Column(db.String)
     sitedirections = db.Column(db.String)
@@ -135,8 +136,14 @@ class Application(Base):
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
     describeexplosivetosite = db.Column(db.String)
+
     proposedstartdate = db.Column(db.DateTime)
     proposedenddate = db.Column(db.DateTime)
+    proposedstartmonth = db.Column(db.String)
+    proposedstartday = db.Column(db.String)
+    proposedendmonth = db.Column(db.String)
+    proposedendday = db.Column(db.String)
+
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
     landlegaldesc = db.Column(db.String)
@@ -305,7 +312,9 @@ class Application(Base):
     hasproposedcrossings = db.Column(db.String)
     proposedcrossingschanges = db.Column(db.String)
     cleanoutdisposalplan = db.Column(db.String)
+
     maxannualtonnage = db.Column(db.Numeric(14, 0))
+    maxannualcubicmeters = db.Column(db.Numeric)
     proposedproduction = db.Column(db.Numeric(14, 0))
     isaccessgated = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
