@@ -24,7 +24,7 @@ spec:
                 - '-c'
                 - >-
                   psql -d $DB_NAME -h $DB_HOST -c "REFRESH MATERIALIZED VIEW
-                  CONCURRENTLY $VIEW"
+                  $VIEW"
               env:
                 - name: DB_USER
                   valueFrom:
@@ -63,6 +63,7 @@ spec:
               imagePullPolicy: Always
           restartPolicy: OnFailure
           terminationGracePeriodSeconds: 30
+          activeDeadlineSeconds: 1200
           dnsPolicy: ClusterFirst
           securityContext: {}
           schedulerName: default-scheduler
