@@ -10,7 +10,7 @@ on:
       - .github/workflows/tusd.yaml
 
 env:
-  INITAL_TAG: latest
+  INITIAL_TAG: latest
   TAG: dev
   NAME: tusd
   CONTEXT: services/tusd/
