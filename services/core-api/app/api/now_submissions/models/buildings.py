@@ -13,6 +13,8 @@ class Buildings(Base):
     structure = db.Column(db.String)
     disturbedarea = db.Column(db.Numeric)
     timbervolume = db.Column(db.Numeric)
+    width = db.Column(db.Numeric)
+    length = db.Column(db.Numeric)
 
     def __repr__(self):
         return '<Buildings %r>' % self.id

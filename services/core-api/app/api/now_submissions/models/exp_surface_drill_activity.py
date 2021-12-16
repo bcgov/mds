@@ -12,6 +12,8 @@ class ExpSurfaceDrillActivity(Base):
     numberofsites = db.Column(db.Integer)
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
+    width = db.Column(db.Numeric)
+    length = db.Column(db.Numeric)
 
     def __repr__(self):
         return '<ExpSurfaceDrillActivity %r>' % self.id
