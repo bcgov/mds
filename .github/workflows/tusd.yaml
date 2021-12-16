@@ -1,18 +1,14 @@
 name: Build tusd
 
 on: 
+  pull_request:
   push:
     branches:
       - develop
     path:
       - migrations/**
       - .github/workflows/tusd.yaml
-  pull_request:
-    branches:
-      - develop
-    path:
-      - migrations/**
-      - .github/workflows/tusd.yaml
+
 env:
   INITAL_TAG: latest
   TAG: dev
