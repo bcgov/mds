@@ -1,0 +1,137 @@
+name: Build tusd
+
+on: 
+  push:
+    branches:
+      - develop
+    path:
+      - migrations/**
+      - .github/workflows/tusd.yaml
+
+env:
+  INITAL_TAG: latest
+  TAG: dev
+  NAME: tusd
+  CONTEXT: migrations/services/tusd/
+
+jobs:
+  build-tusd:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Build n Tag
+        run: |
+          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### OLD FILE with build 'instructions'
+# Note: this is for OpenShift, NOT GitHub actions. So this will not work 
+
+kind: Template
+apiVersion: v1
+metadata:
+name: mds-tusd-bc
+creationTimestamp: null
+parameters:
+- name: NAME
+displayName: Name
+description: The name assigned to all of the objects defined in this template.
+required: true
+value: tusd
+- name: SOURCE_REPOSITORY_URL
+displayName: Git Repo URL
+description: The URL to the Git repository.
+required: true
+value: https://github.com/bcgov/mds.git
+- name: TAG
+value: dev
+- name: SOURCE_REPOSITORY_REF
+displayName: Git Reference
+description: The git reference or branch.
+required: true
+value: master
+- name: SOURCE_CONTEXT_DIR
+displayName: Source Context Directory
+description: The source context directory.
+required: false
+value: openshift4/docker-images/tusd
+objects:
+- kind: ImageStream
+apiVersion: v1
+metadata:
+name: ${NAME}-base
+creationTimestamp: null
+labels:
+shared: "true"
+spec:
+lookupPolicy:
+local: true
+tags:
+- name: v1.3.0
+annotations: null
+from:
+kind: DockerImage
+name: docker.io/tusproject/tusd:v1.3.0
+importPolicy: {}
+referencePolicy:
+type: Local
+- kind: ImageStream
+apiVersion: v1
+metadata:
+name: ${NAME}
+creationTimestamp: null
+labels:
+shared: "true"
+spec:
+lookupPolicy:
+local: false
+tags: []
+- kind: BuildConfig
+apiVersion: v1
+metadata:
+name: ${NAME}
+labels:
+app: ${NAME}
+buildconfig: ${NAME}
+spec:
+successfulBuildsHistoryLimit: 5
+failedBuildsHistoryLimit: 5
+source:
+type: Git
+git:
+uri: ${SOURCE_REPOSITORY_URL}
+ref: ${SOURCE_REPOSITORY_REF}
+contextDir: ${SOURCE_CONTEXT_DIR}
+strategy:
+type: Docker
+dockerStrategy:
+from:
+kind: ImageStreamTag
+name: tusd-base:v1.3.0
+output:
+to:
+kind: ImageStreamTag
+name: ${NAME}:${TAG}
+completionDeadlineSeconds: 1440
+triggers:
+- type: ImageChange
