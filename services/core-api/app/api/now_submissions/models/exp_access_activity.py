@@ -10,6 +10,8 @@ class ExpAccessActivity(Base):
     messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
     type = db.Column(db.String)
     length = db.Column(db.Numeric(14, 2))
+    lengthinmeters = db.Column(db.Numeric)
+    width = db.Column(db.Numeric)
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
     numberofsites = db.Column(db.Numeric)

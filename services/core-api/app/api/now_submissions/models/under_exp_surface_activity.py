@@ -12,6 +12,8 @@ class UnderExpSurfaceActivity(Base):
     quantity = db.Column(db.Integer)
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
+    width = db.Column(db.Numeric)
+    length = db.Column(db.Numeric)
 
     def __repr__(self):
         return '<UnderExpSurfaceActivity %r>' % self.id

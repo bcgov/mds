@@ -2799,6 +2799,33 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
+  EMLIContactTypes: [
+    {
+      emli_contact_type_code: "SHI",
+      description: "Senior Health, Safety and Environment Inspector",
+      active_ind: true,
+    },
+    {
+      emli_contact_type_code: "SPI",
+      description: "Senior Permitting Inspector",
+      active_ind: true,
+    },
+    {
+      emli_contact_type_code: "ROE",
+      description: "Regional Office",
+      active_ind: true,
+    },
+    {
+      emli_contact_type_code: "RDR",
+      description: "Regional Director",
+      active_ind: true,
+    },
+    {
+      emli_contact_type_code: "HSI",
+      description: "Health and Safety Inspector",
+      active_ind: true,
+    },
+  ],
   mineDisturbanceOptions: [
     {
       mine_disturbance_code: "SUR",
@@ -6300,6 +6327,47 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN = [
     isActive: true,
   },
 ];
+
+export const EMLI_TYPE_CODES_DROPDOWN = [
+  {
+    value: "HSI",
+    label: "Health and Safety Inspector",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "RDR",
+    label: "Regional Director",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "ROE",
+    label: "Regional Office",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "SHI",
+    label: "Senior Health, Safety and Environment Inspector",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "SPI",
+    label: "Senior Permitting Inspector",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const EMLI_TYPE_CODES_HASH = {
+  HSI: "Health and Safety Inspector",
+  RDR: "Regional Director",
+  ROE: "Regional Office",
+  SHI: "Senior Health, Safety and Environment Inspector",
+  SPI: "Senior Permitting Inspector",
+};
 
 export const MINE_EPIC_INFO = {
   records: {

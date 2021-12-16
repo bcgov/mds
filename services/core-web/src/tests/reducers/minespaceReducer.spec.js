@@ -7,6 +7,8 @@ import {
 const baseExpectedValue = {
   minespaceUsers: [],
   minespaceUserMines: [],
+  EMLIContacts: [],
+  EMLIContactsByRegion: [],
 };
 
 const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
