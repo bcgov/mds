@@ -567,7 +567,6 @@ const transformRowData = (
     key: permit.permit_guid,
     lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    exemption_fee_status_code: permit.exemption_fee_status_code,
     firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permittee: permit.current_permittee,
     permit_amendments: permit.permit_amendments.filter(
