@@ -30,7 +30,7 @@ FROM (Select p.permit_guid as permit_guid, p.permit_id, mpx.mine_guid as mine_gu
 left join mine_type mt on mt.permit_guid = p.permit_guid 
 join mine_permit_xref mpx on p.permit_id = mpx.permit_id
 where permit_no like 'M-%' and exemption_fee_status_code is null) as mineral_mine_type_insert;
--- update 
+-- update Mineral exemption_fee_status_code
 update permit set exemption_fee_status_code = 'MIM' where permit_no like 'M-%' and exemption_fee_status_code is null;
 
 
