@@ -192,12 +192,6 @@ const columns = [
     render: (text, record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
   },
   {
-    title: "exemption_fee_status_code",
-    dataIndex: "exemption_fee_status_code",
-    key: "exemption_fee_status_code",
-    render: (text) => <div title="exemption_fee_status_code">{text}</div>,
-  },
-  {
     title: "Status",
     dataIndex: "status",
     key: "status",
