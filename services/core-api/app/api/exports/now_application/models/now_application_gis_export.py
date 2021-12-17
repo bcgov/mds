@@ -28,7 +28,6 @@ class NowApplicationGisExport(Base):
     is_applicant_individual_or_company = db.Column(db.String)
     relationship_to_applicant = db.Column(db.String)
     tenure_number = db.Column(db.String)
-    description_of_land = db.Column(db.String)
     term_of_application = db.Column(db.String)
     proposed_start_date = db.Column(db.String)
     proposed_end_date = db.Column(db.String)
@@ -39,17 +38,17 @@ class NowApplicationGisExport(Base):
     has_key_for_inspector = db.Column(db.String)
 
     # Notice of Work Activity Disturbance Data
-    now_total_disturbed_area = db.Column(db.String)
-    now_activity_cut_lines_polarization_survey_total_disturbed_area = db.Column(db.String)
-    now_activity_settling_pond_total_disturbed_area = db.Column(db.String)
-    now_activity_exploration_surface_drilling_total_disturbed_area = db.Column(db.String)
-    now_activity_sand_gravel_quarry_operation_total_disturbed_area = db.Column(db.String)
-    now_activity_exploration_access_total_disturbed_area = db.Column(db.String)
-    now_activity_underground_exploration_total_disturbed_area = db.Column(db.String)
-    now_activity_camp_total_disturbed_area = db.Column(db.String)
-    now_activity_mechanical_trenching_total_disturbed_area = db.Column(db.String)
-    now_activity_surface_bulk_sample_total_disturbed_area = db.Column(db.String)
-    now_activity_placer_operation_total_disturbed_area = db.Column(db.String)
+    total_disturbed_area = db.Column(db.String)
+    activity_cut_lines_polarization_survey_total_disturbed_area = db.Column(db.String)
+    activity_settling_pond_total_disturbed_area = db.Column(db.String)
+    activity_exploration_surface_drilling_total_disturbed_area = db.Column(db.String)
+    activity_sand_gravel_quarry_operation_total_disturbed_area = db.Column(db.String)
+    activity_exploration_access_total_disturbed_area = db.Column(db.String)
+    activity_underground_exploration_total_disturbed_area = db.Column(db.String)
+    activity_camp_total_disturbed_area = db.Column(db.String)
+    activity_mechanical_trenching_total_disturbed_area = db.Column(db.String)
+    activity_surface_bulk_sample_total_disturbed_area = db.Column(db.String)
+    activity_placer_operation_total_disturbed_area = db.Column(db.String)
 
     # Notice of Work Progress
     now_progress_consultation_start_date = db.Column(db.String)
@@ -77,7 +76,10 @@ class NowApplicationGisExport(Base):
     # Permittee
     permittee_first_name = db.Column(db.String)
     permittee_name = db.Column(db.String)
-    permittee_phone_number = db.Column(db.String)
+    permittee_primary_phone_no = db.Column(db.String)
+    permittee_secondary_phone_no = db.Column(db.String)
+    permittee_tertiary_phone_no = db.Column(db.String)
+
     permittee_party_guid = db.Column(db.String)
 
     # Mine General
@@ -88,7 +90,6 @@ class NowApplicationGisExport(Base):
     mine_region_description = db.Column(db.String)
     mine_latitude = db.Column(db.String)
     mine_longitude = db.Column(db.String)
-    mine_manager_name = db.Column(db.String)
     mine_date = db.Column(db.String)
     status_date = db.Column(db.String)
     major_mine_ind = db.Column(db.String)
