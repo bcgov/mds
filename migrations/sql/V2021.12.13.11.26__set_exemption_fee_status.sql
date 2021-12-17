@@ -1,8 +1,3 @@
--- All closed permits are exempt, drafts will be updated once issued.
-update permit
-set exemption_fee_status_code = 'Y'
-where permit.permit_status_code in ('C', 'D') and exemption_fee_status_code is null;
-
 -- All Placer permits are exempt.
 --  create Placer mine_type
 INSERT INTO mine_type(mine_guid, mine_tenure_type_code, create_user, update_user, active_ind, permit_guid) SELECT placer_mine_type_insert.mine_guid, 'PLR', 'system-mds', 'system-mds', true, placer_mine_type_insert.permit_guid 
@@ -76,4 +71,9 @@ $$LANGUAGE plpgsql;
 
 -- update the exemption fee status for exploration permits
 -- Exploration with ONLY surface, are exempt.
-update permit set exemption_fee_status_code = 'Y' where permit_no like 'X-%' and exemption_fee_status_code is null;
+update permit set exemption_fee_status_code = 'Y' where permit_no like '%X-%' and exemption_fee_status_code is null;
+
+-- All closed permits are exempt, drafts will be updated once issued.
+update permit
+set exemption_fee_status_code = 'Y'
+where permit.permit_status_code in ('C', 'D');
