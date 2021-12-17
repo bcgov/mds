@@ -64,6 +64,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         order_by='asc(PermitConditions.display_order)')
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
+    is_generated_in_core = db.Column(db.Boolean)
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.
@@ -174,7 +175,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                security_received_date=None,
                security_not_required=None,
                security_not_required_reason=None,
-               add_to_session=True):
+               add_to_session=True,
+               is_generated_in_core=False):
         new_pa = cls(
             permit_id=permit.permit_id,
             mine_guid=mine.mine_guid,
@@ -191,7 +193,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             now_application_guid=now_application_guid,
             security_received_date=security_received_date,
             security_not_required=security_not_required,
-            security_not_required_reason=security_not_required_reason)
+            security_not_required_reason=security_not_required_reason,
+            is_generated_in_core=is_generated_in_core)
         permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)

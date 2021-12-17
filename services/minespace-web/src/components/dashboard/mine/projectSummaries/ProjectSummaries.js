@@ -13,9 +13,7 @@ import {
   createProjectSummary,
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
-import {
-  getProjectSummaryStatusCodesHash,
-} from "@common/selectors/staticContentSelectors";
+import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
@@ -48,28 +46,90 @@ export class ProjectSummaries extends Component {
         this.setState({ isLoaded: true, mine: this.props.mines[id] });
       });
     });
-  };
+  }
 
   render() {
     return (
       <Row>
         <Col span={24}>
-          <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
-            <Button
-              style={{ display: "inline", float: "right" }}
-              type="primary"
-            >
-              <PlusCircleFilled />
-              Create a new Project Summary
-            </Button>
-          </Link>
-          <Typography.Title level={4}>Project Summaries</Typography.Title>
+          <Typography.Title level={4}>Application Submissions</Typography.Title>
           <Typography.Paragraph>
-            This table displays all of the&nbsp;
+            A&nbsp;
             <Typography.Text className="color-primary" strong>
-              project summaries&nbsp;
+              project summary&nbsp;
             </Typography.Text>
-            associated with this mine.
+            is a high level overview of a production mining project used for assessment prior to
+            applying for a new or amending an existing production mineral or coal mining permit
+            issued under the Mines Act.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            If you are proposing induced polarization surveys or exploration drilling within the
+            permit mine area of an operating production mineral or coal mine (
+            <a
+              href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HSRC
+            </a>
+            &nbsp;10.1.2), please submit a&nbsp;
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-deemed-authorizations"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Notification of Deemed Authorization
+            </a>
+            &nbsp;application through&nbsp;
+            <a
+              href="https://portal.nrs.gov.bc.ca/web/client/home"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              FrontCounter BC
+            </a>
+            .
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            If you are proposing exploration work (
+            <a
+              href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HSRC
+            </a>
+            &nbsp;9.1.1) outside of the permit mine area of an operating production mineral or coal
+            mine that does not consist of an expansion to the production mining area, please submit
+            a Notice of Work application through{" "}
+            <a
+              href="https://portal.nrs.gov.bc.ca/web/client/home"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              FrontCounter BC
+            </a>
+            &nbsp;to amend your MX or CX permit.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            If you are unsure how to proceed, please email the Major Mines Office at&nbsp;
+            <a href="mailto:permrecl@gov.bc.ca">permrecl@gov.bc.ca</a>&nbsp;or contact the&nbsp;
+            <a
+              href=" https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/office-chief-inspector"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Regional Mines Office
+            </a>
+            &nbsp;closest to your project location.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
+              <Button type="primary">
+                <PlusCircleFilled />
+                Start a new application
+              </Button>
+            </Link>
           </Typography.Paragraph>
           <ProjectSummariesTable
             projectSummaries={this.props.projectSummaries}

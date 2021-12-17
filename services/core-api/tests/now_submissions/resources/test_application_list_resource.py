@@ -741,7 +741,7 @@ class TestGetApplicationListResource:
             headers=auth_headers["nros_vfcbc_auth_header"])
         post_data = json.loads(post_resp.data.decode())
 
-        assert post_resp.status_code == 201, post_resp.response
+        assert post_resp.status_code == 200 or post_resp.status_code == 201, post_resp.response
         assert post_data["messageid"] == NOW_APPLICATION_DATA["messageid"]
         assert post_data["application_guid"] is not None
         assert post_data["mine_guid"] == str(mine.mine_guid)

@@ -144,4 +144,4 @@ class ApplicationListResource(Resource, UserMixin):
         current_app.logger.debug('Attempting to Save')
         application.save()
 
-        return application, 201
+        return application

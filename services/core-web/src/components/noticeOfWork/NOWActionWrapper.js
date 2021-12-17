@@ -47,9 +47,10 @@ export class NOWActionWrapper extends Component {
 
   componentDidMount() {
     // allow all actions if component is being used on the Admin Dashboard (ie Standard PErmit Condition Management)
-    const isAdminDashboard = this.props.location.pathname.includes(
-      "admin/permit-condition-management"
-    );
+    const isAdminRoute = this.props.location.pathname.includes("admin/permit-condition-management");
+    const isEditPermitConditions = this.props.location.pathname.includes("edit-permit-conditions");
+    const isAdminDashboard = isAdminRoute || isEditPermitConditions;
+
     if (isAdminDashboard) {
       this.setState({ disableTab: false, isAdminDashboard });
     } else {
@@ -76,9 +77,10 @@ export class NOWActionWrapper extends Component {
       nextProps.progress[this.props.tab],
       this.props.progress[this.props.tab]
     );
-    const isAdminDashboard = nextProps.location.pathname.includes(
-      "admin/permit-condition-management"
-    );
+    const isAdminRoute = this.props.location.pathname.includes("admin/permit-condition-management");
+    const isEditPermitConditions = this.props.location.pathname.includes("edit-permit-conditions");
+    const isAdminDashboard = isAdminRoute || isEditPermitConditions;
+
     if (!isAdminDashboard) {
       const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
         this.props.noticeOfWork.application_type_code
@@ -92,17 +94,17 @@ export class NOWActionWrapper extends Component {
 
   handleDisableTab = (tab, progress, isDisabledReviewButton) => {
     if (tab) {
-      //application_progress_status_code does not have end_date. Status:In Progress
+      // application_progress_status_code does not have end_date. Status:In Progress
       if (!isEmpty(progress[tab]) && !progress[tab].end_date) {
         this.setState({ disableTab: false });
       }
-      //DisabledReviewButton applies for CON/REF to show CON/REF package buttons in not started state.
-      //Otherwise, if not CON/REF tab, do not show buttons.
-      //application_progress_status_code does not exist. Status:Not started
+      // DisabledReviewButton applies for CON/REF to show CON/REF package buttons in not started state.
+      // Otherwise, if not CON/REF tab, do not show buttons.
+      // application_progress_status_code does not exist. Status:Not started
       else if (!isDisabledReviewButton && isEmpty(progress[tab])) {
         this.setState({ disableTab: true });
       }
-      //application_progress_status_code has end date. Status: Complete
+      // application_progress_status_code has end date. Status: Complete
       else if (!isEmpty(progress[tab]) && progress[tab].end_date) {
         this.setState({ disableTab: true });
       }

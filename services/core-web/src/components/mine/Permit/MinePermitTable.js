@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter, Link } from "react-router-dom";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import {
   MinusSquareFilled,
@@ -9,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
@@ -25,6 +27,7 @@ import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
+import * as route from "@/constants/routes";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -52,6 +55,12 @@ const propTypes = {
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditSitePropertiesModal: PropTypes.func.isRequired,
   openViewConditionModal: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: {
+      mine_guid: PropTypes.string,
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -133,6 +142,34 @@ const renderVerifyCredentials = (text, record) => {
           </button>
         </div>
       </Popconfirm>
+    </AuthorizationWrapper>
+  );
+};
+
+const renderEditPermitConditions = (text, record) => {
+  return (
+    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+      <div className="custom-menu-item">
+        <Link
+          to={route.EDIT_PERMIT_CONDITIONS.dynamicRoute(
+            record.mineGuid,
+            record.permit_amendment_guid
+          )}
+        >
+          <button
+            type="button"
+            className="full add-permit-dropdown-button"
+            style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.65)" }}
+          >
+            <img
+              src={EDIT_OUTLINE_VIOLET}
+              alt="Edit"
+              className="icon-sm padding-sm--right violet"
+            />
+            Edit Permit Conditions
+          </button>
+        </Link>
+      </div>
     </AuthorizationWrapper>
   );
 };
@@ -475,11 +512,14 @@ const childColumns = [
               </button>
             </div>
           </Menu.Item>
-          <Menu.Item key="2">
+          {!record.is_generated_in_core && (
+            <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
+          )}
+          <Menu.Item key="3">
             <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
           </Menu.Item>
-          <Menu.Item key="3">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
-          <Menu.Item key="4">{renderVerifyCredentials(text, record)}</Menu.Item>
+          <Menu.Item key="4">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
+          <Menu.Item key="5">{renderVerifyCredentials(text, record)}</Menu.Item>
         </Menu>
       );
       return (
@@ -558,7 +598,8 @@ const transformChildRowData = (
   handleDeletePermitAmendment,
   handlePermitAmendmentIssueVC,
   permitAmendmentTypeOptionsHash,
-  openViewConditionModal
+  openViewConditionModal,
+  mineGuid
 ) => ({
   amendmentNumber,
   isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
@@ -583,6 +624,7 @@ const transformChildRowData = (
     documentManagerGuid: doc.document_manager_guid,
     filename: doc.document_name,
   })),
+  mineGuid,
   ...amendment,
 });
 
@@ -619,7 +661,8 @@ export const MinePermitTable = (props) => {
         props.handleDeletePermitAmendment,
         props.handlePermitAmendmentIssueVC,
         props.permitAmendmentTypeOptionsHash,
-        props.openViewConditionModal
+        props.openViewConditionModal,
+        props.match.params.id
       )
     );
 
@@ -673,4 +716,4 @@ const mapStateToProps = (state) => ({
 MinePermitTable.propTypes = propTypes;
 MinePermitTable.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(MinePermitTable);
+export default withRouter(connect(mapStateToProps)(MinePermitTable));

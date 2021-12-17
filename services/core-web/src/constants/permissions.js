@@ -19,3 +19,4 @@ export const EDIT_SECURITIES = "role_edit_securities";
 export const EDIT_HISTORICAL_AMENDMENTS = "role_edit_historical_amendments";
 export const ADMINISTRATIVE_USERS = "role_mds_administrative_users";
 export const EDIT_NOW_DATES = "role_edit_now_dates";
+export const EDIT_EMLI_CONTACTS = "role_edit_emli_contacts";

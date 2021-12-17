@@ -14,6 +14,7 @@ import * as ApplicationPageFromRoute from "@/customPropTypes/applicationPageFrom
 import * as Securities from "@/customPropTypes/securities";
 import * as ExplosivePermits from "@/customPropTypes/explosivesPermit";
 import * as ExternalAuthorizations from "@/customPropTypes/externalAuthorizations";
+import * as ProjectSummaries from "@/customPropTypes/projectSummaries";
 
 export default {
   ...CommonTypes,
@@ -31,4 +32,5 @@ export default {
   ...Securities,
   ...ExplosivePermits,
   ...ExternalAuthorizations,
+  ...ProjectSummaries,
 };

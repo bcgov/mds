@@ -104,12 +104,16 @@ SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
         'quantity': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
     })
 
 SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
     'type': fields.String,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
+    'length': fields.Integer,
+    'width': fields.Integer,
 })
 
 UNDER_EXP_NEW_ACTIVITY = api.model(
@@ -148,6 +152,8 @@ EXP_ACCESS_ACTIVITY = api.model(
     'EXP_ACCESS_ACTIVITY', {
         'type': fields.String,
         'length': fields.Arbitrary,
+        'lengthinmeters': fields.Integer,
+        'width': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
         'numberofsites': fields.Arbitrary,
@@ -159,6 +165,8 @@ EXP_SURFACE_DRILL_ACTIVITY = api.model(
         'numberofsites': fields.Arbitrary,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
     })
 
 MECH_TRENCHING_ACTIVITY = api.model(
@@ -200,6 +208,8 @@ CAMP_ACTIVITY = api.model(
         'quantityofwater': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
     })
 
 BUILDING_ACTIVITY = api.model(
@@ -209,12 +219,16 @@ BUILDING_ACTIVITY = api.model(
         'structure': fields.String,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
     })
 
 STAGING_AREA_ACTIVITY = api.model('STAGING_AREA_ACTIVITY', {
     'name': fields.String,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
+    'length': fields.Integer,
+    'width': fields.Integer,
 })
 
 APPLICATION = api.model(
@@ -238,6 +252,7 @@ APPLICATION = api.model(
         'typeofpermit': fields.String,
         'typeofapplication': fields.String,
         'minenumber': fields.String,
+        'minepurpose': fields.String,
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
         'nameofproperty': fields.String,
@@ -250,6 +265,10 @@ APPLICATION = api.model(
         'describeexplosivetosite': fields.String,
         'proposedstartdate': fields.DateTime,
         'proposedenddate': fields.DateTime,
+        'proposedstartmonth': fields.String,
+        'proposedstartday': fields.String,
+        'proposedendmonth': fields.String,
+        'proposedendday': fields.String,
         'yearroundseasonal': fields.String,
         'landcommunitywatershed': fields.String,
         'landprivate': fields.String,
@@ -389,6 +408,7 @@ APPLICATION = api.model(
         'proposedcrossingschanges': fields.String,
         'cleanoutdisposalplan': fields.String,
         'maxannualtonnage': fields.Arbitrary,
+        'maxannualcubicmeters': fields.Arbitrary,
         'proposedproduction': fields.Arbitrary,
         'isaccessgated': fields.String,
         'permitnumber': fields.String,

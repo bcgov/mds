@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Tabs, Typography } from "antd";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import { bindActionCreators } from "redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -22,8 +25,6 @@ import ProjectSummaries from "@/components/dashboard/mine/projectSummaries/Proje
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils"
-
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -37,6 +38,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  fetchEMLIContactsByRegion: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -61,6 +63,9 @@ export class MineDashboard extends Component {
     }
     this.props
       .fetchMineRecordById(id)
+      .then(({ data }) => {
+        this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
+      })
       .then(() => {
         this.setState({ isLoaded: true });
       })
@@ -97,6 +102,8 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const isMajorMine = mine?.major_mine_ind;
+
     if (this.state.mineNotFound) {
       return <NotFoundNotice />;
     }
@@ -125,6 +132,11 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Overview" key={initialTab}>
                     <Overview mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
+                  {isMajorMine && !IN_PROD() && (
+                    <Tabs.TabPane tab="Applications" key="applications">
+                      <ProjectSummaries mine={mine} match={this.props.match} />
+                    </Tabs.TabPane>
+                  )}
                   <Tabs.TabPane tab="Permits" key="permits">
                     <Permits mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
@@ -146,11 +158,6 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Tailings" key="tailings">
                     <Tailings mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  {!IN_PROD() && 
-                    <Tabs.TabPane tab="Project Summaries" key="projectSummaries">
-                      <ProjectSummaries mine={mine} match={this.props.match} />
-                    </Tabs.TabPane>
-                  }
                 </Tabs>
               </Col>
             </Row>
@@ -164,6 +171,7 @@ export class MineDashboard extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
+  EMLIContactsByRegion: getEMLIContactsByRegion(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -172,6 +180,7 @@ const mapDispatchToProps = (dispatch) => ({
     {
       fetchMineRecordById,
       fetchPartyRelationships,
+      fetchEMLIContactsByRegion,
     },
     dispatch
   ),

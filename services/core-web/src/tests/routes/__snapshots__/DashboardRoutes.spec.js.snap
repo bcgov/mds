@@ -203,6 +203,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineApplications)",
         "type": [Function],
       }
@@ -403,6 +416,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/minespace-emli-contact-management"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(Connect(authorizationGuard))",
         "type": [Function],
       }
@@ -500,6 +526,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/dashboard/view-notice-of-work/app/:id/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(PermitConditionManagement)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
   />
   <Route
     exact={true}

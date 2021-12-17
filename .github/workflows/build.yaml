@@ -28,7 +28,6 @@ jobs:
           - name: postgresql
           - name: frontend
           - name: backend
-          - name: flyway
           - name: tusd
           - name: docgen
           - name: dbbackup
@@ -92,7 +91,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: flyway
           - name: tusd
           - name: dbbackup
           - name: metabase
@@ -123,7 +121,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: flyway
           - name: tusd
           - name: docgen
           - name: dbbackup
@@ -188,7 +185,7 @@ jobs:
     name: watch-rollout
     runs-on: ubuntu-20.04
     needs: grace-period
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       matrix:
         include:

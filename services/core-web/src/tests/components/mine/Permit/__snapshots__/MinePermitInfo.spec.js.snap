@@ -43,7 +43,7 @@ exports[`MinePermitInfo renders properly 1`] = `
           </Connect(AuthorizationWrapper)>
         </div>
       </div>
-      <Connect(MinePermitTable)
+      <withRouter(Connect(MinePermitTable))
         expandedRowKeys={Array []}
         handleDeletePermit={[Function]}
         handleDeletePermitAmendment={[Function]}

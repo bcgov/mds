@@ -52,6 +52,7 @@ export const {
   getExplosivesPermitMagazineType,
   getProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypes,
+  getEMLIContactTypes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -789,5 +790,16 @@ export const getDropdownProjectSummaryDocumentTypes = createSelectorWrapper(
 
 export const getProjectSummaryDocumentTypesHash = createSelector(
   [getDropdownProjectSummaryDocumentTypes],
+  createLabelHash
+);
+
+export const getDropdownEMLIContactTypes = createSelectorWrapper(
+  getEMLIContactTypes,
+  createDropDownList,
+  ["description", "emli_contact_type_code", "active_ind"]
+);
+
+export const getEMLIContactTypesHash = createSelector(
+  [getDropdownEMLIContactTypes],
   createLabelHash
 );
