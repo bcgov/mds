@@ -43,6 +43,42 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'project_summary_title',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
+    parser.add_argument(
+        'proponent_project_id',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_draft_irt_submission_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_permit_application_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_permit_receipt_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_project_start_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get a Project Summary.',
@@ -74,7 +110,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         data = self.parser.parse_args()
         project_summary.update(
             data.get('project_summary_date'), data.get('project_summary_description'),
-            data.get('documents', []))
+            data.get('project_summary_title'), data.get('proponent_project_id'),
+            data.get('expected_draft_irt_submission_date'),
+            data.get('expected_permit_application_date'), data.get('expected_permit_receipt_date'),
+            data.get('expected_project_start_date'), data.get('documents', []))
 
         project_summary.save()
         return project_summary
