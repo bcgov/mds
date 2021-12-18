@@ -104,6 +104,10 @@ spec:
           value: 0.0.0.0:5432
         - name: PATRONI_RESTAPI_LISTEN
           value: 0.0.0.0:8008
+        - name: POSTGRESQL_MAX_CONNECTIONS
+          value: "500"
+        - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
+          value: "500"
         image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
         imagePullPolicy: Always
         name: postgresql
@@ -128,6 +132,18 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
           periodSeconds: 10
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  # switch leader pod if the current pod is the leader
+                  if curl --fail http://localhost:8008/read-write; then
+                    patronictl switchover --force
+                  fi
         resources:
           limits:
             cpu: "1"
