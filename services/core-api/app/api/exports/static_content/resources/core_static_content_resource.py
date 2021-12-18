@@ -61,6 +61,7 @@ from app.api.mines.explosives_permit.models.explosives_permit_document_type impo
 from app.api.mines.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
 from app.api.mines.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
@@ -76,7 +77,7 @@ MODELS_GET_ACTIVE = [
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
-    ProjectSummaryStatusCode, EMLIContactType
+    ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType
 ]
 
 
