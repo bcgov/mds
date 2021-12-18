@@ -8,6 +8,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.parties.party.models.party import Party
 from app.api.constants import PROJECT_SUMMARY_EMAILS
 from app.api.services.email_service import EmailService
@@ -21,11 +22,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     project_summary_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
-    project_summary_description = db.Column(db.String(300), nullable=True)
+    project_summary_title = db.Column(db.String(300), nullable=False)
     project_summary_date = db.Column(db.DateTime, nullable=True)
+    project_summary_description = db.Column(db.String(300), nullable=True)
+    proponent_project_id = db.Column(db.String(20), nullable=True)
+    expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
+    expected_permit_application_date = db.Column(db.DateTime, nullable=True)
+    expected_permit_receipt_date = db.Column(db.DateTime, nullable=True)
+    expected_project_start_date = db.Column(db.DateTime, nullable=True)
+
     project_summary_lead_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     status_code = db.Column(
         db.String,
@@ -36,6 +43,19 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'Party',
         lazy='select',
         primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
+    contacts = db.relationship(
+        'ProjectSummaryContact',
+        lazy='select',
+        primaryjoin=
+        'and_(ProjectSummaryContact.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryContact.deleted_ind == False)'
+    )
+    project_summary_contacts = db.relationship(
+        'ProjectSummaryContact',
+        backref='project_summary',
+        lazy='select',
+        primaryjoin=
+        'and_(ProjectSummaryContact.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryContact.deleted_ind == False)'
+    )
 
     # Note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('ProjectSummaryDocumentXref', lazy='select')
@@ -71,12 +91,24 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                mine,
                project_summary_date,
                project_summary_description,
+               project_summary_title,
+               proponent_project_id,
+               expected_draft_irt_submission_date,
+               expected_permit_application_date,
+               expected_permit_receipt_date,
+               expected_project_start_date,
                documents=[],
                add_to_session=True):
         project_summary = cls(
             project_summary_date=project_summary_date,
             project_summary_description=project_summary_description,
             mine_guid=mine.mine_guid,
+            project_summary_title=project_summary_title,
+            proponent_project_id=proponent_project_id,
+            expected_draft_irt_submission_date=expected_draft_irt_submission_date,
+            expected_permit_application_date=expected_permit_application_date,
+            expected_permit_receipt_date=expected_permit_receipt_date,
+            expected_project_start_date=expected_project_start_date,
             status_code='O')
 
         mine.project_summaries.append(project_summary)
@@ -100,12 +132,24 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def update(self,
                project_summary_date,
                project_summary_description,
+               project_summary_title,
+               proponent_project_id,
+               expected_draft_irt_submission_date,
+               expected_permit_application_date,
+               expected_permit_receipt_date,
+               expected_project_start_date,
                documents=[],
                add_to_session=True):
 
         # Update simple properties.
         self.project_summary_date = project_summary_date
         self.project_summary_description = project_summary_description
+        self.project_summary_title = project_summary_title
+        self.proponent_project_id = proponent_project_id
+        self.expected_draft_irt_submission_date = expected_draft_irt_submission_date
+        self.expected_permit_application_date = expected_permit_application_date
+        self.expected_permit_receipt_date = expected_permit_receipt_date
+        self.expected_project_start_date = expected_project_start_date
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -145,7 +189,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         for doc in self.documents:
             self.mine_documents.remove(doc.mine_document)
             doc.mine_document.delete(False)
-        super(ProjectSummary, self).delete(commit)
+        return super(ProjectSummary, self).delete(commit)
 
     def send_project_summary_email_to_ministry(self, mine):
         recipients = PROJECT_SUMMARY_EMAILS
