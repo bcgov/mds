@@ -28,7 +28,6 @@ jobs:
           - name: postgresql
           - name: frontend
           - name: backend
-          - name: tusd
           - name: docgen
           - name: dbbackup
           - name: metabase
@@ -91,7 +90,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: tusd
           - name: dbbackup
           - name: metabase
           - name: docman
@@ -121,7 +119,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: tusd
           - name: docgen
           - name: dbbackup
           - name: metabase
