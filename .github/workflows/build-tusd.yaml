@@ -5,8 +5,8 @@ on:
     branches:
       - develop
     path:
-      - migrations/**
-      - .github/workflows/tusd.yaml
+      - services/tusd/**
+      - .github/workflows/build-tusd.yaml
 
 env:
   INITIAL_TAG: latest
