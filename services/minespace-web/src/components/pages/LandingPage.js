@@ -55,13 +55,24 @@ export const LandingPage = (props) => (
           Manage applications, see inspection histories, submit reports, and more.
         </Typography.Paragraph>
         {!props.isAuthenticated && (
-          <Button type="primary" size="large" className="login">
+          <div>
+          <Button type="primary" size="large" className="login" style={{"margin-right":"10px"}}>
             <a
               href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
             >
-              Log in
+              Log in with BCeID
             </a>
           </Button>
+          <AuthorizationGuard inTesting>
+            <Button  type="primary" size="large" className="login">
+            <a
+              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+            >
+              Log in with Verifiable Credentials
+            </a>
+            </Button>
+          </AuthorizationGuard>
+        </div>
         )}
       </Col>
     </Row>

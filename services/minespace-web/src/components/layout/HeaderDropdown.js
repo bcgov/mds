@@ -67,20 +67,22 @@ export class HeaderDropdown extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <div>
-        <Button className="login-btn">
-          <a
-            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
-          >
-            Log in with BCeID
-          </a>
-        </Button>
-        <Button className="login-btn">
-        <a
-          href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
-        >
-          Log in with Verifiable Credentials
-        </a>
-        </Button> 
+          <Button className="login-btn" style={{"margin-right":"10px"}}>
+            <a
+              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
+            >
+              Log in with BCeID
+            </a>
+          </Button>
+          <AuthorizationGuard inTesting>
+            <Button className="login-btn">
+            <a
+              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+            >
+              Log in with Verifiable Credentials
+            </a>
+            </Button> 
+          </AuthorizationGuard>
         </div>
       );
     }
