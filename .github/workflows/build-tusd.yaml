@@ -1,7 +1,6 @@
 name: Build tusd
 
 on: 
-  pull_request:
   push:
     branches:
       - develop
