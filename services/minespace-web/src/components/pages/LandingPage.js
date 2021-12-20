@@ -8,6 +8,7 @@ import * as COMMON_ENV from "@common/constants/environment";
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -56,23 +57,28 @@ export const LandingPage = (props) => (
         </Typography.Paragraph>
         {!props.isAuthenticated && (
           <div>
-          <Button type="primary" size="large" className="login" style={{"margin-right":"10px"}}>
-            <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
+            <Button
+              type="primary"
+              size="large"
+              className="login"
+              style={{ "margin-right": "10px" }}
             >
-              Log in with BCeID
-            </a>
-          </Button>
-          <AuthorizationGuard inTesting>
-            <Button  type="primary" size="large" className="login">
-            <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
-            >
-              Log in with Verifiable Credentials
-            </a>
+              <a
+                href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
+              >
+                Log in with BCeID
+              </a>
             </Button>
-          </AuthorizationGuard>
-        </div>
+            <AuthorizationGuard inTesting>
+              <Button type="primary" size="large" className="login">
+                <a
+                  href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+                >
+                  Log in with Verifiable Credentials
+                </a>
+              </Button>
+            </AuthorizationGuard>
+          </div>
         )}
       </Col>
     </Row>

@@ -12,6 +12,7 @@ import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
 import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
@@ -67,7 +68,7 @@ export class HeaderDropdown extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <div>
-          <Button className="login-btn" style={{"margin-right":"10px"}}>
+          <Button className="login-btn" style={{ "margin-right": "10px" }}>
             <a
               href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
             >
@@ -76,12 +77,12 @@ export class HeaderDropdown extends Component {
           </Button>
           <AuthorizationGuard inTesting>
             <Button className="login-btn">
-            <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
-            >
-              Log in with Verifiable Credentials
-            </a>
-            </Button> 
+              <a
+                href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+              >
+                Log in with Verifiable Credentials
+              </a>
+            </Button>
           </AuthorizationGuard>
         </div>
       );

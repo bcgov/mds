@@ -36,21 +36,47 @@ exports[`LandingPage renders properly 1`] = `
       >
         Manage applications, see inspection histories, submit reports, and more.
       </Paragraph>
-      <Button
-        block={false}
-        className="login"
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        size="large"
-        type="primary"
-      >
-        <a
-          href="<URL>http://localhostundefined/return-page?type=login&kc_idp_hint=idir"
+      <div>
+        <Button
+          block={false}
+          className="login"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          size="large"
+          style={
+            Object {
+              "margin-right": "10px",
+            }
+          }
+          type="primary"
         >
-          Log in
-        </a>
-      </Button>
+          <a
+            href="<URL>http://localhostundefined/return-page?type=login&kc_idp_hint=bceid"
+          >
+            Log in with BCeID
+          </a>
+        </Button>
+        <AuthorizationGuard
+          inTesting={true}
+        >
+          <Button
+            block={false}
+            className="login"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            size="large"
+            type="primary"
+          >
+            <a
+              href="<URL>http://localhostundefined/return-page?type=login&kc_idp_hint=ms-verifiable-credential"
+            >
+              Log in with Verifiable Credentials
+            </a>
+          </Button>
+        </AuthorizationGuard>
+      </div>
     </Col>
   </Row>
   <Row
