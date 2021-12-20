@@ -8,7 +8,7 @@ import * as COMMON_ENV from "@common/constants/environment";
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -69,7 +69,7 @@ export const LandingPage = (props) => (
                 Log in with BCeID
               </a>
             </Button>
-            <AuthorizationGuard inTesting>
+            <AuthorizationWrapper inTesting>
               <Button type="primary" size="large" className="login">
                 <a
                   href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
@@ -77,7 +77,7 @@ export const LandingPage = (props) => (
                   Log in with Verifiable Credentials
                 </a>
               </Button>
-            </AuthorizationGuard>
+            </AuthorizationWrapper>
           </div>
         )}
       </Col>

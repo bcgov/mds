@@ -12,7 +12,6 @@ import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
 import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
@@ -75,7 +74,7 @@ export class HeaderDropdown extends Component {
               Log in with BCeID
             </a>
           </Button>
-          <AuthorizationGuard inTesting>
+          <AuthorizationWrapper inTesting>
             <Button className="login-btn">
               <a
                 href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
@@ -83,7 +82,7 @@ export class HeaderDropdown extends Component {
                 Log in with Verifiable Credentials
               </a>
             </Button>
-          </AuthorizationGuard>
+          </AuthorizationWrapper>
         </div>
       );
     }
