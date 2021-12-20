@@ -34,7 +34,7 @@ export const LandingPage = (props) => (
         </Typography.Paragraph>
         <Button type="primary" size="large" className="login">
           <a
-            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
           >
             Log in
           </a>
@@ -57,7 +57,7 @@ export const LandingPage = (props) => (
         {!props.isAuthenticated && (
           <Button type="primary" size="large" className="login">
             <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
             >
               Log in
             </a>

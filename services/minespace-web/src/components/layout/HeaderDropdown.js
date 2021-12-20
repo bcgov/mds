@@ -66,13 +66,22 @@ export class HeaderDropdown extends Component {
     const dropdownMenuDesktop = <Menu className="header-dropdown-menu">{menuItemLogout}</Menu>;
     if (!this.props.isAuthenticated) {
       return (
+        <div>
         <Button className="login-btn">
           <a
-            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
           >
-            Log in
+            Log in with BCeID
           </a>
         </Button>
+        <Button className="login-btn">
+        <a
+          href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+        >
+          Log in with Verifiable Credentials
+        </a>
+        </Button> 
+        </div>
       );
     }
     const smallestDesktopWidth = 1280;
