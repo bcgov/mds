@@ -25,7 +25,7 @@ export const KEYCLOAK = {
   realm: "mds",
   "ssl-required": "external",
   url: "<URL>",
-  idir_idpHint:"idir",
+  idir_idpHint: "idir",
   bceid_idpHint: "bceid",
   vcauthn_idpHint: "ms-verifiable-credential",
   resource: "<RESOURCE>",
