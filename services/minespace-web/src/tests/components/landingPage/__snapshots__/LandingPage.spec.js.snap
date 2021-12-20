@@ -57,7 +57,7 @@ exports[`LandingPage renders properly 1`] = `
             Log in with BCeID
           </a>
         </Button>
-        <AuthorizationGuard
+        <AuthorizationWrapper
           inTesting={true}
         >
           <Button
@@ -75,7 +75,7 @@ exports[`LandingPage renders properly 1`] = `
               Log in with Verifiable Credentials
             </a>
           </Button>
-        </AuthorizationGuard>
+        </AuthorizationWrapper>
       </div>
     </Col>
   </Row>
