@@ -23,24 +23,24 @@ spec:
                 - /bin/sh
                 - '-c'
                 - >-
-                  psql -d $DB_NAME -h $DB_HOST -c "REFRESH MATERIALIZED VIEW
+                  psql -d $DB_NAME -U $DB_USER -h $DB_HOST -c "REFRESH MATERIALIZED VIEW
                   $VIEW"
               env:
                 - name: DB_USER
                   valueFrom:
                     secretKeyRef:
                       name: postgresql
-                      key: database-admin-user
+                      key: database-user
                 - name: PGPASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: postgresql
-                      key: database-admin-password
+                      key: database-password
                 - name: DB_HOST
                   valueFrom:
                     secretKeyRef:
                       name: refresh-gis
-                      key: database-host
+                      key: database-hostname
                 - name: DB_NAME
                   valueFrom:
                     secretKeyRef:
