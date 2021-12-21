@@ -293,12 +293,13 @@ class NOWApplication(Base, AuditMixin):
         return permit_amendment.permit_guid if permit_amendment else None
 
     @hybrid_property
-    def has_source_conditions(self):
-        source_conditions = PermitConditions.query.filter_by(
-            permit_amendment_id=self.source_permit_amendment_id,
-            parent_permit_condition_id=None,
-            deleted_ind=False).count()
-        return source_conditions > 0
+    def is_source_permit_generated_in_core(self):
+        permit_amendment = None
+        if self.source_permit_amendment_id:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_id(
+                self.source_permit_amendment_id)
+
+        return permit_amendment.is_generated_in_core if permit_amendment else False
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

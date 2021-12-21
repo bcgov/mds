@@ -20,7 +20,7 @@ const setupProps = () => {
   props.permitConditionCategoryOptions = [];
   props.editingConditionFlag = false;
   props.isNoWApplication = true;
-  props.hasSourceConditions = true;
+  props.isSourcePermitGeneratedInCore = true;
   props.draftPermitAmendment = {};
 };
 
