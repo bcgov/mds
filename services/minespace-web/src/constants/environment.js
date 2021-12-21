@@ -6,9 +6,12 @@ export const DEFAULT_ENVIRONMENT = {
   environment: "development",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
-  keycloak_idpHint: "local",
+  keycloak_idir_idpHint: "local",
+  keycloak_bceid_idpHint: "local",
+  keycloak_vcauthn_idpHint: "local",
   keycloak_url: "https://test.oidc.gov.bc.ca/auth",
   siteminder_url: "https://logontest.gov.bc.ca",
+  vcauthn_pres_req_conf_id: "minespace-access-0.1-dev",
 };
 
 export const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
