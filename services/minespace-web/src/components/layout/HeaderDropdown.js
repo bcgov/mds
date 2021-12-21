@@ -75,6 +75,14 @@ export class HeaderDropdown extends Component {
             </a>
           </Button>
           <AuthorizationWrapper inTesting>
+            {/* TODO BEFORE PROD: 
+              1) Reach out to Wade Barnes (or, Emiliano Sune) and configure Production Keycloak Realm to use the vc-authn service as an Identity Provider
+              2) Replicate IDP Mappers from TEST Keycloak (adding pres_req_conf_id to the client mapper as well)
+              3) Production VC Issuer needs to be stood up, MDT team will be involved (BPA or other product)
+              4) Add Proof Configuration for Production vc-authn installation (https://github.com/bcgov/a2a-trust-over-ip-configurations/tree/main/proof-configurations/minespace-access)
+                  Use the same config as test/minespace-access-test, but with id = 'minespace-access-0.1', with ISSUER_DID that matches issuer from step 3. 
+              5) Update Minespace to read 'pres_req_conf_id' from JWT and ensure it matches the 'vcauthn_pres_req_conf_id' environment variable
+            */}
             <Button className="login-btn">
               <a
                 href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
