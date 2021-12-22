@@ -27,18 +27,18 @@ export const USERS = {
 };
 
 export const ADD_PROJECT_SUMMARY = {
-  route: "/mines/:mineGuid/project-summary/new",
-  dynamicRoute: (mineGuid) =>
-    `/mines/${mineGuid}/project-summary/new`,
+  route: "/mines/:mineGuid/project-summary/new/:tab",
+  dynamicRoute: (mineGuid, tab = "basic-information") =>
+    `/mines/${mineGuid}/project-summary/new/${tab}`,
   component: ProjectSummaryPage,
-}
+};
 
 export const EDIT_PROJECT_SUMMARY = {
-  route: "/mines/:mineGuid/project-summary/:projectSummaryGuid",
-  dynamicRoute: (mineGuid, projectSummaryGuid) =>
-    `/mines/${mineGuid}/project-summary/${projectSummaryGuid}`,
+  route: "/mines/:mineGuid/project-summary/:projectSummaryGuid/:tab",
+  dynamicRoute: (mineGuid, projectSummaryGuid, activeTab = "basic-information") =>
+    `/mines/${mineGuid}/project-summary/${projectSummaryGuid}/${activeTab}`,
   component: ProjectSummaryPage,
-}
+};
 
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",

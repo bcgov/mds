@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { getFormValues } from "redux-form";
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
@@ -13,11 +14,12 @@ import {
   fetchProjectSummaryById,
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
+import { formatTitleString } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import ProjectSummaryForm from "@/components/Forms/projectSummaries/AddEditProjectSummaryForm";
+import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 
 const propTypes = {
   formValues: PropTypes.shape({
@@ -43,20 +45,29 @@ const defaultProps = {
   formValues: {},
 };
 
+const initialTab = "basic-information";
+const tabs = [
+  "basic-information",
+  "project-contacts",
+  "project-dates",
+  "authorizations-involved",
+  "document-upload",
+];
 export class ProjectSummaryPage extends Component {
   state = {
     isLoaded: false,
     isEditMode: false,
+    activeTab: tabs[0],
   };
 
   componentDidMount() {
-    const { mineGuid, projectSummaryGuid } = this.props.match?.params;
+    const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
     if (mineGuid && projectSummaryGuid) {
       return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
-        this.setState({ isLoaded: true, isEditMode: true });
+        this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
       });
     }
-    return this.setState({ isLoaded: true });
+    return this.setState({ isLoaded: true, activeTab: tab });
   }
 
   handleSubmit = (values) => {
@@ -80,6 +91,17 @@ export class ProjectSummaryPage extends Component {
       });
   }
 
+  handleTabChange = (activeTab) => {
+    this.setState({ activeTab });
+    this.props.history.push(
+      EDIT_PROJECT_SUMMARY.dynamicRoute(
+        this.props.match.params?.mineGuid,
+        this.props.match.params?.projectSummaryGuid,
+        activeTab
+      )
+    );
+  };
+
   handleUpdateProjectSummary(values) {
     const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
     return this.props
@@ -97,30 +119,43 @@ export class ProjectSummaryPage extends Component {
 
   render() {
     const title = this.state.isEditMode
-      ? `Edit Project Summary #${this.props.projectSummary?.project_summary_id}`
-      : "Create new Project Summary";
+      ? `Edit Project Description #${this.props.projectSummary?.project_summary_id}`
+      : "Create new Project Description";
     const { mineGuid } = this.props.match?.params;
     return (
       (this.state.isLoaded && (
-        <Row>
-          <Col span={24}>
-            <Typography.Title>
-              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
-                <CaretLeftOutlined />
-              </Link>
-              {title}
-            </Typography.Title>
-          </Col>
-          <Col span={24}>
-            <ProjectSummaryForm
-              initialValues={this.state.isEditMode ? this.props.projectSummary : {}}
-              mineGuid={mineGuid}
-              isEditMode={this.state.isEditMode}
-              onSubmit={this.handleSubmit}
-              projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
-            />
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col span={24}>
+              <Typography.Title>
+                <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
+                  <CaretLeftOutlined />
+                </Link>
+                {title}
+              </Typography.Title>
+            </Col>
+          </Row>
+          <Divider />
+          <Tabs
+            tabPosition="left"
+            activeKey={this.state.activeTab}
+            defaultActiveKey={tabs[0]}
+            onChange={this.handleTabChange}
+          >
+            {tabs.map((tab) => (
+              <Tabs.TabPane tab={formatTitleString(tab)} key={tab}>
+                <ProjectSummaryForm
+                  initialValues={this.state.isEditMode ? this.props.projectSummary : {}}
+                  mineGuid={mineGuid}
+                  isEditMode={this.state.isEditMode}
+                  onSubmit={this.handleSubmit}
+                  projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
+                  handleTabChange={this.handleTabChange}
+                />
+              </Tabs.TabPane>
+            ))}
+          </Tabs>
+        </>
       )) || <Loading />
     );
   }
