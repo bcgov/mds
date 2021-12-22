@@ -80,7 +80,8 @@ VALUES
 CREATE TABLE IF NOT EXISTS project_summary_authorization (
     project_summary_authorization_guid            uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
     project_summary_guid                          uuid                                     NOT NULL,
-    project_summary_permit_type                   character varying(100)                   NOT NULL,
+    project_summary_authorization_type            character varying(100)                   NOT NULL,
+    project_summary_permit_type                   text[]                                   NOT NULL,
     existing_permits_authorizations               text[]                                   NOT NULL,
     deleted_ind                                   boolean DEFAULT false                    NOT NULL,
     create_user                                   character varying(60)                    NOT NULL,
@@ -89,7 +90,7 @@ CREATE TABLE IF NOT EXISTS project_summary_authorization (
     update_timestamp                              timestamp with time zone DEFAULT now()   NOT NULL,
 
     CONSTRAINT project_summary_guid_fkey FOREIGN KEY (project_summary_guid) REFERENCES project_summary(project_summary_guid),
-    CONSTRAINT project_summary_permit_type_fkey FOREIGN KEY (project_summary_permit_type) REFERENCES project_summary_permit_type(project_summary_permit_type)
+    CONSTRAINT project_summary_authorization_type_fkey FOREIGN KEY (project_summary_authorization_type) REFERENCES project_summary_authorization_type(project_summary_authorization_type)
 );
 
 COMMENT ON TABLE project_summary_authorization is 'Stores all relevant authorization information for project summaries.';
