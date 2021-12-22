@@ -46,9 +46,10 @@ const tabs = [
   "authorizations-involved",
   "document-upload",
 ];
+
 export class ProjectSummaryForm extends Component {
   state = {
-    uploadedFiles: [],
+    // uploadedFiles: [],
     tabIndex: 0,
   };
 
@@ -56,22 +57,22 @@ export class ProjectSummaryForm extends Component {
     this.setState({ tabIndex: tabs.indexOf(this.props.match.params.tab) });
   }
 
-  componendWillUpdate(nextProps) {
+  componentWillUpdate(nextProps) {
     const tabChanged = nextProps.match.params.tab !== this.props.match.params.tab;
     if (tabChanged) {
       this.setState({ tabIndex: tabs.indexOf(nextProps.match.params.tab) });
     }
   }
 
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
-    this.props.change("documents", this.state.uploadedFiles);
-  };
+  // onFileLoad = (fileName, document_manager_guid) => {
+  //   this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
+  //   this.props.change("documents", this.state.uploadedFiles);
+  // };
 
-  onRemoveFile = (err, fileItem) => {
-    remove(this.props.documents, { document_manager_guid: fileItem.serverId });
-    return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
-  };
+  // onRemoveFile = (err, fileItem) => {
+  //   remove(this.props.documents, { document_manager_guid: fileItem.serverId });
+  //   return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
+  // };
 
   render() {
     const renderTabComponent = (tab) =>
