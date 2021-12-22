@@ -22,7 +22,6 @@ def test_put_project_summary(test_client, db_session, auth_headers):
     project_summary = ProjectSummaryFactory()
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
-    data['project_summary_date'] = '2021-07-12T00:00:00+00:00'
     data['project_summary_description'] = 'Test'
 
     put_resp = test_client.put(
@@ -33,5 +32,4 @@ def test_put_project_summary(test_client, db_session, auth_headers):
 
     assert put_resp.status_code == 200, put_resp.response
 
-    assert put_data['project_summary_date'] == data['project_summary_date']
     assert put_data['project_summary_description'] == data['project_summary_description']

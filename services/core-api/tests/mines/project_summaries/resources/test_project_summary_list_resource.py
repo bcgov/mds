@@ -28,10 +28,7 @@ def test_get_project_summaries_by_invalid_mine_guid(test_client, db_session, aut
 
 def test_post_project_summary(test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
-    data = {
-        'project_summary_date': '2021-07-12',
-        'project_summary_description': 'Sample description.'
-    }
+    data = {'project_summary_description': 'Sample description.'}
 
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/project-summaries',
