@@ -11,12 +11,14 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
 
     project_summary_authorization_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
-    existing_permits_authorizations = db.Column(db.Array(db.String), nullable=True)
+    existing_permits_authorizations = db.Column(db.ARRAY(db.String), nullable=True)
 
     project_summary_guid = db.Column(
         db.ForeignKey('project_summary.project_summary_guid'), nullable=False)
-    project_summary_permit_type = db.Column(
-        db.ForeignKey('project_summary_permit_type.project_summary_permit_type'), nullable=False)
+    project_summary_permit_type = db.Column(db.ARRAY(db.String), nullable=False)
+    project_summary_authorization_type = db.Column(
+        db.ForeignKey('project_summary_authorization_type.project_summary_authorization_type'),
+        nullable=False)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
@@ -28,8 +30,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                existing_permits_authorizations,
                add_to_session=True):
         new_authorization = cls(
-            project_summary_guid,
-            project_summary_permit_type,
+            project_summary_guid=project_summary_guid,
+            project_summary_permit_type=project_summary_permit_type,
             existing_permits_authorizations=existing_permits_authorizations)
         if add_to_session:
             new_authorization.save(commit=False)

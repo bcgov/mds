@@ -18,32 +18,31 @@ class ProjectSummaryContact(SoftDeleteMixin, AuditMixin, Base):
     company_name = db.Column(db.String(100), nullable=True)
 
     project_summary_guid = db.Column(
-        db.String(3), db.ForeignKey('project_summary.project_summary_guid'))
+        UUID(as_uuid=True), db.ForeignKey('project_summary.project_summary_guid'))
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_contact_guid}'
 
     @classmethod
     def create(cls,
-               project_summary,
+               project_summary_guid,
                name,
                job_title,
                company_name,
                email,
                phone_number,
                phone_extension,
+               is_primary,
                add_to_session=True):
         new_contact = cls(
-            project_summary_guid=project_summary.project_summary_guid,
+            project_summary_guid=project_summary_guid,
             name=name,
             job_title=job_title,
             company_name=company_name,
             email=email,
             phone_number=phone_number,
             phone_extension=phone_extension,
-            is_primary=True)
-
-        project_summary.project_summary_contacts.append(new_contact)
+            is_primary=is_primary)
 
         if add_to_session:
             new_contact.save(commit=False)
