@@ -54,14 +54,16 @@ PROJECT_SUMMARY_CONTACT_MODEL = api.model(
         'company_name': fields.String,
         'email': fields.String,
         'phone_number': fields.String,
-        'phone_extension': fields.String
+        'phone_extension': fields.String,
+        'is_primary': fields.Boolean
     })
 
 PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
     'ProjectSummaryAuthorization', {
         'project_summary_authorization_guid': fields.String,
         'project_summary_guid': fields.String,
-        'project_summary_permit_type': fields.String,
+        'project_summary_permit_type': fields.List(fields.String),
+        'project_summary_authorization_type': fields.String,
         'existing_permits_authorizations': fields.List(fields.String)
     })
 
@@ -71,7 +73,6 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_guid': fields.String,
         'project_summary_title': fields.String,
         'project_summary_description': fields.String,
-        'project_summary_date': fields.DateTime,
         'mine_guid': fields.String,
         'status_code': fields.String,
         'project_summary_lead_party_guid': fields.String,
@@ -83,6 +84,9 @@ PROJECT_SUMMARY_MODEL = api.model(
         'expected_project_start_date': fields.DateTime,
         'documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
         'contacts': fields.List(fields.Nested(PROJECT_SUMMARY_CONTACT_MODEL)),
+        'authorizations': fields.List(fields.Nested(PROJECT_SUMMARY_AUTHORIZATION_MODEL)),
         'update_user': fields.String,
-        'update_timestamp': fields.DateTime
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
     })
