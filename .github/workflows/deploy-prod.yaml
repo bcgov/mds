@@ -74,5 +74,6 @@ jobs:
           -p MS_KEYCLOAK_CLIENT_ID=minespace-prod \
           -p SITEMINDER_URL=https://logon.gov.bc.ca \
           -p MATOMO_URL=https://matomo-4c2ba9-prod.apps.silver.devops.gov.bc.ca/ \
+          -p VCAUTHN_PRES_REQ_CONF_ID=minespace-access-0.1 \
           -p OBJECT_STORE_ENABLED=1 \
           | oc -n ${{secrets.NS_PROD}} apply -f -

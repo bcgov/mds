@@ -29,10 +29,6 @@ class User:
         raw_info = self.get_user_raw_info()
         return raw_info.get('email')
 
-    def get_user_given_name(self):
-        raw_info = self.get_user_raw_info()
-        return raw_info.get('given_name')
-
     def get_user_username(self):
         raw_info = self.get_user_raw_info()
         realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
