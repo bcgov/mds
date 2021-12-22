@@ -67,7 +67,7 @@ class ProjectSummaryContactResource(Resource, UserMixin):
             'project_summary_guid': 'The GUID of the Project Summary to delete.',
             'project_summary_contact_guid': 'The GUID of the Project Summary contact to get.'
         })
-    @requires_any_of([MINESPACE_PROPONENT])
+    # @requires_any_of([MINESPACE_PROPONENT])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, project_summary_guid, project_summary_contact_guid):
         project_summary = ProjectSummaryContact.find_project_summary_contact_by_guid(
@@ -127,5 +127,6 @@ class ProjectSummaryContactListResource(Resource, UserMixin):
                                                                data.get('email'),
                                                                data.get('phone_number'),
                                                                data.get('phone_extension'))
+        project_summary.save()
 
         return project_summary_contact, 201

@@ -25,14 +25,14 @@ class ProjectSummaryResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument(
-        'project_summary_description',
+        'status_code',
         type=str,
         store_missing=False,
-        required=False,
+        required=True,
     )
     parser.add_argument(
-        'project_summary_date',
-        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        'project_summary_description',
+        type=str,
         store_missing=False,
         required=False,
     )
@@ -79,6 +79,9 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument('contacts', type=list, location='json', store_missing=False, required=False)
+    parser.add_argument(
+        'authorizations', type=list, location='json', store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Summary.',
@@ -109,11 +112,11 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         project_summary.update(
-            data.get('project_summary_date'), data.get('project_summary_description'),
-            data.get('project_summary_title'), data.get('proponent_project_id'),
-            data.get('expected_draft_irt_submission_date'),
+            data.get('project_summary_description'), data.get('project_summary_title'),
+            data.get('proponent_project_id'), data.get('expected_draft_irt_submission_date'),
             data.get('expected_permit_application_date'), data.get('expected_permit_receipt_date'),
-            data.get('expected_project_start_date'), data.get('documents', []))
+            data.get('expected_project_start_date'), data.get('status_code'),
+            data.get('documents', []), data.get('contacts', []), data.get('authorizations', []))
 
         project_summary.save()
         return project_summary
