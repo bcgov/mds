@@ -8,6 +8,7 @@ import * as COMMON_ENV from "@common/constants/environment";
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -34,7 +35,7 @@ export const LandingPage = (props) => (
         </Typography.Paragraph>
         <Button type="primary" size="large" className="login">
           <a
-            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+            href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
           >
             Log in
           </a>
@@ -55,13 +56,29 @@ export const LandingPage = (props) => (
           Manage applications, see inspection histories, submit reports, and more.
         </Typography.Paragraph>
         {!props.isAuthenticated && (
-          <Button type="primary" size="large" className="login">
-            <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+          <div>
+            <Button
+              type="primary"
+              size="large"
+              className="login"
+              style={{ "margin-right": "10px" }}
             >
-              Log in
-            </a>
-          </Button>
+              <a
+                href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
+              >
+                Log in with BCeID
+              </a>
+            </Button>
+            <AuthorizationWrapper inTesting>
+              <Button type="primary" size="large" className="login">
+                <a
+                  href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+                >
+                  Log in with Verifiable Credentials
+                </a>
+              </Button>
+            </AuthorizationWrapper>
+          </div>
         )}
       </Col>
     </Row>

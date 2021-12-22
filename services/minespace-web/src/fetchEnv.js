@@ -19,11 +19,13 @@ export default function fetchEnv() {
       ENVIRONMENT.docManUrl = env.docManUrl;
       ENVIRONMENT.matomoUrl = env.matomoUrl;
       ENVIRONMENT.environment = env.environment;
+      
       KEYCLOAK.clientId = env.keycloak_clientId;
-      KEYCLOAK.idpHint = env.keycloak_idpHint;
+      KEYCLOAK.bceid_idpHint = env.keycloak_bceid_idpHint;
+      KEYCLOAK.vcauthn_idpHint = env.keycloak_vcauthn_idpHint;
       KEYCLOAK.resource = env.keycloak_resource;
       KEYCLOAK.siteMinderLogoutURL = `${env.siteminder_url}/clp-cgi/logoff.cgi?returl=`;
-      KEYCLOAK.loginURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/auth?response_type=code&client_id=${env.keycloak_clientId}&redirect_uri=`;
+      KEYCLOAK.loginURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${env.vcauthn_pres_req_conf_id}&client_id=${env.keycloak_clientId}&redirect_uri=`;
       KEYCLOAK.keycloakLogoutURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
       KEYCLOAK.tokenURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/token`;
       KEYCLOAK.userInfoURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/userinfo`;

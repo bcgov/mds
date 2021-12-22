@@ -53,7 +53,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
       await keycloak
         .init({
           onLoad: "login-required",
-          idpHint: KEYCLOAK.idpHint,
+          idpHint: KEYCLOAK.idir_idpHint,
         })
         .success(() => {
           keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
