@@ -146,6 +146,5 @@ export default compose(
     form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     touchOnBlur: true,
     touchOnChange: false,
-    enableReinitialize: true,
   })
 )(withRouter(ProjectSummaryForm));
