@@ -147,7 +147,15 @@ export class ProjectSummaryPage extends Component {
             {tabs.map((tab) => (
               <Tabs.TabPane tab={formatTitleString(tab)} key={tab}>
                 <ProjectSummaryForm
-                  initialValues={this.state.isEditMode ? this.props.projectSummary : {}}
+                  initialValues={
+                    this.state.isEditMode
+                      ? this.props.projectSummary
+                      : {
+                          contacts: [{ is_primary: true }],
+                          documents: [],
+                          authorizations: [],
+                        }
+                  }
                   mineGuid={mineGuid}
                   isEditMode={this.state.isEditMode}
                   onSubmit={this.handleSubmit}

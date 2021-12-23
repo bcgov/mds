@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
+import { Typography } from "antd";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 
@@ -9,7 +10,7 @@ const propTypes = {};
 
 export const ProjectDates = (props) => (
   <>
-    <h1>Project Dates</h1>
+    <Typography.Title level={3}>Project Dates</Typography.Title>
     <Field
       id="expected_draft_irt_submission_date"
       name="expected_draft_irt_submission_date"

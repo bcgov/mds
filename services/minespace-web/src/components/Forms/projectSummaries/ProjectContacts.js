@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
+import { Typography, Button } from "antd";
 import { Field, FormSection, FieldArray } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -18,33 +19,55 @@ export const ProjectContacts = (props) => {
               <Field
                 name={`${field}.name`}
                 id={`${field}.name`}
-                label="Project title"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(300)]}
-              />
-              <Field
-                id="proponent_project_id"
-                name="proponent_project_id"
-                label="Proponent project tracking ID (optional)"
+                label="Name"
                 component={renderConfig.FIELD}
                 validate={[maxLength(300)]}
               />
               <Field
-                id="project_summary_description"
-                name="project_summary_description"
-                label="Project overview"
-                component={renderConfig.AUTO_SIZE_FIELD}
+                name={`${field}.job_title`}
+                id={`${field}.job_title`}
+                label="Job Title"
+                component={renderConfig.FIELD}
+                validate={[maxLength(300)]}
+              />
+              <Field
+                name={`${field}.company_name`}
+                id={`${field}.company_name`}
+                label="Company name"
+                component={renderConfig.FIELD}
+                validate={[maxLength(300)]}
+              />
+              <Field
+                name={`${field}.email`}
+                id={`${field}.email`}
+                label="Email"
+                component={renderConfig.FIELD}
+                validate={[maxLength(300)]}
+              />
+              <Field
+                name={`${field}.phone_number`}
+                id={`${field}.phone_number`}
+                label="Phone Number"
+                component={renderConfig.FIELD}
+                validate={[maxLength(300)]}
+              />
+              <Field
+                name={`${field}.phone_extension`}
+                id={`${field}.phone_extension`}
+                label="Ext."
+                component={renderConfig.FIELD}
                 validate={[maxLength(300)]}
               />
             </div>
           );
         })}
+        <Button onClick={() => fields.push({})}>Add</Button>
       </>
     );
   };
   return (
     <>
-      <h1>Contacts</h1>
+      <Typography.Title level={3}>Project Contacts</Typography.Title>
       <FieldArray name="contacts" component={contacts} />
     </>
   );

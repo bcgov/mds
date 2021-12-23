@@ -1,7 +1,8 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Typography } from "antd";
+import { Field, FormSection } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 
@@ -9,7 +10,8 @@ const propTypes = {};
 
 export const AuthorizationsInvolved = (props) => (
   <>
-    <h1>Authorizations Involves</h1>
+    <Typography.Title level={3}>Authorizations Involved</Typography.Title>
+    <FormSection name="authorizations"></FormSection>
     {/* <Field
       id="project_summary_date"
       name="project_summary_date"
