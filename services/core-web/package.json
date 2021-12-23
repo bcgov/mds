@@ -164,7 +164,7 @@
     "test": "jest --env=jsdom --runInBand",
     "test:coverage": "npm test src -- --testResultsProcessor=jest-junit --coverage",
     "test:updateAll": "npm test -- -u",
-    "test:watch": "npm test -- --watchpoll"
+    "test:watch": "npm test -- --watch"
   },
   "jest": {
     "verbose": true,
