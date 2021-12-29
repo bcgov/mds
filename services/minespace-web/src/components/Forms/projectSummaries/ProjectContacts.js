@@ -17,6 +17,12 @@ export const ProjectContacts = (props) => {
           return (
             <div key={index}>
               <Field
+                name={`${field}.is_primary`}
+                id={`${field}.is_primary`}
+                label="Is this the Primary contact?"
+                component={renderConfig.RADIO}
+              />
+              <Field
                 name={`${field}.name`}
                 id={`${field}.name`}
                 label="Name"
