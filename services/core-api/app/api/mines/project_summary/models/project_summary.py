@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from sqlalchemy.schema import FetchedValue
+from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -10,6 +11,7 @@ from app.api.mines.project_summary.models.project_summary_document_xref import P
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.constants import PROJECT_SUMMARY_EMAILS
 from app.api.services.email_service import EmailService
@@ -130,6 +132,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.contacts.append(new_contact)
 
         for authorization in authorizations:
+            # Validate permit types
+            for permit_type in authorization['project_summary_permit_type']:
+                valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
+                if not valid_permit_type:
+                    raise BadRequest(f'Invalid project summary permit type: {permit_type}')
+
             new_authorization = ProjectSummaryAuthorization(
                 project_summary_guid=project_summary.project_summary_guid,
                 project_summary_authorization_type=authorization[
@@ -239,6 +247,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Create or update existing authorizations.
         for authorization in authorizations:
+            # Validate permit types
+            for permit_type in authorization['project_summary_permit_type']:
+                valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
+                if not valid_permit_type:
+                    raise BadRequest(f'Invalid project summary permit type: {permit_type}')
+
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')
             if updated_authorization_guid:
                 updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
