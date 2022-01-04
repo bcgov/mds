@@ -55,7 +55,6 @@ from app.api.mines.project_summary.resources.project_summary_status_codes import
 from app.api.mines.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
 from app.api.mines.project_summary.resources.project_summary_authorization_types import ProjectSummaryAuthorizationTypeResource
 from app.api.mines.project_summary.resources.project_summary_permit_types import ProjectSummaryPermitTypeResource
-from app.api.mines.project_summary.resources.project_summary_contacts import ProjectSummaryContactResource, ProjectSummaryContactListResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -198,9 +197,3 @@ api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
 api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-types')
 api.add_resource(ProjectSummaryAuthorizationTypeResource, '/project-summary-authorization-types')
-api.add_resource(
-    ProjectSummaryContactResource,
-    '/<string:mine_guid>/project-summaries/<string:project_summary_guid>/contacts/<string:project_summary_contact_guid>'
-)
-api.add_resource(ProjectSummaryContactListResource,
-                 '/<string:mine_guid>/project-summaries/<string:project_summary_guid>/contacts')
