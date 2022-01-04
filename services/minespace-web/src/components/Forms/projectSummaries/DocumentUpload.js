@@ -33,26 +33,29 @@ export class DocumentUpload extends Component {
 
   render() {
     return (
-      <Form.Item label="Attached Files">
-        {this.props.isEditMode && (
-          <DocumentTable
-            documents={this.props.initialValues?.documents}
-            documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
-            documentParent="project summary"
-            categoryDataIndex="project_summary_document_type_code"
-            uploadDateIndex="upload_date"
+      <>
+        <Typography.Title level={4}>Document Upload</Typography.Title>
+        <Form.Item label="Attached Files">
+          {this.props.isEditMode && (
+            <DocumentTable
+              documents={this.props.initialValues?.documents}
+              documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
+              documentParent="project summary"
+              categoryDataIndex="project_summary_document_type_code"
+              uploadDateIndex="upload_date"
+            />
+          )}
+          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
+          <Field
+            id="documents"
+            name="documents"
+            onFileLoad={this.onFileLoad}
+            onRemoveFile={this.onRemoveFile}
+            mineGuid={this.props.mineGuid}
+            component={ProjectSummaryFileUpload}
           />
-        )}
-        <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
-        <Field
-          id="documents"
-          name="documents"
-          onFileLoad={this.onFileLoad}
-          onRemoveFile={this.onRemoveFile}
-          mineGuid={this.props.mineGuid}
-          component={ProjectSummaryFileUpload}
-        />
-      </Form.Item>
+        </Form.Item>
+      </>
     );
   }
 }
@@ -62,6 +65,7 @@ const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
 });
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {

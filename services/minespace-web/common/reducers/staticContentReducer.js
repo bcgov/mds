@@ -53,6 +53,8 @@ const initialState = {
   explosivesPermitDocumentType: [],
   explosivesPermitMagazineType: [],
   EMLIContactTypes: [],
+  projectSummaryAuthorizationTypes: [],
+  projectSummaryPermitTypes: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {

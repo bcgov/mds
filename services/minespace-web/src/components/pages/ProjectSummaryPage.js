@@ -17,7 +17,7 @@ import {
 import { formatTitleString } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
-import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD } from "@/constants/routes";
+import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 
@@ -71,6 +71,7 @@ export class ProjectSummaryPage extends Component {
   }
 
   handleSubmit = (values) => {
+    console.log(values);
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(values);
     }
@@ -92,14 +93,15 @@ export class ProjectSummaryPage extends Component {
   }
 
   handleTabChange = (activeTab) => {
+    const url = this.state.isEditMode
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(
+          this.props.match.params?.mineGuid,
+          this.props.match.params?.projectSummaryGuid,
+          activeTab
+        )
+      : ADD_PROJECT_SUMMARY.dynamicRoute(this.props.match.params?.mineGuid, activeTab);
     this.setState({ activeTab });
-    this.props.history.push(
-      EDIT_PROJECT_SUMMARY.dynamicRoute(
-        this.props.match.params?.mineGuid,
-        this.props.match.params?.projectSummaryGuid,
-        activeTab
-      )
-    );
+    this.props.history.push(url);
   };
 
   handleUpdateProjectSummary(values) {
@@ -145,7 +147,15 @@ export class ProjectSummaryPage extends Component {
             {tabs.map((tab) => (
               <Tabs.TabPane tab={formatTitleString(tab)} key={tab}>
                 <ProjectSummaryForm
-                  initialValues={this.state.isEditMode ? this.props.projectSummary : {}}
+                  initialValues={
+                    this.state.isEditMode
+                      ? this.props.projectSummary
+                      : {
+                          contacts: [{ is_primary: true }],
+                          documents: [],
+                          authorizations: [],
+                        }
+                  }
                   mineGuid={mineGuid}
                   isEditMode={this.state.isEditMode}
                   onSubmit={this.handleSubmit}

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
+import { Typography } from "antd";
 import { Field } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -9,6 +10,7 @@ const propTypes = {};
 
 export const BasicInformation = (props) => (
   <>
+    <Typography.Title level={3}>Basic Information</Typography.Title>
     <Field
       id="project_summary_title"
       name="project_summary_title"
