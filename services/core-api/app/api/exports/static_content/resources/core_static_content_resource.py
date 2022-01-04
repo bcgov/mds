@@ -62,6 +62,7 @@ from app.api.mines.project_summary.models.project_summary_status_code import Pro
 from app.api.mines.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
@@ -77,7 +78,8 @@ MODELS_GET_ACTIVE = [
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
-    ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType
+    ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
+    ProjectSummaryPermitType
 ]
 
 
@@ -96,7 +98,8 @@ class StaticContentResource(Resource):
     )
     @requires_role_view_all
     def get(self):
-        content_json = cache.get(STATIC_CONTENT_KEY)
+        # content_json = cache.get(STATIC_CONTENT_KEY)
+        content_json = []
         if not content_json:
             current_app.logger.debug('CACHE MISS - core-static-content')
             content = generate_static_content_dict()
