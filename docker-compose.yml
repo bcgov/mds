@@ -1,25 +1,6 @@
 version: "3"
 
 services:
-  ####################### Keycloak Definition #######################
-  # keycloak:
-  #   restart: always
-  #   container_name: mds_keycloak
-  #   image: jboss/keycloak
-  #   environment:
-  #     - KEYCLOAK_USER=admin
-  #     - KEYCLOAK_PASSWORD=admin
-  #     - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
-  #     - DB_VENDOR=h2
-  #   volumes:
-  #     - ./monitoring/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-  #     - ./monitoring/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
-  #   ports:
-  #     - "8080:8080"
-  #     - "8443:8443"
-  #   # logging:
-  #   #     driver: none
-
   ####################### Postgres Definition #######################
   postgres:
     restart: always
@@ -35,6 +16,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -56,7 +42,8 @@ services:
       - LOGSTASH_USER_PASSWORD=logstash_pass
       - METABASE_USER_PASSWORD=metabase_pass
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   ####################### Backend Definition #######################
   backend:
@@ -77,6 +64,11 @@ services:
       - document_manager_backend
       - tusd
       - filesystem_provider
+    healthcheck:
+      test: ["CMD", "curl", "localhost:5000/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   ####################### Redis Definition #######################
   redis:
@@ -86,6 +78,11 @@ services:
     command: redis-server --requirepass redis-password
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   ####################### Frontend Definition #######################
   frontend:
@@ -101,7 +98,14 @@ services:
     depends_on:
       - backend
     env_file: ./services/core-web/.env
+    healthcheck:
+      test: ["CMD", "curl", "localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
+  ####################### Minespace Definition #######################
   minespace:
     restart: always
     container_name: mds_minespace
@@ -115,6 +119,11 @@ services:
     depends_on:
       - backend
     env_file: ./services/minespace-web/.env
+    healthcheck:
+      test: ["CMD", "curl", "localhost:3020/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:
@@ -131,6 +140,11 @@ services:
       - redis
       - nris_migrate
     env_file: ./services/nris-api/backend/.env
+    healthcheck:
+      test: ["CMD", "curl", "localhost:5500/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nris_migrate:
     restart: on-failure
@@ -220,61 +234,8 @@ services:
       - APP_PORT=3030
       - CACHE_DIR=/tmp/tmp-reports
       - NODE_ENV=development
-    #volumes:
-    #  - ./services/docgen-api/:/carbone-api/
     ports:
       - 3030:3030
-
-  ############################# Container metrics ###########################
-  # https://github.com/maheshmahadevan/docker-monitoring-windows
-  node-exporter:
-    image: prom/node-exporter
-    container_name: node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-    command:
-      - "--path.procfs=/host/proc"
-      - "--path.sysfs=/host/sys"
-      - --collector.filesystem.ignored-mount-points
-      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    ports:
-      - 9100:9100
-    restart: always
-
-  cadvisor:
-    image: google/cadvisor
-    container_name: cadvisor
-    volumes:
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - 8080:8080
-    restart: always
-
-  ############################# Exporters ###################################
-  # https://github.com/rongfengliang/redis-exporter-prometheus-docker-compose
-  redis_monitoring:
-    image: oliver006/redis_exporter:latest
-    container_name: mds_cache_monitoring
-    command: -redis.addr redis://redis:6379 -redis.password redis-password
-    restart: always
-    depends_on:
-      - redis
-    ports:
-      - "9121"
-  # https://github.com/wrouesnel/postgres_exporter
-  postgres_monitoring:
-    image: wrouesnel/postgres_exporter
-    container_name: mds_postgres_monitoring
-    environment:
-      - DATA_SOURCE_NAME=postgresql://mds:test@postgres:5432/mds?sslmode=disable
-    restart: always
-    depends_on:
-      - postgres
-    ports:
-      - "9187"
 
 ####################### Networks Definition ######################
 networks:
