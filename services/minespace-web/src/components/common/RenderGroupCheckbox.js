@@ -17,10 +17,13 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.string).isRequired,
   disabled: PropTypes.bool.isRequired,
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  change: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-const onChange = (checkedValues) => {
+const onChange = (checkedValues, change, name) => {
   console.log(checkedValues);
+  change("mines_act.MINES_ACT_PERMIT.project_summary_permit_type", checkedValues);
 };
 
 const RenderGroupCheckbox = (props) => (
@@ -36,7 +39,7 @@ const RenderGroupCheckbox = (props) => (
       disabled={props.disabled}
       defaultValue={[]}
       {...props.input.value}
-      onChange={onChange}
+      onChange={(values) => onChange(values, props.change, props.name)}
     />
   </Form.Item>
 );

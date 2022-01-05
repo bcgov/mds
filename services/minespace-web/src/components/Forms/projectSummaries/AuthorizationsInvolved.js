@@ -56,13 +56,14 @@ export const AuthorizationsInvolved = (props) => {
         />
         <Field
           id="project_summary_permit_type"
-          name="project_summary_permit_type"
+          name="MINES_ACT_PERMIT.project_summary_permit_type"
           options={options}
+          change={props.change}
           component={renderConfig.GROUP_CHECK_BOX}
         />
         <Field
           id="existing_permits_authorizations"
-          name="existing_permits_authorizations"
+          name="MINES_ACT_PERMIT.existing_permits_authorizations"
           label="Other Authorizations"
           component={renderConfig.FIELD}
           // validate={[maxLength(300)]}
