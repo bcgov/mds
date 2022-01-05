@@ -81,7 +81,10 @@ export class ProjectSummaryForm extends Component {
         "project-contacts": <ProjectContacts initialValues={this.props.initialValues} />,
         "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
         "authorizations-involved": (
-          <AuthorizationsInvolved initialValues={this.props.initialValues} />
+          <AuthorizationsInvolved
+            initialValues={this.props.initialValues}
+            change={this.props.change}
+          />
         ),
         "document-upload": (
           <DocumentUpload initialValues={this.props.initialValues} {...this.props} />

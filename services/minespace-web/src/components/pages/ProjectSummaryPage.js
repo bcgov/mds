@@ -153,7 +153,24 @@ export class ProjectSummaryPage extends Component {
                       : {
                           contacts: [{ is_primary: true }],
                           documents: [],
-                          authorizations: [],
+                          authorizations: [
+                            {
+                              project_summary_permit_type: ["NEW"],
+                              existing_permits_authorizations: ["1234-x"],
+                              project_summary_authorization_type: "MINES_ACT_PERMIT",
+                            },
+                            {
+                              project_summary_permit_type: ["AMENDMENT", "OTHER"],
+                              existing_permits_authorizations: [],
+                              project_summary_authorization_type: "CHANGE_APPROVAL",
+                            },
+                            {
+                              project_summary_permit_type: ["NOTIFICATION"],
+                              existing_permits_authorizations: ["4321-y", "xyz-223"],
+                              project_summary_authorization_type: "OTHER",
+                            },
+                          ],
+                          status_code: "D",
                         }
                   }
                   mineGuid={mineGuid}
