@@ -77,6 +77,9 @@ class MineIncidentListResource(Resource, UserMixin):
             raise NotFound("Mine not found")
         return [i for i in mine.mine_incidents if i.deleted_ind == False]
 
+    def _get_year_incident(self, incident_timestamp):
+        return incident_timestamp.year
+
     @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
@@ -99,6 +102,7 @@ class MineIncidentListResource(Resource, UserMixin):
         reported_timestamp_default = datetime.utcnow(
         ) if not data['reported_timestamp'] and is_minespace_user() else data['reported_timestamp']
 
+        mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
             mine,
             data['incident_timestamp'],
@@ -112,6 +116,7 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_by_name=data['reported_by_name'],
         )
 
+        incident.mine_incident_id_year = mine_incident_year
         incident.reported_by_email = data.get('reported_by_email')
         incident.reported_by_phone_no = data.get('reported_by_phone_no')
         incident.reported_by_phone_ext = data.get('reported_by_phone_ext')
