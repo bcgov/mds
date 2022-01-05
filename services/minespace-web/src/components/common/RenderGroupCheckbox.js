@@ -2,6 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { change } from "redux-form";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Checkbox } from "antd";
@@ -36,11 +38,13 @@ const RenderGroupCheckbox = (props) => (
       disabled={props.disabled}
       defaultValue={[]}
       {...props.input.value}
-      onChange={onChange}
+      // onChange={onChange}
     />
   </Form.Item>
 );
 
 RenderGroupCheckbox.propTypes = propTypes;
 
-export default RenderGroupCheckbox;
+const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
+export default connect(null, mapDispatchToProps)(RenderGroupCheckbox);
+// export default RenderGroupCheckbox;

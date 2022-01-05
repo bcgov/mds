@@ -42,6 +42,7 @@ export const AuthorizationsInvolved = (props) => {
       console.log(e.target.value);
     }
   };
+
   return (
     <>
       <Typography.Title level={3}>Authorizations Involved</Typography.Title>
@@ -49,10 +50,11 @@ export const AuthorizationsInvolved = (props) => {
       <Typography.Title level={5}>Mines Act</Typography.Title>
       <FormSection name="mines_act">
         <Field
-          id="MINES_ACT_PERMIT"
-          name="MINES_ACT_PERMIT"
-          label="Mines Act Permit"
-          component={renderConfig.CHECK_BOX}
+          id="project_summary_authorization_type"
+          name="project_summary_authorization_type"
+          // label="Mines Act Permit"
+          customOptions={[{ label: "Mines Act Permit", value: "MINES_ACT_PERMIT" }]}
+          component={renderConfig.RADIO}
         />
         <Field
           id="project_summary_permit_type"
@@ -68,6 +70,7 @@ export const AuthorizationsInvolved = (props) => {
           // validate={[maxLength(300)]}
         />
       </FormSection>
+
       <Typography.Title level={5}>Environmental Management Act</Typography.Title>
       {/* <Field
         id="project_summary_description"
