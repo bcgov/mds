@@ -45,8 +45,16 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'Party',
         lazy='select',
         primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
-    contacts = db.relationship('ProjectSummaryContact', lazy='select')
-    authorizations = db.relationship('ProjectSummaryAuthorization', lazy='select')
+    contacts = db.relationship(
+        'ProjectSummaryContact',
+        primaryjoin=
+        'and_(ProjectSummaryContact.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryContact.deleted_ind == False)',
+        lazy='selectin')
+    authorizations = db.relationship(
+        'ProjectSummaryAuthorization',
+        primaryjoin=
+        'and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
+        lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('ProjectSummaryDocumentXref', lazy='select')
