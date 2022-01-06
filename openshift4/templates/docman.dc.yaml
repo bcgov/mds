@@ -341,7 +341,7 @@ objects:
                 - containerPort: 5001
                   protocol: TCP
               command:
-                - /opt/app-root/src/celery.sh
+                - /app/celery.sh
               env:
                 - name: DB_USER
                   valueFrom:

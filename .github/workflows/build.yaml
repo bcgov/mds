@@ -32,7 +32,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
@@ -65,7 +64,6 @@ jobs:
         include:
           - name: frontend
           - name: backend
-          - name: docman
           - name: nris
           - name: minespace
     steps:
@@ -92,7 +90,6 @@ jobs:
           - name: backend
           - name: dbbackup
           - name: metabase
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
@@ -123,7 +120,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
