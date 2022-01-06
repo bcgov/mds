@@ -7,7 +7,7 @@ on:
       - develop
     path:
       - services/document-manager/backend/**
-      - .github/workflows/build-tusd.yaml
+      - .github/workflows/build-docman.yaml
 
 env:
   INITIAL_TAG: latest
