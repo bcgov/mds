@@ -25,8 +25,6 @@ const propTypes = {
 };
 
 const onChange = (checkedValues, change, form, name) => {
-  console.log(form);
-  console.log(checkedValues);
   change(form, name, checkedValues);
 };
 
@@ -48,4 +46,3 @@ RenderGroupCheckbox.propTypes = propTypes;
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
 export default connect(null, mapDispatchToProps)(RenderGroupCheckbox);
-// export default RenderGroupCheckbox;

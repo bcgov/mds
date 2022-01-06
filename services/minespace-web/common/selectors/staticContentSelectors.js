@@ -53,6 +53,8 @@ export const {
   getProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypes,
   getEMLIContactTypes,
+  getProjectSummaryAuthorizationTypes,
+  getProjectSummaryPermitTypes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -802,4 +804,36 @@ export const getDropdownEMLIContactTypes = createSelectorWrapper(
 export const getEMLIContactTypesHash = createSelector(
   [getDropdownEMLIContactTypes],
   createLabelHash
+);
+
+export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
+  [getProjectSummaryAuthorizationTypes],
+  (types) => {
+    const parents = types
+      .filter(
+        ({ project_summary_authorization_type_group_id }) =>
+          !project_summary_authorization_type_group_id
+      )
+      .map(({ project_summary_authorization_type, description }) => {
+        return { code: project_summary_authorization_type, description, children: [] };
+      });
+
+    types.map((child) => {
+      parents.map(({ code, children }) => {
+        if (code === child.project_summary_authorization_type_group_id) {
+          return children.push({
+            code: child.project_summary_authorization_type,
+            description: child.description,
+          });
+        }
+      });
+    });
+    return parents;
+  }
+);
+
+export const getDropdownProjectSummaryPermitTypes = createSelectorWrapper(
+  getProjectSummaryPermitTypes,
+  createDropDownList,
+  ["description", "project_summary_permit_type"]
 );

@@ -105,6 +105,10 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleUpdateProjectSummary(values) {
+    console.log(values);
+    const payload = {
+      ...values,
+    };
     const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
     return this.props
       .updateProjectSummary(
@@ -112,7 +116,7 @@ export class ProjectSummaryPage extends Component {
           mineGuid,
           projectSummaryGuid,
         },
-        values
+        payload
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
         this.props.fetchProjectSummaryById(mine_guid, project_summary_guid);
@@ -151,25 +155,6 @@ export class ProjectSummaryPage extends Component {
                     this.state.isEditMode
                       ? this.props.projectSummary
                       : {
-                          contacts: [{ is_primary: true }],
-                          documents: [],
-                          authorizations: [
-                            {
-                              project_summary_permit_type: ["NEW"],
-                              existing_permits_authorizations: ["1234-x"],
-                              project_summary_authorization_type: "MINES_ACT_PERMIT",
-                            },
-                            {
-                              project_summary_permit_type: ["AMENDMENT", "OTHER"],
-                              existing_permits_authorizations: [],
-                              project_summary_authorization_type: "CHANGE_APPROVAL",
-                            },
-                            {
-                              project_summary_permit_type: ["NOTIFICATION"],
-                              existing_permits_authorizations: ["4321-y", "xyz-223"],
-                              project_summary_authorization_type: "OTHER",
-                            },
-                          ],
                           status_code: "D",
                         }
                   }
