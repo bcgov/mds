@@ -8,6 +8,7 @@ import { hot } from "react-hot-loader";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@common/actionCreators/staticContentActionCreator";
+import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
 import { Header } from "@/components/layout/Header";
@@ -27,7 +28,9 @@ class App extends Component {
   state = { isIE: true, isMobile: true };
 
   componentDidMount() {
-    this.props.loadBulkStaticContent();
+    if (this.props.isAuthenticated) {
+      this.props.loadBulkStaticContent();
+    }
     this.setState({ isIE: detectIE() });
   }
 
@@ -75,6 +78,10 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  isAuthenticated: isAuthenticated(state),
+});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -85,6 +92,6 @@ const mapDispatchToProps = (dispatch) =>
 
 export default compose(
   hot(module),
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   AuthenticationGuard(true)
 )(App);
