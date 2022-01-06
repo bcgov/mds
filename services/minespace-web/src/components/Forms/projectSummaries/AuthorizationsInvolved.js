@@ -45,6 +45,7 @@ export const AuthorizationsInvolved = (props) => {
       />
     </>
   );
+
   return (
     <>
       <Typography.Title level={3}>Authorizations Involved</Typography.Title>

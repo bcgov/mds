@@ -8,7 +8,10 @@ import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
-import { getProjectSummaryDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+import {
+  getProjectSummaryDocumentTypesHash,
+  getProjectSummaryAuthorizationTypesArray,
+} from "@common/selectors/staticContentSelectors";
 import {
   createProjectSummary,
   fetchProjectSummaryById,
@@ -71,11 +74,26 @@ export class ProjectSummaryPage extends Component {
   }
 
   handleSubmit = (values) => {
-    console.log(values);
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(values);
     }
     return this.handleUpdateProjectSummary(values);
+  };
+
+  handleTransformPayload = (values) => {
+    const authorizations = [];
+    Object.keys(values).map((key) => {
+      if (this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
+        authorizations.push({
+          project_summary_authorization_type: key,
+          existing_permits_authorizations: [],
+          ...values[key],
+        });
+        delete values[key];
+      }
+    });
+
+    return { authorizations, ...values };
   };
 
   handleCreateProjectSummary(values) {
@@ -84,7 +102,7 @@ export class ProjectSummaryPage extends Component {
         {
           mineGuid: this.props.match.params?.mineGuid,
         },
-        values
+        this.handleTransformPayload(values)
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
         this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
@@ -105,10 +123,6 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleUpdateProjectSummary(values) {
-    console.log(values);
-    const payload = {
-      ...values,
-    };
     const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
     return this.props
       .updateProjectSummary(
@@ -116,7 +130,7 @@ export class ProjectSummaryPage extends Component {
           mineGuid,
           projectSummaryGuid,
         },
-        payload
+        this.handleTransformPayload(values)
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
         this.props.fetchProjectSummaryById(mine_guid, project_summary_guid);
@@ -155,6 +169,7 @@ export class ProjectSummaryPage extends Component {
                     this.state.isEditMode
                       ? this.props.projectSummary
                       : {
+                          contacts: [{}],
                           status_code: "D",
                         }
                   }
@@ -177,6 +192,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
+  projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
