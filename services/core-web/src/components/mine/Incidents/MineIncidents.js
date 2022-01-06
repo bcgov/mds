@@ -98,13 +98,19 @@ export class MineIncidents extends Component {
       this.props.fetchMineIncidents(this.props.mineGuid);
     });
 
-  parseIncidentIntoFormData = (existingIncident) => ({
-    ...existingIncident,
-    reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
-    reported_time: moment(existingIncident.reported_timestamp),
-    incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(existingIncident.incident_timestamp),
-  });
+  parseIncidentIntoFormData = (existingIncident, newIncident) => {
+    if (newIncident) {
+      return { ...existingIncident };
+    } 
+      return {
+        ...existingIncident,
+        reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+        reported_time: moment(existingIncident.reported_timestamp),
+        incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+        incident_time: moment(existingIncident.incident_timestamp),
+      };
+    
+  };
 
   openViewMineIncidentModal = (event, incident) => {
     const mine = this.props.mines[this.props.mineGuid];
@@ -140,7 +146,7 @@ export class MineIncidents extends Component {
         newIncident,
         initialValues: {
           status_code: "PRE",
-          ...this.parseIncidentIntoFormData(existingIncident),
+          ...this.parseIncidentIntoFormData(existingIncident, newIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),
