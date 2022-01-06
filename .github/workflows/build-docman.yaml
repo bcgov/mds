@@ -15,7 +15,7 @@ env:
   CONTEXT: services/document-manager/backend/
 
 jobs:
-  build-tusd:
+  build-docman:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
