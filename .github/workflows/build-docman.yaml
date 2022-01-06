@@ -1,7 +1,6 @@
 name: Build docman
 
 on:
-  pull_request:
   push:
     branches:
       - develop
