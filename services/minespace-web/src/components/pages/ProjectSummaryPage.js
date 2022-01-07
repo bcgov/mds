@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { getFormValues } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
-import { CaretLeftOutlined } from "@ant-design/icons";
+import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -69,6 +69,10 @@ export class ProjectSummaryPage extends Component {
   };
 
   componentDidMount() {
+    this.handleFetchData();
+  }
+
+  handleFetchData = () => {
     const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
     this.props.fetchMineRecordById(mineGuid).then(() => {
       if (mineGuid && projectSummaryGuid) {
@@ -78,13 +82,15 @@ export class ProjectSummaryPage extends Component {
       }
       return this.setState({ isLoaded: true, activeTab: tab });
     });
-  }
+  };
 
-  handleSubmit = (values) => {
+  handleSubmit = (values, isDraft = false) => {
+    const status = isDraft ? "D" : "O";
+    const payload = { status_code: status, ...values };
     if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(values);
+      return this.handleCreateProjectSummary(payload);
     }
-    return this.handleUpdateProjectSummary(values);
+    return this.handleUpdateProjectSummary(payload);
   };
 
   handleTransformPayload = (values) => {
@@ -113,7 +119,6 @@ export class ProjectSummaryPage extends Component {
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
         this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
-        window.location.reload();
       });
   }
 
@@ -139,8 +144,8 @@ export class ProjectSummaryPage extends Component {
         },
         this.handleTransformPayload(values)
       )
-      .then(({ data: { mine_guid, project_summary_guid } }) => {
-        this.props.fetchProjectSummaryById(mine_guid, project_summary_guid);
+      .then(() => {
+        this.handleFetchData();
       });
   }
 
@@ -157,12 +162,15 @@ export class ProjectSummaryPage extends Component {
         <>
           <Row>
             <Col span={24}>
-              <Typography.Title>
-                <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
-                  <CaretLeftOutlined />
-                </Link>
-                {title}
-              </Typography.Title>
+              <Typography.Title>{title}</Typography.Title>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={22} md={14} lg={12}>
+              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
+                <ArrowLeftOutlined className="padding-sm--right" />
+                Back to: {mine.mine_name} Applications page
+              </Link>
             </Col>
           </Row>
           <Divider />
@@ -179,8 +187,7 @@ export class ProjectSummaryPage extends Component {
                     this.state.isEditMode
                       ? this.props.formattedProjectSummary.summary
                       : {
-                          contacts: [{ is_primary: true }],
-                          status_code: "D",
+                          contacts: [],
                         }
                   }
                   mineGuid={mineGuid}

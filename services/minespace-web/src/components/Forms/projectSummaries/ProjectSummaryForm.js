@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, arrayPush, formValueSelector } from "redux-form";
+import { Field, reduxForm, change, arrayPush, formValueSelector, getFormValues } from "redux-form";
 import { remove } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -74,6 +74,11 @@ export class ProjectSummaryForm extends Component {
   //   return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
   // };
 
+  handleDraft = (e) => {
+    e.preventDefault();
+    this.props.onSubmit(this.props.formValues, true);
+  };
+
   render() {
     const renderTabComponent = (tab) =>
       ({
@@ -104,7 +109,12 @@ export class ProjectSummaryForm extends Component {
               Back
             </Button>
           )}
-          <Button type="ghost" loading={this.props.submitting}>
+          <Button
+            type="ghost"
+            loading={this.props.submitting}
+            disabled={this.props.submitting}
+            onClick={(e) => this.handleDraft(e)}
+          >
             Save Draft
           </Button>
           {!isLast && (
@@ -116,7 +126,12 @@ export class ProjectSummaryForm extends Component {
             </Button>
           )}
           {isLast && (
-            <Button type="primary" htmlType="submit" loading={this.props.submitting}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={this.props.submitting}
+              disabled={this.props.submitting}
+            >
               {this.props.isEditMode ? "Save" : "Submit"}
             </Button>
           )}
@@ -132,6 +147,7 @@ ProjectSummaryForm.defaultProps = defaultProps;
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
+  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
