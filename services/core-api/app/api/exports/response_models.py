@@ -209,7 +209,7 @@ STATIC_CONTENT_MODEL = api.model(
         'projectSummaryAuthorizationTypes':
         fields.List(
             fields.Nested(PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL),
-            attribute='projectSummaryAuthorizationType'),
+            attribute='ProjectSummaryAuthorizationType'),
         'projectSummaryPermitTypes':
         fields.List(
             fields.Nested(PROJECT_SUMMARY_PERMIT_TYPE_MODEL),

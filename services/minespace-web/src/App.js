@@ -1,11 +1,14 @@
 import React, { Fragment, Component } from "react";
 import { compose } from "redux";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
-
+import { loadBulkStaticContent } from "@common/actionCreators/staticContentActionCreator";
+import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
 import { Header } from "@/components/layout/Header";
@@ -25,6 +28,9 @@ class App extends Component {
   state = { isIE: true, isMobile: true };
 
   componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.loadBulkStaticContent();
+    }
     this.setState({ isIE: detectIE() });
   }
 
@@ -72,4 +78,20 @@ class App extends Component {
   }
 }
 
-export default compose(hot(module), AuthenticationGuard(true))(App);
+const mapStateToProps = (state) => ({
+  isAuthenticated: isAuthenticated(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      loadBulkStaticContent,
+    },
+    dispatch
+  );
+
+export default compose(
+  hot(module),
+  connect(mapStateToProps, mapDispatchToProps),
+  AuthenticationGuard(true)
+)(App);
