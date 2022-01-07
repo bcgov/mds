@@ -26,9 +26,9 @@ def test_get_project_summaries_by_invalid_mine_guid(test_client, db_session, aut
     assert get_resp.status_code == 404
 
 
-def test_post_project_summary(test_client, db_session, auth_headers):
+def test_post_project_summary_minimum(test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
-    data = {'project_summary_description': 'Sample description.'}
+    data = {'project_summary_title': 'Sample title.', 'status_code': 'D'}
 
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/project-summaries',
@@ -40,6 +40,5 @@ def test_post_project_summary(test_client, db_session, auth_headers):
 
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_guid'] == str(mine.mine_guid)
-    assert post_data['status_code'] == 'O'
-    assert post_data['project_summary_lead_name'] == None
-    assert post_data['project_summary_lead_party_guid'] == None
+    assert post_data['project_summary_title'] == data['project_summary_title']
+    assert post_data['status_code'] == data['status_code']
