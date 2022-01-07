@@ -7,7 +7,6 @@ import { bindActionCreators } from "redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Checkbox } from "antd";
-import * as FORM from "@/constants/forms";
 
 /**
  * @constant RenderGroupCheckbox - Ant Design `Checkbox` component for redux-form.
@@ -28,19 +27,24 @@ const onChange = (checkedValues, change, form, name) => {
   change(form, name, checkedValues);
 };
 
-const RenderGroupCheckbox = (props) => (
-  <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
-    <Checkbox.Group
-      id={props.id}
-      checked={props.input.value}
-      options={props.options}
-      disabled={props.disabled}
-      defaultValue={[]}
-      {...props.input.value}
-      onChange={(values) => onChange(values, props.change, props.formName, props.fieldName)}
-    />
-  </Form.Item>
-);
+const RenderGroupCheckbox = (props) => {
+  console.log(props.formValues[props.fieldName]);
+  console.log(props.formValues);
+  console.log(props);
+  return (
+    <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
+      <Checkbox.Group
+        id={props.id}
+        checked={props.input.value}
+        options={props.options}
+        disabled={props.disabled}
+        defaultValue={props.formValues[props.fieldName]}
+        {...props.input.value}
+        onChange={(values) => onChange(values, props.change, props.formName, props.fieldName)}
+      />
+    </Form.Item>
+  );
+};
 
 RenderGroupCheckbox.propTypes = propTypes;
 
