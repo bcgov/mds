@@ -43,6 +43,10 @@ from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
 from app.api.mines.project_summary.models.project_summary import ProjectSummary
+from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
@@ -978,17 +982,24 @@ class ProjectSummaryFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory(MineFactory, minimal=True)
-        project_summary_lead = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
-
-    project_summary_guid = GUID
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    project_summary_lead_party_guid = factory.SelfAttribute('project_summary_lead.party.party_guid')
-    project_summary_description = 'Sample test description.'
-    project_summary_date = TODAY
+    project_summary_guid = GUID
+    project_summary_title = 'Sample test title'
     status_code = 'O'
-    deleted_ind = False
     documents = []
+    contacts = []
+    authorizations = []
+    deleted_ind = False
+
+    project_summary_description = None
+    proponent_project_id = None
+    expected_draft_irt_submission_date = None
+    expected_permit_application_date = None
+    expected_permit_receipt_date = None
+    expected_project_start_date = None
+    project_summary_lead_party_guid = None
+    project_summary_lead = None
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -1000,6 +1011,40 @@ class ProjectSummaryFactory(BaseFactory):
 
         ProjectSummaryDocumentFactory.create_batch(
             size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
+
+
+class ProjectSummaryContactFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummaryContact
+
+    class Params:
+        project_summary = factory.SubFactory(ProjectSummaryFactory)
+
+    project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
+    email = factory.Faker('email')
+    phone_number = factory.Faker('numerify', text='###-###-####')
+    name = factory.Faker('name')
+    is_primary = True
+    deleted_ind = False
+
+    phone_extension = None
+    job_title = None
+    company_name = None
+
+
+class ProjectSummaryAuthorizationFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummaryAuthorization
+
+    class Params:
+        project_summary = factory.SubFactory(ProjectSummaryFactory)
+
+    project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
+    project_summary_permit_type = ['NEW']
+    project_summary_authorization_type = 'MINES_ACT'
+    deleted_ind = False
+
+    existing_permits_authorizations = None
 
 
 class EMLIContactTypeFactory(BaseFactory):
