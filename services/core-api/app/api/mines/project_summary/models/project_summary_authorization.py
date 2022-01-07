@@ -11,8 +11,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
 
     project_summary_authorization_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
-    existing_permits_authorizations = db.Column(db.ARRAY(db.String), nullable=True)
-
+    existing_permits_authorizations = db.Column(db.ARRAY(db.String), nullable=False)
     project_summary_guid = db.Column(
         db.ForeignKey('project_summary.project_summary_guid'), nullable=False)
     project_summary_permit_type = db.Column(db.ARRAY(db.String), nullable=False)

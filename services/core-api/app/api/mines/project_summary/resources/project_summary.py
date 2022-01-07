@@ -134,5 +134,9 @@ class ProjectSummaryResource(Resource, UserMixin):
         if project_summary is None:
             raise NotFound('Project Summary not found')
 
-        project_summary.delete()
-        return None, 204
+        if project_summary.status_code == 'D':
+            project_summary.delete()
+            return None, 204
+
+        raise BadRequest(
+            'Project summary must have status code of "DRAFT" to be eligible for deletion.')
