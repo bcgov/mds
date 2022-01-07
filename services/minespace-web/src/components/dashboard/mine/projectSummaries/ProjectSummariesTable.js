@@ -37,7 +37,7 @@ export class ProjectSummariesTable extends Component {
       title: "Project #",
       dataIndex: "project_summary_id",
       sorter: (a, b) => (a.project_summary_id > b.project_summary_id ? -1 : 1),
-      render: (text) => <div title="Project Summary No.">{text}</div>,
+      render: (text) => <div title="Project Description No.">{text}</div>,
     },
     {
       title: "Last Updated",
@@ -105,7 +105,7 @@ export class ProjectSummariesTable extends Component {
           this.props.projectSummaries,
           this.props.projectSummaryStatusCodesHash
         )}
-        locale={{ emptyText: "This mine has no project summary data." }}
+        locale={{ emptyText: "This mine has no project description data." }}
       />
     );
   }

@@ -7,7 +7,10 @@ import { getFormValues } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
+import {
+  getProjectSummary,
+  getFormattedProjectSummary,
+} from "@common/selectors/projectSummarySelectors";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
@@ -86,7 +89,7 @@ export class ProjectSummaryPage extends Component {
       if (this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
         authorizations.push({
           project_summary_authorization_type: key,
-          existing_permits_authorizations: [],
+          existing_permits_authorizations: values[key].existing_permits_authorizations.split(","),
           ...values[key],
         });
         delete values[key];
@@ -138,6 +141,8 @@ export class ProjectSummaryPage extends Component {
   }
 
   render() {
+    // console.log(this.props.projectSummary);
+    // console.log(this.props.formattedProjectSummary);
     const title = this.state.isEditMode
       ? `Edit Project Description #${this.props.projectSummary?.project_summary_id}`
       : "Create new Project Description";
@@ -167,9 +172,9 @@ export class ProjectSummaryPage extends Component {
                 <ProjectSummaryForm
                   initialValues={
                     this.state.isEditMode
-                      ? this.props.projectSummary
+                      ? this.props.formattedProjectSummary.summary
                       : {
-                          contacts: [{}],
+                          contacts: [{ is_primary: true }],
                           status_code: "D",
                         }
                   }
@@ -191,6 +196,7 @@ export class ProjectSummaryPage extends Component {
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
+  formattedProjectSummary: getFormattedProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
 });

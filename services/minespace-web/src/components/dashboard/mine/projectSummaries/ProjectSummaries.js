@@ -56,7 +56,7 @@ export class ProjectSummaries extends Component {
           <Typography.Paragraph>
             A&nbsp;
             <Typography.Text className="color-primary" strong>
-              project summary&nbsp;
+            project description&nbsp;
             </Typography.Text>
             is a high level overview of a production mining project used for assessment prior to
             applying for a new or amending an existing production mineral or coal mining permit
