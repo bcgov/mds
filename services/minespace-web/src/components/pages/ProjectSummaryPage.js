@@ -20,6 +20,7 @@ import {
   fetchProjectSummaryById,
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { formatTitleString } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
@@ -37,6 +38,7 @@ const propTypes = {
   fetchProjectSummaryById: PropTypes.func.isRequired,
   createProjectSummary: PropTypes.func.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
     params: {
@@ -51,7 +53,6 @@ const defaultProps = {
   formValues: {},
 };
 
-const initialTab = "basic-information";
 const tabs = [
   "basic-information",
   "project-contacts",
@@ -68,6 +69,7 @@ export class ProjectSummaryPage extends Component {
 
   componentDidMount() {
     const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
+    this.props.fetchMineRecordById(mineGuid);
     if (mineGuid && projectSummaryGuid) {
       return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
         this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
@@ -141,11 +143,11 @@ export class ProjectSummaryPage extends Component {
   }
 
   render() {
-    // console.log(this.props.projectSummary);
-    // console.log(this.props.formattedProjectSummary);
+    console.log(this.props.projectSummary);
+    console.log(this.props.formattedProjectSummary);
     const title = this.state.isEditMode
-      ? `Edit Project Description #${this.props.projectSummary?.project_summary_id}`
-      : "Create new Project Description";
+      ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
+      : "New project description for ";
     const { mineGuid } = this.props.match?.params;
     return (
       (this.state.isLoaded && (
@@ -207,6 +209,7 @@ const mapDispatchToProps = (dispatch) =>
       createProjectSummary,
       fetchProjectSummaryById,
       updateProjectSummary,
+      fetchMineRecordById,
     },
     dispatch
   );

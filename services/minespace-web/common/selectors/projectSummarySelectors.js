@@ -16,17 +16,17 @@ export const getFormattedProjectSummary = createSelector([getProjectSummary], (s
     summary?.authorizations.map((authorization) => {
       formattedSummary = {
         summary: {
+          ...formattedSummary.summary,
           [authorization.project_summary_authorization_type]: {
             ...authorization,
             existing_permits_authorizations: authorization.existing_permits_authorizations.toString(),
           },
-          ...formattedSummary.summary,
         },
         ...formattedSummary,
       };
       formattedSummary.authorizationOptions.push(authorization.project_summary_authorization_type);
     });
-  delete formattedSummary.summary.authorizations;
+  // delete formattedSummary.summary.authorizations;
 
   return formattedSummary;
 });

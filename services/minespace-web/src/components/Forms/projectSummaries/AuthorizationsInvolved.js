@@ -28,6 +28,8 @@ export const AuthorizationsInvolved = (props) => {
       setChecked(checked.filter((item) => item !== code));
     }
   };
+
+  console.log(props.formattedProjectSummary.summary);
   const renderNestedFields = (code) => (
     <>
       {code !== "OTHER" && (
@@ -37,7 +39,7 @@ export const AuthorizationsInvolved = (props) => {
           fieldName={`${code}.project_summary_permit_type`}
           options={props.dropdownProjectSummaryPermitTypes}
           formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          formValues={props.formValues}
+          formValues={props.formattedProjectSummary.summary}
           change={props.change}
           component={renderConfig.GROUP_CHECK_BOX}
         />

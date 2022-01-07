@@ -28,9 +28,9 @@ const onChange = (checkedValues, change, form, name) => {
 };
 
 const RenderGroupCheckbox = (props) => {
-  console.log(props.formValues[props.fieldName]);
-  console.log(props.formValues);
-  console.log(props);
+  // console.log(props.formValues[props.fieldName]);
+  // console.log(props.formValues);
+  // console.log(props);
   return (
     <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
       <Checkbox.Group
