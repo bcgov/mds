@@ -41,6 +41,9 @@ services:
       - DOCMAN_USER_PASSWORD=docman_pass
       - LOGSTASH_USER_PASSWORD=logstash_pass
       - METABASE_USER_PASSWORD=metabase_pass
+    volumes:
+      - ./migrations/sql:/flyway/sql
+      - ./migrations/scripts:/flyway/scripts
     depends_on:
       postgres:
         condition: service_healthy
