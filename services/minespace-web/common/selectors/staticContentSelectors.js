@@ -776,7 +776,7 @@ export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
 export const getDropdownProjectSummaryStatusCodes = createSelectorWrapper(
   getProjectSummaryStatusCodes,
   createDropDownList,
-  ["description", "project_summary_status_code", "active_ind"]
+  ["description", "project_summary_status_code"]
 );
 
 export const getProjectSummaryStatusCodesHash = createSelector(

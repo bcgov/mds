@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import { Table, Button, Popconfirm } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,7 +19,7 @@ const propTypes = {
 };
 
 export class ProjectSummariesTable extends Component {
-  transformRowData = (projectSummaries, codeHash) =>
+  transformRowData = (projectSummaries, codeHash, handleDeleteDraft) =>
     projectSummaries &&
     projectSummaries.map((projectSummary) => ({
       key: projectSummary.project_summary_guid,
@@ -30,6 +31,7 @@ export class ProjectSummariesTable extends Component {
       update_user: projectSummary.update_user,
       update_timestamp: formatDate(projectSummary.update_timestamp),
       documents: projectSummary.documents,
+      handleDeleteDraft: handleDeleteDraft,
     }));
 
   columns = () => [
@@ -89,6 +91,19 @@ export class ProjectSummariesTable extends Component {
           >
             <img src={EDIT_PENCIL} alt="Edit" />
           </Link>
+          {record.status_code === "Draft" && (
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this draft?"
+              onConfirm={(e) => record.handleDeleteDraft(e, record.project_summary_guid)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button type="primary" size="small" ghost>
+                <DeleteOutlined className="padding-sm--left icon-sm" />
+              </Button>
+            </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -103,7 +118,8 @@ export class ProjectSummariesTable extends Component {
         columns={this.columns()}
         dataSource={this.transformRowData(
           this.props.projectSummaries,
-          this.props.projectSummaryStatusCodesHash
+          this.props.projectSummaryStatusCodesHash,
+          this.props.handleDeleteDraft
         )}
         locale={{ emptyText: "This mine has no project description data." }}
       />

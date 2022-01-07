@@ -12,6 +12,7 @@ import {
   fetchProjectSummariesByMine,
   createProjectSummary,
   updateProjectSummary,
+  deleteProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
@@ -41,12 +42,24 @@ export class ProjectSummaries extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.handleFetchData(id);
+  }
+
+  handleFetchData = (id) => {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchProjectSummariesByMine({ mineGuid: id }).then(() => {
         this.setState({ isLoaded: true, mine: this.props.mines[id] });
       });
     });
-  }
+  };
+
+  handleDeleteDraft = (e, projectSummaryGuid) => {
+    const { id } = this.props.match.params;
+    e.preventDefault();
+    this.props.deleteProjectSummary(id, projectSummaryGuid).then(() => {
+      this.handleFetchData(id);
+    });
+  };
 
   render() {
     return (
@@ -56,7 +69,7 @@ export class ProjectSummaries extends Component {
           <Typography.Paragraph>
             A&nbsp;
             <Typography.Text className="color-primary" strong>
-            project description&nbsp;
+              project description&nbsp;
             </Typography.Text>
             is a high level overview of a production mining project used for assessment prior to
             applying for a new or amending an existing production mineral or coal mining permit
@@ -136,6 +149,7 @@ export class ProjectSummaries extends Component {
             mine={this.state.mine}
             isLoaded={this.state.isLoaded}
             projectSummaryStatusCodesHash={this.props.projectSummaryStatusCodesHash}
+            handleDeleteDraft={this.handleDeleteDraft}
           />
         </Col>
       </Row>
@@ -158,6 +172,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectSummariesByMine,
       createProjectSummary,
       updateProjectSummary,
+      deleteProjectSummary,
     },
     dispatch
   );

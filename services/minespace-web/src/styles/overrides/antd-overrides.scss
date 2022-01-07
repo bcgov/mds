@@ -59,8 +59,19 @@
 }
 
 .ant-btn-background-ghost {
+  border-color: transparent;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.ant-btn-background-ghost.ant-btn-primary {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ant-btn-background-ghost.ant-btn-primary:hover,
+.ant-btn-background-ghost.ant-btn-primary:focus {
+  border-color: transparent;
 }
 
 // Typography
