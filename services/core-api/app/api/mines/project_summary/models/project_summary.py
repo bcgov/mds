@@ -130,13 +130,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         for contact in contacts:
             new_contact = ProjectSummaryContact(
                 project_summary_guid=project_summary.project_summary_guid,
-                name=contact['name'],
-                job_title=contact['job_title'],
-                company_name=contact['company_name'],
-                email=contact['email'],
-                phone_number=contact['phone_number'],
-                phone_extension=contact['phone_extension'],
-                is_primary=contact['is_primary'])
+                name=contact.get('name'),
+                job_title=contact.get('job_title'),
+                company_name=contact.get('company_name'),
+                email=contact.get('email'),
+                phone_number=contact.get('phone_number'),
+                phone_extension=contact.get('phone_extension'),
+                is_primary=contact.get('is_primary'))
             project_summary.contacts.append(new_contact)
 
         for authorization in authorizations:
@@ -233,24 +233,24 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if updated_contact_guid:
                 updated_contact = ProjectSummaryContact.find_project_summary_contact_by_guid(
                     updated_contact_guid)
-                updated_contact.name = contact['name']
-                updated_contact.job_title = contact['job_title']
-                updated_contact.company_name = contact['company_name']
-                updated_contact.email = contact['email']
-                updated_contact.phone_number = contact['phone_number']
-                updated_contact.phone_extension = contact['phone_extension']
-                updated_contact.is_primary = contact['is_primary']
+                updated_contact.name = contact.get('name')
+                updated_contact.job_title = contact.get('job_title')
+                updated_contact.company_name = contact.get('company_name')
+                updated_contact.email = contact.get('email')
+                updated_contact.phone_number = contact.get('phone_number')
+                updated_contact.phone_extension = contact('phone_extension')
+                updated_contact.is_primary = contact.get('is_primary')
 
             else:
                 new_contact = ProjectSummaryContact(
                     project_summary_guid=self.project_summary_guid,
-                    name=contact['name'],
-                    job_title=contact['job_title'],
-                    company_name=contact['company_name'],
-                    email=contact['email'],
-                    phone_number=contact['phone_number'],
-                    phone_extension=contact['phone_extension'],
-                    is_primary=contact['is_primary'])
+                    name=contact.get('name'),
+                    job_title=contact.get('job_title'),
+                    company_name=contact.get('company_name'),
+                    email=contact.get('email'),
+                    phone_number=contact.get('phone_number'),
+                    phone_extension=contact('phone_extension'),
+                    is_primary=contact.get('is_primary'))
                 self.contacts.append(new_contact)
 
         # Create or update existing authorizations.
@@ -265,17 +265,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if updated_authorization_guid:
                 updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
                     updated_authorization_guid)
-                updated_authorization.project_summary_permit_type = authorization[
-                    'project_summary_permit_type']
-                updated_authorization.existing_permits_authorizations = authorization[
-                    'existing_permits_authorizations']
+                updated_authorization.project_summary_permit_type = authorization.get(
+                    'project_summary_permit_type')
+                updated_authorization.existing_permits_authorizations = authorization.get(
+                    'existing_permits_authorizations')
 
             else:
                 new_authorization = ProjectSummaryAuthorization(
                     project_summary_guid=self.project_summary_guid,
-                    project_summary_permit_type=authorization['project_summary_permit_type'],
-                    existing_permits_authorizations=authorization['existing_permits_authorizations']
-                )
+                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
+                    existing_permits_authorizations=authorization.get(
+                        'existing_permits_authorizations'))
                 self.authorizations.append(new_authorization)
 
         if add_to_session:
