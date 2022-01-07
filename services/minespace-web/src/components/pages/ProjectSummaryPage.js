@@ -70,13 +70,14 @@ export class ProjectSummaryPage extends Component {
 
   componentDidMount() {
     const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
-    this.props.fetchMineRecordById(mineGuid);
-    if (mineGuid && projectSummaryGuid) {
-      return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
-        this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
-      });
-    }
-    return this.setState({ isLoaded: true, activeTab: tab });
+    this.props.fetchMineRecordById(mineGuid).then(() => {
+      if (mineGuid && projectSummaryGuid) {
+        return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
+          this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
+        });
+      }
+      return this.setState({ isLoaded: true, activeTab: tab });
+    });
   }
 
   handleSubmit = (values) => {

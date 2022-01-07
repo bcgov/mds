@@ -10,7 +10,7 @@ export const {
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {
   let formattedSummary = { summary, authorizationOptions: [] };
-  console.log(summary);
+  // console.log(summary);
   !isEmpty(summary) &&
     summary?.authorizations.length > 0 &&
     summary?.authorizations.map((authorization) => {
