@@ -1041,7 +1041,7 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
 
     project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
     project_summary_permit_type = ['NEW']
-    project_summary_authorization_type = 'MINES_ACT'
+    project_summary_authorization_type = 'MINES_ACT_PERMIT'
     existing_permits_authorizations = []
     deleted_ind = False
 
