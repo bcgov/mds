@@ -7,6 +7,7 @@ import { getFormValues } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
@@ -145,10 +146,11 @@ export class ProjectSummaryPage extends Component {
   render() {
     console.log(this.props.projectSummary);
     console.log(this.props.formattedProjectSummary);
+    const { mineGuid } = this.props.match?.params;
+    const mine = this.props.mines[mineGuid];
     const title = this.state.isEditMode
       ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
-      : "New project description for ";
-    const { mineGuid } = this.props.match?.params;
+      : `New project description for ${mine.mine_name}`;
     return (
       (this.state.isLoaded && (
         <>
@@ -196,6 +198,7 @@ export class ProjectSummaryPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  mines: getMines(state),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
   formattedProjectSummary: getFormattedProjectSummary(state),
