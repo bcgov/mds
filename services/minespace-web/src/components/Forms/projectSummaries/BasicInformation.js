@@ -15,7 +15,7 @@ export const BasicInformation = (props) => (
       id="project_summary_title"
       name="project_summary_title"
       label={<span className="bold">Project title</span>}
-      component={renderConfig.AUTO_SIZE_FIELD}
+      component={renderConfig.FIELD}
       validate={[maxLength(300), required]}
     />
     <Field
