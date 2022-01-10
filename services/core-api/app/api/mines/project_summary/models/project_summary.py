@@ -144,7 +144,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for permit_type in authorization['project_summary_permit_type']:
                 valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
                 if not valid_permit_type:
-                    raise BadRequest(f'Invalid project summary permit type: {permit_type}')
+                    raise BadRequest(f'Invalid project description permit type: {permit_type}')
 
             new_authorization = ProjectSummaryAuthorization(
                 project_summary_guid=project_summary.project_summary_guid,
@@ -259,7 +259,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for permit_type in authorization['project_summary_permit_type']:
                 valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
                 if not valid_permit_type:
-                    raise BadRequest(f'Invalid project summary permit type: {permit_type}')
+                    raise BadRequest(f'Invalid project description permit type: {permit_type}')
 
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')
             if updated_authorization_guid:
@@ -292,8 +292,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def send_project_summary_email_to_ministry(self, mine):
         recipients = PROJECT_SUMMARY_EMAILS
 
-        subject = f'Project Summary Notification for {mine.mine_name}'
-        body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Summary data in MineSpace</p>'
+        subject = f'Project Description Notification for {mine.mine_name}'
+        body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Description data in MineSpace</p>'
         body += f'<p>Description: {self.project_summary_description}'
 
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'

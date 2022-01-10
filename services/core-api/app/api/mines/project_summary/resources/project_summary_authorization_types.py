@@ -10,7 +10,7 @@ from app.api.mines.project_summary.models.project_summary_authorization_type imp
 class ProjectSummaryAuthorizationTypeResource(Resource):
     @api.marshal_with(
         PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL, envelope='records', code=200, as_list=True)
-    @api.doc(description='Returns the possible project summary authorization types')
+    @api.doc(description='Returns the possible project description authorization types')
     @requires_role_view_all
     def get(self):
         return ProjectSummaryAuthorizationType.get_all()

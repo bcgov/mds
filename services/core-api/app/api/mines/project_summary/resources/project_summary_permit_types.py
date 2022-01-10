@@ -9,7 +9,7 @@ from app.api.mines.project_summary.models.project_summary_permit_type import Pro
 
 class ProjectSummaryPermitTypeResource(Resource):
     @api.marshal_with(PROJECT_SUMMARY_PERMIT_TYPE_MODEL, envelope='records', code=200, as_list=True)
-    @api.doc(description='Returns the possible project summary permit types')
+    @api.doc(description='Returns the possible project description permit types')
     @requires_role_view_all
     def get(self):
         return ProjectSummaryPermitType.get_all()
