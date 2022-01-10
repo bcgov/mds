@@ -90,8 +90,8 @@ class ProjectSummaryListResource(Resource, UserMixin):
         return project_summaries
 
     @api.doc(
-        description='Create a new Project Summary.',
-        params={'mine_guid': 'The GUID of the mine to create the Project Summary for.'})
+        description='Create a new Project Description.',
+        params={'mine_guid': 'The GUID of the mine to create the Project Description for.'})
     # @requires_any_of([MINESPACE_PROPONENT])
     @api.expect(parser)
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=201)

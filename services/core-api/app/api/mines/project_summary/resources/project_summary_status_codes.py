@@ -9,7 +9,7 @@ from app.api.mines.project_summary.models.project_summary_status_code import Pro
 
 class ProjectSummaryStatusCodeResource(Resource):
     @api.marshal_with(PROJECT_SUMMARY_STATUS_CODE_MODEL, envelope='records', code=200, as_list=True)
-    @api.doc(description='Returns the possible project summary status codes')
+    @api.doc(description='Returns the possible project description status codes')
     @requires_role_view_all
     def get(self):
         return ProjectSummaryStatusCode.get_all()

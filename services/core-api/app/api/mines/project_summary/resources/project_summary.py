@@ -84,31 +84,31 @@ class ProjectSummaryResource(Resource, UserMixin):
         'authorizations', type=list, location='json', store_missing=False, required=False)
 
     @api.doc(
-        description='Get a Project Summary.',
+        description='Get a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
-            'project_summary_guid': 'The GUID of the Project Summary to get.'
+            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_summary_guid': 'The GUID of the Project Description to get.'
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def get(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
-            raise NotFound('Project Summary not found')
+            raise NotFound('Project Description not found')
 
         return project_summary
 
     @api.doc(
-        description='Update a Project Summary.',
+        description='Update a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
-            'project_summary_guid': 'The GUID of the Project Summary to update.'
+            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_summary_guid': 'The GUID of the Project Description to update.'
         })
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
-            raise NotFound('Project Summary not found')
+            raise NotFound('Project Description not found')
 
         data = self.parser.parse_args()
         project_summary.update(
@@ -122,21 +122,21 @@ class ProjectSummaryResource(Resource, UserMixin):
         return project_summary
 
     @api.doc(
-        description='Delete a Project Summary.',
+        description='Delete a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Summary belongs to.',
-            'project_summary_guid': 'The GUID of the Project Summary to delete.'
+            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_summary_guid': 'The GUID of the Project Description to delete.'
         })
     @requires_any_of([MINE_ADMIN])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
-            raise NotFound('Project Summary not found')
+            raise NotFound('Project Description not found')
 
         if project_summary.status_code == 'D':
             project_summary.delete()
             return None, 204
 
         raise BadRequest(
-            'Project summary must have status code of "DRAFT" to be eligible for deletion.')
+            'Project description must have status code of "DRAFT" to be eligible for deletion.')
