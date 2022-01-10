@@ -21,7 +21,7 @@ import {
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { formatTitleString } from "@common/utils/helpers";
+import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
@@ -182,9 +182,14 @@ export class ProjectSummaryPage extends Component {
             activeKey={this.state.activeTab}
             defaultActiveKey={tabs[0]}
             onChange={this.handleTabChange}
+            className="vertical-tabs"
           >
             {tabs.map((tab) => (
-              <Tabs.TabPane tab={formatTitleString(tab)} key={tab}>
+              <Tabs.TabPane
+                tab={formatUrlToUpperCaseString(tab)}
+                key={tab}
+                className="vertical-tabs--tabpane"
+              >
                 <ProjectSummaryForm
                   initialValues={
                     this.state.isEditMode
