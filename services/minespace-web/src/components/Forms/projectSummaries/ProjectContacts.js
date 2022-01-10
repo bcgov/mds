@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { Typography, Button } from "antd";
+import { Typography, Button, Row, Col } from "antd";
 import { Field, FormSection, FieldArray } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -32,14 +32,14 @@ export const ProjectContacts = (props) => {
               <Field
                 name={`${field}.job_title`}
                 id={`${field}.job_title`}
-                label="Job Title"
+                label="Job Title (optional)"
                 component={renderConfig.FIELD}
                 validate={[maxLength(300)]}
               />
               <Field
                 name={`${field}.company_name`}
                 id={`${field}.company_name`}
-                label="Company name"
+                label="Company name (optional)"
                 component={renderConfig.FIELD}
                 validate={[maxLength(300)]}
               />
@@ -50,20 +50,26 @@ export const ProjectContacts = (props) => {
                 component={renderConfig.FIELD}
                 validate={[maxLength(300)]}
               />
-              <Field
-                name={`${field}.phone_number`}
-                id={`${field}.phone_number`}
-                label="Phone Number"
-                component={renderConfig.FIELD}
-                validate={[maxLength(300)]}
-              />
-              <Field
-                name={`${field}.phone_extension`}
-                id={`${field}.phone_extension`}
-                label="Ext."
-                component={renderConfig.FIELD}
-                validate={[maxLength(300)]}
-              />
+              <Row gutter={16}>
+                <Col span={20}>
+                  <Field
+                    name={`${field}.phone_number`}
+                    id={`${field}.phone_number`}
+                    label="Phone Number"
+                    component={renderConfig.FIELD}
+                    validate={[maxLength(300)]}
+                  />
+                </Col>
+                <Col span={4}>
+                  <Field
+                    name={`${field}.phone_extension`}
+                    id={`${field}.phone_extension`}
+                    label="Ext. (optional)"
+                    component={renderConfig.FIELD}
+                    validate={[maxLength(300)]}
+                  />
+                </Col>
+              </Row>
             </div>
           );
         })}

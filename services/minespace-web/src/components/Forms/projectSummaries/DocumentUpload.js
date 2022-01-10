@@ -6,7 +6,7 @@ import { maxLength } from "@common/utils/Validate";
 import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
-import { Button, Typography } from "antd";
+import { Button, Typography, Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
 import { compose, bindActionCreators } from "redux";
 import { renderConfig } from "@/components/common/config";
@@ -22,8 +22,9 @@ export class DocumentUpload extends Component {
   };
 
   onFileLoad = (fileName, document_manager_guid) => {
+    console.log("is this going something??");
     this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
-    this.props.change("documents", this.state.uploadedFiles);
+    return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
@@ -32,10 +33,28 @@ export class DocumentUpload extends Component {
   };
 
   render() {
+    console.log(this.state.uploadedFiles);
     return (
       <>
-        <Typography.Title level={4}>Document Upload</Typography.Title>
-        <Form.Item label="Attached Files">
+        <Typography.Title level={3}>Document Upload</Typography.Title>
+        <Form.Item label="Attach your project description file(s) here.">
+          <Row gutter={16}>
+            <Col span={12}>
+              <Typography.Paragraph>
+                <ul>
+                  <li>You cannot upload ZIP files</li>
+                  <li>
+                    {" "}
+                    The allowed file types are: .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm,
+                    .xls, .xlsx, .jpeg, .png, .dbf, .geojson, .gml, .kml, .kmz, .ain, .aih, .atx,
+                    .cpg, .fbn, .fbx, .ixs, .mxs, .prj, .sbn, .sbx, .shp, .shpz, .shx, .wkt, .csv,
+                    .xml
+                  </li>
+                  <li>Maximum individual file size is 400 MB</li>
+                </ul>
+              </Typography.Paragraph>
+            </Col>
+          </Row>
           {this.props.isEditMode && (
             <DocumentTable
               documents={this.props.initialValues?.documents}
@@ -45,7 +64,7 @@ export class DocumentUpload extends Component {
               uploadDateIndex="upload_date"
             />
           )}
-          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
+
           <Field
             id="documents"
             name="documents"
