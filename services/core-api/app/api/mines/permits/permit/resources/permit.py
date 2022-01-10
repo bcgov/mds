@@ -186,7 +186,8 @@ class PermitListResource(Resource, UserMixin):
             liability_adjustment=data.get('liability_adjustment'),
             security_received_date=data.get('security_received_date'),
             security_not_required=data.get('security_not_required'),
-            security_not_required_reason=data.get('security_not_required_reason'))
+            security_not_required_reason=data.get('security_not_required_reason'),
+            is_generated_in_core=True if permit.permit_status_code == 'D' else False)
 
         db.session.add(permit)
         db.session.add(amendment)
