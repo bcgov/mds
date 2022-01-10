@@ -294,7 +294,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'Project Description Notification for {mine.mine_name}'
         body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Description data in MineSpace</p>'
-        body += f'<p>Description: {self.project_summary_description}'
+        body += f'<p>Overview: {self.project_summary_description}'
 
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
