@@ -7,6 +7,7 @@ import { getFormValues } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
@@ -78,7 +79,9 @@ export class ProjectSummaryPage extends Component {
         this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
       });
     }
-    return this.setState({ isLoaded: true, activeTab: tab });
+    return this.props.fetchMineRecordById(mineGuid).then(() => {
+      this.setState({ isLoaded: true, activeTab: tab });
+    });
   };
 
   handleSaveDraft = (e, values) => {
@@ -156,7 +159,9 @@ export class ProjectSummaryPage extends Component {
 
   render() {
     const { mineGuid } = this.props.match?.params;
-    const mineName = this.props.formattedProjectSummary?.summary?.mine_name || "";
+    const mineName = this.state.isEditMode
+      ? this.props.formattedProjectSummary?.summary?.mine_name || ""
+      : this.props.mines[mineGuid]?.mine_name || "";
     const title = this.state.isEditMode
       ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
       : `New project description for ${mineName}`;
@@ -215,6 +220,7 @@ export class ProjectSummaryPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  mines: getMines(state),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
   formattedProjectSummary: getFormattedProjectSummary(state),
