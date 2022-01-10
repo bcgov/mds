@@ -25,7 +25,7 @@ def test_put_project_summary(test_client, db_session, auth_headers):
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
     data['project_summary_title'] = 'Test Title'
-    data['status_code'] = 'D'
+    data['status_code'] = 'O'
 
     put_resp = test_client.put(
         f'/mines/{project_summary.mine_guid}/project-summaries/{project_summary.project_summary_guid}',
@@ -36,3 +36,20 @@ def test_put_project_summary(test_client, db_session, auth_headers):
     assert put_resp.status_code == 200, put_resp.response
     assert put_data['project_summary_title'] == str(project_summary.project_summary_title)
     assert put_data['status_code'] == str(project_summary.status_code)
+
+
+def test_delete_project_summary_bad_status_code(test_client, db_session, auth_headers):
+    '''Staus code needs to be D in order to delete a project description'''
+
+    project_summary = ProjectSummaryFactory()
+    data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
+
+    data['project_summary_title'] = 'Test Title'
+    data['status_code'] = 'O'
+
+    put_resp = test_client.delete(
+        f'/mines/{project_summary.mine_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+
+    assert put_resp.status_code == 400, put_resp.response == 'Project description must have status code of "DRAFT" to be eligible for deletion.'
