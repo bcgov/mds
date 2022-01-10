@@ -282,7 +282,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=False)
         return self
 
-    @classmethod
     def delete(self, commit=True):
         for doc in self.documents:
             self.mine_documents.remove(doc.mine_document)
