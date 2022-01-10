@@ -7,7 +7,6 @@ import { getFormValues } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
@@ -74,14 +73,12 @@ export class ProjectSummaryPage extends Component {
 
   handleFetchData = () => {
     const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
-    this.props.fetchMineRecordById(mineGuid).then(() => {
-      if (mineGuid && projectSummaryGuid) {
-        return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
-          this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
-        });
-      }
-      return this.setState({ isLoaded: true, activeTab: tab });
-    });
+    if (mineGuid && projectSummaryGuid) {
+      return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
+        this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
+      });
+    }
+    return this.setState({ isLoaded: true, activeTab: tab });
   };
 
   handleSaveDraft = (e, values) => {
@@ -107,7 +104,7 @@ export class ProjectSummaryPage extends Component {
       if (this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
         authorizations.push({
           project_summary_authorization_type: key,
-          existing_permits_authorizations: values[key].existing_permits_authorizations.split(","),
+          existing_permits_authorizations: values[key].existing_permits_authorizations?.split(","),
           ...values[key],
         });
         delete values[key];
@@ -158,13 +155,11 @@ export class ProjectSummaryPage extends Component {
   }
 
   render() {
-    console.log(this.props.projectSummary);
-    console.log(this.props.formattedProjectSummary);
     const { mineGuid } = this.props.match?.params;
-    const mine = this.props.mines[mineGuid];
+    const mineName = this.props.formattedProjectSummary?.summary?.mine_name || "";
     const title = this.state.isEditMode
       ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
-      : `New project description for ${mine.mine_name || ""}`;
+      : `New project description for ${mineName}`;
     return (
       (this.state.isLoaded && (
         <>
@@ -179,7 +174,7 @@ export class ProjectSummaryPage extends Component {
                 <Col span={24}>
                   <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
                     <ArrowLeftOutlined className="padding-sm--right" />
-                    Back to: {mine.mine_name || ""} Applications page
+                    Back to: {mineName} Applications page
                   </Link>
                 </Col>
               </Row>
@@ -224,7 +219,6 @@ export class ProjectSummaryPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMines(state),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
   formattedProjectSummary: getFormattedProjectSummary(state),
