@@ -22,7 +22,6 @@ export class DocumentUpload extends Component {
   };
 
   onFileLoad = (fileName, document_manager_guid) => {
-    console.log("is this going something??");
     this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
     return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.state.uploadedFiles);
   };
@@ -33,7 +32,6 @@ export class DocumentUpload extends Component {
   };
 
   render() {
-    console.log(this.state.uploadedFiles);
     return (
       <>
         <Typography.Title level={3}>Document Upload</Typography.Title>
