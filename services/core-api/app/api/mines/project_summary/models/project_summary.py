@@ -76,6 +76,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return party.name
         return None
 
+    @hybrid_property
+    def mine_name(self):
+        return self.mine.mine_name
+
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
         return cls.query.filter_by(
