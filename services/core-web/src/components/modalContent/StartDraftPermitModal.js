@@ -160,7 +160,7 @@ export const StartDraftPermitModal = (props) => {
         changes later, click &quot;Resume {props.tab}&quot;.
       </p>
       <br />
-      {!props.noticeOfWork.has_source_conditions &&
+      {!props.noticeOfWork.is_source_permit_generated_in_core &&
       props.noticeOfWork.application_type_code === "ADA" ? (
         <p className="center" />
       ) : (
@@ -169,9 +169,9 @@ export const StartDraftPermitModal = (props) => {
         </p>
       )}
       <br />
-      {!props.noticeOfWork.has_source_conditions &&
+      {!props.noticeOfWork.is_source_permit_generated_in_core &&
         props.noticeOfWork.application_type_code === "ADA" && (
-          <Radio.Group value onChange={onChange} value={isGenerateThroughCore}>
+          <Radio.Group onChange={onChange} value={isGenerateThroughCore}>
             <Row gutter={16}>
               <Col span={12} className="border--right--layout">
                 <Radio value> Write Permit in Core </Radio>
@@ -238,7 +238,7 @@ export const StartDraftPermitModal = (props) => {
     notice_of_work_type_code: props.noticeOfWork.notice_of_work_type_code,
   };
 
-  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions
+  const sourceAmendmentMessage = props.noticeOfWork.is_source_permit_generated_in_core
     ? `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
     : `This is an amendment to an authorization that was not written in Core.`;
   const amendmentMessage = props.noticeOfWork.source_permit_guid
