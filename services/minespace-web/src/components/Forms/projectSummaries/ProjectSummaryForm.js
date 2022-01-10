@@ -74,11 +74,6 @@ export class ProjectSummaryForm extends Component {
   //   return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
   // };
 
-  handleDraft = (e) => {
-    e.preventDefault();
-    this.props.onSubmit(this.props.formValues, true);
-  };
-
   render() {
     const renderTabComponent = (tab) =>
       ({
@@ -113,7 +108,7 @@ export class ProjectSummaryForm extends Component {
             type="ghost"
             loading={this.props.submitting}
             disabled={this.props.submitting}
-            onClick={(e) => this.handleDraft(e)}
+            onClick={(e) => this.handleSaveDraft(e, this.props.formValues)}
           >
             Save Draft
           </Button>

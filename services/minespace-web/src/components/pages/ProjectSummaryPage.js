@@ -84,9 +84,17 @@ export class ProjectSummaryPage extends Component {
     });
   };
 
-  handleSubmit = (values, isDraft = false) => {
-    const status = isDraft ? "D" : "O";
-    const payload = { status_code: status, ...values };
+  handleSaveDraft = (e, values) => {
+    e.preventDefault();
+    const payload = { status_code: "D", ...values };
+    if (!this.state.isEditMode) {
+      return this.handleCreateProjectSummary(payload);
+    }
+    return this.handleUpdateProjectSummary(payload);
+  };
+
+  handleSubmit = (values) => {
+    const payload = { status_code: "O", ...values };
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(payload);
     }
@@ -156,7 +164,7 @@ export class ProjectSummaryPage extends Component {
     const mine = this.props.mines[mineGuid];
     const title = this.state.isEditMode
       ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
-      : `New project description for ${mine.mine_name}`;
+      : `New project description for ${mine.mine_name || ""}`;
     return (
       (this.state.isLoaded && (
         <>
@@ -169,7 +177,7 @@ export class ProjectSummaryPage extends Component {
             <Col sm={22} md={14} lg={12}>
               <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
                 <ArrowLeftOutlined className="padding-sm--right" />
-                Back to: {mine.mine_name} Applications page
+                Back to: {mine.mine_name || ""} Applications page
               </Link>
             </Col>
           </Row>
@@ -193,6 +201,7 @@ export class ProjectSummaryPage extends Component {
                   mineGuid={mineGuid}
                   isEditMode={this.state.isEditMode}
                   onSubmit={this.handleSubmit}
+                  handleSaveDraft={this.handleSaveDraft}
                   projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
                   handleTabChange={this.handleTabChange}
                 />
