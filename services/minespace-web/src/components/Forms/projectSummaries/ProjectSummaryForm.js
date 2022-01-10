@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, change, arrayPush, formValueSelector, getFormValues } from "redux-form";
 import { remove } from "lodash";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Typography } from "antd";
@@ -104,23 +105,25 @@ export class ProjectSummaryForm extends Component {
                   type="secondary"
                   onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
                 >
-                  Back
+                  <LeftOutlined /> Back
                 </Button>
               )}
             </div>
             <div>
-              <LinkButton
-                onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
-                title="Save Draft"
-              >
-                Save Draft
-              </LinkButton>
+              {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
+                <LinkButton
+                  onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
+                  title="Save Draft"
+                >
+                  Save Draft
+                </LinkButton>
+              )}
               {!isLast && (
                 <Button
                   type="secondary"
                   onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
                 >
-                  Next
+                  Next <RightOutlined />
                 </Button>
               )}
               {isLast && (
@@ -130,7 +133,9 @@ export class ProjectSummaryForm extends Component {
                   loading={this.props.submitting}
                   disabled={this.props.submitting}
                 >
-                  {this.props.isEditMode ? "Save" : "Submit"}
+                  {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                    ? "Save"
+                    : "Submit"}
                 </Button>
               )}
             </div>
