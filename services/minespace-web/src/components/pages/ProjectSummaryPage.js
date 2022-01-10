@@ -163,24 +163,20 @@ export class ProjectSummaryPage extends Component {
     return (
       (this.state.isLoaded && (
         <>
-          <div className="fixed-header">
-            <Row>
-              <Row>
-                <Col span={24}>
-                  <Typography.Title>{title}</Typography.Title>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
-                    <ArrowLeftOutlined className="padding-sm--right" />
-                    Back to: {mineName} Applications page
-                  </Link>
-                </Col>
-              </Row>
-              <Divider />
-            </Row>
-          </div>
+          <Row>
+            <Col span={24}>
+              <Typography.Title>{title}</Typography.Title>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
+                <ArrowLeftOutlined className="padding-sm--right" />
+                Back to: {mineName} Applications page
+              </Link>
+            </Col>
+          </Row>
+          <Divider />
           <Tabs
             tabPosition="left"
             activeKey={this.state.activeTab}
