@@ -173,6 +173,14 @@ h4.ant-typography,
       color: #036 !important;
     }
   }
+  & .ant-tabs-tab:hover,
+  .ant-tabs-tab-btn:hover {
+    background-color: #003366 !important;
+    color: white !important;
+    &.ant-tabs-tab-active.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: white !important;
+    }
+  }
 
   &--tabpane {
     height: 70vh;
