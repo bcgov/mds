@@ -108,7 +108,7 @@ export class ProjectSummaryForm extends Component {
             type="ghost"
             loading={this.props.submitting}
             disabled={this.props.submitting}
-            onClick={(e) => this.handleSaveDraft(e, this.props.formValues)}
+            onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
           >
             Save Draft
           </Button>
