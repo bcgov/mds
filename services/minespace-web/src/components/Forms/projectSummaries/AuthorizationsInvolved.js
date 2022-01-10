@@ -9,6 +9,7 @@ import { getFormValues } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
+import Callout from "@/components/common/Callout";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
@@ -59,7 +60,10 @@ export const AuthorizationsInvolved = (props) => {
 
   return (
     <>
-      <Typography.Title level={3}>Authorizations Involved</Typography.Title>
+      <Typography.Title level={3}>
+        Authorizations potentially involved in the project
+      </Typography.Title>
+      <Callout message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application." />
       {props.transformedProjectSummaryAuthorizationTypes.map((authorization) => {
         return (
           <>

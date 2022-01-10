@@ -2,7 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Typography } from "antd";
+import { Typography, Alert } from "antd";
+import Callout from "@/components/common/Callout";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 
@@ -11,6 +12,22 @@ const propTypes = {};
 export const ProjectDates = (props) => (
   <>
     <Typography.Title level={3}>Project Dates</Typography.Title>
+    <Callout
+      message={
+        <>
+          These dates are for guidance and planning purposes only and do not reflect actual delivery
+          dates. The{" "}
+          <a
+            target="_blank"
+            alt="Major Mines Permitting Office"
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
+          >
+            Major Mines Office
+          </a>{" "}
+          will work with you on a more definitive schedule.
+        </>
+      }
+    />
     <Field
       id="expected_draft_irt_submission_date"
       name="expected_draft_irt_submission_date"
