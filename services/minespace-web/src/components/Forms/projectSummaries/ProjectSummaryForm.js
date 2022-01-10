@@ -19,6 +19,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 import BasicInformation from "@/components/Forms/projectSummaries/BasicInformation";
 import DocumentUpload from "@/components/Forms/projectSummaries/DocumentUpload";
+import LinkButton from "@/components/common/LinkButton";
 
 import ProjectContacts from "@/components/Forms/projectSummaries/ProjectContacts";
 import ProjectDates from "@/components/Forms/projectSummaries/ProjectDates";
@@ -95,41 +96,45 @@ export class ProjectSummaryForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         {renderTabComponent(tabs[this.state.tabIndex])}
-        <div className="ant-modal-footer">
-          {!isFirst && (
-            <Button
-              type="secondary"
-              onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
-            >
-              Back
-            </Button>
-          )}
-          <Button
-            type="ghost"
-            loading={this.props.submitting}
-            disabled={this.props.submitting}
-            onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
-          >
-            Save Draft
-          </Button>
-          {!isLast && (
-            <Button
-              type="secondary"
-              onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
-            >
-              Next
-            </Button>
-          )}
-          {isLast && (
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={this.props.submitting}
-              disabled={this.props.submitting}
-            >
-              {this.props.isEditMode ? "Save" : "Submit"}
-            </Button>
-          )}
+        <div className="vertical-tabs--tabpane--actions">
+          <div className="inline-flex between">
+            <div>
+              {!isFirst && (
+                <Button
+                  type="secondary"
+                  onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
+                >
+                  Back
+                </Button>
+              )}
+            </div>
+            <div>
+              <LinkButton
+                onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
+                title="Save Draft"
+              >
+                Save Draft
+              </LinkButton>
+              {!isLast && (
+                <Button
+                  type="secondary"
+                  onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
+                >
+                  Next
+                </Button>
+              )}
+              {isLast && (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={this.props.submitting}
+                  disabled={this.props.submitting}
+                >
+                  {this.props.isEditMode ? "Save" : "Submit"}
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </Form>
     );

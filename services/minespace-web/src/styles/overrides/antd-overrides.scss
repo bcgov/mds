@@ -147,6 +147,43 @@ h4.ant-typography,
   }
 }
 
+// vertical-tabs
+.vertical-tabs {
+  &.ant-tabs .ant-tabs-tab {
+    color: #036;
+    text-decoration: underline;
+    background-color: white !important;
+  }
+
+  &.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+    border-bottom: none !important;
+    border-right: 1px solid grey !important;
+    height: 70vh;
+  }
+
+  & .ant-tabs-tab-active {
+    color: #036 !important;
+    text-decoration: underline;
+    background-color: white !important;
+    border-left: 7px solid #003366;
+    border-right: none !important;
+
+    &.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #036 !important;
+    }
+  }
+
+  &--tabpane {
+    height: 70vh;
+
+    &--actions {
+      // margin-top: 150px;
+      position: absolute;
+      bottom: 0;
+    }
+  }
+}
 // Tables
 
 .ant-table {
