@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
-import { createMinespaceUser } from "@common/actionCreators/minespaceActionCreator";
+
 import CustomPropTypes from "@/customPropTypes";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
@@ -27,12 +27,6 @@ export class NewMinespaceUser extends Component {
     this.props.fetchMineNameList();
   }
 
-  handleSubmit = (values) => {
-    this.props.createMinespaceUser(values).then(() => {
-      this.props.refreshData();
-    });
-  };
-
   handleSearch = (name) => {
     if (name.length > 0) {
       this.props.fetchMineNameList({ name });
@@ -54,7 +48,7 @@ export class NewMinespaceUser extends Component {
               label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
             minespaceUserEmailHash={this.props.minespaceUserEmailHash}
-            onSubmit={this.handleSubmit}
+            onSubmit={this.props.handleSubmit}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
           />
@@ -72,7 +66,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineNameList,
-      createMinespaceUser,
     },
     dispatch
   );

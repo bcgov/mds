@@ -47,6 +47,12 @@ class MinespaceUser(SoftDeleteMixin, Base):
             minespace_user.save(commit=False)
         return minespace_user
 
+
+    @classmethod
+    def update_minespace_user(cls, **kwargs):
+        pass
+
+
     @validates('email_or_username')
     def validate_email(self, key, email_or_username):
         if not email_or_username:

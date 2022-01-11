@@ -1,7 +1,7 @@
 import pytest
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
-from tests.factories import MinespaceUserFactory
+from tests.factories import MinespaceUserFactory, MineFactory
 
 
 def test_minespace_user_model_find_by_id(db_session):
@@ -25,3 +25,13 @@ def test_minespace_user_model_find_all(db_session):
     all_mu = MinespaceUser.get_all()
     assert len(all_mu) == 2
     assert any(mu.email_or_username == user1.email_or_username for mu in all_mu)
+
+# def test_minespace_user_model_add_mine(db_session):
+#     user = MinespaceUserFactory()
+#     mine = MineFactory()
+#     mine_guid = mine.mine_guid
+
+#     user.add_mine(mine_guid)
+    
+#     assert mine_guid in user.mines
+    

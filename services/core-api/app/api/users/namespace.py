@@ -7,6 +7,11 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 
 api = Namespace('users', description='User related operations')
 
+# api.add_resource(MinespaceUserResource, '/minespace/<string:user_id>', endpoint='minespace_user')
+
+# /users/minespace/<string:mine_guid>
+
+
 api.add_resource(MinespaceUserListResource, '/minespace')
 api.add_resource(MinespaceUserResource, '/minespace/<user_id>')
 api.add_resource(MinespaceUserMineListResource, '/minespace/<user_id>/mines')
