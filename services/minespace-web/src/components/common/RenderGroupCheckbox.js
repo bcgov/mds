@@ -36,6 +36,7 @@ const RenderGroupCheckbox = (props) => {
     >
       <Checkbox.Group
         id={props.id}
+        name={props.name}
         checked={props.input.value}
         options={props.options}
         disabled={props.disabled}
