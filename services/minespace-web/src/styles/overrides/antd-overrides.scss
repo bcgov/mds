@@ -91,6 +91,16 @@ h4.ant-typography,
   color: $primary-color;
 }
 
+h3.ant-typography,
+.ant-typography h3 {
+  color: #313132;
+}
+
+h5.ant-typography,
+.ant-typography h5 {
+  color: #313132;
+}
+
 .ant-typography a {
   text-decoration: underline;
 }
@@ -194,6 +204,12 @@ h4.ant-typography,
       position: absolute;
       bottom: 0;
     }
+  }
+
+  &.ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane,
+  .ant-tabs-left > div > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+    overflow: scroll;
+    margin-bottom: 50px;
   }
 }
 // Tables
