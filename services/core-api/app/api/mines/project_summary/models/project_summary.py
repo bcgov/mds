@@ -242,7 +242,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 updated_contact.company_name = contact.get('company_name')
                 updated_contact.email = contact.get('email')
                 updated_contact.phone_number = contact.get('phone_number')
-                updated_contact.phone_extension = contact('phone_extension')
+                updated_contact.phone_extension = contact.get('phone_extension')
                 updated_contact.is_primary = contact.get('is_primary')
 
             else:
@@ -266,6 +266,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     raise BadRequest(f'Invalid project description permit type: {permit_type}')
 
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')
+            print(f'Authorization: {updated_authorization_guid}')
             if updated_authorization_guid:
                 updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
                     updated_authorization_guid)
