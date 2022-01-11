@@ -86,7 +86,7 @@ export class ProjectSummaryPage extends Component {
 
   handleSaveDraft = (e, values) => {
     e.preventDefault();
-    const payload = { status_code: "D", ...values };
+    const payload = { ...values, status_code: "D" };
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(payload);
     }
@@ -105,16 +105,25 @@ export class ProjectSummaryPage extends Component {
     const authorizations = [];
     Object.keys(values).map((key) => {
       if (this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
+        const project_summary_guid = values?.project_summary_guid;
+        const authorization = values?.authorizations?.find(
+          (auth) => auth?.project_summary_authorization_type === key
+        );
         authorizations.push({
-          project_summary_authorization_type: key,
-          existing_permits_authorizations: values[key].existing_permits_authorizations?.split(","),
           ...values[key],
+          ...(project_summary_guid && { project_summary_guid }),
+          ...(authorization && {
+            project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
+          }),
+          project_summary_authorization_type: key,
+          existing_permits_authorizations:
+            values[key]?.existing_permits_authorizations?.split(",") || [],
         });
         delete values[key];
       }
     });
 
-    return { authorizations, ...values };
+    return { ...values, authorizations };
   };
 
   handleCreateProjectSummary(values) {
