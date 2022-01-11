@@ -21,6 +21,7 @@ const propTypes = {
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   change: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  setInitialValues: PropTypes.func,
 };
 
 const onChange = (checkedValues, change, form, name) => {
@@ -28,9 +29,6 @@ const onChange = (checkedValues, change, form, name) => {
 };
 
 const RenderGroupCheckbox = (props) => {
-  console.log(props.formValues[props.fieldName]);
-  console.log(props.formValues);
-  console.log(props);
   return (
     <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
       <Checkbox.Group
@@ -39,7 +37,9 @@ const RenderGroupCheckbox = (props) => {
         options={props.options}
         disabled={props.disabled}
         defaultValue={props.formValues[props.fieldName]}
-        {...props.input.value}
+        value={
+          props.setInitialValues && !props.meta.dirty ? props.setInitialValues() : props.input.value
+        }
         onChange={(values) => onChange(values, props.change, props.formName, props.fieldName)}
       />
     </Form.Item>
