@@ -14,7 +14,7 @@ export const BasicInformation = (props) => (
     <Field
       id="project_summary_title"
       name="project_summary_title"
-      label={<span className="bold">Project title</span>}
+      label="Project title"
       component={renderConfig.FIELD}
       validate={[maxLength(300), required]}
     />
@@ -23,8 +23,11 @@ export const BasicInformation = (props) => (
       name="proponent_project_id"
       label={
         <>
-          <span className="bold">Proponent project tracking ID (optional)</span> <br />
-          If your company uses a tracking number to identify projects, please provide it here.
+          Proponent project tracking ID (optional)
+          <br />
+          <span className="light--sm">
+            If your company uses a tracking number to identify projects, please provide it here.
+          </span>
         </>
       }
       component={renderConfig.FIELD}
@@ -35,8 +38,11 @@ export const BasicInformation = (props) => (
       name="project_summary_description"
       label={
         <>
-          <span className="bold">Project overview</span> <br />
-          Provide a 2-3 paragraph high-level description of your proposed project.
+          Project overview <br />
+          <span className="light--sm">
+            {" "}
+            Provide a 2-3 paragraph high-level description of your proposed project.
+          </span>
         </>
       }
       component={renderConfig.AUTO_SIZE_FIELD}

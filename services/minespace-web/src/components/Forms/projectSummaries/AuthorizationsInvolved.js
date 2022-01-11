@@ -52,11 +52,7 @@ export const AuthorizationsInvolved = (props) => {
             formValues={props.formattedProjectSummary.summary}
             change={props.change}
             component={renderConfig.GROUP_CHECK_BOX}
-            label={
-              <>
-                <span className="bold">What type of permit is involved in your application?</span>
-              </>
-            }
+            label="What type of permit is involved in your application?"
             setInitialValues={() => setInitialValues(code, props.formattedProjectSummary.summary)}
           />
         </>
@@ -66,12 +62,10 @@ export const AuthorizationsInvolved = (props) => {
         name="existing_permits_authorizations"
         label={
           <>
-            <span className="bold">
-              If your application involved a change to an existing permit, please list the numbers
-              of the permits involved.
-            </span>{" "}
+            If your application involved a change to an existing permit, please list the numbers of
+            the permits involved.
             <br />
-            Please separate each permit number with a comma
+            <span className="light--sm">Please separate each permit number with a comma</span>
           </>
         }
         component={renderConfig.FIELD}
