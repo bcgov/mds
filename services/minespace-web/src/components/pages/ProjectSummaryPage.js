@@ -200,7 +200,7 @@ export class ProjectSummaryPage extends Component {
                     this.state.isEditMode
                       ? this.props.formattedProjectSummary.summary
                       : {
-                          contacts: [{is_primary: true}],
+                          contacts: [{ is_primary: true }],
                         }
                   }
                   mineGuid={mineGuid}
