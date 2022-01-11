@@ -1,13 +1,8 @@
-FROM python:3.6
-
-USER 0
+FROM bitnami/python:3.6
+# workdir defaults to /app
 
 # Update installation utility
 RUN apt-get update
-
-# Create working directory
-RUN mkdir /app
-WORKDIR /app
 
 # Install the requirements
 COPY requirements.txt .
