@@ -94,7 +94,7 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleSubmit = (values) => {
-    const payload = { status_code: "O", ...values };
+    const payload = { ...values, status_code: "O" };
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(payload);
     }

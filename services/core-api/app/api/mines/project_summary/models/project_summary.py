@@ -253,7 +253,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     company_name=contact.get('company_name'),
                     email=contact.get('email'),
                     phone_number=contact.get('phone_number'),
-                    phone_extension=contact('phone_extension'),
+                    phone_extension=contact.get('phone_extension'),
                     is_primary=contact.get('is_primary'))
                 self.contacts.append(new_contact)
 
