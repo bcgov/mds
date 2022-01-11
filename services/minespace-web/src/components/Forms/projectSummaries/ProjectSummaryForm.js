@@ -10,7 +10,7 @@ import { remove } from "lodash";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Typography } from "antd";
+import { Button, Typography, Row, Col } from "antd";
 import { maxLength } from "@common/utils/Validate";
 import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
@@ -98,48 +98,52 @@ export class ProjectSummaryForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         {renderTabComponent(tabs[this.state.tabIndex])}
         <div className="vertical-tabs--tabpane--actions">
-          <div className="inline-flex between">
-            <div>
-              {!isFirst && (
-                <Button
-                  type="secondary"
-                  onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
-                >
-                  <LeftOutlined /> Back
-                </Button>
-              )}
-            </div>
-            <div>
-              {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
-                <LinkButton
-                  onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
-                  title="Save Draft"
-                >
-                  Save Draft
-                </LinkButton>
-              )}
-              {!isLast && (
-                <Button
-                  type="secondary"
-                  onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
-                >
-                  Next <RightOutlined />
-                </Button>
-              )}
-              {isLast && (
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={this.props.submitting}
-                  disabled={this.props.submitting}
-                >
-                  {this.props.isEditMode && this.props.initialValues.status_code !== "D"
-                    ? "Save"
-                    : "Submit"}
-                </Button>
-              )}
-            </div>
-          </div>
+          <Row justify="space-between">
+            <Col span={18}>
+              <div>
+                {!isFirst && (
+                  <Button
+                    type="secondary"
+                    onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
+                  >
+                    <LeftOutlined /> Back
+                  </Button>
+                )}
+              </div>
+            </Col>
+            <Col span={6}>
+              <div>
+                {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
+                  <LinkButton
+                    onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
+                    title="Save Draft"
+                  >
+                    Save Draft
+                  </LinkButton>
+                )}
+                {!isLast && (
+                  <Button
+                    type="secondary"
+                    onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
+                  >
+                    Next <RightOutlined />
+                  </Button>
+                )}
+                {isLast && (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={this.props.submitting}
+                    disabled={this.props.submitting}
+                  >
+                    {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                      ? "Save"
+                      : "Submit"}
+                  </Button>
+                )}
+              </div>
+            </Col>
+          </Row>
         </div>
       </Form>
     );
