@@ -30,7 +30,10 @@ const onChange = (checkedValues, change, form, name) => {
 
 const RenderGroupCheckbox = (props) => {
   return (
-    <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
+    <Form.Item
+      label={props.label}
+      validateStatus={props.meta.touched ? props.meta.error && "error" : ""}
+    >
       <Checkbox.Group
         id={props.id}
         checked={props.input.value}

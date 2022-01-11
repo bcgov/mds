@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Typography, Checkbox } from "antd";
-import { Field, Fields, FormSection, Form } from "redux-form";
+import { DownOutlined } from "@ant-design/icons";
+import { Field, Fields, FormSection } from "redux-form";
+import { Form } from "@ant-design/compatible";
 import { getFormValues } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -37,33 +39,44 @@ export const AuthorizationsInvolved = (props) => {
     return currentAuthorizationType?.project_summary_permit_type ?? [];
   };
 
-  console.log(props.formattedProjectSummary.summary);
   const renderNestedFields = (code) => (
-    <>
+    <div className="nested-container">
       {code !== "OTHER" && (
-        <Field
-          id="project_summary_permit_type"
-          name="project_summary_permit_type"
-          fieldName={`${code}.project_summary_permit_type`}
-          options={props.dropdownProjectSummaryPermitTypes}
-          formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          formValues={props.formattedProjectSummary.summary}
-          change={props.change}
-          component={renderConfig.GROUP_CHECK_BOX}
-          setInitialValues={() => setInitialValues(code, props.formattedProjectSummary.summary)}
-        />
+        <>
+          <Field
+            id="project_summary_permit_type"
+            name="project_summary_permit_type"
+            fieldName={`${code}.project_summary_permit_type`}
+            options={props.dropdownProjectSummaryPermitTypes}
+            formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+            formValues={props.formattedProjectSummary.summary}
+            change={props.change}
+            component={renderConfig.GROUP_CHECK_BOX}
+            label={
+              <>
+                <span className="bold">What type of permit is involved in your application?</span>
+              </>
+            }
+            setInitialValues={() => setInitialValues(code, props.formattedProjectSummary.summary)}
+          />
+        </>
       )}
-      <h4>
-        If your application involved a change to an existing permit, please list the numbers of the
-        permits involved.
-      </h4>
       <Field
         id="existing_permits_authorizations"
         name="existing_permits_authorizations"
-        label="Please separate each permit number with a comma"
+        label={
+          <>
+            <span className="bold">
+              If your application involved a change to an existing permit, please list the numbers
+              of the permits involved.
+            </span>{" "}
+            <br />
+            Please separate each permit number with a comma
+          </>
+        }
         component={renderConfig.FIELD}
       />
-    </>
+    </div>
   );
 
   return (
@@ -85,12 +98,19 @@ export const AuthorizationsInvolved = (props) => {
                       onChange={(e) => handleChange(e, child.code)}
                       checked={checked.includes(child.code)}
                     >
-                      {child.description}
+                      {checked.includes(child.code) ? (
+                        <>
+                          {child.description} <DownOutlined />
+                        </>
+                      ) : (
+                        child.description
+                      )}
                     </Checkbox>
                     {checked.includes(child.code) && renderNestedFields(child.code)}
                   </FormSection>
                 );
               })}
+            <br />
           </>
         );
       })}
