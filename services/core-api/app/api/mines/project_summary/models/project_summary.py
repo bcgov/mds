@@ -278,6 +278,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             else:
                 new_authorization = ProjectSummaryAuthorization(
                     project_summary_guid=self.project_summary_guid,
+                    project_summary_authorization_type=authorization.get(
+                        'project_summary_authorization_type'),
                     project_summary_permit_type=authorization.get('project_summary_permit_type'),
                     existing_permits_authorizations=authorization.get(
                         'existing_permits_authorizations'))
