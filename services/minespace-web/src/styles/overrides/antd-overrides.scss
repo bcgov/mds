@@ -159,6 +159,11 @@ h5.ant-typography,
 
 // vertical-tabs
 .vertical-tabs {
+  &.ant-tabs .ant-tabs-ink-bar {
+    background: transparent;
+    height: 0px;
+    top: 0px;
+  }
   &.ant-tabs .ant-tabs-tab {
     color: #036;
     text-decoration: underline;

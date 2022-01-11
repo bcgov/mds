@@ -33,7 +33,7 @@ export const ProjectDates = (props) => (
     <Field
       id="expected_draft_irt_submission_date"
       name="expected_draft_irt_submission_date"
-      label="When do you anticipate submitting a draft IRT? (optional)"
+      label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
       placeholder="Please select date"
       component={renderConfig.DATE}
       validate={[dateNotAfterOther(props.expected_permit_application_date)]}
