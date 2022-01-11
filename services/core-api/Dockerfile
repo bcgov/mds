@@ -19,7 +19,7 @@ RUN chown -R 1000:0 /var/log
 # Setup user to represent developer permissions in container
 ARG USERNAME=python
 ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG USER_GID=1000
 RUN useradd -rm -d /home/$USERNAME -s /bin/bash -g root -G sudo -u $USER_UID $USERNAME
 USER $USERNAME
 
