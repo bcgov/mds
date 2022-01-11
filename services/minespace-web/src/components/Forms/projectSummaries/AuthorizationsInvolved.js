@@ -30,6 +30,13 @@ export const AuthorizationsInvolved = (props) => {
     }
   };
 
+  const setInitialValues = (authorizationType, formValues) => {
+    const currentAuthorizationType = formValues?.authorizations?.find(
+      (val) => val?.project_summary_authorization_type === authorizationType
+    );
+    return currentAuthorizationType?.project_summary_permit_type ?? [];
+  };
+
   console.log(props.formattedProjectSummary.summary);
   const renderNestedFields = (code) => (
     <>
@@ -43,6 +50,7 @@ export const AuthorizationsInvolved = (props) => {
           formValues={props.formattedProjectSummary.summary}
           change={props.change}
           component={renderConfig.GROUP_CHECK_BOX}
+          setInitialValues={() => setInitialValues(code, props.formattedProjectSummary.summary)}
         />
       )}
       <h4>
