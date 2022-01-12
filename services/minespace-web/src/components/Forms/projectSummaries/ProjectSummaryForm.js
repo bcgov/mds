@@ -51,7 +51,6 @@ const tabs = [
 
 export class ProjectSummaryForm extends Component {
   state = {
-    // uploadedFiles: [],
     tabIndex: 0,
   };
 
@@ -75,16 +74,6 @@ export class ProjectSummaryForm extends Component {
     }
     return formObject;
   };
-
-  // onFileLoad = (fileName, document_manager_guid) => {
-  //   this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
-  //   this.props.change("documents", this.state.uploadedFiles);
-  // };
-
-  // onRemoveFile = (err, fileItem) => {
-  //   remove(this.props.documents, { document_manager_guid: fileItem.serverId });
-  //   return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
-  // };
 
   render() {
     const renderTabComponent = (tab) =>
