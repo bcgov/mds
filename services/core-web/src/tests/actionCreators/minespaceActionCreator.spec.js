@@ -10,6 +10,7 @@ import {
   createEMLIContact,
   fetchEMLIContactsByRegion,
   fetchEMLIContacts,
+  updateMinespaceUserMines,
 } from "@common/actionCreators/minespaceActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -246,6 +247,33 @@ describe("`updateEMLIContact` action creator", () => {
       guid,
       {}
     )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateMinespaceUserMines` action creator", () => {
+  const minespace_id = "12345-6789";
+  const url = `${ENVIRONMENT.apiUrl + API.UPDATE_MINESPACE_USER(minespace_id)}`;
+  const mockPayLoad = {};
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockMineResponse = { success: true };
+    mockAxios.onPut(url, mockPayLoad).reply(200, mockMineResponse);
+    return updateMinespaceUserMines(
+      minespace_id,
+      mockPayLoad
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateMinespaceUserMines(minespace_id)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
