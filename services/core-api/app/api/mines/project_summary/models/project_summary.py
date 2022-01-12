@@ -27,7 +27,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project_summary_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_summary_title = db.Column(db.String(300), nullable=False)
-    project_summary_description = db.Column(db.String(300), nullable=True)
+    project_summary_description = db.Column(db.String(4000), nullable=True)
     proponent_project_id = db.Column(db.String(20), nullable=True)
     expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
