@@ -9,24 +9,20 @@ export const {
 } = projectSummaryReducer;
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {
-  let formattedSummary = { summary, authorizationOptions: [] };
-  // console.log(summary);
-  !isEmpty(summary) &&
-    summary?.authorizations.length > 0 &&
-    summary?.authorizations.map((authorization) => {
+  let formattedSummary = { ...summary, authorizationOptions: [] };
+  if (!isEmpty(summary) && summary?.authorizations.length) {
+    summary.authorizations.forEach((authorization) => {
       formattedSummary = {
-        summary: {
-          ...formattedSummary.summary,
-          [authorization.project_summary_authorization_type]: {
-            ...authorization,
-            existing_permits_authorizations: authorization.existing_permits_authorizations.toString(),
-          },
-        },
         ...formattedSummary,
+        [authorization.project_summary_authorization_type]: {
+          ...authorization,
+          existing_permits_authorizations: authorization.existing_permits_authorizations.toString(),
+        },
       };
-      formattedSummary.authorizationOptions.push(authorization.project_summary_authorization_type);
+      return formattedSummary.authorizationOptions.push(
+        authorization.project_summary_authorization_type
+      );
     });
-  // delete formattedSummary.summary.authorizations;
-
+  }
   return formattedSummary;
 });
