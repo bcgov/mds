@@ -89,7 +89,7 @@ class MineVarianceResource(Resource, UserMixin):
 
         inspector_party_guid = data.get('inspector_party_guid')
         if inspector_party_guid:
-            inspector = Party.find_by_party_guid(inspector_party_guid)
+            inspector = Party.find_inspector_by_party_guid(inspector_party_guid)
             if not inspector:
                 raise BadRequest('Unable to find new inspector.')
             if not 'INS' in inspector.business_roles_codes:
