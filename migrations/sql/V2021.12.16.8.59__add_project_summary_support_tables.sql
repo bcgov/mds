@@ -46,7 +46,7 @@ VALUES
 ('MINES_ACT_PERMIT', 'Mines Act permit', 'MINES_ACT', 'system-mds', 'system-mds'),
 ('AIR_EMISSIONS_DISCHARGE_PERMIT', 'Air emissions discharge permit', 'ENVIRONMENTAL_MANAGMENT_ACT', 'system-mds', 'system-mds'),
 ('EFFLUENT_DISCHARGE_PERMIT', 'Effluent discharge permit', 'ENVIRONMENTAL_MANAGMENT_ACT', 'system-mds', 'system-mds'),
-('SOLID_WASTES_PERMIT', 'Solid wastes permit', 'ENVIRONMENTAL_MANAGMENT_ACT', 'system-mds', 'system-mds'),
+('REFUSE_DISCHARGE_PERMIT', 'Refuse discharge permit', 'ENVIRONMENTAL_MANAGMENT_ACT', 'system-mds', 'system-mds'),
 ('MUNICIPAL_WASTEWATER_REGULATION', 'Municipal wastewater regulation', 'ENVIRONMENTAL_MANAGMENT_ACT', 'system-mds', 'system-mds'),
 ('CHANGE_APPROVAL', 'Change approval', 'WATER_SUSTAINABILITY_ACT', 'system-mds', 'system-mds'),
 ('USE_APPROVAL', 'Use approval', 'WATER_SUSTAINABILITY_ACT', 'system-mds', 'system-mds'),

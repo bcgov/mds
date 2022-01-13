@@ -1,10 +1,18 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
-import { getFormValues } from "redux-form";
-import { Row, Col, Typography, Tabs, Divider } from "antd";
+import { Link, Prompt } from "react-router-dom";
+import {
+  getFormValues,
+  submit,
+  updateSyncErrors,
+  formValueSelector,
+  getFormSyncErrors,
+  reset,
+} from "redux-form";
+import { Row, Col, Typography, Tabs, Divider, Popconfirm } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -66,6 +74,7 @@ export class ProjectSummaryPage extends Component {
     isLoaded: false,
     isEditMode: false,
     activeTab: tabs[0],
+    urlChangedFromNav: false,
   };
 
   componentDidMount() {
@@ -85,16 +94,20 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleSaveDraft = (e, values) => {
+    console.log("am I being called???");
     e.preventDefault();
-    const payload = { ...values, status_code: "D" };
-    if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(payload);
-    }
-    return this.handleUpdateProjectSummary(payload);
+    this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    // const payload = { ...values, status_code: "D" };
+    // if (!this.state.isEditMode) {
+    //   return this.handleCreateProjectSummary(payload);
+    // }
+    // return this.handleUpdateProjectSummary(payload);
   };
 
   handleSubmit = (values) => {
     const payload = { ...values, status_code: "O" };
+    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    this.props.updateSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY);
     if (!this.state.isEditMode) {
       return this.handleCreateProjectSummary(payload);
     }
@@ -139,7 +152,7 @@ export class ProjectSummaryPage extends Component {
       });
   }
 
-  handleTabChange = (activeTab) => {
+  handleTabChange = (activeTab, urlChangedFromNav) => {
     const url = this.state.isEditMode
       ? EDIT_PROJECT_SUMMARY.dynamicRoute(
           this.props.match.params?.mineGuid,
@@ -147,7 +160,7 @@ export class ProjectSummaryPage extends Component {
           activeTab
         )
       : ADD_PROJECT_SUMMARY.dynamicRoute(this.props.match.params?.mineGuid, activeTab);
-    this.setState({ activeTab });
+    this.setState({ activeTab, urlChangedFromNav });
     this.props.history.push(url);
   };
 
@@ -177,6 +190,18 @@ export class ProjectSummaryPage extends Component {
     return (
       (this.state.isLoaded && (
         <>
+          <Prompt
+            when={this.props.anyTouched}
+            message={(location, action) => {
+              if (action === "REPLACE") {
+                this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
+              }
+              return this.props.location.pathname !== location.pathname &&
+                !location.pathname.includes("project-description")
+                ? "You have unsaved changes. Are you sure you want to leave without saving?"
+                : true;
+            }}
+          />
           <Row>
             <Col span={24}>
               <Typography.Title>{title}</Typography.Title>
@@ -191,11 +216,18 @@ export class ProjectSummaryPage extends Component {
             </Col>
           </Row>
           <Divider />
+          {/* <Popconfirm
+      title="Title"
+      visible={visible}
+      onConfirm={handleOk}
+      okButtonProps={{ loading: confirmLoading }}
+      onCancel={handleCancel}
+    > */}
           <Tabs
             tabPosition="left"
             activeKey={this.state.activeTab}
             defaultActiveKey={tabs[0]}
-            onChange={this.handleTabChange}
+            onChange={(tab) => this.handleTabChange(tab, true)}
             className="vertical-tabs"
           >
             {tabs.map((tab) => (
@@ -222,12 +254,14 @@ export class ProjectSummaryPage extends Component {
               </Tabs.TabPane>
             ))}
           </Tabs>
+          {/* </Popconfirm> */}
         </>
       )) || <Loading />
     );
   }
 }
 
+const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
@@ -235,6 +269,8 @@ const mapStateToProps = (state) => ({
   formattedProjectSummary: getFormattedProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
+  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  anyTouched: selector(state, "anyTouched"),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -244,6 +280,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectSummaryById,
       updateProjectSummary,
       fetchMineRecordById,
+      submit,
+      updateSyncErrors,
+      reset,
     },
     dispatch
   );

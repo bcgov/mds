@@ -47,7 +47,7 @@ export const BasicInformation = (props) => (
       }
       component={renderConfig.AUTO_SIZE_FIELD}
       minRows={10}
-      validate={[maxLength(300), required]}
+      validate={[maxLength(4000), required]}
     />
   </>
 );

@@ -3,10 +3,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 import { withRouter } from "react-router-dom";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, arrayPush, formValueSelector, getFormValues } from "redux-form";
-import { remove } from "lodash";
+import {
+  Field,
+  reduxForm,
+  change,
+  arrayPush,
+  formValueSelector,
+  getFormValues,
+  getFormSyncErrors,
+  // getFormState,
+} from "redux-form";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -95,57 +104,71 @@ export class ProjectSummaryForm extends Component {
       }[tab]);
     const isFirst = this.state.tabIndex === 0;
     const isLast = tabs.length - 1 === this.state.tabIndex;
+    console.log(this.props.formErrors);
+    console.log(this.props.anyTouched);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        {renderTabComponent(tabs[this.state.tabIndex])}
-        <div className="vertical-tabs--tabpane--actions">
-          <Row justify="space-between">
-            <Col span={18}>
-              <div>
-                {!isFirst && (
-                  <Button
-                    type="secondary"
-                    onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
-                  >
-                    <LeftOutlined /> Back
-                  </Button>
-                )}
-              </div>
-            </Col>
-            <Col span={6}>
-              <div>
-                {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
-                  <LinkButton
-                    onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
-                    title="Save Draft"
-                  >
-                    Save Draft
-                  </LinkButton>
-                )}
-                {!isLast && (
-                  <Button
-                    type="secondary"
-                    onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex + 1])}
-                  >
-                    Next <RightOutlined />
-                  </Button>
-                )}
-                {isLast && (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    loading={this.props.submitting}
-                    disabled={this.props.submitting}
-                  >
-                    {this.props.isEditMode && this.props.initialValues.status_code !== "D"
-                      ? "Save"
-                      : "Submit"}
-                  </Button>
-                )}
-              </div>
-            </Col>
-          </Row>
-        </div>
+        <Row gutter={16}>
+          <Col span={18}>
+            <>{renderTabComponent(tabs[this.state.tabIndex])}</>
+          </Col>
+          <div className="vertical-tabs--tabpane--actions">
+            <Row justify="space-between">
+              <Col span={13}>
+                <div>
+                  {!isFirst && (
+                    <Button
+                      type="secondary"
+                      disabled={!isEmpty(this.props.formErrors) && this.props.anyTouched}
+                      onClick={() =>
+                        this.props.handleTabChange(tabs[this.state.tabIndex - 1], false)
+                      }
+                    >
+                      <LeftOutlined /> Back
+                    </Button>
+                  )}
+                </div>
+              </Col>
+              <Col span={6}>
+                <div>
+                  {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
+                    <LinkButton
+                      onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
+                      title="Save Draft"
+                      disabled={this.props.submitting}
+                    >
+                      Save Draft
+                    </LinkButton>
+                  )}
+                  {!isLast && (
+                    <Button
+                      type="secondary"
+                      disabled={!isEmpty(this.props.formErrors) && this.props.anyTouched}
+                      onClick={() =>
+                        this.props.handleTabChange(tabs[this.state.tabIndex + 1], false)
+                      }
+                    >
+                      Next <RightOutlined />
+                    </Button>
+                  )}
+                  {isLast && (
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={this.props.submitting}
+                      disabled={this.props.submitting}
+                    >
+                      {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                        ? "Save"
+                        : "Submit"}
+                    </Button>
+                  )}
+                </div>
+              </Col>
+              <Col span={3} />
+            </Row>
+          </div>
+        </Row>
       </Form>
     );
   }
@@ -158,6 +181,9 @@ const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
+  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  anyTouched: selector(state, "anyTouched"),
+  // formState: getFormState(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
