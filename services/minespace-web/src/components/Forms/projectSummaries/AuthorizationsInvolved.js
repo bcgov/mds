@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Typography, Checkbox } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Field, Fields, FormSection } from "redux-form";
+import { Field, Fields, FormSection, change } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { getFormValues } from "redux-form";
 import { maxLength } from "@common/utils/Validate";
@@ -24,11 +24,12 @@ export const AuthorizationsInvolved = (props) => {
   const [checked, setChecked] = useState(
     props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
   );
-  const handleChange = (e, code) => {
+  const handleChange = (e, code, change) => {
     if (e.target.checked) {
       setChecked((arr) => [code, ...arr]);
     } else {
       setChecked(checked.filter((item) => item !== code));
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
     }
   };
 
@@ -49,16 +50,16 @@ export const AuthorizationsInvolved = (props) => {
             fieldName={`${code}.project_summary_permit_type`}
             options={props.dropdownProjectSummaryPermitTypes}
             formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-            formValues={props.formattedProjectSummary.summary}
+            formValues={props.formattedProjectSummary}
             change={props.change}
             component={renderConfig.GROUP_CHECK_BOX}
             label="What type of permit is involved in your application?"
-            setInitialValues={() => setInitialValues(code, props.formattedProjectSummary.summary)}
+            setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
           />
         </>
       )}
       <Field
-        id="existing_permits_authorizations"
+        id={`${code}.existing_permits_authorizations`}
         name="existing_permits_authorizations"
         label={
           <>
@@ -81,15 +82,16 @@ export const AuthorizationsInvolved = (props) => {
       <Callout message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application." />
       {props.transformedProjectSummaryAuthorizationTypes.map((authorization) => {
         return (
-          <>
+          <React.Fragment key={authorization.code}>
             <Typography.Title level={5}>{authorization.description}</Typography.Title>
             {authorization.children &&
               authorization.children.map((child) => {
                 return (
-                  <FormSection name={child.code}>
+                  <FormSection name={child.code} key={`${authorization}.${child.code}`}>
                     <Checkbox
+                      key={child.code}
                       value={child.code}
-                      onChange={(e) => handleChange(e, child.code)}
+                      onChange={(e) => handleChange(e, child.code, props.change)}
                       checked={checked.includes(child.code)}
                     >
                       {checked.includes(child.code) ? (
@@ -105,7 +107,7 @@ export const AuthorizationsInvolved = (props) => {
                 );
               })}
             <br />
-          </>
+          </React.Fragment>
         );
       })}
     </>
@@ -123,4 +125,6 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
 });
 
-export default connect(mapStateToProps)(AuthorizationsInvolved);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationsInvolved);

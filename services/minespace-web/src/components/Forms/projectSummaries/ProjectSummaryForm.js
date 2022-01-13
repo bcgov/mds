@@ -74,16 +74,6 @@ export class ProjectSummaryForm extends Component {
     }
   }
 
-  setAuthorizationsInvolvedInitialValues = (initialValues) => {
-    const formObject = { ...initialValues };
-    if (formObject.authorizations) {
-      for (const authorization of formObject.authorizations) {
-        formObject[authorization.project_summary_authorization_type] = authorization;
-      }
-    }
-    return formObject;
-  };
-
   render() {
     const renderTabComponent = (tab) =>
       ({
@@ -92,9 +82,7 @@ export class ProjectSummaryForm extends Component {
         "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
         "authorizations-involved": (
           <AuthorizationsInvolved
-            initialValues={{
-              ...this.setAuthorizationsInvolvedInitialValues(this.props.initialValues),
-            }}
+            initialValues={this.props.initialValues}
             change={this.props.change}
           />
         ),

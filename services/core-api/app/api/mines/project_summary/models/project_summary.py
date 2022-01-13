@@ -7,6 +7,7 @@ from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.access_decorators import is_minespace_user
 from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
@@ -26,7 +27,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project_summary_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_summary_title = db.Column(db.String(300), nullable=False)
-    project_summary_description = db.Column(db.String(300), nullable=True)
+    project_summary_description = db.Column(db.String(4000), nullable=True)
     proponent_project_id = db.Column(db.String(20), nullable=True)
     expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
@@ -82,12 +83,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
-        return cls.query.filter_by(
+        if is_minespace_user():
+            return cls.query.filter_by(
+                project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
+        if is_minespace_user():
+            return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
+            mine_guid=mine_guid, deleted_ind=False).all()
 
     @classmethod
     def create(cls,

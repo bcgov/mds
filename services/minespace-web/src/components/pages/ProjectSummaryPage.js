@@ -10,8 +10,8 @@ import {
   updateSyncErrors,
   formValueSelector,
   getFormSyncErrors,
-  reset,
 } from "redux-form";
+import { getFormValues, reset } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -115,14 +115,15 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleTransformPayload = (values) => {
-    const authorizations = [];
+    let payloadValues = {};
+    const updatedAuthorizations = [];
     Object.keys(values).map((key) => {
-      if (this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
+      if (values[key] && this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
         const project_summary_guid = values?.project_summary_guid;
         const authorization = values?.authorizations?.find(
           (auth) => auth?.project_summary_authorization_type === key
         );
-        authorizations.push({
+        updatedAuthorizations.push({
           ...values[key],
           ...(project_summary_guid && { project_summary_guid }),
           ...(authorization && {
@@ -135,8 +136,12 @@ export class ProjectSummaryPage extends Component {
         delete values[key];
       }
     });
-
-    return { ...values, authorizations };
+    payloadValues = {
+      ...values,
+      authorizations: updatedAuthorizations,
+    };
+    delete payloadValues.authorizationOptions;
+    return payloadValues;
   };
 
   handleCreateProjectSummary(values) {
@@ -182,7 +187,7 @@ export class ProjectSummaryPage extends Component {
   render() {
     const { mineGuid } = this.props.match?.params;
     const mineName = this.state.isEditMode
-      ? this.props.formattedProjectSummary?.summary?.mine_name || ""
+      ? this.props.formattedProjectSummary?.mine_name || ""
       : this.props.mines[mineGuid]?.mine_name || "";
     const title = this.state.isEditMode
       ? `Edit project description - ${this.props.projectSummary?.project_summary_title}`
@@ -232,7 +237,7 @@ export class ProjectSummaryPage extends Component {
                 <ProjectSummaryForm
                   initialValues={
                     this.state.isEditMode
-                      ? this.props.formattedProjectSummary.summary
+                      ? this.props.formattedProjectSummary
                       : {
                           contacts: [{ is_primary: true }],
                         }
