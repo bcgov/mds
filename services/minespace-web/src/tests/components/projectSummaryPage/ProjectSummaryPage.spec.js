@@ -10,6 +10,7 @@ const setupProps = () => {
   props.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
   props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;
   props.mines = {};
+  props.fieldsTouched = {};
 };
 
 const setupDispatchProps = () => {
