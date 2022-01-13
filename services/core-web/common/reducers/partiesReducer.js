@@ -63,6 +63,11 @@ export const partiesReducer = (state = initialState, action) => {
         ...state,
         inspectors: action.payload.records,
       };
+    case actionTypes.STORE_PROJECT_LEADS:
+      return {
+        ...state,
+        project_leads: action.payload.records,
+      };
     default:
       return state;
   }
@@ -84,5 +89,8 @@ export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state) => state[PARTIES].inspectors;
 export const getInspectorsList = (state) =>
   createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
+export const getProjectLeads = (state) => state[PARTIES].project_leads;
+export const getProjectLeadsList = (state) =>
+  createDropDownList(state[PARTIES].project_leads, "name", "party_guid");
 
 export default partiesReducerObject;
