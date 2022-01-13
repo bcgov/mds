@@ -175,8 +175,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                security_received_date=None,
                security_not_required=None,
                security_not_required_reason=None,
-               add_to_session=True,
-               is_generated_in_core=False):
+               is_generated_in_core=False,
+               add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
             mine_guid=mine.mine_guid,
