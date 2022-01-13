@@ -10,8 +10,8 @@ import {
   updateSyncErrors,
   formValueSelector,
   getFormSyncErrors,
+  reset,
 } from "redux-form";
-import { getFormValues, reset } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
