@@ -9,7 +9,6 @@ This function is run right before setup_marshmallow and it looks through all of 
 It creates a mapping of classes to lists if their PK's, this is only done for code tables. To find the code tables
 the classes are inspected and if they have a column named active_ind, it's type is not a UUID and its type is a string
 the PK's are added to STATIC_DATA under the class name.
-
 Parameters: Base <SQL Alchemy Model>
 Return: None
 """

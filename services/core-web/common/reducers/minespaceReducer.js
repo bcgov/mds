@@ -4,6 +4,8 @@ import { MINESPACE } from "../constants/reducerTypes";
 const initialState = {
   minespaceUsers: [],
   minespaceUserMines: [],
+  EMLIContacts: [],
+  EMLIContactsByRegion: [],
 };
 
 export const minespaceReducer = (state = initialState, action) => {
@@ -18,6 +20,16 @@ export const minespaceReducer = (state = initialState, action) => {
         ...state,
         minespaceUserMines: action.payload,
       };
+    case actionTypes.STORE_EMLI_CONTACTS:
+      return {
+        ...state,
+        EMLIContacts: action.payload.records,
+      };
+    case actionTypes.STORE_EMLI_CONTACTS_BY_REGION:
+      return {
+        ...state,
+        EMLIContactsByRegion: action.payload.records,
+      };
     default:
       return state;
   }
@@ -29,5 +41,7 @@ const minespaceReducerObject = {
 
 export const getMinespaceUsers = (state) => state[MINESPACE].minespaceUsers;
 export const getMinespaceUserMines = (state) => state[MINESPACE].minespaceUserMines;
+export const getEMLIContacts = (state) => state[MINESPACE].EMLIContacts;
+export const getEMLIContactsByRegion = (state) => state[MINESPACE].EMLIContactsByRegion;
 
 export default minespaceReducerObject;

@@ -28,12 +28,10 @@ jobs:
           - name: postgresql
           - name: frontend
           - name: backend
-          - name: tusd
           - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
@@ -66,7 +64,6 @@ jobs:
         include:
           - name: frontend
           - name: backend
-          - name: docman
           - name: nris
           - name: minespace
     steps:
@@ -91,10 +88,8 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: tusd
           - name: dbbackup
           - name: metabase
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
@@ -121,12 +116,10 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: tusd
           - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: docman
           - name: filesystem-provider
           - name: nris
           - name: minespace
@@ -185,7 +178,7 @@ jobs:
     name: watch-rollout
     runs-on: ubuntu-20.04
     needs: grace-period
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       matrix:
         include:

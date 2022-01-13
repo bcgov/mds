@@ -150,7 +150,7 @@
     "puppeteer": "^1.18.1"
   },
   "scripts": {
-    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
+    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --watch --watch-poll --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
     "start": "npx pm2 start server.js --no-daemon",
@@ -211,7 +211,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "lint-prepush"
+      "pre-push": "lint-prepush && cd ../minespace-web && lint-prepush"
     }
   },
   "lint-staged": {
@@ -219,7 +219,15 @@
       "npm run format:write",
       "git add"
     ],
+    "../minespace-web/**/*.{js,css,json,md}": [
+      "npm run format:write",
+      "git add"
+    ],
     "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "../minespace-web/**/*.js": [
       "eslint --fix",
       "git add"
     ]

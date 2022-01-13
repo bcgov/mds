@@ -31,6 +31,7 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
+import MineProjectSummaries from "@/components/mine/ProjectSummaries/MineProjectSummary";
 import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
@@ -38,6 +39,7 @@ import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/Noti
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
+import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 
 const withoutDefaultParams = (params, defaults) => {
@@ -147,6 +149,13 @@ export const MINE_VARIANCES = {
   route: "/mine-dashboard/:id/permits-and-approvals/variances",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
   component: MineVariance,
+};
+
+// Project Summaries
+export const MINE_PRE_APPLICATIONS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
+  component: MineProjectSummaries,
 };
 
 export const MINE_NOW_APPLICATIONS = {
@@ -259,6 +268,11 @@ export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
   component: AdminPermitConditionManagement,
 };
 
+export const ADMIN_EMLI_CONTACT_MANAGEMENT = {
+  route: "/admin/minespace-emli-contact-management",
+  component: MineSpaceEMLIContactManagement,
+};
+
 export const ADMIN_VERIFIED_MINES = {
   route: "/admin/dashboard/mine-verification/:type",
   dynamicRoute: (type) => `/admin/dashboard/mine-verification/${type}`,
@@ -320,8 +334,7 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 
 export const EDIT_PERMIT_CONDITIONS = {
   route: "/:mine_guid/permit-amendment/:id/edit-permit-conditions",
-  dynamicRoute: (mine_guid, id) =>
-    `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
+  dynamicRoute: (mine_guid, id) => `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
   component: PermitConditionManagement,
 };
 

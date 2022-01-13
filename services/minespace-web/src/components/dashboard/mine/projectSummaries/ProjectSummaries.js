@@ -99,7 +99,7 @@ export class ProjectSummaries extends Component {
             >
               HSRC
             </a>
-            &nbsp;9.1.1) outside of the permit mine ara of an operating production mineral or coal
+            &nbsp;9.1.1) outside of the permit mine area of an operating production mineral or coal
             mine that does not consist of an expansion to the production mining area, please submit
             a Notice of Work application through{" "}
             <a

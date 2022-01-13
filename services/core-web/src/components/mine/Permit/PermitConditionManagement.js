@@ -169,7 +169,8 @@ export class PermitConditionManagement extends Component {
             <Row>
               <Col sm={22} md={14} lg={12}>
                 <h1>
-                  ({formatDate(this.state.issuesDate)} - {this.state.authEndDate ? formatDate(this.state.authEndDate) : 'Present'})
+                  ({formatDate(this.state.issuesDate)} -{" "}
+                  {this.state.authEndDate ? formatDate(this.state.authEndDate) : "Present"})
                 </h1>
               </Col>
             </Row>

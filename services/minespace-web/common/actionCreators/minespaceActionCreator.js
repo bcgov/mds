@@ -63,3 +63,86 @@ export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.DELETE_MINESPACE_USER)))
     .finally(() => dispatch(hideLoading()));
 };
+
+// MineSpace EMLI contact
+export const fetchEMLIContacts = () => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_EMLI_CONTACTS));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.EMLI_CONTACTS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_EMLI_CONTACTS));
+      dispatch(minespaceActions.storeEMLIContacts(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_EMLI_CONTACTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchEMLIContactsByRegion = (region, isMajorMine) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_EMLI_CONTACTS));
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl + API.EMLI_CONTACTS_BY_REGION(region, isMajorMine),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_EMLI_CONTACTS));
+      dispatch(minespaceActions.storeEMLIContactsByRegion(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_EMLI_CONTACTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createEMLIContact = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_EMLI_CONTACT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.EMLI_CONTACTS, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: `Successfully created a new EMLI contact.`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_EMLI_CONTACT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_EMLI_CONTACT)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const updateEMLIContact = (guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_EMLI_CONTACT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated EMLI contact.`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_EMLI_CONTACT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_EMLI_CONTACT)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const deleteEMLIContact = (guid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_EMLI_CONTACT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: `Successfully deleted EMLI contact.`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_EMLI_CONTACT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_EMLI_CONTACT)))
+    .finally(() => dispatch(hideLoading()));
+};

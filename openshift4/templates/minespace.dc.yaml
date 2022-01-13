@@ -81,6 +81,10 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Stand-Alone
+  - name: VCAUTHN_PRES_REQ_CONF_ID
+    displayName: VC-AUTHN-PRES-REQ_CONF_ID
+    description: Presentation Requestion Configuration Id for KC to foward to vc-authn Identity Provider
+    value: minespace-access-0.1-dev
 objects:
   - kind: Service
     apiVersion: v1
@@ -160,6 +164,8 @@ objects:
                   value: ${KEYCLOAK_IDP_HINT}
                 - name: SITEMINDER_URL
                   value: ${SITEMINDER_URL}
+                - name: VCAUTHN_PRES_REQ_CONF_ID
+                  value: ${VCAUTHN_PRES_REQ_CONF_ID}
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}

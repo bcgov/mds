@@ -25,7 +25,9 @@ export const KEYCLOAK = {
   realm: "mds",
   "ssl-required": "external",
   url: "<URL>",
-  idpHint: "idir",
+  idir_idpHint: "idir",
+  bceid_idpHint: "bceid",
+  vcauthn_idpHint: "ms-verifiable-credential",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
@@ -57,4 +59,5 @@ export const USER_ROLES = {
   role_edit_historical_amendments: "core_edit_historical_amendments",
   role_mds_administrative_users: "mds_administrative_users",
   role_edit_now_dates: "core_edit_now_dates",
+  role_edit_emli_contacts: "core_edit_emli_contacts",
 };

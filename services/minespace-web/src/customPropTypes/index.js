@@ -9,7 +9,8 @@ import * as ReportTypes from "@/customPropTypes/reports";
 import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as Incidents from "@/customPropTypes/incidents";
 import * as Securities from "@/customPropTypes/securities";
-import * as ProjectSummaryTypes from "@/customPropTypes/projectSummaries"
+import * as ProjectSummaryTypes from "@/customPropTypes/projectSummaries";
+import * as EMLIContactTypes from "@/customPropTypes/EMLIContact";
 
 export default {
   ...UserTypes,
@@ -24,4 +25,5 @@ export default {
   ...Incidents,
   ...Securities,
   ...ProjectSummaryTypes,
+  ...EMLIContactTypes,
 };
