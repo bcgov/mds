@@ -12,7 +12,7 @@ import {
   getFormSyncErrors,
   reset,
 } from "redux-form";
-import { Row, Col, Typography, Tabs, Divider, Popconfirm } from "antd";
+import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -216,13 +216,6 @@ export class ProjectSummaryPage extends Component {
             </Col>
           </Row>
           <Divider />
-          {/* <Popconfirm
-      title="Title"
-      visible={visible}
-      onConfirm={handleOk}
-      okButtonProps={{ loading: confirmLoading }}
-      onCancel={handleCancel}
-    > */}
           <Tabs
             tabPosition="left"
             activeKey={this.state.activeTab}
@@ -254,7 +247,6 @@ export class ProjectSummaryPage extends Component {
               </Tabs.TabPane>
             ))}
           </Tabs>
-          {/* </Popconfirm> */}
         </>
       )) || <Loading />
     );
