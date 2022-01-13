@@ -44,6 +44,7 @@ exports[`ProjectSummariesTable renders properly 1`] = `
     Array [
       Object {
         "documents": Array [],
+        "handleDeleteDraft": undefined,
         "key": "81324623978135",
         "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
         "projectSummary": Object {
@@ -65,7 +66,7 @@ exports[`ProjectSummariesTable renders properly 1`] = `
   loading={true}
   locale={
     Object {
-      "emptyText": "This mine has no project summary data.",
+      "emptyText": "This mine has no project description data.",
     }
   }
   pagination={false}
