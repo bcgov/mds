@@ -94,17 +94,18 @@ export class ProjectSummaryPage extends Component {
   };
 
   handleSaveDraft = (e, values) => {
-    console.log("am I being called???");
+    console.log("this is the one I should  be calling...");
     e.preventDefault();
-    this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    // const payload = { ...values, status_code: "D" };
-    // if (!this.state.isEditMode) {
-    //   return this.handleCreateProjectSummary(payload);
-    // }
-    // return this.handleUpdateProjectSummary(payload);
+    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const payload = { ...values, status_code: "D" };
+    if (!this.state.isEditMode) {
+      return this.handleCreateProjectSummary(payload);
+    }
+    return this.handleUpdateProjectSummary(payload);
   };
 
   handleSubmit = (values) => {
+    console.log("I bet this is getting called when it shouldn't be");
     const payload = { ...values, status_code: "O" };
     // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     this.props.updateSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY);
@@ -235,13 +236,7 @@ export class ProjectSummaryPage extends Component {
                 className="vertical-tabs--tabpane"
               >
                 <ProjectSummaryForm
-                  initialValues={
-                    this.state.isEditMode
-                      ? this.props.formattedProjectSummary
-                      : {
-                          contacts: [{ is_primary: true }],
-                        }
-                  }
+                  initialValues={this.state.isEditMode ? this.props.formattedProjectSummary : {}}
                   mineGuid={mineGuid}
                   isEditMode={this.state.isEditMode}
                   onSubmit={this.handleSubmit}

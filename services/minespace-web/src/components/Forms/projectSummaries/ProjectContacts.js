@@ -1,14 +1,18 @@
 /* eslint-disable */
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Field, FormSection, FieldArray } from "redux-form";
+import { Field, FieldArray, arrayPush, formValueSelector } from "redux-form";
 import { PlusOutlined } from "@ant-design/icons";
 import { maxLength, phoneNumber, required, email } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/LinkButton";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {};
 
@@ -16,7 +20,6 @@ const contacts = ({ fields }) => {
   return (
     <>
       {fields.map((field, index) => {
-        // const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
         return (
           <div key={index}>
             {index === 0 ? (
@@ -30,12 +33,12 @@ const contacts = ({ fields }) => {
             ) : (
               <>
                 <Row gutter={16}>
-                  <Col span={7}>
+                  <Col span={10}>
                     <Typography.Title level={5}>
                       Additional project contact #{index}
                     </Typography.Title>
                   </Col>
-                  <Col span={17}>
+                  <Col span={12}>
                     <Popconfirm
                       placement="topLeft"
                       title="Are you sure you want to remove this contact?"
@@ -121,15 +124,36 @@ const contacts = ({ fields }) => {
   );
 };
 
-export const ProjectContacts = (props) => {
-  return (
-    <>
-      <Typography.Title level={3}>Project Contacts</Typography.Title>
-      <FieldArray name="contacts" component={contacts} />
-    </>
-  );
-};
+export class ProjectContacts extends Component {
+  componentWillMount() {
+    if (isNil(this.props.contacts) || this.props.contacts.length === 0) {
+      this.props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
+    }
+  }
+
+  render() {
+    return (
+      <>
+        <Typography.Title level={3}>Project Contacts</Typography.Title>
+        <FieldArray name="contacts" component={contacts} />
+      </>
+    );
+  }
+}
 
 ProjectContacts.propTypes = propTypes;
 
-export default ProjectContacts;
+const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
+const mapStateToProps = (state) => ({
+  contacts: selector(state, "contacts"),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      arrayPush,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectContacts);

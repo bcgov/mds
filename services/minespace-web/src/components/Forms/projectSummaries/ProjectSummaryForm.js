@@ -19,7 +19,7 @@ import {
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Typography, Row, Col } from "antd";
+import { Button, Row, Col } from "antd";
 import { maxLength } from "@common/utils/Validate";
 import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
