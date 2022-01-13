@@ -76,6 +76,7 @@ export const INCIDENT_DETERMINATION_TYPES = {
 export const INCIDENT_FOLLOWUP_ACTIONS = {
   miu: "MIU",
   inspector: "INS",
+  projectLead: "PRL",
   none: "NO",
   unknown: "HUK",
 };
