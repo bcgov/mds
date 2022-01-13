@@ -15,6 +15,7 @@ import { getStaticContentLoadingIsComplete } from "@common/selectors/staticConte
 import {
   loadBulkStaticContent,
   fetchInspectors,
+  fetchProjectLeads,
 } from "@common/actionCreators/staticContentActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
@@ -33,6 +34,7 @@ const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   loadBulkStaticContent: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
+  fetchProjectLeads: PropTypes.func.isRequired,
 };
 
 export class Home extends Component {
@@ -82,6 +84,8 @@ export class Home extends Component {
   loadStaticContent = () => {
     this.props.loadBulkStaticContent();
     this.props.fetchInspectors();
+    this.props.fetchProjectLeads();
+    console.log(this.props.fetchProjectLeads);
   };
 
   render() {
@@ -139,6 +143,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       loadBulkStaticContent,
       fetchInspectors,
+      fetchProjectLeads,
     },
     dispatch
   );
