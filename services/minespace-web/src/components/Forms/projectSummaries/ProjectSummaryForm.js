@@ -19,7 +19,7 @@ import {
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Row, Col } from "antd";
+import { Button, Row, Col, Popconfirm } from "antd";
 import { maxLength } from "@common/utils/Validate";
 import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
@@ -92,10 +92,8 @@ export class ProjectSummaryForm extends Component {
       }[tab]);
     const isFirst = this.state.tabIndex === 0;
     const isLast = tabs.length - 1 === this.state.tabIndex;
-    console.log(this.props.formErrors);
-    console.log(this.props.anyTouched);
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical">
         <Row gutter={16}>
           <Col span={18}>
             <>{renderTabComponent(tabs[this.state.tabIndex])}</>
@@ -121,7 +119,9 @@ export class ProjectSummaryForm extends Component {
                 <div>
                   {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
                     <LinkButton
-                      onClick={(e) => this.props.handleSaveDraft(e, this.props.formValues)}
+                      onClick={(e) =>
+                        this.props.handleSaveData(e, { ...this.props.formValues, status_code: "D" })
+                      }
                       title="Save Draft"
                       disabled={this.props.submitting}
                     >
@@ -142,7 +142,9 @@ export class ProjectSummaryForm extends Component {
                   {isLast && (
                     <Button
                       type="primary"
-                      htmlType="submit"
+                      onClick={(e) =>
+                        this.props.handleSaveData(e, { ...this.props.formValues, status_code: "O" })
+                      }
                       loading={this.props.submitting}
                       disabled={this.props.submitting}
                     >
@@ -171,7 +173,6 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
   anyTouched: selector(state, "anyTouched"),
-  // formState: getFormState(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -189,5 +190,6 @@ export default compose(
     form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     touchOnBlur: true,
     touchOnChange: false,
+    onSubmit: () => {},
   })
 )(withRouter(ProjectSummaryForm));

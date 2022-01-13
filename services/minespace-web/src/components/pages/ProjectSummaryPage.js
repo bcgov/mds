@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
+import { flattenObject, formatDate } from "@common/utils/helpers";
 import { Link, Prompt } from "react-router-dom";
 import {
   getFormValues,
@@ -11,9 +12,11 @@ import {
   formValueSelector,
   getFormSyncErrors,
   reset,
+  startAsyncValidation,
+  touch,
 } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
-import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -69,6 +72,20 @@ const tabs = [
   "authorizations-involved",
   "document-upload",
 ];
+
+// list of  fields on each tab that require some level of validation, used to add error icon to tab so users know what page has errors.
+const errorsPerTab = {
+  "basic-information": ["project_summary_title", "project_summary_description"],
+  "project-contacts": ["contacts[0].name", "contacts[0].email", "contacts[0].phone_number"],
+  "project-dates": [
+    "expected_draft_irt_submission_date",
+    "expected_permit_application_date",
+    "expected_permit_receipt_date",
+    "expected_project_start_date",
+  ],
+  "authorizations-involved": [],
+  "document-upload": [],
+};
 export class ProjectSummaryPage extends Component {
   state = {
     isLoaded: false,
@@ -93,26 +110,33 @@ export class ProjectSummaryPage extends Component {
     });
   };
 
-  handleSaveDraft = (e, values) => {
-    console.log("this is the one I should  be calling...");
-    e.preventDefault();
-    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    const payload = { ...values, status_code: "D" };
-    if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(payload);
-    }
-    return this.handleUpdateProjectSummary(payload);
-  };
+  // handleSaveDraft = (e, values) => {
+  //   e.preventDefault();
+  //   // this.props.startAsyncValidation(FORM.ADD_EDIT_PROJECT_SUMMARY);
+  //   // this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+  //   this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+  //   const errors = Object.keys(flattenObject(this.props.formErrors));
+  //   if (errors.length > 0) {
+  //     console.log("there are errors??");
+  //   }
+  //   // const payload = { ...values, status_code: "D" };
+  //   // if (!this.state.isEditMode) {
+  //   //   return this.handleCreateProjectSummary(payload);
+  //   // }
+  //   // return this.handleUpdateProjectSummary(payload);
+  // };
 
-  handleSubmit = (values) => {
-    console.log("I bet this is getting called when it shouldn't be");
-    const payload = { ...values, status_code: "O" };
-    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    this.props.updateSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(payload);
+  handleSaveData = (e, values) => {
+    e.preventDefault();
+    this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      if (!this.state.isEditMode) {
+        return this.handleCreateProjectSummary(values);
+      }
+      return this.handleUpdateProjectSummary(values);
     }
-    return this.handleUpdateProjectSummary(payload);
   };
 
   handleTransformPayload = (values) => {
@@ -154,7 +178,9 @@ export class ProjectSummaryPage extends Component {
         this.handleTransformPayload(values)
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
-        this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
+        this.props.history.replace(
+          EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid)
+        );
       });
   }
 
@@ -186,6 +212,21 @@ export class ProjectSummaryPage extends Component {
   }
 
   render() {
+    console.log(Object.keys(flattenObject(this.props.formErrors)));
+    console.log(this.props.anyTouched);
+    console.log(Object.keys(this.props.fieldsTouched));
+    // console.log(this.props.contacts);
+    // console.log(this.props);
+    const touchedFields = Object.keys(this.props.fieldsTouched);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    // const showErrorsIfTouched =
+    //   Object.keys(this.props.fieldsTouched) === Object.keys(flattenObject(this.props.formErrors));
+    const showErrorsOnlyIfTouched =
+      Object.keys(flattenObject(this.props.formErrors)).length > 0 &&
+      Object.keys(flattenObject(this.props.formErrors)).every((field) =>
+        Object.keys(this.props.fieldsTouched).includes(field)
+      );
+    console.log(showErrorsOnlyIfTouched);
     const { mineGuid } = this.props.match?.params;
     const mineName = this.state.isEditMode
       ? this.props.formattedProjectSummary?.mine_name || ""
@@ -203,7 +244,8 @@ export class ProjectSummaryPage extends Component {
                 this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
               }
               return this.props.location.pathname !== location.pathname &&
-                !location.pathname.includes("project-description")
+                !location.pathname.includes("project-description") &&
+                this.props.anyTouched
                 ? "You have unsaved changes. Are you sure you want to leave without saving?"
                 : true;
             }}
@@ -231,7 +273,25 @@ export class ProjectSummaryPage extends Component {
           >
             {tabs.map((tab) => (
               <Tabs.TabPane
-                tab={formatUrlToUpperCaseString(tab)}
+                tab={
+                  <>
+                    {this.props.anyTouched &&
+                    showErrorsOnlyIfTouched &&
+                    errorsPerTab[tab].length > 0 &&
+                    errorsPerTab[tab].some((e) => errors.includes(e)) ? (
+                      <>
+                        {formatUrlToUpperCaseString(tab)}
+                        <ExclamationCircleOutlined
+                          style={{ color: "red" }}
+                          className="padding-sm--left icon-sm"
+                        />
+                      </>
+                    ) : (
+                      formatUrlToUpperCaseString(tab)
+                    )}
+                  </>
+                }
+                disabled={showErrorsOnlyIfTouched}
                 key={tab}
                 className="vertical-tabs--tabpane"
               >
@@ -239,8 +299,7 @@ export class ProjectSummaryPage extends Component {
                   initialValues={this.state.isEditMode ? this.props.formattedProjectSummary : {}}
                   mineGuid={mineGuid}
                   isEditMode={this.state.isEditMode}
-                  onSubmit={this.handleSubmit}
-                  handleSaveDraft={this.handleSaveDraft}
+                  handleSaveData={this.handleSaveData}
                   projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
                   handleTabChange={this.handleTabChange}
                 />
@@ -255,6 +314,8 @@ export class ProjectSummaryPage extends Component {
 
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
+  anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
+  fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
   mines: getMines(state),
   formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
@@ -262,7 +323,7 @@ const mapStateToProps = (state) => ({
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  anyTouched: selector(state, "anyTouched"),
+  contacts: selector(state, "contacts"),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -275,6 +336,8 @@ const mapDispatchToProps = (dispatch) =>
       submit,
       updateSyncErrors,
       reset,
+      startAsyncValidation,
+      touch,
     },
     dispatch
   );
