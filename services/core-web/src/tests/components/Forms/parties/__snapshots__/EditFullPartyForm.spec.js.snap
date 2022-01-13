@@ -493,6 +493,62 @@ exports[`EditFullPartyForm renders properly 1`] = `
           span={24}
         >
           <h5>
+            Assign Project Lead Role
+          </h5>
+        </Col>
+      </Row>
+      <Row>
+        <p>
+          By setting this checkbox you grant project lead role to this party. Please note that removing this checkbox will not delete party from associated entities.
+        </p>
+        <Col
+          md={12}
+          sm={24}
+        >
+          <Field
+            component={[Function]}
+            id="set_to_project_lead"
+            label="Set to project lead"
+            name="set_to_project_lead"
+            type="checkbox"
+          />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={12}
+        >
+          <Field
+            component={[Function]}
+            id="project_lead_start_date"
+            label="Start Date"
+            name="project_lead_start_date"
+            placeholder="yyyy-mm-dd"
+          />
+        </Col>
+        <Col
+          span={12}
+        >
+          <Field
+            component={[Function]}
+            id="project_lead_end_date"
+            label="End Date"
+            name="project_lead_end_date"
+            placeholder="yyyy-mm-dd"
+          />
+        </Col>
+      </Row>
+      <br />
+      <Divider />
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h5>
             Upload Signature
           </h5>
         </Col>
