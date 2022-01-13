@@ -13,6 +13,8 @@ export const {
   getLastCreatedParty,
   getInspectors,
   getInspectorsList,
+  getProjectLeads,
+  getProjectLeadsList,
   getAllPartyRelationships,
 } = partiesReducer;
 
@@ -55,4 +57,38 @@ export const getDropdownInspectors = createSelector([getInspectors], (parties) =
   ];
 });
 
+// split project leads on active and inactive based on business role
+export const getDropdownProjectLeads = createSelector([getProjectLeads], (parties) => {
+  const today = moment().utc();
+  const activeProjectLeads = parties
+    .filter((projectLead) =>
+      projectLead.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.start_date, "day") &&
+          (today.isBefore(r.end_date, "day") || !r.end_date)
+      )
+    )
+    .map((projectLead) => ({
+      value: projectLead.party_guid,
+      label: projectLead.name,
+    }));
+  const inactiveProjectLeads = parties
+    .filter((projectLead) =>
+      projectLead.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.end_date, "day") &&
+          !activeProjectLeads.find((prl) => prl.value === projectLead.party_guid)
+      )
+    )
+    .map((projectLead) => ({
+      value: projectLead.party_guid,
+      label: projectLead.name,
+    }));
+  return [
+    { groupName: "Active", opt: activeProjectLeads },
+    { groupName: "Inactive", opt: inactiveProjectLeads },
+  ];
+});
+
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
+export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);
