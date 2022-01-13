@@ -136,6 +136,9 @@ export class PartyProfile extends Component {
           if (record.relationship.party_business_role_code === "INS") {
             return "N/A";
           }
+          if (record.relationship.party_business_role_code === "PRL") {
+            return "N/A";
+          }
           if (record.relationship.mine_party_appt_type_code === "AGT") {
             return (
               <div title="NoW Number">
