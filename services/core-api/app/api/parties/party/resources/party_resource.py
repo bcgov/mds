@@ -62,8 +62,10 @@ class PartyResource(Resource, UserMixin):
         type=str,
         help='The extension of the tertiary phone number. Ex: 1234',
         store_missing=False)
-    parser.add_argument('email', type=str, help='The primary email of the party.', store_missing=False)
-    parser.add_argument('email_sec', type=str, help='The secondary email of the party.', store_missing=False)
+    parser.add_argument(
+        'email', type=str, help='The primary email of the party.', store_missing=False)
+    parser.add_argument(
+        'email_sec', type=str, help='The secondary email of the party.', store_missing=False)
     parser.add_argument(
         'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
     parser.add_argument(
@@ -157,6 +159,27 @@ class PartyResource(Resource, UserMixin):
             raise NotFound('Party not found')
         return party
 
+    def _save_new_party_business_appointment(self,
+                                             business_role,
+                                             party_business_role_code,
+                                             party_guid,
+                                             start_date=None,
+                                             end_date=None):
+        update_required = business_role and business_role.start_date == start_date.date() and (
+            end_date == None or business_role.end_date != end_date.date())
+        if update_required:
+            business_role.end_date = end_date
+            business_role.save()
+            cache.delete(GET_ALL_PROJECT_LEADS_KEY)
+        else:
+            new_bappt = PartyBusinessRoleAppointment.create(party_business_role_code, party_guid,
+                                                            start_date, end_date)
+            try:
+                new_bappt.save()
+            except alch_exceptions.IntegrityError as e:
+                if "daterange_excl" in str(e):
+                    raise BadRequest(f'Date ranges for project lead appointment must not overlap')
+
     @api.expect(parser)
     @api.doc(
         description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
@@ -211,22 +234,9 @@ class PartyResource(Resource, UserMixin):
                 start_date = data.inspector_start_date if data.get(
                     "inspector_start_date") else datetime.now(timezone.utc)
                 end_date = data.inspector_end_date if data.get("inspector_end_date") else None
-                update_required = inspector_role and inspector_role.start_date == start_date.date(
-                ) and (end_date == None or inspector_role.end_date != end_date.date())
-                if update_required:
-                    inspector_role.end_date = end_date
-                    inspector_role.save()
-                    cache.delete(GET_ALL_INSPECTORS_KEY)
-                else:
-                    new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date,
-                                                                    end_date)
-                    try:
-                        new_bappt.save()
-                    except alch_exceptions.IntegrityError as e:
-                        if "daterange_excl" in str(e):
-                            raise BadRequest(
-                                f'Date ranges for inspector appointment must not overlap')
-                    cache.delete(GET_ALL_INSPECTORS_KEY)
+                self._save_new_party_business_appointment(inspector_role, "INS", party_guid,
+                                                          start_date, end_date)
+                cache.delete(GET_ALL_INSPECTORS_KEY)
             # deactivate inspector
             elif inspector_role:
                 end_date = data.get("inspector_end_date")
@@ -241,22 +251,9 @@ class PartyResource(Resource, UserMixin):
                 start_date = data.project_lead_start_date if data.get(
                     "project_lead_start_date") else datetime.now(timezone.utc)
                 end_date = data.project_lead_end_date if data.get("project_lead_end_date") else None
-                update_required = project_lead_role and project_lead_role.start_date == start_date.date(
-                ) and (end_date == None or project_lead_role.end_date != end_date.date())
-                if update_required:
-                    project_lead_role.end_date = end_date
-                    project_lead_role.save()
-                    cache.delete(GET_ALL_PROJECT_LEADS_KEY)
-                else:
-                    new_bappt = PartyBusinessRoleAppointment.create("PRL", party_guid, start_date,
-                                                                    end_date)
-                    try:
-                        new_bappt.save()
-                    except alch_exceptions.IntegrityError as e:
-                        if "daterange_excl" in str(e):
-                            raise BadRequest(
-                                f'Date ranges for project lead appointment must not overlap')
-                    cache.delete(GET_ALL_PROJECT_LEADS_KEY)
+                self._save_new_party_business_appointment(project_lead_role, "PRL", party_guid,
+                                                          start_date, end_date)
+                cache.delete(GET_ALL_PROJECT_LEADS_KEY)
 
             # deactivate project lead
             elif project_lead_role:
