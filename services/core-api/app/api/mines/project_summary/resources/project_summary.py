@@ -127,7 +127,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to delete.'
         })
-    @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
