@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from decimal import Decimal
 
 from app.extensions import api
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -92,7 +92,8 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def get(self, mine_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
+                                                                      is_minespace_user())
         if project_summary is None:
             raise NotFound('Project Description not found')
 
