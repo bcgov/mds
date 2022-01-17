@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -42,6 +42,22 @@ class MinespaceUserListResource(Resource, UserMixin):
             new_mum.save()
         return new_user
 
+    @api.doc(description='Update an existing Minespace Users mine list')
+    @api.marshal_with(MINESPACE_USER_MODEL)
+    @requires_role_mine_admin
+    def put(self, user_id):
+        contact = MinespaceUser.find_by_id(user_id)
+        if not contact:
+            raise NotFound('Contact not found.')
+        data = self.parser.parse_args()
+        current_app.logger.debug('TESTING IT HIT THIS API')
+        mines = data.mine_guids
+        result = MinespaceUser.update_minelist(user_id, mines)
+        if result:
+            contact.save()
+            return contact
+        else:
+            print("Error: Cannot update user ${user_id}'s mines")
 
 class MinespaceUserResource(Resource, UserMixin):
     @api.marshal_with(MINESPACE_USER_MODEL)
