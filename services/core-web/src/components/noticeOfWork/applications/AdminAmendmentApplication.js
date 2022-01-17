@@ -104,7 +104,11 @@ export class AdminAmendmentApplication extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
 
-          <Tabs.TabPane tab={this.props.renderTabTitle("Referral", "REF")} key="referral">
+          <Tabs.TabPane
+            tab={this.props.renderTabTitle("Referral", "REF")}
+            key="referral"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <ReferralTabs
                 mineGuid={this.props.noticeOfWork.mine_guid}
@@ -115,7 +119,11 @@ export class AdminAmendmentApplication extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
 
-          <Tabs.TabPane tab={this.props.renderTabTitle("Consultation", "CON")} key="consultation">
+          <Tabs.TabPane
+            tab={this.props.renderTabTitle("Consultation", "CON")}
+            key="consultation"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <ReferralTabs
                 mineGuid={this.props.noticeOfWork.mine_guid}
@@ -125,7 +133,11 @@ export class AdminAmendmentApplication extends Component {
               />
             </LoadingWrapper>
           </Tabs.TabPane>
-          <Tabs.TabPane tab={this.props.renderTabTitle("Draft", "DFT")} key="draft-permit">
+          <Tabs.TabPane
+            tab={this.props.renderTabTitle("Draft", "DFT")}
+            key="draft-permit"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <DraftPermitTab
                 fixedTop={this.props.fixedTop}
@@ -134,7 +146,11 @@ export class AdminAmendmentApplication extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
 
-          <Tabs.TabPane tab="Process" key="process-permit">
+          <Tabs.TabPane
+            tab="Process"
+            key="process-permit"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <ProcessPermit
                 mineGuid={this.props.noticeOfWork.mine_guid}
@@ -143,7 +159,11 @@ export class AdminAmendmentApplication extends Component {
               />
             </LoadingWrapper>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Administrative" key="administrative">
+          <Tabs.TabPane
+            tab="Administrative"
+            key="administrative"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <AdministrativeTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
