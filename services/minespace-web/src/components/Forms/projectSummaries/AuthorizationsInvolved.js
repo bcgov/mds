@@ -1,14 +1,10 @@
-/* eslint-disable */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Typography, Checkbox } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Field, Fields, FormSection, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import { getFormValues } from "redux-form";
-import { maxLength } from "@common/utils/Validate";
+import { Field, FormSection, change, getFormValues } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import Callout from "@/components/common/Callout";
@@ -17,19 +13,29 @@ import {
   getDropdownProjectSummaryPermitTypes,
 } from "@common/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@common/selectors/projectSummarySelectors";
+import CustomPropTypes from "@/customPropTypes";
 
-const propTypes = {};
+const propTypes = {
+  formattedProjectSummary: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
+  ).isRequired,
+  change: PropTypes.func.isRequired,
+  dropdownProjectSummaryPermitTypes: CustomPropTypes.options.isRequired,
+  transformedProjectSummaryAuthorizationTypes: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.string)
+  ).isRequired,
+};
 
 export const AuthorizationsInvolved = (props) => {
   const [checked, setChecked] = useState(
     props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
   );
-  const handleChange = (e, code, change) => {
+  const handleChange = (e, code) => {
     if (e.target.checked) {
       setChecked((arr) => [code, ...arr]);
     } else {
       setChecked(checked.filter((item) => item !== code));
-      change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
     }
   };
 
@@ -91,7 +97,7 @@ export const AuthorizationsInvolved = (props) => {
                     <Checkbox
                       key={child.code}
                       value={child.code}
-                      onChange={(e) => handleChange(e, child.code, props.change)}
+                      onChange={(e) => handleChange(e, child.code)}
                       checked={checked.includes(child.code)}
                     >
                       {checked.includes(child.code) ? (

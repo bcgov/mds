@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDates renders properly 1`] = `
+<Fragment>
+  <Title
+    level={3}
+  >
+    Project Dates
+  </Title>
+  <Callout
+    message={
+      <React.Fragment>
+        These dates are for guidance and planning purposes only and do not reflect actual delivery dates. The
+         
+        <a
+          alt="Major Mines Permitting Office"
+          href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Major Mines Office
+        </a>
+         
+        will work with you on a more definitive schedule.
+      </React.Fragment>
+    }
+  />
+  <Field
+    component={[Function]}
+    id="expected_draft_irt_submission_date"
+    label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
+    name="expected_draft_irt_submission_date"
+    placeholder="Please select date"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="expected_permit_application_date"
+    label="When do you anticipate submitting a permit application? (optional)"
+    name="expected_permit_application_date"
+    placeholder="Please select date"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="expected_permit_receipt_date"
+    label="When do you hope to receive your permit/amendment(s)? (optional)"
+    name="expected_permit_receipt_date"
+    placeholder="Please select date"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="expected_project_start_date"
+    label="When do you anticipate starting work on this project? (optional)"
+    name="expected_project_start_date"
+    placeholder="Please select date"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+</Fragment>
+`;

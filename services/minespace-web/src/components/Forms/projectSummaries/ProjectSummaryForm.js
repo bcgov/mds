@@ -1,42 +1,38 @@
-// TODO - Determine how to clear ProjectSummaryFileUpload state after successfully saving in edit mode
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { isEmpty } from "lodash";
 import { withRouter } from "react-router-dom";
+import { flattenObject } from "@common/utils/helpers";
 import { compose, bindActionCreators } from "redux";
 import {
-  Field,
   reduxForm,
   change,
   arrayPush,
   formValueSelector,
   getFormValues,
   getFormSyncErrors,
-  // getFormState,
 } from "redux-form";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Row, Col, Popconfirm } from "antd";
-import { maxLength } from "@common/utils/Validate";
-import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
-import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 import BasicInformation from "@/components/Forms/projectSummaries/BasicInformation";
 import DocumentUpload from "@/components/Forms/projectSummaries/DocumentUpload";
 import LinkButton from "@/components/common/LinkButton";
-
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ProjectContacts from "@/components/Forms/projectSummaries/ProjectContacts";
 import ProjectDates from "@/components/Forms/projectSummaries/ProjectDates";
 import AuthorizationsInvolved from "@/components/Forms/projectSummaries/AuthorizationsInvolved";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
+  match: PropTypes.shape({
+    params: {
+      tab: PropTypes.string,
+    },
+  }).isRequired,
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -44,10 +40,16 @@ const propTypes = {
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   change: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.object),
+  formErrors: PropTypes.objectOf(PropTypes.string),
+  handleTabChange: PropTypes.func.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.string),
+  handleSaveData: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   documents: [],
+  formValues: {},
+  formErrors: {},
 };
 
 const tabs = [
@@ -92,6 +94,8 @@ export class ProjectSummaryForm extends Component {
       }[tab]);
     const isFirst = this.state.tabIndex === 0;
     const isLast = tabs.length - 1 === this.state.tabIndex;
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const disabledButton = errors.length > 0;
     return (
       <Form layout="vertical">
         <Row gutter={16}>
@@ -105,10 +109,8 @@ export class ProjectSummaryForm extends Component {
                   {!isFirst && (
                     <Button
                       type="secondary"
-                      disabled={!isEmpty(this.props.formErrors) && this.props.anyTouched}
-                      onClick={() =>
-                        this.props.handleTabChange(tabs[this.state.tabIndex - 1], false)
-                      }
+                      disabled={disabledButton}
+                      onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
                     >
                       <LeftOutlined /> Back
                     </Button>
@@ -131,7 +133,7 @@ export class ProjectSummaryForm extends Component {
                   {!isLast && (
                     <Button
                       type="secondary"
-                      disabled={!isEmpty(this.props.formErrors) && this.props.anyTouched}
+                      disabled={disabledButton}
                       onClick={() =>
                         this.props.handleTabChange(tabs[this.state.tabIndex + 1], false)
                       }
@@ -140,18 +142,50 @@ export class ProjectSummaryForm extends Component {
                     </Button>
                   )}
                   {isLast && (
-                    <Button
-                      type="primary"
-                      onClick={(e) =>
-                        this.props.handleSaveData(e, { ...this.props.formValues, status_code: "O" })
-                      }
-                      loading={this.props.submitting}
-                      disabled={this.props.submitting}
-                    >
-                      {this.props.isEditMode && this.props.initialValues.status_code !== "D"
-                        ? "Save"
-                        : "Submit"}
-                    </Button>
+                    <>
+                      {this.props.isEditMode && this.props.initialValues.status_code !== "D" ? (
+                        <Button
+                          type="primary"
+                          onClick={(e) =>
+                            this.props.handleSaveData(e, {
+                              ...this.props.formValues,
+                              status_code: "O",
+                            })
+                          }
+                          loading={this.props.submitting}
+                          disabled={this.props.submitting}
+                        >
+                          {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                            ? "Update"
+                            : "Submit"}
+                        </Button>
+                      ) : (
+                        <AuthorizationWrapper>
+                          <Popconfirm
+                            placement="topRight"
+                            title="Are you sure you want to submit your project description to the Province of British Columbia?"
+                            onConfirm={(e) =>
+                              this.props.handleSaveData(e, {
+                                ...this.props.formValues,
+                                status_code: "O",
+                              })
+                            }
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <Button
+                              type="primary"
+                              loading={this.props.submitting}
+                              disabled={this.props.submitting}
+                            >
+                              {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                                ? "Update"
+                                : "Submit"}
+                            </Button>
+                          </Popconfirm>
+                        </AuthorizationWrapper>
+                      )}
+                    </>
                   )}
                 </div>
               </Col>

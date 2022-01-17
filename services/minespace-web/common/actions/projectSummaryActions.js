@@ -9,8 +9,3 @@ export const storeProjectSummary = (payload) => ({
   type: actionTypes.STORE_PROJECT_SUMMARY,
   payload,
 });
-
-// export const storeProjectSummaryAuthorizations = (payload) => ({
-//   type: actionTypes.STORE_AUTHORIZATIONS,
-//   payload,
-// });

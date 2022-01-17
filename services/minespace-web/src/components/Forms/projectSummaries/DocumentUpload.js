@@ -1,20 +1,24 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change, arrayPush, formValueSelector } from "redux-form";
-import { maxLength } from "@common/utils/Validate";
+import { Field, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
-import { Button, Typography, Row, Col } from "antd";
-import { withRouter } from "react-router-dom";
-import { compose, bindActionCreators } from "redux";
-import { renderConfig } from "@/components/common/config";
+import { Typography, Row, Col } from "antd";
+import { bindActionCreators } from "redux";
+import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 
-const propTypes = {};
+const propTypes = {
+  initialValues: CustomPropTypes.projectSummary.isRequired,
+  change: PropTypes.func.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  isEditMode: PropTypes.bool.isRequired,
+  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineGuid: PropTypes.string.isRequired,
+};
 
 export class DocumentUpload extends Component {
   state = {
@@ -87,7 +91,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       change,
-      arrayPush,
     },
     dispatch
   );

@@ -1,6 +1,4 @@
-/* eslint-disable */
 import React from "react";
-import PropTypes from "prop-types";
 import { Typography } from "antd";
 import { Field } from "redux-form";
 import { maxLength, required } from "@common/utils/Validate";
@@ -8,6 +6,7 @@ import { renderConfig } from "@/components/common/config";
 
 const propTypes = {};
 
+// eslint-disable-next-line no-unused-vars
 export const BasicInformation = (props) => (
   <>
     <Typography.Title level={3}>Basic Information</Typography.Title>
@@ -31,7 +30,7 @@ export const BasicInformation = (props) => (
         </>
       }
       component={renderConfig.FIELD}
-      validate={[maxLength(300)]}
+      validate={[maxLength(20)]}
     />
     <Field
       id="project_summary_description"
