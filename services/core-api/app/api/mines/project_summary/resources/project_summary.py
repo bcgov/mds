@@ -131,7 +131,8 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
+                                                                      is_minespace_user())
         if project_summary is None:
             raise NotFound('Project Description not found')
 
