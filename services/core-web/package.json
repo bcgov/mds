@@ -211,7 +211,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "lint-prepush"
+      "pre-push": "lint-prepush && cd ../minespace-web && lint-prepush"
     }
   },
   "lint-staged": {
@@ -219,7 +219,15 @@
       "npm run format:write",
       "git add"
     ],
+    "../minespace-web/**/*.{js,css,json,md}": [
+      "npm run format:write",
+      "git add"
+    ],
     "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "../minespace-web/**/*.js": [
       "eslint --fix",
       "git add"
     ]

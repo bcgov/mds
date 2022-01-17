@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mds-patroni
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: mds-patroni
+    app.kubernetes.io/managed-by: template
+    app.kubernetes.io/name: patroni
+    cluster-name: mds-patroni
+    phase: deploy
+  name: mds-patroni-master
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app.kubernetes.io/name: patroni
+    cluster-name: mds-patroni
+    role: master
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

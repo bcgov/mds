@@ -42,7 +42,7 @@ const propTypes = {
   deletePermitCondition: PropTypes.func.isRequired,
   updatePermitCondition: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
-  hasSourceConditions: PropTypes.bool.isRequired,
+  isSourcePermitGeneratedInCore: PropTypes.bool.isRequired,
   isNoWApplication: PropTypes.bool.isRequired,
 };
 
@@ -159,7 +159,7 @@ export class Conditions extends Component {
       : null;
     return (
       <>
-        {!this.props.hasSourceConditions && !this.props.isNoWApplication && (
+        {!this.props.isSourcePermitGeneratedInCore && !this.props.isNoWApplication && (
           <>
             <Alert
               description="The source authorization was not written in Core. The conditions below are defaults, not specific to this application or site."
@@ -212,6 +212,7 @@ export class Conditions extends Component {
                           (value) => value === "CON"
                         ).length
                       } conditions)`}
+                      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                       <span onClick={(event) => event.stopPropagation()}>
                         <Button
                           ghost
