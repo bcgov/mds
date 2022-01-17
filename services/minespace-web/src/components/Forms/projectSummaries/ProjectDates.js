@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, formValueSelector } from "redux-form";
@@ -9,7 +8,17 @@ import { dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 
-const propTypes = {};
+const propTypes = {
+  expected_permit_application_date: PropTypes.string,
+  expected_draft_irt_submission_date: PropTypes.string,
+  expected_permit_receipt_date: PropTypes.string,
+};
+
+const defaultProps = {
+  expected_permit_application_date: undefined,
+  expected_draft_irt_submission_date: undefined,
+  expected_permit_receipt_date: undefined,
+};
 
 export const ProjectDates = (props) => (
   <>
@@ -21,6 +30,7 @@ export const ProjectDates = (props) => (
           dates. The{" "}
           <a
             target="_blank"
+            rel="noreferrer"
             alt="Major Mines Permitting Office"
             href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
           >
@@ -66,6 +76,7 @@ export const ProjectDates = (props) => (
 );
 
 ProjectDates.propTypes = propTypes;
+ProjectDates.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({

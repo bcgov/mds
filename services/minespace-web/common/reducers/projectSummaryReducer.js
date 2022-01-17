@@ -5,7 +5,6 @@ const initialState = {
   projectSummaries: [],
   projectSummary: {},
   projectSummaryPageData: {},
-  authorizations: {},
 };
 
 export const projectSummaryReducer = (state = initialState, action) => {
@@ -21,11 +20,6 @@ export const projectSummaryReducer = (state = initialState, action) => {
         ...state,
         projectSummary: action.payload,
       };
-    // case actionTypes.STORE_AUTHORIZATIONS:
-    //   return {
-    //     ...state,
-    //     authorizations: action.payload,
-    //   };
     default:
       return state;
   }

@@ -17,11 +17,10 @@ const propTypes = {
   handleEditTailings: PropTypes.func.isRequired,
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired
+  itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const TailingsTable = (props) => {
-
   const columns = [
     {
       title: "Name",
@@ -58,7 +57,9 @@ export const TailingsTable = (props) => {
     {
       title: "Engineer of Record",
       dataIndex: "engineer_of_record",
-      render: (text) => <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>,  
+      render: (text) => (
+        <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>
+      ),
     },
     {
       title: "Latitude",
@@ -77,14 +78,19 @@ export const TailingsTable = (props) => {
         return (
           <div title="" align="right">
             <AuthorizationWrapper>
-              <Button type="link" onClick={(event) => props.openEditTailingsModal(event, props.handleEditTailings, record)}>
+              <Button
+                type="link"
+                onClick={(event) =>
+                  props.openEditTailingsModal(event, props.handleEditTailings, record)
+                }
+              >
                 <img src={EDIT_PENCIL} alt="Edit" />
               </Button>
             </AuthorizationWrapper>
           </div>
         );
       },
-    }
+    },
   ];
 
   return (

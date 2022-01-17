@@ -1,26 +1,29 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Field, FieldArray, arrayPush, formValueSelector } from "redux-form";
-import { PlusOutlined } from "@ant-design/icons";
+
 import { maxLength, phoneNumber, required, email } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/LinkButton";
 import * as FORM from "@/constants/forms";
 
-const propTypes = {};
+const propTypes = {
+  arrayPush: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+};
 
 const contacts = ({ fields }) => {
   return (
     <>
       {fields.map((field, index) => {
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <div key={index}>
             {index === 0 ? (
               <>

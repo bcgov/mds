@@ -86,7 +86,7 @@ class ProjectSummaryListResource(Resource, UserMixin):
         if mine is None:
             raise NotFound('Mine not found')
 
-        project_summaries = ProjectSummary.find_by_mine_guid(mine_guid)
+        project_summaries = ProjectSummary.find_by_mine_guid(mine_guid, is_minespace_user())
         return project_summaries
 
     @api.doc(

@@ -1,19 +1,11 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
+import { flattenObject, formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { Link, Prompt } from "react-router-dom";
-import {
-  getFormValues,
-  submit,
-  updateSyncErrors,
-  formValueSelector,
-  getFormSyncErrors,
-  reset,
-} from "redux-form";
+import { submit, formValueSelector, getFormSyncErrors, reset, touch } from "redux-form";
 import { Row, Col, Typography, Tabs, Divider } from "antd";
-import { CaretLeftOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -30,7 +22,6 @@ import {
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
@@ -38,11 +29,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 
 const propTypes = {
-  formValues: PropTypes.shape({
-    project_summary_date: PropTypes.string,
-    project_summary_description: PropTypes.string,
-    documents: PropTypes.arrayOf(PropTypes.object),
-  }),
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   projectSummary: CustomPropTypes.projectSummary,
   fetchProjectSummaryById: PropTypes.func.isRequired,
   createProjectSummary: PropTypes.func.isRequired,
@@ -54,12 +41,25 @@ const propTypes = {
       mineGuid: PropTypes.string,
     },
   }).isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
+  submit: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  formValueSelector: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  getFormSyncErrors: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  touch: PropTypes.func.isRequired,
+  formErrors: PropTypes.objectOf(PropTypes.string),
+  projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
+  anyTouched: PropTypes.bool,
+  formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 const defaultProps = {
   projectSummary: {},
-  formValues: {},
+  formErrors: {},
+  anyTouched: false,
 };
 
 const tabs = [
@@ -69,12 +69,12 @@ const tabs = [
   "authorizations-involved",
   "document-upload",
 ];
+
 export class ProjectSummaryPage extends Component {
   state = {
     isLoaded: false,
     isEditMode: false,
     activeTab: tabs[0],
-    urlChangedFromNav: false,
   };
 
   componentDidMount() {
@@ -93,31 +93,24 @@ export class ProjectSummaryPage extends Component {
     });
   };
 
-  handleSaveDraft = (e, values) => {
-    console.log("this is the one I should  be calling...");
+  // eslint-disable-next-line consistent-return
+  handleSaveData = (e, values) => {
     e.preventDefault();
-    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    const payload = { ...values, status_code: "D" };
-    if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(payload);
+    this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      if (!this.state.isEditMode) {
+        return this.handleCreateProjectSummary(values);
+      }
+      return this.handleUpdateProjectSummary(values);
     }
-    return this.handleUpdateProjectSummary(payload);
-  };
-
-  handleSubmit = (values) => {
-    console.log("I bet this is getting called when it shouldn't be");
-    const payload = { ...values, status_code: "O" };
-    // this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    this.props.updateSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    if (!this.state.isEditMode) {
-      return this.handleCreateProjectSummary(payload);
-    }
-    return this.handleUpdateProjectSummary(payload);
   };
 
   handleTransformPayload = (values) => {
     let payloadValues = {};
     const updatedAuthorizations = [];
+    // eslint-disable-next-line array-callback-return
     Object.keys(values).map((key) => {
       if (values[key] && this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
         const project_summary_guid = values?.project_summary_guid;
@@ -131,9 +124,12 @@ export class ProjectSummaryPage extends Component {
             project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
           }),
           project_summary_authorization_type: key,
+          project_summary_permit_type:
+            key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
           existing_permits_authorizations:
             values[key]?.existing_permits_authorizations?.split(",") || [],
         });
+        // eslint-disable-next-line no-param-reassign
         delete values[key];
       }
     });
@@ -141,8 +137,21 @@ export class ProjectSummaryPage extends Component {
       ...values,
       authorizations: updatedAuthorizations,
     };
+    // eslint-disable-next-line no-param-reassign
     delete payloadValues.authorizationOptions;
     return payloadValues;
+  };
+
+  handleTabChange = (activeTab) => {
+    const url = this.state.isEditMode
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(
+          this.props.match.params?.mineGuid,
+          this.props.match.params?.projectSummaryGuid,
+          activeTab
+        )
+      : ADD_PROJECT_SUMMARY.dynamicRoute(this.props.match.params?.mineGuid, activeTab);
+    this.setState({ activeTab });
+    this.props.history.push(url);
   };
 
   handleCreateProjectSummary(values) {
@@ -154,21 +163,11 @@ export class ProjectSummaryPage extends Component {
         this.handleTransformPayload(values)
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
-        this.props.history.push(EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid));
+        this.props.history.replace(
+          EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid)
+        );
       });
   }
-
-  handleTabChange = (activeTab, urlChangedFromNav) => {
-    const url = this.state.isEditMode
-      ? EDIT_PROJECT_SUMMARY.dynamicRoute(
-          this.props.match.params?.mineGuid,
-          this.props.match.params?.projectSummaryGuid,
-          activeTab
-        )
-      : ADD_PROJECT_SUMMARY.dynamicRoute(this.props.match.params?.mineGuid, activeTab);
-    this.setState({ activeTab, urlChangedFromNav });
-    this.props.history.push(url);
-  };
 
   handleUpdateProjectSummary(values) {
     const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
@@ -186,6 +185,8 @@ export class ProjectSummaryPage extends Component {
   }
 
   render() {
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const disabledTabs = errors.length > 0;
     const { mineGuid } = this.props.match?.params;
     const mineName = this.state.isEditMode
       ? this.props.formattedProjectSummary?.mine_name || ""
@@ -203,7 +204,8 @@ export class ProjectSummaryPage extends Component {
                 this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
               }
               return this.props.location.pathname !== location.pathname &&
-                !location.pathname.includes("project-description")
+                !location.pathname.includes("project-description") &&
+                this.props.anyTouched
                 ? "You have unsaved changes. Are you sure you want to leave without saving?"
                 : true;
             }}
@@ -226,26 +228,28 @@ export class ProjectSummaryPage extends Component {
             tabPosition="left"
             activeKey={this.state.activeTab}
             defaultActiveKey={tabs[0]}
-            onChange={(tab) => this.handleTabChange(tab, true)}
+            onChange={(tab) => this.handleTabChange(tab)}
             className="vertical-tabs"
           >
-            {tabs.map((tab) => (
-              <Tabs.TabPane
-                tab={formatUrlToUpperCaseString(tab)}
-                key={tab}
-                className="vertical-tabs--tabpane"
-              >
-                <ProjectSummaryForm
-                  initialValues={this.state.isEditMode ? this.props.formattedProjectSummary : {}}
-                  mineGuid={mineGuid}
-                  isEditMode={this.state.isEditMode}
-                  onSubmit={this.handleSubmit}
-                  handleSaveDraft={this.handleSaveDraft}
-                  projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
-                  handleTabChange={this.handleTabChange}
-                />
-              </Tabs.TabPane>
-            ))}
+            {tabs.map((tab) => {
+              return (
+                <Tabs.TabPane
+                  tab={formatUrlToUpperCaseString(tab)}
+                  disabled={disabledTabs}
+                  key={tab}
+                  className="vertical-tabs--tabpane"
+                >
+                  <ProjectSummaryForm
+                    initialValues={this.state.isEditMode ? this.props.formattedProjectSummary : {}}
+                    mineGuid={mineGuid}
+                    isEditMode={this.state.isEditMode}
+                    handleSaveData={this.handleSaveData}
+                    projectSummaryDocumentTypesHash={this.props.projectSummaryDocumentTypesHash}
+                    handleTabChange={this.handleTabChange}
+                  />
+                </Tabs.TabPane>
+              );
+            })}
           </Tabs>
         </>
       )) || <Loading />
@@ -255,14 +259,15 @@ export class ProjectSummaryPage extends Component {
 
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
+  anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
+  fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
   mines: getMines(state),
-  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
   projectSummary: getProjectSummary(state),
   formattedProjectSummary: getFormattedProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  anyTouched: selector(state, "anyTouched"),
+  contacts: selector(state, "contacts"),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -273,8 +278,8 @@ const mapDispatchToProps = (dispatch) =>
       updateProjectSummary,
       fetchMineRecordById,
       submit,
-      updateSyncErrors,
       reset,
+      touch,
     },
     dispatch
   );
