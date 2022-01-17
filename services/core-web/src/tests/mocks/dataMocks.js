@@ -5141,6 +5141,105 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       description: "Detonator Magazine",
     },
   ],
+  projectSummaryAuthorizationTypes: [
+    {
+      project_summary_authorization_type: "MINES_ACT",
+      description: "Mines Act",
+      project_summary_authorization_type_group_id: null,
+    },
+    {
+      project_summary_authorization_type: "ENVIRONMENTAL_MANAGMENT_ACT",
+      description: "Environmental Management Act",
+      project_summary_authorization_type_group_id: null,
+    },
+    {
+      project_summary_authorization_type: "WATER_SUSTAINABILITY_ACT",
+      description: "Water Sustainability Act",
+      project_summary_authorization_type_group_id: null,
+    },
+    {
+      project_summary_authorization_type: "FORESTRY_ACT",
+      description: "Forestry Act",
+      project_summary_authorization_type_group_id: null,
+    },
+    {
+      project_summary_authorization_type: "OTHER_LEGISLATION",
+      description: "Other legislation",
+      project_summary_authorization_type_group_id: null,
+    },
+    {
+      project_summary_authorization_type: "MINES_ACT_PERMIT",
+      description: "Mines Act permit",
+      project_summary_authorization_type_group_id: "MINES_ACT",
+    },
+    {
+      project_summary_authorization_type: "AIR_EMISSIONS_DISCHARGE_PERMIT",
+      description: "Air emissions discharge permit",
+      project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
+    },
+    {
+      project_summary_authorization_type: "EFFLUENT_DISCHARGE_PERMIT",
+      description: "Effluent discharge permit",
+      project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
+    },
+    {
+      project_summary_authorization_type: "SOLID_WASTES_PERMIT",
+      description: "Solid wastes permit",
+      project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
+    },
+    {
+      project_summary_authorization_type: "MUNICIPAL_WASTEWATER_REGULATION",
+      description: "Municipal wastewater regulation",
+      project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
+    },
+    {
+      project_summary_authorization_type: "CHANGE_APPROVAL",
+      description: "Change approval",
+      project_summary_authorization_type_group_id: "WATER_SUSTAINABILITY_ACT",
+    },
+    {
+      project_summary_authorization_type: "USE_APPROVAL",
+      description: "Use approval",
+      project_summary_authorization_type_group_id: "WATER_SUSTAINABILITY_ACT",
+    },
+    {
+      project_summary_authorization_type: "WATER_LICENCE",
+      description: "Water licence",
+      project_summary_authorization_type_group_id: "WATER_SUSTAINABILITY_ACT",
+    },
+    {
+      project_summary_authorization_type: "OCCUPANT_CUT_LICENCE",
+      description: "Occupant licence to cut",
+      project_summary_authorization_type_group_id: "FORESTRY_ACT",
+    },
+    {
+      project_summary_authorization_type: "OTHER",
+      description: "Other legislation",
+      project_summary_authorization_type_group_id: "OTHER_LEGISLATION",
+    },
+  ],
+  projectSummaryPermitTypes: [
+    {
+      project_summary_permit_type: "NEW",
+      description: "New",
+    },
+    {
+      project_summary_permit_type: "AMENDMENT",
+      description: "Amendement to an existing permit",
+    },
+    {
+      project_summary_permit_type: "NOTIFICATION",
+      description: "Notification",
+    },
+    {
+      project_summary_permit_type: "CLOSURE",
+      description: "Closure of an existing permit",
+    },
+    {
+      project_summary_permit_type: "OTHER",
+      description: "Other",
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
