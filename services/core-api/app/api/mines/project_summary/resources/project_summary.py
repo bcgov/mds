@@ -107,7 +107,8 @@ class ProjectSummaryResource(Resource, UserMixin):
         })
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, mine_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
+                                                                      is_minespace_user())
         if project_summary is None:
             raise NotFound('Project Description not found')
 
