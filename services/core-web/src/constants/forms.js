@@ -75,3 +75,6 @@ export const GENERATE_PERMIT_NUMBER = "GENERATE_PERMIT_NUMBER";
 
 // EMLI Contacts
 export const EMLI_CONTACT_FORM = "EMLI_CONTACT_FORM";
+
+// Project Descriptions
+export const PROJECT_SUMMAY_FORM = "PROJECT_SUMMAY_FORM";

@@ -31,7 +31,8 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
-import MineProjectSummaries from "@/components/mine/ProjectSummaries/MineProjectSummary";
+import MineProjectSummary from "@/components/mine/ProjectSummaries/MineProjectSummary";
+import ProjectSummary from "@/components/mine/ProjectSummaries/ProjectSummary";
 import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
@@ -151,11 +152,18 @@ export const MINE_VARIANCES = {
   component: MineVariance,
 };
 
-// Project Summaries
+// Project Descriptions(Project Summaries)
 export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
-  component: MineProjectSummaries,
+  component: MineProjectSummary,
+};
+
+export const PRE_APPLICATIONS = {
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/pre-applications/:projectSummaryGuid",
+  dynamicRoute: (mineGuid, projectSummaryGuid) =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/pre-applications/${projectSummaryGuid}`,
+  component: ProjectSummary,
 };
 
 export const MINE_NOW_APPLICATIONS = {
