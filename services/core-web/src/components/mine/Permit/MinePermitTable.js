@@ -92,7 +92,8 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
-  const isLinkedToNowApplication = !isEmpty(record.now_application_guid);
+  const isLinkedToNowApplication =
+    !isEmpty(record.now_application_guid) && record.is_generated_in_core;
 
   // eslint-disable-next-line consistent-return
   return (
@@ -101,7 +102,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         placement="topLeft"
         title={
           isLinkedToNowApplication
-            ? "You cannot delete permit amendment with associated NoW application imported to Core."
+            ? "You cannot delete permit amendment generated in Core with associated NoW application."
             : "Are you sure you want to delete this amendment and all related documents?"
         }
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
@@ -306,7 +307,7 @@ const columns = [
 
       const isLinkedToNowApplication =
         record.permit.permit_amendments.filter(
-          (amendment) => !isEmpty(amendment.now_application_guid)
+          (amendment) => !isEmpty(amendment.now_application_guid) && amendment.is_generated_in_core
         ).length > 0;
 
       const isAnyBondsAssociatedTo = record.permit.bonds && record.permit.bonds.length > 0;
@@ -317,7 +318,9 @@ const columns = [
 
       if (!isDeletionAllowed) {
         if (isLinkedToNowApplication) {
-          issues.push("Permit has amendments associated with a NoW application imported to Core.");
+          issues.push(
+            "Permit has amendments generated in Core which are associated with a NoW application."
+          );
         }
 
         if (isAnyBondsAssociatedTo) {
