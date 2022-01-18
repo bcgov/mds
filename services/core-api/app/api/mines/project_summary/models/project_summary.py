@@ -273,7 +273,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     raise BadRequest(f'Invalid project description permit type: {permit_type}')
 
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')
-            print(f'Authorization: {updated_authorization_guid}')
             if updated_authorization_guid:
                 updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
                     updated_authorization_guid)
