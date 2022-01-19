@@ -119,10 +119,13 @@ export class ProjectSummaryForm extends Component {
               </Col>
               <Col span={6}>
                 <div>
-                  {(this.props.initialValues.status_code === "D" || !this.props.isEditMode) && (
+                  {(this.props.initialValues.status_code === "DFT" || !this.props.isEditMode) && (
                     <LinkButton
                       onClick={(e) =>
-                        this.props.handleSaveData(e, { ...this.props.formValues, status_code: "D" })
+                        this.props.handleSaveData(e, {
+                          ...this.props.formValues,
+                          status_code: "DFT",
+                        })
                       }
                       title="Save Draft"
                       disabled={this.props.submitting}
@@ -143,19 +146,19 @@ export class ProjectSummaryForm extends Component {
                   )}
                   {isLast && (
                     <>
-                      {this.props.isEditMode && this.props.initialValues.status_code !== "D" ? (
+                      {this.props.isEditMode && this.props.initialValues.status_code !== "DFT" ? (
                         <Button
                           type="primary"
                           onClick={(e) =>
                             this.props.handleSaveData(e, {
                               ...this.props.formValues,
-                              status_code: "O",
+                              status_code: "OPN",
                             })
                           }
                           loading={this.props.submitting}
                           disabled={this.props.submitting}
                         >
-                          {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                          {this.props.isEditMode && this.props.initialValues.status_code !== "DFT"
                             ? "Update"
                             : "Submit"}
                         </Button>
@@ -167,7 +170,7 @@ export class ProjectSummaryForm extends Component {
                             onConfirm={(e) =>
                               this.props.handleSaveData(e, {
                                 ...this.props.formValues,
-                                status_code: "O",
+                                status_code: "OPN",
                               })
                             }
                             okText="Yes"
@@ -178,7 +181,8 @@ export class ProjectSummaryForm extends Component {
                               loading={this.props.submitting}
                               disabled={this.props.submitting}
                             >
-                              {this.props.isEditMode && this.props.initialValues.status_code !== "D"
+                              {this.props.isEditMode &&
+                              this.props.initialValues.status_code !== "DFT"
                                 ? "Update"
                                 : "Submit"}
                             </Button>
