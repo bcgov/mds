@@ -137,7 +137,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         if project_summary is None:
             raise NotFound('Project Description not found')
 
-        if project_summary.status_code == 'D':
+        if project_summary.status_code == 'DFT':
             project_summary.delete()
             return None, 204
 
