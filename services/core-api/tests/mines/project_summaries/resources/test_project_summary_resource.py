@@ -25,7 +25,7 @@ def test_put_project_summary(test_client, db_session, auth_headers):
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
     data['project_summary_title'] = 'Test Title'
-    data['status_code'] = 'O'
+    data['status_code'] = 'OPN'
 
     put_resp = test_client.put(
         f'/mines/{project_summary.mine_guid}/project-summaries/{project_summary.project_summary_guid}',
@@ -39,13 +39,13 @@ def test_put_project_summary(test_client, db_session, auth_headers):
 
 
 def test_delete_project_summary_bad_status_code(test_client, db_session, auth_headers):
-    '''Staus code needs to be D in order to delete a project description'''
+    '''Staus code needs to be DFT in order to delete a project description'''
 
     project_summary = ProjectSummaryFactory()
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
     data['project_summary_title'] = 'Test Title'
-    data['status_code'] = 'O'
+    data['status_code'] = 'OPN'
 
     put_resp = test_client.delete(
         f'/mines/{project_summary.mine_guid}/project-summaries/{project_summary.project_summary_guid}',

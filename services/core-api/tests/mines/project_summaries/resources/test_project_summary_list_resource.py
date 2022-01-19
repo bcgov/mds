@@ -50,7 +50,7 @@ def test_post_project_summary_with_contacts(test_client, db_session, auth_header
         'project_summary_title':
         'Sample title.',
         'status_code':
-        'D',
+        'DFT',
         'contacts': [{
             'name': 'Test Man',
             'email': 'email@test.com',
@@ -84,7 +84,7 @@ def test_post_project_summary_with_authorizations(test_client, db_session, auth_
         'project_summary_title':
         'Sample title.',
         'status_code':
-        'D',
+        'DFT',
         'authorizations': [{
             'project_summary_permit_type': ['NEW'],
             'project_summary_authorization_type': 'MINES_ACT_PERMIT',
