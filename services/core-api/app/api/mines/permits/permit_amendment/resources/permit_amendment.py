@@ -168,7 +168,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         permit_amendment_status_code = data.get('permit_amendment_status_code')
 
         now_application_guid = data.get('now_application_guid')
-        is_generated_in_core =  True if permit_amendment_status_code == "DFT" else False
+        populate_with_conditions = data.get('populate_with_conditions', True)
+        is_generated_in_core = True if permit_amendment_status_code == "DFT" and populate_with_conditions else False
 
         new_pa = PermitAmendment.create(
             permit,
@@ -185,8 +186,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
             now_application_guid=data.get('now_application_guid'),
-            is_generated_in_core=is_generated_in_core
-        )
+            is_generated_in_core=is_generated_in_core)
 
         uploadedFiles = data.get('uploadedFiles', [])
         for newFile in uploadedFiles:
@@ -210,7 +210,6 @@ class PermitAmendmentListResource(Resource, UserMixin):
                                             new_pa.permit_amendment_id, condition.condition,
                                             condition.display_order, condition.sub_conditions)
 
-            populate_with_conditions = data.get('populate_with_conditions', True)
             if application_identity.now_application:
                 if populate_with_conditions:
                     permit_amendment_id = None

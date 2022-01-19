@@ -434,6 +434,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
       key="referral"
     >
       <LoadingWrapper
@@ -841,6 +842,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
       key="consultation"
     >
       <LoadingWrapper
@@ -1248,6 +1250,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
       key="draft-permit"
     >
       <LoadingWrapper
@@ -1260,6 +1263,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
       key="process-permit"
       tab="Process"
     >
@@ -1667,6 +1671,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
       key="administrative"
       tab="Administrative"
     >

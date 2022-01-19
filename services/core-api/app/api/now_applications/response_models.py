@@ -597,7 +597,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'source_permit_amendment_guid':
         fields.String,
-        'has_source_conditions':
+        'is_source_permit_generated_in_core':
         fields.Boolean,
         'proponent_submitted_permit_number':
         fields.String,
