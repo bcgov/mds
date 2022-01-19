@@ -1,6 +1,6 @@
 import json, uuid
 
-from tests.factories import MinespaceUserFactory
+from tests.factories import MineFactory, MinespaceUserFactory
 
 
 def test_get_minespace_users_all(test_client, db_session, auth_headers):
@@ -76,31 +76,70 @@ def test_delete_minespace_not_found(test_client, db_session, auth_headers):
     assert del_resp.status_code == 404, del_resp.response
 
 
-# def test_update_minespace_user_mines(test_client, db_session, auth_headers):
-#     """
-#     Check that after creating a user, the minespace user is created with the correct mine guids (should be none)
-#     then, update the mines and check that the minespace user is updated with the correct mine guids
-#     """
+def test_update_minespace_user_mines_success(test_client, db_session, auth_headers):
+    
+    user = MinespaceUserFactory()
+    mine = MineFactory()
+    email = user.email_or_username
+    mine_guids = [str(mine.mine_guid)]
 
-#     user = MinespaceUserFactory()
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
 
-#     # Check that the minespace user has no mines
-#     get_resp = test_client.get(
-#         f'/users/minespace?email={user.email_or_username}',
-#         headers=auth_headers['full_auth_header'])
-#     get_data = json.loads(get_resp.data.decode())
-#     assert get_resp.status_code == 200, get_resp.response
-#     assert get_data['records'][0]['email_or_username'] == user.email_or_username
-#     print(get_data['records'])
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200, put_resp.response
+    decoded_resp = json.loads(put_resp.data)
+    
+    assert decoded_resp['mines'][0] == str(mine.mine_guid)
 
 
-#     data = {'email_or_username': "new_email@server.com", "mine_guids": [str(uuid.uuid4())]} 
+def test_update_minespace_user_empty_mine_list(test_client, db_session, auth_headers):
+    user = MinespaceUserFactory()
+    
+    email = user.email_or_username
+    mine_guids = []
 
-#     update_response = test_client.put(
-#         f'/users/minespace/{user.user_id}', json=data, headers=auth_headers['full_auth_header'])
-#     assert update_response.status_code == 200, update_response.response
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
 
-# def test_update_minespace_user_delete_mine(test_client, db_session, auth_headers):
-#     user = MinespaceUserFactory()
-#     data = {'email_or_username': ""}
-#     pass
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400, put_resp.response
+
+
+def test_update_minespace_user_mine_does_not_exist(test_client, db_session, auth_headers):
+    user = MinespaceUserFactory()
+    email = user.email_or_username
+    mine_guids = [str(uuid.uuid4())]
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 404, put_resp.response
+
+def test_update_minespace_user_mine_user_does_not_exist(test_client, db_session, auth_headers):
+    
+    email = "test@email.com"
+    mine_guids = [str(uuid.uuid4())]
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/1', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 404, put_resp.response

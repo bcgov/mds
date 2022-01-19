@@ -41,6 +41,9 @@ testbe:
 	@echo "+\n++ Running tests in backend container ...\n+"
 	@docker-compose exec backend pytest
 
+testbe_folder:
+	@echo "+\n++ Running $f tests in backend container ...\n+"
+	@docker-compose exec backend pytest -s --disable-warnings tests/$f
 testfe:
 	@echo "+\n++ Running tests in frontend container ...\n+"
 	@docker-compose exec frontend npm run test
