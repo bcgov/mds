@@ -25,13 +25,3 @@ def test_minespace_user_model_find_all(db_session):
     all_mu = MinespaceUser.get_all()
     assert len(all_mu) == 2
     assert any(mu.email_or_username == user1.email_or_username for mu in all_mu)
-
-# def test_minespace_user_model_add_mine(db_session):
-#     user = MinespaceUserFactory()
-#     mine = MineFactory()
-#     mine_guid = mine.mine_guid
-
-#     user.add_mine(mine_guid)
-    
-#     assert mine_guid in user.mines
-    

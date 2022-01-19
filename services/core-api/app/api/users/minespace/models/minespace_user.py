@@ -53,10 +53,3 @@ class MinespaceUser(SoftDeleteMixin, Base):
             raise AssertionError('Identifier is not provided.')
         return email_or_username
     
-    @classmethod
-    def update_minelist(cls, user_id, mine_guids_list, add_to_session=True):      
-        minespace_user = cls.find_by_guid(user_id)
-        cls.deep_update_from_dict({'mines': [mine_guids_list]})
-        if add_to_session:
-            minespace_user.save(commit=False)
-        return True

@@ -11,6 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.users.response_models import MINESPACE_USER_MODEL
+from app.api.mines.mine.models.mine import Mine
 
 
 class MinespaceUserListResource(Resource, UserMixin):
@@ -42,24 +43,12 @@ class MinespaceUserListResource(Resource, UserMixin):
             new_mum.save()
         return new_user
 
-    @api.doc(description='Update an existing Minespace Users mine list')
-    @api.marshal_with(MINESPACE_USER_MODEL)
-    @requires_role_mine_admin
-    def put(self, user_id):
-        contact = MinespaceUser.find_by_id(user_id)
-        if not contact:
-            raise NotFound('Contact not found.')
-        data = self.parser.parse_args()
-        current_app.logger.debug('TESTING IT HIT THIS API')
-        mines = data.mine_guids
-        result = MinespaceUser.update_minelist(user_id, mines)
-        if result:
-            contact.save()
-            return contact
-        else:
-            print("Error: Cannot update user ${user_id}'s mines")
 
 class MinespaceUserResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('email_or_username', type=str, location='json', required=True)
+    parser.add_argument('mine_guids', type=list, location='json', required=True)
+    
     @api.marshal_with(MINESPACE_USER_MODEL)
     @requires_role_mine_admin
     def get(self, user_id):
@@ -79,3 +68,32 @@ class MinespaceUserResource(Resource, UserMixin):
         db.session.delete(user)
         db.session.commit()
         return ('', 204)
+
+    @api.doc(description='Update an existing Minespace Users mine list')
+    @api.marshal_with(MINESPACE_USER_MODEL)
+    @requires_role_mine_admin
+    def put(self, user_id):
+        contact = MinespaceUser.find_by_id(user_id)
+        if not contact:
+            raise NotFound('Contact not found.')
+        data = self.parser.parse_args()
+        if not data.get('mine_guids'):
+            raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
+
+        current_app.logger.debug('Mine list found, checking for new mines')
+        existing_mines = contact.mines
+       
+        # Cycle through list of mines. Mines have to exist before being added to the user.
+        for guid in data.get('mine_guids'):
+            mine = Mine.find_by_mine_guid(guid)
+            if mine:
+                current_app.logger.debug('Found mine with guid: {}'.format(guid))
+                MinespaceUserMine.create(user_id, mine.mine_guid)     
+            elif mine in existing_mines:
+                continue # Mine already exists, do nothing
+            else:
+                raise NotFound('Mine with guid {} not found.'.format(guid))
+
+        contact.save()
+        return contact
+        
