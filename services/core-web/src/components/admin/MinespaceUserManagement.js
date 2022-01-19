@@ -66,6 +66,7 @@ export class MinespaceUserManagement extends Component {
   };
 
   handleOpenModal = (e, record) => {
+    console.log(record);
     this.props.openModal({
       props: {
         title: "Update User",

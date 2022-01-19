@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
+import UpdateMinespaceUser from "@/components/admin/UpdateMinespaceUser";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -13,7 +13,7 @@ const defaultProps = {
 
 export const UpdateMinespaceUserModal = (props) => (
   <div>
-    <NewMinespaceUser {...props} />
+    <UpdateMinespaceUser {...props} />
   </div>
 );
 

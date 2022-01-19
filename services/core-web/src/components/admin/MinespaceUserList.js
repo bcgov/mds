@@ -58,7 +58,7 @@ const columns = [
         </Button>
         <Popconfirm
           placement="topLeft"
-          title={`Are you sure you want to delete ${record.email}?`}
+          title={`Are you sure you want to delete ${record.email_or_username}?`}
           onConfirm={() => text(record.user_id)}
           okText="Delete"
           cancelText="Cancel"
