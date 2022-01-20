@@ -158,9 +158,7 @@ export class ProjectSummaryForm extends Component {
                           loading={this.props.submitting}
                           disabled={this.props.submitting}
                         >
-                          {this.props.isEditMode && this.props.initialValues.status_code !== "DFT"
-                            ? "Update"
-                            : "Submit"}
+                          Update
                         </Button>
                       ) : (
                         <AuthorizationWrapper>
@@ -181,10 +179,7 @@ export class ProjectSummaryForm extends Component {
                               loading={this.props.submitting}
                               disabled={this.props.submitting}
                             >
-                              {this.props.isEditMode &&
-                              this.props.initialValues.status_code !== "DFT"
-                                ? "Update"
-                                : "Submit"}
+                              Submit
                             </Button>
                           </Popconfirm>
                         </AuthorizationWrapper>
