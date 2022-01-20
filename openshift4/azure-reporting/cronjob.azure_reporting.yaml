@@ -34,8 +34,8 @@ spec:
                   psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST -c "REVOKE CONNECT ON DATABASE $DB_NAME FROM PUBLIC;SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid() and usename <> 'azure_superuser';"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "DROP DATABASE $DB_NAME;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "CREATE DATABASE $DB_NAME OWNER mds;"
-                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT mds to postgres;"
-                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT nris to postgres;"
+                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT mds to $DB_USER;"
+                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT nris to $DB_USER;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT ALL ON DATABASE "$DB_NAME" to "$DB_USER";"
                   gunzip -c $BKUP_FILE | psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST
               env:
@@ -72,8 +72,8 @@ spec:
                   cpu: 256m
                   memory: 1024Mi
               volumeMounts:
-                    - name: mds-db-backup-data
-                      mountPath: /backups/
+                - name: mds-db-backup-data
+                  mountPath: /backups/
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               imagePullPolicy: Always
