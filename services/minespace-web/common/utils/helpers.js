@@ -2,7 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
-import { get, sortBy, isEmpty, isNil } from "lodash";
+import { get, sortBy, isEmpty, isNil, startCase } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -512,4 +512,8 @@ export const formatBooleanToString = (value, defaultValue) => {
     response = value ? "Yes" : "No";
   }
   return response;
+};
+
+export const formatUrlToUpperCaseString = (url) => {
+  return startCase(url.replace("-", " "));
 };

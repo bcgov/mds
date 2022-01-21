@@ -148,3 +148,21 @@
 .minespace-tooltip * {
   color: white !important;
 }
+
+.bold {
+  font-weight: bolder;
+  margin-bottom: none;
+}
+
+.light {
+  color: #606060;
+  &--sm {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+.nested-container {
+  padding: 10px;
+  padding-left: 25px;
+}
