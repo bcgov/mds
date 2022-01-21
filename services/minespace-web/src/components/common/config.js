@@ -7,6 +7,8 @@ import RenderField from "./RenderField";
 import RenderScrollField from "./RenderScrollField";
 import RenderMultiSelect from "./RenderMultiSelect";
 import RenderRadioButtons from "./RenderRadioButtons";
+import RenderCheckbox from "./RenderCheckbox";
+import RenderGroupCheckbox from "./RenderGroupCheckbox";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -20,4 +22,6 @@ export const renderConfig = {
   SCROLL_FIELD: RenderScrollField,
   MULTI_SELECT: RenderMultiSelect,
   RADIO: RenderRadioButtons,
+  CHECK_BOX: RenderCheckbox,
+  GROUP_CHECK_BOX: RenderGroupCheckbox,
 };
