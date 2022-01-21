@@ -112,6 +112,7 @@ export class ProjectSummaryPage extends Component {
     const updatedAuthorizations = [];
     // eslint-disable-next-line array-callback-return
     Object.keys(values).map((key) => {
+      // Pull out form properties from request object that match known authorization types
       if (values[key] && this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
         const project_summary_guid = values?.project_summary_guid;
         const authorization = values?.authorizations?.find(
@@ -119,6 +120,8 @@ export class ProjectSummaryPage extends Component {
         );
         updatedAuthorizations.push({
           ...values[key],
+          // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
+          // ... otherwise treat it as a new one which won't have those two properties yet.
           ...(project_summary_guid && { project_summary_guid }),
           ...(authorization && {
             project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
