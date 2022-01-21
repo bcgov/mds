@@ -20,7 +20,7 @@ const propTypes = {
 
 const transformRowData = (projectSummaries) => {
   return projectSummaries.map((projectSummary) => {
-    const contact = projectSummary.contacts.find((c) => c.is_primary);
+    const contact = projectSummary?.contacts?.find((c) => c.is_primary);
 
     return {
       key: projectSummary.project_summary_guid,

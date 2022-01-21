@@ -5,27 +5,49 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "project_summary_id",
+        "dataIndex": "project_name",
         "render": [Function],
         "sorter": true,
-        "title": "Project ID",
+        "title": "Project name",
       },
       Object {
-        "dataIndex": "status_code",
+        "dataIndex": "project_proponent_id",
+        "render": [Function],
+        "sorter": true,
+        "title": "Project Proponent ID",
+      },
+      Object {
+        "dataIndex": "project_contact",
+        "render": [Function],
+        "sorter": true,
+        "title": "Project contact",
+      },
+      Object {
+        "dataIndex": "project_stage",
         "render": [Function],
         "sorter": true,
         "title": "Project stage",
       },
       Object {
-        "dataIndex": "update_timestamp",
+        "dataIndex": "first_submitted_date",
         "render": [Function],
         "sorter": true,
-        "title": "Last updated",
+        "title": "First submitted date",
+      },
+      Object {
+        "dataIndex": "last_updated_date",
+        "render": [Function],
+        "sorter": true,
+        "title": "Last updated date",
       },
       Object {
         "dataIndex": "documents",
         "render": [Function],
         "title": "Files",
+      },
+      Object {
+        "dataIndex": "projectSummary",
+        "render": [Function],
       },
     ]
   }
@@ -34,7 +56,9 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
     Array [
       Object {
         "documents": Array [],
+        "first_submitted_date": undefined,
         "key": "81324623978135",
+        "last_updated_date": undefined,
         "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
         "projectSummary": Object {
           "documents": Array [],
@@ -44,9 +68,11 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
           "project_summary_guid": "81324623978135",
           "status_code": "O",
         },
+        "project_contact": "N/A",
+        "project_name": undefined,
+        "project_proponent_id": "N/A",
+        "project_stage": "O",
         "project_summary_id": "N/A",
-        "status_code": "O",
-        "update_timestamp": undefined,
       },
     ]
   }
