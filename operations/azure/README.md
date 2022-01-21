@@ -23,8 +23,8 @@ Azure provides us with 2 resource groups per project
 - First, ensure the remote tf state storage has been correctly deployed in the resource group so that infra changes are correctly tracked - refer to `./setup/`
 - After following the above terraform instructions: in order for the `openshift cronjob` to succeed with its restore process we need to manually seed some data into the deployed azure databases
 - Run `pg_dumpall --roles-only -U postgres > /tmp/roles_super.sql` in the source database and add any needed roles (`mds`, `nris`) to the azure database by running the resulting sql. We need to do this manually since our postgres version is 9.6 there's a bug where roles are not included in pg_dumps and so they're not included in our backups - we need to add them separately
-- Run the sql pertaining to roles `mds` and `nris` on the azure database while connected to `postgres`. you can connect to an azure database using your preferred DB tool. Just use the credentials exemplified in the `Connection Settings` page of the resource. Ensure your `client IP` has been added to the firewall ruleset or you will get a `ssl error` upon connection
-- With the required roles seeded, the restore process in the cronjob can now succeed
+- Run the sql pertaining to roles `mds`, `postgres` and `nris` on the azure database while connected to `postgres`. you can connect to an azure database using your preferred DB tool. Just use the credentials exemplified in the `Connection Settings` page of the resource. Ensure your `client IP` has been added to the firewall ruleset or you will get a `ssl error` upon connection. `You must all
+- With the `required roles` seeded, the `silver ip address allowed`, the restore process in the cronjob can now succeed
 
 # Deployment Process
 Azure deployments are triggered via github actions which authenticate to Azure via a service account. The credentials of this service account are stored as secrets in the MDS repo.
