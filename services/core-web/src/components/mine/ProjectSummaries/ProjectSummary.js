@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
-import { submit, formValueSelector, getFormSyncErrors, reset, touch } from "redux-form";
+import { submit, getFormValues, reduxForm, formValueSelector } from "redux-form";
 import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
-import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
-import { getMineGuid } from "@common/selectors/mineSelectors";
+import {
+  getProjectSummaryStatusCodesHash,
+  getProjectSummaryDocumentTypesHash,
+} from "@common/selectors/staticContentSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
@@ -14,11 +16,17 @@ import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryAc
 import * as router from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+// import ProjectSummaryPageHeader from "@/components/mine/ProjectSummaries/ProjectSummaryPageHeader";
+// import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
+import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import * as Permission from "@/constants/permissions";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary,
+  projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  getProjectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -43,17 +51,35 @@ export class ProjectSummary extends Component {
     }
   };
 
-  render() {}
+  handleSubmit = (values) => {
+    return true;
+  };
+
+  render() {
+    return (
+      <div className="page">
+        {/* <div className="side-menu--fixed">
+          <ProjectSummarySideMenu />
+        </div> */}
+        <ProjectSummaryForm {...this.props} initialValues={this.props.formattedProjectSummary} />
+      </div>
+    );
+  }
 }
 
-const selector = formValueSelector(FORM.PROJECT_SUMMAY_FORM);
-const mapStateToProps = (state) => ({
-  projectSummary: getProjectSummary(state),
-  formattedProjectSummary: getFormattedProjectSummary(state),
-  projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
-  projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
-  contacts: selector(state, "contacts"),
-});
+ProjectSummary.propTypes = propTypes;
+ProjectSummary.defaultProps = defaultProps;
+
+const mapStateToProps = (state) => {
+  return {
+    projectSummary: getProjectSummary(state),
+    formattedProjectSummary: getFormattedProjectSummary(state),
+    formValues: getFormValues(FORM.PROJECT_SUMMARY)(state),
+    projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
+    projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
+    initialValues: getFormattedProjectSummary(state),
+  };
+};
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -63,7 +89,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-ProjectSummary.propTypes = propTypes;
-ProjectSummary.defaultProps = defaultProps;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummary);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: FORM.PROJECT_SUMMARY,
+    enableReinitialize: true,
+  })
+)(ProjectSummary);

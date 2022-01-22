@@ -39,7 +39,6 @@ const transformRowData = (projectSummaries) => {
 };
 
 export const MineProjectSummaryTable = (props) => {
-  console.log("PROPS: ", props);
   const columns = [
     {
       title: "Project name",

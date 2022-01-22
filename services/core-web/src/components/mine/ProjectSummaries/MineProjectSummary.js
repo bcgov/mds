@@ -68,7 +68,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineProjectSummary.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AuthorizationGuard(Permission.IN_TESTING)(MineProjectSummary));
+export default connect(mapStateToProps, mapDispatchToProps)(MineProjectSummary);

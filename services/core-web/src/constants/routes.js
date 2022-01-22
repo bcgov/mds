@@ -163,6 +163,8 @@ export const PRE_APPLICATIONS = {
   route: "/mine-dashboard/:mineGuid/permits-and-approvals/pre-applications/:projectSummaryGuid",
   dynamicRoute: (mineGuid, projectSummaryGuid) =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/pre-applications/${projectSummaryGuid}`,
+  hashRoute: (mineGuid, projectSummaryGuid, link) =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/pre-applications/${projectSummaryGuid}/${link}`,
   component: ProjectSummary,
 };
 
