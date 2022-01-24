@@ -85,7 +85,6 @@ export class Home extends Component {
     this.props.loadBulkStaticContent();
     this.props.fetchInspectors();
     this.props.fetchProjectLeads();
-    console.log(this.props.fetchProjectLeads);
   };
 
   render() {
