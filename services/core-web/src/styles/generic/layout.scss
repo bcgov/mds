@@ -544,6 +544,11 @@ img.lessOpacity {
   visibility: visible;
 }
 
-.top-100 {
-  margin-top: 100px !important;
+.top {
+  &-100 {
+    margin-top: 100px !important;
+  }
+  &-125 {
+    margin-top: 125px !important;
+  }
 }
