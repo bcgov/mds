@@ -86,7 +86,7 @@ export class MinespaceUserManagement extends Component {
   handleUpdate = (record) => {
     // console.log("RECORD: ", record);
     this.props.updateMinespaceUserMines(record.user_id, record).then(() => {
-      this.props.refreshData();
+      this.refreshUserData();
       // this.refreshUserData();
     });
   };

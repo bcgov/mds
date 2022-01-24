@@ -52,9 +52,9 @@ export const fetchMinespaceUsers = () => (dispatch) => {
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINESPACE_USER, createRequestHeader())
     .then((response) => {
-      console.log(response);
+      console.log(response.data);
       dispatch(success(reducerTypes.GET_MINESPACE_USER));
-      dispatch(minespaceActions.storeMinespaceUserList(response));
+      dispatch(minespaceActions.storeMinespaceUserList(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINESPACE_USER)))
     .finally(() => dispatch(hideLoading()));
