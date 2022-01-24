@@ -160,11 +160,11 @@ export const MINE_PRE_APPLICATIONS = {
 };
 
 export const PRE_APPLICATIONS = {
-  route: "/mine-dashboard/:mineGuid/permits-and-approvals/pre-applications/:projectSummaryGuid",
+  route: "/pre-applications/:mineGuid/project-description/:projectSummaryGuid",
   dynamicRoute: (mineGuid, projectSummaryGuid) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/pre-applications/${projectSummaryGuid}`,
+    `/pre-applications/${mineGuid}/project-description/${projectSummaryGuid}`,
   hashRoute: (mineGuid, projectSummaryGuid, link) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/pre-applications/${projectSummaryGuid}/${link}`,
+    `/pre-applications/${mineGuid}/project-description/${projectSummaryGuid}/${link}`,
   component: ProjectSummary,
 };
 

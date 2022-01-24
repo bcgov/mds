@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
@@ -36,7 +37,7 @@ export const ProjectSummaryForm = (props) => {
 
   const renderContacts = (contacts) => {
     return (
-      <>
+      <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
         <Typography strong>Proponent contacts</Typography>
         <Typography strong>Primary project contact</Typography>
@@ -87,13 +88,13 @@ export const ProjectSummaryForm = (props) => {
             />
           )
         })} */}
-      </>
+      </div>
     );
   };
 
   const renderProjectDates = () => {
     return (
-      <>
+      <div id="project-dates">
         <Typography.Title level={3}>Project dates requested by proponent</Typography.Title>
         <Typography>
           These are the key dates the proponent hopes to target. A final schedule will be negotiated
@@ -135,39 +136,45 @@ export const ProjectSummaryForm = (props) => {
             disabled
           />
         </Form.Item>
-      </>
+      </div>
     );
   };
 
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Typography.Title level={3}>Project details</Typography.Title>
-      <Form.Item>
-        <Field
-          id="proponent_project_id"
-          name="proponent_project_id"
-          label="Project number"
-          component={renderConfig.FIELD}
-          disabled
-        />
-      </Form.Item>
-      <Form.Item>
-        <Field
-          id="project_summary_description"
-          name="project_summary_description"
-          label="Executive summary"
-          component={renderConfig.AUTO_SIZE_FIELD}
-          disabled
-        />
-      </Form.Item>
-      <Typography.Title level={3}>Authorizations involved</Typography.Title>
-      <Typography>
-        These are the authorizations the proponent believes may be needed for this project.
-        Additional authorizations may be required.
-      </Typography>
+      <div id="project-details">
+        <Typography.Title level={3}>Project details</Typography.Title>
+        <Form.Item>
+          <Field
+            id="proponent_project_id"
+            name="proponent_project_id"
+            label="Project number"
+            component={renderConfig.FIELD}
+            disabled
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="project_summary_description"
+            name="project_summary_description"
+            label="Executive summary"
+            component={renderConfig.AUTO_SIZE_FIELD}
+            disabled
+          />
+        </Form.Item>
+      </div>
+      <div id="authorizations-involved">
+        <Typography.Title level={3}>Authorizations involved</Typography.Title>
+        <Typography>
+          These are the authorizations the proponent believes may be needed for this project.
+          Additional authorizations may be required.
+        </Typography>
+      </div>
       {renderProjectDates()}
-      {renderContacts(contacts)}
-      <Typography.Title level={4}>Documents</Typography.Title>
+      {/* {renderContacts(contacts)} */}
+      <div id="documents">
+        <Typography.Title level={4}>Documents</Typography.Title>
+      </div>
     </Form>
   );
 };

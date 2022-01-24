@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
+import { kebabCase } from "lodash";
 import { submit, getFormValues, reduxForm, formValueSelector } from "redux-form";
-import { Divider, Tabs } from "antd";
+import * as routes from "@/constants/routes";
+import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
 import {
   getProjectSummaryStatusCodesHash,
@@ -13,15 +16,19 @@ import {
   getFormattedProjectSummary,
 } from "@common/selectors/projectSummarySelectors";
 import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
-import * as router from "@/constants/routes";
 import * as FORM from "@/constants/forms";
+import { Link } from "react-router-dom";
+import * as Strings from "@common/constants/strings";
+import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 // import ProjectSummaryPageHeader from "@/components/mine/ProjectSummaries/ProjectSummaryPageHeader";
-// import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
+import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
 import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import * as Permission from "@/constants/permissions";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
+import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary,
@@ -36,11 +43,28 @@ const defaultProps = {
 export class ProjectSummary extends Component {
   state = {
     isLoaded: false,
+    fixedTop: false,
+    isTabLoaded: false,
+    activeTab: "project-descriptions",
   };
 
   componentDidMount() {
     this.handleFetchData();
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (window.pageYOffset > 170 && !this.state.fixedTop) {
+      this.setState({ fixedTop: true });
+    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
+      this.setState({ fixedTop: false });
+    }
+  };
 
   handleFetchData = () => {
     const { mineGuid, projectSummaryGuid } = this.props.match?.params;
@@ -51,6 +75,15 @@ export class ProjectSummary extends Component {
     }
   };
 
+  handleTabChange = (key) => {
+    this.props.history.replace(
+      routes.PRE_APPLICATIONS.dynamicRoute(
+        this.props.noticeOfWork.now_application_guid,
+        kebabCase(key)
+      )
+    );
+  };
+
   handleSubmit = (values) => {
     return true;
   };
@@ -58,10 +91,68 @@ export class ProjectSummary extends Component {
   render() {
     return (
       <div className="page">
-        {/* <div className="side-menu--fixed">
+        <div
+          className={
+            this.state.fixedTop
+              ? "padding-lg view--header fixed-scroll"
+              : " padding-lg view--header"
+          }
+        >
+          <h1>
+            {this.props.formattedProjectSummary.project_summary_title}
+            <span>
+              <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={router.MINE_GENERAL.dynamicRoute(
+                    this.props.formattedProjectSummary.mine_guid
+                  )}
+                  disabled={!this.props.formattedProjectSummary.mine_guid}
+                >
+                  <EnvironmentOutlined className="padding-sm--right" />
+                  {this.props.formattedProjectSummary.mine_name}
+                </Link>
+              </Tag>
+            </span>
+          </h1>
+          <Link
+            to={router.MINE_PRE_APPLICATIONS.dynamicRoute(
+              this.props.formattedProjectSummary.mine_guid
+            )}
+          >
+            <ArrowLeftOutlined className="padding-sm--right" />
+            Back to: {this.props.formattedProjectSummary.mine_name} Pre-application submissions
+          </Link>
+        </div>
+        <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
           <ProjectSummarySideMenu />
-        </div> */}
-        <ProjectSummaryForm {...this.props} initialValues={this.props.formattedProjectSummary} />
+        </div>
+        <Tabs
+          size="large"
+          activeKey={this.state.activeTab}
+          animated={{ inkBar: true, tabPane: false }}
+          className="now-tabs"
+          onTabClick={this.handleTabChange}
+          style={{ margin: "0" }}
+          centered
+        >
+          <Tabs.TabPane tab="Project Descriptions" key="project-descriptions">
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <div
+                className={
+                  this.state.fixedTop
+                    ? "side-menu--content with-fixed-top top-100"
+                    : "side-menu--content"
+                }
+              >
+                <ProjectSummaryForm
+                  {...this.props}
+                  initialValues={this.props.formattedProjectSummary}
+                />
+              </div>
+            </LoadingWrapper>
+          </Tabs.TabPane>
+        </Tabs>
       </div>
     );
   }
