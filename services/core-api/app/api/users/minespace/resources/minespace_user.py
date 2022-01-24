@@ -70,9 +70,10 @@ class MinespaceUserResource(Resource, UserMixin):
         return ('', 204)
 
     @api.doc(description='Update an existing Minespace Users mine list')
-    @api.marshal_with(MINESPACE_USER_MODEL)
+    @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
     @requires_role_mine_admin
     def put(self, user_id):
+        # current_app.logger.debug('Mine list found, checking for new mines')
         contact = MinespaceUser.find_by_id(user_id)
         if not contact:
             raise NotFound('Contact not found.')
@@ -81,19 +82,31 @@ class MinespaceUserResource(Resource, UserMixin):
             raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
 
         current_app.logger.debug('Mine list found, checking for new mines')
-        existing_mines = contact.mines
-       
+        
+        existing_mines = contact.mines # list of mines already existing in the user's mine list
+        updated_mines = data.get('mine_guids') # updated list of mines to be applied to the user
+
+        for delete_mine in existing_mines:
+            if str(delete_mine) not in updated_mines:
+                current_app.logger.debug('Deleting mine: {}'.format(delete_mine))
+                minespace_user_mine = MinespaceUserMine.find_by_guid(delete_mine)
+                if minespace_user_mine:
+                    
+                    minespace_user_mine.delete()
+
+
         # Cycle through list of mines. Mines have to exist before being added to the user.
-        for guid in data.get('mine_guids'):
+        for guid in updated_mines:
+    
             mine = Mine.find_by_mine_guid(guid)
-            if mine:
-                current_app.logger.debug('Found mine with guid: {}'.format(guid))
-                MinespaceUserMine.create(user_id, mine.mine_guid)     
-            elif mine in existing_mines:
-                continue # Mine already exists, do nothing
-            else:
+            
+            if not mine:
                 raise NotFound('Mine with guid {} not found.'.format(guid))
 
+            existing_minespace_user_mine = MinespaceUserMine.find_by_guid(guid)
+            if not existing_minespace_user_mine:
+                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)   
+                
         contact.save()
-        return contact
+        return MinespaceUser.get_all()
         

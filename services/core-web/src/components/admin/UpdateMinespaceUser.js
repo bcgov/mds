@@ -38,6 +38,9 @@ export class UpdateMinespaceUser extends Component {
   };
 
   render() {
+    const {
+      initialValues: { mineNames },
+    } = this.props;
     return (
       <div>
         <h3>Edit Proponent</h3>
@@ -47,6 +50,10 @@ export class UpdateMinespaceUser extends Component {
               value: mine.mine_guid,
               label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
+            initialValues={{
+              ...this.props.initialValues,
+              mine_guids: mineNames.map((mn) => mn.mine_guid),
+            }}
             minespaceUserEmailHash={this.props.minespaceUserEmailHash}
             onSubmit={this.props.handleSubmit}
             handleChange={this.handleChange}

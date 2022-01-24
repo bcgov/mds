@@ -6,12 +6,12 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import { compose } from "redux";
-import { connect } from "react-redux";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
@@ -41,6 +41,7 @@ export const EditMinespaceUser = (props) => (
               component={RenderField}
               validate={[required, minespaceUserNotExists]}
               allowClear
+              disabled
             />
           </Form.Item>
         </Col>

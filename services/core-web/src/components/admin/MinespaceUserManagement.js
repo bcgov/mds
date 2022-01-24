@@ -15,12 +15,12 @@ import {
   updateMinespaceUserMines,
 } from "@common/actionCreators/minespaceActionCreator";
 import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 
 /**
@@ -75,6 +75,8 @@ export class MinespaceUserManagement extends Component {
         handleSubmit: this.handleUpdate,
         refreshData: this.refreshUserData,
         minespaceUserEmailHash: this.props.minespaceUserEmailHash,
+        afterClose: () => {},
+        // onSubmit: this.handleUpdate,
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
       width: "75vw",
@@ -82,8 +84,10 @@ export class MinespaceUserManagement extends Component {
   };
 
   handleUpdate = (record) => {
-    this.props.updateMinespaceUserMines(record.id, record).then(() => {
+    // console.log("RECORD: ", record);
+    this.props.updateMinespaceUserMines(record.user_id, record).then(() => {
       this.props.refreshData();
+      // this.refreshUserData();
     });
   };
 
