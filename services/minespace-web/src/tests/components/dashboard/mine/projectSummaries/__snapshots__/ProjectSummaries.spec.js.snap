@@ -16,7 +16,7 @@ exports[`ProjectSummaries renders properly 1`] = `
         className="color-primary"
         strong={true}
       >
-        project summary 
+        project description 
       </Text>
       is a high level overview of a production mining project used for assessment prior to applying for a new or amending an existing production mineral or coal mining permit issued under the Mines Act.
     </Paragraph>
@@ -86,7 +86,7 @@ exports[`ProjectSummaries renders properly 1`] = `
     </Paragraph>
     <Paragraph>
       <Link
-        to="/mines/undefined/project-summary/new"
+        to="/mines/undefined/project-description/new/basic-information"
       >
         <Button
           block={false}
@@ -101,6 +101,7 @@ exports[`ProjectSummaries renders properly 1`] = `
       </Link>
     </Paragraph>
     <ProjectSummariesTable
+      handleDeleteDraft={[Function]}
       isLoaded={false}
       mine={Object {}}
       projectSummaries={
@@ -111,15 +112,15 @@ exports[`ProjectSummaries renders properly 1`] = `
             "project_summary_date": "2021-11-19",
             "project_summary_description": "Sample description.",
             "project_summary_guid": "81324623978135",
-            "status_code": "O",
+            "status_code": "OPN",
           },
         ]
       }
       projectSummaryStatusCodesHash={
         Object {
-          "C": "Closed",
-          "O": "Open",
-          "W": "Withdrawn",
+          "CLD": "Closed",
+          "OPN": "Open",
+          "WDN": "Withdrawn",
         }
       }
     />

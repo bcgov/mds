@@ -77,7 +77,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    path="/mines/:mineGuid/project-summary/new"
+    path="/mines/:mineGuid/project-description/new/:tab"
   />
   <Route
     component={
@@ -89,7 +89,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    path="/mines/:mineGuid/project-summary/:projectSummaryGuid"
+    path="/mines/:mineGuid/project-description/:projectSummaryGuid/:tab"
   />
   <Route
     render={[Function]}
