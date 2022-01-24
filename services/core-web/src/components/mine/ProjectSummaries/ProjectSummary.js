@@ -116,7 +116,7 @@ export class ProjectSummary extends Component {
         >
           <h1>
             {this.props.formattedProjectSummary.project_summary_title}
-            <span>
+            <span className="padding-sm--left">
               <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
                 <Link
                   style={{ textDecoration: "none" }}
