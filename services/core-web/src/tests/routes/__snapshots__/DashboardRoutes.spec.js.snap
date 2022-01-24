@@ -203,7 +203,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
+        "displayName": "Connect(MineProjectSummary)",
         "type": [Function],
       }
     }
@@ -214,14 +214,36 @@ exports[`DashboardRoutes  renders properly 1`] = `
     component={
       Object {
         "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
+        "WrappedComponent": Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "defaultProps": Object {
+            "destroyOnUnmount": true,
+            "enableReinitialize": true,
+            "forceUnregisterOnUnmount": false,
+            "form": "PROJECT_SUMMARY",
+            "getFormState": [Function],
+            "keepDirtyOnReinitialize": false,
+            "persistentSubmitErrors": false,
+            "pure": true,
+            "shouldAsyncValidate": [Function],
+            "shouldError": [Function],
+            "shouldValidate": [Function],
+            "shouldWarn": [Function],
+            "submitAsSideEffect": false,
+            "touchOnBlur": true,
+            "touchOnChange": false,
+            "updateUnregisteredFields": false,
+          },
+          "displayName": "ReduxForm",
+          "render": [Function],
+        },
         "compare": null,
-        "displayName": "Connect(ProjectSummary)",
+        "displayName": "Connect(ReduxForm)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/mine-dashboard/:mineGuid/permits-and-approvals/pre-applications/:projectSummaryGuid"
+    path="/pre-applications/:mineGuid/project-description/:projectSummaryGuid"
   />
   <Route
     component={
