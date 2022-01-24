@@ -29,7 +29,7 @@ export const createMinespaceUser = (payload) => (dispatch) => {
 export const updateMinespaceUserMines = (minespace_id, payload) => (dispatch) => {
   console.log("PAYLOAD: ", payload);
   console.log("MINESPACE_ID: ", minespace_id);
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.UPDATE_MINESPACE_USER_MINES));
   return CustomAxios()
     .put(
@@ -39,11 +39,12 @@ export const updateMinespaceUserMines = (minespace_id, payload) => (dispatch) =>
     )
     .then((response) => {
       dispatch(success(reducerTypes.UPDATE_MINESPACE_USER_MINES));
+      return response;
       // console.log(response.data);
       // dispatch(minespaceActions.storeMinespaceUserMineList(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_MINESPACE_USER_MINES)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchMinespaceUsers = () => (dispatch) => {
