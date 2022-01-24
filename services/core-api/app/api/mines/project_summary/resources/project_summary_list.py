@@ -10,20 +10,22 @@ from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_MODEL
 from app.api.mines.project_summary.models.project_summary import ProjectSummary
+from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 
 
 class ProjectSummaryListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument(
-        'project_summary_description',
+        'status_code',
         type=str,
         store_missing=False,
-        required=False,
+        required=True,
     )
     parser.add_argument(
-        'project_summary_date',
-        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        'project_summary_description',
+        type=str,
         store_missing=False,
         required=False,
     )
@@ -34,6 +36,45 @@ class ProjectSummaryListResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'project_summary_title',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
+    parser.add_argument(
+        'proponent_project_id',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_draft_irt_submission_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_permit_application_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_permit_receipt_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'expected_project_start_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument('contacts', type=list, location='json', store_missing=False, required=False)
+    parser.add_argument(
+        'authorizations', type=list, location='json', store_missing=False, required=False)
 
     @api.doc(
         description='Get a list of all Project Summaries for a given mine.',
@@ -45,12 +86,13 @@ class ProjectSummaryListResource(Resource, UserMixin):
         if mine is None:
             raise NotFound('Mine not found')
 
-        project_summaries = ProjectSummary.find_by_mine_guid(mine_guid)
+        project_summaries = ProjectSummary.find_by_mine_guid(mine_guid, is_minespace_user())
         return project_summaries
 
     @api.doc(
-        description='Create a new Project Summary.',
-        params={'mine_guid': 'The GUID of the mine to create the Project Summary for.'})
+        description='Create a new Project Description.',
+        params={'mine_guid': 'The GUID of the mine to create the Project Description for.'})
+    # @requires_any_of([MINESPACE_PROPONENT])
     @api.expect(parser)
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=201)
     def post(self, mine_guid):
@@ -59,9 +101,16 @@ class ProjectSummaryListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-        project_summary = ProjectSummary.create(mine, data.get('project_summary_date'),
-                                                data.get('project_summary_description'),
-                                                data.get('documents', []))
+        project_summary = ProjectSummary.create(mine, data.get('project_summary_description'),
+                                                data.get('project_summary_title'),
+                                                data.get('proponent_project_id'),
+                                                data.get('expected_draft_irt_submission_date'),
+                                                data.get('expected_permit_application_date'),
+                                                data.get('expected_permit_receipt_date'),
+                                                data.get('expected_project_start_date'),
+                                                data.get('status_code'), data.get('documents', []),
+                                                data.get('contacts', []),
+                                                data.get('authorizations', []))
 
         try:
             project_summary.save()
