@@ -145,12 +145,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(party_guid=party_guid, deleted_ind=False).one_or_none()
 
     @classmethod
-    def find_inspector_by_party_guid(cls, party_guid):
-        return cls.query.filter_by(
-            party_guid=party_guid, deleted_ind=False).join(
-                cls.business_role_appts).filter_by(party_business_role_code='INS').one_or_none()
-
-    @classmethod
     def find_by_name(cls, party_name, first_name=None):
         party_type_code = 'PER' if first_name else 'ORG'
         filters = [
