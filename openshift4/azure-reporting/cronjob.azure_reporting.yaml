@@ -27,10 +27,15 @@ spec:
                 - /bin/sh
                 - '-c'
                 - |-
+                  echo "Fetching paths..."
                   YESTERDAY=$(date +%Y-%m-%d -d "yesterday")
                   BACKUP=$(find /backups/daily/ -depth -name "*$YESTERDAY*.gz")
+                  echo "Checking restore file exists..."
+                  [[ -f $BACKUP ]] && echo "Using $BACKUP for restore" || exit 1
+                  echo "Proceeding with restore..."
                   cp $BACKUP /tmp/
                   BKUP_FILE=$(find /tmp/ -depth -name "*$YESTERDAY*.gz")
+                  echo "Applying grants..."
                   psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST -c "REVOKE CONNECT ON DATABASE $DB_NAME FROM PUBLIC;SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid() and usename <> 'azure_superuser';"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "DROP DATABASE $DB_NAME;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT mds to $DB_USER;"
@@ -38,8 +43,11 @@ spec:
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT postgres to $DB_USER;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "CREATE DATABASE $DB_NAME OWNER mds;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT ALL ON DATABASE "$DB_NAME" to "$DB_USER";"
+                  echo "Restoring schema and data..."
                   gunzip -c $BKUP_FILE | psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST
+                  echo "Performing post-restore action..."
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "$REPORT_CMD"
+                  echo "Restore process finished"
               env:
                 - name: DB_USER
                   valueFrom:
