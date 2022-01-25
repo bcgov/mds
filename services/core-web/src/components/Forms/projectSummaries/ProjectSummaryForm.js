@@ -69,7 +69,7 @@ export const ProjectSummaryForm = (props) => {
 
   const renderAuthorizationsInvolved = () => {
     const {
-      formValues: { authorizations },
+      initialValues: { authorizations },
       projectSummaryAuthorizationTypes,
       projectSummaryPermitTypesHash,
     } = props;
@@ -78,6 +78,7 @@ export const ProjectSummaryForm = (props) => {
     );
     // We need to make sure we only add parent authorization type labels once to the form
     const parentHeadersAdded = [];
+    console.log(authorizations);
     return (
       <div id="authorizations-involved">
         <Typography.Title level={3}>Authorizations involved</Typography.Title>
@@ -85,38 +86,39 @@ export const ProjectSummaryForm = (props) => {
           These are the authorizations the proponent believes may be needed for this project.
           Additional authorizations may be required.
         </Typography>
-        {authorizations.map((a) => {
-          const parentCode =
-            transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent?.code;
-          const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
-          return (
-            <>
-              {!parentHeaderAdded ? (
-                <h2>
+        {authorizations.length > 0 &&
+          authorizations.map((a) => {
+            const parentCode =
+              transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent?.code;
+            const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
+            return (
+              <>
+                {!parentHeaderAdded ? (
+                  <h2>
+                    {
+                      transformedAuthorizationTypesHash[a.project_summary_authorization_type]
+                        ?.parent?.description
+                    }
+                  </h2>
+                ) : null}
+                <h4>
                   {
-                    transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
+                    transformedAuthorizationTypesHash[a.project_summary_authorization_type]
                       ?.description
                   }
-                </h2>
-              ) : null}
-              <h4>
-                {
-                  transformedAuthorizationTypesHash[a.project_summary_authorization_type]
-                    ?.description
-                }
-              </h4>
-              <Typography>Types of permits</Typography>
-              {a.project_summary_permit_type.map((pt) => {
-                parentHeadersAdded.push(parentCode);
-                return <Typography>{projectSummaryPermitTypesHash[pt]}</Typography>;
-              })}
-              <Typography>Existing permit numbers involved</Typography>
-              {a.existing_permits_authorizations.map((epa) => {
-                return <Typography>{epa}</Typography>;
-              })}
-            </>
-          );
-        })}
+                </h4>
+                <Typography>Types of permits</Typography>
+                {a.project_summary_permit_type.map((pt) => {
+                  parentHeadersAdded.push(parentCode);
+                  return <Typography>{projectSummaryPermitTypesHash[pt]}</Typography>;
+                })}
+                <Typography>Existing permit numbers involved</Typography>
+                {a.existing_permits_authorizations.map((epa) => {
+                  return <Typography>{epa}</Typography>;
+                })}
+              </>
+            );
+          })}
       </div>
     );
   };

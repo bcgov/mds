@@ -25,7 +25,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 // import ProjectSummaryPageHeader from "@/components/mine/ProjectSummaries/ProjectSummaryPageHeader";
 import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
-import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectSummaryForm";
+import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import * as Permission from "@/constants/permissions";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
