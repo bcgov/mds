@@ -22,16 +22,10 @@ Azure provides us with 2 resource groups per project
 # First time deployment
 - First, ensure the remote tf state storage has been correctly deployed in the resource group so that infra changes are correctly tracked - refer to `./setup/`
 - After following the above terraform instructions: in order for the `openshift cronjob` to succeed with its restore process we need to manually seed some data into the deployed azure databases
-- Run `pg_dumpall --roles-only -U postgres > /tmp/roles_super.sql` in the source database and add any needed roles (`mds`, `nris`) to the azure database by running the resulting sql. We need to do this manually since our postgres version is 9.6 there's a bug where roles are not included in pg_dumps and so they're not included in our backups - we need to add them separately
-- Run the sql pertaining to roles `mds`, `postgres` and `nris` on the azure database while connected to `postgres`. you can connect to an azure database using your preferred DB tool. Just use the credentials exemplified in the `Connection Settings` page of the resource. Ensure your `client IP` has been added to the firewall ruleset or you will get a `ssl error` upon connection. `You must all
+- Run `pg_dumpall --roles-only -U postgres > /tmp/roles_super.sql` in the source database and add any needed roles (`mds`, `postgres`, `nris`) to the azure database by running the resulting sql. We need to do this manually since our postgres version is 9.6 there's a bug where roles are not included in pg_dumps and so they're not included in our backups - we need to add them separately
+- Run the sql pertaining to roles `mds`, `postgres` and `nris` on the azure database while connected to `postgres`. you can connect to an azure database using your preferred DB tool. Just use the credentials exemplified in the `Connection Settings` page of the resource. Ensure your `client IP` has been added to the firewall ruleset or you will get a `ssl error` upon connection.
 - With the `required roles` seeded, the `silver ip address allowed`, the restore process in the cronjob can now succeed
-
-# Deployment Process
-Azure deployments are triggered via github actions which authenticate to Azure via a service account. The credentials of this service account are stored as secrets in the MDS repo.
-
-- On PR open -> wipe staging -> Fresh staging
-- On PR sync (new commits) -> terraform apply to staging
-- On develop merge -> terraform apply to live
+- The above steps are stored in an `azure-reporting` secret in the namespace for manual purposes
 
 # Infrastructure as Code
 `If infrastructure is not version controlled as code then it does not exist.` That being said, we are human and do want to support an organic/exploratory development process that appeals to this best practice. In the event infrastructure is created via the UI / CLI, make sure you import the state to the remote backend and version control matching terraform configurations

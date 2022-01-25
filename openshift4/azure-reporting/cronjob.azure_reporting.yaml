@@ -3,7 +3,7 @@ apiVersion: batch/v1beta1
 metadata:
   name: cj-azure-reporting
 spec:
-  schedule: 30 03 * * *
+  schedule: 05 08 * * *
   concurrencyPolicy: Replace
   suspend: false
   jobTemplate:
