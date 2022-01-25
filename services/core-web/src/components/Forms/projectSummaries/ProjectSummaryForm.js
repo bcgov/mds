@@ -1,11 +1,12 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography } from "antd";
 import CustomPropTypes from "@/customPropTypes";
+import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
@@ -284,11 +285,6 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
-  const {
-    formattedProjectSummary: { contacts, documents, authorizations },
-    projectSummaryAuthorizationTypes,
-  } = props;
-
   return (
     <Form layout="vertical">
       {renderProjectDetails()}
@@ -303,4 +299,9 @@ export const ProjectSummaryForm = (props) => {
 ProjectSummaryForm.propTypes = propTypes;
 ProjectSummaryForm.defaultProps = defaultProps;
 
-export default ProjectSummaryForm;
+export default reduxForm({
+  form: FORM.PROJECT_SUMMARY,
+  enableReinitialize: true,
+})(ProjectSummaryForm);
+
+// export default ProjectSummaryForm;

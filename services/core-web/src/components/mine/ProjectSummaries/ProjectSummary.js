@@ -196,10 +196,12 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.PROJECT_SUMMARY,
-    enableReinitialize: true,
-  })
-)(ProjectSummary);
+// export default compose(
+//   connect(mapStateToProps, mapDispatchToProps),
+//   reduxForm({
+//     form: FORM.PROJECT_SUMMARY,
+//     enableReinitialize: true,
+//   })
+// )(ProjectSummary);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummary);
