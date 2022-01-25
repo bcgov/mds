@@ -141,9 +141,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             raise Exception('Unable to delete permit with attached bonds.')
 
         if self.permit_amendments and self.permit_status_code != 'D' and any(
-                amendment.now_application_guid is not None for amendment in self.permit_amendments):
+                amendment.now_application_guid is not None and amendment.is_generated_in_core for amendment in self.permit_amendments):
             raise Exception(
-                'Unable to delete permit with linked NOW application in Core to one of its permit amendments.'
+                'Unable to delete permit generated in Core with linked NOW application in Core to one of its permit amendments.'
             )
         if self.permit_amendments:
             for amendment in self.permit_amendments:
