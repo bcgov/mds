@@ -41,12 +41,12 @@ spec:
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT mds to $DB_USER;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT nris to $DB_USER;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT postgres to $DB_USER;"
-                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "CREATE DATABASE $DB_NAME OWNER mds;"
+                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
                   psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "GRANT ALL ON DATABASE "$DB_NAME" to "$DB_USER";"
                   echo "Restoring schema and data..."
                   gunzip -c $BKUP_FILE | psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST
                   echo "Performing post-restore action..."
-                  psql -d postgres -U $AZUREDB_USER -h $DB_HOST -c "$REPORT_CMD"
+                  psql -d $DB_NAME -U $AZUREDB_USER -h $DB_HOST -c "$REPORT_CMD"
                   echo "Restore process finished"
               env:
                 - name: DB_USER
