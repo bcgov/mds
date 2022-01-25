@@ -10,7 +10,7 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
 export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
-  const message = "Successfully created a new project summary";
+  const message = "Successfully created a new project description";
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
@@ -38,7 +38,7 @@ export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) 
     )
     .then((response) => {
       notification.success({
-        message: "Successfully updated project summary",
+        message: "Successfully updated project description",
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
@@ -127,7 +127,7 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     )
     .then((response) => {
       notification.success({
-        message: "Successfully deleted project summary.",
+        message: "Successfully deleted project description.",
         duration: 10,
       });
       dispatch(success(reducerTypes.DELETE_PROJECT_SUMMARY));

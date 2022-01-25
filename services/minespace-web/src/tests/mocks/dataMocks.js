@@ -1089,7 +1089,7 @@ export const PROJECT_SUMMARIES = {
     {
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       project_summary_guid: "81324623978135",
-      status_code: "O",
+      status_code: "OPN",
       project_summary_date: "2021-11-19",
       project_summary_description: "Sample description.",
       documents: [],
@@ -1100,16 +1100,16 @@ export const PROJECT_SUMMARIES = {
 export const PROJECT_SUMMARY = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   project_summary_guid: "81324623978135",
-  status_code: "O",
+  status_code: "OPN",
   project_summary_date: "2021-11-19",
   project_summary_description: "Sample description.",
   documents: [],
 };
 
 export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
-  O: "Open",
-  C: "Closed",
-  W: "Withdrawn",
+  OPN: "Open",
+  CLD: "Closed",
+  WDN: "Withdrawn",
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {

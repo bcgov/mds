@@ -15,7 +15,6 @@ import {
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
@@ -89,16 +88,14 @@ export class Incidents extends Component {
     return (
       <Row>
         <Col span={24}>
-          <AuthorizationWrapper inTesting>
-            <Button
-              style={{ display: "inline", float: "right" }}
-              type="primary"
-              onClick={(event) => this.openCreateIncidentModal(event)}
-            >
-              <PlusCircleFilled />
-              Record a mine incident
-            </Button>
-          </AuthorizationWrapper>
+          <Button
+            style={{ display: "inline", float: "right" }}
+            type="primary"
+            onClick={(event) => this.openCreateIncidentModal(event)}
+          >
+            <PlusCircleFilled />
+            Record a mine incident
+          </Button>
           <Typography.Title level={4}>Incidents</Typography.Title>
           <Typography.Paragraph>
             This table shows your mine&apos;s history of&nbsp;
