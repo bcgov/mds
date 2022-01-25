@@ -6,7 +6,6 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
@@ -21,6 +20,19 @@ const propTypes = {
 const defaultProps = {
   formValues: {},
   initialValues: {},
+};
+
+const transformAuthorizationTypes = (types) => {
+  const transformedObject = {};
+  for (const type of types) {
+    for (const childType of type.children) {
+      transformedObject[childType.code] = {
+        description: childType.description,
+        parent: { code: type.code, description: type.description },
+      };
+    }
+  }
+  return transformedObject;
 };
 
 export const ProjectSummaryForm = (props) => {
@@ -51,6 +63,16 @@ export const ProjectSummaryForm = (props) => {
   };
 
   const renderAuthorizationsInvolved = () => {
+    const {
+      formValues: { authorizations },
+      projectSummaryAuthorizationTypes,
+      projectSummaryPermitTypesHash,
+    } = props;
+    const transformedAuthorizationTypesHash = transformAuthorizationTypes(
+      projectSummaryAuthorizationTypes
+    );
+    // We need to make sure we only add parent authorization type labels once to the form
+    const parentHeadersAdded = [];
     return (
       <div id="authorizations-involved">
         <Typography.Title level={3}>Authorizations involved</Typography.Title>
@@ -58,11 +80,46 @@ export const ProjectSummaryForm = (props) => {
           These are the authorizations the proponent believes may be needed for this project.
           Additional authorizations may be required.
         </Typography>
+        {authorizations.map((a) => {
+          const parentCode =
+            transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent?.code;
+          const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
+          return (
+            <>
+              {!parentHeaderAdded ? (
+                <Typography.Title level={3}>
+                  {
+                    transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
+                      ?.description
+                  }
+                </Typography.Title>
+              ) : null}
+              <Typography.Title level={4}>
+                {
+                  transformedAuthorizationTypesHash[a.project_summary_authorization_type]
+                    ?.description
+                }
+              </Typography.Title>
+              <Typography>Types of permits</Typography>
+              {a.project_summary_permit_type.map((pt) => {
+                parentHeadersAdded.push(parentCode);
+                return <Typography>{projectSummaryPermitTypesHash[pt]}</Typography>;
+              })}
+              <Typography>Existing permit numbers involved</Typography>
+              {a.existing_permits_authorizations.map((epa) => {
+                return <Typography>{epa}</Typography>;
+              })}
+            </>
+          );
+        })}
       </div>
     );
   };
 
-  const renderContacts = (contacts) => {
+  const renderContacts = () => {
+    const {
+      projectSummary: { contacts },
+    } = props;
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
@@ -150,7 +207,7 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
-  const renderProjectDates = (projectSummary) => {
+  const renderProjectDates = () => {
     return (
       <div id="project-dates">
         <Typography.Title level={3}>Project dates requested by proponent</Typography.Title>
@@ -198,7 +255,10 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
-  const renderDocuments = (documents) => {
+  const renderDocuments = () => {
+    const {
+      projectSummary: { documents },
+    } = props;
     return (
       <div id="documents">
         <Typography.Title level={4}>Documents</Typography.Title>
@@ -225,16 +285,17 @@ export const ProjectSummaryForm = (props) => {
   };
 
   const {
-    formattedProjectSummary: { contacts, documents },
+    formattedProjectSummary: { contacts, documents, authorizations },
+    projectSummaryAuthorizationTypes,
   } = props;
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical">
       {renderProjectDetails()}
       {renderAuthorizationsInvolved()}
-      {renderProjectDates(props.formattedProjectSummary)}
-      {renderContacts(contacts)}
-      {renderDocuments(documents)}
+      {renderProjectDates()}
+      {renderContacts()}
+      {renderDocuments()}
     </Form>
   );
 };
