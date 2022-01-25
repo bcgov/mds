@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -41,27 +41,27 @@ const transformRowData = (projectSummaries) => {
 export const MineProjectSummaryTable = (props) => {
   const columns = [
     {
+      key: "project_name",
       title: "Project name",
       dataIndex: "project_name",
-      sorter: true,
       render: (text) => <div title="Project name">{text}</div>,
     },
     {
+      key: "project_proponent_id",
       title: "Project Proponent ID",
       dataIndex: "project_proponent_id",
-      sorter: true,
       render: (text) => <div title="Project Proponent ID">{text}</div>,
     },
     {
+      key: "project_contact",
       title: "Project contact",
       dataIndex: "project_contact",
-      sorter: true,
       render: (text) => <div title="Project contact">{text}</div>,
     },
     {
+      key: "project_stage",
       title: "Project stage",
       dataIndex: "project_stage",
-      sorter: true,
       render: (text) => (
         <div title="Project stage">
           {props.projectSummaryStatusCodesHash[text] || Strings.EMPTY_FIELD}
@@ -69,16 +69,19 @@ export const MineProjectSummaryTable = (props) => {
       ),
     },
     {
+      key: "first_submitted_date",
       title: "First submitted date",
       dataIndex: "first_submitted_date",
-      sorter: true,
       render: (text) => <div title="First submitted date">{text}</div>,
+      sorter: dateSorter("first_submitted_date"),
     },
     {
+      key: "last_updated_date",
       title: "Last updated date",
       dataIndex: "last_updated_date",
-      sorter: true,
       render: (text) => <div title="Last updated date">{text}</div>,
+      sorter: dateSorter("last_updated_date"),
+      sortOrder: "descend",
     },
     {
       title: "Files",
