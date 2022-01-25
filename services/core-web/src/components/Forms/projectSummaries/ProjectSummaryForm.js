@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography } from "antd";
+import { Typography, Row, Col } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
@@ -40,24 +40,28 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-details">
         <Typography.Title level={3}>Project details</Typography.Title>
-        <Form.Item>
-          <Field
-            id="proponent_project_id"
-            name="proponent_project_id"
-            label="Project number"
-            component={renderConfig.FIELD}
-            disabled
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="project_summary_description"
-            name="project_summary_description"
-            label="Executive summary"
-            component={renderConfig.AUTO_SIZE_FIELD}
-            disabled
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col md={12} xs={18}>
+            <Form.Item>
+              <Field
+                id="proponent_project_id"
+                name="proponent_project_id"
+                label="Project number"
+                component={renderConfig.FIELD}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="project_summary_description"
+                name="project_summary_description"
+                label="Executive summary"
+                component={renderConfig.AUTO_SIZE_FIELD}
+                disabled
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </div>
     );
   };
@@ -87,19 +91,19 @@ export const ProjectSummaryForm = (props) => {
           return (
             <>
               {!parentHeaderAdded ? (
-                <Typography.Title level={3}>
+                <h2>
                   {
                     transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
                       ?.description
                   }
-                </Typography.Title>
+                </h2>
               ) : null}
-              <Typography.Title level={4}>
+              <h4>
                 {
                   transformedAuthorizationTypesHash[a.project_summary_authorization_type]
                     ?.description
                 }
-              </Typography.Title>
+              </h4>
               <Typography>Types of permits</Typography>
               {a.project_summary_permit_type.map((pt) => {
                 parentHeadersAdded.push(parentCode);
@@ -123,9 +127,15 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
-        <Typography strong>Proponent contacts</Typography>
-        <Typography strong>Primary project contact</Typography>
-        <Field
+        <h3>Proponent contacts</h3>
+        <p className="bold">Primary project contact</p>
+        <p>{contacts[0]?.name}</p>
+        <p>{contacts[0]?.job_title}</p>
+        <p>{contacts[0]?.company_name}</p>
+        <p>{contacts[0]?.email}</p>
+        <div className="inline-flex"></div>
+        <p>{contacts[0]?.phone_number}</p>
+        {/* <Field
           id="primary_contact_name"
           name="contacts[0].name"
           component={renderConfig.FIELD}
@@ -158,7 +168,7 @@ export const ProjectSummaryForm = (props) => {
           name="contacts[0].phone_number"
           component={renderConfig.FIELD}
           disabled
-        />
+        /> */}
         {contacts.length > 1 && <Typography strong>Additional project contacts</Typography>}
         {contacts.length >= 1 &&
           contacts.map((c, idx) => {
@@ -215,42 +225,46 @@ export const ProjectSummaryForm = (props) => {
           These are the key dates the proponent hopes to target. A final schedule will be negotiated
           during the pre-application review.
         </Typography>
-        <Form.Item>
-          <Field
-            id="expected_draft_irt_submission_date"
-            name="expected_draft_irt_submission_date"
-            label="Anticipated draft IRT submission date"
-            component={renderConfig.DATE}
-            disabled
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="expected_permit_application_date"
-            name="expected_permit_application_date"
-            label="Anticipated permit application submission date"
-            component={renderConfig.DATE}
-            disabled
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="expected_permit_receipt_date"
-            name="expected_permit_receipt_date"
-            label="Desired permit issuance date"
-            component={renderConfig.DATE}
-            disabled
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="expected_project_start_date"
-            name="expected_project_start_date"
-            label="Anticipated work start date"
-            component={renderConfig.DATE}
-            disabled
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col md={12} xs={18}>
+            <Form.Item>
+              <Field
+                id="expected_draft_irt_submission_date"
+                name="expected_draft_irt_submission_date"
+                label="Anticipated draft IRT submission date"
+                component={renderConfig.DATE}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="expected_permit_application_date"
+                name="expected_permit_application_date"
+                label="Anticipated permit application submission date"
+                component={renderConfig.DATE}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="expected_permit_receipt_date"
+                name="expected_permit_receipt_date"
+                label="Desired permit issuance date"
+                component={renderConfig.DATE}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="expected_project_start_date"
+                name="expected_project_start_date"
+                label="Anticipated work start date"
+                component={renderConfig.DATE}
+                disabled
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </div>
     );
   };
@@ -292,9 +306,13 @@ export const ProjectSummaryForm = (props) => {
   return (
     <Form layout="vertical">
       {renderProjectDetails()}
+      <br />
       {renderAuthorizationsInvolved()}
+      <br />
       {renderProjectDates()}
+      <br />
       {renderContacts()}
+      <br />
       {renderDocuments()}
     </Form>
   );
