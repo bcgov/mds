@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
 import moment from "moment";
 import * as partiesReducer from "../reducers/partiesReducer";
-import { createLabelHash } from "../utils/helpers";
+import { PARTIES } from "../constants/reducerTypes";
+import { createLabelHash, createDropDownList } from "../utils/helpers";
 
 export const {
   getParties,
@@ -12,9 +13,7 @@ export const {
   getAddPartyFormState,
   getLastCreatedParty,
   getInspectors,
-  getInspectorsList,
   getProjectLeads,
-  getProjectLeadsList,
   getAllPartyRelationships,
 } = partiesReducer;
 
@@ -89,6 +88,12 @@ export const getDropdownProjectLeads = createSelector([getProjectLeads], (partie
     { groupName: "Inactive", opt: inactiveProjectLeads },
   ];
 });
+
+export const getInspectorsList = (state) =>
+  createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
+
+export const getProjectLeadsList = (state) =>
+  createDropDownList(state[PARTIES].projectLeads, "name", "party_guid");
 
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
 export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);

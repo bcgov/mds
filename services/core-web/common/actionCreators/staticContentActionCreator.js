@@ -29,7 +29,7 @@ export const fetchInspectors = () => (dispatch) => {
       ENVIRONMENT.apiUrl +
         API.PARTIES_LIST_QUERY({
           per_page: "all",
-          business_role: String.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+          business_role: String.BUSINESS_ROLES.inspector,
         }),
       createRequestHeader()
     )
@@ -47,7 +47,7 @@ export const fetchProjectLeads = () => (dispatch) => {
       ENVIRONMENT.apiUrl +
         API.PARTIES_LIST_QUERY({
           per_page: "all",
-          business_role: String.INCIDENT_FOLLOWUP_ACTIONS.projectLead,
+          business_role: String.BUSINESS_ROLES.projectLead,
         }),
       createRequestHeader()
     )

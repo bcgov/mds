@@ -75,10 +75,13 @@ export const INCIDENT_DETERMINATION_TYPES = {
 
 export const INCIDENT_FOLLOWUP_ACTIONS = {
   miu: "MIU",
-  inspector: "INS",
-  projectLead: "PRL",
   none: "NO",
   unknown: "HUK",
+};
+
+export const BUSINESS_ROLES = {
+  inspector: "INS",
+  projectLead: "PRL",
 };
 
 export const NOT_APPLICABLE = "N/A";
