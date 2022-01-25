@@ -29,6 +29,7 @@ import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectS
 import * as Permission from "@/constants/permissions";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
+import NullScreen from "@/components/common/NullScreen";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 
 const propTypes = {
@@ -47,17 +48,24 @@ export class ProjectSummary extends Component {
     isLoaded: false,
     fixedTop: false,
     isTabLoaded: false,
+    isValid: true,
     activeTab: "project-descriptions",
   };
 
   componentDidMount() {
-    this.handleFetchData();
+    this.handleFetchData(this.props.match.params);
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  componentDidUpdate(nextProps) {
+    if (nextProps.match.params.projectSummaryGuid !== this.props.match.params.projectSummaryGuid) {
+      this.handleFetchData(nextProps.match.params);
+    }
   }
 
   handleScroll = () => {
@@ -68,12 +76,17 @@ export class ProjectSummary extends Component {
     }
   };
 
-  handleFetchData = () => {
-    const { mineGuid, projectSummaryGuid } = this.props.match?.params;
+  handleFetchData = (params) => {
+    const { mineGuid, projectSummaryGuid } = params;
     if (mineGuid && projectSummaryGuid) {
-      return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
-        this.setState({ isLoaded: true });
-      });
+      return this.props
+        .fetchProjectSummaryById(mineGuid, projectSummaryGuid)
+        .then(() => {
+          this.setState({ isLoaded: true, isValid: true });
+        })
+        .catch(() => {
+          this.setState({ isLoaded: false, isValid: false });
+        });
     }
   };
 
@@ -87,6 +100,9 @@ export class ProjectSummary extends Component {
   };
 
   render() {
+    if (!this.state.isValid) {
+      return <NullScreen type="generic" />;
+    }
     return (
       <div className="page">
         <div
@@ -98,7 +114,7 @@ export class ProjectSummary extends Component {
         >
           <h1>
             {this.props.formattedProjectSummary.project_summary_title}
-            <span>
+            <span className="padding-sm--left">
               <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
                 <Link
                   style={{ textDecoration: "none" }}
@@ -139,7 +155,7 @@ export class ProjectSummary extends Component {
               <div
                 className={
                   this.state.fixedTop
-                    ? "side-menu--content with-fixed-top top-100"
+                    ? "side-menu--content with-fixed-top top-125"
                     : "side-menu--content"
                 }
               >

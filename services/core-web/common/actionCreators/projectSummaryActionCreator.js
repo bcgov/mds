@@ -76,7 +76,10 @@ export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispat
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectSummaryActions.storeProjectSummary(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARY)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_PROJECT_SUMMARY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
