@@ -3,13 +3,15 @@ import React, { Component } from "react";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import { kebabCase } from "lodash";
-import { submit, getFormValues, reduxForm, formValueSelector } from "redux-form";
+import { getFormValues, reduxForm } from "redux-form";
 import * as routes from "@/constants/routes";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
 import {
   getProjectSummaryStatusCodesHash,
   getProjectSummaryDocumentTypesHash,
+  getTransformedProjectSummaryAuthorizationTypes,
+  getProjectSummaryPermitTypesHash,
 } from "@common/selectors/staticContentSelectors";
 import {
   getProjectSummary,
@@ -18,7 +20,6 @@ import {
 import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
-import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -34,6 +35,7 @@ const propTypes = {
   projectSummary: CustomPropTypes.projectSummary,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   getProjectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -82,10 +84,6 @@ export class ProjectSummary extends Component {
         kebabCase(key)
       )
     );
-  };
-
-  handleSubmit = (values) => {
-    return true;
   };
 
   render() {
@@ -168,6 +166,8 @@ const mapStateToProps = (state) => {
     formValues: getFormValues(FORM.PROJECT_SUMMARY)(state),
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
+    projectSummaryAuthorizationTypes: getTransformedProjectSummaryAuthorizationTypes(state),
+    projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     initialValues: getFormattedProjectSummary(state),
   };
 };
