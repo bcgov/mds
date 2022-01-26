@@ -35,6 +35,9 @@ const propTypes = {
   fetchMinespaceUserMines: PropTypes.func.isRequired,
   deleteMinespaceUser: PropTypes.func.isRequired,
   updateMinespaceUserMines: PropTypes.func.isRequired,
+  createMinespaceUser: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -66,7 +69,6 @@ export class MinespaceUserManagement extends Component {
   };
 
   handleOpenModal = (e, record) => {
-    console.log(record);
     this.props.openModal({
       props: {
         title: "Update User",
@@ -76,7 +78,6 @@ export class MinespaceUserManagement extends Component {
         refreshData: this.refreshUserData,
         minespaceUserEmailHash: this.props.minespaceUserEmailHash,
         afterClose: () => {},
-        // onSubmit: this.handleUpdate,
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
       width: "75vw",
@@ -84,12 +85,9 @@ export class MinespaceUserManagement extends Component {
   };
 
   handleUpdate = (record) => {
-    // console.log("RECORD: ", record);
     this.props.updateMinespaceUserMines(record.user_id, record).then(() => {
-      console.log("We in hereeee???")
       this.props.closeModal();
       this.refreshUserData();
-      // this.refreshUserData();
     });
   };
 

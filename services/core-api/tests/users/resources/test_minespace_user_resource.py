@@ -93,9 +93,11 @@ def test_update_minespace_user_mines_success(test_client, db_session, auth_heade
 
     assert put_resp.status_code == 200, put_resp.response
     decoded_resp = json.loads(put_resp.data)
-    
-    assert decoded_resp['mines'][0] == str(mine.mine_guid)
+    mines = decoded_resp['records'][0]['mines']
 
+    assert mines[0] == str(mine.mine_guid)
+    assert len(mines) == 1
+    
 
 def test_update_minespace_user_empty_mine_list(test_client, db_session, auth_headers):
     user = MinespaceUserFactory()
@@ -129,7 +131,7 @@ def test_update_minespace_user_mine_does_not_exist(test_client, db_session, auth
 
     assert put_resp.status_code == 404, put_resp.response
 
-def test_update_minespace_user_mine_user_does_not_exist(test_client, db_session, auth_headers):
+def test_update_minespace_user_does_not_exist(test_client, db_session, auth_headers):
     
     email = "test@email.com"
     mine_guids = [str(uuid.uuid4())]

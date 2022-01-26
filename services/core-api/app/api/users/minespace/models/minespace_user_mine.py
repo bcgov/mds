@@ -23,20 +23,15 @@ class MinespaceUserMine(Base):
         return minespace_user
 
     @classmethod
-    def find_by_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).first()
+    # Unlike other functions find_by functions, this function HAS to use both the user_id and the mine_guid, 
+    # since it's looking for relationships between a mine and a minespace user, and needs both keys to be unique. 
+    def find_by_minespace_user_mine_relationship(cls, mine_guid, user_id):
+        return cls.query.filter_by(mine_guid=mine_guid, user_id=user_id).first()
 
     
     def delete(self):
         current_app.logger.debug('foooo mine')
         print('Delete mine')
         db.session.delete(self)
-
-        # minespace_user_mine = cls.find_by_guid(mine_guid)
-        # if minespace_user_mine is None:
-        #     raise NotFound('MinespaceUserMine not found')
-       
-        
-        # db.session.delete(minespace_user_mine)
         db.session.commit()
         return None, 204

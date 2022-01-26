@@ -81,32 +81,24 @@ class MinespaceUserResource(Resource, UserMixin):
         if not data.get('mine_guids'):
             raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
 
-        current_app.logger.debug('Mine list found, checking for new mines')
-        
         existing_mines = contact.mines # list of mines already existing in the user's mine list
         updated_mines = data.get('mine_guids') # updated list of mines to be applied to the user
 
         for delete_mine in existing_mines:
             if str(delete_mine) not in updated_mines:
-                current_app.logger.debug('Deleting mine: {}'.format(delete_mine))
-                minespace_user_mine = MinespaceUserMine.find_by_guid(delete_mine)
-                if minespace_user_mine:
-                    
+                minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(delete_mine, user_id)
+                if minespace_user_mine:  
                     minespace_user_mine.delete()
-
 
         # Cycle through list of mines. Mines have to exist before being added to the user.
         for guid in updated_mines:
-    
             mine = Mine.find_by_mine_guid(guid)
-            
             if not mine:
                 raise NotFound('Mine with guid {} not found.'.format(guid))
-
-            existing_minespace_user_mine = MinespaceUserMine.find_by_guid(guid)
+            existing_minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(guid, user_id)
+            current_app.logger.debug('Existing Mine: {}'.format(existing_minespace_user_mine))
             if not existing_minespace_user_mine:
-                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)   
-                
+                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)       
         contact.save()
         return MinespaceUser.get_all()
         

@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { compose } from "redux";
-import { connect } from "react-redux";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -72,27 +70,9 @@ export const EditMinespaceUser = (props) => (
 
 EditMinespaceUser.propTypes = propTypes;
 
-const mapStateToProps = (state) => ({
-  formValues: getFormValues(FORM.EDIT_MINESPACE_USER)(state) || {},
-});
-
 export default reduxForm({
   form: FORM.EDIT_MINESPACE_USER,
   initialValues: { proponent_mine_access: [] },
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.EDIT_MINESPACE_USER),
 })(EditMinespaceUser);
-
-// export default compose(
-//   connect(mapStateToProps),
-
-//   reduxForm({
-//     form: FORM.EDIT_MINESPACE_USER,
-//     initialValues: { mine_guids: [], email_or_username: "foo@foo.com" },
-//     touchOnBlur: true,
-
-//     touchOnChange: false,
-
-//     onSubmit: () => {},
-//   })
-// )(EditMinespaceUser);

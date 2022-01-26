@@ -27,8 +27,6 @@ export const createMinespaceUser = (payload) => (dispatch) => {
 };
 
 export const updateMinespaceUserMines = (minespace_id, payload) => (dispatch) => {
-  console.log("PAYLOAD: ", payload);
-  console.log("MINESPACE_ID: ", minespace_id);
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.UPDATE_MINESPACE_USER_MINES));
   return CustomAxios()
@@ -40,8 +38,6 @@ export const updateMinespaceUserMines = (minespace_id, payload) => (dispatch) =>
     .then((response) => {
       dispatch(success(reducerTypes.UPDATE_MINESPACE_USER_MINES));
       return response;
-      // console.log(response.data);
-      // dispatch(minespaceActions.storeMinespaceUserMineList(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_MINESPACE_USER_MINES)))
     .finally(() => dispatch(hideLoading("modal")));
@@ -53,7 +49,6 @@ export const fetchMinespaceUsers = () => (dispatch) => {
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINESPACE_USER, createRequestHeader())
     .then((response) => {
-      console.log(response.data);
       dispatch(success(reducerTypes.GET_MINESPACE_USER));
       dispatch(minespaceActions.storeMinespaceUserList(response.data));
     })
