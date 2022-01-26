@@ -2,7 +2,7 @@
 
 exports[`UpdateMinespaceUserModal renders properly 1`] = `
 <div>
-  <Connect(NewMinespaceUser)
+  <Connect(UpdateMinespaceUser)
     onSubmit={[MockFunction]}
     title="mock title"
   />

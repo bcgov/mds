@@ -11,6 +11,7 @@ const propTypes = {
   minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
   handleDelete: PropTypes.func,
   isLoaded: PropTypes.bool.isRequired,
+  handleOpenModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -54,7 +55,7 @@ const columns = [
           ghost
           type="primary"
         >
-          <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Remove User" />
+          <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit User" />
         </Button>
         <Popconfirm
           placement="topLeft"
