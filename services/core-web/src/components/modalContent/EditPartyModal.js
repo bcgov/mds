@@ -26,6 +26,13 @@ export const EditPartyModal = (props) => {
       (!role.end_date || today.isBefore(role.end_date, "day"))
   );
 
+  const projectLeadInfo = party.business_role_appts.find(
+    (role) =>
+      role.party_business_role_code === "PRL" &&
+      today.isSameOrAfter(role.start_date, "day") &&
+      (!role.end_date || today.isBefore(role.end_date, "day"))
+  );
+
   if (inspectorInfo) {
     party.set_to_inspector =
       today.isSameOrAfter(inspectorInfo.start_date, "day") &&
@@ -33,6 +40,18 @@ export const EditPartyModal = (props) => {
     party.inspector_start_date = moment(formatDate(inspectorInfo.start_date)).format("YYYY-MM-DD");
     party.inspector_end_date = inspectorInfo.end_date
       ? moment(formatDate(inspectorInfo.end_date)).format("YYYY-MM-DD")
+      : null;
+  }
+
+  if (projectLeadInfo) {
+    party.set_to_project_lead =
+      today.isSameOrAfter(projectLeadInfo.start_date, "day") &&
+      (!projectLeadInfo.end_date || today.isSameOrBefore(projectLeadInfo.end_date, "day"));
+    party.project_lead_start_date = moment(formatDate(projectLeadInfo.start_date)).format(
+      "YYYY-MM-DD"
+    );
+    party.project_end_date = projectLeadInfo.end_date
+      ? moment(formatDate(projectLeadInfo.end_date)).format("YYYY-MM-DD")
       : null;
   }
 

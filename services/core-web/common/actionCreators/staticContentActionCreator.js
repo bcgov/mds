@@ -29,7 +29,7 @@ export const fetchInspectors = () => (dispatch) => {
       ENVIRONMENT.apiUrl +
         API.PARTIES_LIST_QUERY({
           per_page: "all",
-          business_role: String.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+          business_role: String.BUSINESS_ROLES.inspector,
         }),
       createRequestHeader()
     )
@@ -38,4 +38,22 @@ export const fetchInspectors = () => (dispatch) => {
       dispatch(partyActions.storeInspectors(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)));
+};
+
+export const fetchProjectLeads = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PROJECT_LEADS));
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({
+          per_page: "all",
+          business_role: String.BUSINESS_ROLES.projectLead,
+        }),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PROJECT_LEADS));
+      dispatch(partyActions.storeProjectLeads(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PROJECT_LEADS)));
 };
