@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
 import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
-import CustomPropTypes from "@/customPropTypes";
-import { sideMenuOptions } from "./ProjectSummarySections";
 
 /**
  * @constant ProjectSummarySideMenu renders react children with an active indicator if the id is in the url.
@@ -25,16 +23,39 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  projectSummary: CustomPropTypes.projectSummary.isRequired,
+  tabSection: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = { tabSection: "" };
 
 export class ProjectSummarySideMenu extends Component {
   state = {};
 
   // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
+
+  sideMenuOptions = [
+    {
+      href: "project-details",
+      title: "Project details",
+    },
+    {
+      href: "authorizations-involved",
+      title: "Authorizations involved",
+    },
+    {
+      href: "project-dates",
+      title: "Project dates",
+    },
+    {
+      href: "project-contacts",
+      title: "Project contacts",
+    },
+    {
+      href: "documents",
+      title: "Documents",
+    },
+  ];
 
   componentDidMount() {
     // If the user loads the page with a hash in the URL, start them off at the corresponding Project Summary section.
@@ -77,7 +98,6 @@ export class ProjectSummarySideMenu extends Component {
   };
 
   updateUrlRoute = (route) => {
-    console.log("UPDATE URL ROUTE: ", route);
     const { mineGuid, projectSummaryGuid } = this.props.match.params;
     this.urlRoute = routes.PRE_APPLICATIONS.hashRoute(mineGuid, projectSummaryGuid, route);
 
@@ -100,7 +120,7 @@ export class ProjectSummarySideMenu extends Component {
             this.anchor = anchor;
           }}
         >
-          {sideMenuOptions.map(({ href, title }) => (
+          {this.sideMenuOptions.map(({ href, title }) => (
             <Anchor.Link href={`#${href}`} title={title} className="now-menu-link" />
           ))}
         </Anchor>
