@@ -101,17 +101,18 @@ export const ProjectSummaryForm = (props) => {
                     }
                   </h2>
                 ) : null}
-                <h4>
+                <h4 className="padding-sm--bottom">
                   {
                     transformedAuthorizationTypesHash[a.project_summary_authorization_type]
                       ?.description
                   }
                 </h4>
-                <p className="bold">Types of permits</p>
+                <p className="bold padding-sm--bottom">Types of permits</p>
                 {a.project_summary_permit_type.map((pt) => {
                   return <p className="padding-md--left">{projectSummaryPermitTypesHash[pt]}</p>;
                 })}
-                <p className="bold">Existing permit numbers involved</p>
+                <br />
+                <p className="bold padding-sm--bottom">Existing permit numbers involved</p>
                 {a.existing_permits_authorizations.map((epa) => {
                   return <p className="padding-md--left">{epa}</p>;
                 })}
