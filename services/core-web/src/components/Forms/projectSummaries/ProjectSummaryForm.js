@@ -93,7 +93,7 @@ export const ProjectSummaryForm = (props) => {
             const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
             return (
               <>
-                {!parentHeaderAdded ? (
+                {!parentHeaderAdded && parentHeadersAdded.push(parentCode) ? (
                   <h2>
                     {
                       transformedAuthorizationTypesHash[a.project_summary_authorization_type]
@@ -109,7 +109,6 @@ export const ProjectSummaryForm = (props) => {
                 </h4>
                 <Typography>Types of permits</Typography>
                 {a.project_summary_permit_type.map((pt) => {
-                  parentHeadersAdded.push(parentCode);
                   return <Typography>{projectSummaryPermitTypesHash[pt]}</Typography>;
                 })}
                 <Typography>Existing permit numbers involved</Typography>
