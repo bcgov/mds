@@ -6,38 +6,41 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "project_name",
+        "key": "project_name",
         "render": [Function],
-        "sorter": true,
         "title": "Project name",
       },
       Object {
         "dataIndex": "project_proponent_id",
+        "key": "project_proponent_id",
         "render": [Function],
-        "sorter": true,
         "title": "Project Proponent ID",
       },
       Object {
         "dataIndex": "project_contact",
+        "key": "project_contact",
         "render": [Function],
-        "sorter": true,
         "title": "Project contact",
       },
       Object {
         "dataIndex": "project_stage",
+        "key": "project_stage",
         "render": [Function],
-        "sorter": true,
         "title": "Project stage",
       },
       Object {
         "dataIndex": "first_submitted_date",
+        "key": "first_submitted_date",
         "render": [Function],
-        "sorter": true,
+        "sorter": [Function],
         "title": "First submitted date",
       },
       Object {
         "dataIndex": "last_updated_date",
+        "key": "last_updated_date",
         "render": [Function],
-        "sorter": true,
+        "sortOrder": "descend",
+        "sorter": [Function],
         "title": "Last updated date",
       },
       Object {
