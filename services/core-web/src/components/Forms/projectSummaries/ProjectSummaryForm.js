@@ -42,7 +42,7 @@ export const ProjectSummaryForm = (props) => {
       <div id="project-details">
         <Typography.Title level={3}>Project details</Typography.Title>
         <Row gutter={16}>
-          <Col md={12} xs={18}>
+          <Col lg={12} md={24}>
             <Form.Item>
               <Field
                 id="proponent_project_id"
@@ -78,14 +78,14 @@ export const ProjectSummaryForm = (props) => {
     );
     // We need to make sure we only add parent authorization type labels once to the form
     const parentHeadersAdded = [];
-    console.log(authorizations);
     return (
       <div id="authorizations-involved">
         <Typography.Title level={3}>Authorizations involved</Typography.Title>
-        <Typography>
+        <p>
           These are the authorizations the proponent believes may be needed for this project.
           Additional authorizations may be required.
-        </Typography>
+        </p>
+        <br />
         {authorizations.length > 0 &&
           authorizations.map((a) => {
             const parentCode =
@@ -107,15 +107,16 @@ export const ProjectSummaryForm = (props) => {
                       ?.description
                   }
                 </h4>
-                <Typography>Types of permits</Typography>
+                <p className="bold">Types of permits</p>
                 {a.project_summary_permit_type.map((pt) => {
                   parentHeadersAdded.push(parentCode);
-                  return <Typography>{projectSummaryPermitTypesHash[pt]}</Typography>;
+                  return <p className="padding-md--left">{projectSummaryPermitTypesHash[pt]}</p>;
                 })}
-                <Typography>Existing permit numbers involved</Typography>
+                <p className="bold">Existing permit numbers involved</p>
                 {a.existing_permits_authorizations.map((epa) => {
-                  return <Typography>{epa}</Typography>;
+                  return <p className="padding-md--left">{epa}</p>;
                 })}
+                <br />
               </>
             );
           })}
@@ -133,85 +134,28 @@ export const ProjectSummaryForm = (props) => {
         <h3>Proponent contacts</h3>
         <p className="bold">Primary project contact</p>
         <p>{contacts[0]?.name}</p>
-        <p>{contacts[0]?.job_title}</p>
-        <p>{contacts[0]?.company_name}</p>
-        <p>{contacts[0]?.email}</p>
-        <div className="inline-flex"></div>
-        <p>{contacts[0]?.phone_number}</p>
-        {/* <Field
-          id="primary_contact_name"
-          name="contacts[0].name"
-          component={renderConfig.FIELD}
-          disabled
-        />
-        {contacts[0]?.job_title && (
-          <Field
-            id="primary_contact_job_title"
-            name="contacts[0].job_title"
-            component={renderConfig.FIELD}
-            disabled
-          />
-        )}
-        {contacts[0]?.company_name && (
-          <Field
-            id="primary_contact_company_name"
-            name="contacts[0].company_name"
-            component={renderConfig.FIELD}
-            disabled
-          />
-        )}
-        <Field
-          id="primary_contact_email"
-          name="contacts[0].email"
-          component={renderConfig.FIELD}
-          disabled
-        />
-        <Field
-          id="primary_contact_phone_number"
-          name="contacts[0].phone_number"
-          component={renderConfig.FIELD}
-          disabled
-        /> */}
-        {contacts.length > 1 && <Typography strong>Additional project contacts</Typography>}
+        {contacts[0]?.job_title && <p>{contacts[0]?.job_title}</p>}
+        {contacts[0]?.company_name && <p>{contacts[0]?.company_name}</p>}
+        <a href={`mailto: ${contacts[0]?.email}`}>{contacts[0]?.email}</a>
+        <div className="inline-flex">
+          <p>{contacts[0]?.phone_number}</p>
+          {contacts[0]?.phone_extension && <p> ({contacts[0]?.phone_extension})</p>}
+        </div>
+        <br />
+        {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
         {contacts.length >= 1 &&
-          contacts.map((c, idx) => {
-            if (!c.is_primary) {
+          contacts.map((contact, idx) => {
+            if (!contact.is_primary) {
               return (
                 <>
-                  <Field
-                    id={`contact_name_${idx}`}
-                    name={`contacts[${idx}].name`}
-                    component={renderConfig.FIELD}
-                    disabled
-                  />
-                  {contacts[idx]?.job_title && (
-                    <Field
-                      id={`contact_job_title_${idx}`}
-                      name={`contacts[${idx}].job_title`}
-                      component={renderConfig.FIELD}
-                      disabled
-                    />
-                  )}
-                  {contacts[idx]?.company_name && (
-                    <Field
-                      id={`contact_company_name_${idx}`}
-                      name={`contacts[${idx}].company_name`}
-                      component={renderConfig.FIELD}
-                      disabled
-                    />
-                  )}
-                  <Field
-                    id={`contact_email_${idx}`}
-                    name={`contacts[${idx}].email`}
-                    component={renderConfig.FIELD}
-                    disabled
-                  />
-                  <Field
-                    id={`contact_phone_number_${idx}`}
-                    name={`contacts[${idx}].phone_number`}
-                    component={renderConfig.FIELD}
-                    disabled
-                  />
+                  <p>{contact.name}</p>
+                  {contact.job_title && <p>{contact.job_title}</p>}
+                  {contact.company_name && <p>{contact.company_name}</p>}
+                  <a href={`mailto: ${contact.email}`}>{contact.email}</a>
+                  <div className="inline-flex">
+                    <p>{contact.phone_number}</p>
+                    {contact.phone_extension && <p> ({contact.phone_extension})</p>}
+                  </div>
                 </>
               );
             }
@@ -224,12 +168,13 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-dates">
         <Typography.Title level={3}>Project dates requested by proponent</Typography.Title>
-        <Typography>
+        <p>
           These are the key dates the proponent hopes to target. A final schedule will be negotiated
           during the pre-application review.
-        </Typography>
+        </p>
+        <br />
         <Row gutter={16}>
-          <Col md={12} xs={18}>
+          <Col lg={12} md={24}>
             <Form.Item>
               <Field
                 id="expected_draft_irt_submission_date"
