@@ -95,9 +95,10 @@ class MinespaceUserResource(Resource, UserMixin):
             if not mine:
                 raise NotFound('Mine with guid {} not found.'.format(guid))
             existing_minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(guid, user_id)
-            current_app.logger.debug('Existing Mine: {}'.format(existing_minespace_user_mine))
+            current_app.logger.info('Existing Mine: {}'.format(existing_minespace_user_mine))
             if not existing_minespace_user_mine:
                 new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)       
         contact.save()
-        return MinespaceUser.get_all()
+        return contact
+
         

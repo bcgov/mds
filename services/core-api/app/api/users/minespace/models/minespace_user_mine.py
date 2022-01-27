@@ -1,13 +1,11 @@
 import uuid
 
-from flask import request, current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.utils.models_mixins import AuditMixin, Base
-from werkzeug.exceptions import NotFound
+from app.api.utils.models_mixins import Base
 
 class MinespaceUserMine(Base):
     __tablename__ = 'minespace_user_mds_mine_access'
