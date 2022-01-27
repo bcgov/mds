@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import UpdateMinespaceUserModal from "@/components/modalContent/UpdateMinespaceUserModal";
+import { UpdateMinespaceUserModal } from "@/components/modalContent/UpdateMinespaceUserModal";
 
 const dispatchProps = {};
 const props = {};

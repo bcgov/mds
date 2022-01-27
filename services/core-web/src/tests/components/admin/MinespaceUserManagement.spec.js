@@ -20,7 +20,6 @@ const setupDispatchProps = () => {
   dispatchProps.createMinespaceUser = jest.fn();
   dispatchProps.updateMinespaceUserMines = jest.fn();
   dispatchProps.fetchMinespaceUserMines = jest.fn();
-  dispatchProps.updateMinespaceUserMines = jest.fn();
 };
 
 beforeEach(() => {

@@ -30,8 +30,6 @@ class MinespaceUserMine(Base):
 
     
     def delete(self):
-        current_app.logger.debug('foooo mine')
-        print('Delete mine')
         db.session.delete(self)
         db.session.commit()
         return None, 204

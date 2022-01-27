@@ -73,7 +73,6 @@ class MinespaceUserResource(Resource, UserMixin):
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
     @requires_role_mine_admin
     def put(self, user_id):
-        # current_app.logger.debug('Mine list found, checking for new mines')
         contact = MinespaceUser.find_by_id(user_id)
         if not contact:
             raise NotFound('Contact not found.')

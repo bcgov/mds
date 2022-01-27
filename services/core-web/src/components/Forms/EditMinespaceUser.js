@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
-import { required, requiredList } from "@common/utils/Validate";
+import { requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
@@ -14,16 +14,10 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
 };
-
-const minespaceUserNotExists = (value, allValues, props) =>
-  value && !(value in props.minespaceUserEmailHash)
-    ? undefined
-    : "A user with this email already exists";
 
 export const EditMinespaceUser = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -37,7 +31,6 @@ export const EditMinespaceUser = (props) => (
               label="Email/BCeID username"
               placeholder="Enter the users Email (BCeID username if email is not available)"
               component={RenderField}
-              validate={[required, minespaceUserNotExists]}
               allowClear
               disabled
             />

@@ -10,16 +10,14 @@ import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  createMinespaceUser: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
-  refreshData: PropTypes.func,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   mines: [],
   minespaceUserEmailHash: {},
-  refreshData: () => {},
 };
 
 export class NewMinespaceUser extends Component {

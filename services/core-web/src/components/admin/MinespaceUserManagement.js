@@ -71,12 +71,11 @@ export class MinespaceUserManagement extends Component {
   handleOpenModal = (e, record) => {
     this.props.openModal({
       props: {
-        title: "Update User",
+        title: `Update User: ${record.email_or_username}`,
         closeModal: this.props.closeModal,
         initialValues: record,
         handleSubmit: this.handleUpdate,
         refreshData: this.refreshUserData,
-        minespaceUserEmailHash: this.props.minespaceUserEmailHash,
         afterClose: () => {},
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
@@ -106,7 +105,6 @@ export class MinespaceUserManagement extends Component {
         <br />
         <NewMinespaceUser
           handleSubmit={this.handleCreateUser}
-          refreshData={this.refreshUserData}
           minespaceUserEmailHash={this.props.minespaceUserEmailHash}
         />
         <h3>MineSpace Users</h3>

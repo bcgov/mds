@@ -10,16 +10,15 @@ import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  updateMinespaceUser: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
-  refreshData: PropTypes.func,
+  handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
   mines: [],
   minespaceUserEmailHash: {},
-  refreshData: () => {},
 };
 
 export class UpdateMinespaceUser extends Component {
@@ -38,9 +37,6 @@ export class UpdateMinespaceUser extends Component {
   };
 
   render() {
-    const {
-      initialValues: { mineNames },
-    } = this.props;
     return (
       <div>
         <h3>Edit Proponent</h3>
@@ -52,7 +48,7 @@ export class UpdateMinespaceUser extends Component {
             }))}
             initialValues={{
               ...this.props.initialValues,
-              mine_guids: mineNames.map((mn) => mn.mine_guid),
+              mine_guids: this.props.initialValues.mineNames.map((mn) => mn.mine_guid),
             }}
             minespaceUserEmailHash={this.props.minespaceUserEmailHash}
             onSubmit={this.props.handleSubmit}
