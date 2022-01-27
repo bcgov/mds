@@ -8,6 +8,7 @@ const setupReducerProps = () => {
   props.location = { pathname: " " };
   props.loadBulkStaticContent = jest.fn();
   props.fetchInspectors = jest.fn();
+  props.fetchProjectLeads = jest.fn();
   props.staticContentLoadingIsComplete = true;
 };
 
