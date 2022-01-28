@@ -56,7 +56,6 @@ exports[`ProjectSummary renders properly 1`] = `
     }
     centered={true}
     className="now-tabs"
-    onTabClick={[Function]}
     size="large"
     style={
       Object {
