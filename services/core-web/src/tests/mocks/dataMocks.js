@@ -6483,6 +6483,76 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN = [
   },
 ];
 
+export const PROJECT_SUMMARY_PERMIT_TYPES_DROPDOWN = [
+  {
+    value: "AMENDMENT",
+    label: "Amendment to an existing permit",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "CLOSURE",
+    label: "Closure of an existing permit",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "NEW",
+    label: "New",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "NOTIFICATION",
+    label: "Notification",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "OTHER",
+    label: "Other",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED = [
+  {
+    code: "MINES_ACT",
+    description: "Mines Act",
+    children: [{ code: "MINES_ACT_PERMIT", description: "Mines Act permit" }],
+  },
+  {
+    code: "ENVIRONMENTAL_MANAGMENT_ACT",
+    description: "Environmental Management Act",
+    children: [
+      { code: "AIR_EMISSIONS_DISCHARGE_PERMIT", description: "Air emissions discharge permit" },
+      { code: "EFFLUENT_DISCHARGE_PERMIT", description: "Effluent discharge permit" },
+      { code: "SOLID_WASTES_PERMIT", description: "Solid wastes permit" },
+      { code: "MUNICIPAL_WASTEWATER_REGULATION", description: "Municipal wastewater regulation" },
+    ],
+  },
+  {
+    code: "WATER_SUSTAINABILITY_ACT",
+    description: "Water Sustainability Act",
+    children: [
+      { code: "CHANGE_APPROVAL", description: "Change approval" },
+      { code: "USE_APPROVAL", description: "Use approval" },
+      { code: "WATER_LICENCE", description: "Water licence" },
+    ],
+  },
+  {
+    code: "FORESTRY_ACT",
+    description: "Forestry Act",
+    children: [{ code: "OCCUPANT_CUT_LICENCE", description: "Occupant licence to cut" }],
+  },
+  {
+    code: "OTHER_LEGISLATION",
+    description: "Other legislation",
+    children: [{ code: "OTHER", description: "Other legislation" }],
+  },
+];
+
 export const EMLI_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
