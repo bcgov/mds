@@ -35,12 +35,12 @@ const propTypes = {
 
 const renderRecommendations = ({ fields }) => [
   <div className="ant-col ant-form-item-label">
-    <label>Recommendations</label>
+    <label>Mine Manager Recommendations</label>
   </div>,
   fields.map((recommendation) => (
     <Field
       name={`${recommendation}.recommendation`}
-      placeholder="Provide recommendation actions"
+      placeholder="Write in each individual Mine Manager Recommendation here"
       component={renderConfig.AUTO_SIZE_FIELD}
     />
   )),
