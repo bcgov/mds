@@ -1,10 +1,7 @@
-/* eslint-disable */
 import React, { Component } from "react";
-import { bindActionCreators, compose } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { kebabCase } from "lodash";
-import { getFormValues, reduxForm } from "redux-form";
-import * as routes from "@/constants/routes";
+import { getFormValues } from "redux-form";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
 import {
@@ -20,7 +17,7 @@ import {
 import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
@@ -31,18 +28,22 @@ const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
-
+  match: PropTypes.shape({
+    params: {
+      projectSummaryGuid: PropTypes.string,
+    },
+  }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  getProjectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fetchProjectSummaryById: PropTypes.func.isRequired,
 };
 
 export class ProjectSummary extends Component {
   state = {
     isLoaded: false,
     fixedTop: false,
-    isTabLoaded: false,
     isValid: true,
     activeTab: "project-descriptions",
   };
@@ -53,14 +54,14 @@ export class ProjectSummary extends Component {
     this.handleScroll();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
   componentDidUpdate(nextProps) {
     if (nextProps.match.params.projectSummaryGuid !== this.props.match.params.projectSummaryGuid) {
       this.handleFetchData(nextProps.match.params);
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   handleScroll = () => {
@@ -76,22 +77,10 @@ export class ProjectSummary extends Component {
     if (mineGuid && projectSummaryGuid) {
       return this.props
         .fetchProjectSummaryById(mineGuid, projectSummaryGuid)
-        .then(() => {
-          this.setState({ isLoaded: true, isValid: true });
-        })
-        .catch(() => {
-          this.setState({ isLoaded: false, isValid: false });
-        });
+        .then(() => this.setState({ isLoaded: true, isValid: true }))
+        .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
-  };
-
-  handleTabChange = (key) => {
-    this.props.history.replace(
-      routes.PRE_APPLICATIONS.dynamicRoute(
-        this.props.noticeOfWork.now_application_guid,
-        kebabCase(key)
-      )
-    );
+    return null;
   };
 
   render() {
@@ -113,7 +102,7 @@ export class ProjectSummary extends Component {
               <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
                 <Link
                   style={{ textDecoration: "none" }}
-                  to={router.MINE_GENERAL.dynamicRoute(
+                  to={routes.MINE_GENERAL.dynamicRoute(
                     this.props.formattedProjectSummary.mine_guid
                   )}
                   disabled={!this.props.formattedProjectSummary.mine_guid}
@@ -125,7 +114,7 @@ export class ProjectSummary extends Component {
             </span>
           </h1>
           <Link
-            to={router.MINE_PRE_APPLICATIONS.dynamicRoute(
+            to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(
               this.props.formattedProjectSummary.mine_guid
             )}
           >
@@ -141,7 +130,6 @@ export class ProjectSummary extends Component {
           activeKey={this.state.activeTab}
           animated={{ inkBar: true, tabPane: false }}
           className="now-tabs"
-          onTabClick={this.handleTabChange}
           style={{ margin: "0" }}
           centered
         >
