@@ -52,3 +52,4 @@ class MinespaceUser(SoftDeleteMixin, Base):
         if not email_or_username:
             raise AssertionError('Identifier is not provided.')
         return email_or_username
+    
