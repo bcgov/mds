@@ -6370,7 +6370,7 @@ export const PROJECT_SUMMARIES = {
     {
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       project_summary_guid: "81324623978135",
-      status_code: "O",
+      status_code: "OPN",
       project_summary_date: "2021-11-19",
       project_summary_description: "Sample description.",
       documents: [],
@@ -6381,16 +6381,43 @@ export const PROJECT_SUMMARIES = {
 export const PROJECT_SUMMARY = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   project_summary_guid: "81324623978135",
-  status_code: "O",
+  status_code: "OPN",
   project_summary_date: "2021-11-19",
   project_summary_description: "Sample description.",
   documents: [],
 };
 
 export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
-  O: "Open",
-  C: "Closed",
-  W: "Withdrawn",
+  DFT: "Draft",
+  OPN: "Open",
+  CLD: "Closed",
+  WDN: "Withdrawn",
+};
+
+export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
+  MINES_ACT: "Mines Act",
+  ENVIRONMENTAL_MANAGMENT_ACT: "Environmental Management Act",
+  WATER_SUSTAINABILITY_ACT: "Water Sustainability Act",
+  FORESTRY_ACT: "Forestry Act",
+  OTHER_LEGISLATION: "Other legislation",
+  MINES_ACT_PERMIT: "Mines Act permit",
+  AIR_EMISSIONS_DISCHARGE_PERMIT: "Air emissions discharge permit",
+  EFFLUENT_DISCHARGE_PERMIT: "Effluent discharge permit",
+  SOLID_WASTES_PERMIT: "Solid wastes permit",
+  MUNICIPAL_WASTEWATER_REGULATION: "Municipal wastewater regulation",
+  CHANGE_APPROVAL: "Change approval",
+  USE_APPROVAL: "Use approval",
+  WATER_LICENCE: "Water licence",
+  OCCUPANT_CUT_LICENCE: "Occupant licence to cut",
+  OTHER: "Other legislation",
+};
+
+export const PROJECT_SUMMARY_PERMIT_TYPES_HASH = {
+  NEW: "New",
+  AMENDMENT: "Amendment",
+  NOTIFICATION: "Notification",
+  CLOSURE: "Closure",
+  OTHER: "Other",
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {
