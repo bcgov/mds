@@ -93,7 +93,7 @@ def test_update_minespace_user_mines_success(test_client, db_session, auth_heade
 
     assert put_resp.status_code == 200, put_resp.response
     decoded_resp = json.loads(put_resp.data)
-    mines = decoded_resp['records'][0]['mines']
+    mines = decoded_resp['records']['mines']
 
     assert mines[0] == str(mine.mine_guid)
     assert len(mines) == 1
