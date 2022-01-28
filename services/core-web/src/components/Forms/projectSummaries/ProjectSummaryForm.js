@@ -14,6 +14,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
+  initialValues: PropTypes.objectOf(PropTypes.any),
   projectSummaryStatusCodesOptions: CustomPropTypes.options.isRequired,
   projectSummaryDocumentTypesOptions: CustomPropTypes.options.isRequired,
 };
@@ -268,5 +269,3 @@ export default reduxForm({
   form: FORM.PROJECT_SUMMARY,
   enableReinitialize: true,
 })(ProjectSummaryForm);
-
-// export default ProjectSummaryForm;
