@@ -324,4 +324,4 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
                 f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
 
-        EmailService.send_email(subject, proponent_recipients, body, proponent=True)
+        EmailService.send_email(subject, proponent_recipients, body, send_to_proponent=True)
