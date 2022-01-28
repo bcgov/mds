@@ -21,26 +21,21 @@ import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryAc
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-// import ProjectSummaryPageHeader from "@/components/mine/ProjectSummaries/ProjectSummaryPageHeader";
 import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
-import * as Permission from "@/constants/permissions";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 
 const propTypes = {
-  projectSummary: CustomPropTypes.projectSummary,
+  formattedProjectSummary: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
+  ).isRequired,
+
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   getProjectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-};
-
-const defaultProps = {
-  projectSummary: {},
+  projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ProjectSummary extends Component {
@@ -173,7 +168,6 @@ export class ProjectSummary extends Component {
 }
 
 ProjectSummary.propTypes = propTypes;
-ProjectSummary.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
@@ -195,13 +189,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-// export default compose(
-//   connect(mapStateToProps, mapDispatchToProps),
-//   reduxForm({
-//     form: FORM.PROJECT_SUMMARY,
-//     enableReinitialize: true,
-//   })
-// )(ProjectSummary);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummary);

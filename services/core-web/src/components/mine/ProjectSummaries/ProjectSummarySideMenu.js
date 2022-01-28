@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
-import { connect } from "react-redux";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
-import { getProjectSummary } from "@common/selectors/projectSummarySelectors";
 
 /**
  * @constant ProjectSummarySideMenu renders react children with an active indicator if the id is in the url.
@@ -132,8 +130,4 @@ export class ProjectSummarySideMenu extends Component {
 ProjectSummarySideMenu.propTypes = propTypes;
 ProjectSummarySideMenu.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => ({
-  projectSummary: getProjectSummary(state),
-});
-
-export default withRouter(connect(mapStateToProps)(ProjectSummarySideMenu));
+export default withRouter(ProjectSummarySideMenu);
