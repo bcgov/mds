@@ -10,6 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
+import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
@@ -25,6 +26,12 @@ export class DocumentUpload extends Component {
     uploadedFiles: [],
   };
 
+  acceptedFileTypesMap = {
+    ...DOCUMENT,
+    ...EXCEL,
+    ...IMAGE,
+  };
+
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
     return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.state.uploadedFiles);
@@ -36,6 +43,7 @@ export class DocumentUpload extends Component {
   };
 
   render() {
+    const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     return (
       <>
         <Typography.Title level={3}>Document Upload</Typography.Title>
@@ -45,13 +53,7 @@ export class DocumentUpload extends Component {
               <Typography.Paragraph>
                 <ul>
                   <li>You cannot upload ZIP files</li>
-                  <li>
-                    {" "}
-                    The allowed file types are: .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm,
-                    .xls, .xlsx, .jpeg, .png, .dbf, .geojson, .gml, .kml, .kmz, .ain, .aih, .atx,
-                    .cpg, .fbn, .fbx, .ixs, .mxs, .prj, .sbn, .sbx, .shp, .shpz, .shx, .wkt, .csv,
-                    .xml
-                  </li>
+                  <li>The allowed file types are: {acceptFileTypeArray.join(", ")}</li>
                   <li>Maximum individual file size is 400 MB</li>
                 </ul>
               </Typography.Paragraph>
@@ -73,6 +75,7 @@ export class DocumentUpload extends Component {
             onFileLoad={this.onFileLoad}
             onRemoveFile={this.onRemoveFile}
             mineGuid={this.props.mineGuid}
+            acceptedFileTypesMap={this.acceptedFileTypesMap}
             component={ProjectSummaryFileUpload}
           />
         </Form.Item>
