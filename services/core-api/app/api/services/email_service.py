@@ -126,7 +126,7 @@ class EmailService():
                    encoding=EmailEncoding.UTF8.value,
                    priority=EmailPriority.NORMAL.value,
                    tag=None,
-                   proponent=False):
+                   send_to_proponent=False):
         '''Sends an email.'''
 
         # Validate enum parameters.
@@ -141,7 +141,7 @@ class EmailService():
         if not Config.EMAIL_ENABLED:
             current_app.logger.info('Not sending email: Emails are disabled.')
             return
-        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE and not proponent:
+        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE and not send_to_proponent:
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
             return
@@ -151,8 +151,9 @@ class EmailService():
 
         EmailService.perform_health_check()
 
-        # If the sender is the MDS no-reply email address, add the MDS no-reply signature to the email body.
-        if proponent:
+        # If the receiver is the proponent, add the MINESPACE no-reply signature.
+        # if sender is the MDS no-reply email address, add the MDS no-reply signature to the email body.
+        if send_to_proponent:
             body += MINESPACE_NO_REPLY_SIGNATURE
         elif sender == Config.MDS_NO_REPLY_EMAIL:
             body += MDS_NO_REPLY_SIGNATURE

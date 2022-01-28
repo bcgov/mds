@@ -116,7 +116,8 @@ class ProjectSummaryListResource(Resource, UserMixin):
             project_summary.save()
             if is_minespace_user():
                 project_summary.send_project_summary_email_to_ministry(mine)
-                project_summary.send_project_summary_email_to_proponent(mine)
+                if project_summary.status_code == 'OPN':
+                    project_summary.send_project_summary_email_to_proponent(mine)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
