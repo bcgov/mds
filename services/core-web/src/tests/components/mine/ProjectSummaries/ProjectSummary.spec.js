@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import ProjectSummary from "@/components/mine/ProjectSummaries/ProjectSummary";
+import { ProjectSummary } from "@/components/mine/ProjectSummaries/ProjectSummary";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -14,6 +14,9 @@ const setupProps = () => {
   props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;
   props.projectSummaryPermitTypesHash = MOCK.PROJECT_SUMMARY_PERMIT_TYPES_HASH;
   props.projectSummaryAuthorizationTypesHash = MOCK.PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH;
+  props.match = {
+    params: { mineGuid: "testMineGuid", projectSummaryGuid: "testProjectSummaryGuid" },
+  };
 };
 
 const setupDispatchProps = () => {

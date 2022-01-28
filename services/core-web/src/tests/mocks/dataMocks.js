@@ -3395,17 +3395,28 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { variance_document_category_code: "DEC", description: "Decision", active_ind: true },
   ],
   projectSummaryStatusCodes: [
-    { project_summary_status_code: "O", description: "Open", display_order: 10, active_ind: true },
     {
-      project_summary_status_code: "C",
+      project_summary_status_code: "OPN",
+      description: "Open",
+      display_order: 10,
+      active_ind: true,
+    },
+    {
+      project_summary_status_code: "CLD",
       description: "Closed",
       display_order: 20,
       active_ind: true,
     },
     {
-      project_summary_status_code: "W",
+      project_summary_status_code: "WDN",
       description: "Withdrawn",
       display_order: 30,
+      active_ind: true,
+    },
+    {
+      project_summary_status_code: "DFT",
+      description: "Draft",
+      display_order: 40,
       active_ind: true,
     },
   ],
@@ -5225,7 +5236,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     {
       project_summary_permit_type: "AMENDMENT",
-      description: "Amendement to an existing permit",
+      description: "Amendment to an existing permit",
     },
     {
       project_summary_permit_type: "NOTIFICATION",
@@ -6371,9 +6382,15 @@ export const PROJECT_SUMMARIES = {
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       project_summary_guid: "81324623978135",
       status_code: "OPN",
-      project_summary_date: "2021-11-19",
-      project_summary_description: "Sample description.",
+      project_summary_title: "Sample title",
+      project_summary_description: "Sample description",
+      proponent_project_id: "25789-x",
+      expected_draft_irt_submission_date: "2020-11-10T22:18:19+00:00",
+      expected_permit_application_date: "2020-11-12T22:18:19+00:00",
+      expected_permit_receipt_date: "2020-11-20T22:18:19+00:00",
+      expected_project_start_date: "2020-11-22T22:18:19+00:00",
       documents: [],
+      contacts: [],
     },
   ],
 };
@@ -6382,15 +6399,21 @@ export const PROJECT_SUMMARY = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   project_summary_guid: "81324623978135",
   status_code: "OPN",
-  project_summary_date: "2021-11-19",
-  project_summary_description: "Sample description.",
+  project_summary_title: "Sample title",
+  project_summary_description: "Sample description",
+  proponent_project_id: "25789-x",
+  expected_draft_irt_submission_date: "2020-11-10T22:18:19+00:00",
+  expected_permit_application_date: "2020-11-12T22:18:19+00:00",
+  expected_permit_receipt_date: "2020-11-20T22:18:19+00:00",
+  expected_project_start_date: "2020-11-22T22:18:19+00:00",
   documents: [],
+  contacts: [],
 };
 
 export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
+  CLD: "Closed",
   DFT: "Draft",
   OPN: "Open",
-  CLD: "Closed",
   WDN: "Withdrawn",
 };
 
@@ -6414,9 +6437,9 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
 
 export const PROJECT_SUMMARY_PERMIT_TYPES_HASH = {
   NEW: "New",
-  AMENDMENT: "Amendment",
+  AMENDMENT: "Amendment to an existing permit",
   NOTIFICATION: "Notification",
-  CLOSURE: "Closure",
+  CLOSURE: "Closure of an existing permit",
   OTHER: "Other",
 };
 
@@ -6426,19 +6449,25 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {
 
 export const PROJECT_SUMMARY_STATUS_CODES_DROPDOWN = [
   {
-    value: "C",
+    value: "CLD",
     label: "Closed",
     subType: null,
     isActive: true,
   },
   {
-    value: "O",
+    value: "DFT",
+    label: "Draft",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "OPN",
     label: "Open",
     subType: null,
     isActive: true,
   },
   {
-    value: "W",
+    value: "WDN",
     label: "Withdrawn",
     subType: null,
     isActive: true,
