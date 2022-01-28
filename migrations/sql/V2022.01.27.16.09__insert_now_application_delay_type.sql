@@ -4,7 +4,7 @@ INSERT INTO now_application_delay_type (
     create_user,
     update_user
     )
-VALUES 
+VALUES
     ('NRT', 'Nation Requests Additional Time','system-mds', 'system-mds')
 
 ON CONFLICT DO NOTHING;
