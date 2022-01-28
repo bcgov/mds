@@ -1,7 +1,6 @@
 name: Build filesystem-provider
 
 on:
-  pull_request:
   push:
     branches:
       - develop
@@ -10,8 +9,8 @@ on:
       - .github/workflows/build-filesystem-provider.yaml
 
 env:
-  INITIAL_TAG: test
-  TAG: test
+  INITIAL_TAG: latest
+  TAG: dev
   NAME: filesystem-provider
   CONTEXT: services/filesystem-provider/
 
