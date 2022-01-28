@@ -206,7 +206,7 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory', inspector=True)
         approved = factory.Trait(
             variance_application_status_code='APP',
             issue_date=TODAY,
@@ -501,6 +501,9 @@ class PartyFactory(BaseFactory):
 class PartyBusinessRoleFactory(BaseFactory):
     class Meta:
         model = PartyBusinessRoleAppointment
+
+    class Params:
+        inspector = factory.Trait(party_business_role_code='INS')
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)

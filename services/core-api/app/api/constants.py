@@ -110,6 +110,7 @@ NOW_APPLICATION_GIS_EXPORT = "mds:now_application:gis-export"
 
 #Redis Cache Keys
 GET_ALL_INSPECTORS_KEY = "mds:parties:all_inspectors"
+GET_ALL_PROJECT_LEADS_KEY = "mds:parties:all_project_leads"
 STATIC_CONTENT_KEY = "mds:core:all_static_content"
 NROS_NOW_TOKEN = "mds:nros:token"
 
