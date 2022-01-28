@@ -11,7 +11,7 @@ on:
 
 env:
   INITIAL_TAG: latest
-  TAG: dev
+  TAG: test
   NAME: filesystem-provider
   CONTEXT: services/filesystem-provider/
 
