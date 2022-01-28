@@ -66,8 +66,8 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "projectSummary": Object {
           "contacts": Array [],
           "documents": Array [],
-          "expected_draft_irt_submission_date": "2020-11-15T22:18:19+00:00",
-          "expected_permit_application_date": "2020-11-10T22:18:19+00:00",
+          "expected_draft_irt_submission_date": "2020-11-10T22:18:19+00:00",
+          "expected_permit_application_date": "2020-11-12T22:18:19+00:00",
           "expected_permit_receipt_date": "2020-11-20T22:18:19+00:00",
           "expected_project_start_date": "2020-11-22T22:18:19+00:00",
           "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
