@@ -10,14 +10,15 @@ exports[`MinespaceUserManagement renders properly 1`] = `
   <Divider />
   <br />
   <Connect(NewMinespaceUser)
+    handleSubmit={[Function]}
     minespaceUserEmailHash={Object {}}
-    refreshData={[Function]}
   />
   <h3>
     MineSpace Users
   </h3>
   <MinespaceUserList
     handleDelete={[Function]}
+    handleOpenModal={[Function]}
     isLoaded={false}
     minespaceUserMines={Array []}
     minespaceUsers={Array []}
