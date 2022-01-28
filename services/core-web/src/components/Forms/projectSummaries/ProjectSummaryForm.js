@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
@@ -11,29 +10,23 @@ import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any),
-  initialValues: PropTypes.objectOf(PropTypes.any),
-  projectSummaryStatusCodesOptions: CustomPropTypes.options.isRequired,
+  projectSummary: CustomPropTypes.projectSummary.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryDocumentTypesOptions: CustomPropTypes.options.isRequired,
-};
-
-const defaultProps = {
-  formValues: {},
-  initialValues: {},
+  projectSummaryAuthorizationTypes: PropTypes.objectOf(PropTypes.any).isRequired,
+  projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const transformAuthorizationTypes = (types) => {
   const transformedObject = {};
-  for (const type of types) {
-    for (const childType of type.children) {
+  types.forEach((type) => {
+    return type?.children.forEach((childType) => {
       transformedObject[childType.code] = {
         description: childType.description,
         parent: { code: type.code, description: type.description },
       };
-    }
-  }
+    });
+  });
   return transformedObject;
 };
 
@@ -145,8 +138,9 @@ export const ProjectSummaryForm = (props) => {
         <br />
         {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
         {contacts.length >= 1 &&
-          contacts.map((contact, idx) => {
-            if (!contact.is_primary) {
+          contacts
+            .filter((c) => !c.is_primary)
+            .map((contact) => {
               return (
                 <>
                   <p>{contact.name}</p>
@@ -159,8 +153,7 @@ export const ProjectSummaryForm = (props) => {
                   </div>
                 </>
               );
-            }
-          })}
+            })}
       </div>
     );
   };
@@ -263,7 +256,6 @@ export const ProjectSummaryForm = (props) => {
 };
 
 ProjectSummaryForm.propTypes = propTypes;
-ProjectSummaryForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.PROJECT_SUMMARY,
