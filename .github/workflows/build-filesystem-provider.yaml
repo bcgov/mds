@@ -10,7 +10,7 @@ on:
       - .github/workflows/build-filesystem-provider.yaml
 
 env:
-  INITIAL_TAG: latest
+  INITIAL_TAG: test
   TAG: test
   NAME: filesystem-provider
   CONTEXT: services/filesystem-provider/
