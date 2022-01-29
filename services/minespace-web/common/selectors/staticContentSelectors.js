@@ -838,11 +838,16 @@ export const getDropdownProjectSummaryPermitTypes = createSelectorWrapper(
   ["description", "project_summary_permit_type"]
 );
 
+export const getProjectSummaryPermitTypesHash = createSelector(
+  [getDropdownProjectSummaryPermitTypes],
+  createLabelHash
+);
+
 export const getProjectSummaryAuthorizationTypesArray = createSelector(
   [getProjectSummaryAuthorizationTypes],
   (types) => {
     const arr = [];
-    types.map(({ project_summary_authorization_type, description }) => {
+    types.map(({ project_summary_authorization_type }) => {
       return arr.push(project_summary_authorization_type);
     });
 

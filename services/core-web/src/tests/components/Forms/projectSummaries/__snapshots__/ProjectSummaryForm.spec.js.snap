@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSummaryForm renders properly 1`] = `
+<Hoc
+  destroyOnUnmount={true}
+  enableReinitialize={true}
+  forceUnregisterOnUnmount={false}
+  form="PROJECT_SUMMARY"
+  formValues={Object {}}
+  forwardedRef={null}
+  getFormState={[Function]}
+  handleSubmit={[MockFunction]}
+  initialValues={Object {}}
+  keepDirtyOnReinitialize={false}
+  persistentSubmitErrors={false}
+  projectSummaryDocumentTypesOptions={Array []}
+  projectSummaryStatusCodesOptions={Array []}
+  pure={true}
+  shouldAsyncValidate={[Function]}
+  shouldError={[Function]}
+  shouldValidate={[Function]}
+  shouldWarn={[Function]}
+  submitAsSideEffect={false}
+  submitting={false}
+  touchOnBlur={true}
+  touchOnChange={false}
+  updateUnregisteredFields={false}
+/>
+`;

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSummarySideMenu renders properly 1`] = `
+<div>
+  <Anchor
+    affix={false}
+    offsetTop={160}
+    onChange={[Function]}
+    onClick={[Function]}
+    showInkInFixed={false}
+  >
+    <AnchorLink
+      className="now-menu-link"
+      href="#project-details"
+      title="Project details"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#authorizations-involved"
+      title="Authorizations involved"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#project-dates"
+      title="Project dates"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#project-contacts"
+      title="Project contacts"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#documents"
+      title="Documents"
+    />
+  </Anchor>
+</div>
+`;
