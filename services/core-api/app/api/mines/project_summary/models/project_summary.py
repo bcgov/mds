@@ -178,6 +178,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                expected_permit_receipt_date,
                expected_project_start_date,
                status_code,
+               project_summary_lead_party_guid,
                documents=[],
                contacts=[],
                authorizations=[],
@@ -192,6 +193,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.expected_permit_application_date = expected_permit_application_date
         self.expected_permit_receipt_date = expected_permit_receipt_date
         self.expected_project_start_date = expected_project_start_date
+        self.project_summary_lead_party_guid = project_summary_lead_party_guid
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
