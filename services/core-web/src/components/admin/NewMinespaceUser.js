@@ -4,34 +4,26 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
-import { createMinespaceUser } from "@common/actionCreators/minespaceActionCreator";
+
 import CustomPropTypes from "@/customPropTypes";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  createMinespaceUser: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
-  refreshData: PropTypes.func,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   mines: [],
   minespaceUserEmailHash: {},
-  refreshData: () => {},
 };
 
 export class NewMinespaceUser extends Component {
   componentDidMount() {
     this.props.fetchMineNameList();
   }
-
-  handleSubmit = (values) => {
-    this.props.createMinespaceUser(values).then(() => {
-      this.props.refreshData();
-    });
-  };
 
   handleSearch = (name) => {
     if (name.length > 0) {
@@ -54,7 +46,7 @@ export class NewMinespaceUser extends Component {
               label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
             minespaceUserEmailHash={this.props.minespaceUserEmailHash}
-            onSubmit={this.handleSubmit}
+            onSubmit={this.props.handleSubmit}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
           />
@@ -72,7 +64,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineNameList,
-      createMinespaceUser,
     },
     dispatch
   );
