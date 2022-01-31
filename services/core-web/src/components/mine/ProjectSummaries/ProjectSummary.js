@@ -14,7 +14,10 @@ import {
   getProjectSummary,
   getFormattedProjectSummary,
 } from "@common/selectors/projectSummarySelectors";
-import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
+import {
+  fetchProjectSummaryById,
+  updateProjectSummary,
+} from "@common/actionCreators/projectSummaryActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
 import * as routes from "@/constants/routes";
@@ -38,6 +41,7 @@ const propTypes = {
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectSummaryById: PropTypes.func.isRequired,
+  updateProjectSummary: PropTypes.func.isRequired,
 };
 
 export class ProjectSummary extends Component {
@@ -81,6 +85,19 @@ export class ProjectSummary extends Component {
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return null;
+  };
+
+  handleUpdate = (formValues) => {
+    const {
+      match: {
+        params: { mineGuid, projectSummaryGuid },
+      },
+    } = this.props;
+    console.log("UPDATE VALUES: ", formValues);
+    // this.props.updateProjectSummary({ mineGuid, projectSummaryGuid }, formValues).then(() => {
+    //   this.props.fetchProjectSummaryById((mineGuid, projectSummaryGuid);
+    // });
+    // return true;
   };
 
   render() {
@@ -145,6 +162,7 @@ export class ProjectSummary extends Component {
                 <ProjectSummaryForm
                   {...this.props}
                   initialValues={this.props.formattedProjectSummary}
+                  handleSubmit={this.handleUpdate}
                 />
               </div>
             </LoadingWrapper>
@@ -174,6 +192,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchProjectSummaryById,
+      updateProjectSummary,
     },
     dispatch
   );

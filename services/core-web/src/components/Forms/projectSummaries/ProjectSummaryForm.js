@@ -1,11 +1,16 @@
 import React from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Alert, Button } from "antd";
+import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
+import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { PENCIL } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
@@ -15,6 +20,8 @@ const propTypes = {
   projectSummaryDocumentTypesOptions: CustomPropTypes.options.isRequired,
   projectSummaryAuthorizationTypes: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  projectLeads: CustomPropTypes.groupOptions.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 const transformAuthorizationTypes = (types) => {
@@ -32,8 +39,24 @@ const transformAuthorizationTypes = (types) => {
 
 export const ProjectSummaryForm = (props) => {
   const renderProjectDetails = () => {
+    const {
+      projectSummary: { project_summary_lead_party_guid },
+    } = props;
     return (
       <div id="project-details">
+        {!project_summary_lead_party_guid && (
+          <Alert
+            message="This project does not have a Project Lead"
+            description={
+              <p>
+                Please assign a Project Lead to this project via the{" "}
+                <a href="#project-contacts">Project contacts</a> section.
+              </p>
+            }
+            type="warning"
+            showIcon
+          />
+        )}
         <Typography.Title level={3}>Project details</Typography.Title>
         <Row gutter={16}>
           <Col lg={12} md={24}>
@@ -121,10 +144,33 @@ export const ProjectSummaryForm = (props) => {
   const renderContacts = () => {
     const {
       projectSummary: { contacts },
+      projectLeads,
     } = props;
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
+        <Row gutter={16}>
+          <Col lg={12} md={24}>
+            <h3>EMLI contacts</h3>
+            <Form.Item>
+              <Field
+                id="project_summary_lead_party_guid"
+                name="project_summary_lead_party_guid"
+                label={<p className="bold">Project Lead</p>}
+                component={renderConfig.GROUPED_SELECT}
+                format={null}
+                data={projectLeads}
+                defaultValue="Unassigned"
+              />
+            </Form.Item>
+          </Col>
+          <Col lg={4} md={24}>
+            <Button className="no-margin" type="primary" onClick={props.handleSubmit}>
+              <img name="edit" src={PENCIL} alt="Edit" />
+              &nbsp; Edit
+            </Button>
+          </Col>
+        </Row>
         <h3>Proponent contacts</h3>
         <p className="bold">Primary project contact</p>
         <p>{contacts[0]?.name}</p>
@@ -241,7 +287,7 @@ export const ProjectSummaryForm = (props) => {
   };
 
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -257,7 +303,15 @@ export const ProjectSummaryForm = (props) => {
 
 ProjectSummaryForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.PROJECT_SUMMARY,
-  enableReinitialize: true,
-})(ProjectSummaryForm);
+const mapStateToProps = (state) => ({
+  projectLeads: getDropdownProjectLeads(state),
+});
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.PROJECT_SUMMARY,
+    enableReinitialize: true,
+    // onSubmitSuccess: resetForm(FORM.PROJECT_SUMMARY),
+  })
+)(ProjectSummaryForm);
