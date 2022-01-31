@@ -1,7 +1,7 @@
 import pytest
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
-from tests.factories import MinespaceUserFactory
+from tests.factories import MinespaceUserFactory, MineFactory
 
 
 def test_minespace_user_model_find_by_id(db_session):
