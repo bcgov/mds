@@ -12,7 +12,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  projectSummaryDocumentTypesOptions: CustomPropTypes.options.isRequired,
+  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypes: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -227,7 +227,7 @@ export const ProjectSummaryForm = (props) => {
                 document_manager_guid: doc.document_manager_guid,
                 name: doc.document_name,
                 category:
-                  props.projectSummaryDocumentTypesOptions[doc.project_summary_document_type_code],
+                  props.projectSummaryDocumentTypesHash[doc.project_summary_document_type_code],
                 uploaded: doc.created_at,
               },
               ...docs,
