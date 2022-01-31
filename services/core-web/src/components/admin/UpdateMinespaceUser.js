@@ -6,13 +6,14 @@ import { getMineNames } from "@common/selectors/mineSelectors";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 
 import CustomPropTypes from "@/customPropTypes";
-import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
+import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
   handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -20,7 +21,7 @@ const defaultProps = {
   minespaceUserEmailHash: {},
 };
 
-export class NewMinespaceUser extends Component {
+export class UpdateMinespaceUser extends Component {
   componentDidMount() {
     this.props.fetchMineNameList();
   }
@@ -38,13 +39,17 @@ export class NewMinespaceUser extends Component {
   render() {
     return (
       <div>
-        <h3>Create Proponent</h3>
+        <h3>Edit Proponent</h3>
         {this.props.mines && (
-          <AddMinespaceUser
+          <EditMinespaceUser
             mines={this.props.mines.map((mine) => ({
               value: mine.mine_guid,
               label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
+            initialValues={{
+              ...this.props.initialValues,
+              mine_guids: this.props.initialValues.mineNames.map((mn) => mn.mine_guid),
+            }}
             minespaceUserEmailHash={this.props.minespaceUserEmailHash}
             onSubmit={this.props.handleSubmit}
             handleChange={this.handleChange}
@@ -68,7 +73,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-NewMinespaceUser.propTypes = propTypes;
-NewMinespaceUser.defaultProps = defaultProps;
+UpdateMinespaceUser.propTypes = propTypes;
+UpdateMinespaceUser.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewMinespaceUser);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateMinespaceUser);
