@@ -20,6 +20,11 @@ export const projectSummaryReducer = (state = initialState, action) => {
         ...state,
         projectSummary: action.payload,
       };
+    case actionTypes.CLEAR_PROJECT_SUMMARY:
+      return {
+        ...state,
+        projectSummary: {},
+      };
     default:
       return state;
   }

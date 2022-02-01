@@ -22,6 +22,7 @@ import {
   updateProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { clearProjectSummary } from "@common/actions/projectSummaryActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
@@ -35,6 +36,7 @@ const propTypes = {
   createProjectSummary: PropTypes.func.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  clearProjectSummary: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
     params: {
@@ -79,6 +81,10 @@ export class ProjectSummaryPage extends Component {
 
   componentDidMount() {
     this.handleFetchData();
+  }
+
+  componentWillUnmount() {
+    this.props.clearProjectSummary();
   }
 
   handleFetchData = () => {
@@ -280,6 +286,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectSummaryById,
       updateProjectSummary,
       fetchMineRecordById,
+      clearProjectSummary,
       submit,
       reset,
       touch,
