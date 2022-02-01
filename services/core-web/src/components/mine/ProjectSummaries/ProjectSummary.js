@@ -83,6 +83,22 @@ export class ProjectSummary extends Component {
     return null;
   };
 
+<<<<<<< Updated upstream
+=======
+  handleUpdate = () => {
+    const {
+      match: {
+        params: { mineGuid, projectSummaryGuid },
+      },
+    } = this.props;
+    this.props
+      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues)
+      .then(() => {
+        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+      });
+  };
+
+>>>>>>> Stashed changes
   render() {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
