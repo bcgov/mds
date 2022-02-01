@@ -92,7 +92,6 @@ class ProjectSummaryListResource(Resource, UserMixin):
     @api.doc(
         description='Create a new Project Description.',
         params={'mine_guid': 'The GUID of the mine to create the Project Description for.'})
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.expect(parser)
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=201)
     def post(self, mine_guid):
@@ -115,8 +114,8 @@ class ProjectSummaryListResource(Resource, UserMixin):
         try:
             project_summary.save()
             if is_minespace_user():
-                project_summary.send_project_summary_email_to_ministry(mine)
                 if project_summary.status_code == 'OPN':
+                    project_summary.send_project_summary_email_to_ministry(mine)
                     project_summary.send_project_summary_email_to_proponent(mine)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')

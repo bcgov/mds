@@ -313,7 +313,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         EmailService.send_email(subject, recipients, body)
 
     def send_project_summary_email_to_proponent(self, mine):
-        proponent_recipients = [contact.email for contact in self.contacts if contact.is_primary]
+        recipients = [contact.email for contact in self.contacts if contact.is_primary]
         project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
 
         subject = f'Project Description Notification for {mine.mine_name}'
@@ -324,4 +324,4 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
                 f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
 
-        EmailService.send_email(subject, proponent_recipients, body, send_to_proponent=True)
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
