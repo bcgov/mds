@@ -8,16 +8,20 @@ import { getMineNames } from "@common/selectors/mineSelectors";
 import { getMinespaceUsers, getMinespaceUserEmailHash } from "@common/selectors/minespaceSelector";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import {
+  createMinespaceUser,
   fetchMinespaceUsers,
   deleteMinespaceUser,
   fetchMinespaceUserMines,
+  updateMinespaceUserMines,
 } from "@common/actionCreators/minespaceActionCreator";
 import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { modalConfig } from "@/components/modalContent/config";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
@@ -30,6 +34,10 @@ const propTypes = {
   fetchMinespaceUsers: PropTypes.func.isRequired,
   fetchMinespaceUserMines: PropTypes.func.isRequired,
   deleteMinespaceUser: PropTypes.func.isRequired,
+  updateMinespaceUserMines: PropTypes.func.isRequired,
+  createMinespaceUser: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -54,6 +62,34 @@ export class MinespaceUserManagement extends Component {
     });
   };
 
+  handleCreateUser = (values) => {
+    this.props.createMinespaceUser(values).then(() => {
+      this.refreshUserData();
+    });
+  };
+
+  handleOpenModal = (e, record) => {
+    this.props.openModal({
+      props: {
+        title: `Update User: ${record.email_or_username}`,
+        closeModal: this.props.closeModal,
+        initialValues: record,
+        handleSubmit: this.handleUpdate,
+        refreshData: this.refreshUserData,
+        afterClose: () => {},
+      },
+      content: modalConfig.UPDATE_MINESPACE_USERS,
+      width: "75vw",
+    });
+  };
+
+  handleUpdate = (record) => {
+    this.props.updateMinespaceUserMines(record.user_id, record).then(() => {
+      this.props.closeModal();
+      this.refreshUserData();
+    });
+  };
+
   refreshUserData = () => {
     this.props.fetchMinespaceUsers().then(() => {
       const mine_guids = flatMap(this.props.minespaceUsers, (user) => user.mines);
@@ -68,7 +104,7 @@ export class MinespaceUserManagement extends Component {
         <Divider />
         <br />
         <NewMinespaceUser
-          refreshData={this.refreshUserData}
+          handleSubmit={this.handleCreateUser}
           minespaceUserEmailHash={this.props.minespaceUserEmailHash}
         />
         <h3>MineSpace Users</h3>
@@ -77,6 +113,7 @@ export class MinespaceUserManagement extends Component {
           minespaceUsers={this.props.minespaceUsers}
           minespaceUserMines={this.props.minespaceUserMines}
           handleDelete={this.handleDelete}
+          handleOpenModal={this.handleOpenModal}
         />
       </div>
     );
@@ -93,10 +130,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      createMinespaceUser,
       fetchMineNameList,
       fetchMinespaceUsers,
       fetchMinespaceUserMines,
       deleteMinespaceUser,
+      updateMinespaceUserMines,
+      openModal,
+      closeModal,
     },
     dispatch
   );

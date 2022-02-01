@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -11,6 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.users.response_models import MINESPACE_USER_MODEL
+from app.api.mines.mine.models.mine import Mine
 
 
 class MinespaceUserListResource(Resource, UserMixin):
@@ -44,6 +45,10 @@ class MinespaceUserListResource(Resource, UserMixin):
 
 
 class MinespaceUserResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('email_or_username', type=str, location='json', required=True)
+    parser.add_argument('mine_guids', type=list, location='json', required=True)
+    
     @api.marshal_with(MINESPACE_USER_MODEL)
     @requires_role_mine_admin
     def get(self, user_id):
@@ -63,3 +68,37 @@ class MinespaceUserResource(Resource, UserMixin):
         db.session.delete(user)
         db.session.commit()
         return ('', 204)
+
+    @api.doc(description='Update an existing Minespace Users mine list')
+    @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
+    @requires_role_mine_admin
+    def put(self, user_id):
+        contact = MinespaceUser.find_by_id(user_id)
+        if not contact:
+            raise NotFound('Contact not found.')
+        data = self.parser.parse_args()
+        if not data.get('mine_guids'):
+            raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
+
+        existing_mines = contact.mines # list of mines already existing in the user's mine list
+        updated_mines = data.get('mine_guids') # updated list of mines to be applied to the user
+
+        for delete_mine in existing_mines:
+            if str(delete_mine) not in updated_mines:
+                minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(delete_mine, user_id)
+                if minespace_user_mine:  
+                    minespace_user_mine.delete()
+
+        # Cycle through list of mines. Mines have to exist before being added to the user.
+        for guid in updated_mines:
+            mine = Mine.find_by_mine_guid(guid)
+            if not mine:
+                raise NotFound('Mine with guid {} not found.'.format(guid))
+            existing_minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(guid, user_id)
+            current_app.logger.info('Existing Mine: {}'.format(existing_minespace_user_mine))
+            if not existing_minespace_user_mine:
+                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)       
+        contact.save()
+        return contact
+
+        
