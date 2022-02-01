@@ -35,3 +35,8 @@ export const storeInspectors = (payload) => ({
   type: ActionTypes.STORE_INSPECTORS,
   payload,
 });
+
+export const storeProjectLeads = (payload) => ({
+  type: ActionTypes.STORE_PROJECT_LEADS,
+  payload,
+});

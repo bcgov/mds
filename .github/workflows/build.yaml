@@ -32,7 +32,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: filesystem-provider
           - name: nris
           - name: minespace
           - name: fider
@@ -90,7 +89,6 @@ jobs:
           - name: backend
           - name: dbbackup
           - name: metabase
-          - name: filesystem-provider
           - name: nris
           - name: minespace
           - name: schemaspy
@@ -120,7 +118,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: filesystem-provider
           - name: nris
           - name: minespace
           - name: schemaspy

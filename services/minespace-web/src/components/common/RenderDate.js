@@ -39,6 +39,7 @@ const RenderDate = (props) => (
     }
   >
     <DatePicker
+      style={{ width: "100%" }}
       disabled={props.disabled}
       id={props.id}
       {...props.input}

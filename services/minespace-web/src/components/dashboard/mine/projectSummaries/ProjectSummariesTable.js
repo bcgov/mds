@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import { Table, Button, Popconfirm, Row, Col } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
@@ -15,10 +16,11 @@ const propTypes = {
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  handleDeleteDraft: PropTypes.func.isRequired,
 };
 
 export class ProjectSummariesTable extends Component {
-  transformRowData = (projectSummaries, codeHash) =>
+  transformRowData = (projectSummaries, codeHash, handleDeleteDraft) =>
     projectSummaries &&
     projectSummaries.map((projectSummary) => ({
       key: projectSummary.project_summary_guid,
@@ -30,6 +32,7 @@ export class ProjectSummariesTable extends Component {
       update_user: projectSummary.update_user,
       update_timestamp: formatDate(projectSummary.update_timestamp),
       documents: projectSummary.documents,
+      handleDeleteDraft,
     }));
 
   columns = () => [
@@ -37,7 +40,7 @@ export class ProjectSummariesTable extends Component {
       title: "Project #",
       dataIndex: "project_summary_id",
       sorter: (a, b) => (a.project_summary_id > b.project_summary_id ? -1 : 1),
-      render: (text) => <div title="Project Summary No.">{text}</div>,
+      render: (text) => <div title="Project Description No.">{text}</div>,
     },
     {
       title: "Last Updated",
@@ -81,14 +84,33 @@ export class ProjectSummariesTable extends Component {
       dataIndex: "projectSummary",
       render: (text, record) => (
         <div title="" align="right">
-          <Link
-            to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-              record.mine_guid,
-              record.project_summary_guid
-            )}
-          >
-            <img src={EDIT_PENCIL} alt="Edit" />
-          </Link>
+          <Row gutter={1}>
+            <Col span={12}>
+              <Link
+                to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+                  record.mine_guid,
+                  record.project_summary_guid
+                )}
+              >
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Link>
+            </Col>
+            <Col span={12}>
+              {record.status_code === "Draft" && (
+                <Popconfirm
+                  placement="topLeft"
+                  title="Are you sure you want to delete this draft?"
+                  onConfirm={(e) => record.handleDeleteDraft(e, record.project_summary_guid)}
+                  okText="Delete"
+                  cancelText="Cancel"
+                >
+                  <Button type="primary" size="small" ghost>
+                    <DeleteOutlined className="icon-sm" />
+                  </Button>
+                </Popconfirm>
+              )}
+            </Col>
+          </Row>
         </div>
       ),
     },
@@ -103,9 +125,10 @@ export class ProjectSummariesTable extends Component {
         columns={this.columns()}
         dataSource={this.transformRowData(
           this.props.projectSummaries,
-          this.props.projectSummaryStatusCodesHash
+          this.props.projectSummaryStatusCodesHash,
+          this.props.handleDeleteDraft
         )}
-        locale={{ emptyText: "This mine has no project summary data." }}
+        locale={{ emptyText: "This mine has no project description data." }}
       />
     );
   }

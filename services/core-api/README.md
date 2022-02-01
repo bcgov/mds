@@ -53,6 +53,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+NOTE: For Ubuntu/Debian based systems, you may have to install libpq-dev. You can do this via:
+
+sudo apt install libpq-dev
+
+https://stackoverflow.com/questions/11618898/pg-config-executable-not-found
+
 3. Run the application
 ```
 flask run
