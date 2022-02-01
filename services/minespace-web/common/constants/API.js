@@ -39,6 +39,7 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
 export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
 export const MINESPACE_USER = "/users/minespace";
+export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
 // EMLI contacts

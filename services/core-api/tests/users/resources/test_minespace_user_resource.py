@@ -1,6 +1,6 @@
 import json, uuid
 
-from tests.factories import MinespaceUserFactory
+from tests.factories import MineFactory, MinespaceUserFactory
 
 
 def test_get_minespace_users_all(test_client, db_session, auth_headers):
@@ -74,3 +74,74 @@ def test_delete_minespace_not_found(test_client, db_session, auth_headers):
     del_resp = test_client.delete(
         '/users/minespace/11112233', headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 404, del_resp.response
+
+
+def test_update_minespace_user_mines_success(test_client, db_session, auth_headers):
+    
+    user = MinespaceUserFactory()
+    mine = MineFactory()
+    email = user.email_or_username
+    mine_guids = [str(mine.mine_guid)]
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200, put_resp.response
+    decoded_resp = json.loads(put_resp.data)
+    mines = decoded_resp['records']['mines']
+
+    assert mines[0] == str(mine.mine_guid)
+    assert len(mines) == 1
+    
+
+def test_update_minespace_user_empty_mine_list(test_client, db_session, auth_headers):
+    user = MinespaceUserFactory()
+    
+    email = user.email_or_username
+    mine_guids = []
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400, put_resp.response
+
+
+def test_update_minespace_user_mine_does_not_exist(test_client, db_session, auth_headers):
+    user = MinespaceUserFactory()
+    email = user.email_or_username
+    mine_guids = [str(uuid.uuid4())]
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/{user.user_id}', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 404, put_resp.response
+
+def test_update_minespace_user_does_not_exist(test_client, db_session, auth_headers):
+    
+    email = "test@email.com"
+    mine_guids = [str(uuid.uuid4())]
+
+    data = {
+    "email_or_username": f"{email}",
+    "mine_guids": mine_guids
+    }
+
+    put_resp = test_client.put(f'/users/minespace/1', json=data, 
+    headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 404, put_resp.response
