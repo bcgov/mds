@@ -85,7 +85,7 @@ services:
 
   ####################### Backend Definition #######################
   backend:
-    user: 1000:1000
+    user: root:root
     restart: always
     container_name: mds_backend
     build:
