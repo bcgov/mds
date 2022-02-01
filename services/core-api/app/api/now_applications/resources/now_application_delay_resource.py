@@ -56,7 +56,8 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
 
         # update now status
         if now_app.now_application is not None:
-            if now_delay.delay_type_code is not None and now_delay.delay_type_code == "OAB":
+            if now_delay.delay_type_code is not None and now_delay.delay_type_code in ("OAB",
+                                                                                       "NRT"):
                 now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
                 now_app.now_application.now_application_status_code = "GVD"
             else:
