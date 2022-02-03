@@ -30,6 +30,7 @@ const transformRowData = (projectSummaries) => {
       documents: projectSummary.documents,
       project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
       project_name: projectSummary.project_summary_title,
+      project_summary_lead_name: projectSummary.project_summary_lead_name || Strings.EMPTY_FIELD,
       project_proponent_id: projectSummary.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
       first_submitted_date: formatDate(projectSummary.create_timestamp),
@@ -51,6 +52,12 @@ export const MineProjectSummaryTable = (props) => {
       title: "Project Proponent ID",
       dataIndex: "project_proponent_id",
       render: (text) => <div title="Project Proponent ID">{text}</div>,
+    },
+    {
+      key: "project_summary_lead_name",
+      title: "EMLI Project Lead",
+      dataIndex: "project_summary_lead_name",
+      render: (text) => <div title="EMLI Project Lead">{text}</div>,
     },
     {
       key: "project_contact",
