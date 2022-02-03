@@ -119,7 +119,7 @@ export class ProjectSummarySideMenu extends Component {
           }}
         >
           {this.sideMenuOptions.map(({ href, title }) => (
-            <Anchor.Link href={`#${href}`} title={title} className="now-menu-link" />
+            <Anchor.Link key={title} href={`#${href}`} title={title} className="now-menu-link" />
           ))}
         </Anchor>
       </div>
