@@ -1,29 +1,184 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProjectSummaryForm renders properly 1`] = `
-<Hoc
-  destroyOnUnmount={true}
-  enableReinitialize={true}
-  forceUnregisterOnUnmount={false}
-  form="PROJECT_SUMMARY"
-  formValues={Object {}}
-  forwardedRef={null}
-  getFormState={[Function]}
-  handleSubmit={[MockFunction]}
-  initialValues={Object {}}
-  keepDirtyOnReinitialize={false}
-  persistentSubmitErrors={false}
-  projectSummaryDocumentTypesOptions={Array []}
-  projectSummaryStatusCodesOptions={Array []}
-  pure={true}
-  shouldAsyncValidate={[Function]}
-  shouldError={[Function]}
-  shouldValidate={[Function]}
-  shouldWarn={[Function]}
-  submitAsSideEffect={false}
-  submitting={false}
-  touchOnBlur={true}
-  touchOnChange={false}
-  updateUnregisteredFields={false}
-/>
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <div
+    id="project-details"
+  >
+    <Title
+      level={3}
+    >
+      Project details
+    </Title>
+    <Row
+      gutter={16}
+    >
+      <Col
+        lg={12}
+        md={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="proponent_project_id"
+            label="Project number"
+            name="proponent_project_id"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="project_summary_description"
+            label="Executive summary"
+            name="project_summary_description"
+          />
+        </FormItem>
+      </Col>
+    </Row>
+  </div>
+  <br />
+  <div
+    id="authorizations-involved"
+  >
+    <Title
+      level={3}
+    >
+      Authorizations involved
+    </Title>
+    <p>
+      These are the authorizations the proponent believes may be needed for this project. Additional authorizations may be required.
+    </p>
+    <br />
+  </div>
+  <br />
+  <div
+    id="project-dates"
+  >
+    <Title
+      level={3}
+    >
+      Project dates requested by proponent
+    </Title>
+    <p>
+      These are the key dates the proponent hopes to target. A final schedule will be negotiated during the pre-application review.
+    </p>
+    <br />
+    <Row
+      gutter={16}
+    >
+      <Col
+        lg={12}
+        md={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="expected_draft_irt_submission_date"
+            label="Anticipated draft IRT submission date"
+            name="expected_draft_irt_submission_date"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="expected_permit_application_date"
+            label="Anticipated permit application submission date"
+            name="expected_permit_application_date"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="expected_permit_receipt_date"
+            label="Desired permit issuance date"
+            name="expected_permit_receipt_date"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="expected_project_start_date"
+            label="Anticipated work start date"
+            name="expected_project_start_date"
+          />
+        </FormItem>
+      </Col>
+    </Row>
+  </div>
+  <br />
+  <div
+    id="project-contacts"
+  >
+    <Title
+      level={4}
+    >
+      Project contacts
+    </Title>
+    <h3>
+      Proponent contacts
+    </h3>
+    <p
+      className="bold"
+    >
+      Primary project contact
+    </p>
+    <p />
+    <a
+      href="mailto: undefined"
+    />
+    <div
+      className="inline-flex"
+    >
+      <p />
+    </div>
+    <br />
+    <p />
+    <a
+      href="mailto: undefined"
+    />
+    <div
+      className="inline-flex"
+    >
+      <p />
+    </div>
+  </div>
+  <br />
+  <div
+    id="documents"
+  >
+    <Title
+      level={4}
+    >
+      Documents
+    </Title>
+    <DocumentTable
+      documents={Array []}
+      isViewOnly={true}
+      removeDocument={[Function]}
+    />
+  </div>
+</Form>
 `;

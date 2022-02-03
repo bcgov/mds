@@ -23,6 +23,7 @@ export const OPEN_DOC = {
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
 export const IMAGE = {
+  ".jpg": "image/jpg",
   ".jpeg": "image/jpeg",
   ".png": "image/png",
 };

@@ -166,7 +166,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "OCCUPANT_CUT_LICENCE": "Occupant licence to cut",
                 "OTHER": "Other legislation",
                 "OTHER_LEGISLATION": "Other legislation",
-                "SOLID_WASTES_PERMIT": "Solid wastes permit",
+                "REFUSE_DISCHARGE_PERMIT": "Refuse discharge permit",
                 "USE_APPROVAL": "Use approval",
                 "WATER_LICENCE": "Water licence",
                 "WATER_SUSTAINABILITY_ACT": "Water Sustainability Act",

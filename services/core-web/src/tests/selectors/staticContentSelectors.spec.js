@@ -73,6 +73,7 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryPermitTypesHash,
   getTransformedProjectSummaryAuthorizationTypes,
+  getTransformedChildProjectSummaryAuthorizationTypesHash,
   getDropdownProjectSummaryPermitTypes,
   getDropdownProjectSummaryStatusCodes,
   getDropdownProjectSummaryDocumentTypes,
@@ -502,6 +503,12 @@ describe("staticContentSelectors", () => {
   it("`getTransformedProjectSummaryAuthorizationTypes` calls `staticContentReducer.getTransformedProjectSummaryAuthorizationTypes`", () => {
     expect(getTransformedProjectSummaryAuthorizationTypes(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED
+    );
+  });
+
+  it("`getTransformedChildProjectSummaryAuthorizationTypesHash` calls `staticContentReducer.getTransformedChildProjectSummaryAuthorizationTypesHash`", () => {
+    expect(getTransformedChildProjectSummaryAuthorizationTypesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_CHILD_AUTHORIZATION_TYPES_HASH
     );
   });
 

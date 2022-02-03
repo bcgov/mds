@@ -1,40 +1,20 @@
 import React from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col, Alert, Button } from "antd";
-import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
-import { resetForm } from "@common/utils/helpers";
+import { Typography, Row, Col } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
-import { PENCIL } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  projectSummaryDocumentTypesOptions: CustomPropTypes.options.isRequired,
-  projectSummaryAuthorizationTypes: PropTypes.objectOf(PropTypes.any).isRequired,
+  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectLeads: CustomPropTypes.groupOptions.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-};
-
-const transformAuthorizationTypes = (types) => {
-  const transformedObject = {};
-  types.forEach((type) => {
-    return type?.children.forEach((childType) => {
-      transformedObject[childType.code] = {
-        description: childType.description,
-        parent: { code: type.code, description: type.description },
-      };
-    });
-  });
-  return transformedObject;
 };
 
 export const ProjectSummaryForm = (props) => {
@@ -87,13 +67,9 @@ export const ProjectSummaryForm = (props) => {
   const renderAuthorizationsInvolved = () => {
     const {
       initialValues: { authorizations },
-      projectSummaryAuthorizationTypes,
+      projectSummaryAuthorizationTypesHash,
       projectSummaryPermitTypesHash,
     } = props;
-    const transformedAuthorizationTypesHash = transformAuthorizationTypes(
-      projectSummaryAuthorizationTypes
-    );
-    // We need to make sure we only add parent authorization type labels once to the form
     const parentHeadersAdded = [];
     return (
       <div id="authorizations-involved">
@@ -106,35 +82,53 @@ export const ProjectSummaryForm = (props) => {
         {authorizations.length > 0 &&
           authorizations.map((a) => {
             const parentCode =
-              transformedAuthorizationTypesHash[a.project_summary_authorization_type]?.parent?.code;
+              projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
+                ?.code;
+            // We need to make sure we only add parent authorization type labels once
             const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
             return (
-              <>
+              <React.Fragment key={a.project_summary_authorization_type}>
                 {!parentHeaderAdded && parentHeadersAdded.push(parentCode) ? (
                   <h2>
                     {
-                      transformedAuthorizationTypesHash[a.project_summary_authorization_type]
+                      projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]
                         ?.parent?.description
                     }
                   </h2>
                 ) : null}
                 <h4 className="padding-sm--bottom">
                   {
-                    transformedAuthorizationTypesHash[a.project_summary_authorization_type]
+                    projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]
                       ?.description
                   }
                 </h4>
                 <p className="bold padding-sm--bottom">Types of permits</p>
                 {a.project_summary_permit_type.map((pt) => {
-                  return <p className="padding-md--left">{projectSummaryPermitTypesHash[pt]}</p>;
+                  return (
+                    <p
+                      key={`${a.project_summary_authorization_type}-${pt}`}
+                      className="padding-md--left"
+                    >
+                      {projectSummaryPermitTypesHash[pt]}
+                    </p>
+                  );
                 })}
                 <br />
                 <p className="bold padding-sm--bottom">Existing permit numbers involved</p>
-                {a.existing_permits_authorizations.map((epa) => {
-                  return <p className="padding-md--left">{epa}</p>;
-                })}
+                {a.existing_permits_authorizations?.length
+                  ? a.existing_permits_authorizations.map((epa) => {
+                      return (
+                        <p
+                          key={`${a.project_summary_authorization_type}-${epa}`}
+                          className="padding-md--left"
+                        >
+                          {epa}
+                        </p>
+                      );
+                    })
+                  : "N/A"}
                 <br />
-              </>
+              </React.Fragment>
             );
           })}
       </div>
@@ -273,8 +267,8 @@ export const ProjectSummaryForm = (props) => {
                 document_manager_guid: doc.document_manager_guid,
                 name: doc.document_name,
                 category:
-                  props.projectSummaryDocumentTypesOptions[doc.project_summary_document_type_code],
-                uploaded: doc.created_at,
+                  props.projectSummaryDocumentTypesHash[doc.project_summary_document_type_code],
+                uploaded: doc.upload_date,
               },
               ...docs,
             ],

@@ -111,6 +111,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to update.'
         })
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,

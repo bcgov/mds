@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {
   getProjectSummaryStatusCodesHash,
   getProjectSummaryDocumentTypesHash,
-  getTransformedProjectSummaryAuthorizationTypes,
+  getTransformedChildProjectSummaryAuthorizationTypesHash,
   getProjectSummaryPermitTypesHash,
 } from "@common/selectors/staticContentSelectors";
 import {
