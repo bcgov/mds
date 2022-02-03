@@ -5194,8 +5194,8 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
     },
     {
-      project_summary_authorization_type: "SOLID_WASTES_PERMIT",
-      description: "Solid wastes permit",
+      project_summary_authorization_type: "REFUSE_DISCHARGE_PERMIT",
+      description: "Refuse discharge permit",
       project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
     },
     {
@@ -6426,7 +6426,7 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
   MINES_ACT_PERMIT: "Mines Act permit",
   AIR_EMISSIONS_DISCHARGE_PERMIT: "Air emissions discharge permit",
   EFFLUENT_DISCHARGE_PERMIT: "Effluent discharge permit",
-  SOLID_WASTES_PERMIT: "Solid wastes permit",
+  REFUSE_DISCHARGE_PERMIT: "Refuse discharge permit",
   MUNICIPAL_WASTEWATER_REGULATION: "Municipal wastewater regulation",
   CHANGE_APPROVAL: "Change approval",
   USE_APPROVAL: "Use approval",
@@ -6528,7 +6528,7 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED = [
     children: [
       { code: "AIR_EMISSIONS_DISCHARGE_PERMIT", description: "Air emissions discharge permit" },
       { code: "EFFLUENT_DISCHARGE_PERMIT", description: "Effluent discharge permit" },
-      { code: "SOLID_WASTES_PERMIT", description: "Solid wastes permit" },
+      { code: "REFUSE_DISCHARGE_PERMIT", description: "Refuse discharge permit" },
       { code: "MUNICIPAL_WASTEWATER_REGULATION", description: "Municipal wastewater regulation" },
     ],
   },
@@ -6552,6 +6552,50 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED = [
     children: [{ code: "OTHER", description: "Other legislation" }],
   },
 ];
+
+export const PROJECT_SUMMARY_CHILD_AUTHORIZATION_TYPES_HASH = {
+  AIR_EMISSIONS_DISCHARGE_PERMIT: {
+    description: "Air emissions discharge permit",
+    parent: { code: "ENVIRONMENTAL_MANAGMENT_ACT", description: "Environmental Management Act" },
+  },
+  CHANGE_APPROVAL: {
+    description: "Change approval",
+    parent: { code: "WATER_SUSTAINABILITY_ACT", description: "Water Sustainability Act" },
+  },
+
+  EFFLUENT_DISCHARGE_PERMIT: {
+    description: "Effluent discharge permit",
+    parent: { code: "ENVIRONMENTAL_MANAGMENT_ACT", description: "Environmental Management Act" },
+  },
+  MINES_ACT_PERMIT: {
+    description: "Mines Act permit",
+    parent: { code: "MINES_ACT", description: "Mines Act" },
+  },
+  MUNICIPAL_WASTEWATER_REGULATION: {
+    description: "Municipal wastewater regulation",
+    parent: { code: "ENVIRONMENTAL_MANAGMENT_ACT", description: "Environmental Management Act" },
+  },
+  OCCUPANT_CUT_LICENCE: {
+    description: "Occupant licence to cut",
+    parent: { code: "FORESTRY_ACT", description: "Forestry Act" },
+  },
+  OTHER: {
+    description: "Other legislation",
+    parent: { code: "OTHER_LEGISLATION", description: "Other legislation" },
+  },
+  REFUSE_DISCHARGE_PERMIT: {
+    description: "Refuse discharge permit",
+    parent: { code: "ENVIRONMENTAL_MANAGMENT_ACT", description: "Environmental Management Act" },
+  },
+  USE_APPROVAL: {
+    description: "Use approval",
+    parent: { code: "WATER_SUSTAINABILITY_ACT", description: "Water Sustainability Act" },
+  },
+  WATER_LICENCE: {
+    description: "Water licence",
+    parent: { code: "WATER_SUSTAINABILITY_ACT", description: "Water Sustainability Act" },
+  },
+};
 
 export const EMLI_TYPE_CODES_DROPDOWN = [
   {
