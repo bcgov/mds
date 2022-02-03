@@ -73,7 +73,9 @@ exports[`ProjectSummary renders properly 1`] = `
         <div
           className="side-menu--content"
         >
-          <Connect(ReduxForm)
+          <ReduxForm
+            destroyOnUnmount={true}
+            enableReinitialize={true}
             fetchProjectSummaryById={
               [MockFunction] {
                 "calls": Array [
@@ -90,6 +92,8 @@ exports[`ProjectSummary renders properly 1`] = `
                 ],
               }
             }
+            forceUnregisterOnUnmount={false}
+            form="PROJECT_SUMMARY"
             formattedProjectSummary={
               Object {
                 "contacts": Array [],
@@ -106,7 +110,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "status_code": "OPN",
               }
             }
-            handleSubmit={[Function]}
+            getFormState={[Function]}
             initialValues={
               Object {
                 "contacts": Array [],
@@ -123,6 +127,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "status_code": "OPN",
               }
             }
+            keepDirtyOnReinitialize={false}
             match={
               Object {
                 "params": Object {
@@ -131,6 +136,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 },
               }
             }
+            persistentSubmitErrors={false}
             projectSummary={
               Object {
                 "contacts": Array [],
@@ -160,7 +166,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "OCCUPANT_CUT_LICENCE": "Occupant licence to cut",
                 "OTHER": "Other legislation",
                 "OTHER_LEGISLATION": "Other legislation",
-                "SOLID_WASTES_PERMIT": "Solid wastes permit",
+                "REFUSE_DISCHARGE_PERMIT": "Refuse discharge permit",
                 "USE_APPROVAL": "Use approval",
                 "WATER_LICENCE": "Water licence",
                 "WATER_SUSTAINABILITY_ACT": "Water Sustainability Act",
@@ -188,6 +194,15 @@ exports[`ProjectSummary renders properly 1`] = `
                 "WDN": "Withdrawn",
               }
             }
+            pure={true}
+            shouldAsyncValidate={[Function]}
+            shouldError={[Function]}
+            shouldValidate={[Function]}
+            shouldWarn={[Function]}
+            submitAsSideEffect={false}
+            touchOnBlur={true}
+            touchOnChange={false}
+            updateUnregisteredFields={false}
           />
         </div>
       </LoadingWrapper>

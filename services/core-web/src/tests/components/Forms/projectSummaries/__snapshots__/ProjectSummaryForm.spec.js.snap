@@ -5,28 +5,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onSubmit={[Function]}
 >
   <div
     id="project-details"
   >
-    <Alert
-      description={
-        <p>
-          Please assign a Project Lead to this project via the
-           
-          <a
-            href="#project-contacts"
-          >
-            Project contacts
-          </a>
-           section.
-        </p>
-      }
-      message="This project does not have a Project Lead"
-      showIcon={true}
-      type="warning"
-    />
     <Title
       level={3}
     >
@@ -154,62 +137,6 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     >
       Project contacts
     </Title>
-    <Row
-      gutter={16}
-    >
-      <Col
-        lg={12}
-        md={24}
-      >
-        <h3>
-          EMLI contacts
-        </h3>
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            data={Array []}
-            format={null}
-            id="project_summary_lead_party_guid"
-            label={
-              <p
-                className="bold"
-              >
-                Project Lead
-              </p>
-            }
-            name="project_summary_lead_party_guid"
-            placeholder="Unassigned"
-          />
-        </FormItem>
-      </Col>
-      <Col
-        lg={4}
-        md={24}
-      >
-        <Button
-          block={false}
-          className="no-margin"
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[MockFunction]}
-          type="primary"
-        >
-          <img
-            alt="Edit"
-            name="edit"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-            Edit
-        </Button>
-      </Col>
-    </Row>
     <h3>
       Proponent contacts
     </h3>
