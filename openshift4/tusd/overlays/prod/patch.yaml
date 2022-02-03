@@ -1,6 +1,102 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: mds-patroni
+  name: tusd
 spec:
-  replicas: 3
+  strategy:
+    type: Recreate
+    maxSurge: 50%
+    maxUnavailable: 0
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - tusd
+        from:
+          kind: ImageStreamTag
+          name: tusd:prod
+          namespace: 4c2ba9-tools
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tusd
+    name: tusd
+  template:
+    metadata:
+      name: tusd
+      labels:
+        name: tusd
+        service: tusd
+    spec:
+      containers:
+        - name: tusd
+          image: "tusproject/tusd:v1.3.0"
+          ports:
+            - containerPort: 1080
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /metrics
+              port: 1080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /metrics
+              port: 1080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: object-store-credentials
+                  key: key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: object-store-credentials
+                  key: secret-access-key
+            - name: AWS_BUCKET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: object-store-credentials
+                  key: bucket-id
+            - name: AWS_REGION
+              value: eu-west-1
+            - name: S3_BUCKET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: object-store-credentials
+                  key: bucket-id
+            - name: S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: object-store-credentials
+                  key: endpoint
+            - name: S3_PREFIX
+              value: mds-files-prod/
+            - name: DOCUMENT_MANAGER_URL
+              value: http://docman:5001/document-manager
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 30m
+              memory: 96Mi
+          terminationMessagePath: /dev/termination-log
+          imagePullPolicy: IfNotPresent
+          capabilities: {}
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/part-of: Core
     cluster-name: tusd
     phase: deploy
-  name: tusd-master
+  name: tusd
 
 spec:
   ports:

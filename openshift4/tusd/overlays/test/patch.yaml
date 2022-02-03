@@ -1,9 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app.kubernetes.io/version: "0.0.1"
-    app.kubernetes.io/name: tusd
   name: tusd
 spec:
   strategy:
@@ -19,13 +16,12 @@ spec:
           - tusd
         from:
           kind: ImageStreamTag
-          name: tusd:dev
+          name: tusd:test
           namespace: 4c2ba9-tools
   replicas: 1
   selector:
     matchLabels:
-      name: tusd
-      service: tusd
+      app: tusd
     name: tusd
   template:
     metadata:
@@ -89,7 +85,7 @@ spec:
                   name: object-store-credentials
                   key: endpoint
             - name: S3_PREFIX
-              value: mds-files-dev/
+              value: mds-files-test/
             - name: DOCUMENT_MANAGER_URL
               value: http://docman:5001/document-manager
           resources:

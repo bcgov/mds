@@ -3,3 +3,4 @@ kind: Kustomization
 bases:
 - ../../base
 patchesStrategicMerge:
+- patch.yaml
