@@ -832,17 +832,57 @@ export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
   }
 );
 
+export const getTransformedChildProjectSummaryAuthorizationTypesHash = createSelector(
+  [getProjectSummaryAuthorizationTypes],
+  (types) => {
+    const parents = types
+      .filter(
+        ({ project_summary_authorization_type_group_id }) =>
+          !project_summary_authorization_type_group_id
+      )
+      .map(({ project_summary_authorization_type, description }) => {
+        return { code: project_summary_authorization_type, description, children: [] };
+      });
+
+    types.map((child) => {
+      parents.map(({ code, children }) => {
+        if (code === child.project_summary_authorization_type_group_id) {
+          return children.push({
+            code: child.project_summary_authorization_type,
+            description: child.description,
+          });
+        }
+      });
+    });
+    const transformedObject = {};
+    parents.forEach((parent) => {
+      return parent.children.forEach((child) => {
+        transformedObject[child.code] = {
+          description: child.description,
+          parent: { code: parent.code, description: parent.description },
+        };
+      });
+    });
+    return transformedObject;
+  }
+);
+
 export const getDropdownProjectSummaryPermitTypes = createSelectorWrapper(
   getProjectSummaryPermitTypes,
   createDropDownList,
   ["description", "project_summary_permit_type"]
 );
 
+export const getProjectSummaryPermitTypesHash = createSelector(
+  [getDropdownProjectSummaryPermitTypes],
+  createLabelHash
+);
+
 export const getProjectSummaryAuthorizationTypesArray = createSelector(
   [getProjectSummaryAuthorizationTypes],
   (types) => {
     const arr = [];
-    types.map(({ project_summary_authorization_type, description }) => {
+    types.map(({ project_summary_authorization_type }) => {
       return arr.push(project_summary_authorization_type);
     });
 
