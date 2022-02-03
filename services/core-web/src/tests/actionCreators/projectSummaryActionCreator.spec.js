@@ -101,7 +101,7 @@ describe("`fetchProjectSummaryById` action creator", () => {
     return fetchProjectSummaryById(
       mineGuid,
       projectSummaryGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
