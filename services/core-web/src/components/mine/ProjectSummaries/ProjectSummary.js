@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {
   getProjectSummaryStatusCodesHash,
   getProjectSummaryDocumentTypesHash,
-  getTransformedProjectSummaryAuthorizationTypes,
+  getTransformedChildProjectSummaryAuthorizationTypesHash,
   getProjectSummaryPermitTypesHash,
 } from "@common/selectors/staticContentSelectors";
 import {
@@ -83,22 +83,6 @@ export class ProjectSummary extends Component {
     return null;
   };
 
-<<<<<<< Updated upstream
-=======
-  handleUpdate = () => {
-    const {
-      match: {
-        params: { mineGuid, projectSummaryGuid },
-      },
-    } = this.props;
-    this.props
-      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues)
-      .then(() => {
-        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
-      });
-  };
-
->>>>>>> Stashed changes
   render() {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
@@ -180,7 +164,9 @@ const mapStateToProps = (state) => {
     formValues: getFormValues(FORM.PROJECT_SUMMARY)(state),
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
-    projectSummaryAuthorizationTypes: getTransformedProjectSummaryAuthorizationTypes(state),
+    projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
+      state
+    ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     initialValues: getFormattedProjectSummary(state),
   };
