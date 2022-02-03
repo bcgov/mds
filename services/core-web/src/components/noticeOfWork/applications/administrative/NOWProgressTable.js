@@ -37,7 +37,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
-import { detectProdEnvironment } from "@common/utils/environmentUtils";
 
 /**
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
@@ -260,7 +259,7 @@ const transformProgressRowData = (
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
-  delayColumns = (inTesting) => [
+  delayColumns = () => [
     {
       title: "Reason for Delay",
       dataIndex: "reason",
@@ -287,13 +286,13 @@ export class NOWProgressTable extends Component {
       render: (text) => <div title="End Comment">{text || "N/A"}</div>,
     },
     // disabled EDIT_NOW_DATES until a crucial bug is fixed - delays cannot overlap, validation should be fixed to ensure that doesn't occur, if there are overlaps the duration does not calculate properly leading to poor timeline reporting.
-    inTesting && {
+    {
       title: "",
       dataIndex: "edit",
       render: (text, record, index) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
+            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES} inTesting>
               <Button
                 type="secondary"
                 ghost
@@ -476,7 +475,6 @@ export class NOWProgressTable extends Component {
           )
         : Strings.EMPTY_FIELD;
     const delaysExist = this.props.applicationDelays.length > 0;
-    const inTesting = !detectProdEnvironment();
     return (
       <div>
         <Row gutter={16} justify="left">
@@ -584,7 +582,7 @@ export class NOWProgressTable extends Component {
             this.props.applicationDelays,
             this.props.delayTypeOptionsHash
           )}
-          columns={this.delayColumns(inTesting)}
+          columns={this.delayColumns()}
           tableProps={{
             pagination: false,
           }}
