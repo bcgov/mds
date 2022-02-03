@@ -60,4 +60,5 @@ export const USER_ROLES = {
   role_mds_administrative_users: "mds_administrative_users",
   role_edit_now_dates: "core_edit_now_dates",
   role_edit_emli_contacts: "core_edit_emli_contacts",
+  role_edit_project_summary_leads: "core_edit_project_summary_leads",
 };

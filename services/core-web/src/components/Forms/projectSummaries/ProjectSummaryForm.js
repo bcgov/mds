@@ -9,15 +9,20 @@ import { Typography, Row, Col, Button, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { PENCIL } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
 import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -145,7 +150,11 @@ export const ProjectSummaryForm = (props) => {
     const {
       projectSummary: { contacts },
       projectLeads,
+      userRoles,
     } = props;
+    const userCanEditProjectLead = userRoles.includes(
+      USER_ROLES[Permission.EDIT_PROJECT_SUMMARY_LEADS]
+    );
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
@@ -161,15 +170,18 @@ export const ProjectSummaryForm = (props) => {
                 format={null}
                 data={projectLeads}
                 defaultValue="Unassigned"
+                disabled={!userCanEditProjectLead}
               />
             </Form.Item>
           </Col>
-          <Col lg={4} md={24}>
-            <Button className="no-margin" type="primary" onClick={props.handleSubmit}>
-              <img name="edit" src={PENCIL} alt="Edit" />
-              &nbsp; Edit
-            </Button>
-          </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARY_LEADS}>
+            <Col lg={4} md={24}>
+              <Button className="no-margin" type="primary" onClick={props.handleSubmit}>
+                <img name="edit" src={PENCIL} alt="Edit" />
+                &nbsp; Edit
+              </Button>
+            </Col>
+          </AuthorizationWrapper>
         </Row>
         <h3>Proponent contacts</h3>
         <p className="bold">Primary project contact</p>
@@ -305,6 +317,7 @@ ProjectSummaryForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
+  userRoles: getUserAccessData(state),
 });
 
 export default compose(
