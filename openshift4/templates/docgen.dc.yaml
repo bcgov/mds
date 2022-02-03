@@ -23,17 +23,17 @@ parameters:
     description: Environment for running node
     value: production
   - name: CPU_LIMIT
-    value: 50m
+    value: 200m
   - name: MEMORY_LIMIT
-    value: 750Mi
+    value: 1500Mi
   - name: CPU_REQUEST
-    value: 10m
+    value: 50m
   - name: MEMORY_REQUEST
-    value: 256Mi
+    value: 512Mi
   - name: REPLICA_MIN
-    value: "1"
+    value: "2"
   - name: REPLICA_MAX
-    value: "1"
+    value: "2"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: APPNAME
