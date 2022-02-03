@@ -1,17 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "redux";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Button, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { PENCIL } from "@/constants/assets";
+import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  projectLeads: CustomPropTypes.groupOptions.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -306,6 +312,5 @@ export default compose(
   reduxForm({
     form: FORM.PROJECT_SUMMARY,
     enableReinitialize: true,
-    // onSubmitSuccess: resetForm(FORM.PROJECT_SUMMARY),
   })
 )(ProjectSummaryForm);

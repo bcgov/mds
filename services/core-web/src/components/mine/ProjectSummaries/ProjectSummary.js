@@ -36,6 +36,7 @@ const propTypes = {
       projectSummaryGuid: PropTypes.string,
     },
   }).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -87,17 +88,14 @@ export class ProjectSummary extends Component {
     return null;
   };
 
-  handleUpdate = (formValues) => {
-    const {
-      match: {
-        params: { mineGuid, projectSummaryGuid },
-      },
-    } = this.props;
-    console.log("UPDATE VALUES: ", formValues);
-    // this.props.updateProjectSummary({ mineGuid, projectSummaryGuid }, formValues).then(() => {
-    //   this.props.fetchProjectSummaryById((mineGuid, projectSummaryGuid);
-    // });
-    // return true;
+  handleUpdate = () => {
+    const mineGuid = this.props.match?.params?.mineGuid;
+    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
+    this.props
+      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues)
+      .then(() => {
+        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+      });
   };
 
   render() {
@@ -182,7 +180,9 @@ const mapStateToProps = (state) => {
     formValues: getFormValues(FORM.PROJECT_SUMMARY)(state),
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
-    projectSummaryAuthorizationTypes: getTransformedProjectSummaryAuthorizationTypes(state),
+    projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
+      state
+    ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     initialValues: getFormattedProjectSummary(state),
   };
