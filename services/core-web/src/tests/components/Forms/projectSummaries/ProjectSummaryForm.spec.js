@@ -7,9 +7,12 @@ const props = {};
 const setupProps = () => {
   props.handleSubmit = jest.fn();
   props.submitting = false;
-  props.formValues = {};
-  props.initialValues = { projectSummaryAuthorizationTypes: [], authorizations: [] };
-  props.projectSummary = { documents: [] };
+  props.formValues = { contacts: [{}] };
+  props.initialValues = {
+    projectSummaryAuthorizationTypes: [],
+    authorizations: [],
+  };
+  props.projectSummary = { documents: [], contacts: [{}] };
   props.projectSummaryDocumentTypesOptions = [];
   props.projectSummaryPermitTypesHash = {};
   props.projectSummaryAuthorizationTypes = [];
