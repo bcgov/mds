@@ -5,12 +5,8 @@ COPY init.sh .
 # Created via the base image for tusd
 WORKDIR /srv/tusd-data
 
-USER tusd
-
 RUN mkdir -p /srv/tusd-data/data
-
-RUN chown -R 1001:0 /srv/tusd-data/data
 
 ENTRYPOINT [ "./init.sh" ]
 
-USER 1001
+USER tusd
