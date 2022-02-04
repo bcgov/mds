@@ -22,7 +22,7 @@ EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
 GIS = "core_gis"
 EDIT_NOW_DATES = "core_edit_now_dates"
 EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
-EDIT_PROJECT_SUMMARY_LEADS = "core_edit_project_summary_leads"
+EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
 
 
 def is_minespace_user():
@@ -37,8 +37,8 @@ def requires_role_edit_emli_contacts(func):
     return _inner_wrapper(func, EDIT_EMLI_CONTACTS)
 
 
-def requires_role_edit_project_summary_leads(func):
-    return _inner_wrapper(func, EDIT_PROJECT_SUMMARY_LEADS)
+def requires_role_edit_project_summaries(func):
+    return _inner_wrapper(func, EDIT_PROJECT_SUMMARIES)
 
 
 def requires_role_view_all(func):
