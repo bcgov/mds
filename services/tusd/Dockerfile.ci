@@ -1,8 +1,13 @@
 FROM tusproject/tusd:v1.3.0
 
+WORKDIR /srv/tusd-data
+
 COPY init.sh .
 
-RUN mkdir -p /srv/tusd-data/data
-CMD ["/bin/sh, "-c", "chown", "-R", "1000:0", "/srv/tusd-data/data"]
+RUN mkdir -p data
+
+RUN chown -R 1000:1000 data
+RUN chmod -R 777 data
+
 USER 1000
 ENTRYPOINT [ "./init.sh" ]
