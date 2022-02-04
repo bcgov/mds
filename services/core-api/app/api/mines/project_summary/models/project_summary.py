@@ -185,6 +185,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
 
         # Update simple properties.
+        # If we assign a project lead update status to Assigned and vice versa Submitted.
+        if project_summary_lead_party_guid and self.project_summary_lead_party_guid is None:
+            self.status_code = "ASG"
+        if project_summary_lead_party_guid is None and self.project_summary_lead_party_guid:
+            self.status_code = "SUB"
+
         self.status_code = status_code
         self.project_summary_description = project_summary_description
         self.project_summary_title = project_summary_title
