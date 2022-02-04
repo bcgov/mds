@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { Field, reduxForm } from "redux-form";
@@ -11,8 +11,6 @@ import * as FORM from "@/constants/forms";
 import { PENCIL } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -22,13 +20,21 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  submitting: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
+const unassignedProjectLeadEntry = {
+  label: "Unassigned",
+  value: null,
+};
+
 export const ProjectSummaryForm = (props) => {
+  const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
+  const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
+
   const renderProjectDetails = () => {
     const {
       projectSummary: { project_summary_lead_party_guid },
@@ -149,16 +155,11 @@ export const ProjectSummaryForm = (props) => {
   const renderContacts = () => {
     const {
       projectSummary: { contacts },
-      projectLeads,
-      userRoles,
     } = props;
-    const userCanEditProjectLead = userRoles.includes(
-      USER_ROLES[Permission.EDIT_PROJECT_SUMMARY_LEADS]
-    );
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
-        <Row gutter={16}>
+        <Row gutter={16} className={isEditingProjectLead ? "project-lead-edit" : ""}>
           <Col lg={12} md={24}>
             <h3>EMLI contacts</h3>
             <Form.Item>
@@ -166,20 +167,40 @@ export const ProjectSummaryForm = (props) => {
                 id="project_summary_lead_party_guid"
                 name="project_summary_lead_party_guid"
                 label={<p className="bold">Project Lead</p>}
-                component={renderConfig.GROUPED_SELECT}
-                format={null}
-                data={projectLeads}
-                defaultValue="Unassigned"
-                disabled={!userCanEditProjectLead}
+                component={renderConfig.SELECT}
+                data={projectLeadData}
+                disabled={!isEditingProjectLead}
               />
             </Form.Item>
           </Col>
-          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARY_LEADS}>
-            <Col lg={4} md={24}>
-              <Button className="no-margin" type="primary" onClick={props.handleSubmit}>
-                <img name="edit" src={PENCIL} alt="Edit" />
-                &nbsp; Edit
-              </Button>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="project-lead-edit-btn">
+              {!isEditingProjectLead ? (
+                <Button type="primary" onClick={() => setIsEditingProjectLead(true)}>
+                  <img name="edit" src={PENCIL} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingProjectLead(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={() => {
+                      props.handleSubmit();
+                      setIsEditingProjectLead(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
             </Col>
           </AuthorizationWrapper>
         </Row>
@@ -317,7 +338,6 @@ ProjectSummaryForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
-  userRoles: getUserAccessData(state),
 });
 
 export default compose(
