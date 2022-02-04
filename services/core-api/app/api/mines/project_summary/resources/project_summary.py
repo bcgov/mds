@@ -130,7 +130,7 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         project_summary.save()
 
-        if prev_status == 'DFT' and project_summary.status_code == 'OPN':
+        if prev_status == 'DFT' and project_summary.status_code == 'SUB':
             project_summary.send_project_summary_email_to_ministry(mine)
             project_summary.send_project_summary_email_to_proponent(mine)
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -9,6 +10,7 @@ import {
   getProjectSummaryDocumentTypesHash,
   getTransformedChildProjectSummaryAuthorizationTypesHash,
   getProjectSummaryPermitTypesHash,
+  getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
 import {
   getProjectSummary,
@@ -17,6 +19,7 @@ import {
 import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
+import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
@@ -38,6 +41,7 @@ const propTypes = {
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectSummaryById: PropTypes.func.isRequired,
+  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
 };
 
 export class ProjectSummary extends Component {
@@ -84,6 +88,7 @@ export class ProjectSummary extends Component {
   };
 
   render() {
+    console.log(this.props.formattedProjectSummary.project_summary_title);
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
     }
@@ -144,6 +149,7 @@ export class ProjectSummary extends Component {
               >
                 <ProjectSummaryForm
                   {...this.props}
+                  projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                   initialValues={this.props.formattedProjectSummary}
                 />
               </div>
@@ -168,7 +174,7 @@ const mapStateToProps = (state) => {
       state
     ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
-    initialValues: getFormattedProjectSummary(state),
+    projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
   };
 };
 

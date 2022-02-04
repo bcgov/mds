@@ -115,7 +115,7 @@ class ProjectSummaryListResource(Resource, UserMixin):
         try:
             project_summary.save()
             if is_minespace_user():
-                if project_summary.status_code == 'OPN':
+                if project_summary.status_code == 'SUB':
                     project_summary.send_project_summary_email_to_ministry(mine)
                     project_summary.send_project_summary_email_to_proponent(mine)
         except Exception as e:

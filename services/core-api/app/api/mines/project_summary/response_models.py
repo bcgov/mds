@@ -11,6 +11,7 @@ PROJECT_SUMMARY_STATUS_CODE_MODEL = api.model(
     'ProjectSummaryStatusCode', {
         'project_summary_status_code': fields.String,
         'description': fields.String,
+        'alias_description': fields.String,
         'active_ind': fields.Boolean,
         'display_order': fields.Integer
     })
@@ -28,10 +29,6 @@ PROJECT_SUMMARY_PERMIT_TYPE_MODEL = api.model('ProjectSummaryPermitType', {
     'description': fields.String
 })
 
-PROJECT_SUMMARY_STATUS_CODE_MODEL = api.model('ProjectSummaryStatusCode', {
-    'project_summary_status_code': fields.String,
-    'description': fields.String
-})
 
 PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL = api.model(
     'ProjectSummaryAuthorizationType', {

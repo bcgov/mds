@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -14,7 +15,7 @@ import {
   updateProjectSummary,
   deleteProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
-import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
@@ -160,7 +161,7 @@ export class ProjectSummaries extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   projectSummaries: getProjectSummaries(state),
-  projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  projectSummaryStatusCodesHash: getProjectSummaryAliasStatusCodesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

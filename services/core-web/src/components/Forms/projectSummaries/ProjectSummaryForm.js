@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
@@ -22,6 +23,19 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-details">
         <Typography.Title level={3}>Project details</Typography.Title>
+        <Row gutter={16}>
+          <Col lg={12} md={24}>
+            <Form.Item>
+              <Field
+                id="status_code"
+                name="status_code"
+                label="Project Stage"
+                component={renderConfig.SELECT}
+                data={props.projectSummaryStatusCodes}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={16}>
           <Col lg={12} md={24}>
             <Form.Item>

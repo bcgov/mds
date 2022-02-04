@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
@@ -780,6 +781,17 @@ export const getDropdownProjectSummaryStatusCodes = createSelectorWrapper(
 );
 
 export const getProjectSummaryStatusCodesHash = createSelector(
+  [getDropdownProjectSummaryStatusCodes],
+  createLabelHash
+);
+
+export const getDropdownProjectSummaryAliasStatusCodes = createSelectorWrapper(
+  getProjectSummaryStatusCodes,
+  createDropDownList,
+  ["alias_description", "project_summary_status_code"]
+);
+
+export const getProjectSummaryAliasStatusCodesHash = createSelector(
   [getDropdownProjectSummaryStatusCodes],
   createLabelHash
 );
