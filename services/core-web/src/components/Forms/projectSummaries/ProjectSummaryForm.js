@@ -1,27 +1,60 @@
 /* eslint-disable */
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { compose } from "redux";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Button, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { PENCIL } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
+import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  projectLeads: CustomPropTypes.groupOptions.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
+const unassignedProjectLeadEntry = {
+  label: "Unassigned",
+  value: null,
+};
+
 export const ProjectSummaryForm = (props) => {
+  const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
+  const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
+
   const renderProjectDetails = () => {
+    const {
+      projectSummary: { project_summary_lead_party_guid },
+    } = props;
     return (
       <div id="project-details">
+        {!project_summary_lead_party_guid && (
+          <Alert
+            message="This project does not have a Project Lead"
+            description={
+              <p>
+                Please assign a Project Lead to this project via the{" "}
+                <a href="#project-contacts">Project contacts</a> section.
+              </p>
+            }
+            type="warning"
+            showIcon
+          />
+        )}
         <Typography.Title level={3}>Project details</Typography.Title>
         <Row gutter={16}>
           <Col lg={12} md={24}>
@@ -140,6 +173,51 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
+        <Row gutter={16} className={isEditingProjectLead ? "project-lead-edit" : ""}>
+          <Col lg={12} md={24}>
+            <h3>EMLI contacts</h3>
+            <Form.Item>
+              <Field
+                id="project_summary_lead_party_guid"
+                name="project_summary_lead_party_guid"
+                label={<p className="bold">Project Lead</p>}
+                component={renderConfig.SELECT}
+                data={projectLeadData}
+                disabled={!isEditingProjectLead}
+              />
+            </Form.Item>
+          </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="project-lead-edit-btn">
+              {!isEditingProjectLead ? (
+                <Button type="primary" onClick={() => setIsEditingProjectLead(true)}>
+                  <img name="edit" src={PENCIL} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingProjectLead(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={() => {
+                      props.handleSubmit();
+                      setIsEditingProjectLead(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </Col>
+          </AuthorizationWrapper>
+        </Row>
         <h3>Proponent contacts</h3>
         <p className="bold">Primary project contact</p>
         <p>{contacts[0]?.name}</p>
@@ -256,7 +334,7 @@ export const ProjectSummaryForm = (props) => {
   };
 
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -272,7 +350,14 @@ export const ProjectSummaryForm = (props) => {
 
 ProjectSummaryForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.PROJECT_SUMMARY,
-  enableReinitialize: true,
-})(ProjectSummaryForm);
+const mapStateToProps = (state) => ({
+  projectLeads: getDropdownProjectLeads(state),
+});
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.PROJECT_SUMMARY,
+    enableReinitialize: true,
+  })
+)(ProjectSummaryForm);

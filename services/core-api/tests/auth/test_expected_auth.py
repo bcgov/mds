@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -129,8 +129,8 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
      (ProjectSummaryListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (ProjectSummaryListResource, 'post', [MINE_ADMIN, MINESPACE_PROPONENT]),
      (ProjectSummaryResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ProjectSummaryResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT]),
-     (ProjectSummaryResource, 'delete', [MINE_ADMIN, MINESPACE_PROPONENT])])
+     (ProjectSummaryResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES]),
+     (ProjectSummaryResource, 'delete', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
