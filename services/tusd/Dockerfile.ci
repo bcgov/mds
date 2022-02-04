@@ -4,10 +4,10 @@ WORKDIR /srv/tusd-data
 
 COPY init.sh .
 
-RUN mkdir -p data
+RUN mkdir -p /srv/tusd-data/data
 
-RUN chown -R 1000:1000 data
-RUN chmod -R 777 data
+RUN chown -R tusd:tusd /srv/tusd-data/data
+RUN chmod -R 777 /srv/tusd-data/data
 
-USER 1000
+USER tusd
 ENTRYPOINT [ "./init.sh" ]
