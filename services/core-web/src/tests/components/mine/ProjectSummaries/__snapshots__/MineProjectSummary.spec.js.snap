@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProjectSummary renders properly 1`] = `
+exports[`MineProjectSummary renders properly 1`] = `
 <div
   className="tab__content"
 >
@@ -74,9 +74,10 @@ exports[`ProjectSummary renders properly 1`] = `
       projectSummaries={Array []}
       projectSummaryStatusCodesHash={
         Object {
-          "C": "Closed",
-          "O": "Open",
-          "W": "Withdrawn",
+          "CLD": "Closed",
+          "DFT": "Draft",
+          "OPN": "Open",
+          "WDN": "Withdrawn",
         }
       }
     />

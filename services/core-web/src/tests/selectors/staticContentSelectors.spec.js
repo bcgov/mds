@@ -71,6 +71,10 @@ import {
   getExplosivesPermitMagazineTypeOptionsHash,
   getProjectSummaryStatusCodesHash,
   getProjectSummaryDocumentTypesHash,
+  getProjectSummaryPermitTypesHash,
+  getTransformedProjectSummaryAuthorizationTypes,
+  getTransformedChildProjectSummaryAuthorizationTypesHash,
+  getDropdownProjectSummaryPermitTypes,
   getDropdownProjectSummaryStatusCodes,
   getDropdownProjectSummaryDocumentTypes,
   getEMLIContactTypes,
@@ -472,6 +476,12 @@ describe("staticContentSelectors", () => {
     );
   });
 
+  it("`getProjectSummaryPermitTypesHash` calls `staticContentReducer.getProjectSummaryPermitTypesHash`", () => {
+    expect(getProjectSummaryPermitTypesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_PERMIT_TYPES_HASH
+    );
+  });
+
   it("`getDropdownProjectSummaryDocumentTypes` calls `staticContentReducer.getDropdownProjectSummaryDocumentTypes`", () => {
     expect(getDropdownProjectSummaryDocumentTypes(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN
@@ -481,6 +491,24 @@ describe("staticContentSelectors", () => {
   it("`getDropdownProjectSummaryStatusCodes` calls `staticContentReducer.getDropdownProjectSummaryStatusCodes`", () => {
     expect(getDropdownProjectSummaryStatusCodes(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_STATUS_CODES_DROPDOWN
+    );
+  });
+
+  it("`getDropdownProjectSummaryPermitTypes` calls `staticContentReducer.getDropdownProjectSummaryPermitTypes`", () => {
+    expect(getDropdownProjectSummaryPermitTypes(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_PERMIT_TYPES_DROPDOWN
+    );
+  });
+
+  it("`getTransformedProjectSummaryAuthorizationTypes` calls `staticContentReducer.getTransformedProjectSummaryAuthorizationTypes`", () => {
+    expect(getTransformedProjectSummaryAuthorizationTypes(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED
+    );
+  });
+
+  it("`getTransformedChildProjectSummaryAuthorizationTypesHash` calls `staticContentReducer.getTransformedChildProjectSummaryAuthorizationTypesHash`", () => {
+    expect(getTransformedChildProjectSummaryAuthorizationTypesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_CHILD_AUTHORIZATION_TYPES_HASH
     );
   });
 

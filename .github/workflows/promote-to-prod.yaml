@@ -35,7 +35,7 @@ jobs:
           - name: metabase
           - name: metabase-postgres
           - name: docman
-          - name: filesystem-provider
+          # - name: filesystem-provider
           - name: nris
           - name: minespace
           - name: schemaspy
@@ -80,7 +80,7 @@ jobs:
           - name: metabase
           - name: metabase-postgres
           - name: docman
-          - name: filesystem-provider
+          # - name: filesystem-provider
           - name: nris
           - name: minespace
     steps:
