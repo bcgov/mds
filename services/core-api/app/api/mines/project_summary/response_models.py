@@ -29,18 +29,12 @@ PROJECT_SUMMARY_PERMIT_TYPE_MODEL = api.model('ProjectSummaryPermitType', {
     'description': fields.String
 })
 
-
 PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL = api.model(
     'ProjectSummaryAuthorizationType', {
         'project_summary_authorization_type': fields.String,
         'description': fields.String,
         'project_summary_authorization_type_group_id': fields.String
     })
-
-# PROJECT_SUMMARY_PERMIT_TYPE = api.model('ProjectSummaryPermitType', {
-#     'project_summary_permit_type': fields.String,
-#     'description': fields.String
-# })
 
 PROJECT_SUMMARY_CONTACT_MODEL = api.model(
     'ProjectSummaryContact', {
