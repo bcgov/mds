@@ -1,0 +1,15 @@
+.project-lead-edit {
+  background-color: lightgrey;
+}
+
+@media (min-width: 992px) {
+  .project-lead-edit-btn {
+    padding-top: 60px;
+  }
+}
+
+@media (max-width: 991px) {
+  .project-lead-edit-btn {
+    padding-left: 0px !important;
+  }
+}
