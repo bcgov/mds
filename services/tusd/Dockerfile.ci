@@ -2,11 +2,7 @@ FROM tusproject/tusd:v1.3.0
 
 COPY init.sh .
 
-# Created via the base image for tusd
-WORKDIR /srv/tusd-data
-
 RUN mkdir -p /srv/tusd-data/data
 
-ENTRYPOINT [ "./init.sh" ]
-
 USER tusd
+ENTRYPOINT [ "./init.sh" ]
