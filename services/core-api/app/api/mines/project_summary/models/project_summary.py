@@ -86,14 +86,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if is_minespace_user:
             return cls.query.filter_by(
                 project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid, is_minespace_user):
         if is_minespace_user:
             return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
             mine_guid=mine_guid, deleted_ind=False).all()
 
     @classmethod
