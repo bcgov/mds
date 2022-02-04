@@ -3,6 +3,8 @@ FROM tusproject/tusd:v1.3.0
 COPY init.sh .
 
 RUN mkdir -p /srv/tusd-data/data
+RUN chgrp -R 0 /srv/tusd-data/data && \
+    chmod -R g=u /srv/tusd-data/data
 
 ENTRYPOINT [ "./init.sh" ]
 
