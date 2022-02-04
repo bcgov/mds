@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from decimal import Decimal
 
 from app.extensions import api
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -111,7 +111,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to update.'
         })
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
@@ -137,7 +137,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to delete.'
         })
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
