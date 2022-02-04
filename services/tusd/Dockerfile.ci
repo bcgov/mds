@@ -3,7 +3,6 @@ FROM tusproject/tusd:v1.3.0
 COPY init.sh .
 
 RUN mkdir -p /srv/tusd-data/data
-RUN chown -R 1000:0 /srv/tusd-data/data
-
+CMD ["'/bin/sh -c chown -R 1000:0 /srv/tusd-data/data'"]
 USER 1000
 ENTRYPOINT [ "./init.sh" ]
