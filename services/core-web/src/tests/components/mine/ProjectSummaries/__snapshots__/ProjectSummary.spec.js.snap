@@ -73,9 +73,7 @@ exports[`ProjectSummary renders properly 1`] = `
         <div
           className="side-menu--content"
         >
-          <ReduxForm
-            destroyOnUnmount={true}
-            enableReinitialize={true}
+          <Connect(ReduxForm)
             fetchProjectSummaryById={
               [MockFunction] {
                 "calls": Array [
@@ -92,8 +90,6 @@ exports[`ProjectSummary renders properly 1`] = `
                 ],
               }
             }
-            forceUnregisterOnUnmount={false}
-            form="PROJECT_SUMMARY"
             formattedProjectSummary={
               Object {
                 "contacts": Array [],
@@ -110,7 +106,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "status_code": "OPN",
               }
             }
-            getFormState={[Function]}
+            handleSubmit={[Function]}
             initialValues={
               Object {
                 "contacts": Array [],
@@ -127,7 +123,6 @@ exports[`ProjectSummary renders properly 1`] = `
                 "status_code": "OPN",
               }
             }
-            keepDirtyOnReinitialize={false}
             match={
               Object {
                 "params": Object {
@@ -136,7 +131,6 @@ exports[`ProjectSummary renders properly 1`] = `
                 },
               }
             }
-            persistentSubmitErrors={false}
             projectSummary={
               Object {
                 "contacts": Array [],
@@ -194,15 +188,6 @@ exports[`ProjectSummary renders properly 1`] = `
                 "WDN": "Withdrawn",
               }
             }
-            pure={true}
-            shouldAsyncValidate={[Function]}
-            shouldError={[Function]}
-            shouldValidate={[Function]}
-            shouldWarn={[Function]}
-            submitAsSideEffect={false}
-            touchOnBlur={true}
-            touchOnChange={false}
-            updateUnregisteredFields={false}
           />
         </div>
       </LoadingWrapper>

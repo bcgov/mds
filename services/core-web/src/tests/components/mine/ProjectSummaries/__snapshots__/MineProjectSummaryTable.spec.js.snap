@@ -17,6 +17,12 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "title": "Project Proponent ID",
       },
       Object {
+        "dataIndex": "project_summary_lead_name",
+        "key": "project_summary_lead_name",
+        "render": [Function],
+        "title": "EMLI Project Lead",
+      },
+      Object {
         "dataIndex": "project_contact",
         "key": "project_contact",
         "render": [Function],
@@ -82,6 +88,7 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "project_proponent_id": "25789-x",
         "project_stage": "OPN",
         "project_summary_id": "N/A",
+        "project_summary_lead_name": "N/A",
       },
     ]
   }
