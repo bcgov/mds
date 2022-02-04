@@ -1,6 +1,7 @@
 name: Build filesystem-provider
 
 on:
+  pull_request:
   push:
     branches:
       - develop
