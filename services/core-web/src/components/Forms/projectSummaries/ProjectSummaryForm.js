@@ -34,6 +34,7 @@ const unassignedProjectLeadEntry = {
 
 export const ProjectSummaryForm = (props) => {
   const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
+  const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
 
   const renderProjectDetails = () => {
@@ -55,8 +56,9 @@ export const ProjectSummaryForm = (props) => {
             showIcon
           />
         )}
+        <br />
         <Typography.Title level={3}>Project details</Typography.Title>
-        <Row gutter={16}>
+        <Row gutter={16} className={isEditingStatus ? "project-lead-edit" : ""}>
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
@@ -65,9 +67,40 @@ export const ProjectSummaryForm = (props) => {
                 label="Project Stage"
                 component={renderConfig.SELECT}
                 data={props.projectSummaryStatusCodes}
+                disabled={!isEditingStatus}
               />
             </Form.Item>
           </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="project-lead-edit-btn">
+              {!isEditingStatus ? (
+                <Button type="primary" onClick={() => setIsEditingStatus(true)}>
+                  <img name="edit" src={PENCIL} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingStatus(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={() => {
+                      props.handleSubmit();
+                      setIsEditingStatus(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </Col>
+          </AuthorizationWrapper>
         </Row>
         <Row gutter={16}>
           <Col lg={12} md={24}>
