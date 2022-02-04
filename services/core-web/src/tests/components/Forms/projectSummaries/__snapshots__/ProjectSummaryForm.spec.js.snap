@@ -27,12 +27,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       showIcon={true}
       type="warning"
     />
+    <br />
     <Title
       level={3}
     >
       Project details
     </Title>
     <Row
+      className=""
       gutter={16}
     >
       <Col
@@ -44,12 +46,42 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            disabled={true}
             id="status_code"
             label="Project Stage"
             name="status_code"
           />
         </FormItem>
       </Col>
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_project_summaries"
+      >
+        <Col
+          className="project-lead-edit-btn"
+          lg={24}
+          md={24}
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="primary"
+          >
+            <img
+              alt="Edit"
+              name="edit"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
+              Edit
+          </Button>
+        </Col>
+      </Connect(AuthorizationWrapper)>
     </Row>
     <Row
       gutter={16}
