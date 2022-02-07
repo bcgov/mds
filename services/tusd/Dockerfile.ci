@@ -4,7 +4,6 @@ COPY init.sh .
 
 RUN mkdir -p /srv/tusd-data/data
 
-RUN chown -R 1001:1001 /srv/tusd-data/data
 RUN chmod -R 777 /srv/tusd-data/data
 
 USER 1001
