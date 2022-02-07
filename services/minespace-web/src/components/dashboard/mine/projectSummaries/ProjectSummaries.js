@@ -7,12 +7,9 @@ import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchProjectSummariesByMine,
-  createProjectSummary,
-  updateProjectSummary,
   deleteProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
@@ -168,11 +165,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      openModal,
-      closeModal,
       fetchProjectSummariesByMine,
-      createProjectSummary,
-      updateProjectSummary,
       deleteProjectSummary,
     },
     dispatch

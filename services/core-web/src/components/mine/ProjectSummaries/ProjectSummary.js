@@ -92,18 +92,17 @@ export class ProjectSummary extends Component {
     return null;
   };
 
-  handleUpdate = () => {
+  handleUpdate = (message) => {
     const mineGuid = this.props.match?.params?.mineGuid;
     const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
     this.props
-      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues)
+      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
       });
   };
 
   render() {
-    console.log(this.props.formattedProjectSummary.project_summary_title);
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
     }

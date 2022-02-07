@@ -7,10 +7,9 @@ import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography, Row, Col, Button, Alert } from "antd";
-import { EditOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
-import { PENCIL } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
@@ -76,8 +75,7 @@ export const ProjectSummaryForm = (props) => {
             <Col lg={24} md={24} className="padding-sm--bottom">
               {!isEditingStatus ? (
                 <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
-                  {/* <img name="edit" src={PENCIL} alt="Edit" /> */}
-                  <EditOutlined />
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
                   &nbsp; Edit
                 </Button>
               ) : (
@@ -93,7 +91,7 @@ export const ProjectSummaryForm = (props) => {
                     type="primary"
                     loading={props.submitting}
                     onClick={() => {
-                      props.handleSubmit();
+                      props.handleSubmit("Successfully updated the project stage.");
                       setIsEditingStatus(false);
                     }}
                   >
@@ -226,8 +224,7 @@ export const ProjectSummaryForm = (props) => {
             <Col lg={24} md={24} className="padding-sm--bottom">
               {!isEditingProjectLead ? (
                 <Button type="secondary" onClick={() => setIsEditingProjectLead(true)}>
-                  {/* <img name="edit" src={PENCIL} alt="Edit" /> */}
-                  <EditOutlined />
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
                   &nbsp; Edit
                 </Button>
               ) : (
@@ -243,7 +240,7 @@ export const ProjectSummaryForm = (props) => {
                     type="primary"
                     loading={props.submitting}
                     onClick={() => {
-                      props.handleSubmit();
+                      props.handleSubmit("Successfully updated the project lead.");
                       setIsEditingProjectLead(false);
                     }}
                   >
