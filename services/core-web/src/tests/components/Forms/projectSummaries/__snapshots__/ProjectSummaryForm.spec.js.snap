@@ -34,6 +34,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       Project details
     </Title>
     <Row
+      align="bottom"
       className=""
       gutter={16}
     >
@@ -57,7 +58,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         permission="role_edit_project_summaries"
       >
         <Col
-          className="project-lead-edit-btn"
+          className="padding-sm--bottom"
           lg={24}
           md={24}
         >
@@ -67,17 +68,9 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             htmlType="button"
             loading={false}
             onClick={[Function]}
-            type="primary"
+            type="secondary"
           >
-            <img
-              alt="Edit"
-              name="edit"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
+            <ForwardRef(EditOutlined) />
               Edit
           </Button>
         </Col>
@@ -205,7 +198,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     >
       Project contacts
     </Title>
+    <h3>
+      EMLI contacts
+    </h3>
     <Row
+      align="bottom"
       className=""
       gutter={16}
     >
@@ -213,9 +210,6 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         lg={12}
         md={24}
       >
-        <h3>
-          EMLI contacts
-        </h3>
         <FormItem
           hasFeedback={false}
         >
@@ -246,7 +240,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         permission="role_edit_project_summaries"
       >
         <Col
-          className="project-lead-edit-btn"
+          className="padding-sm--bottom"
           lg={24}
           md={24}
         >
@@ -256,17 +250,9 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             htmlType="button"
             loading={false}
             onClick={[Function]}
-            type="primary"
+            type="secondary"
           >
-            <img
-              alt="Edit"
-              name="edit"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
+            <ForwardRef(EditOutlined) />
               Edit
           </Button>
         </Col>
