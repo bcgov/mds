@@ -1,13 +1,11 @@
 FROM tusproject/tusd:v1.3.0
 
-WORKDIR /srv/tusd-data
-
 COPY init.sh .
 
 RUN mkdir -p /srv/tusd-data/data
 
-RUN chown -R tusd:tusd /srv/tusd-data/data
+RUN chown -R 1001:1001 /srv/tusd-data/data
 RUN chmod -R 777 /srv/tusd-data/data
 
-USER tusd
+USER 1001
 ENTRYPOINT [ "./init.sh" ]
