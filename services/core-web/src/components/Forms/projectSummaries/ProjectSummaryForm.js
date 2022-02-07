@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography, Row, Col, Button, Alert } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { PENCIL } from "@/constants/assets";
@@ -58,7 +59,7 @@ export const ProjectSummaryForm = (props) => {
         )}
         <br />
         <Typography.Title level={3}>Project details</Typography.Title>
-        <Row gutter={16} className={isEditingStatus ? "project-lead-edit" : ""}>
+        <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
@@ -72,10 +73,11 @@ export const ProjectSummaryForm = (props) => {
             </Form.Item>
           </Col>
           <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
-            <Col lg={24} md={24} className="project-lead-edit-btn">
+            <Col lg={24} md={24} className="padding-sm--bottom">
               {!isEditingStatus ? (
-                <Button type="primary" onClick={() => setIsEditingStatus(true)}>
-                  <img name="edit" src={PENCIL} alt="Edit" />
+                <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
+                  {/* <img name="edit" src={PENCIL} alt="Edit" /> */}
+                  <EditOutlined />
                   &nbsp; Edit
                 </Button>
               ) : (
@@ -206,9 +208,9 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
-        <Row gutter={16} className={isEditingProjectLead ? "project-lead-edit" : ""}>
+        <h3>EMLI contacts</h3>
+        <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
           <Col lg={12} md={24}>
-            <h3>EMLI contacts</h3>
             <Form.Item>
               <Field
                 id="project_summary_lead_party_guid"
@@ -221,10 +223,11 @@ export const ProjectSummaryForm = (props) => {
             </Form.Item>
           </Col>
           <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
-            <Col lg={24} md={24} className="project-lead-edit-btn">
+            <Col lg={24} md={24} className="padding-sm--bottom">
               {!isEditingProjectLead ? (
-                <Button type="primary" onClick={() => setIsEditingProjectLead(true)}>
-                  <img name="edit" src={PENCIL} alt="Edit" />
+                <Button type="secondary" onClick={() => setIsEditingProjectLead(true)}>
+                  {/* <img name="edit" src={PENCIL} alt="Edit" /> */}
+                  <EditOutlined />
                   &nbsp; Edit
                 </Button>
               ) : (
