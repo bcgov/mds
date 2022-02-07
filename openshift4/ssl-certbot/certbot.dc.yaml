@@ -1,0 +1,116 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    labels:
+      app: certbot
+    name: certbot
+- apiVersion: authorization.openshift.io/v1
+  groupNames: null
+  kind: RoleBinding
+  metadata:
+    labels:
+      app: certbot
+    name: certbot_edit
+  roleRef:
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: certbot
+- kind: Role
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: certbot_pulling
+    namespace: 4c2ba9-tools
+  rules:
+    - verbs:
+        - update
+        - list
+        - patch
+        - get
+      apiGroups:
+        - image.openshift.io
+      resources:
+        - imagestreams
+    - verbs:
+        - get
+        - update
+      apiGroups:
+        - ''
+        - image.openshift.io
+      resources:
+        - imagestreams/layers
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: certbot
+    name: certbot-core
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    storageClassName: netapp-file-standard
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    labels:
+      app: certbot
+    name: certbot-core
+  spec:
+    concurrencyPolicy: Replace
+    failedJobsHistoryLimit: 3
+    jobTemplate:
+      metadata: null
+      spec:
+        activeDeadlineSeconds: 300
+        backoffLimit: 6
+        completions: 1
+        parallelism: 1
+        template:
+          metadata:
+            labels:
+              app: certbot
+          spec:
+            containers:
+            - env:
+              - name: CERTBOT_EMAIL
+                value: mds@gov.bc.ca
+              - name: CERTBOT_DEBUG
+                value: "false"
+              - name: CERTBOT_DELETE_ACME_ROUTES
+                value: "true"
+              - name: CERTBOT_STAGING
+                value: "true"
+              - name: CERTBOT_DRY_RUN
+                value: "true"
+              - name: CERTBOT_SERVER
+                value: https://acme-staging-v02.api.letsencrypt.org/directory
+              - name: APPLICATION_NAME
+                value: core
+              image: image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/certbot:latest
+              imagePullPolicy: Always
+              name: certbot-core
+              resources:
+                limits:
+                  cpu: 250m
+                requests:
+                  cpu: 50m
+              volumeMounts:
+              - mountPath: /etc/letsencrypt
+                name: certbot-config
+            restartPolicy: Never
+            serviceAccountName: certbot
+            volumes:
+            - name: certbot-config
+              persistentVolumeClaim:
+                claimName: certbot-core
+    schedule: 0 */12 * * *
+    startingDeadlineSeconds: 60
+    successfulJobsHistoryLimit: 3
+    suspend: true
+kind: List
+metadata: {}

@@ -1,0 +1,47 @@
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: certbot
+    name: certbot
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: certbot
+    name: certbot
+  spec:
+    completionDeadlineSeconds: 300
+    output:
+      to:
+        kind: ImageStreamTag
+        name: certbot:mds
+    postCommit: {}
+    resources:
+      limits:
+        cpu: 1
+      requests:
+        cpu: 1
+    source:
+      contextDir: openshift4/docker-images/certbot
+      git:
+        ref: feature/certbot
+        uri: https://github.com/bcgov/mds.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: registry.access.redhat.com/ubi8:8.3-227
+      type: Docker
+    triggers:
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+kind: List
+metadata: {}
