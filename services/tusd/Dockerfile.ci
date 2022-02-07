@@ -6,5 +6,5 @@ RUN mkdir -p /srv/tusd-data/data
 
 RUN chmod -R 777 /srv/tusd-data/data
 
-USER 1001
+USER tusd
 ENTRYPOINT [ "./init.sh" ]
