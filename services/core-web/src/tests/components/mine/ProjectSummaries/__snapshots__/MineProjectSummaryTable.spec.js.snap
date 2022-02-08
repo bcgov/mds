@@ -65,7 +65,7 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
     Array [
       Object {
         "documents": Array [],
-        "first_submitted_date": undefined,
+        "first_submitted_date": "N/A",
         "key": "81324623978135",
         "last_updated_date": undefined,
         "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
