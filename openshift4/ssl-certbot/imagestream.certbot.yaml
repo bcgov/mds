@@ -1,0 +1,9 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    build: certbot
+  name: certbot
+spec:
+  lookupPolicy:
+    local: false
