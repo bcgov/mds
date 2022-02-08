@@ -252,34 +252,40 @@ export const ProjectSummaryForm = (props) => {
           </AuthorizationWrapper>
         </Row>
         <h3>Proponent contacts</h3>
-        <p className="bold">Primary project contact</p>
-        <p>{contacts[0]?.name}</p>
-        {contacts[0]?.job_title && <p>{contacts[0]?.job_title}</p>}
-        {contacts[0]?.company_name && <p>{contacts[0]?.company_name}</p>}
-        <a href={`mailto: ${contacts[0]?.email}`}>{contacts[0]?.email}</a>
-        <div className="inline-flex">
-          <p>{contacts[0]?.phone_number}</p>
-          {contacts[0]?.phone_extension && <p> ({contacts[0]?.phone_extension})</p>}
-        </div>
-        <br />
-        {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
-        {contacts.length >= 1 &&
-          contacts
-            .filter((c) => !c.is_primary)
-            .map((contact) => {
-              return (
-                <>
-                  <p>{contact.name}</p>
-                  {contact.job_title && <p>{contact.job_title}</p>}
-                  {contact.company_name && <p>{contact.company_name}</p>}
-                  <a href={`mailto: ${contact.email}`}>{contact.email}</a>
-                  <div className="inline-flex">
-                    <p>{contact.phone_number}</p>
-                    {contact.phone_extension && <p> ({contact.phone_extension})</p>}
-                  </div>
-                </>
-              );
-            })}
+        {contacts.length === 0 ? (
+          <p>There are no contacts on the project description</p>
+        ) : (
+          <>
+            <p className="bold">Primary project contact</p>
+            <p>{contacts[0]?.name}</p>
+            {contacts[0]?.job_title && <p>{contacts[0]?.job_title}</p>}
+            {contacts[0]?.company_name && <p>{contacts[0]?.company_name}</p>}
+            <a href={`mailto: ${contacts[0]?.email}`}>{contacts[0]?.email}</a>
+            <div className="inline-flex">
+              <p>{contacts[0]?.phone_number}</p>
+              {contacts[0]?.phone_extension && <p> ({contacts[0]?.phone_extension})</p>}
+            </div>
+            <br />
+            {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
+            {contacts.length >= 1 &&
+              contacts
+                .filter((c) => !c.is_primary)
+                .map((contact) => {
+                  return (
+                    <>
+                      <p>{contact.name}</p>
+                      {contact.job_title && <p>{contact.job_title}</p>}
+                      {contact.company_name && <p>{contact.company_name}</p>}
+                      <a href={`mailto: ${contact.email}`}>{contact.email}</a>
+                      <div className="inline-flex">
+                        <p>{contact.phone_number}</p>
+                        {contact.phone_extension && <p> ({contact.phone_extension})</p>}
+                      </div>
+                    </>
+                  );
+                })}
+          </>
+        )}
       </div>
     );
   };
