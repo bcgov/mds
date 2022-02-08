@@ -33,7 +33,7 @@ const transformRowData = (projectSummaries) => {
       project_summary_lead_name: projectSummary.project_summary_lead_name || Strings.EMPTY_FIELD,
       project_proponent_id: projectSummary.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
-      first_submitted_date: formatDate(projectSummary.create_timestamp),
+      first_submitted_date: formatDate(projectSummary.submission_date) || Strings.EMPTY_FIELD,
       last_updated_date: formatDate(projectSummary.update_timestamp),
     };
   });

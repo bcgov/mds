@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
@@ -25,6 +24,7 @@ const propTypes = {
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
 };
 
 const unassignedProjectLeadEntry = {

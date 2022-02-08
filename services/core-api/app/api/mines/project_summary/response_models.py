@@ -71,6 +71,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_lead_name': fields.String,
         'proponent_project_id': fields.String,
         'expected_draft_irt_submission_date': fields.DateTime,
+        'submission_date': fields.DateTime,
         'expected_permit_application_date': fields.DateTime,
         'expected_permit_receipt_date': fields.DateTime,
         'expected_project_start_date': fields.DateTime,

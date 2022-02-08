@@ -70,7 +70,15 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             onClick={[Function]}
             type="secondary"
           >
-            <ForwardRef(EditOutlined) />
+            <img
+              alt="Edit"
+              name="edit"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
               Edit
           </Button>
         </Col>
@@ -252,7 +260,15 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             onClick={[Function]}
             type="secondary"
           >
-            <ForwardRef(EditOutlined) />
+            <img
+              alt="Edit"
+              name="edit"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
               Edit
           </Button>
         </Col>

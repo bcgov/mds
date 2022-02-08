@@ -1,6 +1,6 @@
 from flask_restplus import Resource, inputs
 from flask import request
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import desc, cast, NUMERIC, extract, asc
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
@@ -127,16 +127,18 @@ class ProjectSummaryResource(Resource, UserMixin):
         prev_status = project_summary.status_code
 
         data = self.parser.parse_args()
+        submission_date = datetime.now(tz=timezone.utc) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else None
+
         project_summary.update(
             data.get('project_summary_description'), data.get('project_summary_title'),
             data.get('proponent_project_id'), data.get('expected_draft_irt_submission_date'),
             data.get('expected_permit_application_date'), data.get('expected_permit_receipt_date'),
             data.get('expected_project_start_date'), data.get('status_code'),
             data.get('project_summary_lead_party_guid'), data.get('documents', []),
-            data.get('contacts', []), data.get('authorizations', []))
+            data.get('contacts', []), data.get('authorizations', []), submission_date)
+
 
         project_summary.save()
-
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
             project_summary.send_project_summary_email_to_ministry(mine)
             project_summary.send_project_summary_email_to_proponent(mine)
