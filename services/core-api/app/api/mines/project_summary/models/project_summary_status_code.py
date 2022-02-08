@@ -18,4 +18,4 @@ class ProjectSummaryStatusCode(AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.order_by(cls.display_order).all()
+        return cls.query.order_by(cls.display_order).filter_by(active_ind=True).all()

@@ -108,7 +108,7 @@ export const ProjectSummaryForm = (props) => {
               <Field
                 id="proponent_project_id"
                 name="proponent_project_id"
-                label="Project number"
+                label="Project Proponent ID"
                 component={renderConfig.FIELD}
                 disabled
               />
@@ -117,7 +117,7 @@ export const ProjectSummaryForm = (props) => {
               <Field
                 id="project_summary_description"
                 name="project_summary_description"
-                label="Executive summary"
+                label="Executive Summary"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 disabled
               />
