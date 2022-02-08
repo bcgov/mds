@@ -66,7 +66,7 @@ export const ProjectSummaryForm = (props) => {
                 name="status_code"
                 label="Project Stage"
                 component={renderConfig.SELECT}
-                data={props.projectSummaryStatusCodes}
+                data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
                 disabled={!isEditingStatus}
               />
             </Form.Item>
