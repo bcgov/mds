@@ -792,7 +792,7 @@ export const getDropdownProjectSummaryAliasStatusCodes = createSelectorWrapper(
 );
 
 export const getProjectSummaryAliasStatusCodesHash = createSelector(
-  [getDropdownProjectSummaryStatusCodes],
+  [getDropdownProjectSummaryAliasStatusCodes],
   createLabelHash
 );
 
