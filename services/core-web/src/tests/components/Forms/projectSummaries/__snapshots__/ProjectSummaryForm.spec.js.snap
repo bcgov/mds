@@ -47,6 +47,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            data={Array []}
             disabled={true}
             id="status_code"
             label="Project Stage"
@@ -98,7 +99,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="proponent_project_id"
-            label="Project number"
+            label="Project Proponent ID"
             name="proponent_project_id"
           />
         </FormItem>
@@ -109,7 +110,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="project_summary_description"
-            label="Executive summary"
+            label="Executive Summary"
             name="project_summary_description"
           />
         </FormItem>

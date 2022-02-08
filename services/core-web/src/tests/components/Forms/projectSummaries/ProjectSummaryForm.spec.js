@@ -20,6 +20,7 @@ const setupProps = () => {
     { groupName: "Active", opt: [] },
     { groupName: "Inactive", opt: [] },
   ];
+  props.projectSummaryStatusCodes = [];
 };
 
 beforeEach(() => {
