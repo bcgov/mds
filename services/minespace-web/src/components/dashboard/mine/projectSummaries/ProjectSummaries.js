@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -26,6 +25,7 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  deleteProjectSummary: PropTypes.func.isRequired,
   fetchProjectSummariesByMine: PropTypes.func.isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
