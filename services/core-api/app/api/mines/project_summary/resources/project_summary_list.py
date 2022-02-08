@@ -118,10 +118,8 @@ class ProjectSummaryListResource(Resource, UserMixin):
             project_summary.save()
             if is_minespace_user():
                 if project_summary.status_code == 'SUB':
-                    # project_summary.submission_date = datetime.now(tz=timezone.utc)
                     project_summary.send_project_summary_email_to_ministry(mine)
                     project_summary.send_project_summary_email_to_proponent(mine)
-                    # project_summary.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
