@@ -19,3 +19,7 @@ class ApplicationTypeCode(Base, AuditMixin):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def find_by_application_type_code(cls,application_type_code):
+        return cls.query.filter_by(application_type_code = application_type_code).first()

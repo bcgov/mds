@@ -116,6 +116,7 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
         'permit_amendment_type_code': 'AMD',
         'permit_amendment_status_code': 'RMT',
         'issue_date': datetime.today().date().isoformat(),
+        'preamble_text': '',
     }
     put_resp = test_client.put(
         f'/mines/{permit.mine.mine_guid}/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',

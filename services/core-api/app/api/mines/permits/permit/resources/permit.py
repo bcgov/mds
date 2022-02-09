@@ -12,6 +12,7 @@ from app.api.mines.permits.permit_conditions.models.standard_permit_conditions i
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -21,7 +22,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
-from app.api.utils.helpers import generate_draft_permit_no_suffix
+from app.api.utils.helpers import generate_draft_permit_no_suffix, get_preamble_text
 
 
 class PermitListResource(Resource, UserMixin):
@@ -125,6 +126,13 @@ class PermitListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
+        identity = NOWApplicationIdentity.find_by_mine_guid(mine.mine_guid)
+        description = None
+        if identity:
+            application_type = ApplicationTypeCode.find_by_application_type_code(
+                identity.application_type_code)
+            description = application_type.description if application_type else None
+
         permittee_party_guid = data.get('permittee_party_guid')
         if permittee_party_guid:
             party = Party.find_by_party_guid(permittee_party_guid)
@@ -159,6 +167,7 @@ class PermitListResource(Resource, UserMixin):
             raise BadRequest("That permit number is already in use.")
 
         uploadedFiles = data.get('uploadedFiles', [])
+        preamble_text = get_preamble_text(description)
 
         # we do not have permit yet so we will use the hybrid property logic at this point
         permit_prefix = permit_no[0]
@@ -178,6 +187,7 @@ class PermitListResource(Resource, UserMixin):
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
+            preamble_text,
             'OGP',
             description='Initial permit issued.',
             issuing_inspector_title=data.get('issuing_inspector_title'),

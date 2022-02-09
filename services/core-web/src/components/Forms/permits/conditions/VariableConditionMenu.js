@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { Menu } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import { change, getFormValues } from "redux-form";
 import { getNOWReclamationSummary } from "@common/selectors/noticeOfWorkSelectors";
+import { getTextBeforeCursor, getTextAfterCursor } from "@common/selectors/permitSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
@@ -15,6 +16,10 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   isManagementView: PropTypes.bool,
   activityTypeOptions: CustomPropTypes.options.isRequired,
+  change: PropTypes.func.isRequired,
+  conditionFormValues: PropTypes.func.isRequired,
+  textBeforeCursorPosition: PropTypes.string.isRequired,
+  textAfterCursorPosition: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -23,9 +28,17 @@ const defaultProps = {
 
 export class VariableConditionMenu extends Component {
   handleClick(value) {
-    const condition = this.props.formValues.condition ? this.props.formValues.condition : "";
-    const newValues = `${condition} ${value.key}`;
-    return this.props.change(FORM.CONDITION_SECTION, "condition", newValues);
+    const condition = this.props.conditionFormValues.condition
+      ? this.props.conditionFormValues.condition
+      : "";
+    if (condition !== "") {
+      const newValues = `${condition} ${value.key}`;
+      return this.props.change(FORM.CONDITION_SECTION, "condition", newValues);
+    }
+    const newPreambleValues = `${this.props.textBeforeCursorPosition.trim()} ${value.key} ${
+      this.props.textAfterCursorPosition
+    }`;
+    return this.props.change(FORM.GENERATE_PERMIT, "preamble_text", newPreambleValues);
   }
 
   render() {
@@ -123,9 +136,11 @@ VariableConditionMenu.propTypes = propTypes;
 VariableConditionMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  formValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
+  conditionFormValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
   reclamationSummary: getNOWReclamationSummary(state),
   activityTypeOptions: getDropdownNoticeOfWorkActivityTypeOptions(state),
+  textBeforeCursorPosition: getTextBeforeCursor(state),
+  textAfterCursorPosition: getTextAfterCursor(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

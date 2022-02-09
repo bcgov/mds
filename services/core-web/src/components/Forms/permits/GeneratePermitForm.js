@@ -5,12 +5,15 @@ import { connect } from "react-redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Descriptions } from "antd";
-import { required, dateNotAfterOther, dateNotBeforeOther } from "@common/utils/Validate";
+import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
+import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
+import { getEditingPreambleFlag } from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import { EDIT_OUTLINE } from "@/constants/assets";
+import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
 
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
@@ -34,6 +37,12 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
+  editingPreambleFlag: PropTypes.bool.isRequired,
+  storeEditingPreambleFlag: PropTypes.func.isRequired,
+  toggleEditMode: PropTypes.func.isRequired,
+  handleSaveDraftEdit: PropTypes.func.isRequired,
+  handleCancelDraftEdit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export const GeneratePermitForm = (props) => {
@@ -253,6 +262,7 @@ export const GeneratePermitForm = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
+      {props.editingPreambleFlag && <VariableConditionMenu />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
@@ -300,6 +310,67 @@ export const GeneratePermitForm = (props) => {
                 />
               </Col>
             </Row>
+            {props.isViewMode && (
+              <div className="right">
+                <br />
+                <br />
+                <br />
+                <Button
+                  type="secondary"
+                  onClick={() => {
+                    props.storeEditingPreambleFlag(true);
+                    props.toggleEditMode();
+                  }}
+                >
+                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                  Edit Preamble Text
+                </Button>
+              </div>
+            )}
+            <div style={!props.isViewMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
+              <Row gutter={32}>
+                <Col xs={48} md={24}>
+                  <Field
+                    id="preamble_text"
+                    name="preamble_text"
+                    label="Preamble text"
+                    component={renderConfig.AUTO_SIZE_FIELD}
+                    disabled={!props.editingPreambleFlag}
+                    minRows={4}
+                    validate={maxLength(2000)}
+                    onChange={(e) => props.handleChange(e)}
+                  />
+                </Col>
+              </Row>
+              {!props.isViewMode && (
+                <div className="right center-mobile">
+                  <Popconfirm
+                    placement="topRight"
+                    title="Are you sure you want to cancel?"
+                    onConfirm={() => {
+                      props.handleCancelDraftEdit();
+                      props.storeEditingPreambleFlag(false);
+                    }}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button className="full-mobile" type="secondary">
+                      Cancel
+                    </Button>
+                  </Popconfirm>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    onClick={() => {
+                      props.handleSaveDraftEdit();
+                      props.storeEditingPreambleFlag(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              )}
+            </div>
             <br />
             <FinalPermitDocuments
               mineGuid={props.noticeOfWork.mine_guid}
@@ -349,6 +420,7 @@ GeneratePermitForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state) || {},
+  editingPreambleFlag: getEditingPreambleFlag(state),
 });
 
 export default compose(
