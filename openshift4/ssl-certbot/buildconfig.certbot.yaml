@@ -4,6 +4,7 @@ metadata:
   labels:
     build: certbot
   name: certbot
+  namespace: 4c2ba9-tools
 spec:
   completionDeadlineSeconds: 300
   output:

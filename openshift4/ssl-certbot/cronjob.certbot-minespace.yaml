@@ -52,7 +52,7 @@ spec:
           - name: certbot-config
             persistentVolumeClaim:
               claimName: certbot-minespace
-  schedule: 0 */12 * * *
+  schedule: 10 */12 * * *
   startingDeadlineSeconds: 60
   successfulJobsHistoryLimit: 3
   suspend: true

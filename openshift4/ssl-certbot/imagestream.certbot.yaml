@@ -4,6 +4,7 @@ metadata:
   labels:
     build: certbot
   name: certbot
+  namespace: 4c2ba9-tools
 spec:
   lookupPolicy:
     local: false
