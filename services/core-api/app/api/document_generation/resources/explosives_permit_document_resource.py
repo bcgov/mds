@@ -1,5 +1,5 @@
 import requests
-from flask import request, Response, stream_with_context
+from flask import request, Response, stream_with_context, current_app
 from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
 from app.extensions import api, cache
@@ -60,6 +60,8 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
         template_data = token_data['template_data']
 
         template_data['document_name_start_extra'] = explosives_permit.application_number
+        # TODO: Remove Logs for generate document
+        current_app.logger.debug(f'token:{token}, document_type_code: {document_type_code}, explosives_permit_document_type: {explosives_permit_document_type}, explosives_permit_guid: {explosives_permit_guid}')
         docgen_resp = DocumentGeneratorService.generate_document(
             explosives_permit_document_type.document_template, template_data)
         if docgen_resp.status_code != requests.codes.ok:
