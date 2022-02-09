@@ -74,9 +74,14 @@ exports[`MineProjectSummary renders properly 1`] = `
       projectSummaries={Array []}
       projectSummaryStatusCodesHash={
         Object {
-          "CLD": "Closed",
+          "ASG": "Assigned",
+          "COM": "Complete",
           "DFT": "Draft",
-          "OPN": "Open",
+          "IAT": "Inactive",
+          "OHD": "On Hold",
+          "SUB": "Submitted",
+          "UNP": "Under review - with proponent",
+          "UNR": "Under review - with reviewers",
           "WDN": "Withdrawn",
         }
       }
