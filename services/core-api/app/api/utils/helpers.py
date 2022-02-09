@@ -29,3 +29,16 @@ def format_datetime_to_string(date):
 
 def format_currency(value):
     return '${:,.2f}'.format(float(value or 0)) if value else '$0.00'
+
+
+def get_preamble_text(description):
+    new_line = '\n\n'
+    return f"{description} for the {{mine_name}} {{application_type}} project was filed with the Chief Permitting Officer, " \
+           f"submitted on {{application_dated}} and last updated on {{application_last_updated_date}}.  The application included a " \
+           f"plan of the proposed work system (“Mine Plan”) and a program for the protection and reclamation of the surface of " \
+           f"the land and watercourses (“Reclamation Program”), affected by the {description}. {new_line}" \
+           f"The Mines Act, the Health, Safety and Reclamation Code for Mines in British Columbia (“Code” or “HSRC”), and this "\
+           f"Mines Act Permit contain the requirements of the Chief Permitting Officer for the execution of the Mine Plan and "\
+           f"Reclamation Program, including the deposit of reclamation securities. Nothing in this permit limits the authority of "\
+           f"other government agencies to set additional requirements or to act independently under their respective authorizations "\
+           f"and legislation."

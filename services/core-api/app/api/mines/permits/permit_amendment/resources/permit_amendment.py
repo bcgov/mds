@@ -19,11 +19,13 @@ from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_A
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.utils.helpers import get_preamble_text
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -107,6 +109,12 @@ class PermitAmendmentListResource(Resource, UserMixin):
             raise NotFound("Mine does not exist")
         # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
         #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
+        identity = NOWApplicationIdentity.find_by_mine_guid(mine.mine_guid)
+        description = None
+        if identity:
+            application_type = ApplicationTypeCode.find_by_application_type_code(
+                identity.application_type_code)
+            description = application_type.description if application_type else None
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -170,6 +178,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         now_application_guid = data.get('now_application_guid')
         populate_with_conditions = data.get('populate_with_conditions', True)
         is_generated_in_core = True if permit_amendment_status_code == "DFT" and populate_with_conditions else False
+        preamble_text = get_preamble_text(description)
 
         new_pa = PermitAmendment.create(
             permit,
@@ -186,7 +195,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
             issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
             now_application_guid=data.get('now_application_guid'),
-            is_generated_in_core=is_generated_in_core)
+            is_generated_in_core=is_generated_in_core,
+            preamble_text=preamble_text)
 
         uploadedFiles = data.get('uploadedFiles', [])
         for newFile in uploadedFiles:
@@ -214,7 +224,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 if populate_with_conditions:
                     permit_amendment_id = None
                     if application_identity.application_type_code == 'NOW':
-                        permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(permit.permit_id)
+                        permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(
+                            permit.permit_id)
                         permit_amendment_id = permit_amendment.permit_amendment_id
                     else:
                         permit_amendment_id = application_identity.source_permit_amendment_id
@@ -225,8 +236,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                         for condition in conditions:
                             PermitConditions.create(condition.condition_category_code,
                                                     condition.condition_type_code,
-                                                    new_pa.permit_amendment_id,
-                                                    condition.condition,
+                                                    new_pa.permit_amendment_id, condition.condition,
                                                     condition.display_order,
                                                     condition.sub_conditions)
                     else:
@@ -333,6 +343,10 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='{ mine_commodity_code, mine_disturbance_code}.')
+    parser.add_argument('preamble_text',
+        type=str,
+        location='json',
+        help='Preamble text.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all

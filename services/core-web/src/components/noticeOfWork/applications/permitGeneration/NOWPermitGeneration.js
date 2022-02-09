@@ -13,7 +13,6 @@ import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { modalConfig } from "@/components/modalContent/config";
 import {
   fetchPermits,
   updatePermitAmendment,
@@ -22,10 +21,18 @@ import {
   deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import {
+  storeEditingPreambleFlag,
+  storeTextBeforeCursor,
+  storeTextAfterCursor,
+} from "@common/actions/permitActions";
+import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
   getPermits,
 } from "@common/selectors/permitSelectors";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,8 +43,6 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
-import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -73,6 +78,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
+  storeEditingPreambleFlag: PropTypes.func.isRequired,
+  storeTextBeforeCursor: PropTypes.string.isRequired,
+  storeTextAfterCursor: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -245,6 +253,7 @@ export class NOWPermitGeneration extends Component {
         amendment.issue_date && amendment.authorization_end_date
           ? getDurationText(amendment.issue_date, amendment.authorization_end_date)
           : "N/A",
+      preamble_text: amendment.preamble_text,
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
     const permittee = noticeOfWork.contacts.filter(
@@ -458,6 +467,7 @@ export class NOWPermitGeneration extends Component {
         transformDocumentsMetadata(this.props.formValues.previous_amendment_documents_metadata)
       ),
       site_properties: this.props.formValues.site_property,
+      preamble_text: this.props.formValues.preamble_text,
     };
 
     // eslint-disable-next-line consistent-return
@@ -473,6 +483,16 @@ export class NOWPermitGeneration extends Component {
         this.handleDraftPermit();
         this.props.toggleEditMode();
       });
+  };
+
+  handleChange = (e) => {
+    if (e.target.value) {
+      const cursorPosition = e.target.selectionStart;
+      this.props.storeTextBeforeCursor(e.target.value.substring(0, cursorPosition));
+      this.props.storeTextAfterCursor(
+        e.target.value.substring(cursorPosition, e.target.value.length)
+      );
+    }
   };
 
   render() {
@@ -560,7 +580,10 @@ export class NOWPermitGeneration extends Component {
               <Popconfirm
                 placement="bottomRight"
                 title="You have unsaved changes. Are you sure you want to cancel?"
-                onConfirm={this.handleCancelDraftEdit}
+                onConfirm={() => {
+                  this.handleCancelDraftEdit();
+                  this.props.storeEditingPreambleFlag(false);
+                }}
                 okText="Yes"
                 cancelText="No"
                 disabled={this.props.submitting}
@@ -572,7 +595,10 @@ export class NOWPermitGeneration extends Component {
               <Button
                 type="primary"
                 className="full-mobile"
-                onClick={this.handleSaveDraftEdit}
+                onClick={() => {
+                  this.handleSaveDraftEdit();
+                  this.props.storeEditingPreambleFlag(false);
+                }}
                 loading={this.props.submitting}
               >
                 Save
@@ -639,6 +665,11 @@ export class NOWPermitGeneration extends Component {
                     }
                     draftPermit={this.props.draftPermit}
                     draftPermitAmendment={this.props.draftPermitAmendment}
+                    storeEditingPreambleFlag={this.props.storeEditingPreambleFlag}
+                    toggleEditMode={this.props.toggleEditMode}
+                    handleSaveDraftEdit={this.handleSaveDraftEdit}
+                    handleCancelDraftEdit={this.handleCancelDraftEdit}
+                    handleChange={this.handleChange}
                   />
                 )}
               </>
@@ -677,6 +708,9 @@ const mapDispatchToProps = (dispatch) =>
       deletePermitAmendment,
       openModal,
       closeModal,
+      storeEditingPreambleFlag,
+      storeTextBeforeCursor,
+      storeTextAfterCursor,
     },
     dispatch
   );

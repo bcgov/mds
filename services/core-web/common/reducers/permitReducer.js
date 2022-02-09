@@ -6,6 +6,9 @@ const initialState = {
   draftPermits: [],
   permitConditions: [],
   editingConditionFlag: false,
+  editingPreambleFlag: false,
+  textBeforeCursor: "",
+  textAfterCursor: "",
 };
 
 export const permitReducer = (state = initialState, action) => {
@@ -35,6 +38,21 @@ export const permitReducer = (state = initialState, action) => {
         ...state,
         editingConditionFlag: action.payload,
       };
+    case actionTypes.STORE_EDITING_PREAMBLE_FLAG:
+      return {
+        ...state,
+        editingPreambleFlag: action.payload,
+      };
+    case actionTypes.STORE_TEXT_BEFORE_CURSOR:
+      return {
+        ...state,
+        textBeforeCursor: action.payload,
+      };
+    case actionTypes.STORE_TEXT_AFTER_CURSOR:
+      return {
+        ...state,
+        textAfterCursor: action.payload,
+      };
     default:
       return state;
   }
@@ -49,4 +67,7 @@ export const getDraftPermits = (state) => state[PERMITS].draftPermits;
 export const getPermitConditions = (state) => state[PERMITS].permitConditions;
 export const getStandardPermitConditions = (state) => state[PERMITS].standardPermitConditions;
 export const getEditingConditionFlag = (state) => state[PERMITS].editingConditionFlag;
+export const getEditingPreambleFlag = (state) => state[PERMITS].editingPreambleFlag;
+export const getTextBeforeCursor = (state) => state[PERMITS].textBeforeCursor;
+export const getTextAfterCursor = (state) => state[PERMITS].textAfterCursor;
 export default permitReducerObject;

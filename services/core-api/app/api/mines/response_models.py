@@ -217,8 +217,12 @@ PERMIT_AMENDMENT_MODEL = api.model(
         fields.DateTime,
         'has_permit_conditions':
         fields.Boolean,
-        'conditions': fields.List(PermitCondition),
-        'is_generated_in_core': fields.Boolean,
+        'conditions':
+        fields.List(PermitCondition),
+        'is_generated_in_core':
+        fields.Boolean,
+        'preamble_text':
+        fields.String
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -241,6 +245,7 @@ PERMIT_MODEL = api.model(
         'exemption_fee_status_note': fields.String,
         'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'permit_prefix': fields.String,
+        'preamble_text': fields.String
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
