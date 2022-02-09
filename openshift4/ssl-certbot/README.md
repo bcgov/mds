@@ -1,35 +1,17 @@
 # SSL Renewal through certbot automation
 
 # Overview
-Request an automated certification renewal from Entrust via an openshift cronjob. This process requires info pre and post run of the cronjob from BCGov.
+Request an automated certification renewal via an openshift cronjob.
 
-# Step 0:
-- Backups, backups, BACKUPS, BACKUPS
-- Copy all vanity route yaml & PVC data from openshift to preserve CERTS
+Note: current method uses letsencrypt - migrate to Entrust when possible
 
-# Step 1:
+# Deploy manifests
+- use `oc -n 4c2ba9-* apply -f <manifest>` on the pertinent files in `ssl-certbot/`
+- Deploy the imagestream & buildconfigs to the tools namespace
+- Ensure rolebinds exist in tools namespace that connect to cerbot & certbot_pulling in the non-tool namespaces
 
+# To run
+- Remove the `suspend: true` value from the manifest and set the schedule value accordingly
 
-# Step 2:
-`export NAMESPACE=4c2ba9-tools`
-
-`oc process -n $NAMESPACE -f "https://raw.githubusercontent.com/BCDevOps/certbot/master/openshift/certbot.bc.yaml" -o yaml > certbot.bc.yaml`
-
-`oc -n 4c2ba9-tools apply -f certbot.bc.yaml`
-
-# Step 3:
-Get the directory ID from X and manually replace the code below
-`export DIR_ID=xx-xxxx-xxxx`
-
-Then run:
-(For entrust)
-`export CERTBOT_SERVER=https://www.entrust.net/acme/api/v1/directory/$DIR_ID`
-`export EMAIL=mds@gov.bc.ca`
-`export NAMESPACE=4c2ba9-test`
-
-(For letsencrypt)
-`export CERTBOT_SERVER=https://acme-staging-v02.api.letsencrypt.org/directory`
-`export EMAIL=mds@gov.bc.ca`
-`export NAMESPACE=4c2ba9-tools`
-
-`oc process -n $NAMESPACE -f "https://raw.githubusercontent.com/BcGovNeal/certbot/master/openshift/certbot.dc.yaml" -p CERTBOT_SUSPEND_CRON=true -p DRYRUN=true  -p EMAIL=$EMAIL -p NAMESPACE=$NAMESPACE -p CERTBOT_SERVER=$CERTBOT_SERVER -p CERTBOT_STAGING=true -p APPLICATION_NAME=core -o yaml > certbot.dc.yaml`
+# To reset
+- The cert info is stored in the PVC. A new cert will not be issued while this exists so if you need to reset things for testing you'll need to delete the PVC. ALWAYS BE CAREFUL WHEN DELETING PVCs!!
