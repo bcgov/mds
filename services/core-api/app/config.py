@@ -55,8 +55,12 @@ class Config(object):
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
     CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
                                          'https://minesdigitalservices.gov.bc.ca')
+    MINESPACE_PRODUCTION_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
+                                              'https://minespace.gov.bc.ca')
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
+    EMA_AUTH_LINK = os.environ.get('EMA_AUTH_LINK',
+                                   'https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization')
 
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL

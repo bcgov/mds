@@ -105,12 +105,20 @@ class ProjectSummaryResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to update.'
         })
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, mine_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
+
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if mine is None:
+            raise NotFound('Mine not found')
+
         if project_summary is None:
             raise NotFound('Project Description not found')
+
+        prev_status = project_summary.status_code
 
         data = self.parser.parse_args()
         project_summary.update(
@@ -121,6 +129,11 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('documents', []), data.get('contacts', []), data.get('authorizations', []))
 
         project_summary.save()
+
+        if prev_status == 'DFT' and project_summary.status_code == 'OPN':
+            project_summary.send_project_summary_email_to_ministry(mine)
+            project_summary.send_project_summary_email_to_proponent(mine)
+
         return project_summary
 
     @api.doc(
