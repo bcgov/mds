@@ -56,7 +56,7 @@ jobs:
       #### Group generation ####
       - name: Generate backend coverage reports
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest -rx
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
 
       # During this, rewrite frontend report from docker context path to runner paths
