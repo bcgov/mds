@@ -90,7 +90,7 @@ const contacts = ({ fields }) => {
                   id={`${field}.phone_number`}
                   label="Phone Number"
                   component={renderConfig.FIELD}
-                  validate={[phoneNumber, maxLength(12)]}
+                  validate={[phoneNumber, maxLength(12), required]}
                   normalize={normalizePhone}
                 />
               </Col>
