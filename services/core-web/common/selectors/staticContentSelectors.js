@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
@@ -829,8 +828,9 @@ export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
       .map(({ project_summary_authorization_type, description }) => {
         return { code: project_summary_authorization_type, description, children: [] };
       });
-
+    // eslint-disable-next-line array-callback-return
     types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
       parents.map(({ code, children }) => {
         if (code === child.project_summary_authorization_type_group_id) {
           return children.push({
@@ -855,8 +855,9 @@ export const getTransformedChildProjectSummaryAuthorizationTypesHash = createSel
       .map(({ project_summary_authorization_type, description }) => {
         return { code: project_summary_authorization_type, description, children: [] };
       });
-
+    // eslint-disable-next-line array-callback-return
     types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
       parents.map(({ code, children }) => {
         if (code === child.project_summary_authorization_type_group_id) {
           return children.push({
