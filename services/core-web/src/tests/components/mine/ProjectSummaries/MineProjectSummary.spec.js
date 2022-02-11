@@ -22,7 +22,7 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("ProjectSummary", () => {
+describe("MineProjectSummary", () => {
   it("renders properly", () => {
     const component = shallow(<MineProjectSummary {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();

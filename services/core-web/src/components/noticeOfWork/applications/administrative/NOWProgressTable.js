@@ -58,14 +58,24 @@ const badgeColor = {
   Approved: COLOR.successGreen,
   "No Permit Required": COLOR.errorRed,
 };
+
 const propTypes = {
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   progress: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   progressStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   progressStatusCodes: CustomPropTypes.options.isRequired,
   applicationDelays: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
+  updateApplicationDelay: PropTypes.func.isRequired,
+  fetchApplicationDelay: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
+  delays: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 const stepItem = (progress, progressStatus, delaysExist) => {
@@ -275,13 +285,14 @@ export class NOWProgressTable extends Component {
       dataIndex: "end_comment",
       render: (text) => <div title="End Comment">{text || "N/A"}</div>,
     },
+    // disabled EDIT_NOW_DATES until a crucial bug is fixed - delays cannot overlap, validation should be fixed to ensure that doesn't occur, if there are overlaps the duration does not calculate properly leading to poor timeline reporting.
     {
       title: "",
       dataIndex: "edit",
       render: (text, record, index) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
+            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES} inTesting>
               <Button
                 type="secondary"
                 ghost

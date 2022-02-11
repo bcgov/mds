@@ -311,3 +311,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
+
+    def send_project_summary_email_to_proponent(self, mine):
+        recipients = [contact.email for contact in self.contacts if contact.is_primary]
+        project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
+
+        subject = f'Project Description Notification for {mine.mine_name}'
+        body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
+               f'contact with you regarding your submission.</p>'
+        body += f'<p><a href="{project_description_link}">{project_description_link}</a></p>'
+        body += f'<p>If you indicated that your project involves a permit under the Environmental Management Act, '\
+                f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
+                f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)

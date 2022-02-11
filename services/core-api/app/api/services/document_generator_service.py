@@ -32,6 +32,8 @@ class DocumentGeneratorService():
 
         # Push the template file to the Document Generator if it doesn't exist
         file_sha = sha256_checksum(fileobj)
+        # TODO: Remove Logs for generate document
+        current_app.logger.debug(f'document_template:{document_template}, template_data:{template_data}, file_type: {file_type}, fileobj: {fileobj}, file_sha: {file_sha}')
         template_exists = cls._check_remote_template_sha(file_sha)
         if not template_exists:
             cls._push_template(document_template, fileobj)
@@ -44,6 +46,8 @@ class DocumentGeneratorService():
         document_name = f'{document_name_start_extra}{document_template.template_name_no_extension}{draft_string} {date_string}.{file_type}'
         data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': file_type}}
 
+        # TODO: Remove Logs for generate document
+        current_app.logger.debug(f'url: {cls.document_generator_url}/{file_sha}/render')
         # Send the document generation request and return the response
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
@@ -59,7 +63,8 @@ class DocumentGeneratorService():
     def _push_template(cls, document_template, template_file):
         file_name = document_template.template_name
         files = {'template': (file_name, template_file, mimetypes.guess_type(file_name))}
-
+        # TODO: Remove Logs for generate document
+        current_app.logger.debug(f'file_name: {file_name}, cls.document_generator_url: {cls.document_generator_url}, files: {files}')
         resp = requests.post(url=cls.document_generator_url, files=files)
         if resp.status_code != 200:
             current_app.logger.warn(f'Push template request responded with {str(resp.text)}')
@@ -67,6 +72,8 @@ class DocumentGeneratorService():
     @classmethod
     def _check_remote_template_sha(cls, file_sha):
         resp = requests.get(url=f'{cls.document_generator_url}/{file_sha}')
+        # TODO: Remove Logs for generate document
+        current_app.logger.debug(f'document_generator_url: {cls.document_generator_url}, file_sha: {file_sha}, resp.status_code: {resp.status_code}')
         if resp.status_code != 200:
             current_app.logger.warn(f'Check template request responded with: {str(resp.content)}')
             return False
