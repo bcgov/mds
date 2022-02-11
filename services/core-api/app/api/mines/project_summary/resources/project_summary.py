@@ -125,9 +125,10 @@ class ProjectSummaryResource(Resource, UserMixin):
             raise NotFound('Project Description not found')
 
         prev_status = project_summary.status_code
+        current_submission_date = project_summary.submission_date
 
         data = self.parser.parse_args()
-        submission_date = datetime.now(tz=timezone.utc) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else None
+        submission_date = datetime.now(tz=timezone.utc) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
 
         project_summary.update(
             data.get('project_summary_description'), data.get('project_summary_title'),
