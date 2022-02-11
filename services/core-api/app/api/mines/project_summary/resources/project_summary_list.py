@@ -1,5 +1,6 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from app.extensions import api
@@ -101,6 +102,7 @@ class ProjectSummaryListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+        submission_date = datetime.now(tz=timezone.utc) if data.get('status_code') == 'SUB' else None
         project_summary = ProjectSummary.create(mine, data.get('project_summary_description'),
                                                 data.get('project_summary_title'),
                                                 data.get('proponent_project_id'),
@@ -110,12 +112,12 @@ class ProjectSummaryListResource(Resource, UserMixin):
                                                 data.get('expected_project_start_date'),
                                                 data.get('status_code'), data.get('documents', []),
                                                 data.get('contacts', []),
-                                                data.get('authorizations', []))
+                                                data.get('authorizations', []), submission_date)
 
         try:
             project_summary.save()
             if is_minespace_user():
-                if project_summary.status_code == 'OPN':
+                if project_summary.status_code == 'SUB':
                     project_summary.send_project_summary_email_to_ministry(mine)
                     project_summary.send_project_summary_email_to_proponent(mine)
         except Exception as e:

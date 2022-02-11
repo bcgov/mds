@@ -29,16 +29,18 @@ beforeEach(() => {
 
 describe("`createProjectSummary` action creator", () => {
   const mineGuid = "12345-6789";
-  const project_summary_date = "2021-11-19T00:00:00.000Z";
+  const submission_date = "2021-11-19T00:00:00.000Z";
+  let message = "Successfully created the project description.";
   const project_summary_description = "This is a sample description.";
   const url = ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid);
-  const mockPayload = { project_summary_date, project_summary_description };
+  const mockPayload = { submission_date, project_summary_description };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
     return createProjectSummary(
       { mineGuid },
-      mockPayload
+      mockPayload,
+      (message = "Successfully created a project description.")
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -48,7 +50,10 @@ describe("`createProjectSummary` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createProjectSummary(mineGuid)(dispatch).catch(() => {
+    return createProjectSummary(
+      mineGuid,
+      message
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -112,16 +117,18 @@ describe("`fetchProjectSummaryById` action creator", () => {
 describe("`updateProjectSummary` action creator", () => {
   const mineGuid = "12345-6789";
   const projectSummaryGuid = "12345-6789";
+  const message = "Successfully updated the project description.";
   const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid);
-  const project_summary_date = "2021-11-20";
+  const submission_date = "2021-11-20";
   const project_summary_description = "Updated description.";
-  const mockPayload = { project_summary_date, project_summary_description };
+  const mockPayload = { submission_date, project_summary_description };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
     return updateProjectSummary(
       { mineGuid, projectSummaryGuid },
-      mockPayload
+      mockPayload,
+      message
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -133,7 +140,8 @@ describe("`updateProjectSummary` action creator", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updateProjectSummary(
       { mineGuid, projectSummaryGuid },
-      mockPayload
+      mockPayload,
+      message
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

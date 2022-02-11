@@ -3396,28 +3396,67 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   projectSummaryStatusCodes: [
     {
-      project_summary_status_code: "OPN",
-      description: "Open",
+      project_summary_status_code: "SUB",
+      description: "Submitted",
+      alias_description: "Submitted",
+      active_ind: true,
       display_order: 10,
-      active_ind: true,
-    },
-    {
-      project_summary_status_code: "CLD",
-      description: "Closed",
-      display_order: 20,
-      active_ind: true,
     },
     {
       project_summary_status_code: "WDN",
       description: "Withdrawn",
-      display_order: 30,
+      alias_description: "Withdrawn",
       active_ind: true,
+      display_order: 30,
     },
     {
       project_summary_status_code: "DFT",
       description: "Draft",
-      display_order: 40,
+      alias_description: "Draft",
       active_ind: true,
+      display_order: 40,
+    },
+    {
+      project_summary_status_code: "ASG",
+      description: "Assigned",
+      alias_description: "Submitted",
+      active_ind: true,
+      display_order: 50,
+    },
+    {
+      project_summary_status_code: "UNP",
+      description: "Under review - with proponent",
+      alias_description: "Under review",
+      active_ind: true,
+      display_order: 60,
+    },
+    {
+      project_summary_status_code: "UNR",
+      description: "Under review - with reviewers",
+      alias_description: "Under review",
+      active_ind: true,
+      display_order: 70,
+    },
+    {
+      project_summary_status_code: "COM",
+      description: "Complete",
+      alias_description: "Complete",
+      active_ind: true,
+      display_order: 80,
+    },
+    {
+      project_summary_status_code: "OHD",
+      description: "On Hold",
+      alias_description: "On Hold",
+      active_ind: true,
+      display_order: 90,
+    },
+    {
+      project_summary_status_code: "IAT",
+      description: "Inactive",
+      alias_description: "Inactive",
+      active_ind: true,
+      display_order: 100,
     },
   ],
   projectSummaryDocumentTypes: [
@@ -6410,13 +6449,6 @@ export const PROJECT_SUMMARY = {
   contacts: [],
 };
 
-export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
-  CLD: "Closed",
-  DFT: "Draft",
-  OPN: "Open",
-  WDN: "Withdrawn",
-};
-
 export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
   MINES_ACT: "Mines Act",
   ENVIRONMENTAL_MANAGMENT_ACT: "Environmental Management Act",
@@ -6449,8 +6481,14 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {
 
 export const PROJECT_SUMMARY_STATUS_CODES_DROPDOWN = [
   {
-    value: "CLD",
-    label: "Closed",
+    value: "ASG",
+    label: "Assigned",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "COM",
+    label: "Complete",
     subType: null,
     isActive: true,
   },
@@ -6461,8 +6499,32 @@ export const PROJECT_SUMMARY_STATUS_CODES_DROPDOWN = [
     isActive: true,
   },
   {
-    value: "OPN",
-    label: "Open",
+    value: "IAT",
+    label: "Inactive",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "OHD",
+    label: "On Hold",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "SUB",
+    label: "Submitted",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNP",
+    label: "Under review - with proponent",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNR",
+    label: "Under review - with reviewers",
     subType: null,
     isActive: true,
   },
@@ -6473,6 +6535,87 @@ export const PROJECT_SUMMARY_STATUS_CODES_DROPDOWN = [
     isActive: true,
   },
 ];
+
+export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
+  SUB: "Submitted",
+  WDN: "Withdrawn",
+  DFT: "Draft",
+  ASG: "Assigned",
+  UNP: "Under review - with proponent",
+  UNR: "Under review - with reviewers",
+  COM: "Complete",
+  OHD: "On Hold",
+  IAT: "Inactive",
+};
+
+export const PROJECT_SUMMARY_STATUS_ALIAS_CODES_DROPDOWN = [
+  {
+    value: "COM",
+    label: "Complete",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "DFT",
+    label: "Draft",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "IAT",
+    label: "Inactive",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "OHD",
+    label: "On Hold",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "SUB",
+    label: "Submitted",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "ASG",
+    label: "Submitted",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNP",
+    label: "Under review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNR",
+    label: "Under review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "WDN",
+    label: "Withdrawn",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const PROJECT_SUMMARY_STATUS_ALIAS_CODES_HASH = {
+  SUB: "Submitted",
+  WDN: "Withdrawn",
+  DFT: "Draft",
+  ASG: "Submitted",
+  UNP: "Under review",
+  UNR: "Under review",
+  COM: "Complete",
+  OHD: "On Hold",
+  IAT: "Inactive",
+};
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPES_DROPDOWN = [
   {

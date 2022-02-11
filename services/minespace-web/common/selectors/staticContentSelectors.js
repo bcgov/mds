@@ -784,6 +784,17 @@ export const getProjectSummaryStatusCodesHash = createSelector(
   createLabelHash
 );
 
+export const getDropdownProjectSummaryAliasStatusCodes = createSelectorWrapper(
+  getProjectSummaryStatusCodes,
+  createDropDownList,
+  ["alias_description", "project_summary_status_code"]
+);
+
+export const getProjectSummaryAliasStatusCodesHash = createSelector(
+  [getDropdownProjectSummaryAliasStatusCodes],
+  createLabelHash
+);
+
 export const getDropdownProjectSummaryDocumentTypes = createSelectorWrapper(
   getProjectSummaryDocumentTypes,
   createDropDownList,
@@ -817,8 +828,9 @@ export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
       .map(({ project_summary_authorization_type, description }) => {
         return { code: project_summary_authorization_type, description, children: [] };
       });
-
+    // eslint-disable-next-line array-callback-return
     types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
       parents.map(({ code, children }) => {
         if (code === child.project_summary_authorization_type_group_id) {
           return children.push({
@@ -843,8 +855,9 @@ export const getTransformedChildProjectSummaryAuthorizationTypesHash = createSel
       .map(({ project_summary_authorization_type, description }) => {
         return { code: project_summary_authorization_type, description, children: [] };
       });
-
+    // eslint-disable-next-line array-callback-return
     types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
       parents.map(({ code, children }) => {
         if (code === child.project_summary_authorization_type_group_id) {
           return children.push({

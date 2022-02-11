@@ -13,10 +13,14 @@ const setupProps = () => {
     authorizations: [],
   };
   props.projectSummary = { documents: [], contacts: [{}] };
-  props.projectSummaryDocumentTypesOptions = [];
+  props.projectSummaryDocumentTypesHash = {};
   props.projectSummaryPermitTypesHash = {};
-  props.projectSummaryAuthorizationTypes = [];
-  props.projectLeads = [];
+  props.projectSummaryAuthorizationTypesHash = {};
+  props.projectLeads = [
+    { groupName: "Active", opt: [] },
+    { groupName: "Inactive", opt: [] },
+  ];
+  props.projectSummaryStatusCodes = [];
 };
 
 beforeEach(() => {
