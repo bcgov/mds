@@ -33,6 +33,7 @@ export class ProjectSummariesTable extends Component {
       update_user: projectSummary.update_user,
       create_timestamp: formatDate(projectSummary.create_timestamp),
       update_timestamp: formatDate(projectSummary.update_timestamp),
+      submission_date: formatDate(projectSummary.submission_date),
       documents: projectSummary.documents,
       handleDeleteDraft,
     }));
@@ -58,12 +59,9 @@ export class ProjectSummariesTable extends Component {
     },
     {
       title: "First Submitted",
-      dataIndex: "create_timestamp",
-      sorter: dateSorter("create_timestamp"),
-      render: (text, record) => {
-        if (record.status_code !== "Draft") return <div title="First Submitted">{text}</div>;
-        return "N/A";
-      },
+      dataIndex: "submission_date",
+      sorter: dateSorter("submission_date"),
+      render: (text) => <div title="First Submitted">{text || "N/A"}</div>,
     },
     {
       title: "Status",

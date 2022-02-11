@@ -124,10 +124,14 @@ export class ProjectSummaryForm extends Component {
                   {(this.props.initialValues.status_code === "DFT" || !this.props.isEditMode) && (
                     <LinkButton
                       onClick={(e) =>
-                        this.props.handleSaveData(e, {
-                          ...this.props.formValues,
-                          status_code: "DFT",
-                        })
+                        this.props.handleSaveData(
+                          e,
+                          {
+                            ...this.props.formValues,
+                            status_code: "DFT",
+                          },
+                          "Successfully saved a draft project description."
+                        )
                       }
                       title="Save Draft"
                       disabled={this.props.submitting}
@@ -152,10 +156,13 @@ export class ProjectSummaryForm extends Component {
                         <Button
                           type="primary"
                           onClick={(e) =>
-                            this.props.handleSaveData(e, {
-                              ...this.props.formValues,
-                              status_code: "OPN",
-                            })
+                            this.props.handleSaveData(
+                              e,
+                              {
+                                ...this.props.formValues,
+                              },
+                              "Successfully updated the project description."
+                            )
                           }
                           loading={this.props.submitting}
                           disabled={this.props.submitting}
@@ -169,10 +176,14 @@ export class ProjectSummaryForm extends Component {
                               placement="topRight"
                               title="Are you sure you want to submit your project description to the Province of British Columbia?"
                               onConfirm={(e) =>
-                                this.props.handleSaveData(e, {
-                                  ...this.props.formValues,
-                                  status_code: "OPN",
-                                })
+                                this.props.handleSaveData(
+                                  e,
+                                  {
+                                    ...this.props.formValues,
+                                    status_code: "SUB",
+                                  },
+                                  "Successfully submitted a project description to the Province of British Columbia."
+                                )
                               }
                               okText="Yes"
                               cancelText="No"
