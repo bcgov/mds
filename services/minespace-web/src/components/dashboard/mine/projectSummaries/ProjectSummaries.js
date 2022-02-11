@@ -6,15 +6,12 @@ import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchProjectSummariesByMine,
-  createProjectSummary,
-  updateProjectSummary,
   deleteProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
-import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
@@ -28,6 +25,7 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  deleteProjectSummary: PropTypes.func.isRequired,
   fetchProjectSummariesByMine: PropTypes.func.isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -160,18 +158,14 @@ export class ProjectSummaries extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   projectSummaries: getProjectSummaries(state),
-  projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  projectSummaryStatusCodesHash: getProjectSummaryAliasStatusCodesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      openModal,
-      closeModal,
       fetchProjectSummariesByMine,
-      createProjectSummary,
-      updateProjectSummary,
       deleteProjectSummary,
     },
     dispatch

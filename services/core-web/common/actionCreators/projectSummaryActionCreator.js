@@ -9,8 +9,11 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
-  const message = "Successfully created a new project description";
+export const createProjectSummary = (
+  { mineGuid },
+  payload,
+  message = "Successfully created a new project description"
+) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
@@ -27,7 +30,11 @@ export const createProjectSummary = ({ mineGuid }, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) => (dispatch) => {
+export const updateProjectSummary = (
+  { mineGuid, projectSummaryGuid },
+  payload,
+  message = "Successfully updated project description"
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
@@ -38,7 +45,7 @@ export const updateProjectSummary = ({ mineGuid, projectSummaryGuid }, payload) 
     )
     .then((response) => {
       notification.success({
-        message: "Successfully updated project description",
+        message,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));

@@ -5,16 +5,86 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onSubmit={[Function]}
+  onSubmit={[MockFunction]}
 >
   <div
     id="project-details"
   >
+    <Alert
+      description={
+        <p>
+          Please assign a Project Lead to this project via the
+           
+          <a
+            href="#project-contacts"
+          >
+            Project contacts
+          </a>
+           section.
+        </p>
+      }
+      message="This project does not have a Project Lead"
+      showIcon={true}
+      type="warning"
+    />
+    <br />
     <Title
       level={3}
     >
       Project details
     </Title>
+    <Row
+      align="bottom"
+      className=""
+      gutter={16}
+    >
+      <Col
+        lg={12}
+        md={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={Array []}
+            disabled={true}
+            id="status_code"
+            label="Project Stage"
+            name="status_code"
+          />
+        </FormItem>
+      </Col>
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_project_summaries"
+      >
+        <Col
+          className="padding-sm--bottom"
+          lg={24}
+          md={24}
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="secondary"
+          >
+            <img
+              alt="Edit"
+              name="edit"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
+              Edit
+          </Button>
+        </Col>
+      </Connect(AuthorizationWrapper)>
+    </Row>
     <Row
       gutter={16}
     >
@@ -29,7 +99,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="proponent_project_id"
-            label="Project number"
+            label="Project Proponent ID"
             name="proponent_project_id"
           />
         </FormItem>
@@ -40,7 +110,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="project_summary_description"
-            label="Executive summary"
+            label="Executive Summary"
             name="project_summary_description"
           />
         </FormItem>
@@ -137,6 +207,74 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     >
       Project contacts
     </Title>
+    <h3>
+      EMLI contacts
+    </h3>
+    <Row
+      align="bottom"
+      className=""
+      gutter={16}
+    >
+      <Col
+        lg={12}
+        md={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "Unassigned",
+                  "value": null,
+                },
+              ]
+            }
+            disabled={true}
+            id="project_summary_lead_party_guid"
+            label={
+              <p
+                className="bold"
+              >
+                Project Lead
+              </p>
+            }
+            name="project_summary_lead_party_guid"
+          />
+        </FormItem>
+      </Col>
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_project_summaries"
+      >
+        <Col
+          className="padding-sm--bottom"
+          lg={24}
+          md={24}
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="secondary"
+          >
+            <img
+              alt="Edit"
+              name="edit"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
+              Edit
+          </Button>
+        </Col>
+      </Connect(AuthorizationWrapper)>
+    </Row>
     <h3>
       Proponent contacts
     </h3>

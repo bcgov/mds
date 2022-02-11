@@ -80,6 +80,8 @@ import {
   getEMLIContactTypes,
   getEMLIContactTypesHash,
   getDropdownEMLIContactTypes,
+  getDropdownProjectSummaryAliasStatusCodes,
+  getProjectSummaryAliasStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -464,12 +466,6 @@ describe("staticContentSelectors", () => {
     );
   });
 
-  it("`getProjectSummaryStatusCodesHash` calls `staticContentReducer.getProjectSummaryStatusCodesHash`", () => {
-    expect(getProjectSummaryStatusCodesHash(mockState)).toEqual(
-      Mock.PROJECT_SUMMARY_STATUS_CODES_HASH
-    );
-  });
-
   it("`getProjectSummaryDocumentTypesHash` calls `staticContentReducer.getProjectSummaryDocumentTypesHash`", () => {
     expect(getProjectSummaryDocumentTypesHash(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH
@@ -491,6 +487,24 @@ describe("staticContentSelectors", () => {
   it("`getDropdownProjectSummaryStatusCodes` calls `staticContentReducer.getDropdownProjectSummaryStatusCodes`", () => {
     expect(getDropdownProjectSummaryStatusCodes(mockState)).toEqual(
       Mock.PROJECT_SUMMARY_STATUS_CODES_DROPDOWN
+    );
+  });
+
+  it("`getProjectSummaryStatusCodesHash` calls `staticContentReducer.getProjectSummaryStatusCodesHash`", () => {
+    expect(getProjectSummaryStatusCodesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_STATUS_CODES_HASH
+    );
+  });
+
+  it("`getDropdownProjectSummaryAliasStatusCodes` calls `staticContentReducer.getDropdownProjectSummaryAliasStatusCodes`", () => {
+    expect(getDropdownProjectSummaryAliasStatusCodes(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_STATUS_ALIAS_CODES_DROPDOWN
+    );
+  });
+
+  it("`getProjectSummaryAliasStatusCodesHash` calls `staticContentReducer.getProjectSummaryAliasStatusCodesHash`", () => {
+    expect(getProjectSummaryAliasStatusCodesHash(mockState)).toEqual(
+      Mock.PROJECT_SUMMARY_STATUS_ALIAS_CODES_HASH
     );
   });
 

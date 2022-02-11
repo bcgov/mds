@@ -100,16 +100,16 @@ export class ProjectSummaryPage extends Component {
   };
 
   // eslint-disable-next-line consistent-return
-  handleSaveData = (e, values) => {
+  handleSaveData = (e, values, message) => {
     e.preventDefault();
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        return this.handleCreateProjectSummary(values);
+        return this.handleCreateProjectSummary(values, message);
       }
-      return this.handleUpdateProjectSummary(values);
+      return this.handleUpdateProjectSummary(values, message);
     }
   };
 
@@ -163,13 +163,14 @@ export class ProjectSummaryPage extends Component {
     this.props.history.push(url);
   };
 
-  handleCreateProjectSummary(values) {
+  handleCreateProjectSummary(values, message) {
     return this.props
       .createProjectSummary(
         {
           mineGuid: this.props.match.params?.mineGuid,
         },
-        this.handleTransformPayload(values)
+        this.handleTransformPayload(values),
+        message
       )
       .then(({ data: { mine_guid, project_summary_guid } }) => {
         this.props.history.replace(
@@ -178,7 +179,7 @@ export class ProjectSummaryPage extends Component {
       });
   }
 
-  handleUpdateProjectSummary(values) {
+  handleUpdateProjectSummary(values, message) {
     const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
     return this.props
       .updateProjectSummary(
@@ -186,7 +187,8 @@ export class ProjectSummaryPage extends Component {
           mineGuid,
           projectSummaryGuid,
         },
-        this.handleTransformPayload(values)
+        this.handleTransformPayload(values),
+        message
       )
       .then(() => {
         this.handleFetchData();

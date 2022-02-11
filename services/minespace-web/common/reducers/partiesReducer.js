@@ -18,6 +18,7 @@ const initialState = {
   addPartyFormState: {},
   lastCreatedParty: {},
   inspectors: [],
+  projectLeads: [],
 };
 
 export const partiesReducer = (state = initialState, action) => {
