@@ -1,5 +1,6 @@
-FROM bitnami/python:3.6
-# workdir defaults to /app
+FROM python:3.6
+
+WORKDIR /app
 
 # Update installation utility
 RUN apt-get update
