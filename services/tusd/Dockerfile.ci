@@ -6,6 +6,7 @@ WORKDIR /srv/tusd-data
 USER tusd
 RUN mkdir -p /srv/tusd-data/data
 
+
 USER 0
 RUN chmod -R 777 /srv/tusd-data/data
 

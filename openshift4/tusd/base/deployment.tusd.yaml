@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
         - name: tusd
-          image: "tusproject/tusd:v1.3.0"
+          image: " "
           ports:
             - containerPort: 1080
               protocol: TCP
