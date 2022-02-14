@@ -119,8 +119,8 @@ else
     VALID=0
     echo -e "${CRED}FAILED ENV CONFIG VALIDATION${CRESET}"
     echo -e "${CRED}You have two options for setting up your .env files:${CRESET}"
-    echo -e "${CRED}1: Request the current collection from a team member${CRESET}"
-    echo -e "${CRED}2: Generate boilerplate .env's that may need further tweaking via: make env${CRESET}"
+    echo -e "${CRED}1: Generate boilerplate .env's that may need further tweaking via: make env${CRESET}"
+    echo -e "${CRED}2: Request the current collection from a team member${CRESET}"
 fi
 
 if [ $VALID = 1 ];

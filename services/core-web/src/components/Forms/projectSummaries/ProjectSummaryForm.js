@@ -1,34 +1,114 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { compose } from "redux";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Button, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
+import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  projectLeads: CustomPropTypes.groupOptions.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
+};
+
+const unassignedProjectLeadEntry = {
+  label: "Unassigned",
+  value: null,
 };
 
 export const ProjectSummaryForm = (props) => {
+  const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
+  const [isEditingStatus, setIsEditingStatus] = useState(false);
+  const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
+
   const renderProjectDetails = () => {
+    const {
+      projectSummary: { project_summary_lead_party_guid },
+    } = props;
     return (
       <div id="project-details">
+        {!project_summary_lead_party_guid && (
+          <Alert
+            message="This project does not have a Project Lead"
+            description={
+              <p>
+                Please assign a Project Lead to this project via the{" "}
+                <a href="#project-contacts">Project contacts</a> section.
+              </p>
+            }
+            type="warning"
+            showIcon
+          />
+        )}
+        <br />
         <Typography.Title level={3}>Project details</Typography.Title>
+        <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
+          <Col lg={12} md={24}>
+            <Form.Item>
+              <Field
+                id="status_code"
+                name="status_code"
+                label="Project Stage"
+                component={renderConfig.SELECT}
+                data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
+                disabled={!isEditingStatus}
+              />
+            </Form.Item>
+          </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="padding-sm--bottom">
+              {!isEditingStatus ? (
+                <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingStatus(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={() => {
+                      props.handleSubmit("Successfully updated the project stage.");
+                      setIsEditingStatus(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </Col>
+          </AuthorizationWrapper>
+        </Row>
         <Row gutter={16}>
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
                 id="proponent_project_id"
                 name="proponent_project_id"
-                label="Project number"
+                label="Project Proponent ID"
                 component={renderConfig.FIELD}
                 disabled
               />
@@ -37,7 +117,7 @@ export const ProjectSummaryForm = (props) => {
               <Field
                 id="project_summary_description"
                 name="project_summary_description"
-                label="Executive summary"
+                label="Executive Summary"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 disabled
               />
@@ -126,11 +206,56 @@ export const ProjectSummaryForm = (props) => {
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
+        <h3>EMLI contacts</h3>
+        <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
+          <Col lg={12} md={24}>
+            <Form.Item>
+              <Field
+                id="project_summary_lead_party_guid"
+                name="project_summary_lead_party_guid"
+                label={<p className="bold">Project Lead</p>}
+                component={renderConfig.SELECT}
+                data={projectLeadData}
+                disabled={!isEditingProjectLead}
+              />
+            </Form.Item>
+          </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="padding-sm--bottom">
+              {!isEditingProjectLead ? (
+                <Button type="secondary" onClick={() => setIsEditingProjectLead(true)}>
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingProjectLead(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={() => {
+                      props.handleSubmit("Successfully updated the project lead.");
+                      setIsEditingProjectLead(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </Col>
+          </AuthorizationWrapper>
+        </Row>
+        <h3>Proponent contacts</h3>
         {contacts.length === 0 ? (
           <p>There are no contacts on the project description</p>
         ) : (
           <>
-            <h3>Proponent contacts</h3>
             <p className="bold">Primary project contact</p>
             <p>{contacts[0]?.name}</p>
             {contacts[0]?.job_title && <p>{contacts[0]?.job_title}</p>}
@@ -248,7 +373,7 @@ export const ProjectSummaryForm = (props) => {
   };
 
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -264,7 +389,14 @@ export const ProjectSummaryForm = (props) => {
 
 ProjectSummaryForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.PROJECT_SUMMARY,
-  enableReinitialize: true,
-})(ProjectSummaryForm);
+const mapStateToProps = (state) => ({
+  projectLeads: getDropdownProjectLeads(state),
+});
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.PROJECT_SUMMARY,
+    enableReinitialize: true,
+  })
+)(ProjectSummaryForm);

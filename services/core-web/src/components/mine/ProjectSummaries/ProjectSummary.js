@@ -9,14 +9,19 @@ import {
   getProjectSummaryDocumentTypesHash,
   getTransformedChildProjectSummaryAuthorizationTypesHash,
   getProjectSummaryPermitTypesHash,
+  getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
 } from "@common/selectors/projectSummarySelectors";
-import { fetchProjectSummaryById } from "@common/actionCreators/projectSummaryActionCreator";
+import {
+  fetchProjectSummaryById,
+  updateProjectSummary,
+} from "@common/actionCreators/projectSummaryActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
+import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
@@ -33,11 +38,14 @@ const propTypes = {
       projectSummaryGuid: PropTypes.string,
     },
   }).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectSummaryById: PropTypes.func.isRequired,
+  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
+  updateProjectSummary: PropTypes.func.isRequired,
 };
 
 export class ProjectSummary extends Component {
@@ -81,6 +89,16 @@ export class ProjectSummary extends Component {
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return null;
+  };
+
+  handleUpdate = (message) => {
+    const mineGuid = this.props.match?.params?.mineGuid;
+    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
+    this.props
+      .updateProjectSummary({ mineGuid, projectSummaryGuid }, this.props.formValues, message)
+      .then(() => {
+        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+      });
   };
 
   render() {
@@ -144,7 +162,9 @@ export class ProjectSummary extends Component {
               >
                 <ProjectSummaryForm
                   {...this.props}
+                  projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                   initialValues={this.props.formattedProjectSummary}
+                  handleSubmit={this.handleUpdate}
                 />
               </div>
             </LoadingWrapper>
@@ -168,7 +188,7 @@ const mapStateToProps = (state) => {
       state
     ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
-    initialValues: getFormattedProjectSummary(state),
+    projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
   };
 };
 
@@ -176,6 +196,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchProjectSummaryById,
+      updateProjectSummary,
     },
     dispatch
   );

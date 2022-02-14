@@ -1,0 +1,1 @@
+ALTER TABLE project_summary RENAME project_summary_date TO submission_date;
