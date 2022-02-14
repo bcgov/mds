@@ -7,8 +7,6 @@ import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import MineProjectSummaryTable from "./MineProjectSummaryTable";
 
 const propTypes = {
@@ -68,6 +66,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineProjectSummary.propTypes = propTypes;
 
-export default AuthorizationGuard(Permission.IN_TESTING)(
-  connect(mapStateToProps, mapDispatchToProps)(MineProjectSummary)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(MineProjectSummary);
