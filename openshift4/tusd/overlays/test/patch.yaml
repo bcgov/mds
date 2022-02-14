@@ -3,17 +3,6 @@ kind: Deployment
 metadata:
   name: tusd
 spec:
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - tusd
-        from:
-          kind: ImageStreamTag
-          name: tusd:test
-          namespace: 4c2ba9-tools
   template:
     spec:
       containers:

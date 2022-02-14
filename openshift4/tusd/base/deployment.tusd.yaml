@@ -10,17 +10,6 @@ spec:
     type: Recreate
     maxSurge: 50%
     maxUnavailable: 0
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - tusd
-        from:
-          kind: ImageStreamTag
-          name: tusd:dev
-          namespace: 4c2ba9-tools
   replicas: 1
   selector:
     matchLabels:
