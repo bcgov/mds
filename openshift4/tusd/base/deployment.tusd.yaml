@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
         - name: tusd
-          image: " "
+          image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/tusd:dev"
           ports:
             - containerPort: 1080
               protocol: TCP

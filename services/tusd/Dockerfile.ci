@@ -10,6 +10,6 @@ RUN mkdir -p /srv/tusd-data/data
 USER 0
 RUN chmod -R 777 /srv/tusd-data/data
 
-USER tusd
+USER 1000
 
 ENTRYPOINT [ "./init.sh" ]
