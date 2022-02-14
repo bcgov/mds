@@ -3,11 +3,6 @@ FROM tusproject/tusd:v1.3.0
 COPY init.sh .
 
 WORKDIR /srv/tusd-data
-USER tusd
-RUN mkdir -p /srv/tusd-data/data
-
-
-
 
 USER 1000
 
