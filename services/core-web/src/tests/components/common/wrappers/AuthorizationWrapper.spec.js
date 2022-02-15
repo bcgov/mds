@@ -42,7 +42,7 @@ describe("AuthorizationWrapper", () => {
 describe("AuthorizationWrapper", () => {
   it("renders properly admin overrides is major mine", () => {
     props.userRoles.push(USER_ROLES[PERMISSIONS.ADMIN]);
-    props.isMajorMine = false;
+    props.isMajorMine = true;
     const component = shallow(<AuthorizationWrapper {...props} />);
     expect(component.html()).toEqual(
       ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))

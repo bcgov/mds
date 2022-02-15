@@ -5,23 +5,25 @@ exports[`MineIncidents renders properly 1`] = `
   <Col
     span={24}
   >
-    <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "display": "inline",
-          "float": "right",
+    <Connect(AuthorizationWrapper)>
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        style={
+          Object {
+            "display": "inline",
+            "float": "right",
+          }
         }
-      }
-      type="primary"
-    >
-      <ForwardRef(PlusCircleFilled) />
-      Record a mine incident
-    </Button>
+        type="primary"
+      >
+        <ForwardRef(PlusCircleFilled) />
+        Record a mine incident
+      </Button>
+    </Connect(AuthorizationWrapper)>
     <Title
       level={4}
     >
