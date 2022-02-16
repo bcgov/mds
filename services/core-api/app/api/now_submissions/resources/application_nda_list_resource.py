@@ -12,7 +12,7 @@ from app.api.now_submissions.response_models import APPLICATIONNDA
 from app.api.utils.access_decorators import requires_role_edit_submissions
 from app.api.utils.resources_mixins import UserMixin
 
-
+# The logic for this business area was half-built. Enable to the resource when Core is ready to accapt application NDA's
 class ApplicationNDAListResource(Resource, UserMixin):
     @api.doc(description='Save an application nda')
     @requires_role_edit_submissions
