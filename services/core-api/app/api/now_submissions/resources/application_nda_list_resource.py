@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from flask import request, current_app
 from sqlalchemy import desc, func, or_
 from marshmallow.exceptions import MarshmallowError
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import NotImplemented
 
 from app.extensions import api
 from app.api.now_submissions.models.application_nda import ApplicationNDA
@@ -19,7 +19,7 @@ class ApplicationNDAListResource(Resource, UserMixin):
     @api.expect(APPLICATIONNDA)
     @api.marshal_with(APPLICATIONNDA, code=201)
     def post(self):
-        raise BadRequest('This resource has not been implemented. Contact the MDS team at mds@gov.bc.ca if you need further assistance.')
+        raise NotImplemented('This resource has not been implemented. Contact the MDS team at mds@gov.bc.ca if you need further assistance.')
         # try:
         #     application_nda = ApplicationNDA._schema().load(request.json)
         # except MarshmallowError as e:
