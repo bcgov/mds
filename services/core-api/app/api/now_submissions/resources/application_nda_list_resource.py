@@ -19,24 +19,25 @@ class ApplicationNDAListResource(Resource, UserMixin):
     @api.expect(APPLICATIONNDA)
     @api.marshal_with(APPLICATIONNDA, code=201)
     def post(self):
-        try:
-            application_nda = ApplicationNDA._schema().load(request.json)
-        except MarshmallowError as e:
-            raise BadRequest(e)
+        raise BadRequest('This resource has not been implemented. Contact the MDS team at mds@gov.bc.ca if you need further assistance.')
+        # try:
+        #     application_nda = ApplicationNDA._schema().load(request.json)
+        # except MarshmallowError as e:
+        #     raise BadRequest(e)
 
-        if application_nda.application_nda_guid is not None:
-            raise BadRequest(f'messageid: {application_nda.messageid} already exists.')
+        # if application_nda.application_nda_guid is not None:
+        #     raise BadRequest(f'messageid: {application_nda.messageid} already exists.')
 
-        if application_nda.applicant.clientid == application_nda.submitter.clientid:
-            application_nda.submitter = application_nda.applicant
+        # if application_nda.applicant.clientid == application_nda.submitter.clientid:
+        #     application_nda.submitter = application_nda.applicant
 
-        mine = Mine.find_by_mine_no(application_nda.minenumber)
+        # mine = Mine.find_by_mine_no(application_nda.minenumber)
 
-        if mine is None:
-            raise BadRequest('Mine not found from the minenumber supplied.')
+        # if mine is None:
+        #     raise BadRequest('Mine not found from the minenumber supplied.')
 
-        application_nda.mine_guid = mine.mine_guid
-        application_nda.nownumber = NOWApplicationIdentity.create_now_number(mine)
+        # application_nda.mine_guid = mine.mine_guid
+        # application_nda.nownumber = NOWApplicationIdentity.create_now_number(mine)
 
-        application_nda.save()
-        return application_nda, 201
+        # application_nda.save()
+        # return application_nda, 201
