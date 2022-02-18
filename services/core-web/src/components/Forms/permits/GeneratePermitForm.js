@@ -24,6 +24,8 @@ import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitG
 import UploadPermitDocument from "@/components/noticeOfWork/applications/permitGeneration/UploadPermitDocument";
 import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -315,16 +317,18 @@ export const GeneratePermitForm = (props) => {
                 <br />
                 <br />
                 <br />
-                <Button
-                  type="secondary"
-                  onClick={() => {
-                    props.storeEditingPreambleFlag(true);
-                    props.toggleEditMode();
-                  }}
-                >
-                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                  Edit Preamble Text
-                </Button>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button
+                    type="secondary"
+                    onClick={() => {
+                      props.storeEditingPreambleFlag(true);
+                      props.toggleEditMode();
+                    }}
+                  >
+                    <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                    Edit Preamble Text
+                  </Button>
+                </AuthorizationWrapper>
               </div>
             )}
             <div style={!props.isViewMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
@@ -358,16 +362,18 @@ export const GeneratePermitForm = (props) => {
                       Cancel
                     </Button>
                   </Popconfirm>
-                  <Button
-                    htmlType="submit"
-                    type="primary"
-                    onClick={() => {
-                      props.handleSaveDraftEdit();
-                      props.storeEditingPreambleFlag(false);
-                    }}
-                  >
-                    Save
-                  </Button>
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                    <Button
+                      htmlType="submit"
+                      type="primary"
+                      onClick={() => {
+                        props.handleSaveDraftEdit();
+                        props.storeEditingPreambleFlag(false);
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </AuthorizationWrapper>
                 </div>
               )}
             </div>
