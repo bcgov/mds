@@ -12,8 +12,6 @@ export const {
   getStandardPermitConditions,
   getEditingConditionFlag,
   getEditingPreambleFlag,
-  getTextBeforeCursor,
-  getTextAfterCursor,
 } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(

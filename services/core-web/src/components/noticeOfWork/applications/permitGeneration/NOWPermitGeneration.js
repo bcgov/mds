@@ -20,11 +20,7 @@ import {
   deletePermit,
   deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
-import {
-  storeEditingPreambleFlag,
-  storeTextBeforeCursor,
-  storeTextAfterCursor,
-} from "@common/actions/permitActions";
+import { storeEditingPreambleFlag } from "@common/actions/permitActions";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
@@ -79,8 +75,6 @@ const propTypes = {
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
   storeEditingPreambleFlag: PropTypes.func.isRequired,
-  storeTextBeforeCursor: PropTypes.string.isRequired,
-  storeTextAfterCursor: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -485,14 +479,37 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  handleChange = (e) => {
-    if (e.target.value) {
-      const cursorPosition = e.target.selectionStart;
-      this.props.storeTextBeforeCursor(e.target.value.substring(0, cursorPosition));
-      this.props.storeTextAfterCursor(
-        e.target.value.substring(cursorPosition, e.target.value.length)
-      );
+  handleSavePreamble = () => {
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length > 0) {
+      this.focusErrorInput();
+      return;
     }
+
+    this.setState({ isLoaded: false });
+    const payload = {
+      preamble_text: this.props.formValues.preamble_text,
+    };
+
+    // eslint-disable-next-line consistent-return
+    return this.props
+      .updatePermitAmendment(
+        this.props.noticeOfWork.mine_guid,
+        this.props.draftPermit.permit_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid,
+        payload
+      )
+      .then(() => this.props.onPermitDraftSave())
+      .then(() => {
+        this.handleDraftPermit();
+        this.props.storeEditingPreambleFlag(false);
+      });
+  };
+
+  handleCancelPreambleTextEdit = () => {
+    this.props.reset(FORM.GENERATE_PERMIT);
+    this.props.storeEditingPreambleFlag(false);
+    // this.props.toggleEditMode();
   };
 
   render() {
@@ -666,9 +683,10 @@ export class NOWPermitGeneration extends Component {
                     draftPermit={this.props.draftPermit}
                     draftPermitAmendment={this.props.draftPermitAmendment}
                     storeEditingPreambleFlag={this.props.storeEditingPreambleFlag}
-                    toggleEditMode={this.props.toggleEditMode}
                     handleSaveDraftEdit={this.handleSaveDraftEdit}
+                    handleSavePreamble={this.handleSavePreamble}
                     handleCancelDraftEdit={this.handleCancelDraftEdit}
+                    handleCancelPreambleTextEdit={this.handleCancelPreambleTextEdit}
                     handleChange={this.handleChange}
                   />
                 )}
@@ -709,8 +727,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       storeEditingPreambleFlag,
-      storeTextBeforeCursor,
-      storeTextAfterCursor,
     },
     dispatch
   );
