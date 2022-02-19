@@ -29,13 +29,3 @@ export const storeEditingPreambleFlag = (payload) => ({
   type: actionTypes.STORE_EDITING_PREAMBLE_FLAG,
   payload,
 });
-
-export const storeTextBeforeCursor = (payload) => ({
-  type: actionTypes.STORE_TEXT_BEFORE_CURSOR,
-  payload,
-});
-
-export const storeTextAfterCursor = (payload) => ({
-  type: actionTypes.STORE_TEXT_AFTER_CURSOR,
-  payload,
-});

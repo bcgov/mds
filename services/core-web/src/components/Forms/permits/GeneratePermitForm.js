@@ -41,10 +41,8 @@ const propTypes = {
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   editingPreambleFlag: PropTypes.bool.isRequired,
   storeEditingPreambleFlag: PropTypes.func.isRequired,
-  toggleEditMode: PropTypes.func.isRequired,
-  handleSaveDraftEdit: PropTypes.func.isRequired,
-  handleCancelDraftEdit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  handleSavePreamble: PropTypes.func.isRequired,
+  handleCancelPreambleTextEdit: PropTypes.func.isRequired,
 };
 
 export const GeneratePermitForm = (props) => {
@@ -312,9 +310,8 @@ export const GeneratePermitForm = (props) => {
                 />
               </Col>
             </Row>
-            {props.isViewMode && (
+            {!props.editingPreambleFlag && (
               <div className="right">
-                <br />
                 <br />
                 <br />
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -322,7 +319,6 @@ export const GeneratePermitForm = (props) => {
                     type="secondary"
                     onClick={() => {
                       props.storeEditingPreambleFlag(true);
-                      props.toggleEditMode();
                     }}
                   >
                     <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
@@ -331,7 +327,13 @@ export const GeneratePermitForm = (props) => {
                 </AuthorizationWrapper>
               </div>
             )}
-            <div style={!props.isViewMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
+            <div
+              style={
+                props.editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
+              }
+            >
+              <br />
+              <br />
               <Row gutter={32}>
                 <Col xs={48} md={24}>
                   <Field
@@ -342,19 +344,15 @@ export const GeneratePermitForm = (props) => {
                     disabled={!props.editingPreambleFlag}
                     minRows={4}
                     validate={maxLength(2000)}
-                    onChange={(e) => props.handleChange(e)}
                   />
                 </Col>
               </Row>
-              {!props.isViewMode && (
+              {props.editingPreambleFlag && (
                 <div className="right center-mobile">
                   <Popconfirm
                     placement="topRight"
                     title="Are you sure you want to cancel?"
-                    onConfirm={() => {
-                      props.handleCancelDraftEdit();
-                      props.storeEditingPreambleFlag(false);
-                    }}
+                    onConfirm={props.handleCancelPreambleTextEdit}
                     okText="Yes"
                     cancelText="No"
                   >
@@ -363,14 +361,7 @@ export const GeneratePermitForm = (props) => {
                     </Button>
                   </Popconfirm>
                   <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                    <Button
-                      htmlType="submit"
-                      type="primary"
-                      onClick={() => {
-                        props.handleSaveDraftEdit();
-                        props.storeEditingPreambleFlag(false);
-                      }}
-                    >
+                    <Button htmlType="submit" type="primary" onClick={props.handleSavePreamble}>
                       Save
                     </Button>
                   </AuthorizationWrapper>

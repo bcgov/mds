@@ -5,7 +5,6 @@ import { PropTypes } from "prop-types";
 import { Menu } from "antd";
 import { change, getFormValues } from "redux-form";
 import { getNOWReclamationSummary } from "@common/selectors/noticeOfWorkSelectors";
-import { getTextBeforeCursor, getTextAfterCursor } from "@common/selectors/permitSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -18,8 +17,7 @@ const propTypes = {
   activityTypeOptions: CustomPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
   conditionFormValues: PropTypes.func.isRequired,
-  textBeforeCursorPosition: PropTypes.string.isRequired,
-  textAfterCursorPosition: PropTypes.string.isRequired,
+  generatePermitFormValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -35,10 +33,12 @@ export class VariableConditionMenu extends Component {
       const newValues = `${condition} ${value.key}`;
       return this.props.change(FORM.CONDITION_SECTION, "condition", newValues);
     }
-    const newPreambleValues = `${this.props.textBeforeCursorPosition.trim()} ${value.key} ${
-      this.props.textAfterCursorPosition
-    }`;
-    return this.props.change(FORM.GENERATE_PERMIT, "preamble_text", newPreambleValues);
+
+    const preambleText = this.props.generatePermitFormValues.preamble_text
+      ? this.props.generatePermitFormValues.preamble_text
+      : "";
+    const newPreambleText = `${preambleText} ${value.key}`;
+    return this.props.change(FORM.GENERATE_PERMIT, "preamble_text", newPreambleText);
   }
 
   render() {
@@ -137,10 +137,9 @@ VariableConditionMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   conditionFormValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
+  generatePermitFormValues: getFormValues(FORM.GENERATE_PERMIT)(state) || {},
   reclamationSummary: getNOWReclamationSummary(state),
   activityTypeOptions: getDropdownNoticeOfWorkActivityTypeOptions(state),
-  textBeforeCursorPosition: getTextBeforeCursor(state),
-  textAfterCursorPosition: getTextAfterCursor(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
