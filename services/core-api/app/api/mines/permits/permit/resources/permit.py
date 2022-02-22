@@ -127,11 +127,11 @@ class PermitListResource(Resource, UserMixin):
             raise NotFound('There was no mine found with the provided mine_guid.')
 
         identity = NOWApplicationIdentity.find_by_mine_guid(mine.mine_guid)
-        description = None
+        application_type_description = None
         if identity:
             application_type = ApplicationTypeCode.find_by_application_type_code(
                 identity.application_type_code)
-            description = application_type.description if application_type else None
+            application_type_description = application_type.description if application_type else None
 
         permittee_party_guid = data.get('permittee_party_guid')
         if permittee_party_guid:
@@ -167,7 +167,7 @@ class PermitListResource(Resource, UserMixin):
             raise BadRequest("That permit number is already in use.")
 
         uploadedFiles = data.get('uploadedFiles', [])
-        preamble_text = get_preamble_text(description)
+        preamble_text = get_preamble_text(application_type_description)
 
         # we do not have permit yet so we will use the hybrid property logic at this point
         permit_prefix = permit_no[0]
