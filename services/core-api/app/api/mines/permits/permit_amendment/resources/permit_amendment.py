@@ -110,11 +110,11 @@ class PermitAmendmentListResource(Resource, UserMixin):
         # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
         #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
         identity = NOWApplicationIdentity.find_by_mine_guid(mine.mine_guid)
-        description = None
+        application_type_description = None
         if identity:
             application_type = ApplicationTypeCode.find_by_application_type_code(
                 identity.application_type_code)
-            description = application_type.description if application_type else None
+            application_type_description = application_type.description if application_type else None
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -178,7 +178,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         now_application_guid = data.get('now_application_guid')
         populate_with_conditions = data.get('populate_with_conditions', True)
         is_generated_in_core = True if permit_amendment_status_code == "DFT" and populate_with_conditions else False
-        preamble_text = get_preamble_text(description)
+        preamble_text = get_preamble_text(application_type_description)
 
         new_pa = PermitAmendment.create(
             permit,
