@@ -480,12 +480,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSavePreamble = () => {
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    if (errors.length > 0) {
-      this.focusErrorInput();
-      return;
-    }
-
     this.setState({ isLoaded: false });
     const payload = {
       preamble_text: this.props.formValues.preamble_text,

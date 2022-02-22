@@ -167,7 +167,6 @@ class PermitListResource(Resource, UserMixin):
             raise BadRequest("That permit number is already in use.")
 
         uploadedFiles = data.get('uploadedFiles', [])
-        preamble_text = get_preamble_text(application_type_description)
 
         # we do not have permit yet so we will use the hybrid property logic at this point
         permit_prefix = permit_no[0]
@@ -180,6 +179,11 @@ class PermitListResource(Resource, UserMixin):
         permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
                                data.get('is_exploration'), data.get('exemption_fee_status_code'),
                                data.get('exemption_fee_status_note'))
+
+        is_generated_in_core = True if permit.permit_status_code == 'D' else False
+
+        preamble_text = get_preamble_text(
+            application_type_description) if is_generated_in_core else ''
 
         amendment = PermitAmendment.create(
             permit,
@@ -197,7 +201,7 @@ class PermitListResource(Resource, UserMixin):
             security_received_date=data.get('security_received_date'),
             security_not_required=data.get('security_not_required'),
             security_not_required_reason=data.get('security_not_required_reason'),
-            is_generated_in_core=True if permit.permit_status_code == 'D' else False)
+            is_generated_in_core=is_generated_in_core)
 
         db.session.add(permit)
         db.session.add(amendment)
