@@ -178,7 +178,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         now_application_guid = data.get('now_application_guid')
         populate_with_conditions = data.get('populate_with_conditions', True)
         is_generated_in_core = True if permit_amendment_status_code == "DFT" and populate_with_conditions else False
-        preamble_text = get_preamble_text(application_type_description) if is_generated_in_core else ''
+        preamble_text = get_preamble_text(application_type_description) if is_generated_in_core else None
 
         new_pa = PermitAmendment.create(
             permit,

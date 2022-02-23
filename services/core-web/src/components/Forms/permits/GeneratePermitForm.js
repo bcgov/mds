@@ -327,13 +327,13 @@ export const GeneratePermitForm = (props) => {
                 </AuthorizationWrapper>
               </div>
             )}
+            <br />
+            <br />
             <div
               style={
                 props.editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
               }
             >
-              <br />
-              <br />
               <Row gutter={32}>
                 <Col xs={48} md={24}>
                   <Field
@@ -343,7 +343,7 @@ export const GeneratePermitForm = (props) => {
                     component={renderConfig.AUTO_SIZE_FIELD}
                     disabled={!props.editingPreambleFlag}
                     minRows={4}
-                    validate={maxLength(2000)}
+                    validate={maxLength(4000)}
                   />
                 </Col>
               </Row>

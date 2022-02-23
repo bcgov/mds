@@ -183,7 +183,7 @@ class PermitListResource(Resource, UserMixin):
         is_generated_in_core = True if permit.permit_status_code == 'D' else False
 
         preamble_text = get_preamble_text(
-            application_type_description) if is_generated_in_core else ''
+            application_type_description) if is_generated_in_core else None
 
         amendment = PermitAmendment.create(
             permit,
