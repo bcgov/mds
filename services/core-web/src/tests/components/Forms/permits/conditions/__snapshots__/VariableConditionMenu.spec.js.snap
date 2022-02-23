@@ -45,6 +45,12 @@ exports[`VariableConditionMenu renders properly 1`] = `
       </MenuItem>
       <MenuItem
         className="variable-item"
+        key="{application_type}"
+      >
+        Application Type
+      </MenuItem>
+      <MenuItem
+        className="variable-item"
         key="{application_dated}"
       >
         Application Dated

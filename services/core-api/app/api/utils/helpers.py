@@ -33,7 +33,7 @@ def format_currency(value):
 
 def get_preamble_text(description):
     new_line = '\n\n'
-    return f"{description} for the {{mine_name}} {{application_type}} project was filed with the Chief Permitting Officer, " \
+    return f"{description.title()} for the {{mine_name}} {{application_type}} project was filed with the Chief Permitting Officer, " \
            f"submitted on {{application_dated}} and last updated on {{application_last_updated_date}}.  The application included a " \
            f"plan of the proposed work system (“Mine Plan”) and a program for the protection and reclamation of the surface of " \
            f"the land and watercourses (“Reclamation Program”), affected by the {description}. {new_line}" \

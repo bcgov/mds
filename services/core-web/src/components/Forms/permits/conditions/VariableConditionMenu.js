@@ -96,6 +96,9 @@ export class VariableConditionMenu extends Component {
                 ))}
               </Menu.SubMenu>
             )}
+            <Menu.Item key="{application_type}" className="variable-item">
+              Application Type
+            </Menu.Item>
             <Menu.Item key="{application_dated}" className="variable-item">
               Application Dated
             </Menu.Item>
