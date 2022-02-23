@@ -8,14 +8,11 @@ metadata:
 spec:
   strategy:
     type: Recreate
-    maxSurge: 50%
-    maxUnavailable: 0
   replicas: 1
   selector:
     matchLabels:
       name: tusd
       service: tusd
-    name: tusd
   template:
     metadata:
       name: tusd
@@ -90,6 +87,5 @@ spec:
               memory: 96Mi
           terminationMessagePath: /dev/termination-log
           imagePullPolicy: IfNotPresent
-          capabilities: {}
       restartPolicy: Always
       dnsPolicy: ClusterFirst
