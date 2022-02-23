@@ -6,6 +6,7 @@ import { Menu } from "antd";
 import { change, getFormValues } from "redux-form";
 import { getNOWReclamationSummary } from "@common/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@common/selectors/staticContentSelectors";
+import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -26,17 +27,18 @@ const defaultProps = {
 
 export class VariableConditionMenu extends Component {
   handleClick(value) {
-    const condition = this.props.conditionFormValues.condition
-      ? this.props.conditionFormValues.condition
-      : "";
-    if (condition !== "") {
+    if (!isEmpty(this.props.conditionFormValues)) {
+      const condition = this.props.conditionFormValues.condition
+        ? this.props.conditionFormValues.condition
+        : "";
+
       const newValues = `${condition} ${value.key}`;
       return this.props.change(FORM.CONDITION_SECTION, "condition", newValues);
     }
-
     const preambleText = this.props.generatePermitFormValues.preamble_text
       ? this.props.generatePermitFormValues.preamble_text
       : "";
+
     const newPreambleText = `${preambleText} ${value.key}`;
     return this.props.change(FORM.GENERATE_PERMIT, "preamble_text", newPreambleText);
   }
@@ -94,6 +96,12 @@ export class VariableConditionMenu extends Component {
                 ))}
               </Menu.SubMenu>
             )}
+            <Menu.Item key="{application_dated}" className="variable-item">
+              Application Dated
+            </Menu.Item>
+            <Menu.Item key="{application_last_updated_date}" className="variable-item">
+              Application Last Updated
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="draft" title="Draft Permit">
             <Menu.Item key="{issue_date}" className="variable-item">

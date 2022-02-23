@@ -593,7 +593,6 @@ export class NOWPermitGeneration extends Component {
                 title="You have unsaved changes. Are you sure you want to cancel?"
                 onConfirm={() => {
                   this.handleCancelDraftEdit();
-                  this.props.storeEditingPreambleFlag(false);
                 }}
                 okText="Yes"
                 cancelText="No"
@@ -608,7 +607,6 @@ export class NOWPermitGeneration extends Component {
                 className="full-mobile"
                 onClick={() => {
                   this.handleSaveDraftEdit();
-                  this.props.storeEditingPreambleFlag(false);
                 }}
                 loading={this.props.submitting}
               >
@@ -681,7 +679,6 @@ export class NOWPermitGeneration extends Component {
                     handleSavePreamble={this.handleSavePreamble}
                     handleCancelDraftEdit={this.handleCancelDraftEdit}
                     handleCancelPreambleTextEdit={this.handleCancelPreambleTextEdit}
-                    handleChange={this.handleChange}
                   />
                 )}
               </>
