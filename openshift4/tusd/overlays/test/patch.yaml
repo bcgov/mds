@@ -11,15 +11,3 @@ spec:
           env:
             - name: S3_PREFIX
               value: mds-files-test/
-          resources:
-            requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
-              cpu: 30m
-              memory: 96Mi
-          terminationMessagePath: /dev/termination-log
-          imagePullPolicy: IfNotPresent
-          capabilities: {}
-      restartPolicy: Always
-      dnsPolicy: ClusterFirst
