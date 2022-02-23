@@ -43,6 +43,18 @@ exports[`VariableConditionMenu renders properly 1`] = `
       >
         Proposed Annual Tonnage
       </MenuItem>
+      <MenuItem
+        className="variable-item"
+        key="{application_dated}"
+      >
+        Application Dated
+      </MenuItem>
+      <MenuItem
+        className="variable-item"
+        key="{application_last_updated_date}"
+      >
+        Application Last Updated
+      </MenuItem>
     </SubMenu>
     <SubMenu
       key="draft"
