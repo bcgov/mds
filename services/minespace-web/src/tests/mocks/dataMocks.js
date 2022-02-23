@@ -1115,3 +1115,160 @@ export const PROJECT_SUMMARY_STATUS_CODES_HASH = {
 export const PROJECT_SUMMARY_DOCUMENT_TYPES_HASH = {
   GEN: "General",
 };
+
+export const PERMITS = {
+  permits: [
+    {
+      permit_id: "283",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+      permit_no: "C-12345",
+      permit_status_code: "O",
+      assessed_liability_total: 8000000,
+      confiscated_bond_total: 500,
+      active_bond_total: 700,
+      permit_amendments: [
+        {
+          permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+          permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+          permit_amendment_status_code: "ACT",
+          permit_amendment_type_code: "OGP",
+          received_date: null,
+          issue_date: "2019-04-01",
+          authorization_end_date: null,
+          liability_adjustment: "1000000",
+          description: "Initial permit issued.",
+          preamble_text: "",
+          related_documents: [
+            {
+              mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+              document_name: "Adams_amendment_1.pdf",
+              document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+            },
+          ],
+        },
+        {
+          permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+          permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+          permit_amendment_status_code: "ACT",
+          permit_amendment_type_code: "AMD",
+          received_date: null,
+          issue_date: "2020-04-01",
+          authorization_end_date: null,
+          liability_adjustment: "7000000",
+          description: "Amendment",
+          preamble_text: "",
+          related_documents: [
+            {
+              mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+              document_name: "Adams_amendment_1.pdf",
+              document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const DRAFT_PERMIT = {
+  draft_permits: [
+    {
+      permit_id: "283",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+      permit_no: "CX-DRAFT-11",
+      permit_status_code: "D",
+      assessed_liability_total: 8000000,
+      confiscated_bond_total: 500,
+      active_bond_total: 700,
+      permit_amendments: [
+        {
+          permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+          permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+          permit_amendment_status_code: "DFT",
+          permit_amendment_type_code: "OGP",
+          received_date: null,
+          issue_date: "2019-04-01",
+          authorization_end_date: null,
+          liability_adjustment: "1000000",
+          description: "Initial permit issued.",
+          preamble_text: "",
+          related_documents: [
+            {
+              mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+              document_name: "Adams_amendment_1.pdf",
+              document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const PERMIT_CONDITIONS = {
+  permit_condition: {
+    permit_condition_id: 15,
+    permit_amendment_id: 1,
+    permit_condition_guid: "86448b3e-611a-4872-a2a8-b1b858fa1de5",
+    condition: "Approved Activities:",
+    condition_type_code: "GEC",
+    condition_category_code: "CON",
+    parent_permit_condition_id: 14,
+    sub_conditions: [{}],
+    step: "string",
+    display_order: 0,
+  },
+};
+
+export const STANDARD_PERMIT_CONDITIONS = {
+  standard_permit_condition: {
+    standard_permit_condition_id: 15,
+    standard_permit_condition_guid: "28b09476-31de-440a-8457-e091ca10e093",
+    notice_of_work_type: "SAG",
+    condition: "Reclamation Security",
+    condition_category_code: "RCC",
+    condition_type_code: "SEC",
+    parent_permit_condition_id: null,
+    all_sub_conditions: [
+      {
+        standard_permit_condition_id: 87,
+        notice_of_work_type: "SAG",
+        standard_permit_condition_guid: "20b1994e-a6be-4a85-a3d8-8c255246ad83",
+        condition:
+          "[X dollars] $<<bond_amt>> in security must be maintained with the Minister of Finance.",
+        condition_type_code: "CON",
+        condition_category_code: "RCC",
+        parent_permit_condition_id: 15,
+        sub_conditions: [{}],
+        step: null,
+        deleted_ind: false,
+        display_order: 1,
+      },
+      {
+        standard_permit_condition_id: 88,
+        notice_of_work_type: "SAG",
+        standard_permit_condition_guid: "fcf013ab-ab4b-4be0-847a-250576654b99",
+        condition:
+          "The security must be deposited in accordance with the following installment schedule:",
+        condition_type_code: "CON",
+        condition_category_code: "RCC",
+        parent_permit_condition_id: 15,
+        sub_conditions: [],
+        step: null,
+        deleted_ind: false,
+        display_order: 2,
+      },
+    ],
+    step: null,
+    display_order: 1,
+    create_user: "system-mds",
+    create_timestamp: "2021-07-29 20:23:16Z",
+    update_user: "system-mds",
+    update_timestamp: "2021-07-29 20:23:16Z",
+  },
+};

@@ -37,6 +37,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     description = db.Column(db.String)
     issuing_inspector_title = db.Column(db.String)
     regional_office = db.Column(db.String)
+    preamble_text = db.Column(db.String, nullable=True)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
@@ -169,6 +170,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                received_date,
                issue_date,
                authorization_end_date,
+               preamble_text,
                permit_amendment_type_code='AMD',
                description=None,
                liability_adjustment=None,
@@ -198,7 +200,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             security_received_date=security_received_date,
             security_not_required=security_not_required,
             security_not_required_reason=security_not_required_reason,
-            is_generated_in_core=is_generated_in_core)
+            is_generated_in_core=is_generated_in_core,
+            preamble_text=preamble_text)
         permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)

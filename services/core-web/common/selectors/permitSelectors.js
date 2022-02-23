@@ -11,6 +11,7 @@ export const {
   getPermitConditions,
   getStandardPermitConditions,
   getEditingConditionFlag,
+  getEditingPreambleFlag,
 } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(

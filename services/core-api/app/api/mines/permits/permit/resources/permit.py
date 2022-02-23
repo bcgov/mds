@@ -12,6 +12,7 @@ from app.api.mines.permits.permit_conditions.models.standard_permit_conditions i
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -21,7 +22,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
-from app.api.utils.helpers import generate_draft_permit_no_suffix
+from app.api.utils.helpers import generate_draft_permit_no_suffix, get_preamble_text
 
 
 class PermitListResource(Resource, UserMixin):
@@ -125,6 +126,13 @@ class PermitListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
+        identity = NOWApplicationIdentity.find_by_mine_guid(mine.mine_guid)
+        application_type_description = None
+        if identity:
+            application_type = ApplicationTypeCode.find_by_application_type_code(
+                identity.application_type_code)
+            application_type_description = application_type.description if application_type else None
+
         permittee_party_guid = data.get('permittee_party_guid')
         if permittee_party_guid:
             party = Party.find_by_party_guid(permittee_party_guid)
@@ -172,12 +180,18 @@ class PermitListResource(Resource, UserMixin):
                                data.get('is_exploration'), data.get('exemption_fee_status_code'),
                                data.get('exemption_fee_status_note'))
 
+        is_generated_in_core = True if permit.permit_status_code == 'D' else False
+
+        preamble_text = get_preamble_text(
+            application_type_description) if is_generated_in_core else None
+
         amendment = PermitAmendment.create(
             permit,
             mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
+            preamble_text,
             'OGP',
             description='Initial permit issued.',
             issuing_inspector_title=data.get('issuing_inspector_title'),
@@ -187,7 +201,7 @@ class PermitListResource(Resource, UserMixin):
             security_received_date=data.get('security_received_date'),
             security_not_required=data.get('security_not_required'),
             security_not_required_reason=data.get('security_not_required_reason'),
-            is_generated_in_core=True if permit.permit_status_code == 'D' else False)
+            is_generated_in_core=is_generated_in_core)
 
         db.session.add(permit)
         db.session.add(amendment)
