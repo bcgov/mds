@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
-import LinkButton from "@/components/common/buttons/LinkButton";
 import {
   DownOutlined,
   ClockCircleOutlined,
@@ -18,11 +17,6 @@ import {
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
-import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-import {
-  generateNoticeOfWorkApplicationDocument,
-  fetchNoticeOfWorkApplicationContextTemplate,
-} from "@/actionCreators/documentActionCreator";
 import { connect } from "react-redux";
 import {
   formatDate,
@@ -41,18 +35,24 @@ import {
   fetchApplicationDelay,
   fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import CustomPropTypes from "@/customPropTypes";
-import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
+import {
+  generateNoticeOfWorkApplicationDocument,
+  fetchNoticeOfWorkApplicationContextTemplate,
+} from "@/actionCreators/documentActionCreator";
+import CustomPropTypes from "@/customPropTypes";
+import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
@@ -315,6 +315,7 @@ export class ProcessPermit extends Component {
       application_last_updated_date: noticeOfWork.last_updated_date
         ? formatDate(noticeOfWork.last_updated_date)
         : formatDate(noticeOfWork.submitted_date),
+        preamble_text: amendment.preamble_text,
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
     permitGenObject.is_draft = false;

@@ -5,7 +5,7 @@ from (select distinct pa.permit_amendment_id, case when atc.application_type_cod
 	  where pa.permit_amendment_status_code = 'DFT' and
       		pa.is_generated_in_core = true and
             pa.preamble_text is NULL and
-            pa.permit_id = nai.permit_id and
+            pa.now_application_guid = nai.now_application_guid and
       		nai.application_type_code = atc.application_type_code 
      ) as draft_permit_amendment_no_preamble_text
 where permit_amendment.permit_amendment_id = draft_permit_amendment_no_preamble_text.permit_amendment_id
