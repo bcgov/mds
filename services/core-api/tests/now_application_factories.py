@@ -26,6 +26,19 @@ class BlastingOperationFactory(BaseFactory):
     explosive_permit_number = factory.Sequence(lambda n: n)
     explosive_permit_expiry_date = factory.Faker('future_datetime', end_date='+30d')
 
+class AccessOperationsFactory(ActivitySummaryBase):
+    class Meta:
+        model = app_models.AccessOperations
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+class AccessRoadsFactory(ActivitySummaryBase):
+    class Meta:
+        model = app_models.AccessRoads
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
 class StateOfLandFactory(BaseFactory):
     class Meta:
@@ -432,7 +445,23 @@ class NOWApplicationFactory(BaseFactory):
     proposed_start_date = factory.Faker('past_datetime')
     last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
+    directions_to_site = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    security_not_required_reasons = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    security_not_required = True
+    imported_by = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    imported_date = factory.Faker('past_datetime')
+    annual_summary_submitted = False
+    is_first_year_of_multi = False
+    verified_by_user_date = factory.Faker('past_datetime')
+    decision_by_user_date = factory.Faker('past_datetime')
+    req_access_authorization_numbers = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    relationship_to_applicant = crown_grant_or_district_lot_numbers
+    liability_adjustment = factory.fuzzy.FuzzyInteger(1, 10000)
+    crown_grant_or_district_lot_numbers = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    adjusted_annual_maximum_tonnage = factory.fuzzy.FuzzyInteger(1, 10000)
 
+    access_operations = factory.RelatedFactory(AccessOperationsFactory, 'now_application')
+    access_roads = factory.RelatedFactory(AccessRoadsFactory, 'now_application')
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
     camp = factory.RelatedFactory(CampFactory, 'now_application')
