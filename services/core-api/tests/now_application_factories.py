@@ -26,14 +26,14 @@ class BlastingOperationFactory(BaseFactory):
     explosive_permit_number = factory.Sequence(lambda n: n)
     explosive_permit_expiry_date = factory.Faker('future_datetime', end_date='+30d')
 
-class AccessOperationsFactory(ActivitySummaryBase):
+class AccessOperationsFactory(BaseFactory):
     class Meta:
         model = app_models.AccessOperations
 
     class Params:
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-class AccessRoadsFactory(ActivitySummaryBase):
+class AccessRoadsFactory(BaseFactory):
     class Meta:
         model = app_models.AccessRoads
 
@@ -455,7 +455,7 @@ class NOWApplicationFactory(BaseFactory):
     verified_by_user_date = factory.Faker('past_datetime')
     decision_by_user_date = factory.Faker('past_datetime')
     req_access_authorization_numbers = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
-    relationship_to_applicant = crown_grant_or_district_lot_numbers
+    relationship_to_applicant = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
     liability_adjustment = factory.fuzzy.FuzzyInteger(1, 10000)
     crown_grant_or_district_lot_numbers = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
     adjusted_annual_maximum_tonnage = factory.fuzzy.FuzzyInteger(1, 10000)
