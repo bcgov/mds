@@ -429,6 +429,48 @@ export class EditFullPartyForm extends Component {
                 <Divider />
                 <Row gutter={16}>
                   <Col span={24}>
+                    <h5>Assign Project Lead Role</h5>
+                  </Col>
+                </Row>
+                <Row>
+                  <p>
+                    By setting this checkbox you grant project lead role to this party. Please note
+                    that removing this checkbox will not delete party from associated entities.
+                  </p>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="set_to_project_lead"
+                      name="set_to_project_lead"
+                      label="Set to project lead"
+                      type="checkbox"
+                      component={renderConfig.CHECKBOX}
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Field
+                      label="Start Date"
+                      id="project_lead_start_date"
+                      name="project_lead_start_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <Field
+                      label="End Date"
+                      id="project_lead_end_date"
+                      name="project_lead_end_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+                <br />
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={24}>
                     <h5>Upload Signature</h5>
                   </Col>
                 </Row>

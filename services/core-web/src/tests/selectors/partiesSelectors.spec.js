@@ -64,4 +64,24 @@ describe("partiesSelectors", () => {
 
     expect(getLastCreatedParty(mockState)).toEqual(party);
   });
+
+  it("`getInspectors` calls `partiesReducer.getInspectors`", () => {
+    const storeAction = storeParties(listInput);
+    const storeState = partiesReducer({}, storeAction);
+    const mockState = {
+      [PARTIES]: storeState,
+    };
+
+    expect(getParties(mockState)).toEqual(listProcessed);
+  });
+
+  it("`getProjectLeads` calls `partiesReducer.getProjectLeads`", () => {
+    const storeAction = storeParties(listInput);
+    const storeState = partiesReducer({}, storeAction);
+    const mockState = {
+      [PARTIES]: storeState,
+    };
+
+    expect(getParties(mockState)).toEqual(listProcessed);
+  });
 });

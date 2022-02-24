@@ -10,7 +10,6 @@ import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -132,7 +131,7 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Overview" key={initialTab}>
                     <Overview mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  {isMajorMine && !IN_PROD() && (
+                  {isMajorMine && (
                     <Tabs.TabPane tab="Applications" key="applications">
                       <ProjectSummaries mine={mine} match={this.props.match} />
                     </Tabs.TabPane>

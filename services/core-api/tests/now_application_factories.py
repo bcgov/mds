@@ -10,6 +10,7 @@ from tests.factories import *
 
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
+from tests.now_submission_factories import NOWSubmissionFactory
 
 
 class BlastingOperationFactory(BaseFactory):
@@ -515,7 +516,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
 
-    now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
+    now_submission = factory.SubFactory(NOWSubmissionFactory, mine=factory.SelfAttribute('..mine'))
 
     # TODO check if we have anything dependent on it and if we need this
     # @factory.post_generation

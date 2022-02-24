@@ -85,6 +85,7 @@ services:
 
   ####################### Backend Definition #######################
   backend:
+    user: root:root # use root in ci as backend coverage file is initially created outside app/
     restart: always
     container_name: mds_backend
     build:

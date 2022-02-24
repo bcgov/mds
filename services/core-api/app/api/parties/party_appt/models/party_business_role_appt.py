@@ -68,6 +68,16 @@ class PartyBusinessRoleAppointment(SoftDeleteMixin, AuditMixin, Base):
                     or_(PartyBusinessRoleAppointment.end_date > today,
                         PartyBusinessRoleAppointment.end_date == None)).one_or_none()
 
+
+    @classmethod
+    def get_current_business_appointments(cls, party_guid, party_business_role_code):
+        today = datetime.now(timezone.utc).date()
+        return cls.query.filter_by(
+            party_guid=party_guid).filter(PartyBusinessRoleAppointment.party_business_role_code.in_(party_business_role_code)).filter(
+                PartyBusinessRoleAppointment.start_date <= today).filter(
+                    or_(PartyBusinessRoleAppointment.end_date > today,
+                        PartyBusinessRoleAppointment.end_date == None)).all()
+
     @classmethod
     def create(cls,
                party_business_role_code,

@@ -6,14 +6,12 @@ import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchProjectSummariesByMine,
-  createProjectSummary,
-  updateProjectSummary,
+  deleteProjectSummary,
 } from "@common/actionCreators/projectSummaryActionCreator";
-import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
@@ -27,6 +25,7 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  deleteProjectSummary: PropTypes.func.isRequired,
   fetchProjectSummariesByMine: PropTypes.func.isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -41,12 +40,24 @@ export class ProjectSummaries extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.handleFetchData(id);
+  }
+
+  handleFetchData = (id) => {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchProjectSummariesByMine({ mineGuid: id }).then(() => {
         this.setState({ isLoaded: true, mine: this.props.mines[id] });
       });
     });
-  }
+  };
+
+  handleDeleteDraft = (e, projectSummaryGuid) => {
+    const { id } = this.props.match.params;
+    e.preventDefault();
+    this.props.deleteProjectSummary(id, projectSummaryGuid).then(() => {
+      this.handleFetchData(id);
+    });
+  };
 
   render() {
     return (
@@ -56,7 +67,7 @@ export class ProjectSummaries extends Component {
           <Typography.Paragraph>
             A&nbsp;
             <Typography.Text className="color-primary" strong>
-              project summary&nbsp;
+              project description&nbsp;
             </Typography.Text>
             is a high level overview of a production mining project used for assessment prior to
             applying for a new or amending an existing production mineral or coal mining permit
@@ -136,6 +147,7 @@ export class ProjectSummaries extends Component {
             mine={this.state.mine}
             isLoaded={this.state.isLoaded}
             projectSummaryStatusCodesHash={this.props.projectSummaryStatusCodesHash}
+            handleDeleteDraft={this.handleDeleteDraft}
           />
         </Col>
       </Row>
@@ -146,18 +158,15 @@ export class ProjectSummaries extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   projectSummaries: getProjectSummaries(state),
-  projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  projectSummaryStatusCodesHash: getProjectSummaryAliasStatusCodesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      openModal,
-      closeModal,
       fetchProjectSummariesByMine,
-      createProjectSummary,
-      updateProjectSummary,
+      deleteProjectSummary,
     },
     dispatch
   );

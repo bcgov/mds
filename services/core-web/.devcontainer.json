@@ -1,0 +1,15 @@
+{
+  "name": "Core-Web",
+  "dockerComposeFile": ["../../docker-compose.yaml"],
+  "service": "frontend",
+  "shutdownAction": "none",
+  "extensions": [
+    "aaron-bond.better-comments",
+    "editorconfig.editorconfig",
+    "coenraads.bracket-pair-colorizer",
+    "ms-vsliveshare.vsliveshare",
+    "christian-kohler.path-intellisense"
+  ],
+  // Open the sub-folder with the source code
+  "workspaceFolder": "/app/"
+}
