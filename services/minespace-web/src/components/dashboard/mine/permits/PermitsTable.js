@@ -10,6 +10,8 @@ import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
+const draftAmendment = "DFT";
+
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -63,8 +65,11 @@ const finalApplicationPackage = (amendment) => {
 };
 
 const transformRowData = (permit, permitStatusOptions) => {
-  const latestAmendment = permit.permit_amendments[0];
-  const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
+  const filteredAmendments = permit.permit_amendments.filter(
+    (a) => a.permit_amendment_status_code !== draftAmendment
+  );
+  const latestAmendment = filteredAmendments[0];
+  const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
   return {
     key: permit.permit_no || Strings.EMPTY_FIELD,
     number: permit.permit_no || Strings.EMPTY_FIELD,
@@ -77,7 +82,7 @@ const transformRowData = (permit, permitStatusOptions) => {
       Strings.EMPTY_FIELD,
     firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    permit_amendments: permit.permit_amendments,
+    permit_amendments: filteredAmendments,
   };
 };
 

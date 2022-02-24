@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateMinespaceUserModal renders properly 1`] = `
+<div>
+  <Connect(UpdateMinespaceUser)
+    onSubmit={[MockFunction]}
+    title="mock title"
+  />
+</div>
+`;

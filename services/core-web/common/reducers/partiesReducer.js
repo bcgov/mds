@@ -1,6 +1,6 @@
 import * as actionTypes from "../constants/actionTypes";
 import { PARTIES } from "../constants/reducerTypes";
-import { createItemMap, createItemIdsArray, createDropDownList } from "../utils/helpers";
+import { createItemMap, createItemIdsArray } from "../utils/helpers";
 
 /**
  * @file partiesReducer.js
@@ -18,6 +18,7 @@ const initialState = {
   addPartyFormState: {},
   lastCreatedParty: {},
   inspectors: [],
+  projectLeads: [],
 };
 
 export const partiesReducer = (state = initialState, action) => {
@@ -63,6 +64,11 @@ export const partiesReducer = (state = initialState, action) => {
         ...state,
         inspectors: action.payload.records,
       };
+    case actionTypes.STORE_PROJECT_LEADS:
+      return {
+        ...state,
+        projectLeads: action.payload.records,
+      };
     default:
       return state;
   }
@@ -82,7 +88,6 @@ export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
 export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state) => state[PARTIES].inspectors;
-export const getInspectorsList = (state) =>
-  createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
+export const getProjectLeads = (state) => state[PARTIES].projectLeads;
 
 export default partiesReducerObject;

@@ -16,6 +16,7 @@ Suggested:\n
 
 (Below commands assume 'make' before each command)\n
 Usage:\n
+\t    env: creates boilerplate environment files\n
 \t    valid: checks your dev environment is setup correctly\n
 \t    lite: creates a minimum viable setup, use to start working asap\n
 \t    rebuild: rebuilds the containers you currently have in use\n

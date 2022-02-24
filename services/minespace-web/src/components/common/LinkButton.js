@@ -6,11 +6,13 @@ const propTypes = {
   tabIndex: PropTypes.number,
   // eslint-disable-next-line  react/forbid-prop-types
   children: PropTypes.any,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   tabIndex: 0,
   children: null,
+  disabled: false,
 };
 
 const LinkButton = (props) => (
@@ -19,6 +21,7 @@ const LinkButton = (props) => (
     onClick={props.onClick}
     onKeyPress={props.onClick}
     tabIndex={props.tabIndex}
+    disabled={props.disabled}
     {...props}
   >
     {props.children}

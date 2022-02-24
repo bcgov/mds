@@ -53,6 +53,8 @@ export const {
   getProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypes,
   getEMLIContactTypes,
+  getProjectSummaryAuthorizationTypes,
+  getProjectSummaryPermitTypes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -774,11 +776,22 @@ export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
 export const getDropdownProjectSummaryStatusCodes = createSelectorWrapper(
   getProjectSummaryStatusCodes,
   createDropDownList,
-  ["description", "project_summary_status_code", "active_ind"]
+  ["description", "project_summary_status_code"]
 );
 
 export const getProjectSummaryStatusCodesHash = createSelector(
   [getDropdownProjectSummaryStatusCodes],
+  createLabelHash
+);
+
+export const getDropdownProjectSummaryAliasStatusCodes = createSelectorWrapper(
+  getProjectSummaryStatusCodes,
+  createDropDownList,
+  ["alias_description", "project_summary_status_code"]
+);
+
+export const getProjectSummaryAliasStatusCodesHash = createSelector(
+  [getDropdownProjectSummaryAliasStatusCodes],
   createLabelHash
 );
 
@@ -802,4 +815,90 @@ export const getDropdownEMLIContactTypes = createSelectorWrapper(
 export const getEMLIContactTypesHash = createSelector(
   [getDropdownEMLIContactTypes],
   createLabelHash
+);
+
+export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
+  [getProjectSummaryAuthorizationTypes],
+  (types) => {
+    const parents = types
+      .filter(
+        ({ project_summary_authorization_type_group_id }) =>
+          !project_summary_authorization_type_group_id
+      )
+      .map(({ project_summary_authorization_type, description }) => {
+        return { code: project_summary_authorization_type, description, children: [] };
+      });
+    // eslint-disable-next-line array-callback-return
+    types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
+      parents.map(({ code, children }) => {
+        if (code === child.project_summary_authorization_type_group_id) {
+          return children.push({
+            code: child.project_summary_authorization_type,
+            description: child.description,
+          });
+        }
+      });
+    });
+    return parents;
+  }
+);
+
+export const getTransformedChildProjectSummaryAuthorizationTypesHash = createSelector(
+  [getProjectSummaryAuthorizationTypes],
+  (types) => {
+    const parents = types
+      .filter(
+        ({ project_summary_authorization_type_group_id }) =>
+          !project_summary_authorization_type_group_id
+      )
+      .map(({ project_summary_authorization_type, description }) => {
+        return { code: project_summary_authorization_type, description, children: [] };
+      });
+    // eslint-disable-next-line array-callback-return
+    types.map((child) => {
+      // eslint-disable-next-line array-callback-return, consistent-return
+      parents.map(({ code, children }) => {
+        if (code === child.project_summary_authorization_type_group_id) {
+          return children.push({
+            code: child.project_summary_authorization_type,
+            description: child.description,
+          });
+        }
+      });
+    });
+    const transformedObject = {};
+    parents.forEach((parent) => {
+      return parent.children.forEach((child) => {
+        transformedObject[child.code] = {
+          description: child.description,
+          parent: { code: parent.code, description: parent.description },
+        };
+      });
+    });
+    return transformedObject;
+  }
+);
+
+export const getDropdownProjectSummaryPermitTypes = createSelectorWrapper(
+  getProjectSummaryPermitTypes,
+  createDropDownList,
+  ["description", "project_summary_permit_type"]
+);
+
+export const getProjectSummaryPermitTypesHash = createSelector(
+  [getDropdownProjectSummaryPermitTypes],
+  createLabelHash
+);
+
+export const getProjectSummaryAuthorizationTypesArray = createSelector(
+  [getProjectSummaryAuthorizationTypes],
+  (types) => {
+    const arr = [];
+    types.map(({ project_summary_authorization_type }) => {
+      return arr.push(project_summary_authorization_type);
+    });
+
+    return arr;
+  }
 );
