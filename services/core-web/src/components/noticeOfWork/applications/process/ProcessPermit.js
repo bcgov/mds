@@ -315,7 +315,7 @@ export class ProcessPermit extends Component {
       application_last_updated_date: noticeOfWork.last_updated_date
         ? formatDate(noticeOfWork.last_updated_date)
         : formatDate(noticeOfWork.submitted_date),
-        preamble_text: amendment.preamble_text,
+      preamble_text: amendment.preamble_text,
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
     permitGenObject.is_draft = false;
