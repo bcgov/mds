@@ -91,10 +91,6 @@ class NOWApplicationIdentity(Base, AuditMixin):
         return cls.query.filter_by(mine_guid=mine_guid).first()
 
     @classmethod
-    def find_by_permit_id(cls, permit_id):
-        return cls.query.filter_by(permit_id=permit_id).first()
-
-    @classmethod
     def get_max_now_number_suffix(cls, mine_guid, year):
         suffix = cls.query.with_entities(
             func.max(cast(func.split_part(cls.now_number, '-', 3), sqlalchemy.Integer))).filter(
