@@ -182,16 +182,12 @@ class PermitListResource(Resource, UserMixin):
 
         is_generated_in_core = True if permit.permit_status_code == 'D' else False
 
-        preamble_text = get_preamble_text(
-            application_type_description) if is_generated_in_core else None
-
         amendment = PermitAmendment.create(
             permit,
             mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
-            preamble_text,
             'OGP',
             description='Initial permit issued.',
             issuing_inspector_title=data.get('issuing_inspector_title'),
@@ -209,6 +205,15 @@ class PermitListResource(Resource, UserMixin):
         now_application_guid = data.get('now_application_guid')
         if now_application_guid is not None and permit.permit_status_code == 'D':
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+
+            application_type_description = None
+            if application_identity:
+                application_type = ApplicationTypeCode.find_by_application_type_code(
+                    application_identity.application_type_code)
+                application_type_description = 'application' if application_type.application_type_code == 'ADA' else application_type.description
+                amendment.preamble_text = get_preamble_text(
+                    application_type_description) if is_generated_in_core else None
+
             if application_identity.now_application:
                 now_type = application_identity.now_application.notice_of_work_type_code
 
