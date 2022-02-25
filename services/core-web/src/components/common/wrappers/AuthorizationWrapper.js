@@ -89,8 +89,10 @@ export const AuthorizationWrapper = (props) => {
     );
   };
 
+  // all actions are visible to admin, except when they should only exist in their respective environments. (ie admin cannot see features in prod if they are feature flagged to test)
+  const adminOverride = isAdmin && !inDevCheck && !inTestCheck;
   return (
-    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
+    (adminOverride || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
       <Tooltip
         title={isAdmin && props.showToolTip ? title() : ""}
         placement="left"
