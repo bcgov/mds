@@ -56,11 +56,18 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 now_application.mine_name,
                 'mine_no':
                 now_application.mine_no,
+                'application_type':
+                now_application.notice_of_work_type.description,
                 'proposed_annual_maximum_tonnage':
                 str(now_application.proposed_annual_maximum_tonnage)
                 if now_application.proposed_annual_maximum_tonnage is not None else ' ',
                 'issue_date':
                 format_datetime_to_string(draft_permit.issue_date),
+                'application_dated':
+                format_datetime_to_string(now_application.submitted_date),
+                'application_last_updated_date':
+                format_datetime_to_string(now_application.last_updated_date)
+                if now_application.last_updated_date else now_application.submitted_date,
                 'authorization_end_date':
                 format_datetime_to_string(draft_permit.authorization_end_date),
                 'permit_no':
@@ -216,6 +223,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             condition_variables = transform_variables_to_data(now_application, permit, mine,
                                                               total_liability)
 
+            template_data['preamble_text'] = replace_condition_value_with_data(
+                template_data['preamble_text'], condition_variables)
             conditions = permit.conditions
             conditions_template_data = {}
             for section in conditions:

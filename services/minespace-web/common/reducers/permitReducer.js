@@ -6,6 +6,7 @@ const initialState = {
   draftPermits: [],
   permitConditions: [],
   editingConditionFlag: false,
+  editingPreambleFlag: false,
 };
 
 export const permitReducer = (state = initialState, action) => {
@@ -35,6 +36,11 @@ export const permitReducer = (state = initialState, action) => {
         ...state,
         editingConditionFlag: action.payload,
       };
+    case actionTypes.STORE_EDITING_PREAMBLE_FLAG:
+      return {
+        ...state,
+        editingPreambleFlag: action.payload,
+      };
     default:
       return state;
   }
@@ -49,4 +55,5 @@ export const getDraftPermits = (state) => state[PERMITS].draftPermits;
 export const getPermitConditions = (state) => state[PERMITS].permitConditions;
 export const getStandardPermitConditions = (state) => state[PERMITS].standardPermitConditions;
 export const getEditingConditionFlag = (state) => state[PERMITS].editingConditionFlag;
+export const getEditingPreambleFlag = (state) => state[PERMITS].editingPreambleFlag;
 export default permitReducerObject;
