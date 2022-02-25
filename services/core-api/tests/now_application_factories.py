@@ -26,6 +26,7 @@ class BlastingOperationFactory(BaseFactory):
     explosive_permit_number = factory.Sequence(lambda n: n)
     explosive_permit_expiry_date = factory.Faker('future_datetime', end_date='+30d')
 
+
 class StateOfLandFactory(BaseFactory):
     class Meta:
         model = app_models.StateOfLand
