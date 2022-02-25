@@ -85,20 +85,22 @@ exports[`ProjectSummaries renders properly 1`] = `
        closest to your project location.
     </Paragraph>
     <Paragraph>
-      <Link
-        to="/mines/undefined/project-description/new/basic-information"
-      >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          type="primary"
+      <Connect(AuthorizationWrapper)>
+        <Link
+          to="/mines/undefined/project-description/new/basic-information"
         >
-          <ForwardRef(PlusCircleFilled) />
-          Start a new application
-        </Button>
-      </Link>
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="primary"
+          >
+            <ForwardRef(PlusCircleFilled) />
+            Start a new application
+          </Button>
+        </Link>
+      </Connect(AuthorizationWrapper)>
     </Paragraph>
     <ProjectSummariesTable
       handleDeleteDraft={[Function]}

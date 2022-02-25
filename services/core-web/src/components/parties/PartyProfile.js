@@ -215,7 +215,7 @@ export class PartyProfile extends Component {
             <div className="inline-flex between">
               <h1>{party.name}</h1>
               <div>
-                <AuthorizationWrapper permission={Permission.ADMIN} inTesting>
+                <AuthorizationWrapper permission={Permission.ADMIN}>
                   <Popconfirm
                     className="delete_contact_warning"
                     placement="bottom"

@@ -122,22 +122,24 @@ export class ProjectSummaryForm extends Component {
               <Col span={6}>
                 <div>
                   {(this.props.initialValues.status_code === "DFT" || !this.props.isEditMode) && (
-                    <LinkButton
-                      onClick={(e) =>
-                        this.props.handleSaveData(
-                          e,
-                          {
-                            ...this.props.formValues,
-                            status_code: "DFT",
-                          },
-                          "Successfully saved a draft project description."
-                        )
-                      }
-                      title="Save Draft"
-                      disabled={this.props.submitting}
-                    >
-                      Save Draft
-                    </LinkButton>
+                    <AuthorizationWrapper>
+                      <LinkButton
+                        onClick={(e) =>
+                          this.props.handleSaveData(
+                            e,
+                            {
+                              ...this.props.formValues,
+                              status_code: "DFT",
+                            },
+                            "Successfully saved a draft project description."
+                          )
+                        }
+                        title="Save Draft"
+                        disabled={this.props.submitting}
+                      >
+                        Save Draft
+                      </LinkButton>
+                    </AuthorizationWrapper>
                   )}
                   {!isLast && (
                     <Button
@@ -153,22 +155,24 @@ export class ProjectSummaryForm extends Component {
                   {isLast && (
                     <>
                       {this.props.isEditMode && this.props.initialValues.status_code !== "DFT" ? (
-                        <Button
-                          type="primary"
-                          onClick={(e) =>
-                            this.props.handleSaveData(
-                              e,
-                              {
-                                ...this.props.formValues,
-                              },
-                              "Successfully updated the project description."
-                            )
-                          }
-                          loading={this.props.submitting}
-                          disabled={this.props.submitting}
-                        >
-                          Update
-                        </Button>
+                        <AuthorizationWrapper>
+                          <Button
+                            type="primary"
+                            onClick={(e) =>
+                              this.props.handleSaveData(
+                                e,
+                                {
+                                  ...this.props.formValues,
+                                },
+                                "Successfully updated the project description."
+                              )
+                            }
+                            loading={this.props.submitting}
+                            disabled={this.props.submitting}
+                          >
+                            Update
+                          </Button>
+                        </AuthorizationWrapper>
                       ) : (
                         <>
                           <AuthorizationWrapper>
