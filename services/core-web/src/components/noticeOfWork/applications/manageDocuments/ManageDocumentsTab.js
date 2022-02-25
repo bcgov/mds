@@ -90,12 +90,23 @@ export class ManageDocumentsTab extends Component {
     this.setState({ cancelDownload: true });
   };
 
+  gatherNowDocuments = () => {
+    // Extract documents from NoW Reviews(generated) and add to NoW Submissions(uploaded)
+    const nowDocs = this.props.noticeOfWork.documents;
+    const nowReviewDocs = [];
+    this.props.noticeOfWorkReviews.forEach((review) => {
+      if (review.documents.length) {
+        nowReviewDocs.push(...review.documents);
+      }
+    });
+    return [...nowDocs, ...nowReviewDocs];
+  };
+
   downloadDocumentPackage = (selectedDocumentRows) => {
     const docURLS = [];
 
-    const nowDocs = this.props.noticeOfWork.documents
+    const nowDocs = this.gatherNowDocuments()
       .map((doc) => ({
-        // key: doc.now_application_document_xref_guid,
         key: doc.mine_document.mine_document_guid,
         documentManagerGuid: doc.mine_document.document_manager_guid,
         filename: doc.mine_document.document_name,
@@ -111,7 +122,7 @@ export class ManageDocumentsTab extends Component {
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
-    const currentFile = 0;
+    let currentFile = 0;
     this.waitFor(() => docURLS.length === totalFiles).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
@@ -128,7 +139,7 @@ export class ManageDocumentsTab extends Component {
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
 
-        this.props.closeModal();
+        currentFile += 1;
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
           downloading: true,
           currentFile,
@@ -155,14 +166,16 @@ export class ManageDocumentsTab extends Component {
 
   openDownloadPackageModal = (event) => {
     event.preventDefault();
+
     this.props.openModal({
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        noticeOfWork: this.props.noticeOfWork,
-        nowDocuments: this.props.noticeOfWork.documents,
+        nowDocuments: this.gatherNowDocuments(),
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
         title: "Download NoW Documents",
+        closeModal: this.props.closeModal,
+        afterClose: () => {},
       },
       content: modalConfig.NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL,
       width: "75vw",
