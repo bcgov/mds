@@ -49,6 +49,4 @@ model_list = [
     ActivityEquipmentXref,
     NOWPartyAppointment,
     NOWApplicationProgress,
-    AccessOperations,
-    AccessRoads,
 ]
