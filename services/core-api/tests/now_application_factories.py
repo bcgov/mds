@@ -26,20 +26,6 @@ class BlastingOperationFactory(BaseFactory):
     explosive_permit_number = factory.Sequence(lambda n: n)
     explosive_permit_expiry_date = factory.Faker('future_datetime', end_date='+30d')
 
-class AccessOperationsFactory(BaseFactory):
-    class Meta:
-        model = app_models.AccessOperations
-
-    class Params:
-        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-class AccessRoadsFactory(BaseFactory):
-    class Meta:
-        model = app_models.AccessRoads
-
-    class Params:
-        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
 class StateOfLandFactory(BaseFactory):
     class Meta:
         model = app_models.StateOfLand
