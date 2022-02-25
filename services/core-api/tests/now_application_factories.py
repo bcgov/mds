@@ -459,11 +459,7 @@ class NOWApplicationFactory(BaseFactory):
     liability_adjustment = factory.fuzzy.FuzzyInteger(1, 10000)
     crown_grant_or_district_lot_numbers = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
     adjusted_annual_maximum_tonnage = factory.fuzzy.FuzzyInteger(1, 10000)
-    first_aid_cert_level = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
-    is_applicant_individual_or_company = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
 
-    access_operations = factory.RelatedFactory(AccessOperationsFactory, 'now_application')
-    access_roads = factory.RelatedFactory(AccessRoadsFactory, 'now_application')
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
     camp = factory.RelatedFactory(CampFactory, 'now_application')
