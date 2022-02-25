@@ -13,8 +13,16 @@ const propTypes = {
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,
-  documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   closeModal: PropTypes.func.isRequired,
+  documentDownloadState: CustomPropTypes.documentDownloadState,
+};
+
+const defaultProps = {
+  documentDownloadState: {
+    downloading: false,
+    currentFile: 0,
+    totalFiles: 0,
+  },
 };
 
 export const ManageDocumentsDownloadPackageModal = (props) => {
@@ -87,5 +95,6 @@ const mapStateToProps = (state) => ({
 });
 
 ManageDocumentsDownloadPackageModal.propTypes = propTypes;
+ManageDocumentsDownloadPackageModal.defaultProps = defaultProps;
 
 export default connect(mapStateToProps)(ManageDocumentsDownloadPackageModal);
