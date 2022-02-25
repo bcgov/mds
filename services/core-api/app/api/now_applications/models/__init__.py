@@ -23,8 +23,6 @@ from .etl_equipment import ETLEquipment
 from .activity_equipment_xref import ActivityEquipmentXref
 from .now_party_appointment import NOWPartyAppointment
 from .now_application_progress import NOWApplicationProgress
-from .access_operations import AccessOperations
-from .access_roads import AccessRoads
 
 model_list = [
     ApplicationsView,
