@@ -18,6 +18,7 @@ import AddMineWorkInformationForm from "@/components/Forms/AddMineWorkInformatio
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 import { formatDate } from "@/utils/helpers";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -60,9 +61,11 @@ export class MineWorkInformation extends Component {
           <Typography.Title level={4}>Work Information</Typography.Title>
           {!this.state.isEditMode && (
             <span>
-              <Button type="link" onClick={() => this.editWorkInformation()}>
-                <img src={EDIT_PENCIL} alt="Edit" />
-              </Button>
+              <AuthorizationWrapper>
+                <Button type="link" onClick={() => this.editWorkInformation()}>
+                  <img src={EDIT_PENCIL} alt="Edit" />
+                </Button>
+              </AuthorizationWrapper>
             </span>
           )}
         </div>
