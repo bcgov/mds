@@ -433,7 +433,7 @@ class NOWApplicationFactory(BaseFactory):
     last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
     directions_to_site = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
-    security_not_required_reasons = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
+    security_not_required_reason = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
     security_not_required = True
     imported_by = factory.Faker('sentence', nb_words=100, variable_nb_words=True)
     imported_date = factory.Faker('past_datetime')
