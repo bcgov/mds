@@ -10,6 +10,7 @@ from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
 from app.api.services.email_service import EmailService
 from app.config import Config
 
+
 class MineTailingsStorageFacility(AuditMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"
     mine_tailings_storage_facility_guid = db.Column(
@@ -96,6 +97,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         recipients = MINESPACE_TSF_UPDATE_EMAIL
         subject = f'TSF Information Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/tailings'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
