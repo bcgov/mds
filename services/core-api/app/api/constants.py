@@ -150,6 +150,8 @@ NOW_SUBMISSIONS_YES_NO = ['Yes', 'No']
 
 NOW_SUBMISSION_STATUS = ["Accepted", "Withdrawn", "Under Review"]
 
+NOW_SUBMISSION_NDA_STATUS = ["Accepted", "Withdrawn", "Under Review"]
+
 # This constant is defined for use during the app setup and creation.
 # See static_data.py in utils for its use and the values it contains.
 STATIC_DATA = {}

@@ -56,8 +56,10 @@ const defaultProps = {
 export const AuthorizationWrapper = (props) => {
   const checkDev = props.inDevelopment && detectDevelopmentEnvironment();
   const checkTest = props.inTesting && !detectProdEnvironment();
-  // do not show any actions if the user is not a proponents, unless in the development
-  if (!props.isProponent && !detectDevelopmentEnvironment() && !checkTest) {
+  // do not show any actions if the user is not a proponents,
+  // Allowing IDIR users, especially in dev, to do tasks that are specific to the role "minespace_proponent" can have unintended side effects
+  // Use BCeID credentials to access actions
+  if (!props.isProponent) {
     return <span />;
   }
   if (props.inDevelopment === undefined && props.inTesting === undefined) {

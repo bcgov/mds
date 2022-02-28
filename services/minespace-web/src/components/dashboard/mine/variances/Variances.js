@@ -25,6 +25,7 @@ import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine),
@@ -154,14 +155,16 @@ export class Variances extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Button
-            style={{ display: "inline", float: "right" }}
-            type="primary"
-            onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
-          >
-            <PlusCircleFilled />
-            Apply for a Variance
-          </Button>
+          <AuthorizationWrapper>
+            <Button
+              style={{ display: "inline", float: "right" }}
+              type="primary"
+              onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
+            >
+              <PlusCircleFilled />
+              Apply for a Variance
+            </Button>
+          </AuthorizationWrapper>
           <Typography.Title level={4}>Variances</Typography.Title>
           <Typography.Paragraph>
             This table shows your mine&apos;s&nbsp;
