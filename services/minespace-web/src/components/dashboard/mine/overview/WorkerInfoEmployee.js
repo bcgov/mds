@@ -9,6 +9,7 @@ import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import EditWorkerInformationForm from "@/components/Forms/mines/EditWorkerInformationForm";
 import * as Strings from "@/constants/strings";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mine: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -71,14 +72,16 @@ export class WorkerInfoEmployee extends Component {
                       </Tooltip>
                     </Typography.Title>
                   </>
-                  <Button
-                    type="link"
-                    onClick={(event) => {
-                      this.handleToggleEdit(event);
-                    }}
-                  >
-                    <img src={EDIT_PENCIL} alt="Edit Worker Info" />
-                  </Button>
+                  <AuthorizationWrapper>
+                    <Button
+                      type="link"
+                      onClick={(event) => {
+                        this.handleToggleEdit(event);
+                      }}
+                    >
+                      <img src={EDIT_PENCIL} alt="Edit Worker Info" />
+                    </Button>
+                  </AuthorizationWrapper>
                 </div>
 
                 <Descriptions>

@@ -13,23 +13,25 @@ exports[`MineWorkInformation renders properly 1`] = `
       Work Information
     </Title>
     <span>
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        onClick={[Function]}
-        type="link"
-      >
-        <img
-          alt="Edit"
-          src={
-            Object {
-              "process": [Function],
+      <Connect(AuthorizationWrapper)>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="link"
+        >
+          <img
+            alt="Edit"
+            src={
+              Object {
+                "process": [Function],
+              }
             }
-          }
-        />
-      </Button>
+          />
+        </Button>
+      </Connect(AuthorizationWrapper)>
     </span>
   </div>
   <Row

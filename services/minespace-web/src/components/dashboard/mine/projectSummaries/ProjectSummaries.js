@@ -16,6 +16,7 @@ import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
 import * as routes from "@/constants/routes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine),
@@ -135,12 +136,14 @@ export class ProjectSummaries extends Component {
             &nbsp;closest to your project location.
           </Typography.Paragraph>
           <Typography.Paragraph>
-            <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
-              <Button type="primary">
-                <PlusCircleFilled />
-                Start a new application
-              </Button>
-            </Link>
+            <AuthorizationWrapper>
+              <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
+                <Button type="primary">
+                  <PlusCircleFilled />
+                  Start a new application
+                </Button>
+              </Link>
+            </AuthorizationWrapper>
           </Typography.Paragraph>
           <ProjectSummariesTable
             projectSummaries={this.props.projectSummaries}

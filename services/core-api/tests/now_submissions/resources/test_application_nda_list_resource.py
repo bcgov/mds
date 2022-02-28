@@ -123,10 +123,11 @@ class TestGetApplicationNDAListResource:
             headers=auth_headers['nros_vfcbc_auth_header'])
         post_data = json.loads(post_resp.data.decode())
 
-        assert post_resp.status_code == 201, post_resp.response
-        assert post_data['messageid'] == APPLICATION_NDA_DATA['messageid']
-        assert post_data['application_nda_guid'] is not None
-        assert post_data['mine_guid'] == str(mine.mine_guid)
+        # # Not implemented
+        assert post_resp.status_code == 501, post_resp.response
+        # assert post_data['messageid'] == APPLICATION_NDA_DATA['messageid']
+        # assert post_data['application_nda_guid'] is not None
+        # assert post_data['mine_guid'] == str(mine.mine_guid)
 
     def test_post_now_application_messageid_in_use(self, test_client, db_session, auth_headers):
         """Should return a 400 messageid in use for NDA"""
@@ -141,7 +142,8 @@ class TestGetApplicationNDAListResource:
             json=APPLICATION_NDA_DATA,
             headers=auth_headers['nros_vfcbc_auth_header'])
 
-        assert post_resp.status_code == 400, post_resp.response
+        # Not implemented
+        assert post_resp.status_code == 501, post_resp.response
 
     def test_post_now_application_no_mine_found(self, test_client, db_session, auth_headers):
         """Should return a 400 mine not found for NDA"""
@@ -153,4 +155,5 @@ class TestGetApplicationNDAListResource:
             json=APPLICATION_NDA_DATA,
             headers=auth_headers['nros_vfcbc_auth_header'])
 
-        assert post_resp.status_code == 400, post_resp.response
+        # Not implemented
+        assert post_resp.status_code == 501, post_resp.response

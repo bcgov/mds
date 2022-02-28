@@ -24,3 +24,8 @@ export const storeStandardPermitConditions = (payload) => ({
   type: actionTypes.STORE_STANDARD_PERMIT_CONDITIONS,
   payload,
 });
+
+export const storeEditingPreambleFlag = (payload) => ({
+  type: actionTypes.STORE_EDITING_PREAMBLE_FLAG,
+  payload,
+});
