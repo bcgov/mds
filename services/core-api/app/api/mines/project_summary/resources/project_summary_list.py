@@ -1,12 +1,13 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from werkzeug.exceptions import InternalServerError
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_MODEL
 from app.api.mines.project_summary.models.project_summary import ProjectSummary
@@ -92,15 +93,16 @@ class ProjectSummaryListResource(Resource, UserMixin):
     @api.doc(
         description='Create a new Project Description.',
         params={'mine_guid': 'The GUID of the mine to create the Project Description for.'})
-    # @requires_any_of([MINESPACE_PROPONENT])
     @api.expect(parser)
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=201)
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+        submission_date = datetime.now(tz=timezone.utc) if data.get('status_code') == 'SUB' else None
         project_summary = ProjectSummary.create(mine, data.get('project_summary_description'),
                                                 data.get('project_summary_title'),
                                                 data.get('proponent_project_id'),
@@ -110,12 +112,14 @@ class ProjectSummaryListResource(Resource, UserMixin):
                                                 data.get('expected_project_start_date'),
                                                 data.get('status_code'), data.get('documents', []),
                                                 data.get('contacts', []),
-                                                data.get('authorizations', []))
+                                                data.get('authorizations', []), submission_date)
 
         try:
             project_summary.save()
             if is_minespace_user():
-                project_summary.send_project_summary_email_to_ministry(mine)
+                if project_summary.status_code == 'SUB':
+                    project_summary.send_project_summary_email_to_ministry(mine)
+                    project_summary.send_project_summary_email_to_proponent(mine)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

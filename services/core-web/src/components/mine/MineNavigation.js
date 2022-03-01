@@ -6,7 +6,6 @@ import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -69,7 +68,7 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
-            {isMajorMine && !IN_PROD() && (
+            {isMajorMine && (
               <Menu.Item key="pre-applications">
                 <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                   Pre-applications

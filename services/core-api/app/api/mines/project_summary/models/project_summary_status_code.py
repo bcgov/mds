@@ -9,6 +9,7 @@ class ProjectSummaryStatusCode(AuditMixin, Base):
 
     project_summary_status_code = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String, nullable=False)
+    alias_description = db.Column(db.String, nullable=True)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     display_order = db.Column(db.Integer, nullable=False)
 
@@ -17,4 +18,4 @@ class ProjectSummaryStatusCode(AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.order_by(cls.display_order).all()
+        return cls.query.order_by(cls.display_order).filter_by(active_ind=True).all()

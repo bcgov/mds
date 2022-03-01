@@ -1,3 +1,4 @@
+from flask import current_app
 from datetime import datetime
 from pytz import timezone
 
@@ -272,6 +273,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_guid, template_data)
+                    # TODO: Remove Logs for generate document
+                    current_app.logger.debug(
+                        f'explosives_permit_document_type: {explosives_permit_document_type}, token (create_permit_enclosed_letter): {token}'
+                    )
                     return ExplosivesPermitDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
@@ -284,6 +289,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_guid, template_data)
+                    # TODO: Remove Logs for generate document
+                    current_app.logger.debug(
+                        f'explosives_permit_document_type: {explosives_permit_document_type}, token (create_issued_permit): {token}'
+                    )
                     return ExplosivesPermitDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 

@@ -1,6 +1,4 @@
 #!/bin/sh
 
-cd /src
-dotnet restore
-dotnet build
-dotnet run
+cd /app
+dotnet run --no-build

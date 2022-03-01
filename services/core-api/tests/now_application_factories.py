@@ -432,6 +432,20 @@ class NOWApplicationFactory(BaseFactory):
     proposed_start_date = factory.Faker('past_datetime')
     last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
+    directions_to_site = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    security_not_required_reason = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    security_not_required = True
+    imported_by = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    imported_date = factory.Faker('past_datetime')
+    annual_summary_submitted = False
+    is_first_year_of_multi = False
+    verified_by_user_date = factory.Faker('past_datetime')
+    decision_by_user_date = factory.Faker('past_datetime')
+    req_access_authorization_numbers = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    relationship_to_applicant = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    liability_adjustment = factory.fuzzy.FuzzyInteger(1, 10000)
+    crown_grant_or_district_lot_numbers = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    adjusted_annual_maximum_tonnage = factory.fuzzy.FuzzyInteger(1, 10000)
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')

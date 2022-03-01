@@ -4,7 +4,7 @@ from enum import Enum
 from flask import current_app
 
 from app.config import Config
-from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED
+from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED
 
 
 class EmailBodyType(Enum):
@@ -30,7 +30,16 @@ MDS_NO_REPLY_SIGNATURE = f'''
     <hr />
     <p>This is a no-reply email address. If you need to contact the MDS team, please email us at: <a href="mailto: {Config.MDS_EMAIL}">{Config.MDS_EMAIL}</a>.</p>
     <br />
-    <img src="{CORE_PURPLE_LOGO_BASE64_ENCODED}" width="320" height="106" alt="Core Logo">
+    <img src="{CORE_PURPLE_LOGO_BASE64_ENCODED}" width="320" height="106" alt="CoreLogo">
+</div>
+'''
+
+MINESPACE_NO_REPLY_SIGNATURE = f'''
+<div>
+    <hr />
+    <p>This is a no-reply email address. If you need to contact the MDS team, please email us at: <a href="mailto: {Config.MDS_EMAIL}">{Config.MDS_EMAIL}</a>.</p>
+    <br />
+    <img src="{MINESPACE_LOGO_BASE64_ENCODED}" width="820" height="106" alt="MinespaceLogo">
 </div>
 '''
 
@@ -116,7 +125,8 @@ class EmailService():
                    delay=0,
                    encoding=EmailEncoding.UTF8.value,
                    priority=EmailPriority.NORMAL.value,
-                   tag=None):
+                   tag=None,
+                   send_to_proponent=False):
         '''Sends an email.'''
 
         # Validate enum parameters.
@@ -141,8 +151,11 @@ class EmailService():
 
         EmailService.perform_health_check()
 
-        # If the sender is the MDS no-reply email address, add the MDS no-reply signature to the email body.
-        if sender == Config.MDS_NO_REPLY_EMAIL:
+        # If the receiver is the proponent, add the MINESPACE no-reply signature.
+        # if sender is the MDS no-reply email address, add the MDS no-reply signature to the email body.
+        if send_to_proponent:
+            body += MINESPACE_NO_REPLY_SIGNATURE
+        elif sender == Config.MDS_NO_REPLY_EMAIL:
             body += MDS_NO_REPLY_SIGNATURE
 
         url = f'{Config.COMMON_SERVICES_EMAIL_HOST}/email'

@@ -29,6 +29,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project_summary_title = db.Column(db.String(300), nullable=False)
     project_summary_description = db.Column(db.String(4000), nullable=True)
     proponent_project_id = db.Column(db.String(20), nullable=True)
+    submission_date = db.Column(db.DateTime, nullable=True)
     expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
     expected_permit_receipt_date = db.Column(db.DateTime, nullable=True)
@@ -86,14 +87,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if is_minespace_user:
             return cls.query.filter_by(
                 project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid, is_minespace_user):
         if is_minespace_user:
             return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("D")).filter_by(
+        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
             mine_guid=mine_guid, deleted_ind=False).all()
 
     @classmethod
@@ -110,6 +111,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                documents=[],
                contacts=[],
                authorizations=[],
+               submission_date=None,
                add_to_session=True):
         project_summary = cls(
             project_summary_description=project_summary_description,
@@ -120,7 +122,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             expected_permit_application_date=expected_permit_application_date,
             expected_permit_receipt_date=expected_permit_receipt_date,
             expected_project_start_date=expected_project_start_date,
-            status_code=status_code)
+            status_code=status_code, submission_date=submission_date)
 
         mine.project_summaries.append(project_summary)
         if add_to_session:
@@ -178,13 +180,22 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                expected_permit_receipt_date,
                expected_project_start_date,
                status_code,
+               project_summary_lead_party_guid,
                documents=[],
                contacts=[],
                authorizations=[],
+               submission_date=None,
                add_to_session=True):
 
         # Update simple properties.
-        self.status_code = status_code
+        # If we assign a project lead update status to Assigned and vice versa Submitted.
+        if project_summary_lead_party_guid and self.project_summary_lead_party_guid is None:
+            self.status_code = "ASG"
+        elif project_summary_lead_party_guid is None and self.project_summary_lead_party_guid:
+            self.status_code = "SUB"
+        else:
+            self.status_code = status_code
+
         self.project_summary_description = project_summary_description
         self.project_summary_title = project_summary_title
         self.proponent_project_id = proponent_project_id
@@ -192,6 +203,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.expected_permit_application_date = expected_permit_application_date
         self.expected_permit_receipt_date = expected_permit_receipt_date
         self.expected_project_start_date = expected_project_start_date
+        self.project_summary_lead_party_guid = project_summary_lead_party_guid
+        self.submission_date = submission_date
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -311,3 +324,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
+
+    def send_project_summary_email_to_proponent(self, mine):
+        recipients = [contact.email for contact in self.contacts if contact.is_primary]
+        project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
+
+        subject = f'Project Description Notification for {mine.mine_name}'
+        body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
+               f'contact with you regarding your submission.</p>'
+        body += f'<p><a href="{project_description_link}">{project_description_link}</a></p>'
+        body += f'<p>If you indicated that your project involves a permit under the Environmental Management Act, '\
+                f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
+                f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)

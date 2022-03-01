@@ -90,7 +90,7 @@ const contacts = ({ fields }) => {
                   id={`${field}.phone_number`}
                   label="Phone Number"
                   component={renderConfig.FIELD}
-                  validate={[phoneNumber, maxLength(12)]}
+                  validate={[phoneNumber, maxLength(12), required]}
                   normalize={normalizePhone}
                 />
               </Col>
@@ -100,6 +100,7 @@ const contacts = ({ fields }) => {
                   id={`${field}.phone_extension`}
                   label="Ext. (optional)"
                   component={renderConfig.FIELD}
+                  validate={[maxLength(6)]}
                 />
               </Col>
             </Row>

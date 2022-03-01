@@ -5,10 +5,10 @@ exports[`ProjectSummariesTable renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "project_summary_id",
+        "dataIndex": "project_title",
         "render": [Function],
         "sorter": [Function],
-        "title": "Project #",
+        "title": "Project Title",
       },
       Object {
         "dataIndex": "update_timestamp",
@@ -21,6 +21,12 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "render": [Function],
         "sorter": [Function],
         "title": "Last Updated By",
+      },
+      Object {
+        "dataIndex": "submission_date",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "First Submitted",
       },
       Object {
         "dataIndex": "status_code",
@@ -43,6 +49,7 @@ exports[`ProjectSummariesTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
+        "create_timestamp": undefined,
         "documents": Array [],
         "handleDeleteDraft": undefined,
         "key": "81324623978135",
@@ -50,14 +57,16 @@ exports[`ProjectSummariesTable renders properly 1`] = `
         "projectSummary": Object {
           "documents": Array [],
           "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-          "project_summary_date": "2021-11-19",
           "project_summary_description": "Sample description.",
           "project_summary_guid": "81324623978135",
           "status_code": "OPN",
+          "submission_date": "2021-11-19",
         },
         "project_summary_guid": "81324623978135",
         "project_summary_id": undefined,
+        "project_title": undefined,
         "status_code": "Open",
+        "submission_date": "Nov 19 2021",
         "update_timestamp": undefined,
         "update_user": undefined,
       },
