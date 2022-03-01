@@ -74,7 +74,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: tusd
           - name: docgen
           - name: dbbackup
           - name: metabase
