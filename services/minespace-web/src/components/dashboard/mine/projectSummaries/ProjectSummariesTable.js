@@ -28,19 +28,22 @@ export class ProjectSummariesTable extends Component {
       mine_guid: projectSummary.mine_guid,
       project_summary_guid: projectSummary.project_summary_guid,
       project_summary_id: projectSummary.project_summary_id,
+      project_title: projectSummary.project_summary_title,
       status_code: codeHash[projectSummary.status_code],
       update_user: projectSummary.update_user,
+      create_timestamp: formatDate(projectSummary.create_timestamp),
       update_timestamp: formatDate(projectSummary.update_timestamp),
+      submission_date: formatDate(projectSummary.submission_date),
       documents: projectSummary.documents,
       handleDeleteDraft,
     }));
 
   columns = () => [
     {
-      title: "Project #",
-      dataIndex: "project_summary_id",
-      sorter: (a, b) => (a.project_summary_id > b.project_summary_id ? -1 : 1),
-      render: (text) => <div title="Project Description No.">{text}</div>,
+      title: "Project Title",
+      dataIndex: "project_title",
+      sorter: (a, b) => (a.project_name > b.project_name ? -1 : 1),
+      render: (text) => <div title="Project Name">{text}</div>,
     },
     {
       title: "Last Updated",
@@ -53,6 +56,12 @@ export class ProjectSummariesTable extends Component {
       dataIndex: "update_user",
       render: (text) => <div title="Last Updated By">{text}</div>,
       sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
+    },
+    {
+      title: "First Submitted",
+      dataIndex: "submission_date",
+      sorter: dateSorter("submission_date"),
+      render: (text) => <div title="First Submitted">{text || "N/A"}</div>,
     },
     {
       title: "Status",

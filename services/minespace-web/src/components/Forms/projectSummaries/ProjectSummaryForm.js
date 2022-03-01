@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { flattenObject } from "@common/utils/helpers";
 import { compose, bindActionCreators } from "redux";
+import { isNil } from "lodash";
 import {
   reduxForm,
   change,
@@ -72,6 +73,7 @@ export class ProjectSummaryForm extends Component {
   componentWillUpdate(nextProps) {
     const tabChanged = nextProps.match.params.tab !== this.props.match.params.tab;
     if (tabChanged) {
+      // eslint-disable-next-line react/no-will-update-set-state
       this.setState({ tabIndex: tabs.indexOf(nextProps.match.params.tab) });
     }
   }
@@ -120,18 +122,24 @@ export class ProjectSummaryForm extends Component {
               <Col span={6}>
                 <div>
                   {(this.props.initialValues.status_code === "DFT" || !this.props.isEditMode) && (
-                    <LinkButton
-                      onClick={(e) =>
-                        this.props.handleSaveData(e, {
-                          ...this.props.formValues,
-                          status_code: "DFT",
-                        })
-                      }
-                      title="Save Draft"
-                      disabled={this.props.submitting}
-                    >
-                      Save Draft
-                    </LinkButton>
+                    <AuthorizationWrapper>
+                      <LinkButton
+                        onClick={(e) =>
+                          this.props.handleSaveData(
+                            e,
+                            {
+                              ...this.props.formValues,
+                              status_code: "DFT",
+                            },
+                            "Successfully saved a draft project description."
+                          )
+                        }
+                        title="Save Draft"
+                        disabled={this.props.submitting}
+                      >
+                        Save Draft
+                      </LinkButton>
+                    </AuthorizationWrapper>
                   )}
                   {!isLast && (
                     <Button
@@ -147,42 +155,68 @@ export class ProjectSummaryForm extends Component {
                   {isLast && (
                     <>
                       {this.props.isEditMode && this.props.initialValues.status_code !== "DFT" ? (
-                        <Button
-                          type="primary"
-                          onClick={(e) =>
-                            this.props.handleSaveData(e, {
-                              ...this.props.formValues,
-                              status_code: "OPN",
-                            })
-                          }
-                          loading={this.props.submitting}
-                          disabled={this.props.submitting}
-                        >
-                          Update
-                        </Button>
-                      ) : (
                         <AuthorizationWrapper>
-                          <Popconfirm
-                            placement="topRight"
-                            title="Are you sure you want to submit your project description to the Province of British Columbia?"
-                            onConfirm={(e) =>
-                              this.props.handleSaveData(e, {
-                                ...this.props.formValues,
-                                status_code: "OPN",
-                              })
+                          <Button
+                            type="primary"
+                            onClick={(e) =>
+                              this.props.handleSaveData(
+                                e,
+                                {
+                                  ...this.props.formValues,
+                                },
+                                "Successfully updated the project description."
+                              )
                             }
-                            okText="Yes"
-                            cancelText="No"
+                            loading={this.props.submitting}
+                            disabled={this.props.submitting}
                           >
-                            <Button
-                              type="primary"
-                              loading={this.props.submitting}
-                              disabled={this.props.submitting}
-                            >
-                              Submit
-                            </Button>
-                          </Popconfirm>
+                            Update
+                          </Button>
                         </AuthorizationWrapper>
+                      ) : (
+                        <>
+                          <AuthorizationWrapper>
+                            <Popconfirm
+                              placement="topRight"
+                              title="Are you sure you want to submit your project description to the Province of British Columbia?"
+                              onConfirm={(e) =>
+                                this.props.handleSaveData(
+                                  e,
+                                  {
+                                    ...this.props.formValues,
+                                    status_code: "SUB",
+                                  },
+                                  "Successfully submitted a project description to the Province of British Columbia."
+                                )
+                              }
+                              okText="Yes"
+                              cancelText="No"
+                              disabled={
+                                isNil(this.props.formValues?.contacts) ||
+                                (!isNil(this.props.formValues?.contacts) &&
+                                  this.props.formValues?.contacts.length === 0)
+                              }
+                            >
+                              <Button
+                                type="primary"
+                                loading={this.props.submitting}
+                                disabled={
+                                  this.props.submitting ||
+                                  isNil(this.props.formValues?.contacts) ||
+                                  (!isNil(this.props.formValues?.contacts) &&
+                                    this.props.formValues?.contacts.length === 0)
+                                }
+                              >
+                                Submit
+                              </Button>
+                            </Popconfirm>
+                          </AuthorizationWrapper>
+                          {(isNil(this.props.formValues?.contacts) ||
+                            (!isNil(this.props.formValues?.contacts) &&
+                              this.props.formValues?.contacts.length === 0)) && (
+                            <p className="red">Project Descriptions must have a contact.</p>
+                          )}
+                        </>
                       )}
                     </>
                   )}

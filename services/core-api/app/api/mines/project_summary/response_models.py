@@ -11,6 +11,7 @@ PROJECT_SUMMARY_STATUS_CODE_MODEL = api.model(
     'ProjectSummaryStatusCode', {
         'project_summary_status_code': fields.String,
         'description': fields.String,
+        'alias_description': fields.String,
         'active_ind': fields.Boolean,
         'display_order': fields.Integer
     })
@@ -28,22 +29,12 @@ PROJECT_SUMMARY_PERMIT_TYPE_MODEL = api.model('ProjectSummaryPermitType', {
     'description': fields.String
 })
 
-PROJECT_SUMMARY_STATUS_CODE_MODEL = api.model('ProjectSummaryStatusCode', {
-    'project_summary_status_code': fields.String,
-    'description': fields.String
-})
-
 PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL = api.model(
     'ProjectSummaryAuthorizationType', {
         'project_summary_authorization_type': fields.String,
         'description': fields.String,
         'project_summary_authorization_type_group_id': fields.String
     })
-
-# PROJECT_SUMMARY_PERMIT_TYPE = api.model('ProjectSummaryPermitType', {
-#     'project_summary_permit_type': fields.String,
-#     'description': fields.String
-# })
 
 PROJECT_SUMMARY_CONTACT_MODEL = api.model(
     'ProjectSummaryContact', {
@@ -80,6 +71,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_lead_name': fields.String,
         'proponent_project_id': fields.String,
         'expected_draft_irt_submission_date': fields.DateTime,
+        'submission_date': fields.DateTime,
         'expected_permit_application_date': fields.DateTime,
         'expected_permit_receipt_date': fields.DateTime,
         'expected_project_start_date': fields.DateTime,

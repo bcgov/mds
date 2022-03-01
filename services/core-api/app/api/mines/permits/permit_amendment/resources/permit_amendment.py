@@ -19,11 +19,13 @@ from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_A
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.utils.helpers import get_preamble_text
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -107,7 +109,6 @@ class PermitAmendmentListResource(Resource, UserMixin):
             raise NotFound("Mine does not exist")
         # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
         #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
-
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
 
@@ -200,6 +201,14 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if now_application_guid is not None and permit_amendment_status_code == "DFT":
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
 
+            application_type_description = None
+            if application_identity:
+                application_type = ApplicationTypeCode.find_by_application_type_code(
+                    application_identity.application_type_code)
+                application_type_description = 'application' if application_type.application_type_code == 'ADA' else application_type.description
+                new_pa.preamble_text = get_preamble_text(
+                    application_type_description) if is_generated_in_core else None
+
             def create_standard_conditions(application_identity):
                 now_type = application_identity.now_application.notice_of_work_type_code
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
@@ -214,7 +223,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 if populate_with_conditions:
                     permit_amendment_id = None
                     if application_identity.application_type_code == 'NOW':
-                        permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(permit.permit_id)
+                        permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(
+                            permit.permit_id)
                         permit_amendment_id = permit_amendment.permit_amendment_id
                     else:
                         permit_amendment_id = application_identity.source_permit_amendment_id
@@ -225,8 +235,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                         for condition in conditions:
                             PermitConditions.create(condition.condition_category_code,
                                                     condition.condition_type_code,
-                                                    new_pa.permit_amendment_id,
-                                                    condition.condition,
+                                                    new_pa.permit_amendment_id, condition.condition,
                                                     condition.display_order,
                                                     condition.sub_conditions)
                     else:
@@ -333,6 +342,12 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='{ mine_commodity_code, mine_disturbance_code}.')
+    parser.add_argument(
+        'preamble_text',
+        type=str,
+        location='json',
+        store_missing=False,
+        help='Preamble text.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
