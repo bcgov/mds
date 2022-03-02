@@ -1,6 +1,7 @@
 name: Build nris
 
 on:
+  pull_request:
   push:
     branches:
       - develop
