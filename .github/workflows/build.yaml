@@ -62,7 +62,6 @@ jobs:
         include:
           - name: frontend
           - name: backend
-          - name: nris
           - name: minespace
     steps:
       - name: Install oc
