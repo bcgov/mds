@@ -13,7 +13,7 @@ env:
   INITIAL_TAG: latest
   TAG: dev
   NAME: nris
-  CONTEXT: services/nris-api/backend/
+  CONTEXT: services/nris-api/backend
 
 jobs:
   build-nris:
