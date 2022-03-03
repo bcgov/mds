@@ -2,6 +2,6 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 COPY init.sh .
 
-ENTRYPOINT [ "./init.sh" ]
-
 USER 1000
+
+ENTRYPOINT [ "./init.sh" ]
