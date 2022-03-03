@@ -28,7 +28,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # Copy files over and install the requirements
-COPY * .
+COPY * ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
