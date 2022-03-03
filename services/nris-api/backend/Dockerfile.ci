@@ -27,8 +27,8 @@ RUN mkdir -p opt/oracle && \
 RUN mkdir /app
 WORKDIR /app
 
-# Install the requirements
-COPY requirements.txt .
+# Copy files over and install the requirements
+COPY * .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
