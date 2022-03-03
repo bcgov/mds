@@ -2,4 +2,8 @@ FROM tusproject/tusd:v1.3.0
 
 COPY init.sh .
 
+WORKDIR /srv/tusd-data
+
+USER 1000
+
 ENTRYPOINT [ "./init.sh" ]
