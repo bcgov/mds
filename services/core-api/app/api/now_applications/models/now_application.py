@@ -243,7 +243,9 @@ class NOWApplication(Base, AuditMixin):
     @hybrid_property
     def site_property(self):
         return MineType.query.filter_by(
-            now_application_guid=self.now_application_guid).one_or_none()
+            now_application_guid=self.now_application_guid,
+            active_ind=True,
+            mine_guid=self.mine_guid).one_or_none()
 
     @hybrid_property
     def active_permit(self):
