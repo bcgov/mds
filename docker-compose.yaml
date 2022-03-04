@@ -238,6 +238,7 @@ services:
     command: ["npm", "run", "start"]
     environment:
       - SERVER_PORT=3030
+      - APP_PORT=3030
       - CACHE_DIR=/tmp/tmp-reports
       - NODE_ENV=development
     ports:
