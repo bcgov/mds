@@ -26,7 +26,7 @@ objects:
           annotations: null
           from:
             kind: DockerImage
-            name: docker.io/bcgovimages/doc-gen-api:v2.1.3
+            name: docker.io/bcgovimages/common-document-generation-service:2.4.1
           generation: 1
           importPolicy: {}
           referencePolicy:

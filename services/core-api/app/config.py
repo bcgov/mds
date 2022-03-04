@@ -90,7 +90,8 @@ class Config(object):
     # Microservice URLs
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
-    DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://docgen-api:3030')
+    DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL',
+                                            'http://docgen-api:3030/api/v2')
     DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES = int(
         os.environ.get('DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES', '1048576'))
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)

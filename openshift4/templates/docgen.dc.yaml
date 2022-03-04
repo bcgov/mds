@@ -96,7 +96,7 @@ objects:
             - name: ${NAME}
               image: " "
               env:
-                - name: APP_PORT
+                - name: SERVER_PORT
                   value: ${PORT}
                 - name: CACHE_DIR
                   value: ${FILE_DIR}
