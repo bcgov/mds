@@ -24,7 +24,7 @@ RUN mkdir -p opt/oracle && \
     rm -rf /var/lib/apt/lists/*
 
 # Create working directory
-RUN mkdir -r /opt/app-root/src
+RUN mkdir -p /opt/app-root/src
 WORKDIR /opt/app-root/src
 
 # Copy files over and install the requirements
