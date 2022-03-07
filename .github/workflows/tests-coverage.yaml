@@ -216,17 +216,17 @@ jobs:
       - name: Download backend artifact
         uses: actions/download-artifact@v3
         with:
-          path: backend-codeclimate.json
+          name: backend-codeclimate.json
           path: ./coverage
       - name: Download frontend artifact
         uses: actions/download-artifact@v3
         with:
-          path: frontend-codeclimate.json
+          name: frontend-codeclimate.json
           path: ./coverage
       - name: Download minespace artifact
         uses: actions/download-artifact@v3
         with:
-          path: minespace-codeclimate.json
+          name: minespace-codeclimate.json
           path: ./coverage
 
       # debug
