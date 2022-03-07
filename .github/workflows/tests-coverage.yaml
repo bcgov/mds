@@ -229,10 +229,6 @@ jobs:
           name: minespace-codeclimate.json
           path: ./coverage
 
-      # debug
-      - run: |
-          ls -laR ./coverage/
-
       #### Group collection ####
       - name: Collect coverage reports
         run: |
