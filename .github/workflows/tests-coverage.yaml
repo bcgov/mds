@@ -61,7 +61,7 @@ jobs:
       - name: Create backend coverage file artifact
         uses: actions/upload-artifact@v2
         with:
-          name: backend
+          name: backend-codeclimate.json
           path: ./coverage/backend-codeclimate.json
           retention-days: 1
 
@@ -117,7 +117,7 @@ jobs:
       - name: Create frontend coverage file artifact
         uses: actions/upload-artifact@v2
         with:
-          name: frontend
+          name: frontend-codeclimate.json
           path: ./coverage/frontend-codeclimate.json
           retention-days: 1
 
@@ -176,7 +176,7 @@ jobs:
       - name: Create minespace coverage file artifact
         uses: actions/upload-artifact@v2
         with:
-          name: minespace
+          name: minespace-codeclimate.json
           path: ./coverage/minespace-codeclimate.json
           retention-days: 1
 
