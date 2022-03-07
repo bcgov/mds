@@ -10,10 +10,118 @@ env:
   CC_TEST_REPORTER_ID: 50e476c4bbdd07bb0a379f1dfb6bf70e2d9102f25ebd429b3e38efd301d13eeb
 
 jobs:
-  tests-coverage-report:
-    # Dont allow test coverage reports to impact other jobs (non-blocking)
-    continue-on-error: true
-    name: tests-coverage-report
+  tests-coverage-backend:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Check if push event
+        if: github.event_name == 'push'
+        run: |
+          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Check if pr sync event
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+      # Trimming the ref full name in order to publish correct report (paambaati)
+      # CodeClimate only publishes the value if the name matches the default branch (develop)
+      - name: Set refs/heads/develop to develop
+        if: env.GIT_BRANCH == 'refs/heads/develop'
+        run: |
+          echo "GIT_BRANCH=develop" >> $GITHUB_ENV
+
+      - name: Setup reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+          mkdir coverage
+
+      - name: Spin up containers
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker-compose -f docker-compose.ci.yaml up -d backend
+
+      - name: Generate coverage report
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest -rx
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
+
+      # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
+      - name: Format backend report
+        run: |
+          cd services/core-api/
+          ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
+
+      - name: Create backend coverage file artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: backend
+          path: ./coverage/backend-codeclimate.json
+          retention-days: 1
+
+  tests-coverage-frontend:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Check if push event
+        if: github.event_name == 'push'
+        run: |
+          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Check if pr sync event
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+      # Trimming the ref full name in order to publish correct report (paambaati)
+      # CodeClimate only publishes the value if the name matches the default branch (develop)
+      - name: Set refs/heads/develop to develop
+        if: env.GIT_BRANCH == 'refs/heads/develop'
+        run: |
+          echo "GIT_BRANCH=develop" >> $GITHUB_ENV
+
+      - name: Setup reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+          mkdir coverage
+
+      - name: Spin up containers
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker-compose -f docker-compose.ci.yaml up -d frontend
+
+      # During this, rewrite frontend report from docker context path to runner paths
+      - name: Generate frontend coverage reports
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
+          docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
+          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
+ 
+      - name: Format frontend reports
+        run: |
+          cd services/core-web/
+          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
+
+      - name: Create frontend coverage file artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend
+          path: ./coverage/frontend-codeclimate.json
+          retention-days: 1
+
+  tests-coverage-minespace:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out the repo
@@ -45,51 +153,78 @@ jobs:
           mkdir coverage
 
       #### Adjust container topology as needed for future coverage reports ####
-      - name: Create containers to generate reports
+      - name: Spin up containers
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up -d backend
-          docker-compose -f docker-compose.ci.yaml up -d frontend
-          docker-compose -f docker-compose.ci.yaml up -d frontend-minespace
+          docker-compose -f docker-compose.ci.yaml up -d minespace
 
-      #### Group generation ####
-      - name: Generate backend coverage reports
+      # During this, rewrite  minespace report from docker context path to runner paths
+      - name: Generate MineSpace coverage reports
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest -rx
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
-
-      # During this, rewrite frontend report from docker context path to runner paths
-      - name: Generate frontend coverage reports
-        run: |
-          docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
-          docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
-          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
- 
-      # During this, rewrite frontend minespace report from docker context path to runner paths
-      - name: Generate frontend MineSpace coverage reports
-        run: |
-          docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm test -- -u
-          docker-compose -f docker-compose.ci.yaml exec -T frontend-minespace npm run test:coverage
-          docker cp mds_frontend_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
+          docker-compose -f docker-compose.ci.yaml exec -T minespace npm test -- -u
+          docker-compose -f docker-compose.ci.yaml exec -T minespace npm run test:coverage
+          docker cp mds_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
 
-      #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
-      - name: Format backend reports
-        run: |
-          cd services/core-api/
-          ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
-
-      - name: Format frontend reports
-        run: |
-          cd services/core-web/
-          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
-
       - name: Format frontend minespace reports
         run: |
           cd services/minespace-web/
-          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/minespace-web/ -o ../../coverage/frontend-minespace-codeclimate.json clover.xml
+          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/minespace-web/ -o ../../coverage/minespace-codeclimate.json clover.xml
+
+      - name: Create minespace coverage file artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: minespace
+          path: ./coverage/minespace-codeclimate.json
+          retention-days: 1
+
+  tests-coverage-sum-submit:
+    needs:
+      - tests-coverage-backend
+      - tests-coverage-frontend
+      - tests-coverage-minespace
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check if push event
+        if: github.event_name == 'push'
+        run: |
+          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Check if pr sync event
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+      # Trimming the ref full name in order to publish correct report (paambaati)
+      # CodeClimate only publishes the value if the name matches the default branch (develop)
+      - name: Set refs/heads/develop to develop
+        if: env.GIT_BRANCH == 'refs/heads/develop'
+        run: |
+          echo "GIT_BRANCH=develop" >> $GITHUB_ENV
+
+      - name: Setup reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+          mkdir coverage
+
+      # Fetch artifacts from other jobs
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: frontend
+      - name: Download backend artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: backend
+      - name: Download minespace artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: minespace
 
       #### Group collection ####
       - name: Collect coverage reports
