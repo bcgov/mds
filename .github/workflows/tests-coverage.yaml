@@ -213,16 +213,18 @@ jobs:
           mkdir coverage
 
       # Fetch artifacts from other jobs
-      - name: Download artifacts
+      - name: Download backend artifact
         uses: actions/download-artifact@v3
         with:
           path: backend-codeclimate.json
           path: ./coverage
-      - uses: actions/download-artifact@v3
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v3
         with:
           path: frontend-codeclimate.json
           path: ./coverage
-      - uses: actions/download-artifact@v3
+      - name: Download minespace artifact
+        uses: actions/download-artifact@v3
         with:
           path: minespace-codeclimate.json
           path: ./coverage
