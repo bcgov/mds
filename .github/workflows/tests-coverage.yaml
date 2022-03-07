@@ -216,12 +216,20 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
+          path: backend-codeclimate.json
+          path: ./coverage
+      - uses: actions/download-artifact@v3
+        with:
+          path: frontend-codeclimate.json
+          path: ./coverage
+      - uses: actions/download-artifact@v3
+        with:
+          path: minespace-codeclimate.json
           path: ./coverage
 
       # debug
       - run: |
-          ls -la
-          ls -la ./coverage/
+          ls -laR ./coverage/
 
       #### Group collection ####
       - name: Collect coverage reports
