@@ -8,8 +8,8 @@ OS=${1}
 # Global config
 # These values are checked for in validation
 LIC_PLATE="4c2ba9"
-DESIRED_NODE_VER="v14.8.0"
-DESIRED_DC_VER="v2.1.1"
+DESIRED_NODE_VER="v14"
+DESIRED_DC_VER="v2"
 SERVICES_PATH="./services"
 # Start as valid
 VALID=1
@@ -48,7 +48,7 @@ fi
 
 # Check docker-compose version
 DC_VER=$(docker-compose version)
-if [[ "$DC_VER" == *"$DESIRED_DC_VER" ]];
+if [[ "$DC_VER" == *"$DESIRED_DC_VER"* ]];
 then
     echo -e "${CGREEN}PASSED DOCKER COMPOSE V2 VALIDATION${CRESET}"
 else
@@ -71,15 +71,15 @@ fi
 
 # Check NPM Version for non-container compliance
 NODE_VER=$(node --version)
-if [ "$NODE_VER" != "$DESIRED_NODE_VER" ];
+if [[ "$NODE_VER" == *"$DESIRED_NODE_VER"* ]];
 then
+    echo -e "${CGREEN}PASSED NODE VALIDATION${CRESET}"
+else
     VALID=0
     echo -e "${CRED}FAILED NODE VALIDATION${CRESET}"
     echo -e "${CRED}You should be on node version ${DESIRED_NODE_VER}?${CRESET}"
     echo -e "${CRED}You can install n to switch between node versions via 'sudo npm install -g n'${CRESET}"
     echo -e "${CRED}run: sudo n ${DESIRED_NODE_VER}${CRESET}"
-else
-    echo -e "${CGREEN}PASSED NODE VALIDATION${CRESET}"
 fi  
 
 # Check OC
