@@ -33,7 +33,6 @@ jobs:
           - config: postgresql
           - config: nginx
           - config: redis
-          - config: tusd
           - config: metabase
           - config: metabase-postgres
           - config: docman
