@@ -18,6 +18,8 @@ Suggested:\n
 Usage:\n
 \t    env: creates boilerplate environment files\n
 \t    valid: checks your dev environment is setup correctly\n
+\t    stop: stops all running containers\n
+\t    clean: deletes docker volumes and images - use this regularly to keep your environment fresh\n
 \t    lite: creates a minimum viable setup, use to start working asap\n
 \t    rebuild: rebuilds the containers you currently have in use\n
 \t    full: Stands up ALL services\n
