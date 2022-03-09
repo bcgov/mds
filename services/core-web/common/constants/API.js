@@ -132,6 +132,10 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 export const INCIDENTS = (params = {}) => `/incidents?${queryString.stringify(params)}`;
+export const MINE_INCIDENT_NOTE = (mineGuid, mineIncidentGuid, mineIncidentNoteGuid) =>
+  `/mines/${mineGuid}/incidents/${mineIncidentGuid}/notes/${mineIncidentNoteGuid}`;
+export const MINE_INCIDENT_NOTES = (mineGuid, mineIncidentGuid) =>
+  `/mines/${mineGuid}/incidents/${mineIncidentGuid}/notes`;
 
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;

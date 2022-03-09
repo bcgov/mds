@@ -5,6 +5,7 @@ const initialState = {
   incidents: [],
   incidentPageData: {},
   mineIncidents: [],
+  mineIncidentNotes: [],
 };
 
 export const incidentReducer = (state = initialState, action) => {
@@ -19,6 +20,11 @@ export const incidentReducer = (state = initialState, action) => {
       return {
         ...state,
         mineIncidents: action.payload.records,
+      };
+    case actionTypes.STORE_MINE_INCIDENT_NOTES:
+      return {
+        ...state,
+        mineIncidentNotes: action.payload.records,
       };
     default:
       return state;
