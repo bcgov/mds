@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
-// import _ from "lodash";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
