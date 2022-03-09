@@ -1,4 +1,5 @@
 name: Build nris
+
 on:
   pull_request:
   push:
