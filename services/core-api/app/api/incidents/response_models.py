@@ -9,11 +9,12 @@ MINE_INCIDENT_CATEGORY_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model('Mine Incident Determination Type', {
-    'mine_incident_determination_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
+    'Mine Incident Determination Type', {
+        'mine_incident_determination_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
     'Mine Incident Followup Investigation Type', {
@@ -22,17 +23,19 @@ MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-MINE_INCIDENT_STATUS_CODE_MODEL = api.model('Mine Incident Status Codes', {
-    'mine_incident_status_code': fields.String,
-    'description': fields.String,
-    'active_ind' : fields.Boolean
-})
+MINE_INCIDENT_STATUS_CODE_MODEL = api.model(
+    'Mine Incident Status Codes', {
+        'mine_incident_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model('Mine Incident Document Type Codes', {
-    'mine_incident_document_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model(
+    'Mine Incident Document Type Codes', {
+        'mine_incident_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 MINE_INCIDENT_DOCUMENT_MODEL = api.model(
     'Mine Incident Document', {
@@ -85,6 +88,17 @@ MINE_INCIDENT_MODEL = api.model(
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
         'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
+    })
+
+MINE_INCIDENT_NOTE_MODEL = api.model(
+    'Mine Incident Note', {
+        'mine_incident_note_guid': fields.String,
+        'mine_incident_guid': fields.String,
+        'content': fields.String,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
     })
 
 PAGINATED_LIST = api.model(
