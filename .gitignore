@@ -32,3 +32,5 @@ credentials.tfrc.json
 backend.tf
 .terragrunt-cache
 .terraform.lock.hcl
+
+cypress.env.json
