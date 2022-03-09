@@ -4,6 +4,7 @@ from app.api.mines.compliance.resources.compliance import MineComplianceSummaryR
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
+from app.api.mines.incidents.resources.mine_incident_notes import MineIncidentNoteListResource, MineIncidentNoteResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
@@ -95,6 +96,12 @@ api.add_resource(
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
 api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
+api.add_resource(
+    MineIncidentNoteResource,
+    '/<string:mine_guid>/incidents/<string:mine_incident_guid>/notes/<string:mine_incident_note_guid>'
+)
+api.add_resource(MineIncidentNoteListResource,
+                 '/<string:mine_guid>/incidents/<string:mine_incident_guid>/notes')
 
 api.add_resource(MineWorkInformationListResource, '/<string:mine_guid>/work-information')
 api.add_resource(MineWorkInformationResource,

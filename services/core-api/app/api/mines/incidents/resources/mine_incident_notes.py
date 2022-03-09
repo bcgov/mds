@@ -8,7 +8,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.incidents.response_models import MINE_INCIDENT_NOTE_MODEL
-from app.api.incidents.models.mine_incident_note import MineIncidentNote
+from app.api.mines.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.incidents.models.mine_incident import MineIncident
 
 
@@ -30,7 +30,7 @@ class MineIncidentNoteResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINE_INCIDENT_NOTE_MODEL, code=200)
-    def get(self, mine_incident_guid, mine_incident_note_guid):
+    def get(self, mine_guid, mine_incident_guid, mine_incident_note_guid):
         mine_incident_note = MineIncidentNote.find_by_mine_incident_note_guid(
             mine_incident_note_guid)
         if mine_incident_note is None:
@@ -46,7 +46,7 @@ class MineIncidentNoteResource(Resource, UserMixin):
         })
     @requires_any_of([MINE_ADMIN])
     @api.response(204, 'Successfully deleted.')
-    def delete(self, mine_incident_guid, mine_incident_note_guid):
+    def delete(self, mine_guid, mine_incident_guid, mine_incident_note_guid):
         mine_incident_note = MineIncidentNote.find_by_mine_incident_note_guid(
             mine_incident_note_guid)
         if mine_incident_note is None:
@@ -73,7 +73,7 @@ class MineIncidentNoteListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINE_INCIDENT_NOTE_MODEL, code=200, envelope='records')
-    def get(self, mine_incident_guid):
+    def get(self, mine_guid, mine_incident_guid):
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if mine_incident is None:
             raise NotFound('Mine Incident not found')
@@ -89,7 +89,7 @@ class MineIncidentNoteListResource(Resource, UserMixin):
     @api.expect(parser)
     @requires_any_of([MINE_ADMIN])
     @api.marshal_with(MINE_INCIDENT_NOTE_MODEL, code=201)
-    def post(self, mine_incident_guid):
+    def post(self, mine_guid, mine_incident_guid):
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if mine_incident is None:
             raise NotFound('Mine Incident not found')
