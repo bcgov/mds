@@ -11,6 +11,7 @@ on:
 env:
   INITIAL_TAG: latest
   TAG: dev
+  TAG2: foo
   NAME: nris
   CONTEXT: services/nris-api/backend/
 
