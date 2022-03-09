@@ -24,23 +24,13 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", (overrides = {}) => {
-  Cypress.log({
-    name: "loginViaKeycloak",
-  });
-
-  const options = {
-    method: "POST",
-    url: Cypress.env("auth_url"),
-    body: {
-      grant_type: "password",
-      username: Cypress.env("auth_username"),
-      password: Cypress.env("auth_password"),
-      audience: Cypress.env("auth_audience"),
-      scope: "openid profile email",
-      client_id: Cypress.env("auth_client_id"),
-      client_secret: Cypress.env("auth_client_secret"),
-    },
-  };
-  cy.request(options);
+// eslint-disable-next-line consistent-return
+Cypress.Commands.add("login", () => {
+  cy.visit("localhost:3000");
+  cy.get("#username").type(Cypress.env("test-user"));
+  cy.get("#password")
+    .click()
+    .type(Cypress.env("test-pwd"));
+  cy.get("#kc-form-login").submit();
+  cy.url().should("eq", "http://localhost:3000/home/");
 });

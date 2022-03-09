@@ -18,3 +18,12 @@ import "./commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// eslint-disable-next-line consistent-return
+Cypress.on("uncaught:exception", (err) => {
+  if (err.message && /ResizeObserver loop limit exceeded/.test(err.message)) {
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+  }
+});
