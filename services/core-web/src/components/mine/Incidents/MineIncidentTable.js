@@ -198,6 +198,14 @@ export class MineIncidentTable extends Component {
         render: (text) => <span title="Status">{text}</span>,
       },
       {
+        title: "Inspector Responsible",
+        key: "reported_to_inspector_party",
+        dataIndex: "reported_to_inspector_party",
+        render: (text, record) => (
+          <span title="Inspector Responsible">{record.incident.reported_to_inspector_party}</span>
+        ),
+      },
+      {
         title: "Determination",
         key: "determination",
         dataIndex: "determination",
@@ -226,17 +234,6 @@ export class MineIncidentTable extends Component {
                 ))}
               </span>
             )}
-          </span>
-        ),
-      },
-      {
-        title: "Inspector Responsible",
-        key: "reported_to_inspector_party",
-        dataIndex: "reported_to_inspector_party",
-        className: hideColumn(this.props.isDashboardView),
-        render: (text, record) => (
-          <span title="Inspector Responsible" className={hideColumn(this.props.isDashboardView)}>
-            {record.incident.reported_to_inspector_party}
           </span>
         ),
       },
