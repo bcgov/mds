@@ -119,6 +119,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+    party_table = db.relationship('Party', lazy='joined', foreign_keys=[reported_to_inspector_party_guid])
+
+    @hybrid_property
+    def reported_to_inspector_party(self):
+        if self.party_table is not None:
+            return self.party_table.party_name
+        return None
 
     def delete(self):
         if self.mine_documents:
