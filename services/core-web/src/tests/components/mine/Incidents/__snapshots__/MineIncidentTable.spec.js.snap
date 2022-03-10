@@ -49,7 +49,14 @@ exports[`MineIncidentTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "reported_to_inspector_party",
+        "filters": Array [
+          Object {
+            "text": undefined,
+            "value": undefined,
+          },
+        ],
         "key": "reported_to_inspector_party",
+        "onFilter": [Function],
         "render": [Function],
         "title": "Inspector Responsible",
       },
