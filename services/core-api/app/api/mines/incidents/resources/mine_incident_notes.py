@@ -94,7 +94,7 @@ class MineIncidentNoteListResource(Resource, UserMixin):
         if mine_incident is None:
             raise NotFound('Mine Incident not found')
 
-        data = self.parser.parser_args()
+        data = self.parser.parse_args()
         mine_incident_note = MineIncidentNote.create(mine_incident, data.get('content'))
 
         try:

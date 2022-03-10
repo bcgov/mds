@@ -38,5 +38,6 @@ const incidentReducerObject = {
 export const getIncidents = (state) => state[INCIDENTS].incidents;
 export const getIncidentPageData = (state) => state[INCIDENTS].incidentPageData;
 export const getMineIncidents = (state) => state[INCIDENTS].mineIncidents;
+export const getMineIncidentNotes = (state) => state[INCIDENTS].mineIncidentNotes;
 
 export default incidentReducerObject;

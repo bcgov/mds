@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Popconfirm, Tooltip, Drawer } from "antd";
+import { Button, Popconfirm, Drawer } from "antd";
 import { EyeOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
@@ -20,10 +20,12 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
+import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";
 
 const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
@@ -94,9 +96,8 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
 
 export class MineIncidentTable extends Component {
   state = {
-    menuVisible: false,
     isDrawerVisible: false,
-    mineIncidentNumber: null,
+    mineIncident: {},
   };
 
   transformRowData = (
@@ -149,13 +150,8 @@ export class MineIncidentTable extends Component {
   toggleDrawer = (mineIncident) => {
     this.setState((prevState) => ({
       isDrawerVisible: !prevState.isDrawerVisible,
-      mineIncidentNumber: mineIncident.mine_incident_report_no,
+      mineIncident,
     }));
-    this.handleMenuClick();
-  };
-
-  handleMenuClick = () => {
-    this.setState({ menuVisible: false });
   };
 
   render() {
@@ -389,7 +385,8 @@ export class MineIncidentTable extends Component {
         <Drawer
           title={
             <>
-              Internal Communication for Mine Incident {this.state.mineIncidentNumber}
+              Internal Communication for Mine Incident{" "}
+              {this.state.mineIncident?.mine_incident_report_no}
               <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
             </>
           }
@@ -401,7 +398,10 @@ export class MineIncidentTable extends Component {
           <Button ghost className="modal__close" onClick={this.toggleDrawer}>
             <CloseOutlined />
           </Button>
-          {/* <MineComments mineGuid={mine.mine_guid} /> */}
+          <MineIncidentNotes
+            mineGuid={this.props.mineGuid}
+            mineIncidentGuid={this.state.mineIncident.mine_incident_guid}
+          />
         </Drawer>
         <CoreTable
           condition={this.props.isLoaded}

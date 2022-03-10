@@ -113,7 +113,7 @@ export const fetchMineIncidentNotes = (mineGuid, mineIncidentGuid) => (dispatch)
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_NOTES));
-      dispatch(mineActions.storeMineComments(response.data));
+      dispatch(incidentActions.storeMineIncidentNotes(response.data));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_NOTES)));

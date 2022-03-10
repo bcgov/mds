@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-import { getMineComments } from "@common/selectors/mineSelectors";
+import { getMineIncidentNotes } from "@common/selectors/incidentSelectors";
 import {
   deleteMineIncidentNote,
   createMineIncidentNote,
@@ -14,11 +13,15 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  mineIncidentGuid: PropTypes.string.isRequired,
   notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,
   deleteMineIncidentNote: PropTypes.func.isRequired,
   createMineIncidentNote: PropTypes.func.isRequired,
   fetchMineIncidentNotes: PropTypes.func.isRequired,
+  mineIncidentGuid: PropTypes.string,
+};
+
+const defaultProps = {
+  mineIncidentGuid: null,
 };
 
 export class MineIncidentNotes extends Component {
@@ -35,24 +38,24 @@ export class MineIncidentNotes extends Component {
         this.props.mineIncidentGuid,
         mineIncidentNoteGuid
       )
-      .then(() => this.fetchMineIncidentNotes());
+      .then(() => this.fetchNotes());
   };
 
-  handleAddComment = async (values) => {
+  handleAddComment = (values) => {
     const formValues = {
       content: values.comment,
     };
     return this.props
       .createMineIncidentNote(this.props.mineGuid, this.props.mineIncidentGuid, formValues)
       .then(() => {
-        this.fetchMineIncidentNotes();
+        this.fetchNotes();
       });
   };
 
   fetchNotes() {
     this.setState({ loading: true });
     this.props
-      .fetchMineIncidentNotes(this.props.mineGuid)
+      .fetchMineIncidentNotes(this.props.mineGuid, this.props.mineIncidentGuid)
       .then(() => this.setState({ loading: false }));
   }
 
@@ -81,9 +84,10 @@ export class MineIncidentNotes extends Component {
 }
 
 MineIncidentNotes.propTypes = propTypes;
+MineIncidentNotes.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  comments: getMineComments(state),
+  notes: getMineIncidentNotes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
