@@ -23,6 +23,7 @@ exports[`Dashboard renders properly 1`] = `
           permission="role_edit_mines"
         >
           <AddButton
+            id="create-mine-record"
             onClick={[Function]}
           >
             Create Mine Record
