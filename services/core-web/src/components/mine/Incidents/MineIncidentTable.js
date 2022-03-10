@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
+import _ from "lodash";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
@@ -203,6 +204,20 @@ export class MineIncidentTable extends Component {
         dataIndex: "reported_to_inspector_party",
         render: (text, record) => (
           <span title="Inspector Responsible">{record.incident.reported_to_inspector_party}</span>
+        ),
+        onFilter: (value, record) => record.incident.reported_to_inspector_party === value,
+        filters: _.reduce(
+          this.props.incidents,
+          (reporterList, incident) => {
+            if (!reporterList.map((x) => x.value).includes(incident.reported_to_inspector_party)) {
+              reporterList.push({
+                value: incident.reported_to_inspector_party,
+                text: incident.reported_to_inspector_party,
+              });
+            }
+            return reporterList;
+          },
+          []
         ),
       },
       {
