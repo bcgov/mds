@@ -25,6 +25,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWApplicationManageDocuments from "@/components/noticeOfWork/applications/manageDocuments/NOWApplicationManageDocuments";
+import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
 
 /**
  * @class ManageDocumentsTab- contains all information relating to the documents on a Notice of Work Application.
@@ -67,25 +68,6 @@ export class ManageDocumentsTab extends Component {
       });
   };
 
-  waitFor = (conditionFunction) => {
-    const poll = (resolve) => {
-      if (conditionFunction()) resolve();
-      else setTimeout(() => poll(resolve), 400);
-    };
-
-    return new Promise(poll);
-  };
-
-  downloadDocument = (url) => {
-    const a = document.createElement("a");
-    a.href = url.url;
-    a.download = url.filename;
-    a.style.display = "none";
-    document.body.append(a);
-    a.click();
-    a.remove();
-  };
-
   cancelDownload = () => {
     this.setState({ cancelDownload: true });
   };
@@ -123,7 +105,7 @@ export class ManageDocumentsTab extends Component {
     );
 
     let currentFile = 0;
-    this.waitFor(() => docURLS.length === totalFiles).then(async () => {
+    waitFor(() => docURLS.length === totalFiles).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
         if (this.state.cancelDownload) {
@@ -134,7 +116,7 @@ export class ManageDocumentsTab extends Component {
             currentFile: 0,
             totalFiles: 1,
           });
-          this.downloadDocument(url);
+          downloadDocument(url);
           // eslint-disable-next-line
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
@@ -145,7 +127,7 @@ export class ManageDocumentsTab extends Component {
           currentFile,
           totalFiles,
         });
-        this.downloadDocument(url);
+        downloadDocument(url);
         // eslint-disable-next-line
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
