@@ -12,7 +12,6 @@ import CommentPanel from "@/components/common/comments/CommentPanel";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
   notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,
   deleteMineIncidentNote: PropTypes.func.isRequired,
   createMineIncidentNote: PropTypes.func.isRequired,
@@ -33,11 +32,7 @@ export class MineIncidentNotes extends Component {
 
   handleRemoveComment = (mineIncidentNoteGuid) => {
     this.props
-      .deleteMineIncidentNote(
-        this.props.mineGuid,
-        this.props.mineIncidentGuid,
-        mineIncidentNoteGuid
-      )
+      .deleteMineIncidentNote(this.props.mineIncidentGuid, mineIncidentNoteGuid)
       .then(() => this.fetchNotes());
   };
 
@@ -45,17 +40,15 @@ export class MineIncidentNotes extends Component {
     const formValues = {
       content: values.comment,
     };
-    return this.props
-      .createMineIncidentNote(this.props.mineGuid, this.props.mineIncidentGuid, formValues)
-      .then(() => {
-        this.fetchNotes();
-      });
+    return this.props.createMineIncidentNote(this.props.mineIncidentGuid, formValues).then(() => {
+      this.fetchNotes();
+    });
   };
 
   fetchNotes() {
     this.setState({ loading: true });
     this.props
-      .fetchMineIncidentNotes(this.props.mineGuid, this.props.mineIncidentGuid)
+      .fetchMineIncidentNotes(this.props.mineIncidentGuid)
       .then(() => this.setState({ loading: false }));
   }
 

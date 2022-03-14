@@ -25,7 +25,6 @@ import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";
 
 const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
@@ -398,10 +397,7 @@ export class MineIncidentTable extends Component {
           <Button ghost className="modal__close" onClick={this.toggleDrawer}>
             <CloseOutlined />
           </Button>
-          <MineIncidentNotes
-            mineGuid={this.props.mineGuid}
-            mineIncidentGuid={this.state.mineIncident.mine_incident_guid}
-          />
+          <MineIncidentNotes mineIncidentGuid={this.state.mineIncident.mine_incident_guid} />
         </Drawer>
         <CoreTable
           condition={this.props.isLoaded}
