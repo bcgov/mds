@@ -15,6 +15,8 @@ import {
   TextSelection,
   Annotation,
   TextSearch,
+  FormFields,
+  FormDesigner,
   Inject,
 } from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
@@ -137,6 +139,8 @@ export class DocumentViewer extends Component {
               Print,
               TextSelection,
               TextSearch,
+              FormFields,
+              FormDesigner,
             ]}
           />
         </PdfViewerComponent>
