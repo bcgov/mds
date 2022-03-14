@@ -15,7 +15,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.mines.incidents.models.mine_incident_note import MineIncidentNote
+from app.api.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.services.email_service import EmailService
 from app.config import Config

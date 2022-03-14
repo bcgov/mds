@@ -1,14 +1,7 @@
-import uuid, datetime
-from flask.globals import current_app
-
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.associationproxy import association_proxy
-
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
