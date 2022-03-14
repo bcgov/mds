@@ -14,6 +14,7 @@ from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
@@ -352,6 +353,22 @@ class MineIncidentFactory(BaseFactory):
 
         MineIncidentDocumentFactory.create_batch(
             size=extracted, incident=obj, mine_document__mine=None, **kwargs)
+
+
+class MineIncidentNoteFactory(BaseFactory):
+    class Meta:
+        model = MineIncidentNote
+
+    class Params:
+        mine_incident = factory.SubFactory('tests.factories.MineIncidentFactory')
+
+    mine_incident_note_guid = GUID
+    content = factory.Faker('sentence')
+    create_user = factory.Faker('name')
+    update_user = factory.Faker('name')
+    create_timestamp = TODAY
+    update_timestamp = TODAY
+    deleted_ind = False
 
 
 class MineIncidentDocumentFactory(BaseFactory):
