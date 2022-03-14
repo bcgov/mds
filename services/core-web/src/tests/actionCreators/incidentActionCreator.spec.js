@@ -175,17 +175,13 @@ describe("`deleteMineIncident` action creator", () => {
 });
 
 describe("`fetchMineIncidentNotes` action creator", () => {
-  const mineGuid = "123546-x";
   const mineIncidentGuid = "98765-c";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTES(mineGuid, mineIncidentGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineIncidentNotes(
-      mineGuid,
-      mineIncidentGuid
-    )(dispatch).then(() => {
+    return fetchMineIncidentNotes(mineIncidentGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -203,16 +199,14 @@ describe("`fetchMineIncidentNotes` action creator", () => {
 });
 
 describe("`createMineIncidentNote` action creator", () => {
-  const mineGuid = "123546-x";
   const mineIncidentGuid = "98765-c";
   const mockPayload = { content: "Test note" };
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTES(mineGuid, mineIncidentGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
     return createMineIncidentNote(
-      mineGuid,
       mineIncidentGuid,
       mockPayload
     )(dispatch).then(() => {
@@ -224,10 +218,7 @@ describe("`createMineIncidentNote` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMineIncidentNote(
-      mineGuid,
-      mineIncidentGuid
-    )(dispatch).catch(() => {
+    return createMineIncidentNote(mineIncidentGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -236,20 +227,14 @@ describe("`createMineIncidentNote` action creator", () => {
 });
 
 describe("`deleteMineIncidentNote` action creator", () => {
-  const mineGuid = "123546-x";
   const mineIncidentGuid = "98765-c";
   const mineIncidentNoteGuid = "MNXS-1234";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTE(
-    mineGuid,
-    mineIncidentGuid,
-    mineIncidentNoteGuid
-  )}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTE(mineIncidentGuid, mineIncidentNoteGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(204, mockResponse);
     return deleteMineIncidentNote(
-      mineGuid,
       mineIncidentGuid,
       mineIncidentNoteGuid
     )(dispatch).then(() => {
@@ -262,7 +247,6 @@ describe("`deleteMineIncidentNote` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return deleteMineIncidentNote(
-      mineGuid,
       mineIncidentGuid,
       mineIncidentNoteGuid
     )(dispatch).catch(() => {
