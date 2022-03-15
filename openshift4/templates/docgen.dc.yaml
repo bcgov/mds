@@ -103,7 +103,7 @@ objects:
                 - name: CACHE_DIR
                   value: ${FILE_DIR}
                 - name: NODE_ENV
-                  value: ${NODE_ENV}
+                  value: production
                 - name: BASE_PATH
                   value: ${BASE_PATH}
                 - name: ASSET_PATH
