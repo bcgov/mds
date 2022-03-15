@@ -123,9 +123,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def reported_to_inspector_party(self):
-        if self.party_table is not None:
-            return self.party_table.party_name
-        return None
+        return f'{self.party_table.first_name} {self.party_table.party_name}' if self.party_table.first_name and self.party_table.party_type_code == 'PER' else self.party_table.party_name
 
     def delete(self):
         if self.mine_documents:
