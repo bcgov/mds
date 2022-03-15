@@ -404,7 +404,19 @@ exports[`ManageDocumentsTab renders properly 1`] = `
     showActionsAndProgress={true}
     showProgressButton={false}
     tab="MND"
-    tabActions=""
+    tabActions={
+      <ForwardRef(InternalButton)
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
+      >
+        Download Documents
+      </ForwardRef(InternalButton)>
+    }
     tabEditActions=""
     tabName="Manage Documents"
   />
