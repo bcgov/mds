@@ -24,20 +24,21 @@ RUN mkdir -p opt/oracle && \
     rm -rf /var/lib/apt/lists/*
 
 # Create working directory
-RUN mkdir -p /opt/app-root/src
-WORKDIR /opt/app-root/src
+RUN mkdir /app
+WORKDIR /app
 
 # Copy files over and install the requirements
-COPY * ./
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
-RUN mkdir -p /opt/app-root/src/wallet
-COPY cwallet.sso /opt/app-root/src/wallet
-COPY sqlnet.ora /opt/app-root/src/wallet
+RUN mkdir -p /app/wallet
+# Only used during local dev, should be created via configmap mount
+# COPY cwallet.sso /app/wallet
+COPY sqlnet.ora /app/wallet
+
+USER 1000
 
 # Run the server
 EXPOSE 5500
 CMD ["flask","run"]
-
-USER 1000
