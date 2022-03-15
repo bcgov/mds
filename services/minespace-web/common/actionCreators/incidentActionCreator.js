@@ -104,13 +104,10 @@ export const deleteMineIncident = (mineGuid, mineIncidentGuid) => (dispatch) => 
 };
 
 // Notes
-export const fetchMineIncidentNotes = (mineGuid, mineIncidentGuid) => (dispatch) => {
+export const fetchMineIncidentNotes = (mineIncidentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_NOTES));
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTES(mineGuid, mineIncidentGuid)}`,
-      createRequestHeader()
-    )
+    .get(`${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_NOTES));
       dispatch(incidentActions.storeMineIncidentNotes(response.data));
@@ -119,11 +116,11 @@ export const fetchMineIncidentNotes = (mineGuid, mineIncidentGuid) => (dispatch)
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_NOTES)));
 };
 
-export const createMineIncidentNote = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
+export const createMineIncidentNote = (mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTES(mineGuid, mineIncidentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -141,17 +138,11 @@ export const createMineIncidentNote = (mineGuid, mineIncidentGuid, payload) => (
     });
 };
 
-export const deleteMineIncidentNote = (mineGuid, mineIncidentGuid, mineIncidentNoteGuid) => (
-  dispatch
-) => {
+export const deleteMineIncidentNote = (mineIncidentGuid, mineIncidentNoteGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_NOTE(
-        mineGuid,
-        mineIncidentGuid,
-        mineIncidentNoteGuid
-      )}`,
+      `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTE(mineIncidentGuid, mineIncidentNoteGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
