@@ -107,6 +107,17 @@ export class Incidents extends Component {
             </Typography.Text>
             .
           </Typography.Paragraph>
+          <Typography.Paragraph>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/incident-information"
+              target="_blank"
+              rel="noopener noreferrer"
+              alt="Incident Information"
+            >
+              Click here
+            </a>{" "}
+            for more information on mining incidents and dangerous occurrences in British Columbia.
+          </Typography.Paragraph>
           <IncidentsTable isLoaded={this.state.isLoaded} data={this.props.incidents} />
         </Col>
       </Row>
