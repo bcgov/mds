@@ -37,6 +37,8 @@ RUN mkdir -p /app/wallet
 # COPY cwallet.sso /app/wallet
 COPY sqlnet.ora /app/wallet
 
+RUN chmod -R 661 /app/cwallet.sso
+
 USER 1000
 
 # Run the server

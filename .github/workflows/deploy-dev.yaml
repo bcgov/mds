@@ -1,7 +1,6 @@
 name: Update dev infra
 
 on:
-  pull_request:
   push:
     branches:
       - develop
@@ -21,22 +20,22 @@ jobs:
     strategy:
       matrix:
         include:
-          # - config: frontend
-          # - config: backend
-          # - config: dbbackup
-          # - config: docgen
-          # - config: postgresql
-          # - config: nginx
-          # - config: redis
-          # - config: metabase
-          # - config: metabase-postgres
-          # - config: docman
-          # - config: filesystem-provider
-          # - config: nris
+          - config: frontend
+          - config: backend
+          - config: dbbackup
+          - config: docgen
+          - config: postgresql
+          - config: nginx
+          - config: redis
+          - config: metabase
+          - config: metabase-postgres
+          - config: docman
+          - config: filesystem-provider
+          - config: nris
           - config: nris-etl
-          # - config: minespace
-          # - config: fider
-          # - config: schemaspy
+          - config: minespace
+          - config: fider
+          - config: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
