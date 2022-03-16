@@ -276,6 +276,11 @@ export class MineExplosivesPermitTable extends Component {
       render: (text, record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
+        const hasDocuments =
+          record.documents?.filter((doc) =>
+            ["LET", "PER"].includes(doc.explosives_permit_document_type_code)
+          )?.length > 0;
+        const isCoreSource = record.originating_system === "Core";
         const approvedMenu = (
           <Menu>
             <Menu.Item key="0">
@@ -385,6 +390,20 @@ export class MineExplosivesPermitTable extends Component {
           (isApproved && this.props.isPermitTab);
         return (
           <div className="btn--middle flex">
+            {isApproved && !hasDocuments && isCoreSource && (
+              <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
+                <Button
+                  type="secondary"
+                  className="full-mobile"
+                  htmlType="submit"
+                  onClick={(event) =>
+                    this.props.handleOpenExplosivesPermitDecisionModal(event, record)
+                  }
+                >
+                  Re-generate docs
+                </Button>
+              </AuthorizationWrapper>
+            )}
             {showActions && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
                 <Dropdown
