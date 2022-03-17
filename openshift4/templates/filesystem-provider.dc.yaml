@@ -121,13 +121,13 @@ objects:
                 timeoutSeconds: 1
 parameters:
   - name: CPU_LIMIT
-    value: 40m
+    value: 120m
   - name: MEMORY_LIMIT
-    value: 4Gi
+    value: 6Gi
   - name: CPU_REQUEST
-    value: 10m
+    value: 30m
   - name: MEMORY_REQUEST
-    value: 1024Mi
+    value: 2Gi
   - name: ENVIRONMENT_NAME
     value: dev
   - name: NAME

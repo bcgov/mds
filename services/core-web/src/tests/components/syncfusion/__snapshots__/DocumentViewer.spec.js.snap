@@ -53,6 +53,8 @@ exports[`DocumentViewer renders properly 1`] = `
           [Function],
           [Function],
           [Function],
+          [Function],
+          [Function],
         ]
       }
     />

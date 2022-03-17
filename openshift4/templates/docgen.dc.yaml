@@ -23,17 +23,17 @@ parameters:
     description: Environment for running node
     value: production
   - name: CPU_LIMIT
-    value: 200m
+    value: 500m
   - name: MEMORY_LIMIT
     value: 1500Mi
   - name: CPU_REQUEST
-    value: 50m
+    value: 125m
   - name: MEMORY_REQUEST
     value: 512Mi
   - name: REPLICA_MIN
-    value: "2"
+    value: "1"
   - name: REPLICA_MAX
-    value: "2"
+    value: "1"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: APPNAME
@@ -103,7 +103,7 @@ objects:
                 - name: CACHE_DIR
                   value: ${FILE_DIR}
                 - name: NODE_ENV
-                  value: ${NODE_ENV}
+                  value: production
                 - name: BASE_PATH
                   value: ${BASE_PATH}
                 - name: ASSET_PATH
@@ -120,7 +120,7 @@ objects:
               livenessProbe:
                 failureThreshold: 3
                 httpGet:
-                  path: /health
+                  path: /api/v2/health
                   port: ${{PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 25
@@ -130,7 +130,7 @@ objects:
               readinessProbe:
                 failureThreshold: 3
                 httpGet:
-                  path: /health
+                  path: /api/v2/health
                   port: ${{PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 25
