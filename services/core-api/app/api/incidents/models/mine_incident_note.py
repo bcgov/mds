@@ -33,7 +33,9 @@ class MineIncidentNote(SoftDeleteMixin, AuditMixin, Base):
     def find_by_mine_incident_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_incident_guid=_id, deleted_ind=False).all()
+            return cls.query.filter_by(
+                mine_incident_guid=_id,
+                deleted_ind=False).order_by(cls.update_timestamp.desc()).all()
         except ValueError:
             return None
 
