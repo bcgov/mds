@@ -19,6 +19,7 @@ const setupProps = () => {
   props.loading = false;
   props.renderEditor = false;
   props.comments = MINE_COMMENTS;
+  props.userRoles = [];
 };
 
 beforeEach(() => {
