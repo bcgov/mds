@@ -6,7 +6,6 @@ import "@ant-design/compatible/assets/index.css";
 import { Input, Button, Checkbox } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
-import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -49,10 +48,8 @@ export class CommentEditor extends Component {
   validate = () => !(this.props.submitting || this.state.comment === "");
 
   render() {
-    const { userRoles, addCommentPermission } = this.props;
-    const canAddComment = addCommentPermission
-      ? userRoles.includes(USER_ROLES[addCommentPermission]) ||
-        userRoles.includes(USER_ROLES[Permission.ADMIN])
+    const canAddComment = this.props.addCommentPermission
+      ? this.props.userRoles.includes(USER_ROLES[this.props.addCommentPermission])
       : true;
 
     return (
