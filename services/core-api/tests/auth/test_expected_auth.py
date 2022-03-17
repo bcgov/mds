@@ -15,6 +15,7 @@ from app.api.mines.variances.resources.variance import MineVarianceResource
 from app.api.mines.variances.resources.variance_list import MineVarianceListResource
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
+from app.api.incidents.resources.mine_incident_notes import MineIncidentNoteResource, MineIncidentNoteListResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.tailings.resources.tailings_list import MineTailingsStorageFacilityListResource
@@ -115,9 +116,8 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
      (BondListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (BondResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (BondResource, 'put', [EDIT_SECURITIES]), (BondTransferResource, 'put', [EDIT_SECURITIES]),
-     (MineCommentListResource, 'get', [VIEW_ALL]),
-     (MineCommentListResource, 'post', [MINE_ADMIN, EDIT_INCIDENTS]),
-     (MineCommentResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS]),
+     (MineCommentListResource, 'get', [VIEW_ALL]), (MineCommentListResource, 'post', [VIEW_ALL]),
+     (MineCommentResource, 'delete', [MINE_ADMIN]),
      (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
      (PermitConditionsListResource, 'get', [EDIT_PERMIT]),
      (PermitConditionsResource, 'get', [EDIT_PERMIT]),
@@ -131,7 +131,11 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
      (ProjectSummaryListResource, 'post', [MINE_ADMIN, MINESPACE_PROPONENT]),
      (ProjectSummaryResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (ProjectSummaryResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES]),
-     (ProjectSummaryResource, 'delete', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])])
+     (ProjectSummaryResource, 'delete', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES]),
+     (MineIncidentNoteListResource, 'get', [VIEW_ALL]),
+     (MineIncidentNoteListResource, 'post', [MINE_ADMIN, EDIT_INCIDENTS]),
+     (MineIncidentNoteResource, 'get', [VIEW_ALL]),
+     (MineIncidentNoteResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
