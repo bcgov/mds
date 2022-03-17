@@ -10,6 +10,7 @@ import {
 } from "@common/actionCreators/incidentActionCreator";
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,
@@ -70,6 +71,8 @@ export class MineIncidentNotes extends Component {
             actions: null,
             datetime: note.update_timestamp,
           }))}
+          deletePermission={Permission.EDIT_INCIDENTS}
+          createPermission={Permission.EDIT_INCIDENTS}
         />
       </div>
     );

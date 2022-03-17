@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Spin, List, Button, Popconfirm } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
+import { USER_ROLES } from "@common/constants/environment";
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
 import * as Style from "@/constants/styles";
@@ -16,6 +17,8 @@ const propTypes = {
   loading: PropTypes.bool,
   renderEditor: PropTypes.bool,
   comments: PropTypes.arrayOf(CustomPropTypes.mineComment).isRequired,
+  deletePermission: PropTypes.string,
+  createPermission: PropTypes.string,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
   onRemove: PropTypes.func,
@@ -24,6 +27,8 @@ const propTypes = {
 const defaultProps = {
   renderEditor: false,
   loading: false,
+  deletePermission: Permission.ADMIN,
+  createPermission: Permission.ADMIN,
   onChange: () => {},
   onSubmit: () => {},
   onRemove: () => {},
@@ -38,6 +43,8 @@ export const CommentPanel = (props) => (
         dataSource={props.comments}
         locale={{ emptyText: "No Data Yet" }}
         renderItem={(item) => {
+          const deletePermission = [];
+
           return (
             <li key={item.key}>
               <div className="inline-flex">
@@ -46,7 +53,7 @@ export const CommentPanel = (props) => (
                     {item.content}
                   </Comment>
                 </div>
-                <AuthorizationWrapper permission={Permission.ADMIN}>
+                <AuthorizationWrapper permission={props.deletePermission}>
                   <Popconfirm
                     placement="topLeft"
                     title="Are you sure you want to delete this comment?"
@@ -72,7 +79,13 @@ export const CommentPanel = (props) => (
         />
       </div>
     )}
-    {props.renderEditor && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
+    {props.renderEditor && (
+      <CommentEditor
+        addCommentPermission={props.createPermission}
+        onChange={props.onChange}
+        onSubmit={props.onSubmit}
+      />
+    )}
   </React.Fragment>
 );
 

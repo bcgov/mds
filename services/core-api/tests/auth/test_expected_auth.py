@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -115,8 +115,9 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
      (BondListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (BondResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (BondResource, 'put', [EDIT_SECURITIES]), (BondTransferResource, 'put', [EDIT_SECURITIES]),
-     (MineCommentListResource, 'get', [VIEW_ALL]), (MineCommentListResource, 'post', [VIEW_ALL]),
-     (MineCommentResource, 'delete', [MINE_ADMIN]),
+     (MineCommentListResource, 'get', [VIEW_ALL]),
+     (MineCommentListResource, 'post', [MINE_ADMIN, EDIT_INCIDENTS]),
+     (MineCommentResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS]),
      (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
      (PermitConditionsListResource, 'get', [EDIT_PERMIT]),
      (PermitConditionsResource, 'get', [EDIT_PERMIT]),

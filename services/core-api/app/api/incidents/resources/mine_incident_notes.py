@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from werkzeug.exceptions import NotFound, InternalServerError
 
 from app.extensions import api
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_INCIDENTS
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -44,7 +44,7 @@ class MineIncidentNoteResource(Resource, UserMixin):
             'mine_incident_guid': 'The GUID of the mine incident the note belongs to.',
             'mine_incident_note_guid': 'The GUID of the mine incident note to get.'
         })
-    @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN, EDIT_INCIDENTS])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_incident_guid, mine_incident_note_guid):
         mine_incident_note = MineIncidentNote.find_by_mine_incident_note_guid(
@@ -87,7 +87,7 @@ class MineIncidentNoteListResource(Resource, UserMixin):
             'mine_incident_guid': 'The GUID of the mine incident the note belongs to.',
         })
     @api.expect(parser)
-    @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN, EDIT_INCIDENTS])
     @api.marshal_with(MINE_INCIDENT_NOTE_MODEL, code=201)
     def post(self, mine_incident_guid):
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
