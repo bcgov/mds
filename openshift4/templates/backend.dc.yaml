@@ -63,7 +63,7 @@ parameters:
     required: false
     value: dev
   - name: DOCUMENT_GENERATOR_URL
-    value: http://docgen:3030
+    value: http://docgen:3030/api/v2
   - name: OBJECT_STORE_SECRET_NAME
     value: object-store-credentials
   - name: IMAGE_NAMESPACE
@@ -248,7 +248,7 @@ objects:
                 - name: DOCUMENT_MANAGER_URL
                   value: "http://docman:5001/document-manager"
                 - name: DOCUMENT_GENERATOR_URL
-                  value: "http://docgen:3030"
+                  value: "http://docgen:3030/api/v2"
                 - name: ENVIRONMENT_NAME
                   value: ${ENVIRONMENT_NAME}
                 - name: METABASE_EMBEDDING_SECRET_KEY

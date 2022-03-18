@@ -240,14 +240,14 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 explosives_permit_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_doc)
 
-        # Check for application status changes.
-        if application_status and self.application_status != application_status:
-
-            if application_status != 'REC':
+        # Check for application status changes or application is Approved to regenerate permit and letter.
+        if application_status:
+            if application_status != 'REC' and application_status != 'APP':
                 self.decision_timestamp = datetime.utcnow()
                 self.decision_reason = decision_reason
 
-            if self.application_status == 'REC' and application_status == 'APP':
+            if (self.application_status == 'REC'
+                    or self.application_status == 'APP') and application_status == 'APP':
                 from app.api.document_generation.resources.explosives_permit_document_resource import ExplosivesPermitDocumentResource
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
 
@@ -296,7 +296,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     return ExplosivesPermitDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
-                self.permit_number = ExplosivesPermit.get_next_permit_number()
+                if self.application_status == 'REC' and application_status == 'APP':
+                    self.permit_number = ExplosivesPermit.get_next_permit_number()
                 create_permit_enclosed_letter()
                 create_issued_permit()
 

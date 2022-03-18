@@ -39,6 +39,18 @@ exports[`MineIncidents renders properly 1`] = `
       </Text>
       .
     </Paragraph>
+    <Paragraph>
+      <a
+        alt="Incident Information"
+        href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/incident-information"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Click here
+      </a>
+       
+      for more information on mining incidents and dangerous occurrences in British Columbia.
+    </Paragraph>
     <Connect(IncidentsTable)
       data={
         Array [
