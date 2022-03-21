@@ -1,5 +1,5 @@
 from flask_restplus import Resource
-from werkzeug.exceptions import NotFound, InternalServerError
+from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 
 from app.extensions import api
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_INCIDENTS
@@ -95,6 +95,9 @@ class MineIncidentNoteListResource(Resource, UserMixin):
             raise NotFound('Mine Incident not found')
 
         data = self.parser.parse_args()
+        note_content = data.get('content')
+        if note_content is None or note_content is '':
+            raise BadRequest('Mine Incident Note requires "content" to be set')
         mine_incident_note = MineIncidentNote.create(mine_incident, data.get('content'))
 
         try:

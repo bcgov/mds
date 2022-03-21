@@ -39,6 +39,18 @@ class TestPostIncidentNote:
         assert post_resp.status_code == 201, post_resp.response
         assert post_data['content'] == test_incident_note_data['content']
 
+    def test_post_incident_note_empty_content(self, test_client, db_session, auth_headers):
+        """Should return a 400 response code"""
+
+        mine_incident = MineIncidentFactory()
+        test_incident_note_data = {'content': ''}
+
+        post_resp = test_client.post(
+            f'/incidents/{mine_incident.mine_incident_guid}/notes',
+            json=test_incident_note_data,
+            headers=auth_headers['full_auth_header'])
+        assert post_resp.status_code == 400, post_resp.response
+
 
 class TestDeleteIncidentNote:
     """DELETE /incidents/{mine_incident_guid}/notes/{mine_incident_note_guid}"""
