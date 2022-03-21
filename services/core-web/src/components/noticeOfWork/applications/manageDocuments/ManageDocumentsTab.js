@@ -73,25 +73,32 @@ export class ManageDocumentsTab extends Component {
   };
 
   gatherNowDocuments = () => {
-    // Extract documents from NoW Reviews(generated) and add to NoW Submissions(uploaded)
+    // Gather different types of documents(generated, uploaded, imported)
     const nowDocs = this.props.noticeOfWork.documents;
     const nowReviewDocs = [];
+    const nowImportSubmissionDocs = this.props.noticeOfWork.filtered_submission_documents.map(
+      (fsb) => ({ ...fsb, is_imported_submission: true })
+    );
     this.props.noticeOfWorkReviews.forEach((review) => {
       if (review.documents.length) {
         nowReviewDocs.push(...review.documents);
       }
     });
-    return [...nowDocs, ...nowReviewDocs];
+    return [...nowDocs, ...nowImportSubmissionDocs, ...nowReviewDocs];
   };
 
   downloadDocumentPackage = (selectedDocumentRows) => {
     const docURLS = [];
-
     const nowDocs = this.gatherNowDocuments()
       .map((doc) => ({
-        key: doc.mine_document.mine_document_guid,
-        documentManagerGuid: doc.mine_document.document_manager_guid,
-        filename: doc.mine_document.document_name,
+        // NoW Imported Submission documents have a different structure
+        key: doc.is_imported_submission
+          ? doc.mine_document_guid
+          : doc.mine_document.mine_document_guid,
+        documentManagerGuid: doc.is_imported_submission
+          ? doc.document_manager_guid
+          : doc.mine_document.document_manager_guid,
+        filename: doc.is_imported_submission ? doc.filename : doc.mine_document.document_name,
       }))
       .filter((doc) => selectedDocumentRows.includes(doc.key));
 

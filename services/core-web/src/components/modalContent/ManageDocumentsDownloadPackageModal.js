@@ -50,12 +50,26 @@ export const ManageDocumentsDownloadPackageModal = (props) => {
         <NOWSubmissionDocuments
           now_application_guid={props.noticeOfWorkGuid}
           documents={props.nowDocuments.map((nd) => {
-            return {
-              filename: nd.mine_document.document_name,
-              mine_document_guid: nd.mine_document.mine_document_guid,
-              document_manager_guid: nd.mine_document.document_manager_guid,
-              ...nd,
-            };
+            let document = {};
+            // NoW Imported Submission documents have a different structure
+            if (!nd.mine_document) {
+              document = {
+                filename: nd.filename,
+                mine_document_guid: nd.mine_document_guid,
+                document_manager_guid: nd.document_manager_guid,
+                category: nd.documenttype,
+                description: nd.description,
+                is_imported_submission: nd.is_imported_submission,
+              };
+            } else {
+              document = {
+                filename: nd.mine_document.document_name,
+                mine_document_guid: nd.mine_document.mine_document_guid,
+                document_manager_guid: nd.mine_document.document_manager_guid,
+                ...nd,
+              };
+            }
+            return document;
           })}
           selectedRows={{
             selectedSubmissionRows: selectedDocumentRows,
