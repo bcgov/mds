@@ -60,6 +60,7 @@ export const ManageDocumentsDownloadPackageModal = (props) => {
                 category: nd.documenttype,
                 description: nd.description,
                 is_imported_submission: nd.is_imported_submission,
+                upload_date: nd.update_timestamp,
               };
             } else {
               document = {
