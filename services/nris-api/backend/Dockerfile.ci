@@ -27,6 +27,9 @@ RUN mkdir -p opt/oracle && \
 RUN mkdir /app
 WORKDIR /app
 
+COPY sqlnet.ora /opt/oracle/instantclient/network/admin/
+RUN chmod 777 /opt/oracle/instantclient/network/admin/sqlnet.ora
+
 # Copy files over and install the requirements
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -34,12 +37,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Oracle config files
 RUN mkdir -p /app/wallet
 # Only used during local dev, should be created via configmap mount
-# COPY cwallet.sso /app/wallet
-COPY sqlnet.ora /app/wallet
+COPY cwallet.sso /app/wallet
 
 RUN chmod -R 661 /app/cwallet.sso
+RUN chmod 775 /app/
 
-USER 1000
+USER 1001
 
 # Run the server
 EXPOSE 5500
