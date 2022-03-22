@@ -46,4 +46,4 @@ USER 1001
 
 # Run the server
 EXPOSE 5500
-CMD ["flask","run"]
+CMD ["./app.sh"]
