@@ -101,15 +101,14 @@ export class MineIncidents extends Component {
   parseIncidentIntoFormData = (existingIncident, newIncident) => {
     if (newIncident) {
       return { ...existingIncident };
-    } 
-      return {
-        ...existingIncident,
-        reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
-        reported_time: moment(existingIncident.reported_timestamp),
-        incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
-        incident_time: moment(existingIncident.incident_timestamp),
-      };
-    
+    }
+    return {
+      ...existingIncident,
+      reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+      reported_time: moment(existingIncident.reported_timestamp),
+      incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+      incident_time: moment(existingIncident.incident_timestamp),
+    };
   };
 
   openViewMineIncidentModal = (event, incident) => {
@@ -192,6 +191,7 @@ export class MineIncidents extends Component {
           </AuthorizationWrapper>
         </div>
         <MineIncidentTable
+          mineGuid={this.props.mineGuid}
           isLoaded={this.state.isLoaded}
           incidents={this.props.mineIncidents}
           followupActions={this.props.followupActions}

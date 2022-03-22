@@ -102,3 +102,59 @@ export const deleteMineIncident = (mineGuid, mineIncidentGuid) => (dispatch) => 
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+// Notes
+export const fetchMineIncidentNotes = (mineIncidentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT_NOTES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT_NOTES));
+      dispatch(incidentActions.storeMineIncidentNotes(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_NOTES)));
+};
+
+export const createMineIncidentNote = (mineIncidentGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully added note.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
+      throw new Error(err);
+    });
+};
+
+export const deleteMineIncidentNote = (mineIncidentGuid, mineIncidentNoteGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTE(mineIncidentGuid, mineIncidentNoteGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted note.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
+      throw new Error(err);
+    });
+};
