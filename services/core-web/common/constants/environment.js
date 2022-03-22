@@ -61,4 +61,5 @@ export const USER_ROLES = {
   role_edit_now_dates: "core_edit_now_dates",
   role_edit_emli_contacts: "core_edit_emli_contacts",
   role_edit_project_summaries: "core_edit_project_summaries",
+  role_edit_incidents: "core_edit_incidents",
 };

@@ -1,16 +1,22 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Input, Button, Checkbox } from "antd";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool,
+  addCommentPermission: PropTypes.string,
 };
 
 const defaultProps = {
   submitting: false,
+  addCommentPermission: null,
 };
 
 export class CommentEditor extends Component {
@@ -42,16 +48,22 @@ export class CommentEditor extends Component {
   validate = () => !(this.props.submitting || this.state.comment === "");
 
   render() {
+    const canAddComment = this.props.addCommentPermission
+      ? this.props.userRoles.includes(USER_ROLES[this.props.addCommentPermission])
+      : true;
+
     return (
       <div>
-        <Form.Item>
-          <Input.TextArea
-            rows={4}
-            onChange={this.handleChange}
-            value={this.state.comment}
-            name="comment"
-          />
-        </Form.Item>
+        {canAddComment && (
+          <Form.Item>
+            <Input.TextArea
+              rows={4}
+              onChange={this.handleChange}
+              value={this.state.comment}
+              name="comment"
+            />
+          </Form.Item>
+        )}
         {// TODO: Hide until Minespace is updated to display comments.
         false && (
           <Form.Item>
@@ -64,21 +76,27 @@ export class CommentEditor extends Component {
             </Checkbox>
           </Form.Item>
         )}
-        <Button
-          disabled={this.state.comment === ""}
-          htmlType="button"
-          loading={this.state.submitting}
-          onClick={this.handleSubmit}
-          type="primary"
-        >
-          Add Comment
-        </Button>
+        {canAddComment && (
+          <Button
+            disabled={this.state.comment === ""}
+            htmlType="button"
+            loading={this.state.submitting}
+            onClick={this.handleSubmit}
+            type="primary"
+          >
+            Add Comment
+          </Button>
+        )}
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  userRoles: getUserAccessData(state),
+});
+
 CommentEditor.propTypes = propTypes;
 CommentEditor.defaultProps = defaultProps;
 
-export default CommentEditor;
+export default connect(mapStateToProps)(CommentEditor);

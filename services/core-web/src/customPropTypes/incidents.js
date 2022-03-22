@@ -40,4 +40,12 @@ export const incidentPageData = shape({
   total_pages: PropTypes.number,
 });
 
+export const incidentNote = shape({
+  mine_incident_guid: PropTypes.string.isRequired,
+  mine_incident_note_guid: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  create_user: PropTypes.string.isRequired,
+  create_timestamp: PropTypes.string.isRequired,
+});
+
 export default incident;

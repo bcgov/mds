@@ -6,6 +6,9 @@ import {
   fetchMineIncidents,
   fetchIncidents,
   deleteMineIncident,
+  fetchMineIncidentNotes,
+  createMineIncidentNote,
+  deleteMineIncidentNote,
 } from "@common/actionCreators/incidentActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -167,6 +170,89 @@ describe("`deleteMineIncident` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMineIncidentNotes` action creator", () => {
+  const mineIncidentGuid = "98765-c";
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineIncidentNotes(mineIncidentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchMineIncidentNotes()(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`createMineIncidentNote` action creator", () => {
+  const mineIncidentGuid = "98765-c";
+  const mockPayload = { content: "Test note" };
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTES(mineIncidentGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return createMineIncidentNote(
+      mineIncidentGuid,
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createMineIncidentNote(mineIncidentGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`deleteMineIncidentNote` action creator", () => {
+  const mineIncidentGuid = "98765-c";
+  const mineIncidentNoteGuid = "MNXS-1234";
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENT_NOTE(mineIncidentGuid, mineIncidentNoteGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return deleteMineIncidentNote(
+      mineIncidentGuid,
+      mineIncidentNoteGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+    return deleteMineIncidentNote(
+      mineIncidentGuid,
+      mineIncidentNoteGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
