@@ -28,25 +28,27 @@ describe("Mine Tests", () => {
       .click();
   });
 
-  // it("Edits a Mine", { scrollBehavior: false }, () => {
-  //   cy.visit("localhost:3000");
-  //   cy.url().should("eq", "http://localhost:3000/home/");
-  //   cy.get("span")
-  //     .contains("Mines")
-  //     .click();
-  //   cy.get("#search").click();
-  //   cy.get("#search").type("Test");
-  //   cy.get("span")
-  //     .contains("Apply Filters")
-  //     .click();
-  //   cy.get("a")
-  //     .contains("Test")
-  //     .click();
-  //   cy.get("div")
-  //     .contains("Add/Edit")
-  //     .trigger("mouseover");
-  //   cy.get("button")
-  //     .contains("Update Mine Record")
-  //     .click({ force: true });
-  // });
+  it("Edits a Mine", { scrollBehavior: false }, () => {
+    cy.visit("localhost:3000");
+    cy.url().should("eq", "http://localhost:3000/home/");
+    cy.get("span")
+      .contains("Mines")
+      .click();
+    cy.get("#search").click();
+    cy.get("#search").type("Test");
+    cy.get("span")
+      .contains("Apply Filters")
+      .click();
+    cy.get("table")
+      .contains("Test")
+      .click();
+    cy.get("div")
+      .contains("Add/Edit")
+      .trigger("mouseover");
+    cy.get("#updateMine").click({ force: true });
+    cy.get("#mine_name")
+      .clear()
+      .type("Test Mine");
+    cy.get("#mine-record-submit").click();
+  });
 });
