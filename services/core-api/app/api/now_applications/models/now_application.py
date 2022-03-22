@@ -429,7 +429,6 @@ class NOWApplication(Base, AuditMixin):
                     'filename': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None,
-                                                                              # 'update_timestamp': doc.update_timestamp
                 })
 
         return docs
