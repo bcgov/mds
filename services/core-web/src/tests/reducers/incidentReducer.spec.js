@@ -1,11 +1,16 @@
 import { incidentReducer } from "@common/reducers/incidentReducer";
-import { storeIncidents, storeMineIncidents } from "@common/actions/incidentActions";
+import {
+  storeIncidents,
+  storeMineIncidents,
+  storeMineIncidentNotes,
+} from "@common/actions/incidentActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   incidents: [],
   incidentPageData: {},
   mineIncidents: [],
+  mineIncidentNotes: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -30,6 +35,13 @@ describe("incidentReducer", () => {
     expectedValue.incidents = Mocks.INCIDENTS.records;
     expectedValue.incidentPageData = Mocks.INCIDENTS;
     const result = incidentReducer(undefined, storeIncidents(Mocks.INCIDENTS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_MINE_INCIDENT_NOTES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.mineIncidentNotes = Mocks.MINE_INCIDENT_NOTES.records;
+    const result = incidentReducer(undefined, storeMineIncidentNotes(Mocks.MINE_INCIDENT_NOTES));
     expect(result).toEqual(expectedValue);
   });
 });
