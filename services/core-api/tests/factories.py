@@ -341,6 +341,7 @@ class MineIncidentFactory(BaseFactory):
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
     documents = []
+    mine_incident_notes = []
     deleted_ind = False
 
     @factory.post_generation
@@ -354,6 +355,16 @@ class MineIncidentFactory(BaseFactory):
         MineIncidentDocumentFactory.create_batch(
             size=extracted, incident=obj, mine_document__mine=None, **kwargs)
 
+    @factory.post_generation
+    def mine_incident_notes(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineIncidentNoteFactory.create_batch(size=extracted + 1, mine_incident=obj, **kwargs)
+
 
 class MineIncidentNoteFactory(BaseFactory):
     class Meta:
@@ -363,6 +374,7 @@ class MineIncidentNoteFactory(BaseFactory):
         mine_incident = factory.SubFactory('tests.factories.MineIncidentFactory')
 
     mine_incident_note_guid = GUID
+    mine_incident_guid = factory.SelfAttribute('mine_incident.mine_incident_guid')
     content = factory.Faker('sentence')
     create_user = factory.Faker('name')
     update_user = factory.Faker('name')
