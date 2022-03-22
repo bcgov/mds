@@ -10,17 +10,16 @@ class TestGetIncidentNotes:
     def test_get_incident_notes(self, test_client, db_session, auth_headers):
         """Should return all records and a 200 response code"""
 
-        batch_size = 3
+        # MineIncidentFactory creates 2 notes for each instance
+        mine_incident_note_batch_size = 2
         mine_incident = MineIncidentFactory()
-        MineIncidentNoteFactory.create_batch(
-            size=batch_size, mine_incident_guid=mine_incident.mine_incident_guid)
 
         get_resp = test_client.get(
             f'/incidents/{mine_incident.mine_incident_guid}/notes',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(get_data['records']) == batch_size
+        assert len(get_data['records']) == mine_incident_note_batch_size
 
 
 class TestPostIncidentNote:
