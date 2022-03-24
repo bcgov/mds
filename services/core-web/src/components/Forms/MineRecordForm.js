@@ -572,6 +572,7 @@ export class MineRecordForm extends Component {
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
           <Button
+            id="mine-record-submit"
             className="full-mobile"
             type="primary"
             htmlType="submit"
