@@ -26,6 +26,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                 <MenuItem>
                   <button
                     className="full"
+                    id="updateMine"
                     onClick={[Function]}
                     type="button"
                   >
