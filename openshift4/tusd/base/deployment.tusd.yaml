@@ -19,6 +19,7 @@ spec:
       labels:
         name: tusd
         service: tusd
+        app.kubernetes.io/name: tusd
     spec:
       containers:
         - name: tusd

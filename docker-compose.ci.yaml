@@ -122,10 +122,10 @@ services:
       - 3000:3000
     env_file: ./services/core-web/.env-example
 
-    ####################### Frontend MineSpace Definition #######################
-  frontend-minespace:
+  ####################### MineSpace Definition #######################
+  minespace:
     restart: always
-    container_name: mds_frontend_minespace
+    container_name: mds_minespace
     build:
       context: services/minespace-web
     command: ["npm", "run", "serve"]
@@ -139,9 +139,10 @@ services:
   docgen-api:
     restart: always
     container_name: docgen_api
-    image: bcgovimages/doc-gen-api:v2.1.3
+    image: bcgovimages/common-document-generation-service:2.4.1
     command: ["npm", "run", "start"]
     environment:
+      - SERVER_PORT=3030
       - APP_PORT=3030
       - CACHE_DIR=/tmp/tmp-reports
       - NODE_ENV=development

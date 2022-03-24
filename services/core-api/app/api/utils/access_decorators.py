@@ -23,6 +23,7 @@ GIS = "core_gis"
 EDIT_NOW_DATES = "core_edit_now_dates"
 EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
 EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
+EDIT_INCIDENTS = "core_edit_incidents"
 
 
 def is_minespace_user():
@@ -39,6 +40,10 @@ def requires_role_edit_emli_contacts(func):
 
 def requires_role_edit_project_summaries(func):
     return _inner_wrapper(func, EDIT_PROJECT_SUMMARIES)
+
+
+def requires_role_edit_incidents(func):
+    return _inner_wrapper(func, EDIT_INCIDENTS)
 
 
 def requires_role_view_all(func):

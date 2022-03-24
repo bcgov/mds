@@ -15,6 +15,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
+from app.api.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.services.email_service import EmailService
 from app.config import Config
@@ -114,6 +115,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     categories = db.relationship(
         'MineIncidentCategory', lazy='joined', secondary='mine_incident_category_xref')
+    mine_incident_notes = db.relationship(
+        'MineIncidentNote',
+        backref='mine_incident',
+        lazy='select',
+        primaryjoin=
+        'and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
+    )
 
     mine_table = db.relationship('Mine', lazy='joined')
     mine_name = association_proxy('mine_table', 'mine_name')

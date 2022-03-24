@@ -53,6 +53,7 @@ exports[`MineIncidents renders properly 1`] = `
       ]
     }
     isLoaded={false}
+    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
     openMineIncidentModal={[Function]}
     openViewMineIncidentModal={[Function]}
   />

@@ -1765,6 +1765,16 @@ export const INCIDENTS = {
   total_pages: 5,
 };
 
+export const MINE_INCIDENT_NOTES = {
+  records: [
+    {
+      mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+      mine_incident_note_guid: "dc101135-de3e-4f37-8603-eb6a6d2d5866",
+      content: "New incident note",
+    },
+  ],
+};
+
 export const MINE_REPORTS = [
   {
     mine_report_id: 123,
