@@ -400,7 +400,9 @@ class NOWApplication(Base, AuditMixin):
                 'preamble_author':
                 doc.preamble_author,
                 'preamble_date':
-                doc.preamble_date
+                doc.preamble_date,
+                'update_timestamp':
+                doc.update_timestamp
             })
 
         for doc in now_application.submission_documents:
@@ -426,7 +428,7 @@ class NOWApplication(Base, AuditMixin):
                     'is_consultation_package': False,
                     'filename': doc.filename,
                     'now_application_id': now_application.now_application_id,
-                    'document_manager_guid': None
+                    'document_manager_guid': None,
                 })
 
         return docs

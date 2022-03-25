@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
-import { Menu, Col, Divider, Button, Dropdown, Row, Tag, Popover } from "antd";
+import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   updateMineRecord,
@@ -139,6 +139,7 @@ export class MineHeader extends Component {
       <Menu>
         <Menu.Item>
           <button
+            id="updateMine"
             type="button"
             className="full"
             onClick={(event) =>

@@ -345,6 +345,7 @@ exports[`MineRecordForm renders properly 1`] = `
       className="full-mobile"
       ghost={false}
       htmlType="submit"
+      id="mine-record-submit"
       loading={false}
       type="primary"
     >
