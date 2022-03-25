@@ -409,6 +409,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'preamble_date': fields.DateTime,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
+        'update_timestamp': fields.DateTime
     })
 
 APPLICATION_SOURCE_TYPE_CODE = api.model(
@@ -480,7 +481,8 @@ NOW_APPLICATION_MODEL = api.model(
         Date,
         'verified_by_user_date':
         Date,
-        'decision_by_user_date': Date,
+        'decision_by_user_date':
+        Date,
         'latitude':
         fields.Fixed(decimals=7),
         'longitude':
