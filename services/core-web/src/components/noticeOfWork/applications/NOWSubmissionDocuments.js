@@ -46,6 +46,7 @@ const propTypes = {
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob: PropTypes.func.isRequired,
   fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWorkApplicationDocumentTypeOptions: PropTypes.objectOf(PropTypes.any).isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -64,6 +65,7 @@ const propTypes = {
   hideJobStatusColumn: PropTypes.bool,
   showDescription: PropTypes.bool,
   allowAfterProcess: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   isFinalPackageTable: PropTypes.bool,
   isAdminView: PropTypes.bool,
   isPackageModal: PropTypes.bool,
@@ -112,13 +114,14 @@ const transformDocuments = (
       now_application_guid,
       filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,
-      category:
-        (props.noticeOfWorkApplicationDocumentTypeOptionsHash &&
-          props.noticeOfWorkApplicationDocumentTypeOptionsHash[
-            document.now_application_document_type_code
-          ]) ||
-        document.documenttype ||
-        Strings.EMPTY_FIELD,
+      category: document.is_imported_submission
+        ? document.category
+        : (props.noticeOfWorkApplicationDocumentTypeOptionsHash &&
+            props.noticeOfWorkApplicationDocumentTypeOptionsHash[
+              document.now_application_document_type_code
+            ]) ||
+          document.documenttype ||
+          Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       document_manager_guid: document.document_manager_guid,
       mine_document_guid: document.mine_document_guid,
