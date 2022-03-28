@@ -17,6 +17,7 @@ from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentD
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.services.email_service import EmailService
+from app.api.parties.party.models.party import Party
 from app.config import Config
 from app.api.constants import INCIDENTS_EMAIL, MDS_EMAIL
 
@@ -119,11 +120,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
-    party_table = db.relationship('Party', lazy='joined', foreign_keys=[reported_to_inspector_party_guid])
 
     @hybrid_property
     def reported_to_inspector_party(self):
-        return f'{self.party_table.first_name} {self.party_table.party_name}' if self.party_table.first_name and self.party_table.party_type_code == 'PER' else self.party_table.party_name
+        if self.reported_to_inspector_party_guid:
+            party = Party.find_by_party_guid(self.reported_to_inspector_party_guid)
+            return party.name
+        return None
 
     def delete(self):
         if self.mine_documents:
