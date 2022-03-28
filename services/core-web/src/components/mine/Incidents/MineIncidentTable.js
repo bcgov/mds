@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Popconfirm } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { Button, Popconfirm, Drawer } from "antd";
+import { EyeOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -20,6 +20,8 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
+import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";
 
 const propTypes = {
@@ -92,6 +94,11 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
 };
 
 export class MineIncidentTable extends Component {
+  state = {
+    isDrawerVisible: false,
+    mineIncident: {},
+  };
+
   transformRowData = (
     incidents,
     actions,
@@ -138,6 +145,13 @@ export class MineIncidentTable extends Component {
   sortIncidentNumber = (a, b) =>
     a.incident.mine_incident_id_year - b.incident.mine_incident_id_year ||
     a.incident.mine_incident_id - b.incident.mine_incident_id;
+
+  toggleDrawer = (mineIncident) => {
+    this.setState((prevState) => ({
+      isDrawerVisible: !prevState.isDrawerVisible,
+      mineIncident,
+    }));
+  };
 
   render() {
     const columns = [
@@ -346,38 +360,68 @@ export class MineIncidentTable extends Component {
                 </Button>
               </Popconfirm>
             </AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={() => this.toggleDrawer(record.incident)}
+              >
+                <MessageOutlined className="padding-sm icon-sm" />
+              </Button>
+            </AuthorizationWrapper>
           </div>
         ),
       },
     ];
 
     return (
-      <CoreTable
-        condition={this.props.isLoaded}
-        columns={
-          this.props.isDashboardView
-            ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
-            : columns
-        }
-        dataSource={this.transformRowData(
-          this.props.incidents,
-          this.props.followupActions,
-          this.props.handleEditMineIncident,
-          this.props.handleDeleteMineIncident,
-          this.props.openMineIncidentModal,
-          this.props.openViewMineIncidentModal,
-          this.props.incidentDeterminationHash,
-          this.props.incidentStatusCodeHash,
-          this.props.incidentCategoryCodeHash
-        )}
-        tableProps={{
-          onChange: this.props.isDashboardView
-            ? handleTableChange(this.props.handleIncidentSearch, this.props.params)
-            : null,
-          align: "left",
-          pagination: this.props.isPaginated,
-        }}
-      />
+      <div>
+        <Drawer
+          title={
+            <>
+              Internal Communication for Mine Incident{" "}
+              {this.state.mineIncident?.mine_incident_report_no}
+              <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
+            </>
+          }
+          placement="right"
+          closable={false}
+          onClose={this.toggleDrawer}
+          visible={this.state.isDrawerVisible}
+        >
+          <Button ghost className="modal__close" onClick={this.toggleDrawer}>
+            <CloseOutlined />
+          </Button>
+          <MineIncidentNotes mineIncidentGuid={this.state.mineIncident.mine_incident_guid} />
+        </Drawer>
+        <CoreTable
+          condition={this.props.isLoaded}
+          columns={
+            this.props.isDashboardView
+              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+              : columns
+          }
+          dataSource={this.transformRowData(
+            this.props.incidents,
+            this.props.followupActions,
+            this.props.handleEditMineIncident,
+            this.props.handleDeleteMineIncident,
+            this.props.openMineIncidentModal,
+            this.props.openViewMineIncidentModal,
+            this.props.incidentDeterminationHash,
+            this.props.incidentStatusCodeHash,
+            this.props.incidentCategoryCodeHash
+          )}
+          tableProps={{
+            onChange: this.props.isDashboardView
+              ? handleTableChange(this.props.handleIncidentSearch, this.props.params)
+              : null,
+            align: "left",
+            pagination: this.props.isPaginated,
+          }}
+        />
+      </div>
     );
   }
 }

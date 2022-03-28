@@ -433,6 +433,7 @@ export class Dashboard extends Component {
             <div>
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
+                  id="create-mine-record"
                   onClick={(event) =>
                     this.openCreateMineRecordModal(
                       event,

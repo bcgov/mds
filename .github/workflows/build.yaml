@@ -32,7 +32,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: nris
           - name: minespace
           - name: fider
           - name: schemaspy
@@ -63,7 +62,6 @@ jobs:
         include:
           - name: frontend
           - name: backend
-          - name: nris
           - name: minespace
     steps:
       - name: Install oc
@@ -89,7 +87,6 @@ jobs:
           - name: backend
           - name: dbbackup
           - name: metabase
-          - name: nris
           - name: minespace
           - name: schemaspy
     steps:
@@ -118,7 +115,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: nris
           - name: minespace
           - name: schemaspy
     steps:

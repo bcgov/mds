@@ -21,3 +21,4 @@ export const ADMINISTRATIVE_USERS = "role_mds_administrative_users";
 export const EDIT_NOW_DATES = "role_edit_now_dates";
 export const EDIT_EMLI_CONTACTS = "role_edit_emli_contacts";
 export const EDIT_PROJECT_SUMMARIES = "role_edit_project_summaries";
+export const EDIT_INCIDENTS = "role_edit_incidents";
