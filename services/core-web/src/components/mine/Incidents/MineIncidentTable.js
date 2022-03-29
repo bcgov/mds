@@ -213,6 +213,28 @@ export class MineIncidentTable extends Component {
         render: (text) => <span title="Status">{text}</span>,
       },
       {
+        title: "Inspector Responsible",
+        key: "reported_to_inspector_party",
+        dataIndex: "reported_to_inspector_party",
+        render: (text, record) => (
+          <span title="Inspector Responsible">{record.incident.reported_to_inspector_party}</span>
+        ),
+        onFilter: (value, record) => record.incident.reported_to_inspector_party === value,
+        filters: _.reduce(
+          this.props.incidents,
+          (reporterList, incident) => {
+            if (!reporterList.map((x) => x.value).includes(incident.reported_to_inspector_party)) {
+              reporterList.push({
+                value: incident.reported_to_inspector_party,
+                text: incident.reported_to_inspector_party,
+              });
+            }
+            return reporterList;
+          },
+          []
+        ),
+      },
+      {
         title: "Determination",
         key: "determination",
         dataIndex: "determination",
@@ -242,32 +264,6 @@ export class MineIncidentTable extends Component {
               </span>
             )}
           </span>
-        ),
-      },
-      {
-        title: "Reported By",
-        key: "reported_by",
-        dataIndex: "reported_by",
-        className: hideColumn(this.props.isDashboardView),
-        sorter: (a, b) => a.reported_by.localeCompare(b.reported_by),
-        render: (text) => (
-          <span title="Reported By" className={hideColumn(this.props.isDashboardView)}>
-            {text}
-          </span>
-        ),
-        onFilter: (value, record) => record.incident.reported_by_name === value,
-        filters: _.reduce(
-          this.props.incidents,
-          (reporterList, incident) => {
-            if (!reporterList.map((x) => x.value).includes(incident.reported_by_name)) {
-              reporterList.push({
-                value: incident.reported_by_name,
-                text: incident.reported_by_name,
-              });
-            }
-            return reporterList;
-          },
-          []
         ),
       },
       {
