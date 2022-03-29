@@ -77,6 +77,19 @@ exports[`MineIncidentTable renders properly 1`] = `
           "title": "Status",
         },
         Object {
+          "dataIndex": "reported_to_inspector_party",
+          "filters": Array [
+            Object {
+              "text": undefined,
+              "value": undefined,
+            },
+          ],
+          "key": "reported_to_inspector_party",
+          "onFilter": [Function],
+          "render": [Function],
+          "title": "Inspector Responsible",
+        },
+        Object {
           "className": "column-hide",
           "dataIndex": "determination",
           "key": "determination",
@@ -91,21 +104,6 @@ exports[`MineIncidentTable renders properly 1`] = `
           "key": "code",
           "render": [Function],
           "title": "Code",
-        },
-        Object {
-          "className": "",
-          "dataIndex": "reported_by",
-          "filters": Array [
-            Object {
-              "text": undefined,
-              "value": undefined,
-            },
-          ],
-          "key": "reported_by",
-          "onFilter": [Function],
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Reported By",
         },
         Object {
           "className": "column-hide",
