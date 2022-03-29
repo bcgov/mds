@@ -309,6 +309,7 @@ MINE_TSF_MODEL = api.model(
         'consequence_classification_status_code': fields.String,
         'itrb_exemption_status_code': fields.String,
         'tsf_operating_status_code': fields.String,
+        'notes': fields.String,
         'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
 

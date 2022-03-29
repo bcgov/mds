@@ -7,10 +7,10 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
+import { Button } from "antd";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { Button } from "antd";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 const propTypes = {
@@ -85,6 +85,11 @@ export class MineTailingsTable extends Component {
         title: "Longitude",
         dataIndex: "longitude",
         render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
+      },
+      {
+        title: "Notes",
+        dataIndex: "notes",
+        render: (text) => <div title="Note">{text || Strings.EMPTY_FIELD}</div>,
       },
       {
         key: "operations",
