@@ -95,6 +95,7 @@ objects:
               namespace: 4c2ba9-tools
         - type: ConfigChange
       replicas: ${{REPLICA_MIN}}
+      revisionHistoryLimit: 5
       test: false
       selector:
         name: ${NAME}

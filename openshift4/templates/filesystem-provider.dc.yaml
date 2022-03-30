@@ -45,6 +45,7 @@ objects:
               name: ${NAME}:${TAG}
               namespace: 4c2ba9-tools
       replicas: 1
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       template:
