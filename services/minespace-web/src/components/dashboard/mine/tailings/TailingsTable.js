@@ -2,14 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import * as Strings from "@/constants/strings";
-import { EDIT_PENCIL } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   getTSFOperatingStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@/constants/strings";
+import { EDIT_PENCIL } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any),
@@ -70,6 +70,11 @@ export const TailingsTable = (props) => {
       title: "Longitude",
       dataIndex: "longitude",
       render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
+    },
+    {
+      title: "Notes",
+      dataIndex: "notes",
+      render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "",
