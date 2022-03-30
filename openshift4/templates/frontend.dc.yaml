@@ -122,6 +122,7 @@ objects:
               namespace: ${IMAGE_NAMESPACE}
         - type: ConfigChange
       replicas: ${{REPLICA_MIN}}
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       template:
