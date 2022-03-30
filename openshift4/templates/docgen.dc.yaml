@@ -84,6 +84,7 @@ objects:
               name: ${NAME}:${TAG}
               namespace: ${IMAGE_NAMESPACE}
       replicas: ${{REPLICA_MIN}}
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       template:

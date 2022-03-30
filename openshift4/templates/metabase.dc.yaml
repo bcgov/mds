@@ -90,6 +90,7 @@ objects:
               name: ${NAME}:${TAG}
               namespace: ${IMAGE_NAMESPACE}
       replicas: 3
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       template:
