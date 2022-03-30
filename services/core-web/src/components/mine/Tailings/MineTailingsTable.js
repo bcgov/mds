@@ -89,7 +89,7 @@ export class MineTailingsTable extends Component {
       {
         title: "Notes",
         dataIndex: "notes",
-        render: (text) => <div title="Note">{text || Strings.EMPTY_FIELD}</div>,
+        render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
       },
       {
         key: "operations",
