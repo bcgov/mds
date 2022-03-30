@@ -11,7 +11,7 @@ export class Nods extends Component {
           <Typography.Paragraph>
             The below table displays all of the&nbsp;
             <Typography.Text className="color-primary" strong>
-              permit applications
+              notices of departure
             </Typography.Text>
             &nbsp;associated with this mine.
           </Typography.Paragraph>
