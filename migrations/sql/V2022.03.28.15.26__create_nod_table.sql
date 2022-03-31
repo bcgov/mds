@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS nod (
 
 );
   
-COMMENT ON TABLE mine_incident_note is 'Notice of departure';
+COMMENT ON TABLE nod is 'Notice of departure';
 
 ALTER TABLE nod OWNER TO mds;
