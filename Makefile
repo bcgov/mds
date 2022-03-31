@@ -87,7 +87,7 @@ mig:
 	@echo "+\n++ Applying migrations...\n+"
 	@docker-compose stop flyway
 	@docker-compose build --force-rm --no-cache flyway
-	@docker-compose up --always-recreate-deps --force-recreate flyway
+	@docker-compose up --always-recreate-deps --force-recreate -d flyway
 
 #TODO: unstable command - need to review relationship checks among factories
 seeddb:
