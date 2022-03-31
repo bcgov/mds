@@ -58,11 +58,11 @@ from app.api.mines.tailings.models.itrb_exemption_status_code import ITRBExempti
 from app.api.mines.explosives_permit.models.explosives_permit_status import ExplosivesPermitStatus
 from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
-from app.api.mines.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
-from app.api.mines.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
+from app.api.projects.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
+from app.api.projects.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
-from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
