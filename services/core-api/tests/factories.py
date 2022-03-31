@@ -43,12 +43,12 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
-from app.api.mines.project_summary.models.project_summary import ProjectSummary
-from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
-from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
-from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
+from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
