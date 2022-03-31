@@ -169,10 +169,6 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
-api.add_resource(
-    PermitAmendmentResource,
-    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
-
 api.add_resource(NodListResource, '/<string:mine_guid>/permits/<string:permit_guid>/nods')
 
 api.add_resource(ExplosivesPermitResource,
