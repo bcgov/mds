@@ -222,8 +222,11 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        uuid.UUID(_id, version=4)
-        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).first()
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
+        except (ValueError, TypeError):
+            return None
 
     @classmethod
     def find_by_mine_no(cls, _id):
