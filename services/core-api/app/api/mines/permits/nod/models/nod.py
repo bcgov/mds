@@ -3,7 +3,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.constants import *
-from app.api.utils.query import QueryWithSoftDelete
 
 
 class Nod(SoftDeleteMixin, AuditMixin, Base):
