@@ -110,6 +110,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         'and_(ProjectSummary.mine_guid == Mine.mine_guid, ProjectSummary.deleted_ind == False)')
 
+    projects = db.relationship(
+        'Project',
+        backref='mine',
+        lazy='select',
+        primaryjoin='and_(Project.mine_guid == Mine.mine_guid)')
+
     mine_work_informations = db.relationship(
         'MineWorkInformation',
         lazy='selectin',
