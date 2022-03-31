@@ -9,10 +9,10 @@ from werkzeug.exceptions import InternalServerError
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_MODEL
-from app.api.mines.project_summary.models.project_summary import ProjectSummary
-from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 
 
 class ProjectSummaryListResource(Resource, UserMixin):
@@ -102,7 +102,8 @@ class ProjectSummaryListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-        submission_date = datetime.now(tz=timezone.utc) if data.get('status_code') == 'SUB' else None
+        submission_date = datetime.now(
+            tz=timezone.utc) if data.get('status_code') == 'SUB' else None
         project_summary = ProjectSummary.create(mine, data.get('project_summary_description'),
                                                 data.get('project_summary_title'),
                                                 data.get('proponent_project_id'),

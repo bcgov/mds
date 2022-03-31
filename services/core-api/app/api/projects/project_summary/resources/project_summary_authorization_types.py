@@ -3,8 +3,8 @@ from flask_restplus import Resource
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 
-from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL
-from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 
 
 class ProjectSummaryAuthorizationTypeResource(Resource):

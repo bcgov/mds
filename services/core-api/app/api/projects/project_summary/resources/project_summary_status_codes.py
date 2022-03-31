@@ -3,8 +3,8 @@ from flask_restplus import Resource
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 
-from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_STATUS_CODE_MODEL
-from app.api.mines.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
+from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_STATUS_CODE_MODEL
+from app.api.projects.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
 
 
 class ProjectSummaryStatusCodeResource(Resource):

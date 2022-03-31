@@ -1,10 +1,6 @@
 from flask_restplus import Resource, inputs
-from flask import request
 from datetime import datetime, timezone
-from sqlalchemy import desc, cast, NUMERIC, extract, asc
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
-from decimal import Decimal
 
 from app.extensions import api
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
@@ -12,10 +8,8 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
-from app.api.mines.project_summary.response_models import PROJECT_SUMMARY_MODEL
-from app.api.mines.project_summary.models.project_summary import ProjectSummary
-
-from app.api.incidents.response_models import PAGINATED_INCIDENT_LIST
+from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -128,7 +122,9 @@ class ProjectSummaryResource(Resource, UserMixin):
         current_submission_date = project_summary.submission_date
 
         data = self.parser.parse_args()
-        submission_date = datetime.now(tz=timezone.utc) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
+        submission_date = datetime.now(
+            tz=timezone.utc
+        ) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
 
         project_summary.update(
             data.get('project_summary_description'), data.get('project_summary_title'),
@@ -137,7 +133,6 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('expected_project_start_date'), data.get('status_code'),
             data.get('project_summary_lead_party_guid'), data.get('documents', []),
             data.get('contacts', []), data.get('authorizations', []), submission_date)
-
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

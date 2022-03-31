@@ -8,11 +8,11 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.access_decorators import is_minespace_user
-from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
+from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.constants import PROJECT_SUMMARY_EMAILS
 from app.api.services.email_service import EmailService
@@ -122,7 +122,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             expected_permit_application_date=expected_permit_application_date,
             expected_permit_receipt_date=expected_permit_receipt_date,
             expected_project_start_date=expected_project_start_date,
-            status_code=status_code, submission_date=submission_date)
+            status_code=status_code,
+            submission_date=submission_date)
 
         mine.project_summaries.append(project_summary)
         if add_to_session:
@@ -140,17 +141,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary_doc.mine_document = mine_doc
             project_summary.documents.append(project_summary_doc)
 
-        for contact in contacts:
-            new_contact = ProjectSummaryContact(
-                project_summary_guid=project_summary.project_summary_guid,
-                name=contact.get('name'),
-                job_title=contact.get('job_title'),
-                company_name=contact.get('company_name'),
-                email=contact.get('email'),
-                phone_number=contact.get('phone_number'),
-                phone_extension=contact.get('phone_extension'),
-                is_primary=contact.get('is_primary'))
-            project_summary.contacts.append(new_contact)
+        # for contact in contacts:
+        #     new_contact = ProjectSummaryContact(
+        #         project_summary_guid=project_summary.project_summary_guid,
+        #         name=contact.get('name'),
+        #         job_title=contact.get('job_title'),
+        #         company_name=contact.get('company_name'),
+        #         email=contact.get('email'),
+        #         phone_number=contact.get('phone_number'),
+        #         phone_extension=contact.get('phone_extension'),
+        #         is_primary=contact.get('is_primary'))
+        #     project_summary.contacts.append(new_contact)
 
         for authorization in authorizations:
             # Validate permit types
