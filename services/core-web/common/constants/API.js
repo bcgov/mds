@@ -56,7 +56,7 @@ export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified
 export const PERMIT_STATUS_CODES = () => `/mines/permits/status-codes`;
 export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
 export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
-  `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
+  `/mines/${mineGuid}/permits/${permitGuid}/nods`;
 export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
 

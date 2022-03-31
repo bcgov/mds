@@ -25,7 +25,7 @@ class Nod(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_one(cls, __guid):
-        return cls.query.get_or_404(nod_guid=__guid)
+        return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid):
