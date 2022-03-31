@@ -78,7 +78,7 @@ objects:
               command:
                 - bash
                 - -c
-                - cd /opt/app-root/src && flask db upgrade
+                - cd /app && flask db upgrade
           maxSurge: 50%
           maxUnavailable: 0
           timeoutSeconds: 1200
@@ -95,6 +95,7 @@ objects:
               namespace: 4c2ba9-tools
         - type: ConfigChange
       replicas: ${{REPLICA_MIN}}
+      revisionHistoryLimit: 5
       test: false
       selector:
         name: ${NAME}
@@ -209,10 +210,10 @@ objects:
                   port: 5500
                   scheme: HTTP
               volumeMounts:
-                - mountPath: /opt/app-root/src/wallet/cwallet.sso
+                - mountPath: /app/wallet/cwallet.sso
                   name: odb-credentials
                   subPath: cwallet.sso
-                - mountPath: /opt/app-root/src/wallet/ewallet.p12
+                - mountPath: /app/wallet/ewallet.p12
                   name: odb-credentials
                   subPath: ewallet.p12
               terminationMessagePath: /dev/termination-log

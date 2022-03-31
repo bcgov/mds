@@ -39,6 +39,7 @@ objects:
       name: ${NAME}
     spec:
       replicas: 3
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       strategy:

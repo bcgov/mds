@@ -148,8 +148,12 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
       createRequestHeader()
     )
     .then((response) => {
+      const successMessage =
+        response.data.permit_amendment_status_code === "DFT"
+          ? "Successfully updated draft permit"
+          : "Successfully updated permit amendment";
       notification.success({
-        message: `Successfully updated permit amendment`,
+        message: successMessage,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
