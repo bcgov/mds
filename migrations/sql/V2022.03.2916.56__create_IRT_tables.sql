@@ -223,7 +223,7 @@ on conflict do nothing;
 CREATE TABLE IF NOT EXISTS irt (
   irt_guid                         uuid DEFAULT gen_random_uuid()       PRIMARY KEY,
   irt_id                           serial                                  NOT NULL,
-  condition_id                     integer                                 NOT NULL,
+  condition_guid                   uuid                                    NOT NULL,
   "required"                       boolean default false                   NOT NULL,
   methods                          boolean default false                   NOT NULL,
   "comment"                        character varying(3000)                         ,
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS irt (
   update_timestamp                 timestamp with time zone DEFAULT now()  NOT NULL,
 	
   CONSTRAINT irt_id UNIQUE (irt_id),
-  CONSTRAINT condition_id_fkey FOREIGN KEY (condition_id) REFERENCES irt_condition(condition_id),
+  CONSTRAINT condition_guid_fkey FOREIGN KEY (condition_guid) REFERENCES irt_condition(condition_guid),
   CONSTRAINT status_code_fkey FOREIGN KEY (status_code) REFERENCES irt_status_code(status_code)
 );
 ALTER TABLE irt OWNER TO mds;
@@ -245,10 +245,10 @@ ALTER TABLE irt OWNER TO mds;
 COMMENT ON TABLE irt IS 'Information Requirements Table (IRT). ';
 
 CREATE TABLE IF NOT EXISTS project (
-  project_id              serial                                PRIMARY KEY,
-  project_guid            uuid DEFAULT gen_random_uuid()           NOT NULL,
-  project_summary_id      integer                                  NOT NULL,
-  irt_id                  integer                                  NOT NULL,
+  project_guid            uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
+  project_id              serial                                   NOT NULL,
+  project_summary_guid    uuid                                     NOT NULL,
+  irt_guid                uuid                                             ,
   mine_guid               uuid                                     NOT NULL,
 	project_title           character varying(300)                   NOT NULL,
 	project_lead_party_guid uuid                                             ,
@@ -259,8 +259,8 @@ CREATE TABLE IF NOT EXISTS project (
   update_timestamp        timestamp with time zone DEFAULT now()   NOT NULL,
 
   CONSTRAINT project_id UNIQUE (project_id),
-  CONSTRAINT project_summary_id_fkey FOREIGN KEY (project_summary_id) REFERENCES project_summary(project_summary_id) DEFERRABLE INITIALLY DEFERRED,
-  CONSTRAINT irt_id_fkey FOREIGN KEY (irt_id) REFERENCES irt(irt_id) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT project_summary_guid_fkey FOREIGN KEY (project_summary_guid) REFERENCES project_summary(project_summary_guid) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT irt_guid_fkey FOREIGN KEY (irt_guid) REFERENCES irt(irt_guid) DEFERRABLE INITIALLY DEFERRED,
   CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT project_lead_party_guid_fkey FOREIGN KEY (project_lead_party_guid) REFERENCES party(party_guid) ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -274,7 +274,7 @@ COMMENT ON TABLE project IS 'Project contains Project Summary and Information Re
 
 CREATE TABLE IF NOT EXISTS project_contact (
   project_contact_guid                uuid DEFAULT gen_random_uuid()       PRIMARY KEY,
-  project_id                          serial                                  NOT NULL,
+  project_guid                        uuid                                    NOT NULL,
   "name"                              character varying(200)                  NOT NULL,
   job_title                           character varying(100)                          ,
   company_name                        character varying(100)                          ,
@@ -288,7 +288,7 @@ CREATE TABLE IF NOT EXISTS project_contact (
   update_user                         character varying(60)                   NOT NULL,
   update_timestamp                    timestamp with time zone DEFAULT now()  NOT NULL,
 
-  CONSTRAINT project_id_fkey FOREIGN KEY (project_id) REFERENCES project(project_id)
+  CONSTRAINT project_guid_fkey FOREIGN KEY (project_guid) REFERENCES project(project_guid)
 );
 ALTER TABLE project_contact OWNER TO mds;
 --
@@ -307,3 +307,21 @@ COMMENT ON TABLE project_contact IS 'Project contact details related to a projec
 -- DROP  COLUMN IF EXISTS project_summary_lead_party_guid,
 -- DROP  COLUMN IF EXISTS project_summary_title,
 -- DROP  COLUMN IF EXISTS proponent_project_id;
+
+-- Data Fix:
+-- Copy data from project_summary to project table (Need irt_guid field to allow null values for existing records)
+-- INSERT INTO project (project_summary_guid, mine_guid, project_title, project_lead_party_guid, create_user,update_user)
+--   SELECT ps.project_summary_guid, ps.mine_guid, ps.project_summary_title, ps.project_summary_lead_party_guid, 'system-mds','system-mds'
+--   FROM project_summary ps
+--   WHERE project_summary_id not in (select project_summary_id
+-- 								   from project)
+-- Copy data from project_summary_contact to project_contact by project_guid (copied in the previous query)								   
+-- INSERT INTO project_contact(project_guid, name, job_title, company_name, email, phone_number, phone_extension, is_primary, deleted_ind, create_user, update_user)
+--   SELECT pr.project_guid, psc.name, psc.job_title, psc.company_name, psc.email, psc.phone_number, psc.phone_extension, psc.is_primary, psc.deleted_ind, psc.create_user, psc.update_user
+--   FROM project_summary_contact psc, project pr
+--   WHERE psc.project_summary_guid = pr.project_summary_guid and
+--         pr.project_guid not in (select project_guid
+-- 							    from project_contact)
+
+-- After ensuring irt_guid are populated in existing records:
+-- ALTER TABLE project ALTER COLUMN irt_guid SET NOT NULL;
