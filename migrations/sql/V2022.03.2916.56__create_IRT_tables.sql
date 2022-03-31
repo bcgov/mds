@@ -247,8 +247,6 @@ COMMENT ON TABLE irt IS 'Information Requirements Table (IRT). ';
 CREATE TABLE IF NOT EXISTS project (
   project_guid            uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
   project_id              serial                                   NOT NULL,
-  project_summary_guid    uuid                                     NOT NULL,
-  irt_guid                uuid                                             ,
   mine_guid               uuid                                     NOT NULL,
 	project_title           character varying(300)                   NOT NULL,
 	project_lead_party_guid uuid                                             ,
@@ -259,8 +257,6 @@ CREATE TABLE IF NOT EXISTS project (
   update_timestamp        timestamp with time zone DEFAULT now()   NOT NULL,
 
   CONSTRAINT project_id UNIQUE (project_id),
-  CONSTRAINT project_summary_guid_fkey FOREIGN KEY (project_summary_guid) REFERENCES project_summary(project_summary_guid) DEFERRABLE INITIALLY DEFERRED,
-  CONSTRAINT irt_guid_fkey FOREIGN KEY (irt_guid) REFERENCES irt(irt_guid) DEFERRABLE INITIALLY DEFERRED,
   CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT project_lead_party_guid_fkey FOREIGN KEY (project_lead_party_guid) REFERENCES party(party_guid) ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -296,6 +292,13 @@ ALTER TABLE project_contact OWNER TO mds;
 --
 
 COMMENT ON TABLE project_contact IS 'Project contact details related to a project. ';
+
+-- Add foreign keys to project on children(Summary, IRT)
+ALTER TABLE project_summary ADD COLUMN IF NOT EXISTS project_guid uuid;
+ALTER TABLE project_summary ADD CONSTRAINT project_guid_fkey FOREIGN KEY (project_guid) REFERENCES project(project_guid);
+
+ALTER TABLE irt ADD COLUMN IF NOT EXISTS project_guid uuid;
+ALTER TABLE irt ADD CONSTRAINT project_guid_fkey FOREIGN KEY (project_guid) REFERENCES project(project_guid);
 
 
 -- Before droping these columns, need to run data fix to copy data into project table
