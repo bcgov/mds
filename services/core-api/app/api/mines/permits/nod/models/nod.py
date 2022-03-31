@@ -18,8 +18,6 @@ class Nod(SoftDeleteMixin, AuditMixin, Base):
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='select')
 
-    # query = QueryWithSoftDelete()
-
     @classmethod
     def create(cls, mine, permit, nod_title, add_to_session=True):
         new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title)
@@ -34,4 +32,4 @@ class Nod(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid):
-        return cls.query.filter_by(permit_guid=__guid).all()
+        return cls.query.filter_by(permit_guid=__guid, deleted_ind=False).all()
