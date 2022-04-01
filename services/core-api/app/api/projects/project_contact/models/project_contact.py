@@ -17,7 +17,7 @@ class ProjectContact(SoftDeleteMixin, AuditMixin, Base):
     job_title = db.Column(db.String(200), nullable=True)
     company_name = db.Column(db.String(100), nullable=True)
 
-    project_id = db.Column(UUID(as_uuid=True), db.ForeignKey('project.project_id'))
+    project_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('project.project_guid'))
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_contact_guid}'
@@ -75,8 +75,8 @@ class ProjectContact(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).first()
 
     @classmethod
-    def find_project_contacts_by_project_id(cls, project_id):
-        return cls.query.filter_by(project_id=project_id).filter_by(deleted_ind=False).order_by(
+    def find_project_contacts_by_project_guid(cls, project_guid):
+        return cls.query.filter_by(project_guid=project_guid).filter_by(deleted_ind=False).order_by(
             cls.is_primary).all()
 
     @classmethod

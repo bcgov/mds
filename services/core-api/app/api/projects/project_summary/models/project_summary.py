@@ -91,14 +91,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
-    def find_by_mine_guid(cls, mine_guid, is_minespace_user):
+    def find_by_project_guid(cls, project_guid, is_minespace_user):
         if is_minespace_user:
-            return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
+            return cls.query.filter_by(project_guid=project_guid).all()
         return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
-            mine_guid=mine_guid, deleted_ind=False).all()
+            project_guid=project_guid).all()
 
     @classmethod
     def create(cls,
+               project,
                mine,
                project_summary_description,
                project_summary_title,
@@ -115,7 +116,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
         project_summary = cls(
             project_summary_description=project_summary_description,
-            mine_guid=mine.mine_guid,
+            project_guid=project.project_guid,
             project_summary_title=project_summary_title,
             proponent_project_id=proponent_project_id,
             expected_draft_irt_submission_date=expected_draft_irt_submission_date,
@@ -125,7 +126,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             status_code=status_code,
             submission_date=submission_date)
 
-        mine.project_summaries.append(project_summary)
         if add_to_session:
             project_summary.save(commit=False)
 
