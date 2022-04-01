@@ -16,7 +16,7 @@ class TestGetNods:
         NodFactory.create_batch(size=batch_size, mine=mine, permit=permit)
 
         get_resp = test_client.get(
-            f'/mines/{mine.mine_guid}/permits/{permit.permid_guid}/nods',
+            f'/mines/{mine.mine_guid}/permits/{permit.permit_guid}/nods',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
