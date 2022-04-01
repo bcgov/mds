@@ -2,7 +2,7 @@ from flask_restplus import Namespace
 
 from app.api.projects.project.resources.project import ProjectResource, ProjectListResource
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
-from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListResource
+from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
 from app.api.projects.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
 from app.api.projects.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
@@ -21,7 +21,8 @@ api.add_resource(ProjectSummaryResource,
 api.add_resource(
     ProjectSummaryDocumentUploadResource,
     '/<string:project_guid>/project-summaries/<string:project_summary_guid>/documents')
-api.add_resource(ProjectSummaryListResource, '/<string:project_guid>/project-summaries')
+api.add_resource(ProjectSummaryListGetResource, '/<string:project_guid>/project-summaries')
+api.add_resource(ProjectSummaryListPostResource, '/new/project-summaries')
 api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-types')
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
 api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-types')

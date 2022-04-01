@@ -1,7 +1,6 @@
 from flask_restplus import Resource, inputs
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
-from decimal import Decimal
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
@@ -10,14 +9,36 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
 from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 
 
-class ProjectSummaryListResource(Resource, UserMixin):
+class ProjectSummaryListGetResource(Resource, UserMixin):
+    @api.doc(
+        description='Get a list of all Project Descriptions for a given project.',
+        params={'project_guid': 'The GUID of the project to get Project Descriptions for.'})
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200, envelope='records')
+    def get(self, project_guid):
+        project = Project.find_by_project_guid(project_guid)
+        if project is None:
+            raise NotFound('Project not found')
+
+        project_summaries = ProjectSummary.find_by_project_guid(project_guid, is_minespace_user())
+        return project_summaries
+
+
+class ProjectSummaryListPostResource(Resource, UserMixin):
 
     parser = CustomReqparser()
+    parser.add_argument(
+        'mine_guid',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
     parser.add_argument(
         'status_code',
         type=str,
@@ -77,34 +98,27 @@ class ProjectSummaryListResource(Resource, UserMixin):
     parser.add_argument(
         'authorizations', type=list, location='json', store_missing=False, required=False)
 
-    @api.doc(
-        description='Get a list of all Project Summaries for a given mine.',
-        params={'mine_guid': 'The GUID of the mine to get Project Summaries for.'})
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200, envelope='records')
-    def get(self, mine_guid):
-        mine = Mine.find_by_mine_guid(mine_guid)
-        if mine is None:
-            raise NotFound('Mine not found')
-
-        project_summaries = ProjectSummary.find_by_mine_guid(mine_guid, is_minespace_user())
-        return project_summaries
-
-    @api.doc(
-        description='Create a new Project Description.',
-        params={'mine_guid': 'The GUID of the mine to create the Project Description for.'})
+    @api.doc(description='Create a new Project Description.')
     @api.expect(parser)
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=201)
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
-    def post(self, mine_guid):
+    def post(self):
+        data = self.parser.parse_args()
+
+        mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
             raise NotFound('Mine not found')
 
-        data = self.parser.parse_args()
+        # Until the Minespace user workflow is ironed out we will be creating a project first and then assign the description to it.
+        project = Project.create(mine, data.get('project_title'), data.get('proponent_project_id'),
+                                 data.get('contacts', []))
+        new_project = project.save()
+
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None
-        project_summary = ProjectSummary.create(mine, data.get('project_summary_description'),
+        project_summary = ProjectSummary.create(new_project, mine,
+                                                data.get('project_summary_description'),
                                                 data.get('project_summary_title'),
                                                 data.get('proponent_project_id'),
                                                 data.get('expected_draft_irt_submission_date'),
