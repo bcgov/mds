@@ -1168,10 +1168,11 @@ class NodFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        permit = factory.SubFactory('tests.factories.PermitFactory', _all_mines=[mine])
+        permit = factory.SubFactory('tests.factories.PermitFactory')
 
     nod_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     permit_guid = factory.SelfAttribute('permit.permit_guid')
+    
     nod_title = factory.Faker('text', max_nb_chars=50)
     deleted_ind = False
