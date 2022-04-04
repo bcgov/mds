@@ -1168,7 +1168,7 @@ class NodFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        permit = factory.SubFactory('tests.factories.PermitFactory')
+        permit = factory.SubFactory('tests.factories.PermitFactory', _context_mine=mine)
 
     nod_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')

@@ -40,23 +40,24 @@ class TestGetNods:
         assert len(get_data['records']) == 0
 
 
-# class TestPostNod:
-#     """POST /mines/{mine_guid}/permits/{permit_guid}/nods"""
+class TestPostNod:
+    """POST /mines/{mine_guid}/permits/{permit_guid}/nods"""
 
-#     def test_post_nod(self, test_client, db_session, auth_headers):
-#         """Should return the newly created nod"""
+    def test_post_nod(self, test_client, db_session, auth_headers):
+        """Should return the newly created nod"""
 
-#         nod = NodFactory()
-#         data = {
-#             'title': nod.nod_title,
-#         }
-#         print(data)
-#         post_resp = test_client.post(
-#             f'/mines/{nod.mine_guid}/permits/{nod.permit_guid}/nods',
-#             headers=auth_headers['full_auth_header'],
-#             json=data)
-#         post_data = json.loads(post_resp.data.decode())
-#         assert post_resp.status_code == 201, post_resp.response
+        nod = NodFactory()
 
-#         assert post_data['title'] == data['nod_title']
-#         assert nod.permit_guid == data['permit']
+        data = {
+            'title': nod.nod_title,
+        }
+        print(data)
+        post_resp = test_client.post(
+            f'/mines/{nod.mine_guid}/permits/{nod.permit_guid}/nods',
+            headers=auth_headers['full_auth_header'],
+            json=data)
+        post_data = json.loads(post_resp.data.decode())
+        assert post_resp.status_code == 201, post_resp.response
+
+        assert post_data['title'] == data['nod_title']
+        assert nod.permit_guid == data['permit']
