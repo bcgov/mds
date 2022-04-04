@@ -51,7 +51,6 @@ class TestPostNod:
         data = {
             'title': nod.nod_title,
         }
-        print(data)
         post_resp = test_client.post(
             f'/mines/{nod.mine_guid}/permits/{nod.permit_guid}/nods',
             headers=auth_headers['full_auth_header'],
