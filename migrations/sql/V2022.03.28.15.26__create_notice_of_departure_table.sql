@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS nod ( 
+CREATE TABLE IF NOT EXISTS notice_of_departure ( 
   nod_guid UUID DEFAULT gen_random_uuid() NOT NULL,
   mine_guid UUID NOT NULL,
   permit_guid UUID NOT NULL,
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS nod (
 
 );
   
-COMMENT ON TABLE nod is 'Notice of departure';
+COMMENT ON TABLE notice_of_departure is 'Notice of departure';
 
-ALTER TABLE nod OWNER TO mds;
+ALTER TABLE notice_of_departure OWNER TO mds;

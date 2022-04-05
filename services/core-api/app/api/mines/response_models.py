@@ -231,16 +231,6 @@ PERMIT_AMENDMENT_MODEL = api.model(
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
-PERMIT_BASE_MODEL = api.model(
-    'Permit', {
-        'permit_id': fields.Integer,
-        'permit_guid': fields.String,
-        'permit_no': fields.String,
-        'permit_status_code': fields.String,
-        'current_permittee': fields.String,
-        'permit_prefix': fields.String
-    })
-
 PERMIT_MODEL = api.model(
     'Permit', {
         'permit_id': fields.Integer,
@@ -729,10 +719,18 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-MINE_NOD_MODEL = api.model('Nod', {
+MINE_NOD_MODEL = api.model('NoticeOfDeparture', {
     'nod_guid': fields.String,
     'nod_title': fields.String,
-    'permit': fields.Nested(PERMIT_BASE_MODEL)
+    'permit': fields.Nested(api.model(
+    'Permit', {
+        'permit_id': fields.Integer,
+        'permit_guid': fields.String,
+        'permit_no': fields.String,
+        'permit_status_code': fields.String,
+        'current_permittee': fields.String,
+        'permit_prefix': fields.String
+    }))
 })
 
 PERMIT_NOD_MODEL = api.model('Nod', {'nod_guid': fields.String, 'nod_title': fields.String})

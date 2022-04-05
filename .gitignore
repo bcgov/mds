@@ -34,3 +34,7 @@ backend.tf
 .terraform.lock.hcl
 
 cypress.env.json
+
+# m1 mac support
+docker-compose.m1.yml
+migrations/Dockerfile.flyway.m1

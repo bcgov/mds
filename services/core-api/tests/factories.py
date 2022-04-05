@@ -29,7 +29,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.mines.permits.nod.models.nod import Nod
+from app.api.mines.permits.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
@@ -1161,10 +1161,10 @@ class EMLIContactFactory(BaseFactory):
     deleted_ind = False
 
 
-class NodFactory(BaseFactory):
+class NoticeOfDepartureFactory(BaseFactory):
 
     class Meta:
-        model = Nod
+        model = NoticeOfDeparture
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)

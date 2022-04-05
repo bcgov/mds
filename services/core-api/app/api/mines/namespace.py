@@ -17,8 +17,8 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import PermitAmendmentVCResource
-from app.api.mines.permits.nod.resources.permit_nod_list import PermitNodListResource
-from app.api.mines.permits.nod.resources.mine_nod_list import MineNodListResource
+from app.api.mines.permits.notice_of_departure.resources.mine_notice_of_departure_list import MineNoticeOfDepartureListResource
+from app.api.mines.permits.notice_of_departure.resources.permit_notice_of_departure_list import PermitNoticeOfDepartureListResource
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.explosives_permit.resources.explosives_permit import ExplosivesPermitResource
 from app.api.mines.explosives_permit.resources.explosives_permit_list import ExplosivesPermitListResource
@@ -170,8 +170,8 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
-api.add_resource(PermitNodListResource, '/<string:mine_guid>/permits/<string:permit_guid>/nods')
-api.add_resource(MineNodListResource, '/<string:mine_guid>/nods')
+api.add_resource(PermitNoticeOfDepartureListResource, '/<string:mine_guid>/permits/<string:permit_guid>/notice-of-departures')
+api.add_resource(MineNoticeOfDepartureListResource, '/<string:mine_guid>/notice-of-departures')
 
 api.add_resource(ExplosivesPermitResource,
                  '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>')

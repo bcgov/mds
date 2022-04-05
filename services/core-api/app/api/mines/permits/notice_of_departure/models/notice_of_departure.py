@@ -5,8 +5,8 @@ from app.extensions import db
 from app.api.constants import *
 
 
-class Nod(SoftDeleteMixin, AuditMixin, Base):
-    __tablename__ = 'nod'
+class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
+    __tablename__ = 'notice_of_departure'
 
     nod_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue(), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)

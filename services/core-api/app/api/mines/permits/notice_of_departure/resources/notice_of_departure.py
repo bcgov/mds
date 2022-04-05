@@ -4,13 +4,13 @@ from flask_restplus import reqparse
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
-from app.api.mines.permits.nod.models.nod import Nod
+from app.api.mines.permits.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_NOD_MODEL
 
 
-class NodResource(Resource, UserMixin):
+class NoticeOfDepartureResource(Resource, UserMixin):
 
     @api.doc(params={
         'permit_guid': 'Permit guid.',
@@ -20,5 +20,5 @@ class NodResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PERMIT_NOD_MODEL, code=200)
     def get(self, nod_guid):
-        nod = Nod.find(nod_guid)
+        nod = NoticeOfDeparture.find(nod_guid)
         return nod
