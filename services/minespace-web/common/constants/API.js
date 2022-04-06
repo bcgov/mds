@@ -119,10 +119,19 @@ export const PROJECT_PROJECT_SUMMARIES = (projectGuid, params = {}) =>
 export const NEW_PROJECT_SUMMARY = () => "/projects/new/project-summaries/new";
 export const PROJECT_SUMMARY = (projectGuid, projectSummaryGuid) =>
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}`;
-export const PROJECT_SUMMARY_DOCUMENTS = (projectGuid, projectSummaryGuid) =>
-  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents`;
-export const PROJECT_SUMMARY_DOCUMENT = (projectGuid, projectSummaryGuid, documentManagerGuid) =>
-  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${documentManagerGuid}`;
+export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, mineGuid }) =>
+  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents?${queryString.stringify(
+    { mine_guid: mineGuid }
+  )}`;
+export const PROJECT_SUMMARY_DOCUMENT = (
+  projectGuid,
+  projectSummaryGuid,
+  documentManagerGuid,
+  params = {}
+) =>
+  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${documentManagerGuid}?${queryString.stringify(
+    params
+  )}`;
 
 // Users
 export const CORE_USER = "/users/core";
