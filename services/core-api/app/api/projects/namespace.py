@@ -22,7 +22,7 @@ api.add_resource(
     ProjectSummaryDocumentUploadResource,
     '/<string:project_guid>/project-summaries/<string:project_summary_guid>/documents')
 api.add_resource(ProjectSummaryListGetResource, '/<string:project_guid>/project-summaries')
-api.add_resource(ProjectSummaryListPostResource, '/new/project-summaries')
+api.add_resource(ProjectSummaryListPostResource, '/new/project-summaries/new')
 api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-types')
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
 api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-types')
