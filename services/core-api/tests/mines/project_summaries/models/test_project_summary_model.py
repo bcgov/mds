@@ -1,6 +1,6 @@
 from tests.factories import MineFactory, ProjectSummaryFactory
 
-from app.api.mines.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
 
 
 def test_project_summary_find_by_project_summary_guid(db_session):
