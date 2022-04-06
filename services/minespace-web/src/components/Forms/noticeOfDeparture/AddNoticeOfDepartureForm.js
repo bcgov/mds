@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { change, Field, reduxForm } from "redux-form";
 import { Col, Radio, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
-import { required, requiredList } from "@common/utils/Validate";
+import { required, requiredList, maxLength } from "@common/utils/Validate";
 import { remove } from "lodash";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -15,17 +15,29 @@ import { NOD_DOCUMENTS } from "@/constants/API";
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  permitNumberOptions: CustomPropTypes.options.isRequired,
   mineManagerOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
-class AddNODForm extends Component {
+class AddNoticeOfDepartureForm extends Component {
   state = {
     substantial: null,
     uploadedFiles: [],
     documentNameGuidMap: {},
+    permitOptions: [],
   };
+
+  componentDidMount() {
+    if (this.props.permits.length > 0) {
+      this.setState({
+        permitOptions: this.props.permits.map((permit) => ({
+          label: permit.permit_no,
+          value: permit.permit_guid,
+        })),
+      });
+    }
+  }
 
   onFileLoad = (documentName, document_manager_guid) => {
     this.state.uploadedFiles.push({ documentName, document_manager_guid });
@@ -69,20 +81,21 @@ class AddNODForm extends Component {
                   id="permitNumber"
                   name="permitNumber"
                   placeholder="Select Permit #"
-                  component={renderConfig.MULTI_SELECT}
+                  component={renderConfig.SELECT}
                   validate={[requiredList]}
-                  data={this.props.permitNumberOptions}
+                  data={this.state.permitOptions}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Mine Manager">
                 <Field
+                  disabled
                   id="mineManager"
                   name="mineManager"
                   placeholder="Select Mine Manager"
                   component={renderConfig.MULTI_SELECT}
-                  validate={[requiredList]}
+                  // validate={[requiredList]}
                   data={this.props.mineManagerOptions}
                 />
               </Form.Item>
@@ -90,15 +103,16 @@ class AddNODForm extends Component {
           </Row>
           <Form.Item label="Project Title">
             <Field
-              id="project_title"
-              name="project_title"
+              id="title"
+              name="title"
               placeholder="Departure Project Title"
               component={renderConfig.FIELD}
-              validate={[required]}
+              validate={[required, maxLength(50)]}
             />
           </Form.Item>
           <Form.Item label="Departure Summary">
             <Field
+              disabled
               id="departure_summary"
               name="departure_summary"
               placeholder="Departure Summary..."
@@ -134,7 +148,7 @@ class AddNODForm extends Component {
             please contact us.
           </Typography.Paragraph>
           <Form.Item>
-            <Radio.Group onChange={this.onChange} value={this.state.substantial}>
+            <Radio.Group disabled onChange={this.onChange} value={this.state.substantial}>
               <Radio value={false}>
                 This notice of departure is non-substantial and does not require ministry review.
                 (Proponent is responsible for ensuring all details have been completed correctly for
@@ -164,6 +178,7 @@ class AddNODForm extends Component {
               </ul>
               <Form.Item>
                 <Field
+                  disabled
                   id="uploadedFiles"
                   name="uploadedFiles"
                   component={FileUpload}
@@ -183,11 +198,11 @@ class AddNODForm extends Component {
   }
 }
 
-AddNODForm.propTypes = propTypes;
+AddNoticeOfDepartureForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_NOTICE_OF_DEPARTURE,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   touchOnBlur: true,
-})(AddNODForm);
+})(AddNoticeOfDepartureForm);

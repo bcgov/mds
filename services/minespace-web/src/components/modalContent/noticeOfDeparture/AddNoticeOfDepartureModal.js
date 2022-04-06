@@ -4,17 +4,34 @@ import { getFormValues } from "redux-form";
 import { Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
-import AddNODForm from "@/components/Forms/nods/AddNODForm";
+import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  addNoticeOfDepartureFormValues: PropTypes.objectOf(PropTypes.any),
+};
+
+const defaultProps = {
+  addNoticeOfDepartureFormValues: {},
 };
 
 export class AddNODModal extends Component {
   state = { submitting: false };
+
+  handleNoticeOfDepartureSubmit = () => {
+    this.setState({ submitting: true });
+    const { permitNumber } = this.props.addNoticeOfDepartureFormValues;
+    this.props
+      .onSubmit(permitNumber, this.props.addNoticeOfDepartureFormValues)
+      .then(() => this.close())
+      .finally(() => this.setState({ submitting: false }));
+  };
 
   close = () => {
     this.props.closeModal();
@@ -24,10 +41,9 @@ export class AddNODModal extends Component {
   render = () => {
     return (
       <div>
-        {/* TODO: Add permit options and manager options */}
-        <AddNODForm
+        <AddNoticeOfDepartureForm
           initialValues={this.props.initialValues}
-          permitNumberOptions={[]}
+          permits={this.props.permits}
           mineManagerOptions={[]}
           mineGuid={this.props.mineGuid}
         />
@@ -42,7 +58,12 @@ export class AddNODModal extends Component {
           >
             <Button disabled={this.state.submitting}>Cancel</Button>
           </Popconfirm>
-          <Button disabled={this.state.submitting}>Submit</Button>
+          <Button
+            disabled={this.state.submitting}
+            onClick={(event) => this.handleNoticeOfDepartureSubmit(event)}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     );
@@ -50,9 +71,10 @@ export class AddNODModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  addIncidentFormValues: getFormValues(FORM.ADD_INCIDENT)(state) || {},
+  addNoticeOfDepartureFormValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
 });
 
 AddNODModal.propTypes = propTypes;
+AddNODModal.defaultProps = defaultProps;
 
 export default connect(mapStateToProps)(AddNODModal);

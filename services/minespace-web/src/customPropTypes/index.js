@@ -11,6 +11,7 @@ import * as Incidents from "@/customPropTypes/incidents";
 import * as Securities from "@/customPropTypes/securities";
 import * as ProjectSummaryTypes from "@/customPropTypes/projectSummaries";
 import * as EMLIContactTypes from "@/customPropTypes/EMLIContact";
+import * as NoticeOfDepartureTypes from "@/customPropTypes/noticeOfDeparture";
 
 export default {
   ...UserTypes,
@@ -26,4 +27,5 @@ export default {
   ...Securities,
   ...ProjectSummaryTypes,
   ...EMLIContactTypes,
+  ...NoticeOfDepartureTypes,
 };
