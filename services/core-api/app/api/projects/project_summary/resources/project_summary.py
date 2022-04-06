@@ -10,6 +10,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project.models.project import Project
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -86,12 +87,12 @@ class ProjectSummaryResource(Resource, UserMixin):
     @api.doc(
         description='Get a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_guid': 'The GUID of the project the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to get.'
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
-    def get(self, mine_guid, project_summary_guid):
+    def get(self, project_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
         if project_summary is None:
@@ -102,30 +103,32 @@ class ProjectSummaryResource(Resource, UserMixin):
     @api.doc(
         description='Update a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_guid': 'The GUID of the project the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to update.'
         })
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
-    def put(self, mine_guid, project_summary_guid):
+    def put(self, project_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
+        project = Project.find_by_project_guid(project_guid)
 
+        data = self.parser.parse_args()
+        mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
-        if mine is None:
-            raise NotFound('Mine not found')
-
         if project_summary is None:
             raise NotFound('Project Description not found')
+        if project is None:
+            raise NotFound('Project is not found')
 
         prev_status = project_summary.status_code
         current_submission_date = project_summary.submission_date
 
-        data = self.parser.parse_args()
         submission_date = datetime.now(
             tz=timezone.utc
         ) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
 
+        # Update project summary.
         project_summary.update(
             data.get('project_summary_description'), data.get('project_summary_title'),
             data.get('proponent_project_id'), data.get('expected_draft_irt_submission_date'),
@@ -139,17 +142,23 @@ class ProjectSummaryResource(Resource, UserMixin):
             project_summary.send_project_summary_email_to_ministry(mine)
             project_summary.send_project_summary_email_to_proponent(mine)
 
+        # Update project.
+        project.update(
+            data.get('project_summary_title'), data.get('proponent_project_id'),
+            data.get('contacts', []))
+        project.save()
+
         return project_summary
 
     @api.doc(
         description='Delete a Project Description.',
         params={
-            'mine_guid': 'The GUID of the mine the Project Description belongs to.',
+            'project_guid': 'The GUID of the project the Project Description belongs to.',
             'project_summary_guid': 'The GUID of the Project Description to delete.'
         })
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.response(204, 'Successfully deleted.')
-    def delete(self, mine_guid, project_summary_guid):
+    def delete(self, project_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
         if project_summary is None:
