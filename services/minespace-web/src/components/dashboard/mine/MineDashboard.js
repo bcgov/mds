@@ -24,7 +24,7 @@ import ProjectSummaries from "@/components/dashboard/mine/projectSummaries/Proje
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
-import NoticesOfDeparture from "@/components/dashboard/mine/nods/NoticesOfDeparture";
+import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
