@@ -20,11 +20,11 @@ spec:
     admins:
       - jon-funk
       - vyasworks
+      - wilson496
 
 
     # Recommended for contributors who actively push to your project.
     writers:
-      - wilson496
 
     # Recommended for project managers who need to manage the repository without
     # access to sensitive or destructive actions.
