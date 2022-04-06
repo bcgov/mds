@@ -9,6 +9,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.access_decorators import is_minespace_user
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
@@ -53,8 +54,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
     contacts = db.relationship(
         'ProjectContact',
-        primaryjoin="ProjectSummary.project_guid==foreign(ProjectContact.project_guid)")
-
+        primaryjoin=
+        "and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)"
+    )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
         primaryjoin=
@@ -83,7 +85,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def mine_name(self):
-        return self.mine.mine_name
+        mine = None
+        if self.mine_guid:
+            mine = Mine.find_by_mine_guid(str(self.mine_guid))
+        if mine:
+            return mine.mine_name
+        return None
 
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid, is_minespace_user):
@@ -96,9 +103,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_project_guid(cls, project_guid, is_minespace_user):
         if is_minespace_user:
-            return cls.query.filter_by(project_guid=project_guid).all()
+            return cls.query.filter_by(project_guid=project_guid, deleted_ind=False).all()
         return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
-            project_guid=project_guid).all()
+            project_guid=project_guid, deleted_ind=False).all()
 
     @classmethod
     def create(cls,

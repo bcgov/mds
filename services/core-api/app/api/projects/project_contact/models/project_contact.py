@@ -24,7 +24,7 @@ class ProjectContact(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def create(cls,
-               project_summary_guid,
+               project_guid,
                name,
                job_title,
                company_name,
@@ -34,7 +34,7 @@ class ProjectContact(SoftDeleteMixin, AuditMixin, Base):
                is_primary,
                add_to_session=True):
         new_contact = cls(
-            project_summary_guid=project_summary_guid,
+            project_guid=project_guid,
             name=name,
             job_title=job_title,
             company_name=company_name,

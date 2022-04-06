@@ -1,13 +1,12 @@
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.ext.associationproxy import association_proxy
 
 from sqlalchemy.schema import FetchedValue
 from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-# from app.api.projects.project.models.project_summary_contact import ProjectContact
+from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.parties.party.models.party import Party
 from app.config import Config
 
@@ -26,11 +25,11 @@ class Project(AuditMixin, Base):
     project_lead = db.relationship(
         'Party', lazy='select', primaryjoin='Party.party_guid == Project.project_lead_party_guid')
 
-    # contacts = db.relationship(
-    #     'ProjectContact',
-    #     primaryjoin=
-    #     'and_(ProjectContact.project_id == Project.project_id, ProjectContact.deleted_ind == False)',
-    #     lazy='selectin')
+    contacts = db.relationship(
+        'ProjectContact',
+        primaryjoin=
+        'and_(ProjectContact.project_guid == Project.project_guid, ProjectContact.deleted_ind == False)',
+        lazy='selectin')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_id}'
@@ -59,22 +58,24 @@ class Project(AuditMixin, Base):
 
         mine.projects.append(project)
         if add_to_session:
-            project.save(commit=False)
+            project.save(commit=True)
 
-        # for contact in contacts:
-        #     new_contact = ProjectContact(
-        #         project_guid=project.project_guid,
-        #         name=contact.get('name'),
-        #         job_title=contact.get('job_title'),
-        #         company_name=contact.get('company_name'),
-        #         email=contact.get('email'),
-        #         phone_number=contact.get('phone_number'),
-        #         phone_extension=contact.get('phone_extension'),
-        #         is_primary=contact.get('is_primary'))
-        #     project.contacts.append(new_contact)
+        # Create contacts.
+        for contact in contacts:
+            new_contact = ProjectContact(
+                project_guid=project.project_guid,
+                name=contact.get('name'),
+                job_title=contact.get('job_title'),
+                company_name=contact.get('company_name'),
+                email=contact.get('email'),
+                phone_number=contact.get('phone_number'),
+                phone_extension=contact.get('phone_extension'),
+                is_primary=contact.get('is_primary'))
+            project.contacts.append(new_contact)
 
         if add_to_session:
             project.save(commit=False)
+        return project
 
     def update(self, project_title, proponent_project_id, contacts=[], add_to_session=True):
 
@@ -83,36 +84,35 @@ class Project(AuditMixin, Base):
         self.proponent_project_id = proponent_project_id
 
         # Delete deleted contacts.
-        # updated_contact_ids = [contact.get('project_contact_guid') for contact in contacts]
-        # for deleted_contact in self.contacts:
-        #     if str(deleted_contact.project_contact_guid) not in updated_contact_ids:
-        #         deleted_contact.delete(commit=False)
+        updated_contact_ids = [contact.get('project_contact_guid') for contact in contacts]
+        for deleted_contact in self.contacts:
+            if str(deleted_contact.project_contact_guid) not in updated_contact_ids:
+                deleted_contact.delete(commit=False)
 
         # Create or update existing contacts.
-        # for contact in contacts:
-        #     updated_contact_guid = contact.get('project_contact_guid')
-        #     if updated_contact_guid:
-        #         updated_contact = ProjectContact.find_project_contact_by_guid(
-        #             updated_contact_guid)
-        #         updated_contact.name = contact.get('name')
-        #         updated_contact.job_title = contact.get('job_title')
-        #         updated_contact.company_name = contact.get('company_name')
-        #         updated_contact.email = contact.get('email')
-        #         updated_contact.phone_number = contact.get('phone_number')
-        #         updated_contact.phone_extension = contact.get('phone_extension')
-        #         updated_contact.is_primary = contact.get('is_primary')
+        for contact in contacts:
+            updated_contact_guid = contact.get('project_contact_guid')
+            if updated_contact_guid:
+                updated_contact = ProjectContact.find_project_contact_by_guid(updated_contact_guid)
+                updated_contact.name = contact.get('name')
+                updated_contact.job_title = contact.get('job_title')
+                updated_contact.company_name = contact.get('company_name')
+                updated_contact.email = contact.get('email')
+                updated_contact.phone_number = contact.get('phone_number')
+                updated_contact.phone_extension = contact.get('phone_extension')
+                updated_contact.is_primary = contact.get('is_primary')
 
-        #     else:
-        #         new_contact = ProjectContact(
-        #             project_guid=self.project_guid,
-        #             name=contact.get('name'),
-        #             job_title=contact.get('job_title'),
-        #             company_name=contact.get('company_name'),
-        #             email=contact.get('email'),
-        #             phone_number=contact.get('phone_number'),
-        #             phone_extension=contact.get('phone_extension'),
-        #             is_primary=contact.get('is_primary'))
-        #         self.contacts.append(new_contact)
+            else:
+                new_contact = ProjectContact(
+                    project_guid=self.project_guid,
+                    name=contact.get('name'),
+                    job_title=contact.get('job_title'),
+                    company_name=contact.get('company_name'),
+                    email=contact.get('email'),
+                    phone_number=contact.get('phone_number'),
+                    phone_extension=contact.get('phone_extension'),
+                    is_primary=contact.get('is_primary'))
+                self.contacts.append(new_contact)
 
         if add_to_session:
             self.save(commit=False)
