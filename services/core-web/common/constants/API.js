@@ -82,6 +82,11 @@ export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 
+// Permits - Notices of Departure
+export const NOTICES_OF_DEPARTURE = (mineGuid, permitGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/notice-of-departures`;
+export const FETCH_NOTICES_OF_DEPARTURE = (mineGuid) => `/mines/${mineGuid}/notice-of-departures`;
+
 // Explosive Storage & Use Permits
 export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/explosives-permits`;
 export const EXPLOSIVES_PERMIT = (mineGuid, explosivesPermitGuid) =>
