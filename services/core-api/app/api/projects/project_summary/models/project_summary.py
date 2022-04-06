@@ -10,6 +10,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.access_decorators import is_minespace_user
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
@@ -35,23 +36,25 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_permit_receipt_date = db.Column(db.DateTime, nullable=True)
     expected_project_start_date = db.Column(db.DateTime, nullable=True)
 
+    project_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
     project_summary_lead_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     status_code = db.Column(
         db.String,
         db.ForeignKey('project_summary_status_code.project_summary_status_code'),
         nullable=False)
 
+    project_table = db.relationship('Project', lazy='joined')
+    mine_guid = association_proxy('project_table', 'mine_guid')
     project_summary_lead = db.relationship(
         'Party',
         lazy='select',
         primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
     contacts = db.relationship(
-        'ProjectSummaryContact',
-        primaryjoin=
-        'and_(ProjectSummaryContact.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryContact.deleted_ind == False)',
-        lazy='selectin')
+        'ProjectContact',
+        primaryjoin="ProjectSummary.project_guid==foreign(ProjectContact.project_guid)")
+
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
         primaryjoin=
@@ -110,10 +113,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                expected_project_start_date,
                status_code,
                documents=[],
-               contacts=[],
                authorizations=[],
                submission_date=None,
                add_to_session=True):
+
         project_summary = cls(
             project_summary_description=project_summary_description,
             project_guid=project.project_guid,
@@ -140,18 +143,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 project_summary_document_type_code='GEN')
             project_summary_doc.mine_document = mine_doc
             project_summary.documents.append(project_summary_doc)
-
-        # for contact in contacts:
-        #     new_contact = ProjectSummaryContact(
-        #         project_summary_guid=project_summary.project_summary_guid,
-        #         name=contact.get('name'),
-        #         job_title=contact.get('job_title'),
-        #         company_name=contact.get('company_name'),
-        #         email=contact.get('email'),
-        #         phone_number=contact.get('phone_number'),
-        #         phone_extension=contact.get('phone_extension'),
-        #         is_primary=contact.get('is_primary'))
-        #     project_summary.contacts.append(new_contact)
 
         for authorization in authorizations:
             # Validate permit types
@@ -236,12 +227,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 project_summary_doc.mine_document = mine_doc
                 self.documents.append(project_summary_doc)
 
-        # Delete deleted contacts.
-        updated_contact_ids = [contact.get('project_summary_contact_guid') for contact in contacts]
-        for deleted_contact in self.contacts:
-            if str(deleted_contact.project_summary_contact_guid) not in updated_contact_ids:
-                deleted_contact.delete(commit=False)
-
         # Delete deleted authorizations.
         updated_authorization_ids = [
             authorization.get('project_summary_authorization_guid')
@@ -251,32 +236,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if str(deleted_authorization.project_summary_authorization_guid
                    ) not in updated_authorization_ids:
                 deleted_authorization.delete(commit=False)
-
-        # Create or update existing contacts.
-        for contact in contacts:
-            updated_contact_guid = contact.get('project_summary_contact_guid')
-            if updated_contact_guid:
-                updated_contact = ProjectSummaryContact.find_project_summary_contact_by_guid(
-                    updated_contact_guid)
-                updated_contact.name = contact.get('name')
-                updated_contact.job_title = contact.get('job_title')
-                updated_contact.company_name = contact.get('company_name')
-                updated_contact.email = contact.get('email')
-                updated_contact.phone_number = contact.get('phone_number')
-                updated_contact.phone_extension = contact.get('phone_extension')
-                updated_contact.is_primary = contact.get('is_primary')
-
-            else:
-                new_contact = ProjectSummaryContact(
-                    project_summary_guid=self.project_summary_guid,
-                    name=contact.get('name'),
-                    job_title=contact.get('job_title'),
-                    company_name=contact.get('company_name'),
-                    email=contact.get('email'),
-                    phone_number=contact.get('phone_number'),
-                    phone_extension=contact.get('phone_extension'),
-                    is_primary=contact.get('is_primary'))
-                self.contacts.append(new_contact)
 
         # Create or update existing authorizations.
         for authorization in authorizations:
@@ -322,13 +281,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Description data in MineSpace</p>'
         body += f'<p>Overview: {self.project_summary_description}'
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine_guid}/permits-and-approvals/pre-applications'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{mine.mine_guid}/permits-and-approvals/pre-applications'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 
     def send_project_summary_email_to_proponent(self, mine):
         recipients = [contact.email for contact in self.contacts if contact.is_primary]
-        project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
+        project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{mine.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
 
         subject = f'Project Description Notification for {mine.mine_name}'
         body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
