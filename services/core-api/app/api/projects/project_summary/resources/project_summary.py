@@ -136,12 +136,14 @@ class ProjectSummaryResource(Resource, UserMixin):
         ) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
 
         # Update project summary.
-        project_summary.update(
-            data.get('project_summary_description'), data.get('expected_draft_irt_submission_date'),
-            data.get('expected_permit_application_date'), data.get('expected_permit_receipt_date'),
-            data.get('expected_project_start_date'), data.get('status_code'),
-            data.get('project_summary_lead_party_guid'), data.get('documents', []),
-            data.get('authorizations', []), submission_date)
+        project_summary.update(project, data.get('project_summary_description'),
+                               data.get('expected_draft_irt_submission_date'),
+                               data.get('expected_permit_application_date'),
+                               data.get('expected_permit_receipt_date'),
+                               data.get('expected_project_start_date'), data.get('status_code'),
+                               data.get('project_summary_lead_party_guid'),
+                               data.get('documents', []), data.get('authorizations',
+                                                                   []), submission_date)
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
@@ -151,7 +153,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         # Update project.
         project.update(
             data.get('project_summary_title'), data.get('proponent_project_id'),
-            data.get('contacts', []))
+            data.get('project_summary_lead_party_guid'), data.get('contacts', []))
         project.save()
 
         return project_summary

@@ -78,11 +78,17 @@ class Project(AuditMixin, Base):
             project.save(commit=False)
         return project
 
-    def update(self, project_title, proponent_project_id, contacts=[], add_to_session=True):
+    def update(self,
+               project_title,
+               proponent_project_id,
+               project_lead_party_guid,
+               contacts=[],
+               add_to_session=True):
 
         # Update simple properties.
         self.project_title = project_title
         self.proponent_project_id = proponent_project_id
+        self.project_lead_party_guid = project_lead_party_guid
 
         # Delete deleted contacts.
         updated_contact_ids = [contact.get('project_contact_guid') for contact in contacts]
