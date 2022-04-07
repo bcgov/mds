@@ -1,6 +1,5 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import queryString from "query-string";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as Strings from "../constants/strings";
