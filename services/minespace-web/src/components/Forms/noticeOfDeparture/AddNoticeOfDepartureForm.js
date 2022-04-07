@@ -78,8 +78,8 @@ class AddNoticeOfDepartureForm extends Component {
             <Col span={12}>
               <Form.Item label="Permit #">
                 <Field
-                  id="permitNumber"
-                  name="permitNumber"
+                  id="permitGuid"
+                  name="permit_guid"
                   placeholder="Select Permit #"
                   component={renderConfig.SELECT}
                   validate={[requiredList]}
@@ -103,8 +103,8 @@ class AddNoticeOfDepartureForm extends Component {
           </Row>
           <Form.Item label="Project Title">
             <Field
-              id="title"
-              name="title"
+              id="nodTitle"
+              name="nod_title"
               placeholder="Departure Project Title"
               component={renderConfig.FIELD}
               validate={[required, maxLength(50)]}
@@ -113,7 +113,7 @@ class AddNoticeOfDepartureForm extends Component {
           <Form.Item label="Departure Summary">
             <Field
               disabled
-              id="departure_summary"
+              id="departureSummary"
               name="departure_summary"
               placeholder="Departure Summary..."
               component={renderConfig.AUTO_SIZE_FIELD}
