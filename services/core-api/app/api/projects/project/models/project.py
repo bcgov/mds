@@ -7,6 +7,7 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.projects.project_contact.models.project_contact import ProjectContact
+from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.config import Config
 
@@ -22,9 +23,9 @@ class Project(AuditMixin, Base):
     project_lead_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
 
+    project_summary = db.relationship("ProjectSummary", uselist=False, back_populates="project")
     project_lead = db.relationship(
         'Party', lazy='select', primaryjoin='Party.party_guid == Project.project_lead_party_guid')
-
     contacts = db.relationship(
         'ProjectContact',
         primaryjoin=
