@@ -1,7 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
-from app.api.projects.project.response_models import PROJECT_CONTACT_MODEL
+from app.api.projects.project.response_models import PROJECT_CONTACT_MODEL, PROJECT_MODEL
 
 PROJECT_SUMMARY_DOCUMENT_MODEL = api.inherit('ProjectSummaryDocument', MINE_DOCUMENT_MODEL, {
     'project_summary_id': fields.Integer,
@@ -65,6 +65,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'project_summary_guid': fields.String,
         'project_summary_title': fields.String,
         'project_summary_description': fields.String,
+        'project_guid': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'status_code': fields.String,
