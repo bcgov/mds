@@ -58,6 +58,7 @@ objects:
             lastTriggeredImage: ""
         - type: ConfigChange
       replicas: 1
+      revisionHistoryLimit: 5
       selector:
         name: ${NAME}
       template:
