@@ -11,6 +11,7 @@ from app.api.utils.access_decorators import is_minespace_user
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.projects.project.models.project import Project
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
@@ -28,9 +29,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     project_summary_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
-    project_summary_title = db.Column(db.String(300), nullable=False)
     project_summary_description = db.Column(db.String(4000), nullable=True)
-    proponent_project_id = db.Column(db.String(20), nullable=True)
     submission_date = db.Column(db.DateTime, nullable=True)
     expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
@@ -39,19 +38,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
-    project_summary_lead_party_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     status_code = db.Column(
         db.String,
         db.ForeignKey('project_summary_status_code.project_summary_status_code'),
         nullable=False)
 
-    project_table = db.relationship('Project', lazy='joined')
-    mine_guid = association_proxy('project_table', 'mine_guid')
-    project_summary_lead = db.relationship(
-        'Party',
-        lazy='select',
-        primaryjoin='Party.party_guid == ProjectSummary.project_summary_lead_party_guid')
+    project = db.relationship("Project", back_populates="project_summary")
     contacts = db.relationship(
         'ProjectContact',
         primaryjoin=
@@ -78,18 +70,40 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def project_summary_lead_name(self):
-        if self.project_summary_lead_party_guid:
-            party = Party.find_by_party_guid(self.project_summary_lead_party_guid)
+        if self.project.project_lead_party_guid:
+            party = Party.find_by_party_guid(self.project.project_lead_party_guid)
             return party.name
         return None
 
     @hybrid_property
+    def project_summary_lead_party_guid(self):
+        if self.project.project_lead_party_guid:
+            return self.project.project_lead_party_guid
+        return None
+
+    @hybrid_property
+    def mine_guid(self):
+        if self.project.mine_guid:
+            return self.project.mine_guid
+        return None
+
+    @hybrid_property
     def mine_name(self):
-        mine = None
-        if self.mine_guid:
-            mine = Mine.find_by_mine_guid(str(self.mine_guid))
-        if mine:
+        if self.project.mine_guid:
+            mine = Mine.find_by_mine_guid(str(self.project.mine_guid))
             return mine.mine_name
+        return None
+
+    @hybrid_property
+    def project_summary_title(self):
+        if self.project.project_title:
+            return self.project.project_title
+        return None
+
+    @hybrid_property
+    def project_proponent_id(self):
+        if self.project.project_proponent_id:
+            return self.project.project_proponent_id
         return None
 
     @classmethod
@@ -112,8 +126,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                project,
                mine,
                project_summary_description,
-               project_summary_title,
-               proponent_project_id,
                expected_draft_irt_submission_date,
                expected_permit_application_date,
                expected_permit_receipt_date,
@@ -127,8 +139,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         project_summary = cls(
             project_summary_description=project_summary_description,
             project_guid=project.project_guid,
-            project_summary_title=project_summary_title,
-            proponent_project_id=proponent_project_id,
             expected_draft_irt_submission_date=expected_draft_irt_submission_date,
             expected_permit_application_date=expected_permit_application_date,
             expected_permit_receipt_date=expected_permit_receipt_date,
@@ -172,37 +182,31 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     def update(self,
                project_summary_description,
-               project_summary_title,
-               proponent_project_id,
                expected_draft_irt_submission_date,
                expected_permit_application_date,
                expected_permit_receipt_date,
                expected_project_start_date,
                status_code,
-               project_summary_lead_party_guid,
+               project_lead_party_guid,
                documents=[],
-               contacts=[],
                authorizations=[],
                submission_date=None,
                add_to_session=True):
 
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
-        if project_summary_lead_party_guid and self.project_summary_lead_party_guid is None:
-            self.status_code = "ASG"
-        elif project_summary_lead_party_guid is None and self.project_summary_lead_party_guid:
-            self.status_code = "SUB"
-        else:
-            self.status_code = status_code
+        # if project_lead_party_guid and self.project_lead_party_guid is None:
+        #     self.status_code = "ASG"
+        # elif project_lead_party_guid is None and self.project_lead_party_guid:
+        #     self.status_code = "SUB"
+        # else:
+        self.status_code = status_code
 
         self.project_summary_description = project_summary_description
-        self.project_summary_title = project_summary_title
-        self.proponent_project_id = proponent_project_id
         self.expected_draft_irt_submission_date = expected_draft_irt_submission_date
         self.expected_permit_application_date = expected_permit_application_date
         self.expected_permit_receipt_date = expected_permit_receipt_date
         self.expected_project_start_date = expected_project_start_date
-        self.project_summary_lead_party_guid = project_summary_lead_party_guid
         self.submission_date = submission_date
 
         # TODO - Turn this on when document removal is activated on the front end.
