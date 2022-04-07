@@ -20,6 +20,12 @@ class ProjectSummaryResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument(
+        'mine_guid',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
+    parser.add_argument(
         'status_code',
         type=str,
         store_missing=False,
@@ -116,6 +122,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         data = self.parser.parse_args()
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
+
         if project_summary is None:
             raise NotFound('Project Description not found')
         if project is None:
@@ -130,12 +137,11 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         # Update project summary.
         project_summary.update(
-            data.get('project_summary_description'), data.get('project_summary_title'),
-            data.get('proponent_project_id'), data.get('expected_draft_irt_submission_date'),
+            data.get('project_summary_description'), data.get('expected_draft_irt_submission_date'),
             data.get('expected_permit_application_date'), data.get('expected_permit_receipt_date'),
             data.get('expected_project_start_date'), data.get('status_code'),
             data.get('project_summary_lead_party_guid'), data.get('documents', []),
-            data.get('contacts', []), data.get('authorizations', []), submission_date)
+            data.get('authorizations', []), submission_date)
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
