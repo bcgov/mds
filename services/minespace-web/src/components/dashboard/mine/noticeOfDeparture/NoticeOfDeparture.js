@@ -55,7 +55,7 @@ export class NoticeOfDeparture extends Component {
   handleCreateNoticeOfDeparture = (permit_guid, values) => {
     this.setState({ isLoaded: false });
     return this.props
-      .createNoticeOfDeparture(this.props.mine.mine_guid, permit_guid, values)
+      .createNoticeOfDeparture(this.props.mine.mine_guid, values)
       .then(() => {
         this.props.closeModal();
         this.handleFetchNoticesOfDeparture();
