@@ -181,6 +181,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return project_summary
 
     def update(self,
+               project,
                project_summary_description,
                expected_draft_irt_submission_date,
                expected_permit_application_date,
@@ -195,12 +196,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
-        # if project_lead_party_guid and self.project_lead_party_guid is None:
-        #     self.status_code = "ASG"
-        # elif project_lead_party_guid is None and self.project_lead_party_guid:
-        #     self.status_code = "SUB"
-        # else:
-        self.status_code = status_code
+        if project_lead_party_guid and project.project_lead_party_guid is None:
+            self.status_code = "ASG"
+        elif project_lead_party_guid is None and project.project_lead_party_guid:
+            self.status_code = "SUB"
+        else:
+            self.status_code = status_code
 
         self.project_summary_description = project_summary_description
         self.expected_draft_irt_submission_date = expected_draft_irt_submission_date
