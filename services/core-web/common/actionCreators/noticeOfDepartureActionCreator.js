@@ -8,13 +8,13 @@ import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import * as noticeOfDepartureActions from "../actions/noticeOfDepartureActions";
 
-export const createNoticeOfDeparture = (mine_guid, permitGuid, payload) => (dispatch) => {
+export const createNoticeOfDeparture = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_DEPARTURE));
   dispatch(showLoading("modal"));
 
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICES_OF_DEPARTURE(mine_guid, permitGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICES_OF_DEPARTURE(mine_guid)}`,
       payload,
       createRequestHeader()
     )
@@ -37,7 +37,7 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICES_OF_DEPARTURE));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.FETCH_NOTICES_OF_DEPARTURE(mine_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.NOTICES_OF_DEPARTURE(mine_guid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_NOTICES_OF_DEPARTURE));
       dispatch(noticeOfDepartureActions.storeNoticesOfDeparture(response.data));
