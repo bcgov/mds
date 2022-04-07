@@ -1,3 +1,4 @@
+from flask import request
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
@@ -11,8 +12,6 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
-from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 
 
 class ProjectSummaryListGetResource(Resource, UserMixin):
@@ -22,11 +21,21 @@ class ProjectSummaryListGetResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200, envelope='records')
     def get(self, project_guid):
-        project = Project.find_by_project_guid(project_guid)
-        if project is None:
-            raise NotFound('Project not found')
+        # Until the Minespace UI is updated to support projects, we need to retrieve all projects by mine.
+        # After retrieving all projects we can retrieve all project descriptions and show the entirety.
+        # TODO: LONG TERM FLOW - COMPLETE THIS WHEN MINESPACE IS UPDATED...
 
-        project_summaries = ProjectSummary.find_by_project_guid(project_guid, is_minespace_user())
+        # TODO: TEMPORARY FLOW - WILL BE REMOVED
+        mine_guid = request.args.get('mine_guid', type=str)
+        if mine_guid is None:
+            raise BadRequest('Cannot retrieve Project Descriptions because no mine was provided.')
+        projects = Project.find_by_mine_guid(mine_guid)
+        project_summaries = []
+        for project in projects:
+            project_project_summaries = ProjectSummary.find_by_project_guid(
+                project.project_guid, is_minespace_user())
+            project_summaries = [*project_summaries, *project_project_summaries]
+
         return project_summaries
 
 
@@ -111,22 +120,18 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         # Until the Minespace user workflow is ironed out we will be creating a project first and then assign the description to it.
-        project = Project.create(mine, data.get('project_title'), data.get('proponent_project_id'),
-                                 data.get('contacts', []))
-        new_project = project.save()
+        new_project = Project.create(mine, data.get('project_summary_title'),
+                                     data.get('proponent_project_id'), data.get('contacts', []))
 
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None
         project_summary = ProjectSummary.create(new_project, mine,
                                                 data.get('project_summary_description'),
-                                                data.get('project_summary_title'),
-                                                data.get('proponent_project_id'),
                                                 data.get('expected_draft_irt_submission_date'),
                                                 data.get('expected_permit_application_date'),
                                                 data.get('expected_permit_receipt_date'),
                                                 data.get('expected_project_start_date'),
                                                 data.get('status_code'), data.get('documents', []),
-                                                data.get('contacts', []),
                                                 data.get('authorizations', []), submission_date)
 
         try:
