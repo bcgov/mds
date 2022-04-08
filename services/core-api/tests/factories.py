@@ -43,6 +43,8 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
@@ -53,7 +55,7 @@ from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.utcnow)
+TODAY = factory.LazutcyFunction(datetime.utcnow)
 
 FACTORY_LIST = []
 
@@ -1008,30 +1010,41 @@ class ExplosivesPermitMagazineFactory(BaseFactory):
     detonator_type = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
 
 
-class ProjectSummaryFactory(BaseFactory):
+class ProjectFactory(BaseFactory):
     class Meta:
-        model = ProjectSummary
+        model = Project
 
     class Params:
         mine = factory.SubFactory(MineFactory, minimal=True)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    project_summary_guid = GUID
-    project_summary_title = 'Sample test title'
-    status_code = 'O'
-    documents = []
+    project_guid = GUID
+    project_title = 'Test Project Title'
     contacts = []
+
+    proponent_project_id = None
+    project_lead_party_guid = None
+
+
+class ProjectSummaryFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummary
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    project_summary_guid = GUID
+    status_code = 'DFT'
+    documents = []
     authorizations = []
     deleted_ind = False
 
     project_summary_description = None
-    proponent_project_id = None
     expected_draft_irt_submission_date = None
     expected_permit_application_date = None
     expected_permit_receipt_date = None
     expected_project_start_date = None
-    project_summary_lead_party_guid = None
-    project_summary_lead = None
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -1053,6 +1066,25 @@ class ProjectSummaryContactFactory(BaseFactory):
         project_summary = factory.SubFactory(ProjectSummaryFactory)
 
     project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
+    email = factory.Faker('email')
+    phone_number = factory.Faker('numerify', text='###-###-####')
+    name = factory.Faker('name')
+    is_primary = True
+    deleted_ind = False
+
+    phone_extension = None
+    job_title = None
+    company_name = None
+
+
+class ProjectContactFactory(BaseFactory):
+    class Meta:
+        model = ProjectContact
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
     email = factory.Faker('email')
     phone_number = factory.Faker('numerify', text='###-###-####')
     name = factory.Faker('name')

@@ -1,6 +1,6 @@
 from tests.factories import ProjectSummaryContactFactory, ProjectSummaryFactory
 
-from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 
 
 def test_find_project_summary_contact_by_guid(db_session):

@@ -1,6 +1,6 @@
 from tests.factories import ProjectSummaryFactory, ProjectSummaryAuthorizationFactory
 
-from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 
 
 def test_find_by_project_summary_authorization_guid(db_session):
