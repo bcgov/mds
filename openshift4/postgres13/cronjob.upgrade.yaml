@@ -1,0 +1,95 @@
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: cj-upgrade
+spec:
+  schedule: 05 09 * * *
+  concurrencyPolicy: Replace
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      parallelism: 1
+      completions: 1
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          volumes:
+            - name: mds-db-backup-data
+              persistentVolumeClaim:
+                claimName: mds-db-backup-data
+          containers:
+            - name: refresh
+              image: image-registry.apps.silver.devops.gov.bc.ca/openshift/postgresql
+              args:
+                - /bin/sh
+                - '-c'
+                - |-
+                  echo "Hello world"
+            # echo "Fetching paths..."
+            # YESTERDAY=$(date +%Y-%m-%d -d "yesterday")
+            # BACKUP=$(find /backups/daily/ -depth -name "*$YESTERDAY*.gz")
+            # echo "Checking restore file exists..."
+            # [[ -f $BACKUP ]] && echo "Using $BACKUP for restore" || exit 1
+            # echo "Proceeding with restore..."
+            # cp $BACKUP /tmp/
+            # BKUP_FILE=$(find /tmp/ -depth -name "*$YESTERDAY*.gz")
+            # echo "Applying grants..."
+            # psql -d $DB_NAME -U $UPGRADEDB_USER -h $DB_HOST -c "REVOKE CONNECT ON DATABASE $DB_NAME FROM PUBLIC;SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();"
+            # psql -d postgres -U $UPGRADEDB_USER -h $DB_HOST -c "DROP DATABASE $DB_NAME;"
+            # psql -d postgres -U $UPGRADEDB_USER -h $DB_HOST -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
+            # psql -d postgres -U $UPGRADEDB_USER -h $DB_HOST -c "GRANT ALL ON DATABASE "$DB_NAME" to "$DB_USER";"
+            # echo "Restoring schema and data..."
+            # gunzip -c $BKUP_FILE | psql -d $DB_NAME -U $UPGRADEDB_USER -h $DB_HOST
+            # echo "Performing post-restore action..."
+            # psql -d $DB_NAME -U $UPGRADEDB_USER -h $DB_HOST -c "$REPORT_CMD"
+            # echo "Restore process finished"
+              env:
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: database-user
+                - name: UPGRADEDB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: database-admin-user
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: database-admin-password
+                - name: DB_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: database-hostname
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql
+                      key: database-name
+              resources:
+                limits:
+                  cpu: 512m
+                  memory: 2048Mi
+                requests:
+                  cpu: 256m
+                  memory: 1024Mi
+              volumeMounts:
+                - name: mds-db-backup-data
+                  mountPath: /backups/
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: Always
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          activeDeadlineSeconds: 4500
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
