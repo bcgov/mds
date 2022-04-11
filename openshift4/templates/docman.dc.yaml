@@ -45,7 +45,7 @@ parameters:
   - name: CORE_API_URL
     required: true
   - name: CPU_LIMIT
-    value: 30m
+    value: 90m
   - name: MEMORY_LIMIT
     value: 1152Mi
   - name: CPU_REQUEST
