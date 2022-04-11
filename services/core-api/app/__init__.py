@@ -183,8 +183,8 @@ def register_routes(app):
         cached_now = cache.get('ping')
         return now == cached_now
 
-    def get_service_status(URI):
-        url = app.config[URI] + '/health'
+    def get_service_status(uri):
+        url = app.config[uri] + '/health'
         res = requests.get(url)
         return res.status_code == 200
 
