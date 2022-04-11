@@ -338,7 +338,7 @@ objects:
                   path: ${BASE_PATH}/health/live
                   port: 5000
                   scheme: HTTP
-                initialDelaySeconds: 160
+                initialDelaySeconds: 80
                 timeoutSeconds: 1
                 periodSeconds: 1
               readinessProbe:
@@ -346,7 +346,7 @@ objects:
                   path: ${BASE_PATH}/health/ready
                   port: 5000
                   scheme: HTTP
-                initialDelaySeconds: 160
+                initialDelaySeconds: 80
                 timeoutSeconds: 5
                 periodSeconds: 5
               terminationMessagePath: /dev/termination-log
