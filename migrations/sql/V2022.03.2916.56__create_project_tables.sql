@@ -69,8 +69,6 @@ INSERT INTO project_contact(project_guid, name, job_title, company_name, email, 
   WHERE psc.project_summary_guid = ps.project_summary_guid and pr.project_guid = ps.project_guid;
 
 -- Drop legacy tables, columns, and constraints
-DROP TABLE IF EXISTS project_summary_contact;
-							   
 ALTER TABLE project_summary
 DROP CONSTRAINT IF EXISTS mine_guid_fkey,
 DROP COLUMN IF EXISTS mine_guid,
