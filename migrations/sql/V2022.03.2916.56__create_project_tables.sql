@@ -2,9 +2,9 @@ CREATE TABLE IF NOT EXISTS project (
   project_guid            uuid DEFAULT gen_random_uuid()        PRIMARY KEY,
   project_id              serial                                   NOT NULL,
   mine_guid               uuid                                     NOT NULL,
-	project_title           character varying(300)                   NOT NULL,
-	project_lead_party_guid uuid                                             ,
-	proponent_project_id    character varying(20)                            ,
+  project_title           character varying(300)                   NOT NULL,
+  project_lead_party_guid uuid                                             ,
+  proponent_project_id    character varying(20)                            ,
   create_user             character varying(60)                    NOT NULL,
   create_timestamp        timestamp with time zone DEFAULT now()   NOT NULL,
   update_user             character varying(60)                    NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS project (
 
   CONSTRAINT project_id UNIQUE (project_id),
   CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT project_lead_party_guid_fkey FOREIGN KEY (project_lead_party_guid) REFERENCES party(party_guid) ON UPDATE CASCADE ON DELETE SET NULL
+  CONSTRAINT project_lead_party_guid_fkey FOREIGN KEY (project_lead_party_guid) REFERENCES party(party_guid) ON UPDATE CASCADE ON DELETE SET NULL
 );
 ALTER TABLE project OWNER TO mds;
 --
@@ -53,20 +53,24 @@ ALTER TABLE project_summary ADD CONSTRAINT project_guid_fkey FOREIGN KEY (projec
 
 -- Data Fix:
 -- Copy data from project_summary to project table(create a project for every project summary)
-INSERT INTO project (project_summary_guid, mine_guid, project_title, project_lead_party_guid, create_user,update_user)
-  SELECT ps.project_summary_guid, ps.mine_guid, ps.project_summary_title, ps.project_summary_lead_party_guid, 'system-mds','system-mds'
+INSERT INTO project (mine_guid, project_title, project_lead_party_guid, proponent_project_id, create_user,update_user)
+  SELECT ps.mine_guid, ps.project_summary_title, ps.project_summary_lead_party_guid, ps.proponent_project_id, 'system-mds','system-mds'
   FROM project_summary ps
   WHERE project_summary_id not in (select project_summary_id
 								   from project);
+								  
+-- Update project_summary project_guid_fkey with newly created projects
+UPDATE project_summary ps SET project_guid = (SELECT project_guid FROM project WHERE project_title = ps.project_summary_title);
+								  
 -- Copy data from project_summary_contact to project_contact by project_guid (copied in the previous query)								   
 INSERT INTO project_contact(project_guid, name, job_title, company_name, email, phone_number, phone_extension, is_primary, deleted_ind, create_user, update_user)
   SELECT pr.project_guid, psc.name, psc.job_title, psc.company_name, psc.email, psc.phone_number, psc.phone_extension, psc.is_primary, psc.deleted_ind, psc.create_user, psc.update_user
-  FROM project_summary_contact psc, project pr
-  WHERE psc.project_summary_guid = pr.project_summary_guid and
-        pr.project_guid not in (select project_guid
-							    from project_contact);
+  FROM project_summary_contact psc, project pr, project_summary ps
+  WHERE psc.project_summary_guid = ps.project_summary_guid and pr.project_guid = ps.project_guid;
 
--- Drop legacy columns and constraints
+-- Drop legacy tables, columns, and constraints
+DROP TABLE IF EXISTS project_summary_contact;
+							   
 ALTER TABLE project_summary
 DROP CONSTRAINT IF EXISTS mine_guid_fkey,
 DROP COLUMN IF EXISTS mine_guid,
