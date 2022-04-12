@@ -115,7 +115,6 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, project_guid, project_summary_guid):
-        print(f'PR: {project_guid} PS: {project_summary_guid}')
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
         project = Project.find_by_project_guid(project_guid)

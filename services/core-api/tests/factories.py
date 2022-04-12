@@ -1036,7 +1036,7 @@ class ProjectSummaryFactory(BaseFactory):
 
     project_guid = factory.SelfAttribute('project.project_guid')
     project_summary_guid = GUID
-    status_code = 'DFT'
+    status_code = 'SUB'
     documents = []
     authorizations = []
     deleted_ind = False

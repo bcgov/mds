@@ -101,9 +101,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return None
 
     @hybrid_property
-    def project_proponent_id(self):
-        if self.project.project_proponent_id:
-            return self.project.project_proponent_id
+    def proponent_project_id(self):
+        if self.project.proponent_project_id:
+            return self.project.proponent_project_id
         return None
 
     @classmethod

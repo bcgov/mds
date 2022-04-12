@@ -9,7 +9,7 @@ from tests.factories import ProjectFactory
 def test_get_project_summaries_by_project_guid(test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
     project = ProjectFactory(mine=mine)
-    project_summary = ProjectSummaryFactory(project=project)
+    ProjectSummaryFactory(project=project)
 
     get_resp = test_client.get(
         f'/projects/${project.project_guid}/project-summaries?mine_guid={mine.mine_guid}',
@@ -17,11 +17,12 @@ def test_get_project_summaries_by_project_guid(test_client, db_session, auth_hea
     get_data = json.loads(get_resp.data.decode())
 
     assert get_resp.status_code == 200, get_resp.response
-    # TODO: After ProjectSummaryListGetResource gets refactored for long term use, update this test
-    # assert len(get_data['records']) == 1
+    assert len(get_data['records']) == 1
 
 
 def test_post_project_summary_minimum(test_client, db_session, auth_headers):
+    """Creating a new project summary will also create the parent project object"""
+
     mine = MineFactory(minimal=True)
     data = {
         'mine_guid': mine.mine_guid,
@@ -38,6 +39,7 @@ def test_post_project_summary_minimum(test_client, db_session, auth_headers):
     assert post_data['mine_guid'] == str(mine.mine_guid)
     assert post_data['project_summary_title'] == data['project_summary_title']
     assert post_data['status_code'] == data['status_code']
+    assert post_data['project_guid'] is not None
 
 
 def test_post_project_summary_with_authorizations(test_client, db_session, auth_headers):

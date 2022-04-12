@@ -1,3 +1,5 @@
+# TODO: This model is not currently in use but may be re-purposed once further Project requirements are discovered.
+
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import UUID
 from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin
