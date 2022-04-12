@@ -54,12 +54,10 @@ export class NoticeOfDeparture extends Component {
 
   handleCreateNoticeOfDeparture = (permit_guid, values) => {
     this.setState({ isLoaded: false });
-    return this.props
-      .createNoticeOfDeparture(this.props.mine.mine_guid, values)
-      .then(() => {
-        this.props.closeModal();
-        this.handleFetchNoticesOfDeparture();
-      });
+    return this.props.createNoticeOfDeparture(this.props.mine.mine_guid, values).then(() => {
+      this.props.closeModal();
+      this.handleFetchNoticesOfDeparture();
+    });
   };
 
   openCreateNODModal = (event) => {
@@ -80,7 +78,6 @@ export class NoticeOfDeparture extends Component {
     return (
       <Row>
         <Col span={24}>
-          {/* TODO: Add authorization wrapper */}
           <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
