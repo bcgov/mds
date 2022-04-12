@@ -1,4 +1,6 @@
+import datetime
 import logging
+import requests
 from logging.config import dictConfig
 from flask import Flask, request
 from flask_cors import CORS
@@ -31,7 +33,7 @@ from app.config import Config
 #alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
 from app.extensions import db, jwt, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
-
+from sqlalchemy.sql import text
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -99,11 +101,94 @@ def register_routes(app):
     root_api_namespace.add_namespace(EMLI_contacts_api)
     root_api_namespace.add_namespace(projects_api)
 
-    # Healthcheck endpoint
+    # General Service status
     @root_api_namespace.route('/health')
     class Healthcheck(Resource):
+        def get_health(self):
+            service = {
+                'database': False,
+                'cache' : False,
+                'nris' : False,
+                'docgen': False,
+                'docman': False
+            }
+            status = 200
+
+            try:
+                service['database'] = get_database_status()
+            except Exception as error:
+                app.logger.error("Database health check failed " + str(error))
+                service['database'] = False
+                status = 503
+
+            try:
+                service['cache'] = get_cache_status()
+            except Exception as error:
+                app.logger.error("Cache health check failed " + str(error))
+                service['cache'] = False
+                status = 503
+
+            try:
+                service['nris'] = get_service_status('NRIS_API_URL')
+            except Exception as error:
+                app.logger.error("NRIS health check failed " + str(error))
+                service['nris'] = False
+                status = 503
+
+            try:
+                service['docgen'] = get_service_status('DOCUMENT_GENERATOR_URL')
+            except Exception as error:
+                app.logger.error("Docgen health check failed " + str(error))
+                service['docgen'] = False
+                status = 503
+
+            try:
+                service['docman'] = get_service_status('DOCUMENT_MANAGER_URL')
+            except Exception as error:
+                app.logger.error("Document Manager health check failed " + str(error))
+                service['docman'] = False
+                status = 503
+
+            return service, status
+
         def get(self):
-            return {'status': 'pass'}
+            return self.get_health()
+
+    # Liveness Endpoint to make sure that python server is ready to accept connections and container / server is running. 
+    @root_api_namespace.route('/health/live')
+    class Livenesscheck(Resource):
+        def get(self):
+            return {'live': True}
+
+    # Readiness Endpoint to make sure that the container is ready to process the request it receives. Dependencies must be available 
+    @root_api_namespace.route('/health/ready')
+    class Readinesscheck(Resource):
+        def get(self):
+            try:
+                get_database_status()
+                get_cache_status()
+                return {
+                    'ready': True
+                }
+            except Exception as error:
+                app.logger.error("Readiness Check Failed " + str(error))
+                return {
+                    'ready': False
+                }, 503
+    
+    def get_database_status():
+        return db.session.query("up").from_statement(text("SELECT 1 as up")).all()[0][0] == 1;
+
+    def get_cache_status():
+        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cache.set('ping', now)
+        cached_now = cache.get('ping')
+        return now == cached_now
+
+    def get_service_status(uri):
+        url = app.config[uri] + '/health'
+        res = requests.get(url)
+        return res.status_code == 200
 
     @root_api_namespace.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
