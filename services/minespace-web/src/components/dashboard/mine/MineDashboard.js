@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Row, Col, Tabs, Typography } from "antd";
+import { Col, Row, Tabs, Typography } from "antd";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import { bindActionCreators } from "redux";
@@ -10,6 +10,7 @@ import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -24,6 +25,7 @@ import ProjectSummaries from "@/components/dashboard/mine/projectSummaries/Proje
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
+import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -139,6 +141,11 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Permits" key="permits">
                     <Permits mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
+                  {!IN_PROD() && (
+                    <Tabs.TabPane tab="Notices of Departure" key="nods">
+                      <NoticesOfDeparture mine={mine} match={this.props.match} />
+                    </Tabs.TabPane>
+                  )}
                   <Tabs.TabPane tab="Inspections" key="inspections">
                     <Inspections mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
