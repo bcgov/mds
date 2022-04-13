@@ -21,7 +21,7 @@ const defaultProps = {
   addNoticeOfDepartureFormValues: {},
 };
 
-export class AddNODModal extends Component {
+export class AddNoticeOfDepartureModal extends Component {
   state = { submitting: false };
 
   handleNoticeOfDepartureSubmit = () => {
@@ -74,7 +74,7 @@ const mapStateToProps = (state) => ({
   addNoticeOfDepartureFormValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
 });
 
-AddNODModal.propTypes = propTypes;
-AddNODModal.defaultProps = defaultProps;
+AddNoticeOfDepartureModal.propTypes = propTypes;
+AddNoticeOfDepartureModal.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(AddNODModal);
+export default connect(mapStateToProps)(AddNoticeOfDepartureModal);

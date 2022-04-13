@@ -23,8 +23,9 @@ export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
 // NODs
-// TODO: Match the API endpoint
-export const NOD_DOCUMENTS = (mineGuid, nodGuid) => `/mines/${mineGuid}/nods/${nodGuid}/documents`;
+export const NOTICE_OF_DEPARTURE_DOCUMENTS = (mineGuid, nodGuid) =>
+  `/mines/${mineGuid}/nods/${nodGuid}/documents`;
+export const NOTICES_OF_DEPARTURE = (mineGuid) => `/mines/${mineGuid}/notices-of-departure`;
 
 // Reports
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;

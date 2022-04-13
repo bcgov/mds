@@ -10,7 +10,7 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
-import { NOD_DOCUMENTS } from "@/constants/API";
+import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -112,7 +112,7 @@ class AddNoticeOfDepartureForm extends Component {
           </Form.Item>
           <Form.Item label="Departure Summary">
             <Field
-              disabled
+              // disabled
               id="departureSummary"
               name="departure_summary"
               placeholder="Departure Summary..."
@@ -134,7 +134,7 @@ class AddNoticeOfDepartureForm extends Component {
               name="uploadedFiles"
               onFileLoad={this.onFileLoad}
               onRemoveFile={this.onRemoveFile}
-              uploadUrl={NOD_DOCUMENTS(this.state.mineGuid)}
+              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(this.state.mineGuid)}
               mineGuid={this.props.mineGuid}
               component={FileUpload}
             />
@@ -182,7 +182,7 @@ class AddNoticeOfDepartureForm extends Component {
                   id="uploadedFiles"
                   name="uploadedFiles"
                   component={FileUpload}
-                  uploadUrl={NOD_DOCUMENTS(this.state.mineGuid)}
+                  uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(this.state.mineGuid)}
                   acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
                   onFileLoad={this.onFileLoad}
                   onRemoveFile={this.onRemoveFile}
