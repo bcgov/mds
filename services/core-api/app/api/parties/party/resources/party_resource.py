@@ -165,10 +165,19 @@ class PartyResource(Resource, UserMixin):
                                              party_guid,
                                              start_date=None,
                                              end_date=None):
-        update_required = business_role and business_role.start_date == start_date.date() and (
+
+        update_end_date = business_role and business_role.start_date == start_date.date() and (
             end_date == None or business_role.end_date != end_date.date())
-        if update_required:
+        update_start_date = business_role and (business_role.end_date == None
+                                               or business_role.end_date == end_date.date()
+                                               ) and business_role.start_date != start_date.date()
+
+        if update_end_date:
             business_role.end_date = end_date
+            business_role.save()
+            cache.delete(GET_ALL_PROJECT_LEADS_KEY)
+        elif update_start_date:
+            business_role.start_date = start_date
             business_role.save()
             cache.delete(GET_ALL_PROJECT_LEADS_KEY)
         else:
@@ -178,7 +187,8 @@ class PartyResource(Resource, UserMixin):
                 new_bappt.save()
             except alch_exceptions.IntegrityError as e:
                 if "daterange_excl" in str(e):
-                    raise BadRequest(f'Date ranges for project lead appointment must not overlap')
+                    role = "inspector" if party_business_role_code == 'INS' else 'project lead'
+                    raise BadRequest(f'Date ranges for {role} appointment must not overlap')
 
     @api.expect(parser)
     @api.doc(
