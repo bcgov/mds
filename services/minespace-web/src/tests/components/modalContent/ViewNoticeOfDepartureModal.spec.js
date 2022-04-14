@@ -22,7 +22,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AddIncidentModal", () => {
+describe("ViewNoticeOfDepartureModal", () => {
   it("renders properly", () => {
     const component = shallow(<ViewNoticeOfDepartureModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
