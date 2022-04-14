@@ -1,11 +1,11 @@
 import json
 import uuid
 
-from tests.factories import NoticeOfDepartureFactory, MineFactory
+from tests.factories import NoticeOfDepartureFactory, MineFactory, PermitFactory
 
 
-class TestPermitNodRepository:
-    """GET /mines/{mine_guid}/notice-of-departures"""
+class TestNodListResource:
+    """GET /mines/{mine_guid}/notices-of-departure"""
 
     def test_get_nods_for_a_mine(self, test_client, db_session, auth_headers):
         """Should return the correct number of records and a 200 status code"""
@@ -15,7 +15,7 @@ class TestPermitNodRepository:
         NoticeOfDepartureFactory.create_batch(size=batch_size, mine=mine)
 
         get_resp = test_client.get(
-            f'/mines/{mine.mine_guid}/notice-of-departures',
+            f'/mines/{mine.mine_guid}/notices-of-departure',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
@@ -29,7 +29,7 @@ class TestPermitNodRepository:
         NoticeOfDepartureFactory.create_batch(size=batch_size)
 
         get_resp = test_client.get(
-            f'/mines/{fake_guid}/notice-of-departures',
+            f'/mines/{fake_guid}/notices-of-departure',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
 
