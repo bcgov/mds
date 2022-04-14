@@ -74,6 +74,16 @@ export class NoticeOfDeparture extends Component {
     });
   };
 
+  openViewNoticeOfDepartureModal = (noticeOfDeparture) => {
+    this.props.openModal({
+      props: {
+        noticeOfDeparture,
+        title: "View Notice of Departure",
+      },
+      content: modalConfig.VIEW_NOTICE_OF_DEPARTURE,
+    });
+  };
+
   render() {
     return (
       <Row>
@@ -91,7 +101,11 @@ export class NoticeOfDeparture extends Component {
             The below table displays all of the&nbsp; notices of departure and their associated
             permits &nbsp;associated with this mine.
           </Typography.Paragraph>
-          <NoticeOfDepartureTable isLoaded={this.state.isLoaded} data={this.props.nods} />
+          <NoticeOfDepartureTable
+            isLoaded={this.state.isLoaded}
+            data={this.props.nods}
+            openViewNoticeOfDepartureModal={this.openViewNoticeOfDepartureModal}
+          />
         </Col>
       </Row>
     );
