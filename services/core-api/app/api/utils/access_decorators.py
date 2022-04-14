@@ -23,6 +23,8 @@ GIS = "core_gis"
 EDIT_NOW_DATES = "core_edit_now_dates"
 EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
 EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
+EDIT_REQUIREMENTS = "core_edit_requirements"
+EDIT_INFORMATION_REQUIREMENTS_TABLE = 'core_edit_information_requirements_table'
 EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF= "core_edit_tsf"
 
