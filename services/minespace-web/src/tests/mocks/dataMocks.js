@@ -1272,3 +1272,20 @@ export const STANDARD_PERMIT_CONDITIONS = {
     update_timestamp: "2021-07-29 20:23:16Z",
   },
 };
+
+export const NOTICES_OF_DEPARTURE = {
+  records: [
+    {
+      nod_guid: "4ca454f5-7982-4936-bfb9-84f5976fdefe",
+      nod_title: "ff",
+      permit: {
+        permit_id: 22,
+        permit_guid: "d378ca4d-310a-4644-95cf-4d8dc47f294b",
+        permit_no: "M-7594809",
+        permit_status_code: "C",
+        current_permittee: "Haynes, Park and Brown",
+        permit_prefix: "M",
+      },
+    },
+  ],
+};
