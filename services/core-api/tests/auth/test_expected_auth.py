@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -48,6 +48,7 @@ from app.api.now_applications.resources.now_application_list_resource import NOW
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
 
 
 @pytest.mark.parametrize(
@@ -137,7 +138,11 @@ from app.api.projects.project_summary.resources.project_summary import ProjectSu
      (MineIncidentNoteListResource, 'get', [VIEW_ALL]),
      (MineIncidentNoteListResource, 'post', [MINE_ADMIN, EDIT_INCIDENTS]),
      (MineIncidentNoteResource, 'get', [VIEW_ALL]),
-     (MineIncidentNoteResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS])])
+     (MineIncidentNoteResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS]),
+     (InformationRequirementsTableResource, 'put',
+      [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
+     (InformationRequirementsTableResource, 'delete',
+      [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
