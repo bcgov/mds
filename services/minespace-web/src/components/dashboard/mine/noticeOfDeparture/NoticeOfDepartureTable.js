@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { TrashCanIcon } from "@/assets/icons";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -65,9 +64,9 @@ const NoticeOfDepartureTable = (props) => {
                 className="icon-xs--darkestgrey"
               />
             </Button>
-            <Button type="primary" size="small" ghost>
-              <TrashCanIcon onClick={() => {}} className="icon-xs--darkestgrey" />
-            </Button>
+            {/* <Button type="primary" size="small" ghost> */}
+            {/*  <TrashCanIcon onClick={() => {}} className="icon-xs--darkestgrey" /> */}
+            {/* </Button> */}
           </Row>
         </div>
       ),
