@@ -1,12 +1,7 @@
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
-from flask import current_app
-from sqlalchemy.orm import backref
-
 from app.extensions import db
-
 from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
-
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 

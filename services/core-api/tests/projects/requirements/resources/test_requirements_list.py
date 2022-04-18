@@ -1,13 +1,8 @@
-from email import header
 import json
-import uuid
-
 from app.api.projects.information_requirements_table.models.requirements import Requirements
-# from tests.factories import RequirementsFactory
 
 
 def test_get_all_requirements(test_client, db_session, auth_headers):
-    # requirements = RequirementsFactory()
     requirements = Requirements.get_all()
 
     get_resp = test_client.get(f'/projects/requirements', headers=auth_headers['full_auth_header'])
