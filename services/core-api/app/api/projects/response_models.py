@@ -112,13 +112,11 @@ IRT_STATUS_CODE_MODEL = api.model('InformationRequirementsTableStatusCode', {
 IRT_REQUIREMENTS_MODEL = api.model(
     'IRTRequirementsXref', {
         'irt_requirements_xref_guid': fields.String,
-        'irt_guid': fields.String,
         'requirement_guid': fields.String,
         'deleted_ind': fields.Boolean,
         'required': fields.String,
         'methods': fields.String,
-        'comment': fields.String,
-        'requirement': fields.Nested(REQUIREMENTS_MODEL)
+        'comment': fields.String
     })
 
 IRT_MODEL = api.model(

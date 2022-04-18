@@ -1,14 +1,13 @@
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, NotFound
-from flask import request, current_app
+from flask import request
 
-from app.extensions import api, db
+from app.extensions import api
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_INFORMATION_REQUIREMENTS_TABLE
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.projects.response_models import IRT_MODEL
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
-from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
 
 
 class InformationRequirementsTableResource(Resource, UserMixin):

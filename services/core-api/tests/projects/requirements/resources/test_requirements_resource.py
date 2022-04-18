@@ -1,8 +1,6 @@
 import json
-import uuid
 
 from app.api.projects.information_requirements_table.models.requirements import Requirements
-from tests.factories import RequirementsFactory
 
 
 def test_get_requirements_by_requirement_guid(test_client, db_session, auth_headers):
@@ -18,7 +16,6 @@ def test_get_requirements_by_requirement_guid(test_client, db_session, auth_head
 
 
 def test_put_requirement(test_client, db_session, auth_headers):
-    #requirement = RequirementsFactory()
     requirements = Requirements.get_all()
 
     data = {
@@ -45,7 +42,6 @@ def test_put_requirement(test_client, db_session, auth_headers):
 
 
 def test_delete_requirement(test_client, db_session, auth_headers):
-    # requirement = RequirementsFactory()
     requirements = Requirements.get_all()
 
     del_resp = test_client.delete(

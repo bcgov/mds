@@ -3,7 +3,6 @@ from sqlalchemy.schema import FetchedValue
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
-from flask import current_app
 
 
 class IRTRequirementsXref(SoftDeleteMixin, AuditMixin, Base):

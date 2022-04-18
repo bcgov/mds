@@ -1,6 +1,6 @@
 import json
 
-from tests.factories import InformationRequirementsTableFactory, ProjectFactory, RequirementsFactory
+from tests.factories import InformationRequirementsTableFactory, ProjectFactory
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.models.requirements import Requirements
 
@@ -22,14 +22,6 @@ def test_get_information_requirements_table_by_irt_guid(test_client, db_session,
 
 def test_put_information_requirements_table(test_client, db_session, auth_headers):
     project = ProjectFactory()
-    # batch_size = 2
-    # requirements = list()
-
-    # for i in range(batch_size):
-    #     requirements.append(RequirementsFactory())
-
-    # assert len(requirements) == 2
-
     requirements = Requirements.get_all()
 
     data = {
