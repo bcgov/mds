@@ -6,6 +6,8 @@ import EditVarianceModal from "@/components/modalContent/variances/EditVarianceM
 import ViewIncidentModal from "@/components/modalContent/incidents/ViewIncidentModal";
 import AddTailingsModal from "@/components/modalContent/tailing/AddTailingsModal";
 import AddIncidentModal from "@/components/modalContent/incidents/AddIncidentModal";
+import AddNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/AddNoticeOfDepartureModal";
+import ViewNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/ViewNoticeOfDepartureModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -16,6 +18,8 @@ export const modalConfig = {
   VIEW_INCIDENT: ViewIncidentModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_INCIDENT: AddIncidentModal,
+  ADD_NOTICE_OF_DEPARTURE: AddNoticeOfDepartureModal,
+  VIEW_NOTICE_OF_DEPARTURE: ViewNoticeOfDepartureModal,
 };
 
 export default modalConfig;

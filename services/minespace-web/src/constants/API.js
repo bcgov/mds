@@ -22,6 +22,11 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
+// NODs
+export const NOTICE_OF_DEPARTURE_DOCUMENTS = (mineGuid, nodGuid) =>
+  `/mines/${mineGuid}/nods/${nodGuid}/documents`;
+export const NOTICES_OF_DEPARTURE = (mineGuid) => `/mines/${mineGuid}/notices-of-departure`;
+
 // Reports
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
 export const MINE_REPORTS = (mine_guid) => `/mines/${mine_guid}/reports`;

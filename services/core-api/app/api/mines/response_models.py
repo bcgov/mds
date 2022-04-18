@@ -720,7 +720,7 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-MINE_NOD_MODEL = api.model('NoticeOfDeparture', {
+NOD_MODEL = api.model('NoticeOfDeparture', {
     'nod_guid': fields.String,
     'nod_title': fields.String,
     'permit': fields.Nested(api.model(
@@ -734,6 +734,4 @@ MINE_NOD_MODEL = api.model('NoticeOfDeparture', {
     }))
 })
 
-PERMIT_NOD_MODEL = api.model('Nod', {'nod_guid': fields.String, 'nod_title': fields.String})
-
-CREATE_NOD_MODEL = api.model('Nod', {'title': fields.String})
+CREATE_NOD_MODEL = api.model('NoticeOfDeparture', {'permit_guid': fields.String, 'nod_title': fields.String})
