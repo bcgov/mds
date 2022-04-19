@@ -89,7 +89,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    path="/mines/:mineGuid/project-description/:projectSummaryGuid/:tab"
+    path="/projects/:projectGuid/project-description/:projectSummaryGuid/:tab"
   />
   <Route
     render={[Function]}

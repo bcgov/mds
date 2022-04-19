@@ -60,10 +60,16 @@ exports[`DocumentUpload renders properly 1`] = `
       }
       component={[Function]}
       id="documents"
-      mineGuid={Object {}}
       name="documents"
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
+      params={
+        Object {
+          "mineGuid": Object {},
+          "projectGuid": undefined,
+          "projectSummaryGuid": undefined,
+        }
+      }
     />
   </FormItem>
 </Fragment>
