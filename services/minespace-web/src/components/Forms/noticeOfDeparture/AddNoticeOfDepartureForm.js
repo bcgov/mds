@@ -12,15 +12,12 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  // mineManagerOptions: CustomPropTypes.options.isRequired,
-  // mineGuid: PropTypes.string.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 
 class AddNoticeOfDepartureForm extends Component {
   state = {
-    // substantial: null,
     uploadedFiles: [],
     documentNameGuidMap: {},
     permitOptions: [],
@@ -52,12 +49,6 @@ class AddNoticeOfDepartureForm extends Component {
     remove(this.state.documentNameGuidMap, { document_manager_guid: fileItem.serverId });
     change("uploadedFiles", this.state.uploadedFiles);
   };
-
-  // onChange = (e) => {
-  //   this.setState({
-  //     substantial: e.target.value,
-  //   });
-  // };
 
   render() {
     return (
@@ -94,102 +85,7 @@ class AddNoticeOfDepartureForm extends Component {
                 />
               </Form.Item>
             </Col>
-            {/* <Col span={12}> */}
-            {/*  <Form.Item label="Mine Manager"> */}
-            {/*    <Field */}
-            {/*      disabled */}
-            {/*      id="mineManager" */}
-            {/*      name="mineManager" */}
-            {/*      placeholder="Select Mine Manager" */}
-            {/*      component={renderConfig.SELECT} */}
-            {/*      // validate={[requiredList]} */}
-            {/*      data={this.props.mineManagerOptions} */}
-            {/*    /> */}
-            {/*  </Form.Item> */}
-            {/* </Col> */}
           </Row>
-          {/* <Form.Item label="Departure Summary"> */}
-          {/*  <Field */}
-          {/*    disabled */}
-          {/*    id="departureSummary" */}
-          {/*    name="departure_summary" */}
-          {/*    placeholder="Departure Summary..." */}
-          {/*    component={renderConfig.AUTO_SIZE_FIELD} */}
-          {/*    validate={[required]} */}
-          {/*  /> */}
-          {/* </Form.Item> */}
-          {/* <Typography.Title level={4}> */}
-          {/*  Upload Notice of Departure Self-Assessment Form */}
-          {/* </Typography.Title> */}
-          {/* <Form.Item> */}
-          {/*  <Typography.Paragraph> */}
-          {/*    Please upload your completed Self-assessment form (click here to download) below. */}
-          {/*    Remember your completed form must be signed by the Mine Manager and any supporting */}
-          {/*    information included or uploaded. */}
-          {/*  </Typography.Paragraph> */}
-          {/*  <Field */}
-          {/*    id="uploadedFiles" */}
-          {/*    name="uploadedFiles" */}
-          {/*    onFileLoad={this.onFileLoad} */}
-          {/*    onRemoveFile={this.onRemoveFile} */}
-          {/*    uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(this.state.mineGuid)} */}
-          {/*    mineGuid={this.props.mineGuid} */}
-          {/*    component={FileUpload} */}
-          {/*  /> */}
-          {/* </Form.Item> */}
-          {/* <Typography.Title level={4}> */}
-          {/*  Notice of Departure Self-Assessment Determination */}
-          {/* </Typography.Title> */}
-          {/* <Typography.Paragraph> */}
-          {/*  Based on the information established in your self-assessment form please determine your */}
-          {/*  submissions notice of departure type. If you are unsure what category you fall under, */}
-          {/*  please contact us. */}
-          {/* </Typography.Paragraph> */}
-          {/* <Form.Item> */}
-          {/*  <Radio.Group disabled onChange={this.onChange} value={this.state.substantial}> */}
-          {/*    <Radio value={false}> */}
-          {/*      This notice of departure is non-substantial and does not require ministry review. */}
-          {/*      (Proponent is responsible for ensuring all details have been completed correctly for */}
-          {/*      submission and can begin work immediately) */}
-          {/*    </Radio> */}
-          {/*    <Radio value> */}
-          {/*      This notice of departure is potentially substantial and requires ministry review. */}
-          {/*      (Ministry staff will review submission and determine if work can move forward as */}
-          {/*      notice of departure) */}
-          {/*    </Radio> */}
-          {/*  </Radio.Group> */}
-          {/* </Form.Item> */}
-          {/* {this.state.substantial && ( */}
-          {/*  <div> */}
-          {/*    <Typography.Title level={4}>Upload Application Documents</Typography.Title> */}
-          {/*    <Typography.Paragraph> */}
-          {/*      You have indicated that your notice of departure is potentially substantial. Please */}
-          {/*      support your notice of departure by uploading supporting application documents. */}
-          {/*      These items documents should include: */}
-          {/*    </Typography.Paragraph> */}
-          {/*    <ul> */}
-          {/*      <li>A detailed project description</li> */}
-          {/*      <li>Location (with map, showing Mine boundary)</li> */}
-          {/*      <li>Total disturbance area</li> */}
-          {/*      <li>Total new disturbance area</li> */}
-          {/*      <li>Relevant supporting info (management plans, field survey’s, etc...)</li> */}
-          {/*    </ul> */}
-          {/*    <Form.Item> */}
-          {/*      <Field */}
-          {/*        disabled */}
-          {/*        id="uploadedFiles" */}
-          {/*        name="uploadedFiles" */}
-          {/*        component={FileUpload} */}
-          {/*        uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(this.state.mineGuid)} */}
-          {/*        acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }} */}
-          {/*        onFileLoad={this.onFileLoad} */}
-          {/*        onRemoveFile={this.onRemoveFile} */}
-          {/*        allowRevert */}
-          {/*        allowMultiple */}
-          {/*      /> */}
-          {/*    </Form.Item> */}
-          {/*  </div> */}
-          {/* )} */}
         </Form>
       </div>
     );

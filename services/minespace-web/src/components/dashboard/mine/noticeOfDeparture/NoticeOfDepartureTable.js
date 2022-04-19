@@ -64,9 +64,6 @@ const NoticeOfDepartureTable = (props) => {
                 className="icon-xs--darkestgrey"
               />
             </Button>
-            {/* <Button type="primary" size="small" ghost> */}
-            {/*  <TrashCanIcon onClick={() => {}} className="icon-xs--darkestgrey" /> */}
-            {/* </Button> */}
           </Row>
         </div>
       ),
