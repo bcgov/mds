@@ -35,7 +35,6 @@ export class MineNoticeOfDeparture extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     this.handleFetchNoticesOfDeparture();
   }
 

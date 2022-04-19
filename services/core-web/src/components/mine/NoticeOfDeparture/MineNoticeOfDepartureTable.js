@@ -62,7 +62,7 @@ const handleTableChange = (updateNodList, tableFilters) => (pagination, filters,
   };
   updateNodList(params);
 };
-console.log(NoticeOfDepartureType['potentially_substantial'])
+
 export class MineNoticeOfDepartureTable extends Component {
   transformRowData = (nods) =>
     nods.map(({ submission_timestamp, create_timestamp, update_timestamp, nod_guid, nod_type, nod_status, ...other }) => ({
