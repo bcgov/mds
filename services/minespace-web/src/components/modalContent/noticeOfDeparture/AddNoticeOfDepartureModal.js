@@ -24,6 +24,8 @@ const defaultProps = {
 export class AddNoticeOfDepartureModal extends Component {
   state = { submitting: false };
 
+  invalidReportingPayload = (values) => !(values.permit_guid && values.nod_title);
+
   handleNoticeOfDepartureSubmit = () => {
     this.setState({ submitting: true });
     const { permitNumber } = this.props.addNoticeOfDepartureFormValues;
@@ -59,7 +61,10 @@ export class AddNoticeOfDepartureModal extends Component {
             <Button disabled={this.state.submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={this.state.submitting}
+            disabled={
+              this.state.submitting ||
+              this.invalidReportingPayload(this.props.addNoticeOfDepartureFormValues)
+            }
             onClick={(event) => this.handleNoticeOfDepartureSubmit(event)}
           >
             Submit

@@ -40,6 +40,11 @@ exports[`MineTailingsTable renders properly 1`] = `
         "title": "Longitude",
       },
       Object {
+        "dataIndex": "notes",
+        "render": [Function],
+        "title": "Notes",
+      },
+      Object {
         "key": "operations",
         "render": [Function],
       },
