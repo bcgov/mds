@@ -10,6 +10,6 @@ UPDATE notice_of_departure SET nod_type = 'potentially_substantial' WHERE nod_ty
 UPDATE notice_of_departure SET nod_status = 'pending_review' WHERE nod_status IS NULL;
 UPDATE notice_of_departure SET submission_timestamp = create_timestamp WHERE submission_timestamp IS NULL;
 
-ALTER TABLE notice_of_departure ALTER COLUMN nod_type DROP NOT NULL;
-ALTER TABLE notice_of_departure ALTER COLUMN nod_status DROP NOT NULL;
-ALTER TABLE notice_of_departure ALTER COLUMN submission_timestamp DROP NOT NULL;
+ALTER TABLE notice_of_departure ALTER COLUMN nod_type SET NOT NULL;
+ALTER TABLE notice_of_departure ALTER COLUMN nod_status SET NOT NULL;
+ALTER TABLE notice_of_departure ALTER COLUMN submission_timestamp SET NOT NULL;
