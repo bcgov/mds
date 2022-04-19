@@ -6,21 +6,25 @@ from app.api.parties.response_models import PARTY
 
 
 class DateTime(fields.Raw):
+
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
 
 class PermitCondition(fields.Raw):
+
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_MODEL)
 
 
 class PermitConditionTemplate(fields.Raw):
+
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_TEMPLATE_MODEL)
 
 
 class StandardPermitCondition(fields.Raw):
+
     def format(self, value):
         return marshal(value, STANDARD_PERMIT_CONDITION_MODEL)
 
@@ -714,3 +718,19 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'description': fields.String,
         'active_ind': fields.Boolean
     })
+
+NOD_MODEL = api.model('NoticeOfDeparture', {
+    'nod_guid': fields.String,
+    'nod_title': fields.String,
+    'permit': fields.Nested(api.model(
+    'Permit', {
+        'permit_id': fields.Integer,
+        'permit_guid': fields.String,
+        'permit_no': fields.String,
+        'permit_status_code': fields.String,
+        'current_permittee': fields.String,
+        'permit_prefix': fields.String
+    }))
+})
+
+CREATE_NOD_MODEL = api.model('NoticeOfDeparture', {'permit_guid': fields.String, 'nod_title': fields.String})
