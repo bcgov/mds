@@ -60,7 +60,6 @@ export class MineNoticeOfDeparture extends Component {
         isLoaded={this.state.isLoaded}
         nods={this.props.nods}
         mine={mine}
-        isApplication
       />
       <br />
     </div>
