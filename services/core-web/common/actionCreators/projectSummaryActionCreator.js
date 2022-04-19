@@ -17,7 +17,11 @@ export const createProjectSummary = (
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid), payload, createRequestHeader())
+    .post(
+      ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(null),
+      { ...payload, mine_guid: mineGuid },
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
@@ -31,7 +35,7 @@ export const createProjectSummary = (
 };
 
 export const updateProjectSummary = (
-  { mineGuid, projectSummaryGuid },
+  { projectGuid, projectSummaryGuid },
   payload,
   message = "Successfully updated project description"
 ) => (dispatch) => {
@@ -39,7 +43,7 @@ export const updateProjectSummary = (
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
       payload,
       createRequestHeader()
     )
@@ -62,7 +66,10 @@ export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid), createRequestHeader())
+    .get(
+      ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(null, { mine_guid: mineGuid }),
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
       dispatch(projectSummaryActions.storeProjectSummaries(response.data));
@@ -71,12 +78,12 @@ export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectSummaryById = (mineGuid, projectSummaryGuid) => (dispatch) => {
+export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(
-      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid),
+      ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
       createRequestHeader()
     )
     .then((response) => {
@@ -118,7 +125,7 @@ export const fetchProjectSummaries = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.PROJECT_SUMMARIES(payload), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(payload), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
       dispatch(projectSummaryActions.storeProjectSummaries(response.data));

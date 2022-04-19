@@ -29,18 +29,19 @@ beforeEach(() => {
 
 describe("`createProjectSummary` action creator", () => {
   const mineGuid = "12345-6789";
+  const args = { mineGuid };
   const submission_date = "2021-11-19T00:00:00.000Z";
-  let message = "Successfully created the project description.";
+  const message = "Successfully created the project description.";
   const project_summary_description = "This is a sample description.";
-  const url = ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid);
-  const mockPayload = { submission_date, project_summary_description };
+  const url = ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(null);
+  const mockPayload = { submission_date, project_summary_description, mine_guid: mineGuid };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
     return createProjectSummary(
-      { mineGuid },
+      args,
       mockPayload,
-      (message = "Successfully created a project description.")
+      message
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -51,7 +52,7 @@ describe("`createProjectSummary` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createProjectSummary(
-      mineGuid,
+      args,
       message
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -63,7 +64,7 @@ describe("`createProjectSummary` action creator", () => {
 
 describe("`fetchProjectSummariesByMine` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_PROJECT_SUMMARIES(mineGuid);
+  const url = ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(null, { mine_guid: mineGuid });
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
@@ -117,16 +118,17 @@ describe("`fetchProjectSummaryById` action creator", () => {
 describe("`updateProjectSummary` action creator", () => {
   const mineGuid = "12345-6789";
   const projectSummaryGuid = "12345-6789";
+  const projectGuid = "98745-2351";
   const message = "Successfully updated the project description.";
-  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid);
+  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid);
   const submission_date = "2021-11-20";
   const project_summary_description = "Updated description.";
-  const mockPayload = { submission_date, project_summary_description };
+  const mockPayload = { submission_date, project_summary_description, mine_guid: mineGuid };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
     return updateProjectSummary(
-      { mineGuid, projectSummaryGuid },
+      { projectGuid, projectSummaryGuid },
       mockPayload,
       message
     )(dispatch).then(() => {
