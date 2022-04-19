@@ -87,6 +87,11 @@ export class MineNavigation extends Component {
                 Other Ministry Applications and Authorizations
               </Link>
             </Menu.Item>
+            <Menu.Item key="nods">
+              <Link to={routes.MINE_NOTICES_OF_DEPARTURE.dynamicRoute(this.props.mine.mine_guid)}>
+                Notices of Departure
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu

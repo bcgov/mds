@@ -24,6 +24,7 @@ import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineSecurityInfo from "@/components/mine/Securities/MineSecurityInfo";
 import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineNoticeOfDeparture from "@/components/mine/NoticeOfDeparture/MineNoticeOfDeparture";
 import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -150,6 +151,12 @@ export const MINE_VARIANCES = {
   route: "/mine-dashboard/:id/permits-and-approvals/variances",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
   component: MineVariance,
+};
+
+export const MINE_NOTICES_OF_DEPARTURE = {
+  route: "/mine-dashboard/:id/permits-and-approvals/notices-of-departure",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/notices-of-departure`,
+  component: MineNoticeOfDeparture,
 };
 
 // Project Descriptions(Project Summaries)
