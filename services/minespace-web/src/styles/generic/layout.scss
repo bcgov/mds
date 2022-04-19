@@ -1,3 +1,11 @@
+.icon-xs {
+  font-size: 18px !important;
+  &--darkestgrey {
+    @extend .icon-sm;
+    color: $darkest-grey;
+  }
+}
+
 .icon-sm {
   font-size: 20px !important;
 
