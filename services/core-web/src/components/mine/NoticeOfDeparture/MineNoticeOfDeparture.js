@@ -18,6 +18,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/buttons/AddButton";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
@@ -98,4 +99,7 @@ const mapDispatchToProps = (dispatch) =>
 
   MineNoticeOfDeparture.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);
+
+export default AuthorizationGuard(Permission.IN_TESTING)(
+  connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);
+);
