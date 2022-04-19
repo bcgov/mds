@@ -101,5 +101,5 @@ const mapDispatchToProps = (dispatch) =>
 
 
 export default AuthorizationGuard(Permission.IN_TESTING)(
-  connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);
+  connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture)
 );
