@@ -11,9 +11,9 @@ parameters:
   - name: TAG
     value: dev
   - name: REPLICA_MIN
-    value: "3"
+    value: "1"
   - name: REPLICA_MAX
-    value: "4"
+    value: "1"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
 objects:
