@@ -1163,4 +1163,6 @@ class NoticeOfDepartureFactory(BaseFactory):
     permit_guid = factory.SelfAttribute('permit.permit_guid')
 
     nod_title = factory.Faker('text', max_nb_chars=50)
+    nod_status = 'pending_review',
+    nod_type = 'potentially_substantial',
     deleted_ind = False
