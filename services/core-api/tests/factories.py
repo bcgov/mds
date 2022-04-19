@@ -29,7 +29,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
@@ -1163,6 +1163,6 @@ class NoticeOfDepartureFactory(BaseFactory):
     permit_guid = factory.SelfAttribute('permit.permit_guid')
 
     nod_title = factory.Faker('text', max_nb_chars=50)
-    nod_status = 'pending_review',
-    nod_type = 'potentially_substantial',
+    nod_status = NodStatus.pending_review,
+    nod_type = NodType.potentially_substantial,
     deleted_ind = False
