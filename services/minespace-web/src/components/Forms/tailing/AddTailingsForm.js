@@ -17,6 +17,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -76,6 +77,14 @@ export const AddTailingsForm = (props) => (
       component={RenderSelect}
       data={props.itrbExemptionStatusCodeOptions}
       validate={[required]}
+    />
+    <Field
+      id="notes"
+      name="notes"
+      label="Notes"
+      data={props.notes}
+      component={renderConfig.AUTO_SIZE_FIELD}
+      validate={[maxLength(300)]}
     />
     <div className="ant-modal-footer">
       <Popconfirm

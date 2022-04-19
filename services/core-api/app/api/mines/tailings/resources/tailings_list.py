@@ -55,6 +55,12 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         help='GUID of the party that is the Engineer of Record for this TSF.',
         location='json',
         store_missing=False)
+    parser.add_argument(
+        'notes',
+        type=str,
+        help='Any additional notes to be added to the tailing.',
+        trim=True,
+        location='json')
 
     @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(
@@ -86,7 +92,8 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             longitude=data['longitude'],
             consequence_classification_status_code=data['consequence_classification_status_code'],
             itrb_exemption_status_code=data['itrb_exemption_status_code'],
-            tsf_operating_status_code=data['tsf_operating_status_code'])
+            tsf_operating_status_code=data['tsf_operating_status_code'],
+            notes=data['notes'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
         if is_mine_first_tsf:

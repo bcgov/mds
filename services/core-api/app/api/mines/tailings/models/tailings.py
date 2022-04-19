@@ -22,6 +22,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     consequence_classification_status_code = db.Column(db.String)
     itrb_exemption_status_code = db.Column(db.String)
     tsf_operating_status_code = db.Column(db.String)
+    notes = db.Column(db.String)
     engineer_of_records = db.relationship(
         'MinePartyAppointment',
         lazy='select',
@@ -55,6 +56,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
                consequence_classification_status_code,
                itrb_exemption_status_code,
                tsf_operating_status_code,
+               notes,
                add_to_session=True):
         new_tsf = cls(
             mine_tailings_storage_facility_name=mine_tailings_storage_facility_name,
@@ -62,7 +64,8 @@ class MineTailingsStorageFacility(AuditMixin, Base):
             longitude=longitude,
             consequence_classification_status_code=consequence_classification_status_code,
             itrb_exemption_status_code=itrb_exemption_status_code,
-            tsf_operating_status_code=tsf_operating_status_code)
+            tsf_operating_status_code=tsf_operating_status_code,
+            notes=notes)
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:
             new_tsf.save()
