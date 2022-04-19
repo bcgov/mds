@@ -28,7 +28,6 @@ const NoticeOfDepartureStatus = {
 const propTypes = {
   nods: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
   openViewNodModal: PropTypes.func,
-  isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
@@ -38,7 +37,6 @@ const propTypes = {
 
 const defaultProps = {
   openViewNodModal: () => {},
-  isApplication: false,
   isDashboardView: false,
   params: {},
   sortField: undefined,
