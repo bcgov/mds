@@ -4,7 +4,7 @@ from werkzeug.exceptions import NotFound
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, EDIT_DO)
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
 from app.api.mines.response_models import NOD_MODEL, CREATE_NOD_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 
@@ -35,6 +35,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             nods = NoticeOfDeparture.find_all_by_permit_guid(permit_guid, mine_guid)
         else:
             nods = NoticeOfDeparture.find_all_by_mine_guid(mine_guid)
+        print ( i for i in nods )
         return nods
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
@@ -64,7 +65,14 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         if not permit:
             raise NotFound('Either permit does not exist or does not belong to the mine')
-        new_nod = NoticeOfDeparture.create(permit._context_mine, permit, nod_title=data.get('nod_title'))
+        
+        new_nod = NoticeOfDeparture.create(
+            permit._context_mine, 
+            permit, 
+            nod_title=data.get('nod_title'),
+            nod_type=NodType.potentially_substantial,
+            nod_status=NodStatus.pending_review
+            )
         new_nod.save()
 
         return new_nod

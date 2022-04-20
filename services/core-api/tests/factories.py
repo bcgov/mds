@@ -29,7 +29,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
@@ -44,12 +44,14 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
-from app.api.mines.project_summary.models.project_summary import ProjectSummary
-from app.api.mines.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.mines.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.mines.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
-from app.api.mines.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
-from app.api.mines.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_contact.models.project_contact import ProjectContact
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
+from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
@@ -81,14 +83,12 @@ def create_mine_and_tailing_storage_facility(mine_kwargs={}, tsf_kwargs={}, num_
 
 
 class FactoryRegistry:
-
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         FACTORY_LIST.append(cls)
 
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
-
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
@@ -100,7 +100,6 @@ from tests.now_application_factories import *
 
 
 class MineDocumentFactory(BaseFactory):
-
     class Meta:
         model = MineDocument
 
@@ -114,7 +113,6 @@ class MineDocumentFactory(BaseFactory):
 
 
 class MineStatusFactory(BaseFactory):
-
     class Meta:
         model = MineStatus
 
@@ -128,7 +126,6 @@ class MineStatusFactory(BaseFactory):
 
 
 class MineTypeDetailFactory(BaseFactory):
-
     class Meta:
         model = MineTypeDetail
 
@@ -147,7 +144,6 @@ class MineTypeDetailFactory(BaseFactory):
 
 
 class MineTypeFactory(BaseFactory):
-
     class Meta:
         model = MineType
 
@@ -184,7 +180,6 @@ class MineTypeFactory(BaseFactory):
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
-
     class Meta:
         model = MineTailingsStorageFacility
 
@@ -199,7 +194,6 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
 
 class MineCommentFactory(BaseFactory):
-
     class Meta:
         model = MineComment
 
@@ -211,7 +205,6 @@ class MineCommentFactory(BaseFactory):
 
 
 class VarianceFactory(BaseFactory):
-
     class Meta:
         model = Variance
 
@@ -250,7 +243,6 @@ class VarianceFactory(BaseFactory):
 
 
 class VarianceDocumentFactory(BaseFactory):
-
     class Meta:
         model = VarianceDocumentXref
 
@@ -267,7 +259,6 @@ class VarianceDocumentFactory(BaseFactory):
 
 
 class ProjectSummaryDocumentFactory(BaseFactory):
-
     class Meta:
         model = ProjectSummaryDocumentXref
 
@@ -320,7 +311,6 @@ def RandomTenureTypeCode(permit_no):
 
 
 class MineVerifiedStatusFactory(BaseFactory):
-
     class Meta:
         model = MineVerifiedStatus
 
@@ -332,7 +322,6 @@ class MineVerifiedStatusFactory(BaseFactory):
 
 
 class MineIncidentFactory(BaseFactory):
-
     class Meta:
         model = MineIncident
 
@@ -381,7 +370,6 @@ class MineIncidentFactory(BaseFactory):
 
 
 class MineIncidentNoteFactory(BaseFactory):
-
     class Meta:
         model = MineIncidentNote
 
@@ -399,7 +387,6 @@ class MineIncidentNoteFactory(BaseFactory):
 
 
 class MineIncidentDocumentFactory(BaseFactory):
-
     class Meta:
         model = MineIncidentDocumentXref
 
@@ -416,7 +403,6 @@ class MineIncidentDocumentFactory(BaseFactory):
 
 
 class MineReportFactory(BaseFactory):
-
     class Meta:
         model = MineReport
 
@@ -451,7 +437,6 @@ class MineReportFactory(BaseFactory):
 
 
 class MineReportCommentFactory(BaseFactory):
-
     class Meta:
         model = MineReportComment
 
@@ -465,7 +450,6 @@ class MineReportCommentFactory(BaseFactory):
 
 
 class MineReportSubmissionFactory(BaseFactory):
-
     class Meta:
         model = MineReportSubmission
 
@@ -490,7 +474,6 @@ class MineReportSubmissionFactory(BaseFactory):
 
 
 class AddressFactory(BaseFactory):
-
     class Meta:
         model = Address
 
@@ -507,7 +490,6 @@ class AddressFactory(BaseFactory):
 
 
 class PartyFactory(BaseFactory):
-
     class Meta:
         model = Party
 
@@ -549,7 +531,6 @@ class PartyFactory(BaseFactory):
 
 
 class PartyBusinessRoleFactory(BaseFactory):
-
     class Meta:
         model = PartyBusinessRoleAppointment
 
@@ -563,7 +544,6 @@ class PartyBusinessRoleFactory(BaseFactory):
 
 
 class MinePartyAppointmentFactory(BaseFactory):
-
     class Meta:
         model = MinePartyAppointment
 
@@ -591,7 +571,6 @@ class MinePartyAppointmentFactory(BaseFactory):
 
 
 class PartyOrgBookEntityFactory(BaseFactory):
-
     class Meta:
         model = PartyOrgBookEntity
 
@@ -607,7 +586,6 @@ class PartyOrgBookEntityFactory(BaseFactory):
 
 
 class CoreUserFactory(BaseFactory):
-
     class Meta:
         model = CoreUser
 
@@ -619,7 +597,6 @@ class CoreUserFactory(BaseFactory):
 
 
 class IdirUserDetailFactory(BaseFactory):
-
     class Meta:
         model = IdirUserDetail
 
@@ -632,7 +609,6 @@ class IdirUserDetailFactory(BaseFactory):
 
 
 class MinespaceUserFactory(BaseFactory):
-
     class Meta:
         model = MinespaceUser
 
@@ -641,7 +617,6 @@ class MinespaceUserFactory(BaseFactory):
 
 
 class SubscriptionFactory(BaseFactory):
-
     class Meta:
         model = Subscription
 
@@ -653,7 +628,6 @@ class SubscriptionFactory(BaseFactory):
 
 
 class MineFactory(BaseFactory):
-
     class Meta:
         model = Mine
 
@@ -766,7 +740,6 @@ class MineFactory(BaseFactory):
 
 
 class PermitFactory(BaseFactory):
-
     class Meta:
         model = Permit
 
@@ -827,7 +800,6 @@ class PermitFactory(BaseFactory):
 
 
 class MinePermitXrefFactory(BaseFactory):
-
     class Meta:
         model = MinePermitXref
 
@@ -840,7 +812,6 @@ class MinePermitXrefFactory(BaseFactory):
 
 
 class PermitAmendmentFactory(BaseFactory):
-
     class Meta:
         model = PermitAmendment
 
@@ -879,7 +850,6 @@ class PermitAmendmentFactory(BaseFactory):
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
-
     class Meta:
         model = PermitAmendmentDocument
 
@@ -892,7 +862,6 @@ class PermitAmendmentDocumentFactory(BaseFactory):
 
 
 class PermitConditionsFactory(BaseFactory):
-
     class Meta:
         model = PermitConditions
 
@@ -908,7 +877,6 @@ class PermitConditionsFactory(BaseFactory):
 
 
 class StandardPermitConditionsFactory(BaseFactory):
-
     class Meta:
         model = StandardPermitConditions
 
@@ -921,7 +889,6 @@ class StandardPermitConditionsFactory(BaseFactory):
 
 
 class BondFactory(BaseFactory):
-
     class Meta:
         model = Bond
 
@@ -947,7 +914,6 @@ class BondFactory(BaseFactory):
 
 
 class ReclamationInvoiceFactory(BaseFactory):
-
     class Meta:
         model = ReclamationInvoice
 
@@ -958,7 +924,6 @@ class ReclamationInvoiceFactory(BaseFactory):
 
 
 class ExplosivesPermitFactory(BaseFactory):
-
     class Meta:
         model = ExplosivesPermit
 
@@ -1023,7 +988,6 @@ class ExplosivesPermitFactory(BaseFactory):
 
 
 class ExplosivesPermitMagazineFactory(BaseFactory):
-
     class Meta:
         model = ExplosivesPermitMagazine
 
@@ -1047,31 +1011,41 @@ class ExplosivesPermitMagazineFactory(BaseFactory):
     detonator_type = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
 
 
-class ProjectSummaryFactory(BaseFactory):
-
+class ProjectFactory(BaseFactory):
     class Meta:
-        model = ProjectSummary
+        model = Project
 
     class Params:
         mine = factory.SubFactory(MineFactory, minimal=True)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    project_summary_guid = GUID
-    project_summary_title = 'Sample test title'
-    status_code = 'O'
-    documents = []
+    project_guid = GUID
+    project_title = 'Test Project Title'
     contacts = []
+
+    proponent_project_id = None
+    project_lead_party_guid = None
+
+
+class ProjectSummaryFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummary
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    project_summary_guid = GUID
+    status_code = 'SUB'
+    documents = []
     authorizations = []
     deleted_ind = False
 
     project_summary_description = None
-    proponent_project_id = None
     expected_draft_irt_submission_date = None
     expected_permit_application_date = None
     expected_permit_receipt_date = None
     expected_project_start_date = None
-    project_summary_lead_party_guid = None
-    project_summary_lead = None
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -1086,7 +1060,6 @@ class ProjectSummaryFactory(BaseFactory):
 
 
 class ProjectSummaryContactFactory(BaseFactory):
-
     class Meta:
         model = ProjectSummaryContact
 
@@ -1105,8 +1078,26 @@ class ProjectSummaryContactFactory(BaseFactory):
     company_name = None
 
 
-class ProjectSummaryAuthorizationFactory(BaseFactory):
+class ProjectContactFactory(BaseFactory):
+    class Meta:
+        model = ProjectContact
 
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    email = factory.Faker('email')
+    phone_number = factory.Faker('numerify', text='###-###-####')
+    name = factory.Faker('name')
+    is_primary = True
+    deleted_ind = False
+
+    phone_extension = None
+    job_title = None
+    company_name = None
+
+
+class ProjectSummaryAuthorizationFactory(BaseFactory):
     class Meta:
         model = ProjectSummaryAuthorization
 
@@ -1121,7 +1112,6 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
 
 
 class EMLIContactTypeFactory(BaseFactory):
-
     class Meta:
         model = EMLIContactType
 
@@ -1132,7 +1122,6 @@ class EMLIContactTypeFactory(BaseFactory):
 
 
 class EMLIContactFactory(BaseFactory):
-
     class Meta:
         model = EMLIContact
 
@@ -1162,7 +1151,6 @@ class EMLIContactFactory(BaseFactory):
 
 
 class NoticeOfDepartureFactory(BaseFactory):
-
     class Meta:
         model = NoticeOfDeparture
 
@@ -1173,6 +1161,6 @@ class NoticeOfDepartureFactory(BaseFactory):
     nod_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     permit_guid = factory.SelfAttribute('permit.permit_guid')
-    
+
     nod_title = factory.Faker('text', max_nb_chars=50)
     deleted_ind = False

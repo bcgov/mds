@@ -18,6 +18,7 @@ import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -42,6 +43,19 @@ export const AddTailingsForm = (props) => (
             label="Tailings Storage Facility Name*"
             component={RenderField}
             validate={[required]}
+          />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={24}>
+        <Form.Item>
+          <Field
+            id="notes"
+            name="notes"
+            label="Notes"
+            component={renderConfig.AUTO_SIZE_FIELD}
+            validate={[maxLength(300)]}
           />
         </Form.Item>
       </Col>

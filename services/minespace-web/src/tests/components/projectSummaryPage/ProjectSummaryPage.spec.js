@@ -11,6 +11,9 @@ const setupProps = () => {
   props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;
   props.mines = {};
   props.fieldsTouched = {};
+  props.formattedProjectSummary = {
+    mine_guid: "123",
+  };
 };
 
 const setupDispatchProps = () => {

@@ -34,9 +34,9 @@ export const ADD_PROJECT_SUMMARY = {
 };
 
 export const EDIT_PROJECT_SUMMARY = {
-  route: "/mines/:mineGuid/project-description/:projectSummaryGuid/:tab",
-  dynamicRoute: (mineGuid, projectSummaryGuid, activeTab = "basic-information") =>
-    `/mines/${mineGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
+  route: "/projects/:projectGuid/project-description/:projectSummaryGuid/:tab",
+  dynamicRoute: (projectGuid, projectSummaryGuid, activeTab = "basic-information") =>
+    `/projects/${projectGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
   component: ProjectSummaryPage,
 };
 

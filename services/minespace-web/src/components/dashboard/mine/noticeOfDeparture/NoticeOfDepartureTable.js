@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Table } from "antd";
+import { Button, Row, Table } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -35,6 +36,12 @@ const NoticeOfDepartureTable = (props) => {
       sorter: (a, b) => (a.permit.permit_no > b.permit.permit_no ? -1 : 1),
     },
     {
+      title: "Submitted",
+      dataIndex: "created_at",
+      key: "created_at",
+      sorter: (a, b) => (a.permit.permit_no > b.permit.permit_no ? -1 : 1),
+    },
+    {
       title: "Type",
       dataIndex: "type",
       key: "type",
@@ -50,9 +57,14 @@ const NoticeOfDepartureTable = (props) => {
     {
       render: (text, record) => (
         <div title="" align="right">
-          <Button type="primary" size="small" onClick={(event) => handleOpenModal(event, record)}>
-            View
-          </Button>
+          <Row>
+            <Button type="primary" size="small" ghost>
+              <EyeOutlined
+                onClick={(event) => handleOpenModal(event, record)}
+                className="icon-xs--darkestgrey"
+              />
+            </Button>
+          </Row>
         </div>
       ),
     },

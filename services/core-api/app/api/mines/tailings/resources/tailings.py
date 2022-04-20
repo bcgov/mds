@@ -53,6 +53,12 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         help='GUID of the party that is the Engineer of Record for this TSF.',
         location='json',
         store_missing=False)
+    parser.add_argument(
+        'notes',
+        type=str,
+        help='Any additional notes to be added to the tailing.',
+        trim=True,
+        location='json')
 
     @api.doc(description='Updates an existing tailing storage facility for the given mine')
     @requires_any_of([MINESPACE_PROPONENT, MINE_EDIT])

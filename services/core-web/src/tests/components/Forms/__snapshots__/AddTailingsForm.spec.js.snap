@@ -34,6 +34,29 @@ exports[`AddTailingsForm renders properly 1`] = `
     gutter={16}
   >
     <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="notes"
+          label="Notes"
+          name="notes"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
       md={12}
       xs={24}
     >
