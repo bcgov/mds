@@ -58,6 +58,9 @@ INSERT INTO project (mine_guid, project_title, project_lead_party_guid, proponen
   FROM project_summary ps
   WHERE mine_guid not in (select mine_guid
 								   from project);
+
+-- Update project_summary to include FK to newly created projects
+UPDATE project_summary ps SET project_guid = (SELECT project_guid FROM project WHERE mine_guid = ps.mine_guid LIMIT 1);
 								  
 -- Copy data from project_summary_contact to project_contact by project_guid (copied in the previous query)								   
 INSERT INTO project_contact(project_guid, name, job_title, company_name, email, phone_number, phone_extension, is_primary, deleted_ind, create_user, update_user)
