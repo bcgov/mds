@@ -27,7 +27,6 @@ class TestPutIncidentDocument:
             f'/mines/{mine.mine_guid}/incidents/{incident.mine_incident_guid}/documents/12345',
             headers=auth_headers['full_auth_header'],
             data=data)
-        print("put_resp:", put_resp.data)
         put_data = json.loads(put_resp.data.decode())
         assert put_resp.status_code == 200, put_resp.response
         assert len(put_data['documents']) == document_count + 1
