@@ -16,7 +16,7 @@ export const ProjectSummaryFileUpload = (props) => (
     id="fileUpload"
     name="fileUpload"
     component={FileUpload}
-    uploadUrl={PROJECT_SUMMARY_DOCUMENTS(props.mineGuid)}
+    uploadUrl={PROJECT_SUMMARY_DOCUMENTS(props.params)}
     acceptedFileTypesMap={props.acceptedFileTypesMap}
     onFileLoad={props.onFileLoad}
     onRemoveFile={props.onRemoveFile}

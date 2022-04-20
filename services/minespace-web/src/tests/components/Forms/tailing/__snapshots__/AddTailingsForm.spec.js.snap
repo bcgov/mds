@@ -83,6 +83,17 @@ exports[`AddTailingsForm renders properly 1`] = `
       ]
     }
   />
+  <Field
+    component={[Function]}
+    id="notes"
+    label="Notes"
+    name="notes"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
   <div
     className="ant-modal-footer"
   >

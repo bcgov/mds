@@ -44,6 +44,11 @@ export class DocumentUpload extends Component {
 
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
+    const fileUploadParams = {
+      mineGuid: this.props.isEditMode ? this.props.mineGuid : this.props.match?.params?.mineGuid,
+      projectGuid: this.props.initialValues.project_guid,
+      projectSummaryGuid: this.props.initialValues.project_summary_guid,
+    };
     return (
       <>
         <Typography.Title level={3}>Document Upload</Typography.Title>
@@ -74,7 +79,7 @@ export class DocumentUpload extends Component {
             name="documents"
             onFileLoad={this.onFileLoad}
             onRemoveFile={this.onRemoveFile}
-            mineGuid={this.props.mineGuid}
+            params={fileUploadParams}
             acceptedFileTypesMap={this.acceptedFileTypesMap}
             component={ProjectSummaryFileUpload}
           />

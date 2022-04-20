@@ -1,8 +1,20 @@
+from enum import Enum, auto
+from datetime import datetime
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.constants import *
+
+class NodType(Enum):
+    non_substantial = auto()
+    potentially_substantial = auto()
+
+class NodStatus(Enum):
+    pending_review = auto()
+    in_review = auto()
+    self_authorized = auto()
+
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -12,12 +24,16 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
     nod_title = db.Column(db.String(50), nullable=False)
+    nod_type = db.Column(db.Enum(NodType), nullable=False)
+    nod_status = db.Column(db.Enum(NodStatus), nullable=False)
+    submission_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='joined')
 
     @classmethod
-    def create(cls, mine, permit, nod_title, add_to_session=True):
-        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title)
+    def create(cls, mine, permit, nod_title, nod_type, nod_status, add_to_session=True):
+        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title, nod_type=nod_type, nod_status=nod_status)
 
         if add_to_session:
             new_nod.save(commit=False)

@@ -15,7 +15,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchProjectSummariesByMine = jest.fn();
+  dispatchProps.fetchProjectSummariesByProject = jest.fn();
 };
 
 beforeEach(() => {
