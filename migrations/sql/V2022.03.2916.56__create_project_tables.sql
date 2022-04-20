@@ -56,7 +56,7 @@ ALTER TABLE project_summary ADD CONSTRAINT project_guid_fkey FOREIGN KEY (projec
 INSERT INTO project (mine_guid, project_title, project_lead_party_guid, proponent_project_id, create_user,update_user)
   SELECT ps.mine_guid, ps.project_summary_title, ps.project_summary_lead_party_guid, ps.proponent_project_id, 'system-mds','system-mds'
   FROM project_summary ps
-  WHERE project_summary_id not in (select project_summary_id
+  WHERE mine_guid not in (select mine_guid
 								   from project);
 								  
 -- Copy data from project_summary_contact to project_contact by project_guid (copied in the previous query)								   
