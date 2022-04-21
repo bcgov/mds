@@ -1,11 +1,12 @@
 kind: Deployment
-apiVersion: v1
+apiVersion: apps/v1
 metadata:
   name: backend
   creationTimestamp: null
   labels:
     app.kubernetes.io/part-of: Core
     app.openshift.io/runtime: python
+    app.kubernetes.io/name: backend
   annotations:
     description: Defines how to deploy the application server
 spec:
