@@ -4,6 +4,10 @@ metadata:
   name: backend
 spec:
   containers:
+    - name: app
+      image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/backend:prod"
       env:
-        - name: ENVIRONMENT_NAME
-          value: prod
+          - name: ENVIRONMENT_NAME
+            value: prod
+    - name: flyway-migration
+      image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/flyway:prod"

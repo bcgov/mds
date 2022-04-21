@@ -7,39 +7,35 @@ metadata:
     app.kubernetes.io/part-of: Core
     app.openshift.io/runtime: python
     app.kubernetes.io/name: backend
+    name: backend
+    service: backend
   annotations:
     description: Defines how to deploy the application server
 spec:
   strategy:
-    type: Rolling
-    rollingParams:
-      pre:
-        failurePolicy: Retry
-        execNewPod:
-          containerName: flyway-migration
-          command:
-            - bash
-            - -c
-            - $FLYWAY_HOME/scripts/run_migrations.sh
+    type: RollingUpdate
+    rollingUpdate:
       maxSurge: 50%
       maxUnavailable: 0
-      timeoutSeconds: 1200
-    activeDeadlineSeconds: 21600
   replicas: 3
   revisionHistoryLimit: 5
   test: false
   selector:
-    name: backend
+    matchLabels:
+      name: backend
+      service: backend
   template:
     metadata:
       name: backend
       creationTimestamp: null
       labels:
         name: backend
+        service: backend
+        app.kubernetes.io/name: backend
     spec:
       containers:
         - name: app
-          image: " "
+          image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/backend:dev"
           ports:
             - containerPort: 5000
               protocol: TCP
@@ -263,7 +259,7 @@ spec:
           command:
             - cat
           stdin: true
-          image: " "
+          image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/flyway:dev"
           env:
             - name: FLYWAY_USER
               valueFrom:

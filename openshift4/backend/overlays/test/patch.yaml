@@ -4,8 +4,11 @@ metadata:
   name: backend
 spec:
   containers:
+    - name: app
+      image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/backend:test"
       env:
-        - name: ENVIRONMENT_NAME
-          value: test
-
+          - name: ENVIRONMENT_NAME
+            value: test
+    - name: flyway-migration
+      image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/flyway:test"
           
