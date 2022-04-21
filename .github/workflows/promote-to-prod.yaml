@@ -27,7 +27,6 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: backend
           - name: flyway
           - name: tusd
           - name: docgen

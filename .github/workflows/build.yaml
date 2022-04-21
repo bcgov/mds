@@ -152,7 +152,6 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase

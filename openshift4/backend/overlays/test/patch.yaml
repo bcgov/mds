@@ -9,6 +9,10 @@ spec:
       env:
           - name: ENVIRONMENT_NAME
             value: test
+          - name: JWT_OIDC_WELL_KNOWN_CONFIG
+            value: https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration
+          - name: JWT_OIDC_AUDIENCE
+            value: application-test
     - name: flyway-migration
       image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/flyway:test"
           

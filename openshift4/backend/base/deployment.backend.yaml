@@ -139,9 +139,9 @@ spec:
                   key: database-password
                   name: redis
             - name: JWT_OIDC_WELL_KNOWN_CONFIG
-              value: ${JWT_OIDC_WELL_KNOWN_CONFIG}
+              value: https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration
             - name: JWT_OIDC_AUDIENCE
-              value: ${JWT_OIDC_AUDIENCE}
+              value: application-dev
             - name: JWT_OIDC_ALGORITHMS
               value: RS256
             - name: BASE_PATH
