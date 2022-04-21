@@ -9,6 +9,25 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
+export const importIrtSpreadsheet = ({}, payload, message = "Successfully imported an IRT") => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.IMPORT_IRT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.IMPORT_IRT(), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.IMPORT_IRT));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.IMPORT_IRT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const createProjectSummary = (
   { mineGuid },
   payload,

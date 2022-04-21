@@ -10,6 +10,7 @@ import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchProjectSummariesByMine,
   deleteProjectSummary,
+  importIrtSpreadsheet,
 } from "@common/actionCreators/projectSummaryActionCreator";
 import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
@@ -58,6 +59,13 @@ export class ProjectSummaries extends Component {
     this.props.deleteProjectSummary(id, projectSummaryGuid).then(() => {
       this.handleFetchData(id);
     });
+  };
+
+  handleImportIrt = async () => {
+    let fileHandle;
+    [fileHandle] = await window?.showOpenFilePicker();
+    console.log("Filehandle: ", fileHandle);
+    const file = await fileHandle.getFile();
   };
 
   render() {
@@ -145,6 +153,7 @@ export class ProjectSummaries extends Component {
               </Link>
             </AuthorizationWrapper>
           </Typography.Paragraph>
+          <Button onClick={this.handleImportIrt}>IRT Spreadsheet Import</Button>
           <ProjectSummariesTable
             projectSummaries={this.props.projectSummaries}
             mine={this.state.mine}
@@ -170,6 +179,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       fetchProjectSummariesByMine,
       deleteProjectSummary,
+      importIrtSpreadsheet,
     },
     dispatch
   );
