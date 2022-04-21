@@ -75,7 +75,7 @@ export class ProjectSummariesTable extends Component {
       render: (text, record) => {
         return (
           <div title="Documents" className="cap-col-height">
-            {record.documents.length > 0
+            {record?.documents?.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid}>
                     <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>

@@ -6828,16 +6828,21 @@ export const MINE_EPIC_INFO = {
 export const NOTICES_OF_DEPARTURE = {
   records: [
     {
-      nod_guid: "4ca454f5-7982-4936-bfb9-84f5976fdefe",
-      nod_title: "ff",
+      nod_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      nod_title: "Some title",
+      create_timestamp: "2020-04-20 11:58",
+      update_timestamp: "2020-04-20 11:58",
+      submission_timestamp: "2020-04-20 11:58",
       permit: {
-        permit_id: 22,
-        permit_guid: "d378ca4d-310a-4644-95cf-4d8dc47f294b",
+        permit_id: 1,
+        permit_guid: '10d3ec917-179f-4dbc-80a3-4c993fdfe596',
         permit_no: "M-7594809",
         permit_status_code: "C",
         current_permittee: "Haynes, Park and Brown",
         permit_prefix: "M",
       },
+      nod_status: 'pending_review',
+      nod_type: 'potentially_substaintial'
     },
   ],
 };

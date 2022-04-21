@@ -21,6 +21,7 @@ import {
   fetchAllPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchVariancesByMine } from "@common/actionCreators/varianceActionCreator";
+import { fetchNoticesOfDeparture } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { getMines, getIsUserSubscribed } from "@common/selectors/mineSelectors";
@@ -69,6 +70,7 @@ const propTypes = {
   fetchAllPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
+  fetchNoticesOfDeparture: PropTypes.func.isRequired,
   fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
@@ -230,6 +232,7 @@ export class MineDashboard extends Component {
             actions={[storeMine]}
             listActions={[storeVariances, storePermits]}
             requests={[
+              () => this.props.fetchNoticesOfDeparture({ mineGuid: id }),
               () => this.props.fetchVariancesByMine({ mineGuid: id }),
               () => this.props.fetchPermits(mine.mine_guid),
               () => this.props.fetchMineRecordById(id),
@@ -404,6 +407,7 @@ const mapDispatchToProps = (dispatch) =>
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
       fetchVariancesByMine,
+      fetchNoticesOfDeparture,
       fetchExplosivesPermits,
     },
     dispatch

@@ -10,6 +10,7 @@ const MineDashboardRoutes = () => (
     <Route exact path={routes.MINE_PERMITS.route} component={routes.MINE_PERMITS.component} />
     <Route exact path={routes.MINE_SECURITIES.route} component={routes.MINE_SECURITIES.component} />
     <Route exact path={routes.MINE_VARIANCES.route} component={routes.MINE_VARIANCES.component} />
+    <Route exact path={routes.MINE_NOTICES_OF_DEPARTURE.route} component={routes.MINE_NOTICES_OF_DEPARTURE.component} />
     <Route
       exact
       path={routes.MINE_PRE_APPLICATIONS.route}

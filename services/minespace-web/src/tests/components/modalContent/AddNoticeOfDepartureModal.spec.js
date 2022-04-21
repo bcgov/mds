@@ -27,7 +27,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AddIncidentModal", () => {
+describe("AddNoticeOfDepartureModal", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>

@@ -45,8 +45,8 @@ from app.api.now_applications.resources.now_application_document_type_resource i
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentUploadResource, NOWApplicationDocumentResource
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
-from app.api.mines.project_summary.resources.project_summary_list import ProjectSummaryListResource
-from app.api.mines.project_summary.resources.project_summary import ProjectSummaryResource
+from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
+from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
 
 
 @pytest.mark.parametrize(
@@ -127,8 +127,8 @@ from app.api.mines.project_summary.resources.project_summary import ProjectSumma
      (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
-     (ProjectSummaryListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ProjectSummaryListResource, 'post', [MINE_ADMIN, MINESPACE_PROPONENT]),
+     (ProjectSummaryListGetResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+     (ProjectSummaryListPostResource, 'post', [MINE_ADMIN, MINESPACE_PROPONENT]),
      (ProjectSummaryResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (ProjectSummaryResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES]),
      (ProjectSummaryResource, 'delete', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES]),

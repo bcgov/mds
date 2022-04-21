@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Collapse, Button, Popconfirm, Col, Row } from "antd";
+import { Button, Col, Collapse, Popconfirm, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -59,7 +59,7 @@ export const AddRolesForm = (props) => (
       <Collapse accordion activeKey={[props.activeKey]} onChange={props.handleActivePanelChange}>
         {props.roleNumbers.map((roleNumber) => (
           <Collapse.Panel header={panelHeader(props.removeField, roleNumber)} key={roleNumber}>
-            <Row gutter={16}>
+            <Row gutter={16} style={{ minHeight: "250px" }}>
               <Col span={12}>
                 <Form.Item label="Role *">
                   <Field

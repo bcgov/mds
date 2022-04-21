@@ -88,9 +88,9 @@ export class ProjectSummaryPage extends Component {
   }
 
   handleFetchData = () => {
-    const { mineGuid, projectSummaryGuid, tab } = this.props.match?.params;
-    if (mineGuid && projectSummaryGuid) {
-      return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid).then(() => {
+    const { mineGuid, projectGuid, projectSummaryGuid, tab } = this.props.match?.params;
+    if (projectGuid && projectSummaryGuid) {
+      return this.props.fetchProjectSummaryById(projectGuid, projectSummaryGuid).then(() => {
         this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
       });
     }
@@ -154,7 +154,7 @@ export class ProjectSummaryPage extends Component {
   handleTabChange = (activeTab) => {
     const url = this.state.isEditMode
       ? EDIT_PROJECT_SUMMARY.dynamicRoute(
-          this.props.match.params?.mineGuid,
+          this.props.match.params?.projectGuid,
           this.props.match.params?.projectSummaryGuid,
           activeTab
         )
@@ -172,19 +172,19 @@ export class ProjectSummaryPage extends Component {
         this.handleTransformPayload(values),
         message
       )
-      .then(({ data: { mine_guid, project_summary_guid } }) => {
+      .then(({ data: { project_guid, project_summary_guid } }) => {
         this.props.history.replace(
-          EDIT_PROJECT_SUMMARY.dynamicRoute(mine_guid, project_summary_guid)
+          EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid)
         );
       });
   }
 
   handleUpdateProjectSummary(values, message) {
-    const { mine_guid: mineGuid, project_summary_guid: projectSummaryGuid } = values;
+    const { project_guid: projectGuid, project_summary_guid: projectSummaryGuid } = values;
     return this.props
       .updateProjectSummary(
         {
-          mineGuid,
+          projectGuid,
           projectSummaryGuid,
         },
         this.handleTransformPayload(values),
@@ -198,7 +198,7 @@ export class ProjectSummaryPage extends Component {
   render() {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledTabs = errors.length > 0;
-    const { mineGuid } = this.props.match?.params;
+    const { mine_guid: mineGuid } = this.props.formattedProjectSummary;
     const mineName = this.state.isEditMode
       ? this.props.formattedProjectSummary?.mine_name || ""
       : this.props.mines[mineGuid]?.mine_name || "";
