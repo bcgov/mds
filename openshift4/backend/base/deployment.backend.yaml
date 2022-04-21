@@ -327,13 +327,13 @@ spec:
             requests:
               cpu: 60m
               memory: 96Mi
+          volumeMounts:
+            - mountPath: /logs/
+              name: logs
+              readOnly: true
+            - mountPath: /etc/promtail
+              name: promtail-config
       restartPolicy: Always
-      volumeMounts:
-        - mountPath: /logs/
-          name: logs
-          readOnly: true
-        - mountPath: /etc/promtail
-          name: promtail-config
       dnsPolicy: ClusterFirst
       securityContext: {}
       volumes:
