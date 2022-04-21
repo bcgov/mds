@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/part-of: Core
+  annotations:
+    description: Exposes and load balances the application pods
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    name: backend
+  type: ClusterIP
+  sessionAffinity: None

@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  containers:
+      env:
+        - name: ENVIRONMENT_NAME
+          value: test
+
+          

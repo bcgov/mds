@@ -1,0 +1,349 @@
+kind: Deployment
+apiVersion: v1
+metadata:
+  name: backend
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/part-of: Core
+    app.openshift.io/runtime: python
+  annotations:
+    description: Defines how to deploy the application server
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      pre:
+        failurePolicy: Retry
+        execNewPod:
+          containerName: flyway-migration
+          command:
+            - bash
+            - -c
+            - $FLYWAY_HOME/scripts/run_migrations.sh
+      maxSurge: 50%
+      maxUnavailable: 0
+      timeoutSeconds: 1200
+    activeDeadlineSeconds: 21600
+  replicas: 3
+  revisionHistoryLimit: 5
+  test: false
+  selector:
+    name: backend
+  template:
+    metadata:
+      name: backend
+      creationTimestamp: null
+      labels:
+        name: backend
+    spec:
+      containers:
+        - name: app
+          image: " "
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: postgresql
+            - name: DB_HOST
+              value: postgresql
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: postgresql
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: postgresql
+            - name: NRIS_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: user-name
+                  name: template.nris-secret
+            - name: NRIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: template.nris-secret
+            - name: NRIS_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: token-url
+                  name: template.nris-secret
+            - name: NRIS_REMOTE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: user-name
+                  name: template.nris-secret
+            - name: NRIS_REMOTE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: template.nris-secret
+            - name: NRIS_REMOTE_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: token-url
+                  name: template.nris-secret
+            - name: LDAP_IDIR_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: template.idir-secret
+            - name: LDAP_IDIR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: template.idir-secret
+            - name: NROS_NOW_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: template.nros-now-secret
+            - name: NROS_NOW_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: client-id
+                  name: template.nros-now-secret
+            - name: NROS_NOW_URL
+              valueFrom:
+                secretKeyRef:
+                  key: url
+                  name: template.nros-now-secret
+            - name: NROS_NOW_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: token-url
+                  name: template.nros-now-secret
+            - name: NRIS_API_URL
+              value: "http://nris:5500/nris-api"
+            - name: FLASK_RUN_PORT
+              value: "5000"
+            - name: FLASK_LOGGING_LEVEL
+              value: INFO
+            - name: FLASK_RUN_HOST
+              value: 0.0.0.0
+            - name: UWSGI_PROCESSES
+              value: "4"
+            - name: UWSGI_THREADS
+              value: "2"
+            - name: CACHE_REDIS_HOST
+              value: redis
+            - name: CACHE_REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: redis
+            - name: JWT_OIDC_WELL_KNOWN_CONFIG
+              value: ${JWT_OIDC_WELL_KNOWN_CONFIG}
+            - name: JWT_OIDC_AUDIENCE
+              value: ${JWT_OIDC_AUDIENCE}
+            - name: JWT_OIDC_ALGORITHMS
+              value: RS256
+            - name: BASE_PATH
+              value: /api
+            - name: DOCUMENT_MANAGER_URL
+              value: "http://docman:5001/document-manager"
+            - name: DOCUMENT_GENERATOR_URL
+              value: "http://docgen:3030/api/v2"
+            - name: ENVIRONMENT_NAME
+              value: dev
+            - name: METABASE_EMBEDDING_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: embedding-secret-key
+                  name: template.metabase-key
+            - name: METABASE_SITE_URL
+              value: "https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca"
+            - name: NROS_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: token-url
+                  name: template.nros-client-service
+            - name: NROS_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: service-client
+                  name: template.nros-client-service
+            - name: NROS_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: template.nros-client-service
+            - name: VFCBC_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: token-url
+                  name: template.vfcbc-client-service
+            - name: VFCBC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: service-client
+                  name: template.vfcbc-client-service
+            - name: VFCBC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: template.vfcbc-client-service
+            - name: VCR_ISSUER_URL
+              value: https://mines-permitting-issuer-a3e512-test.apps.silver.devops.gov.bc.ca/
+            - name: VCR_ISSUER_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: vcr-issuer-secret-key
+                  name: template.issuer-api-secret
+            - name: COMMON_SERVICES_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: common-services-client-id
+                  name: common-services
+            - name: COMMON_SERVICES_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: common-services-client-secret
+                  name: common-services
+            - name: COMMON_SERVICES_AUTH_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: common-services-auth-host
+                  name: common-services
+            - name: COMMON_SERVICES_EMAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: common-services-email-host
+                  name: common-services
+            - name: EMAIL_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  key: email-enabled
+                  name: common-services
+            - name: EMAIL_RECIPIENT_OVERRIDE
+              valueFrom:
+                secretKeyRef:
+                  key: email-recipient-override
+                  name: common-services
+          resources:
+            limits:
+              cpu: 450m
+              memory: 2Gi
+            requests:
+              cpu: 150m
+              memory: 1024Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 80
+            timeoutSeconds: 1
+            periodSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 80
+            timeoutSeconds: 5
+            periodSeconds: 5
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /var/log
+              name: logs
+        - name: flyway-migration
+          command:
+            - cat
+          stdin: true
+          image: " "
+          env:
+            - name: FLYWAY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-admin-user
+            - name: FLYWAY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-admin-password
+            - name: FLYWAY_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-name
+            - name: FLYWAY_DB_HOST
+              value: postgresql
+            - name: FLYWAY_URL
+              value: jdbc:postgresql://postgresql/mds
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-user
+            - name: PGHOST
+              value: postgresql
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-password
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-name
+            - name: LOGSTASH_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: logstash-user-password
+            - name: METABASE_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: metabase-user-password
+            - name: DOCMAN_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: docman-user-password
+                  name: postgresql
+            - name: NRIS_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-nris-password
+                  name: postgresql-nris
+            - name: FLYWAY_OUT_OF_ORDER
+              value: "true"
+            - name: FLYWAY_CONNECT_RETRIES
+              value: "300"
+          resources:
+            limits:
+              cpu: 240m
+              memory: 512Mi
+            requests:
+              cpu: 60m
+              memory: 96Mi
+      restartPolicy: Always
+      volumeMounts:
+        - mountPath: /logs/
+          name: logs
+          readOnly: true
+        - mountPath: /etc/promtail
+          name: promtail-config
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      volumes:
+        - emptyDir: {}
+          name: logs
+        - configMap:
+            defaultMode: 420
+            name: promtail-config
+          name: promtail-config

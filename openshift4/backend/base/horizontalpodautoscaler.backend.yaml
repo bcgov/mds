@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  labels:
+    name: backend
+spec:
+  maxReplicas: 4
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps.openshift.io/v1
+    kind: Deployment
+    name: backend
+  targetCPUUtilizationPercentage: 95
