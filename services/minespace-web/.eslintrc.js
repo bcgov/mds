@@ -33,6 +33,7 @@ module.exports = {
     "no-case-declarations": 0,
     "react/display-name": 0,
     "react/no-deprecated": 0,
+    "react/destructuring-assignment": "off",
     "import/no-named-as-default": 0,
     "jsx-a11y/anchor-is-valid": 0,
     camelcase: 0,

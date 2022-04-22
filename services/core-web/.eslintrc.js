@@ -36,6 +36,7 @@ module.exports = {
     "react/no-deprecated": 0,
     "import/no-named-as-default": 0,
     "jsx-a11y/anchor-is-valid": 0,
+    "react/destructuring-assignment": "off",
     camelcase: 0,
     "jsx-a11y/label-has-for": 0, // deprecated rule
     "import/no-cycle": 0,
