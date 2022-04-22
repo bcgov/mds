@@ -724,6 +724,7 @@ TSF_OPERATING_STATUS_MODEL = api.model(
 NOD_MODEL = api.model('NoticeOfDeparture', {
     'nod_guid': fields.String,
     'nod_title': fields.String,
+    'nod_description': fields.String,
     'create_timestamp': fields.DateTime,
     'update_timestamp': fields.DateTime,
     'submission_timestamp': fields.DateTime,

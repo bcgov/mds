@@ -12,5 +12,6 @@ export const noticeOfDeparturePermit = shape({
 export const noticeOfDeparture = shape({
   nod_guid: PropTypes.string,
   nod_title: PropTypes.string,
+  nod_description: PropTypes.string,
   permit: noticeOfDeparturePermit,
 });
