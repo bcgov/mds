@@ -75,6 +75,7 @@ exports[`MineNoticeOfDeparture renders properly 1`] = `
           },
         }
       }
+      openViewNodModal={[Function]}
     />
     <br />
   </div>

@@ -56,8 +56,13 @@ exports[`MineNoticeOfDepartureTable renders properly 1`] = `
         "sorter": [Function],
         "title": "Updated",
       },
+      Object {
+        "dataIndex": "actions",
+        "render": [Function],
+      },
     ]
   }
+  condition={false}
   dataSource={
     Array [
       Object {

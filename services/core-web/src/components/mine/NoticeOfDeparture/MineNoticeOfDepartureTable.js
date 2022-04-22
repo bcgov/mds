@@ -24,11 +24,12 @@ const propTypes = {
   isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  isLoaded: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool,
   isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
+  isLoaded: false,
   isDashboardView: false,
   sortField: undefined,
   sortDir: undefined,
