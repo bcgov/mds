@@ -24,6 +24,7 @@ EDIT_NOW_DATES = "core_edit_now_dates"
 EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
 EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
 EDIT_INCIDENTS = "core_edit_incidents"
+EDIT_TSF= "core_edit_tsf"
 
 
 def is_minespace_user():
@@ -101,6 +102,8 @@ def requires_role_mds_administrative_users(func):
 def requires_role_edit_now_dates(func):
     return _inner_wrapper(func, EDIT_NOW_DATES)
 
+def requires_role_edit_tsf(func):
+    return _inner_wrapper(func, EDIT_TSF)
 
 def requires_any_of(roles):
     def decorator(func):
