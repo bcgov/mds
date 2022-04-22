@@ -12,6 +12,7 @@ exports[`AddNoticeOfDepartureForm renders properly 1`] = `
   initialValues={Object {}}
   keepDirtyOnReinitialize={false}
   mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+  onSubmitSuccess={[Function]}
   permits={
     Array [
       Object {

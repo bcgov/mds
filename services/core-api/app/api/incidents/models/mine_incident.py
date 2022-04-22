@@ -136,6 +136,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             return party.name
         return None
 
+    @hybrid_property
+    def responsible_inspector_party(self):
+        if self.responsible_inspector_party_guid:
+            party = Party.find_by_party_guid(self.responsible_inspector_party_guid)
+            return party.name
+        return None
+
     def delete(self):
         if self.mine_documents:
             for document in self.mine_documents:
