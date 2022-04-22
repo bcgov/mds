@@ -31,7 +31,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-const NoticeOfDeparture = (props) => {
+export const NoticeOfDeparture = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
