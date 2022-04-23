@@ -39,13 +39,10 @@ COMMENT ON TABLE information_requirements_table_status_code IS 'Information Requ
 
 
 insert into information_requirements_table_status_code(status_code, description, create_user, update_user)
-   values('REC','Received', 'system-mds','system-mds');
-  
- insert into information_requirements_table_status_code(status_code, description, create_user, update_user)
-   values('UNR','Under review - with reviewers', 'system-mds','system-mds');
-  
- insert into information_requirements_table_status_code(status_code, description, create_user, update_user)
-   values('APV','Approved', 'system-mds','system-mds');
+   values
+   ('REC','Received', 'system-mds','system-mds'),
+   ('UNR','Under review - with reviewers', 'system-mds','system-mds'),
+   ('APV','Approved', 'system-mds','system-mds');
 
   
 insert into requirements (requirement_id, description, display_order, create_user, update_user)
@@ -243,6 +240,24 @@ insert into requirements (requirement_id, parent_requirement_id, description, di
     (157,135,'Cost Estimate', 12, 'system-mds', 'system-mds')
 on conflict do nothing;
 
+DO
+$$
+BEGIN
+   EXECUTE format('
+   DROP SEQUENCE IF EXISTS public.requirements_requirement_id_seq CASCADE;
+   CREATE SEQUENCE IF NOT EXISTS public.requirements_requirement_id_seq
+   INCREMENT 1
+   START %1$s
+   MINVALUE %1$s
+   NO MAXVALUE
+   CACHE 1;'
+ , (SELECT COALESCE ((SELECT MAX(requirement_id) FROM requirements),0)));
+   ALTER SEQUENCE public.requirements_requirement_id_seq OWNER TO mds;
+   GRANT ALL ON SEQUENCE public.requirements_requirement_id_seq TO mds;
+   ALTER TABLE ONLY public.requirements ALTER COLUMN requirement_id SET DEFAULT nextval('public.requirements_requirement_id_seq'::regclass);
+END
+$$;
+
 CREATE TABLE IF NOT EXISTS information_requirements_table (
   irt_guid                         uuid DEFAULT gen_random_uuid()       PRIMARY KEY,
   irt_id                           serial                                  NOT NULL,
@@ -288,35 +303,3 @@ ALTER TABLE irt_requirements_xref OWNER TO mds;
 --
 
 COMMENT ON TABLE irt_requirements_xref IS 'Reference table between Information Requirements Table (IRT) and associated requirements. ';
-
-
-
-
-
--- Before droping these columns, need to run data fix to copy data into project table
-
--- ALTER TABLE project_summary
--- DROP  CONSTRAINT IF EXISTS mine_guid_fkey,
--- DROP  COLUMN IF EXISTS mine_guid,
--- DROP  CONSTRAINT IF EXISTS project_summary_lead_party_guid_fkey,
--- DROP  COLUMN IF EXISTS project_summary_lead_party_guid,
--- DROP  COLUMN IF EXISTS project_summary_title,
--- DROP  COLUMN IF EXISTS proponent_project_id;
-
--- Data Fix:
--- Copy data from project_summary to project table (Need irt_guid field to allow null values for existing records)
--- INSERT INTO project (project_summary_guid, mine_guid, project_title, project_lead_party_guid, create_user,update_user)
---   SELECT ps.project_summary_guid, ps.mine_guid, ps.project_summary_title, ps.project_summary_lead_party_guid, 'system-mds','system-mds'
---   FROM project_summary ps
---   WHERE project_summary_id not in (select project_summary_id
--- 								   from project)
--- Copy data from project_summary_contact to project_contact by project_guid (copied in the previous query)								   
--- INSERT INTO project_contact(project_guid, name, job_title, company_name, email, phone_number, phone_extension, is_primary, deleted_ind, create_user, update_user)
---   SELECT pr.project_guid, psc.name, psc.job_title, psc.company_name, psc.email, psc.phone_number, psc.phone_extension, psc.is_primary, psc.deleted_ind, psc.create_user, psc.update_user
---   FROM project_summary_contact psc, project pr
---   WHERE psc.project_summary_guid = pr.project_summary_guid and
---         pr.project_guid not in (select project_guid
--- 							    from project_contact)
-
--- After ensuring irt_guid are populated in existing records:
--- ALTER TABLE project ALTER COLUMN irt_guid SET NOT NULL;
