@@ -107,6 +107,10 @@ def requires_role_edit_now_dates(func):
 def requires_role_edit_tsf(func):
     return _inner_wrapper(func, EDIT_TSF)
 
+def requires_role_edit_requirements(func):
+    return _inner_wrapper(func, EDIT_REQUIREMENTS)
+
+
 def requires_any_of(roles):
     def decorator(func):
         @wraps(func)

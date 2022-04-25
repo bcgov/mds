@@ -251,7 +251,7 @@ BEGIN
    MINVALUE %1$s
    NO MAXVALUE
    CACHE 1;'
- , (SELECT COALESCE ((SELECT MAX(requirement_id) FROM requirements),0)));
+ , (SELECT COALESCE ((SELECT MAX(requirement_id) FROM requirements),0) +1));
    ALTER SEQUENCE public.requirements_requirement_id_seq OWNER TO mds;
    GRANT ALL ON SEQUENCE public.requirements_requirement_id_seq TO mds;
    ALTER TABLE ONLY public.requirements ALTER COLUMN requirement_id SET DEFAULT nextval('public.requirements_requirement_id_seq'::regclass);
