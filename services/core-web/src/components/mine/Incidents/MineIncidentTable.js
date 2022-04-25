@@ -214,19 +214,18 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Inspector Responsible",
-        key: "reported_to_inspector_party",
-        dataIndex: "reported_to_inspector_party",
+        key: "responsible_inspector_party",
         render: (text, record) => (
-          <span title="Inspector Responsible">{record.incident.reported_to_inspector_party}</span>
+          <span title="Inspector Responsible">{record.incident.responsible_inspector_party}</span>
         ),
-        onFilter: (value, record) => record.incident.reported_to_inspector_party === value,
+        onFilter: (value, record) => record.incident.responsible_inspector_party === value,
         filters: _.reduce(
           this.props.incidents,
           (reporterList, incident) => {
-            if (!reporterList.map((x) => x.value).includes(incident.reported_to_inspector_party)) {
+            if (!reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)) {
               reporterList.push({
-                value: incident.reported_to_inspector_party,
-                text: incident.reported_to_inspector_party,
+                value: incident.responsible_inspector_party,
+                text: incident.responsible_inspector_party,
               });
             }
             return reporterList;

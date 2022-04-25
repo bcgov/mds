@@ -211,7 +211,7 @@ const transformProgressRowData = (
         ) && progress[application_progress_status_code]?.start_date
     )
     .map((item) => {
-      const hasStarted = !isNil(progress[item.application_progress_status_code]?.start_date);
+      // const hasStarted = !isNil(progress[item.application_progress_status_code]?.start_date);
       const hasEnded = !isNil(progress[item.application_progress_status_code]?.end_date);
       const dateMessage = hasEnded
         ? formatDate(progress[item.application_progress_status_code].end_date)
@@ -292,7 +292,7 @@ export class NOWProgressTable extends Component {
       render: (text, record, index) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES} inTesting>
+            <AuthorizationWrapper permission={Permission.EDIT_NOW_DATES}>
               <Button
                 type="secondary"
                 ghost
