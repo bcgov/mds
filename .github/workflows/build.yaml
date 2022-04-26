@@ -27,7 +27,6 @@ jobs:
           - name: nginx
           - name: postgresql
           - name: frontend
-          - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
