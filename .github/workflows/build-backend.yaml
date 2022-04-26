@@ -6,6 +6,7 @@ on:
     branches:
       - develop
     paths:
+      - migrations/**
       - services/core-api/**
       - .github/workflows/build-backend.yaml
 
