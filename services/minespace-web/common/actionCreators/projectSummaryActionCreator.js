@@ -9,13 +9,24 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const importIrtSpreadsheet = ({}, payload, message = "Successfully imported an IRT") => (
-  dispatch
-) => {
+export const importIrtSpreadsheet = (
+  { projectGuid },
+  payload,
+  message = "Successfully imported an IRT"
+) => (dispatch) => {
+  console.log("FILE IN AC: ", payload);
+  console.log("FILE IN PAY: ", payload.file);
+  const formData = new FormData();
+  formData.append("file", payload.file);
+  const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.IMPORT_IRT));
   dispatch(showLoading());
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.IMPORT_IRT(), payload, createRequestHeader())
+    .put(
+      ENVIRONMENT.apiUrl + API.IMPORT_IRT(projectGuid),
+      formData,
+      createRequestHeader(customContentType)
+    )
     .then((response) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.IMPORT_IRT));

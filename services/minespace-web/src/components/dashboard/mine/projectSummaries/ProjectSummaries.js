@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { showOpenFilePicker } from "native-file-system-adapter";
 import { getMines } from "@common/selectors/mineSelectors";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
@@ -63,9 +64,11 @@ export class ProjectSummaries extends Component {
 
   handleImportIrt = async () => {
     let fileHandle;
-    [fileHandle] = await window?.showOpenFilePicker();
+    [fileHandle] = await showOpenFilePicker({ _preferPolyfill: false });
     console.log("Filehandle: ", fileHandle);
     const file = await fileHandle.getFile();
+    console.log("Filesystemhandle: ", file);
+    this.props.importIrtSpreadsheet({}, { file });
   };
 
   render() {

@@ -135,7 +135,8 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${documentManagerGuid}?${queryString.stringify(
     params
   )}`;
-export const IMPORT_IRT = () => `/projects/${projectGuid}/project-summaries`;
+export const IMPORT_IRT = (projectGuid, projectSummaryGuid) =>
+  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents`;
 
 // Users
 export const CORE_USER = "/users/core";
