@@ -31,6 +31,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_summary_description = db.Column(db.String(4000), nullable=True)
     submission_date = db.Column(db.DateTime, nullable=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     expected_draft_irt_submission_date = db.Column(db.DateTime, nullable=True)
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
     expected_permit_receipt_date = db.Column(db.DateTime, nullable=True)
@@ -138,6 +139,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         project_summary = cls(
             project_summary_description=project_summary_description,
+            mine_guid = mine.mine_guid,
             project_guid=project.project_guid,
             expected_draft_irt_submission_date=expected_draft_irt_submission_date,
             expected_permit_application_date=expected_permit_application_date,
