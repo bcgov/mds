@@ -428,6 +428,7 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_to_inspector_party_guid': fields.String,
         'reported_to_inspector_party': fields.String,
         'responsible_inspector_party_guid': fields.String,
+        'responsible_inspector_party': fields.String,
         'determination_type_code': fields.String,
         'mine_determination_type_code': fields.String,
         'mine_determination_representative': fields.String,

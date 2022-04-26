@@ -6,6 +6,8 @@ on:
       - Update dev infra
     types:
       - completed
+    tags:
+      - test
 
 env:
   TAG: test
