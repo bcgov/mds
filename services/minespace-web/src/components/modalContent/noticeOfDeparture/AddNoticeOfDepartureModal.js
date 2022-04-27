@@ -16,7 +16,6 @@ const propTypes = {
 };
 
 const AddNoticeOfDepartureModal = (props) => {
-  // eslint-disable-next-line react/destructuring-assignment
   const { onSubmit, initialValues, afterClose, closeModal, mineGuid, permits } = props;
 
   const close = () => {
