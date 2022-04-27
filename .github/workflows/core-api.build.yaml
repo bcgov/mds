@@ -35,7 +35,7 @@ jobs:
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
 
-  build-deploy:
+  trigger-gitops:
     runs-on: ubuntu-20.04
     needs: build-backend
     steps:
