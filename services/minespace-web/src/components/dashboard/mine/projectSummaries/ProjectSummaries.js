@@ -1,8 +1,13 @@
+/**
+ * TODO: We have disabled the "Start a new application" button after 1 project summary has been created under a project.
+ * This is meant to prevent future bad data and will remain intact until the update Project UI/workflow has been deployed to Prod.
+ */
+
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Tooltip } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -37,7 +42,7 @@ const defaultProps = {
 };
 
 export class ProjectSummaries extends Component {
-  state = { isLoaded: false, mine: {} };
+  state = { isLoaded: false, mine: {}, canStartNewApplication: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -47,7 +52,11 @@ export class ProjectSummaries extends Component {
   handleFetchData = (id) => {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchProjectSummariesByMine({ mineGuid: id }).then(() => {
-        this.setState({ isLoaded: true, mine: this.props.mines[id] });
+        this.setState({
+          isLoaded: true,
+          mine: this.props.mines[id],
+          canStartNewApplication: this.props.projectSummaries.length === 0,
+        });
       });
     });
   };
@@ -138,10 +147,22 @@ export class ProjectSummaries extends Component {
           <Typography.Paragraph>
             <AuthorizationWrapper>
               <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
-                <Button type="primary">
-                  <PlusCircleFilled />
-                  Start a new application
-                </Button>
+                {this.state.canStartNewApplication ? (
+                  <Button type="primary">
+                    <PlusCircleFilled />
+                    Start a new application
+                  </Button>
+                ) : (
+                  <Tooltip
+                    title="You cannot create more than 1 project description per project."
+                    placement="top"
+                  >
+                    <Button type="primary" disabled>
+                      <PlusCircleFilled />
+                      Start a new application
+                    </Button>
+                  </Tooltip>
+                )}
               </Link>
             </AuthorizationWrapper>
           </Typography.Paragraph>
