@@ -10,3 +10,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+
+# Run the server
+EXPOSE 3000
+CMD [ "npm", "run", "serve" ]
