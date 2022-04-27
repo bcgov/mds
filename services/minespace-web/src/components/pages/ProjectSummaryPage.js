@@ -198,7 +198,9 @@ export class ProjectSummaryPage extends Component {
   render() {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledTabs = errors.length > 0;
-    const { mine_guid: mineGuid } = this.props.formattedProjectSummary;
+    const mineGuid = this.state.isEditMode
+      ? this.props.formattedProjectSummary.mine_guid
+      : this.props.match.params.mineGuid;
     const mineName = this.state.isEditMode
       ? this.props.formattedProjectSummary?.mine_name || ""
       : this.props.mines[mineGuid]?.mine_name || "";
