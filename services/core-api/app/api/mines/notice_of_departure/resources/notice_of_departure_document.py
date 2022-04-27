@@ -28,7 +28,7 @@ class MineNoticeOfDepartureNewDocumentUploadResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'notice_of_depatures')
+            request, mine, 'notices_of_depature')
 
 
 class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
