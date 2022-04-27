@@ -199,7 +199,7 @@ export class ProjectSummaryPage extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledTabs = errors.length > 0;
     const mineGuid = this.state.isEditMode
-      ? this.props.formattedProjectSummary.mine_guid
+      ? this.props.formattedProjectSummary?.mine_guid
       : this.props.match.params.mineGuid;
     const mineName = this.state.isEditMode
       ? this.props.formattedProjectSummary?.mine_name || ""
