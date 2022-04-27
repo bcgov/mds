@@ -1,23 +1,24 @@
-name: Build Flyway
+name: CORE API - Build & Deploy To DEV
 
 on:
   workflow_dispatch:
-
+  pull_request:
   push:
     branches:
       - develop
     paths:
       - migrations/**
-      - .github/workflows/build-flyway.yaml
+      - services/core-api/**
+      - .github/workflows/build-backend.yaml
 
 env:
   INITIAL_TAG: latest
   TAG: dev
-  NAME: flyway
-  CONTEXT: migrations/
+  NAME: backend
+  CONTEXT: services/core-api/
 
 jobs:
-  build-flyway:
+  build-backend:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -33,3 +34,12 @@ jobs:
       - name: Push
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    needs: build-backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-api dev ${{ secrets.GH_TOKEN }}

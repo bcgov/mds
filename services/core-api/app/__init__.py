@@ -1,6 +1,7 @@
 import datetime
 import logging
 import requests
+import os
 from logging.config import dictConfig
 from flask import Flask, request
 from flask_cors import CORS
@@ -100,6 +101,12 @@ def register_routes(app):
     root_api_namespace.add_namespace(orgbook_api)
     root_api_namespace.add_namespace(EMLI_contacts_api)
     root_api_namespace.add_namespace(projects_api)
+
+
+    @root_api_namespace.route('/version/')
+    class VersionCheck(Resource):
+        def get(self):
+            return {'commit': os.environ.get('COMMIT_ID', 'local')}
 
     # General Service status
     @root_api_namespace.route('/health')
