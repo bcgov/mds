@@ -1,6 +1,7 @@
 name: Build backend
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -33,3 +34,11 @@ jobs:
       - name: Push
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+
+  build-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-api dev ${{ secrets.GH_TOKEN }}
