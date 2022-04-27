@@ -21,7 +21,7 @@ parameters:
   - name: TUSD_SERVICE_URL
     value: http://tusd:1080/files/
   - name: API_SERVICE_URL
-    value: http://backend:5000
+    value: http://core-api:5000
   - name: NRIS_API_SERVICE_URL
     value: "http://nris:5500"
   - name: FILE_API_SERVICE_URL
