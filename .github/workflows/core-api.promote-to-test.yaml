@@ -1,7 +1,7 @@
 name: Promote Core Api to TEST
 
 on:
-  workflow_run:
+  workflow_dispatch:
 
 env:
   ORIG_TAG: dev
