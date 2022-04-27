@@ -28,7 +28,7 @@ jobs:
           - name: nginx
           - name: postgresql
           - name: frontend
-          - name: backend
+          # - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
@@ -62,7 +62,7 @@ jobs:
       matrix:
         include:
           - name: frontend
-          - name: backend
+          # - name: backend
           - name: minespace
     steps:
       - name: Install oc
@@ -85,7 +85,7 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: backend
+          # - name: backend
           - name: dbbackup
           - name: metabase
           - name: minespace
@@ -111,7 +111,7 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: backend
+          # - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
@@ -153,7 +153,7 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: backend
+          # - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
