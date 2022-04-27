@@ -18,17 +18,20 @@ from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref 
 from app.api.services.document_manager_service import DocumentManagerService
 
 
-class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
+class MineNoticeOfDepartureNewDocumentUploadResource(Resource, UserMixin):
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
-    def post(self, mine_guid, nod_guid):
+    def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'notice_of_depatures')
+
+
+class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
     @api.doc(
         description='Associate an uploaded file with a notice of depature.',
