@@ -1,4 +1,4 @@
-name: Build backend
+name: CORE API - Build & Deploy To DEV
 
 on:
   workflow_dispatch:
@@ -37,6 +37,7 @@ jobs:
 
   build-deploy:
     runs-on: ubuntu-20.04
+    needs: build-backend
     steps:
       - name: Checkout
         uses: actions/checkout@v2

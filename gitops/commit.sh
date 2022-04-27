@@ -8,6 +8,9 @@ GITHUB_TOKEN=${3?"Enter Target Env Name !"}
 REPO_LOCATION=$(git rev-parse --show-toplevel)
 GIT_HASH=$(git rev-parse --verify HEAD)
 
+git config --global user.email "automation@mds.gov.bc.ca"
+git config --global user.name "gh-promoter"
+
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
     git clone https://v-y-a-s:$GITHUB_TOKEN@github.com/bcgov-c/tenant-gitops-4c2ba9 $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 fi

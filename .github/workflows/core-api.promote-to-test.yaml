@@ -1,4 +1,4 @@
-name: Promote Core Api to TEST
+name: CORE API - Promote TEST
 
 on:
   workflow_dispatch:
