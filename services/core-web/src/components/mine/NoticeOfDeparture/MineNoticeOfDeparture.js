@@ -3,31 +3,24 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import moment from "moment";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  fetchNoticesOfDeparture
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import { closeModal, openModal } from "@common/actions/modalActions";
+import { fetchNoticesOfDeparture } from "@common/actionCreators/noticeOfDepartureActionCreator";
+import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import * as Strings from "@common/constants/strings";
-import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
-import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import AddButton from "@/components/common/buttons/AddButton";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
+  nods: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
   openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
-  fetchNoticesOfDeparture: PropTypes.func.isRequired
+  fetchNoticesOfDeparture: PropTypes.func.isRequired,
 };
 
 export class MineNoticeOfDeparture extends Component {
@@ -40,15 +33,25 @@ export class MineNoticeOfDeparture extends Component {
   }
 
   handleFetchNoticesOfDeparture = () => {
-    this.props
-      .fetchNoticesOfDeparture(this.props.mineGuid)
-      .then(() => this.handleFetchPermits());
+    this.props.fetchNoticesOfDeparture(this.props.mineGuid).then(() => this.handleFetchPermits());
   };
 
   handleFetchPermits = () => {
-    this.props
-      .fetchPermits(this.props.mineGuid)
-      .then(() => this.setState({ isLoaded: true }));
+    this.props.fetchPermits(this.props.mineGuid).then(() => this.setState({ isLoaded: true }));
+  };
+
+  openNoticeOfDepartureModal = (event, noticeOfDeparture) => {
+    event.preventDefault();
+    const title = "View Notice of Departure";
+    this.props.openModal({
+      props: {
+        noticeOfDeparture,
+        title,
+        clearOnSubmit: true,
+      },
+      width: "50vw",
+      content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,
+    });
   };
 
   renderNoticeOfDepartureTables = (mine) => (
@@ -60,6 +63,7 @@ export class MineNoticeOfDeparture extends Component {
         isLoaded={this.state.isLoaded}
         nods={this.props.nods}
         mine={mine}
+        openViewNodModal={this.openNoticeOfDepartureModal}
       />
       <br />
     </div>
@@ -82,7 +86,7 @@ export class MineNoticeOfDeparture extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
-  nods: getNoticesOfDeparture(state)
+  nods: getNoticesOfDeparture(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -91,13 +95,12 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticesOfDeparture,
       openModal,
       closeModal,
-      fetchPermits
+      fetchPermits,
     },
     dispatch
   );
 
-  MineNoticeOfDeparture.propTypes = propTypes;
-
+MineNoticeOfDeparture.propTypes = propTypes;
 
 export default AuthorizationGuard(Permission.IN_TESTING)(
   connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture)
