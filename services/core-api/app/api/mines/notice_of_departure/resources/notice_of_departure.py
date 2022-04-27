@@ -12,10 +12,7 @@ from app.api.mines.response_models import PERMIT_NOD_MODEL
 
 class NoticeOfDepartureResource(Resource, UserMixin):
 
-    @api.doc(params={
-        'mine_guid': 'Mine guid.',
-        'nod_guid': 'Mine guid.'
-    })
+    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Mine guid.'})
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PERMIT_NOD_MODEL, code=200)
     def get(self, nod_guid):
