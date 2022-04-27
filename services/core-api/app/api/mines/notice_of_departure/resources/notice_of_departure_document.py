@@ -18,7 +18,7 @@ from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref 
 from app.api.services.document_manager_service import DocumentManagerService
 
 
-class MineVarianceDocumentUploadResource(Resource, UserMixin):
+class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
