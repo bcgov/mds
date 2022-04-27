@@ -1278,6 +1278,7 @@ export const NOTICES_OF_DEPARTURE = {
     {
       nod_guid: "4ca454f5-7982-4936-bfb9-84f5976fdefe",
       nod_title: "ff",
+      nod_description: "some description",
       permit: {
         permit_id: 22,
         permit_guid: "d378ca4d-310a-4644-95cf-4d8dc47f294b",

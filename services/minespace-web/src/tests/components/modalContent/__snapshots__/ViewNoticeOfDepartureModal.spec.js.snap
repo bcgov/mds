@@ -5,6 +5,7 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
   <NoticeOfDepartureDetails
     noticeOfDeparture={
       Object {
+        "nod_description": "some description",
         "nod_guid": "4ca454f5-7982-4936-bfb9-84f5976fdefe",
         "nod_title": "ff",
         "permit": Object {

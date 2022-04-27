@@ -52,6 +52,7 @@ import UpdateNoWDateModal from "./UpdateNoWDateModal";
 import EMLIContactModal from "./EMLIContactModal";
 import UpdateMinespaceUserModal from "./UpdateMinespaceUserModal";
 import ManageDocumentsDownloadPackageModal from "./ManageDocumentsDownloadPackageModal";
+import ViewNoticeOfDepartureModal from "./ViewNoticeOfDepartureModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -108,6 +109,7 @@ export const modalConfig = {
   EMLI_CONTACT_MODAL: EMLIContactModal,
   UPDATE_MINESPACE_USERS: UpdateMinespaceUserModal,
   NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL: ManageDocumentsDownloadPackageModal,
+  VIEW_NOTICE_OF_DEPARTURE_MODAL: ViewNoticeOfDepartureModal,
 };
 
 export default modalConfig;

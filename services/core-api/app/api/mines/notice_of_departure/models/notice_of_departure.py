@@ -24,6 +24,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
     nod_title = db.Column(db.String(50), nullable=False)
+    nod_description = db.Column(db.String(5000), nullable=False)
     nod_type = db.Column(db.Enum(NodType), nullable=False)
     nod_status = db.Column(db.Enum(NodStatus), nullable=False)
     submission_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -32,8 +33,8 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     permit = db.relationship('Permit', lazy='joined')
 
     @classmethod
-    def create(cls, mine, permit, nod_title, nod_type, nod_status, add_to_session=True):
-        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title, nod_type=nod_type, nod_status=nod_status)
+    def create(cls, mine, permit, nod_title, nod_description, nod_type, nod_status, add_to_session=True):
+        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title, nod_description=nod_description, nod_type=nod_type, nod_status=nod_status)
 
         if add_to_session:
             new_nod.save(commit=False)
