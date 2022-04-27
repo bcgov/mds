@@ -27,7 +27,7 @@ jobs:
         include:
           - name: nginx
           - name: postgresql
-          - name: frontend
+          # - name: frontend
           # - name: backend
           - name: docgen
           - name: dbbackup
@@ -61,7 +61,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: frontend
+          # - name: frontend
           # - name: backend
           - name: minespace
     steps:
@@ -84,7 +84,7 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
+          # - name: frontend
           # - name: backend
           - name: dbbackup
           - name: metabase
@@ -110,7 +110,7 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
+          # - name: frontend
           # - name: backend
           - name: docgen
           - name: dbbackup
