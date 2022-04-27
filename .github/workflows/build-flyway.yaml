@@ -1,6 +1,8 @@
 name: Build Flyway
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - develop
