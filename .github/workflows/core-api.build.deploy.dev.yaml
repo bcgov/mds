@@ -14,6 +14,7 @@ env:
   INITIAL_TAG: latest
   TAG: dev
   NAME: backend
+  MIG: flyway
   CONTEXT: services/core-api/
 
 jobs:
@@ -34,9 +35,27 @@ jobs:
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
 
-  trigger-gitops:
+  build-flyway:
     runs-on: ubuntu-20.04
     needs: build-backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Build n Tag
+        run: |
+          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.INITIAL_TAG }}
+          docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.TAG }}
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}
+
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    needs: build-flyway
     steps:
       - name: Checkout
         uses: actions/checkout@v2
