@@ -3,19 +3,12 @@ import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
+import {
+  EMPTY_FIELD,
+  NOTICE_OF_DEPARTURE_STATUS,
+  NOTICE_OF_DEPARTURE_TYPE,
+} from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
-
-const NoticeOfDepartureType = {
-  non_substantial: "Non Substantial",
-  potentially_substantial: "Potentially Substantial",
-};
-
-const NoticeOfDepartureStatus = {
-  pending_review: "Pending Preview",
-  in_review: "In Review",
-  self_authorized: "Self Authorized",
-};
 
 const propTypes = {
   data: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
@@ -97,8 +90,8 @@ const NoticeOfDepartureTable = (props) => {
         ...other,
         key: nod_guid,
         nod_id: nod_guid,
-        nod_status: NoticeOfDepartureStatus[nod_status] || Strings.EMPTY_FIELD,
-        nod_type: NoticeOfDepartureType[nod_type] || Strings.EMPTY_FIELD,
+        nod_status: NOTICE_OF_DEPARTURE_STATUS[nod_status] || EMPTY_FIELD,
+        nod_type: NOTICE_OF_DEPARTURE_TYPE[nod_type] || EMPTY_FIELD,
         updated_at: formatDate(update_timestamp),
         submitted_at: formatDate(submission_timestamp) || formatDate(create_timestamp),
       })
