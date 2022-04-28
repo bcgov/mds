@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { change, Field, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { remove } from "lodash";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -16,12 +18,15 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit } = props;
+  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [documentNameGuidMap, setDocumentNameGuidMap] = useState({});
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -40,6 +45,26 @@ const AddNoticeOfDepartureForm = (props) => {
     onSubmit(permitNumber, values)
       .then(() => closeModal())
       .finally(() => setSubmitting(false));
+  };
+
+  const onFileLoad = (documentName, document_manager_guid) => {
+    setUploadedFiles([
+      ...uploadedFiles,
+      {
+        documentName,
+        document_manager_guid,
+      },
+    ]);
+    setDocumentNameGuidMap({
+      ...documentNameGuidMap,
+      [documentName]: document_manager_guid,
+    });
+    change("uploadedFiles", uploadedFiles);
+  };
+
+  const onRemoveFile = (fileItem) => {
+    remove(documentNameGuidMap, { document_manager_guid: fileItem.serverId });
+    change("uploadedFiles", uploadedFiles);
   };
 
   return (
@@ -84,6 +109,17 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <Form.Item label="Attached Files">
+          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
+          <Field
+            id="uploadedFiles"
+            name="uploadedFiles"
+            onFileLoad={onFileLoad}
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            component={NoticeOfDepartureFileUpload}
+          />
+        </Form.Item>
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
