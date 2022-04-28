@@ -20,3 +20,14 @@ export const RETURN_PAGE_TYPE = {
 
 // MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";
+
+export const NOTICE_OF_DEPARTURE_TYPE = {
+  non_substantial: "Non Substantial",
+  potentially_substantial: "Potentially Substantial",
+};
+
+export const NOTICE_OF_DEPARTURE_STATUS = {
+  pending_review: "Pending Preview",
+  in_review: "In Review",
+  self_authorized: "Self Authorized",
+};
