@@ -3,6 +3,19 @@ import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@/constants/strings";
+import { formatDate } from "@/utils/helpers";
+
+const NoticeOfDepartureType = {
+  non_substantial: "Non Substantial",
+  potentially_substantial: "Potentially Substantial",
+};
+
+const NoticeOfDepartureStatus = {
+  pending_review: "Pending Preview",
+  in_review: "In Review",
+  self_authorized: "Self Authorized",
+};
 
 const propTypes = {
   data: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
@@ -25,8 +38,8 @@ const NoticeOfDepartureTable = (props) => {
     },
     {
       title: "NOD #",
-      dataIndex: "nod_guid",
-      key: "nod_guid",
+      dataIndex: "nod_id",
+      key: "nod_id",
       sorter: (a, b) => (a.nod_guid > b.nod_guid ? -1 : 1),
     },
     {
@@ -37,20 +50,20 @@ const NoticeOfDepartureTable = (props) => {
     },
     {
       title: "Submitted",
-      dataIndex: "created_at",
-      key: "created_at",
+      dataIndex: "submitted_at",
+      key: "submitted_at",
       sorter: (a, b) => (a.permit.permit_no > b.permit.permit_no ? -1 : 1),
     },
     {
       title: "Type",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "nod_type",
+      key: "nod_type",
       sorter: (a, b) => (a.type > b.type ? -1 : 1),
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "nod_status",
+      key: "nod_status",
       sorter: (a, b) => (a.status > b.status ? -1 : 1),
       defaultSortOrder: "ascend",
     },
@@ -70,11 +83,32 @@ const NoticeOfDepartureTable = (props) => {
     },
   ];
 
+  const transformRowData = (nods) =>
+    nods.map(
+      ({
+        submission_timestamp,
+        create_timestamp,
+        update_timestamp,
+        nod_guid,
+        nod_type,
+        nod_status,
+        ...other
+      }) => ({
+        ...other,
+        key: nod_guid,
+        nod_id: nod_guid,
+        nod_status: NoticeOfDepartureStatus[nod_status] || Strings.EMPTY_FIELD,
+        nod_type: NoticeOfDepartureType[nod_type] || Strings.EMPTY_FIELD,
+        updated_at: formatDate(update_timestamp),
+        submitted_at: formatDate(submission_timestamp) || formatDate(create_timestamp),
+      })
+    );
+
   return (
     <Table
       loading={!props.isLoaded}
       columns={columns}
-      dataSource={props.data}
+      dataSource={transformRowData(props.data)}
       pagination={false}
       rowKey={(record) => record.key}
     />
