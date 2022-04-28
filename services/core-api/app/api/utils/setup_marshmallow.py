@@ -32,6 +32,9 @@ from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
+from app.api.projects.information_requirements_table.models.requirements import Requirements
+from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+from app.api.projects.information_requirements_table.models.information_requirements_table import IRTRequirementsXref
 from app.api.constants import STATIC_DATA
 
 AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
@@ -89,8 +92,9 @@ def setup_schema(Base, session):
         for class_ in ActivityDetailBase.__subclasses__() + [
                 Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
                 ReclamationInvoiceDocument, BondHistory, PermitConditions, StandardPermitConditions,
-                NOWPartyAppointment,NOWApplicationDocumentIdentityXref, NOWApplicationDelay,
-                ApplicationReasonXref
+                NOWPartyAppointment, NOWApplicationDocumentIdentityXref, NOWApplicationDelay,
+                ApplicationReasonXref, Requirements, InformationRequirementsTable,
+                IRTRequirementsXref
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:
