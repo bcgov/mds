@@ -7,7 +7,6 @@ on:
       - develop
     paths:
       - services/**
-      - migrations/**
       - openshift4/templates/**.bc.yaml
       - openshift4/docker-images/**
       - .github/workflows/build.yaml
@@ -26,16 +25,14 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: postgresql
+          - name: minespace
           - name: frontend
-          # - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: minespace
-          - name: fider
-          - name: schemaspy
+          - name: postgresql
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -85,11 +82,9 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          # - name: backend
           - name: dbbackup
           - name: metabase
           - name: minespace
-          - name: schemaspy
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -111,13 +106,11 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          # - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
           - name: minespace
-          - name: schemaspy
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -151,16 +144,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
-          - name: frontend
-          # - name: backend
-          - name: docgen
-          - name: dbbackup
-          - name: metabase
-          - name: metabase-postgres
-          - name: docman
           - name: nris
           - name: minespace
+          - name: frontend
+          - name: docman
+          - name: docgen
+          - name: nginx
+          - name: metabase
+          - name: metabase-postgres
+          - name: dbbackup
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
