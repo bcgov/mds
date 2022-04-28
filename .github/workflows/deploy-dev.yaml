@@ -21,7 +21,6 @@ jobs:
       matrix:
         include:
           - config: frontend
-          # - config: backend
           - config: dbbackup
           - config: docgen
           - config: postgresql
