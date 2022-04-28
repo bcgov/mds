@@ -1,4 +1,4 @@
-name: CORE API - Build & Deploy To DEV
+name: CORE WEB - Build & Deploy To DEV
 
 on:
   pull_request:
