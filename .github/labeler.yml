@@ -1,9 +1,0 @@
-💾 Backend:
-  - services/core-api/**/*
-
-💻 Frontend:
-  - services/core-web/**/*
-  - services/minespace-web/**/*
-
-🏭 CI/CD:
-  - openshift/**/*
