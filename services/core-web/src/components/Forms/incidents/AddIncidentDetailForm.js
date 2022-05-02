@@ -7,7 +7,7 @@ import { Col, Row } from "antd";
 import {
   required,
   maxLength,
-  number,
+  wholeNumber,
   dateNotInFuture,
   validateSelectOptions,
 } from "@common/utils/Validate";
@@ -89,7 +89,7 @@ class AddIncidentDetailForm extends Component {
                     name="number_of_injuries"
                     label="Number of Injuries:"
                     component={renderConfig.FIELD}
-                    validate={[number, maxLength(10)]}
+                    validate={[wholeNumber, maxLength(10)]}
                   />
                 </Form.Item>
               </Col>
@@ -100,7 +100,7 @@ class AddIncidentDetailForm extends Component {
                     name="number_of_fatalities"
                     label="Number of Fatalities:"
                     component={renderConfig.FIELD}
-                    validate={[number, maxLength(10)]}
+                    validate={[wholeNumber, maxLength(10)]}
                   />
                 </Form.Item>
               </Col>
