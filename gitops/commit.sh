@@ -2,10 +2,10 @@
 set -e
 
 TARGET_APP=${1?"Enter App Name !"}
-SOURCE_ENV=${2?"Enter Target Env Name !"}
+SOURCE_ENV=${2?"Enter Source Env Name !"}
 TARGET_ENV=${3?"Enter Target Env Name !"}
 ACTOR_NAME=${4?"Enter Actor Name !"}
-GITHUB_TOKEN=${5?"Enter Target Env Name !"}
+GITHUB_TOKEN=${5?"Enter Github Token !"}
 
 MDS_GIT_HASH=$(git rev-parse --verify HEAD)
 REPO_URL="https://github.com/bcgov/mds/commit"
@@ -34,7 +34,7 @@ else
     echo "$TARGET_ENV Environment, Trigger deployment by promoting image from $SOURCE_ENV env"
     # copy git has from dev into test / prod overlay patch!
     # promotion of images are based off the same git hash!
-    MDS_GIT_HASH= $(cat core-api/overlays/$SOURCE_ENV/deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs)
+    MDS_GIT_HASH=$(cat core-api/overlays/$SOURCE_ENV/deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs)
 
     # Replace the commit sha in env vars in overlay patch
     sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH-TS-$TIMESTAMP^" $TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
