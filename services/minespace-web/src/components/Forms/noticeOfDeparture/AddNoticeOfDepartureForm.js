@@ -19,7 +19,6 @@ const propTypes = {
 };
 
 const AddNoticeOfDepartureForm = (props) => {
-  // eslint-disable-next-line react/destructuring-assignment
   const { permits, onSubmit, closeModal, handleSubmit } = props;
   const [submitting, setSubmitting] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
@@ -78,6 +77,13 @@ const AddNoticeOfDepartureForm = (props) => {
             </Form.Item>
           </Col>
         </Row>
+        <Field
+          id="nod_description"
+          name="nod_description"
+          label="Description"
+          component={renderConfig.AUTO_SIZE_FIELD}
+          validate={[maxLength(3000), required]}
+        />
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -108,7 +114,7 @@ AddNoticeOfDepartureForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_NOTICE_OF_DEPARTURE,
   onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
-  destroyOnUnmount: false,
+  destroyOnUnmount: true,
   forceUnregisterOnUnmount: true,
   touchOnBlur: true,
 })(AddNoticeOfDepartureForm);

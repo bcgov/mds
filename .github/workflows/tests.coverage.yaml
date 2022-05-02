@@ -1,10 +1,7 @@
 name: Coverage Test Reports
 
 on:
-  pull_request:
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
 
 env:
   CC_TEST_REPORTER_ID: 50e476c4bbdd07bb0a379f1dfb6bf70e2d9102f25ebd429b3e38efd301d13eeb
@@ -108,7 +105,7 @@ jobs:
           docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
           docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
- 
+
       - name: Format frontend reports
         run: |
           cd services/core-web/

@@ -6830,19 +6830,20 @@ export const NOTICES_OF_DEPARTURE = {
     {
       nod_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
       nod_title: "Some title",
+      nod_description: "Some description",
       create_timestamp: "2020-04-20 11:58",
       update_timestamp: "2020-04-20 11:58",
       submission_timestamp: "2020-04-20 11:58",
       permit: {
         permit_id: 1,
-        permit_guid: '10d3ec917-179f-4dbc-80a3-4c993fdfe596',
+        permit_guid: "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
         permit_no: "M-7594809",
         permit_status_code: "C",
         current_permittee: "Haynes, Park and Brown",
         permit_prefix: "M",
       },
-      nod_status: 'pending_review',
-      nod_type: 'potentially_substaintial'
+      nod_status: "pending_review",
+      nod_type: "potentially_substaintial",
     },
   ],
 };

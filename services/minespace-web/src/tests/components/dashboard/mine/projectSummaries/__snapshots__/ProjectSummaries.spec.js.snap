@@ -89,16 +89,27 @@ exports[`ProjectSummaries renders properly 1`] = `
         <Link
           to="/mines/undefined/project-description/new/basic-information"
         >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            type="primary"
+          <Tooltip
+            arrowPointAtCenter={false}
+            autoAdjustOverflow={true}
+            mouseEnterDelay={0.1}
+            mouseLeaveDelay={0.1}
+            placement="top"
+            title="You cannot create more than 1 project description per project."
+            transitionName="zoom-big-fast"
           >
-            <ForwardRef(PlusCircleFilled) />
-            Start a new application
-          </Button>
+            <Button
+              block={false}
+              disabled={true}
+              ghost={false}
+              htmlType="button"
+              loading={false}
+              type="primary"
+            >
+              <ForwardRef(PlusCircleFilled) />
+              Start a new application
+            </Button>
+          </Tooltip>
         </Link>
       </Connect(AuthorizationWrapper)>
     </Paragraph>

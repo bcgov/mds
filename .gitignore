@@ -41,3 +41,5 @@ migrations/Dockerfile.flyway.m1
 
 # debug
 debug
+devops
+gitops/tenant-gitops-4c2ba9
