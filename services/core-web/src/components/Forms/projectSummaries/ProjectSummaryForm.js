@@ -20,6 +20,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  removeDocument: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -366,7 +367,8 @@ export const ProjectSummaryForm = (props) => {
             ],
             []
           )}
-          isViewOnly
+          removeDocument={props.removeDocument}
+          isViewOnly={false}
         />
       </div>
     );
