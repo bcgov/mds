@@ -2,13 +2,13 @@
 set -e
 
 TARGET_APP=${1?"Enter App Name !"}
-TARGET_ENV=${2?"Enter Target Env Name !"}
-ACTOR_NAME=${3?"Enter Actor Name !"}
-GITHUB_TOKEN=${4?"Enter Target Env Name !"}
+SOURCE_ENV=${2?"Enter Target Env Name !"}
+TARGET_ENV=${3?"Enter Target Env Name !"}
+ACTOR_NAME=${4?"Enter Actor Name !"}
+GITHUB_TOKEN=${5?"Enter Target Env Name !"}
 
 REPO_URL="https://github.com/bcgov/mds/commit"
 REPO_LOCATION=$(git rev-parse --show-toplevel)
-GIT_HASH=$(git rev-parse --verify HEAD)
 TIMESTAMP=$(date +"%y-%m-%d-%H-%M-%S")
 
 git config --global user.name $ACTOR_NAME
@@ -20,9 +20,21 @@ fi
 # Replace the commit id with new commit id of latest push
 # ^ is the delimiter here since repo url has many forward slashes!
 
-sed -i "s^git-commit.*^git-commit-${REPO_URL}/$GIT_HASH-TS-$TIMESTAMP^" $REPO_LOCATION/gitops/tenant-gitops-4c2ba9/$TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
-
 cd $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
+
+if [ $TARGET_ENV == 'dev' ]; then
+    echo "$TARGET_ENV Environment, updating git hash in deployment env vars"
+    GIT_HASH=$(git rev-parse --verify HEAD)
+    git commit -m "[$TARGET_APP] Pushed to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$GIT_HASH"
+else
+    echo "$TARGET_ENV Environment, Trigger deployment by promoting image from $SOURCE_ENV env"
+    # copy git has from dev into test / prod overlay patch!
+    # promotion of images are based off the same git hash!
+    GIT_HASH= $(cat core-api/overlays/$SOURCE_ENV/deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs)
+    git commit -m "[$TARGET_APP] Pushed from $SOURCE_ENV to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$GIT_HASH"
+fi
+
+# commit to gitops repo
+sed -i "s^git-commit.*^git-commit-$GIT_HASH-TS-$TIMESTAMP^" $TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
 git add .
-git commit -m "[$TARGET_APP] Pushed to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$GIT_HASH"
 git push
