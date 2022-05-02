@@ -59,4 +59,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-api dev ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh core-api dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}

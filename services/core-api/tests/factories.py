@@ -52,6 +52,8 @@ from app.api.projects.project_summary.models.project_summary_authorization impor
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+from app.api.projects.information_requirements_table.models.information_requirements_table_status_code import InformationRequirementsTableStatusCode
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
@@ -1165,3 +1167,15 @@ class NoticeOfDepartureFactory(BaseFactory):
     nod_title = factory.Faker('text', max_nb_chars=50)
     nod_description = factory.Faker('text', max_nb_chars=3000)
     deleted_ind = False
+
+
+class InformationRequirementsTableFactory(BaseFactory):
+    class Meta:
+        model = InformationRequirementsTable
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    irt_guid = GUID
+    status_code = 'REC'
