@@ -18,7 +18,9 @@ if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
 fi
 
 # Replace the commit id with new commit id of latest push
-sed -i "s/git-commit.*/git-commit-$REPO_URL/$GIT_HASH" $REPO_LOCATION/gitops/tenant-gitops-4c2ba9/$TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
+# ^ is the delimiter here since repo url has many forward slashes!
+
+sed -i "s^git-commit.*^git-commit-${REPO_URL}/$GIT_HASH^" $REPO_LOCATION/gitops/tenant-gitops-4c2ba9/$TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
 
 cd $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 git add .
