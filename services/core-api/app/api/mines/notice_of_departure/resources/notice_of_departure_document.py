@@ -47,7 +47,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
-        parser.add_argument('nod_document_description', type=str, required=True)
+        parser.add_argument('document_type', type=str, required=True)
 
         nod = NoticeOfDeparture.find_by_nod_guid(nod_guid)
 
@@ -56,7 +56,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
         data = parser.parse_args()
         document_name = data.get('document_name')
-        document_description = data.get('document_description')
+        document_type = data.get('document_type')
         document_manager_guid = data.get('document_manager_guid')
 
         # Register new file upload
@@ -74,7 +74,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         nod_doc = NoticeOfDepartureDocumentXref(
             mine_document_guid=mine_doc.mine_document_guid,
             nod_guid=nod_guid,
-            document_description=document_description)
+            document_type=document_type)
 
         nod.documents.append(nod_doc)
         nod.save()

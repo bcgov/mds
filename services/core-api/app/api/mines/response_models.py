@@ -721,24 +721,49 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-NOD_MODEL = api.model('NoticeOfDeparture', {
-    'nod_guid': fields.String,
-    'nod_title': fields.String,
-    'nod_description': fields.String,
-    'create_timestamp': fields.DateTime,
-    'update_timestamp': fields.DateTime,
-    'submission_timestamp': fields.DateTime,
-    'permit': fields.Nested(api.model(
-    'Permit', {
-        'permit_id': fields.Integer,
-        'permit_guid': fields.String,
-        'permit_no': fields.String,
-        'permit_status_code': fields.String,
-        'current_permittee': fields.String,
-        'permit_prefix': fields.String
-    })),
-    'nod_status': fields.String(enum=NodStatus, attribute='nod_status.name'),
-    'nod_type': fields.String(enum=NodType, attribute='nod_type.name')
-})
+NOD_MODEL = api.model(
+    'NoticeOfDeparture', {
+        'nod_guid':
+        fields.String,
+        'nod_title':
+        fields.String,
+        'nod_description':
+        fields.String,
+        'create_timestamp':
+        fields.DateTime,
+        'update_timestamp':
+        fields.DateTime,
+        'submission_timestamp':
+        fields.DateTime,
+        'permit':
+        fields.Nested(
+            api.model(
+                'Permit', {
+                    'permit_id': fields.Integer,
+                    'permit_guid': fields.String,
+                    'permit_no': fields.String,
+                    'permit_status_code': fields.String,
+                    'current_permittee': fields.String,
+                    'permit_prefix': fields.String
+                })),
+        'nod_status':
+        fields.String(enum=NodStatus, attribute='nod_status.name'),
+        'nod_type':
+        fields.String(enum=NodType, attribute='nod_type.name'),
+        'nod_documents':
+        fields.List(
+            api.model(
+                'NoticeOfDepartureDocumentXref', {
+                    'document_manager_guid': fields.String,
+                    'document_type': fields.String,
+                    'document_name': fields.String
+                }))
+    })
 
-CREATE_NOD_MODEL = api.model('NoticeOfDeparture', {'permit_guid': fields.String, 'nod_title': fields.String, 'mine_manager_id': fields.Integer, 'type': fields.String})
+CREATE_NOD_MODEL = api.model(
+    'NoticeOfDeparture', {
+        'permit_guid': fields.String,
+        'nod_title': fields.String,
+        'mine_manager_id': fields.Integer,
+        'nod_type': fields.String
+    })
