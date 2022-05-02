@@ -62,9 +62,12 @@ export const DocumentTable = (props) => {
     },
     {
       key: "remove",
-      className: props.isViewOnly ? "column-hide" : "",
+      className: props.isViewOnly || !props.removeDocument ? "column-hide" : "",
       render: (text, record) => (
-        <div align="right" className={props.isViewOnly ? "column-hide" : ""}>
+        <div
+          align="right"
+          className={props.isViewOnly || !props.removeDocument ? "column-hide" : ""}
+        >
           <Popconfirm
             placement="topLeft"
             title={`Are you sure you want to delete ${record.name}?`}

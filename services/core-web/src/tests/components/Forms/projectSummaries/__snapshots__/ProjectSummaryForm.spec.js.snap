@@ -315,7 +315,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     <DocumentTable
       documents={Array []}
       isViewOnly={false}
-      removeDocument={[Function]}
+      removeDocument={null}
     />
   </div>
 </Form>
