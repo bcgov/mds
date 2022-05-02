@@ -40,4 +40,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-api prod ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh core-api prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
