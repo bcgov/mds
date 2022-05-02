@@ -11,7 +11,7 @@ REPO_LOCATION=$(git rev-parse --show-toplevel)
 GIT_HASH=$(git rev-parse --verify HEAD)
 TIMESTAMP=$(date +"%y-%m-%d-%H-%M-%S")
 
-git config --global user.name "$ACTOR_NAME"
+git config --global user.name $ACTOR_NAME
 
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
     git clone https://v-y-a-s:$GITHUB_TOKEN@github.com/bcgov-c/tenant-gitops-4c2ba9 $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
