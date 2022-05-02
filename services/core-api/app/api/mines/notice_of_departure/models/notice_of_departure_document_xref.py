@@ -1,8 +1,14 @@
 from sqlalchemy.dialects.postgresql import UUID, dialect
 from sqlalchemy.schema import FetchedValue, CreateTable
 from sqlalchemy.ext.associationproxy import association_proxy
+from enum import Enum, auto
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
+
+
+class DocumentType(Enum):
+    checklist = auto()
+    other = auto()
 
 
 class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
@@ -14,7 +20,7 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True),
         db.ForeignKey('notice_of_departure.nod_guid'),
         server_default=FetchedValue())
-    document_description = db.Column(db.String, nullable=False)
+    document_type = db.Column(db.Enum(DocumentType), nullable=False, default=DocumentType.checklist)
     mine_document = db.relationship('MineDocument', lazy='joined')
 
     mine_guid = association_proxy('mine_document', 'mine_guid')
