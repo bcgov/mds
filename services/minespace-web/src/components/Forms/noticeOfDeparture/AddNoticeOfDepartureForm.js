@@ -5,11 +5,11 @@ import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { remove } from "lodash";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "../../../../common/constants/strings";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -26,7 +26,7 @@ const AddNoticeOfDepartureForm = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [documentNameGuidMap, setDocumentNameGuidMap] = useState({});
+  const [documentArray, setDocumentArray] = useState([]);
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -42,29 +42,43 @@ const AddNoticeOfDepartureForm = (props) => {
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
     const { permitNumber } = values;
-    onSubmit(permitNumber, values)
+    onSubmit(permitNumber, values, documentArray)
       .then(() => closeModal())
       .finally(() => setSubmitting(false));
   };
 
-  const onFileLoad = (documentName, document_manager_guid) => {
+  const onFileLoad = (documentName, document_manager_guid, documentType) => {
     setUploadedFiles([
       ...uploadedFiles,
       {
+        documentType,
         documentName,
         document_manager_guid,
       },
     ]);
-    setDocumentNameGuidMap({
-      ...documentNameGuidMap,
-      [documentName]: document_manager_guid,
-    });
-    change("uploadedFiles", uploadedFiles);
+    setDocumentArray([
+      ...documentArray,
+      {
+        document_type: documentType,
+        document_name: documentName,
+        document_manager_guid,
+      },
+    ]);
   };
 
-  const onRemoveFile = (fileItem) => {
-    remove(documentNameGuidMap, { document_manager_guid: fileItem.serverId });
+  useEffect(() => {
     change("uploadedFiles", uploadedFiles);
+  }, [uploadedFiles]);
+
+  const onRemoveFile = (fileItem) => {
+    setDocumentArray(
+      documentArray.filter(
+        (document) => document.document_manager_guid !== fileItem.document_manager_guid
+      )
+    );
+    setUploadedFiles(
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.document_manager_guid)
+    );
   };
 
   return (
@@ -112,12 +126,18 @@ const AddNoticeOfDepartureForm = (props) => {
         <Form.Item label="Attached Files">
           <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
           <Field
-            id="uploadedFiles"
-            name="uploadedFiles"
-            onFileLoad={onFileLoad}
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+              );
+            }}
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             component={NoticeOfDepartureFileUpload}
+            allowMultiple={false}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
           />
         </Form.Item>
         <div className="ant-modal-footer">

@@ -9,21 +9,23 @@ const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  uploadType: PropTypes.string.isRequired,
+  allowMultiple: PropTypes.bool.isRequired,
 };
 
 export const NoticeOfDepartureFileUpload = (props) => {
-  const { mineGuid, onFileLoad, onRemoveFile } = props;
+  const { mineGuid, onFileLoad, onRemoveFile, uploadType, allowMultiple } = props;
   return (
     <Field
-      id="fileUpload"
-      name="fileUpload"
+      id={uploadType}
+      name={uploadType}
       component={FileUpload}
       uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mineGuid)}
       acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
       onFileLoad={onFileLoad}
       onRemoveFile={onRemoveFile}
       allowRevert
-      allowMultiple
+      allowMultiple={allowMultiple}
     />
   );
 };
