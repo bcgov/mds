@@ -27,7 +27,7 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          # - name: backend
+          - name: backend
           - name: flyway
           - name: tusd
           - name: docgen
@@ -73,7 +73,7 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          # - name: backend
+          - name: backend
           - name: docgen
           - name: dbbackup
           - name: metabase
