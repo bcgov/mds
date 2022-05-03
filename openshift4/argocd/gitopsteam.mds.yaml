@@ -50,7 +50,7 @@ spec:
 
     # Project Readers have read-only access to the Project in the Argo CD UI
     readers:
-      - will-freshworks
-      - matbusby-fw
-      - hitankar-freshworks
-      - fwkendall
+      - will-freshworks@github
+      - matbusby-fw@github
+      - hitankar-freshworks@github
+      - fwkendall@github
