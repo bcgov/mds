@@ -42,10 +42,10 @@ else
     echo "$TARGET_ENV Environment, Trigger deployment by promoting image from $SOURCE_ENV env"
     # copy git has from dev into test / prod overlay patch!
     # promotion of images are based off the same git hash!
-    MDS_GIT_HASH=$(cat core-api/overlays/$SOURCE_ENV/deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs)
+    MDS_GIT_HASH=$(cat core-api/overlays/$SOURCE_ENV/deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs | cut -d "-" -f 3)
 
     # Replace the commit sha in env vars in overlay patch
-    sed -i "s^git-commit.*^$MDS_GIT_HASH^" $TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
+    sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH^" $TARGET_APP/overlays/$TARGET_ENV/deployment.patch.yaml
     commit "[$TARGET_APP] Pushed from $SOURCE_ENV to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$MDS_GIT_HASH"
 
 fi
