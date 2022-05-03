@@ -98,7 +98,7 @@ export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dis
 };
 
 export const removeDocumentFromProjectSummary = (
-  mineGuid,
+  projectGuid,
   projectSummaryGuid,
   mineDocumentGuid
 ) => (dispatch) => {
@@ -107,10 +107,14 @@ export const removeDocumentFromProjectSummary = (
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-        API.PROJECT_SUMMARY_DOCUMENT(mineGuid, projectSummaryGuid, mineDocumentGuid),
+        API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully deleted project description document.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
       return response;
     })
