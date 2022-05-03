@@ -17,10 +17,10 @@ git config --global user.name $ACTOR_NAME
 function commit() {
     git add -A
 
-    # if ! git diff-index --quiet HEAD; then
-    #     git commit -m "$@"
-    #     git push origin main
-    # fi
+    if ! git diff-index --quiet HEAD; then
+        git commit -m "$@"
+        git push origin main
+    fi
 }
 
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
