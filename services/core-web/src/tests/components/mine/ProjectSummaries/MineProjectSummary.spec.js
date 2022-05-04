@@ -11,6 +11,7 @@ const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   props.projectSummaries = [];
   props.projectSummaryStatusCodesHash = MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH;
+  props.userRoles = [];
 };
 
 const setupDispatchProps = () => {

@@ -6,6 +6,7 @@ from app.api.projects.project_summary.resources.project_summary_list import Proj
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
 from app.api.projects.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
 from app.api.projects.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
+from app.api.projects.project_summary.resources.project_summary_uploaded_document import ProjectSummaryUploadedDocumentResource
 from app.api.projects.project_summary.resources.project_summary_authorization_types import ProjectSummaryAuthorizationTypeResource
 from app.api.projects.project_summary.resources.project_summary_permit_types import ProjectSummaryPermitTypeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
@@ -26,6 +27,10 @@ api.add_resource(ProjectSummaryResource,
 api.add_resource(
     ProjectSummaryDocumentUploadResource,
     '/<string:project_guid>/project-summaries/<string:project_summary_guid>/documents')
+api.add_resource(
+    ProjectSummaryUploadedDocumentResource,
+    '/<string:project_guid>/project-summaries/<string:project_summary_guid>/documents/<string:mine_document_guid>'
+)
 api.add_resource(ProjectSummaryListGetResource, '/<string:project_guid>/project-summaries')
 api.add_resource(ProjectSummaryListPostResource, '/new/project-summaries/new')
 api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-types')

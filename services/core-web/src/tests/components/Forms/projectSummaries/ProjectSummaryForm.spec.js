@@ -21,6 +21,7 @@ const setupProps = () => {
     { groupName: "Inactive", opt: [] },
   ];
   props.projectSummaryStatusCodes = [];
+  props.userRoles = [];
 };
 
 beforeEach(() => {

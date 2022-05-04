@@ -16,6 +16,15 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  deleteFilePermission: PropTypes.string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  handleDeleteFile: PropTypes.func,
+};
+
+const defaultProps = {
+  deleteFilePermission: null,
+  handleDeleteFile: () => {},
 };
 
 const transformRowData = (projectSummaries) => {
@@ -101,6 +110,13 @@ export const MineProjectSummaryTable = (props) => {
                   <DocumentLink
                     documentManagerGuid={file.document_manager_guid}
                     documentName={file.document_name}
+                    deletePermission={props.deleteFilePermission}
+                    handleDelete={props.handleDeleteFile}
+                    deleteFilePayload={{
+                      projectGuid: record?.projectSummary?.project_guid,
+                      projectSummaryGuid: record?.projectSummary?.project_summary_guid,
+                      mineDocumentGuid: file?.mine_document_guid,
+                    }}
                   />
                 </div>
               ))
@@ -135,6 +151,7 @@ export const MineProjectSummaryTable = (props) => {
 };
 
 MineProjectSummaryTable.propTypes = propTypes;
+MineProjectSummaryTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
