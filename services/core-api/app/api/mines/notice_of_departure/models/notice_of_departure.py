@@ -3,6 +3,7 @@ from datetime import datetime
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
 
@@ -32,7 +33,15 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='joined')
-    documents = db.relationship('NoticeOfDepartureDocumentXref', lazy='joined')
+    documents = db.relationship('NoticeOfDepartureDocumentXref', lazy='select')
+
+    mine_documents = db.relationship(
+        'MineDocument',
+        lazy='select',
+        secondary='notice_of_departure_document_xref',
+        secondaryjoin=
+        'and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+    )
 
     @classmethod
     def create(cls,
@@ -56,8 +65,13 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         return new_nod
 
     @classmethod
-    def find_one(cls, __guid):
-        return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
+    def find_one(cls, __guid, include_documents=False):
+        if (include_documents):
+            return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
+        else:
+            return cls.query.filter_by(
+                nod_guid=__guid,
+                deleted_ind=False).options(lazyload(NoticeOfDeparture.mine_documents)).first()
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
