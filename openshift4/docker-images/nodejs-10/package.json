@@ -36,7 +36,7 @@
     "leaflet.markercluster": "^1.4.1",
     "leaflet.wms": "^0.2.0",
     "lodash": "^4.17.21",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "pm2": "^3.5.1",
     "promise.prototype.finally": "^3.1.0",
     "prop-types": "^15.7.2",
