@@ -7,14 +7,14 @@ from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPAC
 from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.response_models import PERMIT_NOD_MODEL
+from app.api.mines.response_models import NOD_MODEL
 
 
 class NoticeOfDepartureResource(Resource, UserMixin):
 
-    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Mine guid.'})
+    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Nod guid.'})
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    @api.marshal_with(PERMIT_NOD_MODEL, code=200)
+    @api.marshal_with(NOD_MODEL, code=200)
     def get(self, nod_guid):
-        nod = NoticeOfDeparture.find(nod_guid)
+        nod = NoticeOfDeparture.find(nod_guid, True)
         return nod

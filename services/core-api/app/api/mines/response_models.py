@@ -721,6 +721,11 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+NOD_DOCUMENT = api.inherit('NoticeOfDeparureDocumentModel', MINE_DOCUMENT_MODEL, {
+    'created_at': fields.Date,
+    'document_type': fields.String
+})
+
 NOD_MODEL = api.model(
     'NoticeOfDeparture', {
         'nod_guid':
@@ -752,14 +757,7 @@ NOD_MODEL = api.model(
         fields.String(enum=NodType, attribute='nod_type.name'),
         'nod_documents':
         fields.List(
-            fields.Nested(
-                api.model(
-                'NoticeOfDepartureDocumentXref', {
-                    'document_manager_guid': fields.String,
-                    'document_type': fields.String,
-                    'document_name': fields.String
-                })
-            )
+            fields.Nested(NOD_DOCUMENT)
         )
     })
 
