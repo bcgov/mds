@@ -25,7 +25,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: minespace
           - name: frontend
           - name: docgen
           - name: dbbackup
@@ -59,8 +58,6 @@ jobs:
       matrix:
         include:
           - name: frontend
-          # - name: backend
-          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -84,7 +81,6 @@ jobs:
           - name: frontend
           - name: dbbackup
           - name: metabase
-          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -110,7 +106,6 @@ jobs:
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
-          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -145,7 +140,6 @@ jobs:
       matrix:
         include:
           - name: nris
-          - name: minespace
           - name: frontend
           - name: docman
           - name: docgen
