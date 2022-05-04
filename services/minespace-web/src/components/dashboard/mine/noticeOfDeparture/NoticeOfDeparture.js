@@ -6,8 +6,12 @@ import {
   addDocumentToNoticeOfDeparture,
   createNoticeOfDeparture,
   fetchNoticesOfDeparture,
+  fetchDetailedNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
+import {
+  getNoticesOfDeparture,
+  getNoticeOfDeparture,
+} from "@common/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
@@ -26,6 +30,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
+  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
   addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -37,19 +42,21 @@ export const NoticeOfDeparture = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleFetchPermits = () => {
-    props.fetchPermits(mine.mine_guid).then(() => setIsLoaded(true));
+  const handleFetchPermits = async () => {
+    await props.fetchPermits(mine.mine_guid);
+    await setIsLoaded(true);
   };
 
-  const handleFetchNoticesOfDeparture = () => {
-    props.fetchNoticesOfDeparture(mine.mine_guid).then(() => handleFetchPermits());
+  const handleFetchNoticesOfDeparture = async () => {
+    await props.fetchNoticesOfDeparture(mine.mine_guid);
+    await handleFetchPermits();
   };
 
   useEffect(() => {
     handleFetchNoticesOfDeparture();
   }, []);
 
-  const handleAddDocuments = (documentArray, noticeOfDepartureGuid) =>
+  const handleAddDocuments = (documentArray, noticeOfDepartureGuid) => {
     Promise.all(
       documentArray.forEach((document) =>
         props.addDocumentToNoticeOfDeparture(
@@ -62,6 +69,7 @@ export const NoticeOfDeparture = (props) => {
         )
       )
     );
+  };
 
   const handleCreateNoticeOfDeparture = (permit_guid, values, documentArray) => {
     setIsLoaded(false);
@@ -86,7 +94,8 @@ export const NoticeOfDeparture = (props) => {
     });
   };
 
-  const openViewNoticeOfDepartureModal = (noticeOfDeparture) => {
+  const openViewNoticeOfDepartureModal = async (noticeOfDeparture) => {
+    await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, noticeOfDeparture.nod_id);
     props.openModal({
       props: {
         noticeOfDeparture,
@@ -125,6 +134,7 @@ export const NoticeOfDeparture = (props) => {
 const mapStateToProps = (state) => ({
   nods: getNoticesOfDeparture(state),
   permits: getPermits(state),
+  noticeOfDeparture: getNoticeOfDeparture(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -134,6 +144,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       createNoticeOfDeparture,
       fetchNoticesOfDeparture,
+      fetchDetailedNoticeOfDeparture,
       addDocumentToNoticeOfDeparture,
       fetchPermits,
     },
