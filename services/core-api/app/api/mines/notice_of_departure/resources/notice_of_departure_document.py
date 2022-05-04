@@ -49,7 +49,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         parser.add_argument('document_manager_guid', type=str, required=True)
         parser.add_argument('document_type', type=str, required=True)
 
-        nod = NoticeOfDeparture.find_by_nod_guid(nod_guid)
+        nod = NoticeOfDeparture.find_one(nod_guid)
 
         if not nod:
             raise NotFound('Unable to fetch Notice of departure.')

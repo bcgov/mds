@@ -752,12 +752,15 @@ NOD_MODEL = api.model(
         fields.String(enum=NodType, attribute='nod_type.name'),
         'nod_documents':
         fields.List(
-            api.model(
+            fields.Nested(
+                api.model(
                 'NoticeOfDepartureDocumentXref', {
                     'document_manager_guid': fields.String,
                     'document_type': fields.String,
                     'document_name': fields.String
-                }))
+                })
+            )
+        )
     })
 
 CREATE_NOD_MODEL = api.model(
