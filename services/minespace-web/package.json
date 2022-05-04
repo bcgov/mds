@@ -119,7 +119,7 @@
     "serve": "cross-env HOST=0.0.0.0 PORT=3020 webpack-dev-server --watch --watch-poll --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
-    "start": "npx pm2 start server.js --no-daemon",
+    "production": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --update-snapshot --runInBand --coverage",
     "lint": "eslint ./src",
     "lint:file": "eslint",

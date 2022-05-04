@@ -15,4 +15,4 @@ RUN npm run build
 
 # Run the server
 EXPOSE 3020
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "production" ]
