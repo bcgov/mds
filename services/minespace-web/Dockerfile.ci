@@ -11,6 +11,8 @@ RUN npm ci
 
 COPY . .
 
+RUN npm run build
+
 # Run the server
 EXPOSE 3020
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "run", "start" ]
