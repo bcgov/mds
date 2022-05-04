@@ -12,6 +12,11 @@ export const noticeOfDepartureReducer = (state = initialState, action) => {
         ...state,
         nods: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_DEPARTURE:
+      return {
+        ...state,
+        noticeOfDeparture: action.payload,
+      };
     default:
       return state;
   }
@@ -22,5 +27,6 @@ const noticeOfDepartureReducerObject = {
 };
 
 export const getNoticesOfDeparture = (state) => state[NOTICES_OF_DEPARTURE].nods;
+export const getNoticeOfDeparture = (state) => state[NOTICES_OF_DEPARTURE].noticeOfDeparture;
 
 export default noticeOfDepartureReducerObject;

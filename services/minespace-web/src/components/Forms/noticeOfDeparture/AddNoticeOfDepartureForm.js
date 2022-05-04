@@ -42,9 +42,7 @@ const AddNoticeOfDepartureForm = (props) => {
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
     const { permitNumber } = values;
-    onSubmit(permitNumber, values, documentArray)
-      .then(() => closeModal())
-      .finally(() => setSubmitting(false));
+    onSubmit(permitNumber, values, documentArray).finally(() => setSubmitting(false));
   };
 
   const onFileLoad = (documentName, document_manager_guid, documentType) => {

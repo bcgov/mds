@@ -5,10 +5,15 @@ import {
   CREATE_NOTICE_OF_DEPARTURE,
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
   GET_NOTICES_OF_DEPARTURE,
+  GET_DETAILED_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "../constants/environment";
-import { NOTICES_OF_DEPARTURE, NOTICES_OF_DEPARTURE_DOCUMENTS } from "../constants/API";
+import {
+  NOTICES_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENTS,
+  NOTICE_OF_DEPARTURE,
+} from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { storeNoticesOfDeparture } from "../actions/noticeOfDepartureActions";
 
@@ -44,6 +49,19 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(GET_NOTICES_OF_DEPARTURE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch) => {
+  dispatch(request(GET_DETAILED_NOTICE_OF_DEPARTURE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mine_guid, nod_guid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(GET_DETAILED_NOTICE_OF_DEPARTURE));
+      return response;
+    })
+    .catch(() => dispatch(error(GET_DETAILED_NOTICE_OF_DEPARTURE)))
     .finally(() => dispatch(hideLoading()));
 };
 

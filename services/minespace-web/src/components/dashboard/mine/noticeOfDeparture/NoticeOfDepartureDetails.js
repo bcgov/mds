@@ -1,5 +1,5 @@
 import React from "react";
-import { Descriptions, Typography } from "antd";
+import { Descriptions, Divider, Typography } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -15,9 +15,18 @@ export const NoticeOfDepartureDetails = (props) => {
       <Typography.Title level={4}>Basic Information</Typography.Title>
       <Descriptions colon={false} layout="vertical" column={1} size="middle">
         <Descriptions.Item label="Departure Project Title">{nod_title}</Descriptions.Item>
+      </Descriptions>
+      <Descriptions colon={false} layout="vertical" column={2} size="middle">
         <Descriptions.Item label="Permit #">{permit.permit_no}</Descriptions.Item>
         <Descriptions.Item label="NOD #">{nod_guid}</Descriptions.Item>
-        <Descriptions.Item label="Description">{nod_description}</Descriptions.Item>
+      </Descriptions>
+      <Descriptions colon={false} layout="vertical" column={1} size="middle">
+        <Descriptions.Item label="Depature Summary">{nod_description}</Descriptions.Item>
+      </Descriptions>
+      <Divider />
+      <Typography.Title level={4}>Self-Assessment Form</Typography.Title>
+      <Descriptions colon={false} layout="vertical" column={1} size="middle">
+        <Descriptions.Item label="Uploaded File(s)">Document Map</Descriptions.Item>
       </Descriptions>
     </div>
   );
