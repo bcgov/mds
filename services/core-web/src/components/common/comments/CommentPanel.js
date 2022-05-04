@@ -40,7 +40,7 @@ const defaultProps = {
 export const CommentPanel = (props) => {
   const createPermission = props.userRoles.includes(USER_ROLES[props?.createPermission])
     ? props.createPermission
-    : Permission.ADMIN;
+    : null;
 
   return (
     <React.Fragment>

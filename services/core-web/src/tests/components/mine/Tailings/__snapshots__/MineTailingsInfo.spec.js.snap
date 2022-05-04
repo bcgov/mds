@@ -33,7 +33,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
             Tailing Storage Facilities
           </h4>
           <Connect(AuthorizationWrapper)
-            permission="role_edit_permits"
+            permission="role_edit_tsf"
           >
             <AddButton
               onClick={[Function]}

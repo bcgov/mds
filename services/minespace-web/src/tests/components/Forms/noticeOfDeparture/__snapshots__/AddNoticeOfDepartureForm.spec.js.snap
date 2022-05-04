@@ -2,7 +2,7 @@
 
 exports[`AddNoticeOfDepartureForm renders properly 1`] = `
 <Hoc
-  destroyOnUnmount={false}
+  destroyOnUnmount={true}
   enableReinitialize={false}
   forceUnregisterOnUnmount={true}
   form="ADD_NOTICE_OF_DEPARTURE"

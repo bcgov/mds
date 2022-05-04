@@ -16,14 +16,22 @@ jobs:
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
+
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-      - name: Promote dev to test
+
+      - name: Promote core-api from dev to test
         run: |
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/backend:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/backend:${{ env.PROMOTE_TAG }}
+
+      - name: Promote flyway from dev to test
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} tag \
+          ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
+          ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
 
   trigger-gitops:
     runs-on: ubuntu-20.04
@@ -32,4 +40,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-api test ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh core-api dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}

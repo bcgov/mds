@@ -15,6 +15,7 @@ import * as Securities from "@/customPropTypes/securities";
 import * as ExplosivePermits from "@/customPropTypes/explosivesPermit";
 import * as ExternalAuthorizations from "@/customPropTypes/externalAuthorizations";
 import * as ProjectSummaries from "@/customPropTypes/projectSummaries";
+import * as NoticeOfDeparture from "@/customPropTypes/noticeOfDeparture";
 
 export default {
   ...CommonTypes,
@@ -33,4 +34,5 @@ export default {
   ...ExplosivePermits,
   ...ExternalAuthorizations,
   ...ProjectSummaries,
+  ...NoticeOfDeparture,
 };

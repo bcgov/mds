@@ -96,7 +96,7 @@ export class MineTailingsTable extends Component {
         render: (text, record) => {
           return (
             <div align="right">
-              <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
+              <AuthorizationWrapper permission={Permission.EDIT_TSF}>
                 <Button
                   type="primary"
                   size="small"
@@ -105,7 +105,7 @@ export class MineTailingsTable extends Component {
                     this.props.openEditTailingsModal(event, this.props.handleEditTailings, record)
                   }
                 >
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit Report" />
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
                 </Button>
               </AuthorizationWrapper>
             </div>

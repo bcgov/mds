@@ -10,6 +10,8 @@ import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
 import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
@@ -20,7 +22,9 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  removeDocument: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -347,6 +351,9 @@ export const ProjectSummaryForm = (props) => {
     const {
       projectSummary: { documents },
     } = props;
+    const canRemoveDocuments =
+      props.userRoles.includes(USER_ROLES.role_admin) ||
+      props.userRoles.includes(USER_ROLES.role_edit_project_summaries);
     return (
       <div id="documents">
         <Typography.Title level={4}>Documents</Typography.Title>
@@ -366,7 +373,8 @@ export const ProjectSummaryForm = (props) => {
             ],
             []
           )}
-          isViewOnly
+          removeDocument={canRemoveDocuments ? props.removeDocument : null}
+          isViewOnly={false}
         />
       </div>
     );
@@ -391,6 +399,7 @@ ProjectSummaryForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
+  userRoles: getUserAccessData(state),
 });
 
 export default compose(

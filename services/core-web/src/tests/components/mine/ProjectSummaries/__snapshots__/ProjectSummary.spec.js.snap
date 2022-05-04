@@ -193,6 +193,7 @@ exports[`ProjectSummary renders properly 1`] = `
                 "WDN": "Withdrawn",
               }
             }
+            removeDocument={[Function]}
           />
         </div>
       </LoadingWrapper>
