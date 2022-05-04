@@ -6,15 +6,16 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.constants import *
 
+
 class NodType(Enum):
     non_substantial = auto()
     potentially_substantial = auto()
+
 
 class NodStatus(Enum):
     pending_review = auto()
     in_review = auto()
     self_authorized = auto()
-
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -31,10 +32,24 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='joined')
+    documents = db.relationship('NoticeOfDepartureDocumentXref', lazy='joined')
 
     @classmethod
-    def create(cls, mine, permit, nod_title, nod_description, nod_type, nod_status, add_to_session=True):
-        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title, nod_description=nod_description, nod_type=nod_type, nod_status=nod_status)
+    def create(cls,
+               mine,
+               permit,
+               nod_title,
+               nod_description,
+               nod_type,
+               nod_status,
+               add_to_session=True):
+        new_nod = cls(
+            permit_guid=permit.permit_guid,
+            mine_guid=mine.mine_guid,
+            nod_title=nod_title,
+            nod_description=nod_description,
+            nod_type=nod_type,
+            nod_status=nod_status)
 
         if add_to_session:
             new_nod.save(commit=False)
