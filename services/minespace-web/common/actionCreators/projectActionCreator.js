@@ -3,7 +3,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as Strings from "../constants/strings";
-import * as projectSummaryActions from "../actions/projectSummaryActions";
+import * as projectActions from "../actions/projectActions";
 import * as API from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
@@ -72,7 +72,7 @@ export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
-      dispatch(projectSummaryActions.storeProjectSummaries(response.data));
+      dispatch(projectActions.storeProjectSummaries(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
     .finally(() => dispatch(hideLoading()));
@@ -88,7 +88,7 @@ export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dis
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
-      dispatch(projectSummaryActions.storeProjectSummary(response.data));
+      dispatch(projectActions.storeProjectSummary(response.data));
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT_SUMMARY));
@@ -128,9 +128,40 @@ export const fetchProjectSummaries = (payload) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(payload), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
-      dispatch(projectSummaryActions.storeProjectSummaries(response.data));
+      dispatch(projectActions.storeProjectSummaries(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchProjectsByMine = ({ mineGuid }) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PROJECTS));
+  dispatch(showLoading());
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
+    .get(ENVIRONMENT.apiUrl + API.PROJECTS(mineGuid), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PROJECTS));
+      dispatch(projectActions.storeProjects(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchProjectById = (projectGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PROJECT));
+  dispatch(showLoading());
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
+    .get(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PROJECT));
+      dispatch(projectActions.storeProject(response.data));
+      dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
+      dispatch(projectActions.storeProjectSummary(response.data.project_summary));
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_PROJECT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 

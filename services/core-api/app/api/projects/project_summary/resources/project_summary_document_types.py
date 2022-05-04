@@ -2,7 +2,7 @@ from flask_restplus import Resource
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_DOCUMENT_TYPE_MODEL
+from app.api.projects.response_models import PROJECT_SUMMARY_DOCUMENT_TYPE_MODEL
 from app.api.projects.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
 
 

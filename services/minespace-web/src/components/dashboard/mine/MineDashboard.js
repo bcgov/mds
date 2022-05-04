@@ -21,7 +21,7 @@ import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import Bonds from "@/components/dashboard/mine/bonds/Bonds";
 import Tailings from "@/components/dashboard/mine/tailings/Tailings";
-import ProjectSummaries from "@/components/dashboard/mine/projectSummaries/ProjectSummaries";
+import ProjectSummaries from "@/components/dashboard/mine/projects/Projects";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
@@ -134,7 +134,7 @@ export class MineDashboard extends Component {
                     <Overview mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
                   {isMajorMine && (
-                    <Tabs.TabPane tab="Applications" key="applications">
+                    <Tabs.TabPane tab="Projects" key="applications">
                       <ProjectSummaries mine={mine} match={this.props.match} />
                     </Tabs.TabPane>
                   )}

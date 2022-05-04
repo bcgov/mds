@@ -116,7 +116,9 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
-// Project & Project Summaries
+// Projects(Project Summaries, IRT)
+export const PROJECTS = (mineGuid) => `/projects?${queryString.stringify({ mine_guid: mineGuid })}`;
+export const PROJECT = (projectGuid) => `/projects/${projectGuid}`;
 export const PROJECT_PROJECT_SUMMARIES = (projectGuid, params = {}) =>
   `/projects/${projectGuid}/project-summaries?${queryString.stringify(params)}`;
 export const NEW_PROJECT_SUMMARY = () => "/projects/new/project-summaries/new";

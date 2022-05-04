@@ -12,7 +12,7 @@ import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
 } from "@common/selectors/staticContentSelectors";
-import { getFormattedProjectSummary } from "@common/selectors/projectSummarySelectors";
+import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

@@ -12,14 +12,10 @@ import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import {
-  fetchProjectSummariesByMine,
-  deleteProjectSummary,
-} from "@common/actionCreators/projectSummaryActionCreator";
-import { getProjectSummaryAliasStatusCodesHash } from "@common/selectors/staticContentSelectors";
-import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
+import { fetchProjectsByMine } from "@common/actionCreators/projectActionCreator";
+import { getProjects } from "@common/selectors/projectSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import ProjectSummariesTable from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
+import ProjectTable from "@/components/dashboard/mine/projects/ProjectsTable";
 import * as routes from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
@@ -31,18 +27,16 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  deleteProjectSummary: PropTypes.func.isRequired,
-  fetchProjectSummariesByMine: PropTypes.func.isRequired,
-  projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaries: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+  fetchProjectsByMine: PropTypes.func.isRequired,
+  projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
 };
 
 const defaultProps = {
   mines: {},
 };
 
-export class ProjectSummaries extends Component {
-  state = { isLoaded: false, mine: {}, canStartNewApplication: false };
+export class Projects extends Component {
+  state = { isLoaded: false, mine: {} };
 
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -51,11 +45,10 @@ export class ProjectSummaries extends Component {
 
   handleFetchData = (id) => {
     this.props.fetchMineRecordById(id).then(() => {
-      this.props.fetchProjectSummariesByMine({ mineGuid: id }).then(() => {
+      this.props.fetchProjectsByMine({ mineGuid: id }).then(() => {
         this.setState({
           isLoaded: true,
           mine: this.props.mines[id],
-          canStartNewApplication: this.props.projectSummaries.length === 0,
         });
       });
     });
@@ -73,15 +66,14 @@ export class ProjectSummaries extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Typography.Title level={4}>Application Submissions</Typography.Title>
+          <Typography.Title level={4}>All Projects</Typography.Title>
           <Typography.Paragraph>
-            A&nbsp;
+            The first step in applying for a new or amending an existing production mineral or coal
+            mining permit issued under the Mines Act is to submit a project description. A{" "}
             <Typography.Text className="color-primary" strong>
               project description&nbsp;
-            </Typography.Text>
-            is a high level overview of a production mining project used for assessment prior to
-            applying for a new or amending an existing production mineral or coal mining permit
-            issued under the Mines Act.
+            </Typography.Text>{" "}
+            is a high level overview of a production mining project used for assessment.{" "}
           </Typography.Paragraph>
           <Typography.Paragraph>
             If you are proposing induced polarization surveys or exploration drilling within the
@@ -147,31 +139,17 @@ export class ProjectSummaries extends Component {
           <Typography.Paragraph>
             <AuthorizationWrapper>
               <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
-                {this.state.canStartNewApplication ? (
-                  <Button type="primary">
-                    <PlusCircleFilled />
-                    Start a new application
-                  </Button>
-                ) : (
-                  <Tooltip
-                    title="You cannot create more than 1 project description per project."
-                    placement="top"
-                  >
-                    <Button type="primary" disabled>
-                      <PlusCircleFilled />
-                      Start a new application
-                    </Button>
-                  </Tooltip>
-                )}
+                <Button type="primary">
+                  <PlusCircleFilled />
+                  Create New Project
+                </Button>
               </Link>
             </AuthorizationWrapper>
           </Typography.Paragraph>
-          <ProjectSummariesTable
-            projectSummaries={this.props.projectSummaries}
+          <ProjectTable
+            projects={this.props.projects}
             mine={this.state.mine}
             isLoaded={this.state.isLoaded}
-            projectSummaryStatusCodesHash={this.props.projectSummaryStatusCodesHash}
-            handleDeleteDraft={this.handleDeleteDraft}
           />
         </Col>
       </Row>
@@ -181,21 +159,19 @@ export class ProjectSummaries extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  projectSummaries: getProjectSummaries(state),
-  projectSummaryStatusCodesHash: getProjectSummaryAliasStatusCodesHash(state),
+  projects: getProjects(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchProjectSummariesByMine,
-      deleteProjectSummary,
+      fetchProjectsByMine,
     },
     dispatch
   );
 
-ProjectSummaries.propTypes = propTypes;
-ProjectSummaries.defaultProps = defaultProps;
+Projects.propTypes = propTypes;
+Projects.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummaries);
+export default connect(mapStateToProps, mapDispatchToProps)(Projects);

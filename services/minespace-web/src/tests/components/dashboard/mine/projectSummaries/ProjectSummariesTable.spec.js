@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ProjectSummariesTable } from "@/components/dashboard/mine/projectSummaries/ProjectSummariesTable";
+import { ProjectSummariesTable } from "@/components/dashboard/mine/projects/ProjectsTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -11,9 +11,7 @@ const setupProps = () => {
   props.projectSummaryStatusCodesHash = MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH;
 };
 
-const setupDispatchProps = () => {
-  
-};
+const setupDispatchProps = () => {};
 
 beforeEach(() => {
   setupProps();

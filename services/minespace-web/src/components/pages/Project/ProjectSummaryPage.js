@@ -8,10 +8,7 @@ import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import {
-  getProjectSummary,
-  getFormattedProjectSummary,
-} from "@common/selectors/projectSummarySelectors";
+import { getProjectSummary, getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
@@ -20,9 +17,9 @@ import {
   createProjectSummary,
   fetchProjectSummaryById,
   updateProjectSummary,
-} from "@common/actionCreators/projectSummaryActionCreator";
+} from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { clearProjectSummary } from "@common/actions/projectSummaryActions";
+import { clearProjectSummary } from "@common/actions/projectActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
