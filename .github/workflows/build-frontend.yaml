@@ -32,13 +32,3 @@ jobs:
       - name: Push
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
-
-  # trigger-gitops:
-  #   runs-on: ubuntu-20.04
-  #   needs: build-frontend
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Git Ops Push
-  #       run: ./gitops/commit.sh frontend dev ${{ secrets.GH_TOKEN }}
-  
