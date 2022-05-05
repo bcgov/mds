@@ -724,6 +724,7 @@ TSF_OPERATING_STATUS_MODEL = api.model(
 
 NOD_DOCUMENT_MODEL = api.inherit(
     'NoticeOfDeparureDocumentModel', MINE_DOCUMENT_MODEL, {
+        'upload_date': fields.DateTime,
         'document_type': fields.String(enum=DocumentType, attribute='document_type.name'),
     })
 
