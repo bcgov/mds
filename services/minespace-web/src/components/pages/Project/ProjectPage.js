@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { flattenObject, formatUrlToUpperCaseString } from "@common/utils/helpers";
-import { Link, Prompt } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs, Divider, Descriptions, Card } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -17,21 +16,20 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
   getEMLIContactTypesHash,
+  getProjectSummaryStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
-import {
-  createProjectSummary,
-  fetchProjectSummaryById,
-  updateProjectSummary,
-  fetchProjectById,
-} from "@common/actionCreators/projectActionCreator";
+import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import { clearProjectSummary, clearProject } from "@common/actions/projectActions";
 import Loading from "@/components/common/Loading";
 import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
+import DocumentTable from "@/components/common/DocumentTable";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
+import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -40,6 +38,7 @@ const propTypes = {
   createProjectSummary: PropTypes.func.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchEMLIContactsByRegion: PropTypes.func.isRequired,
   clearProjectSummary: PropTypes.func.isRequired,
   clearProject: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -81,9 +80,16 @@ export class ProjectPage extends Component {
   handleFetchData = () => {
     const { projectGuid } = this.props.match?.params;
     if (projectGuid) {
-      return this.props.fetchProjectById(projectGuid).then(() => {
-        this.setState({ isLoaded: true, activeTab: "overview" });
-      });
+      this.props
+        .fetchProjectById(projectGuid)
+        .then(() => {
+          const mineGuid = this.props.project.mine_guid;
+          return this.props.fetchMineRecordById(mineGuid);
+        })
+        .then(({ data }) => {
+          this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
+          this.setState({ isLoaded: true, activeTab: "overview" });
+        });
     }
   };
 
@@ -137,16 +143,39 @@ export class ProjectPage extends Component {
     this.props.history.push(url);
   };
 
+  renderProjectContactsCard = (contacts = []) => {
+    return (
+      <Card title="Project Contacts">
+        {contacts.map((c) => {
+          const isPrimary = c.is_primary;
+          const hasJobTitle = c.job_title;
+          const title = isPrimary ? "Primary Contact" : hasJobTitle ? c.job_title : null;
+          return (
+            <Typography.Paragraph className="ministry-contact-item">
+              {title && (
+                <Typography.Text strong className="ministry-contact-title">
+                  {title}
+                </Typography.Text>
+              )}
+              <br />
+              <Typography.Text>{c.name}</Typography.Text>
+              <br />
+              <Typography.Text>{c.phone_number}</Typography.Text>
+              <br />
+              <Typography.Text>
+                <a href={`mailto:${c.email}`}>{c.email}</a>
+              </Typography.Text>
+            </Typography.Paragraph>
+          );
+        })}
+      </Card>
+    );
+  };
+
   render() {
-    // const disabledTabs = errors.length > 0;
-    const mineGuid = this.state.isEditMode
-      ? this.props.formattedProjectSummary?.mine_guid
-      : this.props.match.params.mineGuid;
-    const mineName = this.state.isEditMode
-      ? this.props.formattedProjectSummary?.mine_name || ""
-      : this.props.mines[mineGuid]?.mine_name || "";
+    const mineGuid = this.props.project.mine_guid;
+    const mineName = this.props.mines[mineGuid]?.mine_name || "";
     const title = this.props.project?.project_title;
-    console.log("PROJECT SUMMARY: ", this.props.projectSummary);
     const {
       project_summary_description,
       expected_draft_irt_submission_date,
@@ -160,6 +189,7 @@ export class ProjectPage extends Component {
         key: this.props.projectSummary.project_summary_id,
         status: this.props.projectSummary.status_code,
         payload: this.props.projectSummary,
+        statusHash: this.props.projectSummaryStatusCodesHash,
       },
     ];
 
@@ -214,18 +244,25 @@ export class ProjectPage extends Component {
               <Typography.Title level={4}>Project Stages</Typography.Title>
               <ProjectStagesTable projectStages={projectStages} />
               <Typography.Title level={4}>Project Documents</Typography.Title>
+              <DocumentTable
+                documents={this.props.projectSummary.documents}
+                // documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
+                documentParent="project summary"
+                categoryDataIndex="project_summary_document_type_code"
+                uploadDateIndex="upload_date"
+              />
             </Col>
-            <Col lg={{ span: 10 }} xl={{ span: 8 }}>
-              <Card title="Project Contacts">
-                {/* {this.props.EMLIcontactInfo.map((contact) => (
-                  <MinistryContactItem contact={contact} key={contact.id} />
-                ))} */}
-              </Card>
-              <Card title="Ministry Contacts">
-                {this.props.EMLIcontactInfo.map((contact) => (
-                  <MinistryContactItem contact={contact} key={contact.id} />
-                ))}
-              </Card>
+            <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
+              <Row gutter={[0, 16]}>
+                <Col span={24}>{this.renderProjectContactsCard(this.props.project.contacts)}</Col>
+                <Col span={24}>
+                  <Card title="Ministry Contacts">
+                    {this.props.EMLIcontactInfo.map((contact) => (
+                      <MinistryContactItem contact={contact} key={contact.id} />
+                    ))}
+                  </Card>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </>
@@ -241,6 +278,7 @@ const mapStateToProps = (state) => ({
   formattedProjectSummary: getFormattedProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
+  projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
   EMLIcontactInfo: getEMLIContactsByRegion(state),
   EMLIContactTypesHash: getEMLIContactTypesHash(state),
 });
@@ -248,11 +286,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchProjectSummaryById,
-      updateProjectSummary,
       fetchMineRecordById,
       clearProjectSummary,
+      clearProject,
       fetchProjectById,
+      fetchEMLIContactsByRegion,
     },
     dispatch
   );
