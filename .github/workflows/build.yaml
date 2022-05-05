@@ -25,7 +25,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
           - name: docgen
           - name: dbbackup
           - name: metabase
@@ -50,25 +49,6 @@ jobs:
           -p TAG=${{env.INITIAL_TAG}} \
           | oc -n ${{secrets.NS_TOOLS}} apply -f -
 
-  build-bases:
-    name: build-bases
-    needs: template
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        include:
-          - name: frontend
-    steps:
-      - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          oc: "4.7"
-      - name: oc login
-        run: |
-          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-      - name: build
-        run: |
-          oc start-build ${{ matrix.name }}-base -n ${{secrets.NS_TOOLS}} --wait
 
   build:
     name: build
@@ -78,7 +58,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
           - name: dbbackup
           - name: metabase
     steps:
@@ -101,7 +80,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
           - name: docgen
           - name: dbbackup
           - name: metabase
