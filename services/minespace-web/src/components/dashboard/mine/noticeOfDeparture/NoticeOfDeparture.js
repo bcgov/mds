@@ -8,10 +8,7 @@ import {
   fetchNoticesOfDeparture,
   fetchDetailedNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
-import {
-  getNoticesOfDeparture,
-  getNoticeOfDeparture,
-} from "@common/selectors/noticeOfDepartureSelectors";
+import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
@@ -94,11 +91,14 @@ export const NoticeOfDeparture = (props) => {
     });
   };
 
-  const openViewNoticeOfDepartureModal = async (noticeOfDeparture) => {
-    await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, noticeOfDeparture.nod_id);
+  const openViewNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
+    const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
+      mine.mine_guid,
+      selectedNoticeOfDeparture.nod_id
+    );
     props.openModal({
       props: {
-        noticeOfDeparture,
+        noticeOfDeparture: detailedNod,
         title: "View Notice of Departure",
       },
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE,
@@ -134,7 +134,6 @@ export const NoticeOfDeparture = (props) => {
 const mapStateToProps = (state) => ({
   nods: getNoticesOfDeparture(state),
   permits: getPermits(state),
-  noticeOfDeparture: getNoticeOfDeparture(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

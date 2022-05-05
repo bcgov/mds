@@ -11,15 +11,17 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   uploadType: PropTypes.string.isRequired,
   allowMultiple: PropTypes.bool.isRequired,
+  maxFiles: PropTypes.number.isRequired,
 };
 
 export const NoticeOfDepartureFileUpload = (props) => {
-  const { mineGuid, onFileLoad, onRemoveFile, uploadType, allowMultiple } = props;
+  const { mineGuid, onFileLoad, onRemoveFile, uploadType, allowMultiple, maxFiles } = props;
   return (
     <Field
       id={uploadType}
       name={uploadType}
       component={FileUpload}
+      maxFiles={maxFiles}
       uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mineGuid)}
       acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
       onFileLoad={onFileLoad}

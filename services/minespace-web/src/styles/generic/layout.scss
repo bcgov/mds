@@ -152,6 +152,11 @@
   margin: 50px;
 }
 
+.margin-y-large {
+  margin-top: $default-margin-lg;
+  margin-bottom: $default-margin-lg;
+}
+
 .minespace-tooltip,
 .minespace-tooltip * {
   color: white !important;
@@ -177,4 +182,15 @@
 
 .red {
   color: $gov-red;
+}
+
+.content {
+  overflow: initial;
+  min-height: 100vh;
+  background-color: $pure-white;
+
+  &--light-grey {
+    background-color: $lightest-grey-alt;
+    border-radius: 2px;
+  }
 }

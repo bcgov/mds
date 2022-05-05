@@ -5,6 +5,7 @@ import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -37,6 +38,7 @@ const AddNoticeOfDepartureForm = (props) => {
         }))
       );
     }
+    change("uploadedFiles", []);
   }, []);
 
   const handleNoticeOfDepartureSubmit = (values) => {
@@ -65,8 +67,8 @@ const AddNoticeOfDepartureForm = (props) => {
   };
 
   useEffect(() => {
-    change("uploadedFiles", uploadedFiles);
-  }, [uploadedFiles]);
+    change("uploadedFiles", documentArray);
+  }, [documentArray]);
 
   const onRemoveFile = (fileItem) => {
     setDocumentArray(
@@ -121,8 +123,15 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <Form.Item label="Attached Files">
-          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
+        <h4 className="nod-modal-section-header">
+          Upload Notice of Departure Self-Assessment Form
+        </h4>
+        <Typography.Text>
+          Please upload your completed Self-assessment form (click here to download) below. Remember
+          your completed form must be signed by the Mine Manager and any supporting information
+          included or uploaded.
+        </Typography.Text>
+        <Form.Item className="margin-y-large">
           <Field
             onFileLoad={(documentName, document_manager_guid) => {
               onFileLoad(
@@ -133,9 +142,12 @@ const AddNoticeOfDepartureForm = (props) => {
             }}
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
+            allowMultiple
             component={NoticeOfDepartureFileUpload}
-            allowMultiple={false}
+            maxFiles={1}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
+            validate={[required]}
           />
         </Form.Item>
         <div className="ant-modal-footer">

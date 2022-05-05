@@ -7,3 +7,16 @@ a {
 ul {
   list-style-position: inside;
 }
+
+.field-title {
+  font-size: $field-label;
+  font-weight: $semi-bold;
+  font-family: $default-font;
+  color: $ant-label-title-color;
+  margin-right: 5px;
+  margin-bottom: 9px;
+
+  &--light {
+    color: $p-light-color;
+  }
+}
