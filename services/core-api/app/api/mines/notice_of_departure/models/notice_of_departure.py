@@ -67,11 +67,10 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_one(cls, __guid, include_documents=False):
         if (include_documents):
-            return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
-        else:
             return cls.query.filter_by(
                 nod_guid=__guid,
-                deleted_ind=False).options(lazyload(NoticeOfDeparture.mine_documents)).first()
+                deleted_ind=False).options(lazyload(NoticeOfDeparture.documents)).first()
+        return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
