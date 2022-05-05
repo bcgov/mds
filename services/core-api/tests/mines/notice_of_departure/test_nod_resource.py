@@ -18,6 +18,5 @@ class TestNodListResource:
             f'/mines/{mine.mine_guid}/notices-of-departure/{nod_guid}',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
-        print(get_data)
         assert get_resp.status_code == 200
-        assert get_data.nod_guid == nod_guid
+        assert get_data['nod_guid'] == nod_guid
