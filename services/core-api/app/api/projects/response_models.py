@@ -67,6 +67,7 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
 
 PROJECT_SUMMARY_MODEL = api.model(
     'ProjectSummary', {
+        'project_guid': fields.String,
         'project_summary_id': fields.Integer,
         'project_summary_guid': fields.String,
         'project_summary_title': fields.String,
