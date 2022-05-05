@@ -8,7 +8,11 @@ import { Row, Col, Typography, Tabs, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import { getProjectSummary, getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import {
+  getProjectSummary,
+  getFormattedProjectSummary,
+  getProject,
+} from "@common/selectors/projectSelectors";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
@@ -17,12 +21,18 @@ import {
   createProjectSummary,
   fetchProjectSummaryById,
   updateProjectSummary,
+  fetchProjectById,
 } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
-import { EDIT_PROJECT_SUMMARY, MINE_DASHBOARD, ADD_PROJECT_SUMMARY } from "@/constants/routes";
+import {
+  EDIT_PROJECT_SUMMARY,
+  MINE_DASHBOARD,
+  ADD_PROJECT_SUMMARY,
+  EDIT_PROJECT,
+} from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 
@@ -87,9 +97,9 @@ export class ProjectSummaryPage extends Component {
   handleFetchData = () => {
     const { mineGuid, projectGuid, projectSummaryGuid, tab } = this.props.match?.params;
     if (projectGuid && projectSummaryGuid) {
-      return this.props.fetchProjectSummaryById(projectGuid, projectSummaryGuid).then(() => {
-        this.setState({ isLoaded: true, isEditMode: true, activeTab: tab });
-      });
+      return this.props
+        .fetchProjectById(projectGuid)
+        .then(() => this.setState({ isLoaded: true, isEditMode: true, activeTab: tab }));
     }
     return this.props.fetchMineRecordById(mineGuid).then(() => {
       this.setState({ isLoaded: true, activeTab: tab });
@@ -227,10 +237,17 @@ export class ProjectSummaryPage extends Component {
           </Row>
           <Row>
             <Col span={24}>
-              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
-                <ArrowLeftOutlined className="padding-sm--right" />
-                Back to: {mineName} Applications page
-              </Link>
+              {this.state.isEditMode ? (
+                <Link to={EDIT_PROJECT.dynamicRoute(this.props.projectSummary.project_guid)}>
+                  <ArrowLeftOutlined className="padding-sm--right" />
+                  Back to: {this.props.project.project_title} Project Overview page
+                </Link>
+              ) : (
+                <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
+                  <ArrowLeftOutlined className="padding-sm--right" />
+                  Back to: {mineName} Applications page
+                </Link>
+              )}
             </Col>
           </Row>
           <Divider />
@@ -274,6 +291,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   projectSummary: getProjectSummary(state),
   formattedProjectSummary: getFormattedProjectSummary(state),
+  project: getProject(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
@@ -288,6 +306,7 @@ const mapDispatchToProps = (dispatch) =>
       updateProjectSummary,
       fetchMineRecordById,
       clearProjectSummary,
+      fetchProjectById,
       submit,
       reset,
       touch,
