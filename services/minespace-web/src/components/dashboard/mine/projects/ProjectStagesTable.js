@@ -14,6 +14,7 @@ export class ProjectStagesTable extends Component {
       key: stage.key,
       project_stage: stage.title,
       stage_status: stage.status,
+      stage_status_hash: stage.statusHash,
       stage,
     }));
 
@@ -21,20 +22,36 @@ export class ProjectStagesTable extends Component {
     {
       title: "",
       dataIndex: "project_stage",
-      render: (text) => <div title="Project Stage">{text}</div>,
+      render: (text) => (
+        <div title="Project Stage">
+          <b>{text}</b>
+        </div>
+      ),
     },
     {
       title: "",
       dataIndex: "stage_status",
-      render: (text) => <div title="Stage Status">{text || "N/A"}</div>,
+      render: (text, record) => (
+        <div title="Stage Status">
+          <b>{`[${record.stage_status_hash[text]}]` || "N/A"}</b>
+        </div>
+      ),
     },
     {
       title: "",
       dataIndex: "stage",
+      align: "right",
       render: (text, record) => (
-        <Button className="full-mobile margin-small" type="secondary">
-          Edit
-        </Button>
+        <Link
+          to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+            record.stage?.payload?.project_guid,
+            record.stage?.payload?.project_summary_guid
+          )}
+        >
+          <Button className="full-mobile margin-small" type="secondary">
+            Edit
+          </Button>
+        </Link>
       ),
     },
   ];
