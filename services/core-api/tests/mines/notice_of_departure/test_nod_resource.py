@@ -19,4 +19,4 @@ class TestNodListResource:
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert get_data['nod_guid'] == nod_guid
+        assert get_data['nod_guid'] == str(nod_guid)
