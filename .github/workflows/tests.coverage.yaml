@@ -1,7 +1,7 @@
 name: Coverage Test Reports
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 env:
   CC_TEST_REPORTER_ID: 50e476c4bbdd07bb0a379f1dfb6bf70e2d9102f25ebd429b3e38efd301d13eeb

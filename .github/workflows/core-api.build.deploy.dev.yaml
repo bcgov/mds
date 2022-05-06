@@ -1,0 +1,62 @@
+name: CORE API - Build & Deploy To DEV
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - migrations/**
+      - services/core-api/**
+
+env:
+  INITIAL_TAG: latest
+  TAG: dev
+  NAME: backend
+  MIG: flyway
+  CONTEXT: services/core-api/
+  MIG_CONTEXT: migrations/
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Build n Tag
+        run: |
+          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+
+  build-flyway:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Build n Tag
+        run: |
+          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.MIG_CONTEXT }} -f ${{ env.MIG_CONTEXT }}Dockerfile.ci
+          docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.INITIAL_TAG }}
+          docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.TAG }}
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}
+
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    needs: [build-backend, build-flyway]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-api dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}

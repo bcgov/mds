@@ -12,7 +12,7 @@ from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.response_models import MINE_TSF_MODEL
 
-from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
 
 class MineTailingsStorageFacilityResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -61,7 +61,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         location='json')
 
     @api.doc(description='Updates an existing tailing storage facility for the given mine')
-    @requires_any_of([MINESPACE_PROPONENT, MINE_EDIT])
+    @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF])
     @api.marshal_with(MINE_TSF_MODEL) 
     def put(self, mine_guid, mine_tailings_storage_facility_guid):
         mine = Mine.find_by_mine_guid(mine_guid)

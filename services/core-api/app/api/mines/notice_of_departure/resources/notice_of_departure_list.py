@@ -57,6 +57,13 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             location='json',
             required=True,
             store_missing=False)
+        parser.add_argument(
+            'nod_description',
+            type=str,
+            help='Notice of Departure description',
+            location='json',
+            required=True,
+            store_missing=False)
         data = parser.parse_args()
 
         permit_guid = data.get('permit_guid')
@@ -70,6 +77,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             permit._context_mine, 
             permit, 
             nod_title=data.get('nod_title'),
+            nod_description=data.get('nod_description'),
             nod_type=NodType.potentially_substantial,
             nod_status=NodStatus.pending_review
             )

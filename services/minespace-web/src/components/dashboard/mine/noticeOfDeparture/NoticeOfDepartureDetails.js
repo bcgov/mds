@@ -7,7 +7,8 @@ const propTypes = {
 };
 
 export const NoticeOfDepartureDetails = (props) => {
-  const { nod_title, permit, nod_guid } = props.noticeOfDeparture;
+  const { noticeOfDeparture } = props;
+  const { nod_title, permit, nod_guid, nod_description } = noticeOfDeparture;
 
   return (
     <div>
@@ -16,6 +17,7 @@ export const NoticeOfDepartureDetails = (props) => {
         <Descriptions.Item label="Departure Project Title">{nod_title}</Descriptions.Item>
         <Descriptions.Item label="Permit #">{permit.permit_no}</Descriptions.Item>
         <Descriptions.Item label="NOD #">{nod_guid}</Descriptions.Item>
+        <Descriptions.Item label="Description">{nod_description}</Descriptions.Item>
       </Descriptions>
     </div>
   );

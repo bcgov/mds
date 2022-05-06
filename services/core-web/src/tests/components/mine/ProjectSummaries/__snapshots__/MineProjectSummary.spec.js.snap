@@ -12,6 +12,8 @@ exports[`MineProjectSummary renders properly 1`] = `
   </div>
   <div>
     <Connect(MineProjectSummaryTable)
+      deleteFilePermission="role_admin"
+      handleDeleteFile={[Function]}
       isLoaded={false}
       mine={
         Object {
