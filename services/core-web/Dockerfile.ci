@@ -11,6 +11,6 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build --max_old_space_size=4096
+RUN npm run build-serve --max_old_space_size=4096
 
 CMD ["node", "server.js" ]
