@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields, marshal
 from app.api.mines.notice_of_departure.models.notice_of_departure import NodType, NodStatus
+from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import DocumentType
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.parties.response_models import PARTY
 
@@ -721,24 +722,49 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-NOD_MODEL = api.model('NoticeOfDeparture', {
-    'nod_guid': fields.String,
-    'nod_title': fields.String,
-    'nod_description': fields.String,
-    'create_timestamp': fields.DateTime,
-    'update_timestamp': fields.DateTime,
-    'submission_timestamp': fields.DateTime,
-    'permit': fields.Nested(api.model(
-    'Permit', {
-        'permit_id': fields.Integer,
-        'permit_guid': fields.String,
-        'permit_no': fields.String,
-        'permit_status_code': fields.String,
-        'current_permittee': fields.String,
-        'permit_prefix': fields.String
-    })),
-    'nod_status': fields.String(enum=NodStatus, attribute='nod_status.name'),
-    'nod_type': fields.String(enum=NodType, attribute='nod_type.name')
-})
+NOD_DOCUMENT_MODEL = api.inherit(
+    'NoticeOfDeparureDocumentModel', MINE_DOCUMENT_MODEL, {
+        'document_type': fields.String(enum=DocumentType, attribute='document_type.name'),
+        'create_timestamp': fields.DateTime
+    })
 
-CREATE_NOD_MODEL = api.model('NoticeOfDeparture', {'permit_guid': fields.String, 'nod_title': fields.String, 'mine_manager_id': fields.Integer, 'type': fields.String})
+NOD_MODEL = api.model(
+    'NoticeOfDeparture', {
+        'nod_guid':
+        fields.String,
+        'nod_title':
+        fields.String,
+        'nod_description':
+        fields.String,
+        'create_timestamp':
+        fields.DateTime,
+        'update_timestamp':
+        fields.DateTime,
+        'submission_timestamp':
+        fields.DateTime,
+        'permit':
+        fields.Nested(
+            api.model(
+                'Permit', {
+                    'permit_id': fields.Integer,
+                    'permit_guid': fields.String,
+                    'permit_no': fields.String,
+                    'permit_status_code': fields.String,
+                    'current_permittee': fields.String,
+                    'permit_prefix': fields.String
+                })),
+        'nod_status':
+        fields.String(enum=NodStatus, attribute='nod_status.name'),
+        'nod_type':
+        fields.String(enum=NodType, attribute='nod_type.name'),
+        'documents':
+        fields.List(fields.Nested(NOD_DOCUMENT_MODEL))
+    })
+
+CREATE_NOD_MODEL = api.model(
+    'NoticeOfDeparture', {
+        'permit_guid': fields.String,
+        'nod_title': fields.String,
+        'mine_manager_id': fields.Integer,
+        'nod_type': fields.String
+    })
