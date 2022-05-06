@@ -93,10 +93,10 @@ export const NoticeOfDepartureDetails = (props) => {
           </Col>
           <Col>
             <p className="field-title">Upload Date</p>
-            <p>{checklist.upload_date || EMPTY_FIELD}</p>
+            <p>{formatDate(checklist.create_timestamp) || EMPTY_FIELD}</p>
           </Col>
           <Col>
-            <p>&nbsp;</p>
+            <p className="field-title">&nbsp;</p>
             <p>
               <LinkButton
                 onClick={() => downloadFileFromDocumentManager(checklist)}

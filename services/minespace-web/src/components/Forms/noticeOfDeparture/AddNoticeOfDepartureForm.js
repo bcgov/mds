@@ -81,6 +81,12 @@ const AddNoticeOfDepartureForm = (props) => {
     );
   };
 
+  const hasChecklist = () => {
+    return documentArray.some(
+      (file) => file.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    );
+  };
+
   return (
     <div>
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
@@ -162,7 +168,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting}
+            disabled={submitting || !hasChecklist()}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"

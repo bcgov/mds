@@ -122,3 +122,8 @@ export const APPLICATION_TYPES_BY_PERMIT_PREFIX = {
   C: ["COL"],
   Q: ["QCA", "QIM"],
 };
+
+export const NOTICE_OF_DEPARTURE_DOCUMENT_TYPE = {
+  CHECKLIST: "checklist",
+  OTHER: "other",
+};

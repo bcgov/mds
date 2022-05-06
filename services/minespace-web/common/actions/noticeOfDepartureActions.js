@@ -9,5 +9,3 @@ export const storeNoticeOfDeparture = (payload) => ({
   type: ActionTypes.STORE_NOTICE_OF_DEPARTURE,
   payload,
 });
-
-export default storeNoticesOfDeparture;

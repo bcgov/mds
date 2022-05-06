@@ -3,6 +3,7 @@ import { NOTICES_OF_DEPARTURE } from "../constants/reducerTypes";
 
 const initialState = {
   nods: [],
+  noticeOfDeparture: {},
 };
 
 export const noticeOfDepartureReducer = (state = initialState, action) => {
