@@ -9,7 +9,7 @@ import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
 
 const propTypes = {
-  // projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
+  projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
 

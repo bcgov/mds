@@ -19,13 +19,13 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Row, Col, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import BasicInformation from "@/components/Forms/projectSummaries/BasicInformation";
-import DocumentUpload from "@/components/Forms/projectSummaries/DocumentUpload";
+import BasicInformation from "@/components/Forms/projects/projectSummary/BasicInformation";
+import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
 import LinkButton from "@/components/common/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import ProjectContacts from "@/components/Forms/projectSummaries/ProjectContacts";
-import ProjectDates from "@/components/Forms/projectSummaries/ProjectDates";
-import AuthorizationsInvolved from "@/components/Forms/projectSummaries/AuthorizationsInvolved";
+import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
+import ProjectDates from "@/components/Forms/projects/projectSummary/ProjectDates";
+import AuthorizationsInvolved from "@/components/Forms/projects/projectSummary/AuthorizationsInvolved";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,

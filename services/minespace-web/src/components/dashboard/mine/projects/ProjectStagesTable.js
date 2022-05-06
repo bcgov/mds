@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Row, Col, Button } from "antd";
-import { formatDate } from "@/utils/helpers";
+import { Table, Button } from "antd";
 import * as routes from "@/constants/routes";
 
-const propTypes = {};
+const propTypes = {
+  projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
 
 export class ProjectStagesTable extends Component {
   transformRowData = (projectStages) =>

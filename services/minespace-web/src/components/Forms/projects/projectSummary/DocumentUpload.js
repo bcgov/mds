@@ -8,7 +8,7 @@ import { Typography, Row, Col } from "antd";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ProjectSummaryFileUpload from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
+import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";
 
@@ -19,6 +19,11 @@ const propTypes = {
   isEditMode: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: {
+      mineGuid: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 export class DocumentUpload extends Component {

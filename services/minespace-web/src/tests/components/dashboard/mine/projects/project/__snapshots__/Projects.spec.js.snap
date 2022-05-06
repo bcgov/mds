@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProjectSummaries renders properly 1`] = `
+exports[`Projects renders properly 1`] = `
 <Row>
   <Col
     span={24}
@@ -8,17 +8,20 @@ exports[`ProjectSummaries renders properly 1`] = `
     <Title
       level={4}
     >
-      Application Submissions
+      All Projects
     </Title>
     <Paragraph>
-      A 
+      The first step in applying for a new or amending an existing production mineral or coal mining permit issued under the Mines Act is to submit a project description. A
+       
       <Text
         className="color-primary"
         strong={true}
       >
         project description 
       </Text>
-      is a high level overview of a production mining project used for assessment prior to applying for a new or amending an existing production mineral or coal mining permit issued under the Mines Act.
+       
+      is a high level overview of a production mining project used for assessment.
+       
     </Paragraph>
     <Paragraph>
       If you are proposing induced polarization surveys or exploration drilling within the permit mine area of an operating production mineral or coal mine (
@@ -89,51 +92,33 @@ exports[`ProjectSummaries renders properly 1`] = `
         <Link
           to="/mines/undefined/project-description/new/basic-information"
         >
-          <Tooltip
-            arrowPointAtCenter={false}
-            autoAdjustOverflow={true}
-            mouseEnterDelay={0.1}
-            mouseLeaveDelay={0.1}
-            placement="top"
-            title="You cannot create more than 1 project description per project."
-            transitionName="zoom-big-fast"
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="primary"
           >
-            <Button
-              block={false}
-              disabled={true}
-              ghost={false}
-              htmlType="button"
-              loading={false}
-              type="primary"
-            >
-              <ForwardRef(PlusCircleFilled) />
-              Start a new application
-            </Button>
-          </Tooltip>
+            <ForwardRef(PlusCircleFilled) />
+            Create New Project
+          </Button>
         </Link>
       </Connect(AuthorizationWrapper)>
     </Paragraph>
-    <ProjectSummariesTable
-      handleDeleteDraft={[Function]}
+    <ProjectsTable
       isLoaded={false}
       mine={Object {}}
-      projectSummaries={
-        Array [
-          Object {
-            "documents": Array [],
-            "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-            "project_summary_description": "Sample description.",
-            "project_summary_guid": "81324623978135",
-            "status_code": "OPN",
-            "submission_date": "2021-11-19",
-          },
-        ]
-      }
-      projectSummaryStatusCodesHash={
+      projects={
         Object {
-          "CLD": "Closed",
-          "OPN": "Open",
-          "WDN": "Withdrawn",
+          "records": Array [
+            Object {
+              "contacts": Array [],
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "project_guid": "8132462392222",
+              "project_summary": Object {},
+              "proponent_project_id": "Test-ID",
+            },
+          ],
         }
       }
     />

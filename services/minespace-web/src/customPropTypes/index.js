@@ -9,7 +9,7 @@ import * as ReportTypes from "@/customPropTypes/reports";
 import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as Incidents from "@/customPropTypes/incidents";
 import * as Securities from "@/customPropTypes/securities";
-import * as ProjectSummaryTypes from "@/customPropTypes/projectSummaries";
+import * as ProjectTypes from "@/customPropTypes/projects";
 import * as EMLIContactTypes from "@/customPropTypes/EMLIContact";
 import * as NoticeOfDepartureTypes from "@/customPropTypes/noticeOfDeparture";
 
@@ -25,7 +25,7 @@ export default {
   ...ComplianceTypes,
   ...Incidents,
   ...Securities,
-  ...ProjectSummaryTypes,
+  ...ProjectTypes,
   ...EMLIContactTypes,
   ...NoticeOfDepartureTypes,
 };

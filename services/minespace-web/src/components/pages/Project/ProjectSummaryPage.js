@@ -19,7 +19,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import {
   createProjectSummary,
-  fetchProjectSummaryById,
   updateProjectSummary,
   fetchProjectById,
 } from "@common/actionCreators/projectActionCreator";
@@ -34,12 +33,13 @@ import {
   EDIT_PROJECT,
 } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
+import ProjectSummaryForm from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  projectSummary: CustomPropTypes.projectSummary,
-  fetchProjectSummaryById: PropTypes.func.isRequired,
+  projectSummary: CustomPropTypes.projectSummary.isRequired,
+  project: CustomPropTypes.project.isRequired,
+  fetchProjectById: PropTypes.func.isRequired,
   createProjectSummary: PropTypes.func.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -66,7 +66,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  projectSummary: {},
   formErrors: {},
   anyTouched: false,
 };
@@ -302,7 +301,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createProjectSummary,
-      fetchProjectSummaryById,
       updateProjectSummary,
       fetchMineRecordById,
       clearProjectSummary,

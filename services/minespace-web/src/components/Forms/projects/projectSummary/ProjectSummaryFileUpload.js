@@ -7,8 +7,8 @@ import FileUpload from "@/components/common/FileUpload";
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
+  params: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const ProjectSummaryFileUpload = (props) => (

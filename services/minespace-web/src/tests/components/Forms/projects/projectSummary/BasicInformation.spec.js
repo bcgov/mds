@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { BasicInformation } from "@/components/Forms/projectSummaries/BasicInformation";
+import { BasicInformation } from "@/components/Forms/projects/projectSummary/BasicInformation";
 
 const dispatchProps = {};
 const props = {};
