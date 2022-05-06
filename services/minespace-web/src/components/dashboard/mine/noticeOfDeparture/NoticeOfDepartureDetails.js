@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Divider, Row } from "antd";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import {
   EMPTY_FIELD,
@@ -9,7 +10,6 @@ import {
 } from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "../../../../../common/constants/strings";
 
 const propTypes = {
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
