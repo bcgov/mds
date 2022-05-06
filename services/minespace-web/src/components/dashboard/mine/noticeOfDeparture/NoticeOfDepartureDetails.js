@@ -1,15 +1,15 @@
 import React from "react";
 import { Col, Divider, Row } from "antd";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "../../../../../common/constants/strings";
 import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import { downloadFileFromDocumentManager } from "../../../../../common/utils/actionlessNetworkCalls";
 import { formatDate } from "@/utils/helpers";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "../../../../../common/constants/strings";
 
 const propTypes = {
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,

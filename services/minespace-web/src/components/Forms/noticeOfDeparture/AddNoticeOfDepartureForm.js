@@ -5,12 +5,12 @@ import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "../../../../common/constants/strings";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
