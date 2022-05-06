@@ -72,12 +72,10 @@ const AddNoticeOfDepartureForm = (props) => {
 
   const onRemoveFile = (fileItem) => {
     setDocumentArray(
-      documentArray.filter(
-        (document) => document.document_manager_guid !== fileItem.document_manager_guid
-      )
+      documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
     );
     setUploadedFiles(
-      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.document_manager_guid)
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
     );
   };
 
