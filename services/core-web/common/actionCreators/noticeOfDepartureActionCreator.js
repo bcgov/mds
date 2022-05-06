@@ -2,17 +2,17 @@ import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { error, request, success } from "../actions/genericActions";
 import {
-  GET_NOTICES_OF_DEPARTURE,
   CREATE_NOTICE_OF_DEPARTURE,
-  GET_DETAILED_NOTICE_OF_DEPARTURE,
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
+  GET_NOTICES_OF_DEPARTURE,
+  GET_DETAILED_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "../constants/environment";
 import {
   NOTICES_OF_DEPARTURE,
-  NOTICE_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
+  NOTICE_OF_DEPARTURE,
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { storeNoticesOfDeparture } from "../actions/noticeOfDepartureActions";
