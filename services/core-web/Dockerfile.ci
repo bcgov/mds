@@ -11,6 +11,6 @@ RUN npm ci
 
 COPY . .
 
-# Run the server
-EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+RUN npm build
+
+CMD ["node", "server.js" ]
