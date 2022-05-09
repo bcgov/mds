@@ -59,8 +59,10 @@ class Config(object):
                                               'https://minespace.gov.bc.ca')
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
-    EMA_AUTH_LINK = os.environ.get('EMA_AUTH_LINK',
-                                   'https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization')
+    EMA_AUTH_LINK = os.environ.get(
+        'EMA_AUTH_LINK',
+        'https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization'
+    )
 
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
@@ -156,6 +158,12 @@ class Config(object):
     COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
+
+    #Templates
+    TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE','/app/app/templates')
+
+    TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT',f'{TEMPLATE_FOLDER_BASE}/projects/')
+    TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT','IRT_Template.xlsx')
 
 
 class TestConfig(Config):
