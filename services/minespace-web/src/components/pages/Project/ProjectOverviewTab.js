@@ -27,8 +27,8 @@ import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
+import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,

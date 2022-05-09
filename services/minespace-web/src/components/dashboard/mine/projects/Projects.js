@@ -39,7 +39,7 @@ export class Projects extends Component {
   state = { isLoaded: false, mine: {} };
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id } = this.props.project.params;
     this.handleFetchData(id);
   }
 

@@ -15,9 +15,9 @@ import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary, clearProject } from "@common/actions/projectActions";
 import Loading from "@/components/common/Loading";
-import ProjectOverviewTab from "./ProjectOverviewTab";
 import { MINE_DASHBOARD, EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import ProjectOverviewTab from "./ProjectOverviewTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
