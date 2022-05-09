@@ -320,6 +320,10 @@ tr.ant-table-expanded-row {
   margin-right: $padding-lg;
 }
 
+th.ant-descriptions-item.vertical-description {
+  padding-bottom: 0px !important;
+}
+
 .ant-descriptions-row {
   display: flex;
 }
