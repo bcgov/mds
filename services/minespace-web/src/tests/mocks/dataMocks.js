@@ -1084,6 +1084,26 @@ export const INCIDENTS = {
   total_pages: 5,
 };
 
+export const PROJECTS = {
+  records: [
+    {
+      project_guid: "8132462392222",
+      mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
+      proponent_project_id: "Test-ID",
+      project_summary: {},
+      contacts: [],
+    },
+  ],
+};
+
+export const PROJECT = {
+  project_guid: "8132462392222",
+  mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
+  proponent_project_id: "Test-ID",
+  project_summary: {},
+  contacts: [],
+};
+
 export const PROJECT_SUMMARIES = {
   records: [
     {

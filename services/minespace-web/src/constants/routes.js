@@ -4,7 +4,8 @@ import MinesPage from "@/components/pages/MinesPage";
 import UsersPage from "@/components/pages/UsersPage";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/pages/ReturnPage";
-import ProjectSummaryPage from "@/components/pages/ProjectSummaryPage";
+import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
+import ProjectPage from "@/components/pages/Project/ProjectPage";
 
 export const HOME = {
   route: "/",
@@ -38,6 +39,12 @@ export const EDIT_PROJECT_SUMMARY = {
   dynamicRoute: (projectGuid, projectSummaryGuid, activeTab = "basic-information") =>
     `/projects/${projectGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
   component: ProjectSummaryPage,
+};
+
+export const EDIT_PROJECT = {
+  route: "/projects/:projectGuid/:tab",
+  dynamicRoute: (projectGuid, activeTab = "overview") => `/projects/${projectGuid}/${activeTab}`,
+  component: ProjectPage,
 };
 
 export const MINE_DASHBOARD = {

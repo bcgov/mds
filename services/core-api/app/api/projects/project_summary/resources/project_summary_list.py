@@ -9,7 +9,7 @@ from werkzeug.exceptions import InternalServerError
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
-from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 

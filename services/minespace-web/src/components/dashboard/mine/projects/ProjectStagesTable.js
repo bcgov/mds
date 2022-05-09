@@ -1,0 +1,76 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Table, Button } from "antd";
+import * as routes from "@/constants/routes";
+
+const propTypes = {
+  projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export class ProjectStagesTable extends Component {
+  transformRowData = (projectStages) =>
+    projectStages &&
+    projectStages.map((stage) => ({
+      key: stage.key,
+      project_stage: stage.title,
+      stage_status: stage.status,
+      stage_status_hash: stage.statusHash,
+      stage,
+    }));
+
+  columns = () => [
+    {
+      title: "",
+      dataIndex: "project_stage",
+      render: (text) => (
+        <div title="Project Stage">
+          <b>{text}</b>
+        </div>
+      ),
+    },
+    {
+      title: "",
+      dataIndex: "stage_status",
+      render: (text, record) => (
+        <div title="Stage Status">
+          <b>{`[${record.stage_status_hash[text]}]` || "N/A"}</b>
+        </div>
+      ),
+    },
+    {
+      title: "",
+      dataIndex: "stage",
+      align: "right",
+      render: (text, record) => (
+        <Link
+          to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+            record.stage?.payload?.project_guid,
+            record.stage?.payload?.project_summary_guid
+          )}
+        >
+          <Button className="full-mobile margin-small" type="secondary">
+            Edit
+          </Button>
+        </Link>
+      ),
+    },
+  ];
+
+  render() {
+    return (
+      <Table
+        size="small"
+        showHeader={false}
+        pagination={false}
+        columns={this.columns()}
+        dataSource={this.transformRowData(this.props.projectStages)}
+        locale={{ emptyText: "This project has no stage data." }}
+      />
+    );
+  }
+}
+
+ProjectStagesTable.propTypes = propTypes;
+
+export default ProjectStagesTable;

@@ -15,14 +15,14 @@ import {
   securitiesReducer,
   orgbookReducer,
   workInformationReducer,
-  projectSummaryReducer,
+  projectReducer,
   minespaceReducer,
   noticeOfDepartureReducer,
 } from "@common/reducers";
-import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineReducer from "@/reducers/userMineReducer";
+import networkReducer from "./networkReducer";
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -48,7 +48,7 @@ export const reducerObject = {
   ...securitiesReducer,
   ...orgbookReducer,
   ...workInformationReducer,
-  ...projectSummaryReducer,
+  ...projectReducer,
   ...minespaceReducer,
   ...noticeOfDepartureReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
