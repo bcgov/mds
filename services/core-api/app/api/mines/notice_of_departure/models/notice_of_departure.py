@@ -3,18 +3,20 @@ from datetime import datetime
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
+
 
 class NodType(Enum):
     non_substantial = auto()
     potentially_substantial = auto()
 
+
 class NodStatus(Enum):
     pending_review = auto()
     in_review = auto()
     self_authorized = auto()
-
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -31,17 +33,43 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='joined')
+    documents = db.relationship('NoticeOfDepartureDocumentXref', lazy='select')
+
+    mine_documents = db.relationship(
+        'MineDocument',
+        lazy='select',
+        secondary='notice_of_departure_document_xref',
+        secondaryjoin=
+        'and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+    )
 
     @classmethod
-    def create(cls, mine, permit, nod_title, nod_description, nod_type, nod_status, add_to_session=True):
-        new_nod = cls(permit_guid=permit.permit_guid, mine_guid=mine.mine_guid, nod_title=nod_title, nod_description=nod_description, nod_type=nod_type, nod_status=nod_status)
+    def create(cls,
+               mine,
+               permit,
+               nod_title,
+               nod_description,
+               nod_type,
+               nod_status,
+               add_to_session=True):
+        new_nod = cls(
+            permit_guid=permit.permit_guid,
+            mine_guid=mine.mine_guid,
+            nod_title=nod_title,
+            nod_description=nod_description,
+            nod_type=nod_type,
+            nod_status=nod_status)
 
         if add_to_session:
             new_nod.save(commit=False)
         return new_nod
 
     @classmethod
-    def find_one(cls, __guid):
+    def find_one(cls, __guid, include_documents=False):
+        if (include_documents):
+            return cls.query.filter_by(
+                nod_guid=__guid,
+                deleted_ind=False).options(lazyload(NoticeOfDeparture.documents)).first()
         return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod

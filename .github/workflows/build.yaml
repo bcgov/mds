@@ -6,11 +6,7 @@ on:
     branches:
       - develop
     paths:
-      - services/**
-      - openshift4/templates/**.bc.yaml
-      - openshift4/docker-images/**
-      - .github/workflows/build.yaml
-
+      - services/core-web
 env:
   INITIAL_TAG: latest
   TAG: dev
