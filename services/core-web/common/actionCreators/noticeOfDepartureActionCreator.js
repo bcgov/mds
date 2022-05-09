@@ -15,7 +15,10 @@ import {
   NOTICE_OF_DEPARTURE,
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
-import { storeNoticesOfDeparture } from "../actions/noticeOfDepartureActions";
+import {
+  storeNoticesOfDeparture,
+  storeNoticeOfDeparture,
+} from "../actions/noticeOfDepartureActions";
 
 export const createNoticeOfDeparture = (mine_guid, payload) => (dispatch) => {
   dispatch(request(CREATE_NOTICE_OF_DEPARTURE));
@@ -59,6 +62,7 @@ export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch
     .get(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mine_guid, nod_guid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(GET_DETAILED_NOTICE_OF_DEPARTURE));
+      dispatch(storeNoticeOfDeparture(response.data));
       return response;
     })
     .catch(() => dispatch(error(GET_DETAILED_NOTICE_OF_DEPARTURE)))
