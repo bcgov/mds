@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: core-web
+  labels:
+    name: core-web
+spec:
+  maxReplicas: 5
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: core-web
+  targetCPUUtilizationPercentage: 95

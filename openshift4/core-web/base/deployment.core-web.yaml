@@ -1,0 +1,162 @@
+#   - name: TAG
+#     displayName: Name
+#     description: The name assigned to all of the frontend objects defined in this template.
+#     required: true
+
+
+#   - name: CORE_API_URL
+#     displayName: API Url
+#     description: URL for the backend API
+#     value: https://mds-dev.apps.silver.devops.gov.bc.ca/api
+
+
+
+
+
+#   - name: APPLICATION_DOMAIN
+#     displayName: Application Hostname
+#     description: The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.
+#     value: ""
+
+
+
+
+#   - name: BASE_PATH
+#     required: false
+#     value: ""
+#   - name: PORT
+#     value: "3000"
+
+
+
+
+
+
+
+#   - name: DOCMAN_API_URL
+#     required: true
+#   - name: KEYCLOAK_RESOURCE
+#     displayName: Resource ID
+#     description: Resource ID for keycloak
+#     value: mines-application-dev
+#   - name: KEYCLOAK_CLIENT_ID
+#     displayName: Client ID
+#     description: Client ID for keycloak
+#     value: mines-application-dev
+#   - name: KEYCLOAK_URL
+#     displayName: Keycloak URL
+#     description: URL of the keycloak server
+#     value: https://test.oidc.gov.bc.ca/auth
+#   - name: SITEMINDER_URL
+#     value: https://logontest7.gov.bc.ca
+
+#   - name: MATOMO_URL
+#     displayName: Matomo Url
+#     description: URL for the tracking component
+#     value: https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/
+#   - name: TUSD_URL
+#     value: http://tusd:1080/files/
+#   - name: FN_LAYER_URL
+#     value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
+#   - name: CORE_DOMAIN
+#     required: true
+
+
+
+
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: core-web
+  annotations:
+    description: Defines how to deploy the application server
+    template.alpha.openshift.io/wait-for-ready: "true"
+  labels:
+    component: core-web
+    app.kubernetes.io/part-of: Core
+    app.openshift.io/runtime: nodejs
+spec:
+  strategy:
+    type: Rolling
+    maxSurge: 50%
+    maxUnavailable: 0
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - app
+        from:
+          kind: ImageStreamTag
+          name: core-web:${TAG}
+          namespace: 4c2ba9-tools
+    - type: ConfigChange
+  replicas: 3
+  revisionHistoryLimit: 5
+  selector:
+    name: core-web
+  template:
+    metadata:
+      name: core-web
+      labels:
+        name: core-web
+    spec:
+      containers:
+        - name: app
+          image: " "
+          env:
+            - name: API_URL
+              value: ${CORE_API_URL}
+            - name: DOCUMENT_MANAGER_URL
+              value: ${DOCMAN_API_URL}
+            - name: MATOMO_URL
+              value: ${MATOMO_URL}
+            - name: TUSD_URL
+              value: ${TUSD_URL}
+            - name: FN_LAYER_URL
+              value: ${FN_LAYER_URL}
+            - name: NODE_ENV
+              value: production
+            - name: BASE_PATH
+              value: ${BASE_PATH}
+            - name: ASSET_PATH
+              value: ${BASE_PATH}/
+            - name: KEYCLOAK_RESOURCE
+              value: ${KEYCLOAK_RESOURCE}
+            - name: KEYCLOAK_CLIENT_ID
+              value: ${KEYCLOAK_CLIENT_ID}
+            - name: KEYCLOAK_URL
+              value: ${KEYCLOAK_URL}
+            - name: KEYCLOAK_IDP_HINT
+              value: idir
+            - name: SITEMINDER_URL
+              value: ${SITEMINDER_URL}
+            - name: FILESYSTEM_PROVIDER_URL
+              value: https://${CORE_DOMAIN}/file-api/AmazonS3Provider/
+          resources:
+            limits:
+              cpu: 60m
+              memory: 600Mi
+            requests:
+              cpu:  20m
+              memory: 200Mi
+          ports:
+            - containerPort: ${{PORT}}
+          livenessProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /health
+              port: ${{PORT}}
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /health
+              port: ${{PORT}}
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
