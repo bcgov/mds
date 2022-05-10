@@ -9,7 +9,7 @@ env:
 
 jobs:
   promote-image-to-prod:
-    name: promote-core-api-to-prod
+    name: promote-core-web-to-prod
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
