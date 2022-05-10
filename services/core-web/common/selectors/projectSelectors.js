@@ -1,12 +1,15 @@
 import { createSelector } from "reselect";
 import { isEmpty } from "lodash";
-import * as projectSummaryReducer from "../reducers/projectSummaryReducer";
+import * as projectReducer from "../reducers/projectReducer";
 
 export const {
   getProjectSummary,
   getProjectSummaries,
   getProjectSummaryPageData,
-} = projectSummaryReducer;
+  getProject,
+  getProjects,
+  getProjectPageData,
+} = projectReducer;
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {
   let formattedSummary = { ...summary, authorizationOptions: [] };
