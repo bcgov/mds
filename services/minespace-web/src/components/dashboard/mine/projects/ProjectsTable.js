@@ -19,6 +19,7 @@ export class ProjectsTable extends Component {
     projects.map((project) => ({
       key: project.project_guid,
       project,
+      primary_contact: project.contacts.find((c) => c.is_primary)?.name || "",
       mine_guid: project.mine_guid,
       proponent_project_id: project.proponent_project_id,
       project_title: project.project_title,
@@ -58,18 +59,6 @@ export class ProjectsTable extends Component {
       render: (text) => <div title="Last Updated By">{text}</div>,
       sorter: (a, b) => (a.update_user > b.update_user ? -1 : 1),
     },
-    // {
-    //   title: "First Submitted",
-    //   dataIndex: "submission_date",
-    //   sorter: dateSorter("submission_date"),
-    //   render: (text) => <div title="First Submitted">{text || "N/A"}</div>,
-    // },
-    // {
-    //   title: "Status",
-    //   dataIndex: "status_code",
-    //   render: (text) => <div title="Status">{text}</div>,
-    //   sorter: (a, b) => (a.status_code > b.status_code ? -1 : 1),
-    // },
     {
       title: "",
       dataIndex: "project",
