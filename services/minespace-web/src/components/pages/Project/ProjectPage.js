@@ -2,18 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
-import { Row, Col, Typography, Tabs, Divider } from "antd";
+import { Row, Col, Typography, Tabs } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
-import {
-  getProjectSummary,
-  getFormattedProjectSummary,
-  getProject,
-} from "@common/selectors/projectSelectors";
+import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { clearProjectSummary, clearProject } from "@common/actions/projectActions";
+import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import Loading from "@/components/common/Loading";
 import { MINE_DASHBOARD, EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -21,50 +17,43 @@ import ProjectOverviewTab from "./ProjectOverviewTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  projectSummary: CustomPropTypes.projectSummary,
-  fetchProjectSummaryById: PropTypes.func.isRequired,
-  createProjectSummary: PropTypes.func.isRequired,
-  updateProjectSummary: PropTypes.func.isRequired,
+  project: CustomPropTypes.project.isRequired,
+  fetchProjectById: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchEMLIContactsByRegion: PropTypes.func.isRequired,
-  clearProjectSummary: PropTypes.func.isRequired,
-  clearProject: PropTypes.func.isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
     params: {
       mineGuid: PropTypes.string,
     },
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
-  submit: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  formValueSelector: PropTypes.func.isRequired,
-  projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
-  formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
-  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
-  EMLIcontactInfo: PropTypes.arrayOf(CustomPropTypes.EMLIContactInfo).isRequired,
-};
-
-const defaultProps = {
-  project: {},
 };
 
 const tabs = ["overview", "irt", "toc", "application"];
 
 export class ProjectPage extends Component {
   state = {
-    isLoaded: true,
+    isLoaded: false,
     activeTab: tabs[0],
   };
 
   componentDidMount() {
     const { projectGuid } = this.props.match?.params;
     if (projectGuid) {
-      return this.props.fetchProjectById(projectGuid).then(() => {
-        this.props.fetchMineRecordById(this.props.project.mine_guid);
-        this.setState({ isLoaded: true, activeTab: tabs.indexOf(this.props.match.params.tab) });
-      });
+      return this.props
+        .fetchProjectById(projectGuid)
+        .then(() => {
+          return this.props.fetchMineRecordById(this.props.project.mine_guid);
+        })
+        .then(({ data }) => {
+          this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
+          this.setState({
+            isLoaded: true,
+            activeTab: tabs.indexOf(this.props.match.params.tab),
+          });
+        });
     }
+    return null;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,7 +99,10 @@ export class ProjectPage extends Component {
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key={this.state.activeTab}>
-                  <ProjectOverviewTab project={this.props.project} mines={this.props.mines} />
+                  <ProjectOverviewTab
+                    project={this.props.project}
+                    mine={this.props.mines[mineGuid]}
+                  />
                 </Tabs.TabPane>
               </Tabs>
             </Col>
@@ -124,22 +116,18 @@ export class ProjectPage extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   project: getProject(state),
-  projectSummary: getProjectSummary(state),
-  formattedProjectSummary: getFormattedProjectSummary(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      clearProjectSummary,
-      clearProject,
       fetchProjectById,
+      fetchEMLIContactsByRegion,
     },
     dispatch
   );
 
 ProjectPage.propTypes = propTypes;
-ProjectPage.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);
