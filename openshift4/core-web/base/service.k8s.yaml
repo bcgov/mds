@@ -6,10 +6,14 @@ metadata:
     description: Exposes and load balances the application pods
   labels:
     app.kubernetes.io/part-of: Core
+    app: core-web
 spec:
   ports:
     - name: web
       port: 3000
+      protocol: TCP
       targetPort: 3000
   selector:
     name: core-web
+  type: ClusterIP
+  sessionAffinity: None
