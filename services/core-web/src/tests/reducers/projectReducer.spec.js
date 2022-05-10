@@ -6,6 +6,9 @@ const baseExpectedValue = {
   projectSummaries: [],
   projectSummary: {},
   projectSummaryPageData: {},
+  projects: [],
+  project: {},
+  projectPageData: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
