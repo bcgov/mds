@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tusd
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          image: frontend:prod
+          env:
+            - name: CORE_API_URL
+              value: https://mds-prod.apps.silver.devops.gov.bc.ca/api
+            - name: API_URL
+              value: https://mds-prod.apps.silver.devops.gov.bc.ca/api
+            - name: DOCUMENT_MANAGER_URL
+              value: https://mds-prod.apps.silver.devops.gov.bc.ca/document-manager
+            - name: MATOMO_URL
+              value: https://matomo-4c2ba9-prod.apps.silver.devops.gov.bc.ca/
+            - name: TUSD_URL
+              value: http://tusd:1080/files/
+            - name: FN_LAYER_URL
+              value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
+            - name: NODE_ENV
+              value: production
+            - name: BASE_PATH
+              required: false
+              value: ""
+            - name: ASSET_PATH
+              value: ${BASE_PATH}/
+            - name: KEYCLOAK_RESOURCE
+              value: mines-application-prod
+            - name: KEYCLOAK_CLIENT_ID
+              value: mines-application-prod
+            - name: KEYCLOAK_URL
+              value: https://oidc.gov.bc.ca/auth
+            - name: KEYCLOAK_IDP_HINT
+              value: idir
+            - name: SITEMINDER_URL
+              value: https://logon.gov.bc.ca
+            - name: FILESYSTEM_PROVIDER_URL
+              value: https://mds-prod.apps.silver.devops.gov.bc.ca/file-api/AmazonS3Provider/
+          resources:
+            limits:
+              cpu: 60m
+              memory: 600Mi
+            requests:
+              cpu:  20m
+              memory: 200Mi
