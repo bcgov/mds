@@ -11,8 +11,9 @@ import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import Loading from "@/components/common/Loading";
-import { MINE_DASHBOARD, EDIT_PROJECT } from "@/constants/routes";
+import { MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 
 const propTypes = {
@@ -40,7 +41,7 @@ export class ProjectPage extends Component {
   componentDidMount() {
     const { projectGuid } = this.props.match?.params;
     if (projectGuid) {
-      return this.props
+      this.props
         .fetchProjectById(projectGuid)
         .then(() => {
           return this.props.fetchMineRecordById(this.props.project.mine_guid);
@@ -64,8 +65,8 @@ export class ProjectPage extends Component {
   }
 
   handleTabChange = (activeTab) => {
-    const url = EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
     this.setState({ activeTab });
+    const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
     this.props.history.push(url);
   };
 
@@ -92,17 +93,9 @@ export class ProjectPage extends Component {
           </Row>
           <Row gutter={[0, 16]}>
             <Col span={24}>
-              <Tabs
-                activeKey={this.state.activeTab}
-                defaultActiveKey="overview"
-                onChange={this.handleTabChange}
-                type="card"
-              >
-                <Tabs.TabPane tab="Overview" key={this.state.activeTab}>
-                  <ProjectOverviewTab
-                    project={this.props.project}
-                    mine={this.props.mines[mineGuid]}
-                  />
+              <Tabs defaultActiveKey={tabs[0]} onChange={this.handleTabChange} type="card">
+                <Tabs.TabPane tab="Overview" key="overview">
+                  <ProjectOverviewTab />
                 </Tabs.TabPane>
               </Tabs>
             </Col>
