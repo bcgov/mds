@@ -6,6 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
+from app.api.utils.include.user_info import User
 
 
 class NodType(Enum):
@@ -82,3 +83,14 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         if mine_guid:
             query = cls.query.filter_by(permit_guid=__guid, mine_guid=mine_guid, deleted_ind=False)
         return query.all()
+
+    def save(self, commit=True):
+        self.updated_by = User().get_user_username()
+        self.updated_timestamp = datetime.utcnow()
+        super(NoticeOfDeparture, self).save(commit)
+
+    def delete(self):
+        if self.mine_documents:
+            for document in self.mine_documents:
+                document.deleted_ind = True
+        super(NoticeOfDeparture, self).delete()
