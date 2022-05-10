@@ -26,3 +26,12 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.PROMOTE_TAG }}
+  
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    needs: build-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-api dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}

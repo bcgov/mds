@@ -48,7 +48,6 @@ jobs:
 
   build:
     name: build
-    needs: build-bases
     runs-on: ubuntu-20.04
     strategy:
       matrix:
