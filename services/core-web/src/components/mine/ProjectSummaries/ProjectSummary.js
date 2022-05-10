@@ -15,6 +15,7 @@ import { getProjectSummary, getFormattedProjectSummary } from "@common/selectors
 import {
   fetchProjectSummaryById,
   updateProjectSummary,
+  removeDocumentFromProjectSummary,
 } from "@common/actionCreators/projectActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
@@ -43,6 +44,7 @@ const propTypes = {
   fetchProjectSummaryById: PropTypes.func.isRequired,
   projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
+  removeDocumentFromProjectSummary: PropTypes.func.isRequired,
 };
 
 export class ProjectSummary extends Component {
@@ -97,6 +99,22 @@ export class ProjectSummary extends Component {
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
       });
+  };
+
+  handleRemoveDocument = (event, documentGuid) => {
+    event.preventDefault();
+    const {
+      project_summary_guid: projectSummaryGuid,
+      project_guid: projectGuid,
+      mine_guid: mineGuid,
+    } = this.props.formattedProjectSummary;
+    return this.props
+      .removeDocumentFromProjectSummary(projectGuid, projectSummaryGuid, documentGuid)
+      .then(() => {
+        this.setState({ isLoaded: false });
+        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+      })
+      .finally(() => this.setState({ isLoaded: true }));
   };
 
   render() {
@@ -163,6 +181,7 @@ export class ProjectSummary extends Component {
                   projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                   initialValues={this.props.formattedProjectSummary}
                   handleSubmit={this.handleUpdate}
+                  removeDocument={this.handleRemoveDocument}
                 />
               </div>
             </LoadingWrapper>
@@ -195,6 +214,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchProjectSummaryById,
       updateProjectSummary,
+      removeDocumentFromProjectSummary,
     },
     dispatch
   );

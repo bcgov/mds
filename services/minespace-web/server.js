@@ -34,7 +34,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
     docManUrl: process.env.DOCUMENT_MANAGER_URL,
-    matomoUrl: process.env.MATOMO_URL,
+    matomoUrl: process.env.MATOMO_URL || "",
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
     keycloak_idir_idpHint: process.env.KEYCLOAK_IDIR_IDP_HINT,
@@ -43,13 +43,19 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_url: process.env.KEYCLOAK_URL,
     siteminder_url: process.env.SITEMINDER_URL,
     environment: process.env.NODE_ENV,
-    vcauthn_pres_req_conf_id: process.env.VCAUTHN_PRES_REQ_CONF_ID
+    vcauthn_pres_req_conf_id: process.env.VCAUTHN_PRES_REQ_CONF_ID,
   });
 });
 
 app.get(`/health`, (req, res) => {
   res.json({
     status: "pass",
+  });
+});
+
+app.get(`/version`, (req, res) => {
+  res.json({
+    status: process.env.COMMIT_ID || "N/A",
   });
 });
 

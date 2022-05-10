@@ -22,11 +22,13 @@ export class Index extends Component {
     super();
     this.state = { environment: false };
     fetchEnv().then(() => {
-      instance = createInstance({
-        urlBase: ENVIRONMENT.matomoUrl,
-        enableLinkTracking: false,
-        siteId: 2,
-      });
+      if (ENVIRONMENT.matomoUrl) {
+        instance = createInstance({
+          urlBase: ENVIRONMENT.matomoUrl,
+          enableLinkTracking: false,
+          siteId: 2,
+        });
+      }
       this.setState({ environment: true });
     });
   }

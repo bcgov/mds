@@ -3,10 +3,15 @@ from flask_restplus import Resource, reqparse, inputs
 from werkzeug.exceptions import NotFound
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, EDIT_DO)
+from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
+                                             EDIT_DO)
 from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
 from app.api.mines.response_models import NOD_MODEL, CREATE_NOD_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+
+from sqlalchemy.dialects.postgresql import dialect
+from sqlalchemy.schema import CreateTable
+from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref
 
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
@@ -25,17 +30,18 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             store_missing=False)
         args = parser.parse_args()
 
+        print(CreateTable(NoticeOfDepartureDocumentXref.__table__).compile(dialect=dialect()))
         nods = []
 
         permit_guid = args.get('permit_guid')
         if permit_guid:
             permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
             if not permit:
-              raise NotFound('Either permit does not exist or does not belong to the mine')
+                raise NotFound('Either permit does not exist or does not belong to the mine')
             nods = NoticeOfDeparture.find_all_by_permit_guid(permit_guid, mine_guid)
         else:
             nods = NoticeOfDeparture.find_all_by_mine_guid(mine_guid)
-        print ( i for i in nods )
+        print(i for i in nods)
         return nods
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
@@ -72,15 +78,14 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         if not permit:
             raise NotFound('Either permit does not exist or does not belong to the mine')
-        
+
         new_nod = NoticeOfDeparture.create(
-            permit._context_mine, 
-            permit, 
+            permit._context_mine,
+            permit,
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
             nod_type=NodType.potentially_substantial,
-            nod_status=NodStatus.pending_review
-            )
+            nod_status=NodStatus.pending_review)
         new_nod.save()
 
         return new_nod
