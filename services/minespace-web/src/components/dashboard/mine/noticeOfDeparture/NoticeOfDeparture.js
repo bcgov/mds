@@ -3,8 +3,10 @@ import { Button, Col, Row, Typography } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import {
+  addDocumentToNoticeOfDeparture,
   createNoticeOfDeparture,
   fetchNoticesOfDeparture,
+  fetchDetailedNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
@@ -25,6 +27,8 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
+  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
@@ -35,21 +39,40 @@ export const NoticeOfDeparture = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleFetchPermits = () => {
-    props.fetchPermits(mine.mine_guid).then(() => setIsLoaded(true));
+  const handleFetchPermits = async () => {
+    await props.fetchPermits(mine.mine_guid);
+    await setIsLoaded(true);
   };
 
-  const handleFetchNoticesOfDeparture = () => {
-    props.fetchNoticesOfDeparture(mine.mine_guid).then(() => handleFetchPermits());
+  const handleFetchNoticesOfDeparture = async () => {
+    await props.fetchNoticesOfDeparture(mine.mine_guid);
+    await handleFetchPermits();
   };
 
   useEffect(() => {
     handleFetchNoticesOfDeparture();
   }, []);
 
-  const handleCreateNoticeOfDeparture = (permit_guid, values) => {
+  const handleAddDocuments = (documentArray, noticeOfDepartureGuid) => {
+    Promise.all(
+      documentArray.forEach((document) =>
+        props.addDocumentToNoticeOfDeparture(
+          { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+          {
+            document_type: document.document_type,
+            document_name: document.document_name,
+            document_manager_guid: document.document_manager_guid,
+          }
+        )
+      )
+    );
+  };
+
+  const handleCreateNoticeOfDeparture = (permit_guid, values, documentArray) => {
     setIsLoaded(false);
-    return props.createNoticeOfDeparture(mine.mine_guid, values).then(() => {
+    return props.createNoticeOfDeparture(mine.mine_guid, values).then(async (response) => {
+      const { nod_guid } = response.data;
+      await handleAddDocuments(documentArray, nod_guid);
       props.closeModal();
       handleFetchNoticesOfDeparture();
     });
@@ -68,10 +91,14 @@ export const NoticeOfDeparture = (props) => {
     });
   };
 
-  const openViewNoticeOfDepartureModal = (noticeOfDeparture) => {
+  const openViewNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
+    const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
+      mine.mine_guid,
+      selectedNoticeOfDeparture.nod_id
+    );
     props.openModal({
       props: {
-        noticeOfDeparture,
+        noticeOfDeparture: detailedNod,
         title: "View Notice of Departure",
       },
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE,
@@ -116,6 +143,8 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       createNoticeOfDeparture,
       fetchNoticesOfDeparture,
+      fetchDetailedNoticeOfDeparture,
+      addDocumentToNoticeOfDeparture,
       fetchPermits,
     },
     dispatch

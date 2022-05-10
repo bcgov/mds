@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:14.8.0
 
 # Create working directory
 RUN mkdir /app
@@ -11,8 +11,8 @@ RUN npm ci
 
 COPY . .
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+RUN npm run build
 
-RUN npm run-script build
-
-CMD ["node", "server.js" ]
+# Run the server
+EXPOSE 3020
+CMD [ "npm", "run", "production" ]

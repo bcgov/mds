@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 import {
   fetchProjectSummariesByMine,
   removeDocumentFromProjectSummary,
-} from "@common/actionCreators/projectSummaryActionCreator";
+} from "@common/actionCreators/projectActionCreator";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
-import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
+import { getProjectSummaries } from "@common/selectors/projectSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import * as Permission from "@/constants/permissions";
 import { USER_ROLES } from "@common/constants/environment";

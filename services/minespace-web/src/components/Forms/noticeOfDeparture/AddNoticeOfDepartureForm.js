@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { change, Field, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -16,12 +19,15 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit } = props;
+  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [documentArray, setDocumentArray] = useState([]);
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -32,14 +38,51 @@ const AddNoticeOfDepartureForm = (props) => {
         }))
       );
     }
+    change("uploadedFiles", []);
   }, []);
 
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
     const { permitNumber } = values;
-    onSubmit(permitNumber, values)
-      .then(() => closeModal())
-      .finally(() => setSubmitting(false));
+    onSubmit(permitNumber, values, documentArray).finally(() => setSubmitting(false));
+  };
+
+  const onFileLoad = (documentName, document_manager_guid, documentType) => {
+    setUploadedFiles([
+      ...uploadedFiles,
+      {
+        documentType,
+        documentName,
+        document_manager_guid,
+      },
+    ]);
+    setDocumentArray([
+      ...documentArray,
+      {
+        document_type: documentType,
+        document_name: documentName,
+        document_manager_guid,
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    change("uploadedFiles", documentArray);
+  }, [documentArray]);
+
+  const onRemoveFile = (fileItem) => {
+    setDocumentArray(
+      documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
+    );
+    setUploadedFiles(
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+    );
+  };
+
+  const hasChecklist = () => {
+    return documentArray.some(
+      (file) => file.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    );
   };
 
   return (
@@ -84,6 +127,33 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <h4 className="nod-modal-section-header">
+          Upload Notice of Departure Self-Assessment Form
+        </h4>
+        <Typography.Text>
+          Please upload your completed Self-assessment form (click here to download) below. Remember
+          your completed form must be signed by the Mine Manager and any supporting information
+          included or uploaded.
+        </Typography.Text>
+        <Form.Item className="margin-y-large">
+          <Field
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+              );
+            }}
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            allowMultiple
+            component={NoticeOfDepartureFileUpload}
+            maxFiles={1}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
+            validate={[required]}
+          />
+        </Form.Item>
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -96,7 +166,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting}
+            disabled={submitting || !hasChecklist()}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"

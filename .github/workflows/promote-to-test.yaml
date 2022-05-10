@@ -29,7 +29,6 @@ jobs:
           - name: metabase-postgres
           - name: docman
           - name: nris
-          - name: minespace
           - name: schemaspy
     steps:
       - name: Install oc
@@ -71,7 +70,6 @@ jobs:
           - name: metabase-postgres
           - name: docman
           - name: nris
-          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1

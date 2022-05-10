@@ -7,7 +7,7 @@ import {
   updateProjectSummary,
   deleteProjectSummary,
   removeDocumentFromProjectSummary,
-} from "@common/actionCreators/projectSummaryActionCreator";
+} from "@common/actionCreators/projectActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";

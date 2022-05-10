@@ -1,8 +1,8 @@
 .nod-modal-section-header {
   color: #000;
-  font-size: 1.125rem;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
   margin-bottom: 1rem;
 }
 
@@ -13,15 +13,13 @@
 .nod-cancel-button {
   transition: all 0.1s ease-in-out;
   background: #FFFFFF;
-  border: 2px solid $violet;
   border-radius: 4px;
   color: #5E46A1;
   &:hover {
-    background: $violet;
     color: #FFFFFF;
   }
 }
 
-.nod-table-link > a {
-  color: #333;
+.nod-divider {
+  color: $med-grey;
 }
