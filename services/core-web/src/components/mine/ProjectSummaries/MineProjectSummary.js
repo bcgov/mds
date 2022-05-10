@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { fetchProjectSummariesByMine } from "@common/actionCreators/projectSummaryActionCreator";
+import { fetchProjectSummariesByMine } from "@common/actionCreators/projectActionCreator";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
-import { getProjectSummaries } from "@common/selectors/projectSummarySelectors";
+import { getProjectSummaries } from "@common/selectors/projectSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import MineProjectSummaryTable from "./MineProjectSummaryTable";
 
