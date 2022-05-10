@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography, Button, Tooltip } from "antd";
+import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -39,7 +39,7 @@ export class Projects extends Component {
   state = { isLoaded: false, mine: {} };
 
   componentDidMount() {
-    const { id } = this.props.project.params;
+    const { id } = this.props.match.params;
     this.handleFetchData(id);
   }
 
@@ -51,14 +51,6 @@ export class Projects extends Component {
           mine: this.props.mines[id],
         });
       });
-    });
-  };
-
-  handleDeleteDraft = (e, projectSummaryGuid) => {
-    const { id } = this.props.match.params;
-    e.preventDefault();
-    this.props.deleteProjectSummary(id, projectSummaryGuid).then(() => {
-      this.handleFetchData(id);
     });
   };
 
