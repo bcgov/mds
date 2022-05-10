@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: frontend:prod
+          image: "image-registry.openshift-image-registry.svc:5000/4c2ba9-tools/frontend:prod"
           env:
             - name: CORE_API_URL
               value: https://mds-prod.apps.silver.devops.gov.bc.ca/api
