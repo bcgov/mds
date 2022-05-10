@@ -127,3 +127,14 @@ export const NOTICE_OF_DEPARTURE_DOCUMENT_TYPE = {
   CHECKLIST: "checklist",
   OTHER: "other",
 };
+
+export const NOTICE_OF_DEPARTURE_TYPE = {
+  non_substantial: "Non Substantial",
+  potentially_substantial: "Potentially Substantial",
+};
+
+export const NOTICE_OF_DEPARTURE_STATUS = {
+  pending_review: "Pending Preview",
+  in_review: "In Review",
+  self_authorized: "Self Authorized",
+};

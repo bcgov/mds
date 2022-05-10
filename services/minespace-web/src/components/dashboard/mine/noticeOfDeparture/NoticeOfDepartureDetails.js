@@ -27,9 +27,9 @@ export const NoticeOfDepartureDetails = (props) => {
     documents,
     submission_timestamp,
   } = noticeOfDeparture;
-  const checklist = documents.find(
-    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
-  );
+  const checklist =
+    documents.find((doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) ||
+    {};
   const submitted = formatDate(submission_timestamp);
 
   return (
@@ -89,7 +89,7 @@ export const NoticeOfDepartureDetails = (props) => {
         <Row justify="space-between">
           <Col span={16}>
             <p className="field-title">Uploaded File(s)</p>
-            <p>{checklist.document_name}</p>
+            <p>{checklist.document_name || EMPTY_FIELD}</p>
           </Col>
           <Col>
             <p className="field-title">Upload Date</p>
@@ -98,12 +98,16 @@ export const NoticeOfDepartureDetails = (props) => {
           <Col>
             <p className="field-title">&nbsp;</p>
             <p>
-              <LinkButton
-                onClick={() => downloadFileFromDocumentManager(checklist)}
-                title="Download"
-              >
-                Download
-              </LinkButton>
+              {checklist.document_name ? (
+                <LinkButton
+                  onClick={() => downloadFileFromDocumentManager(checklist)}
+                  title="Download"
+                >
+                  Download
+                </LinkButton>
+              ) : (
+                <p>{EMPTY_FIELD}</p>
+              )}
             </p>
           </Col>
         </Row>

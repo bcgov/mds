@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
-import * as Mock from "@/tests/mocks/dataMocks";
 import ViewNoticeOfDepartureModal from "@/components/modalContent/ViewNoticeOfDepartureModal";
+import { NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};
@@ -12,7 +12,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   // eslint-disable-next-line prefer-destructuring
-  props.noticeOfDeparture = Mock.NOTICES_OF_DEPARTURE.records[0];
+  props.noticeOfDeparture = NOTICE_OF_DEPARTURE_DETAILS;
 };
 
 beforeEach(() => {
