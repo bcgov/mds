@@ -1,8 +1,3 @@
-/**
- * TODO: We have disabled the "Start a new application" button after 1 project summary has been created under a project.
- * This is meant to prevent future bad data and will remain intact until the update Project UI/workflow has been deployed to Prod.
- */
-
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
