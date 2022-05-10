@@ -41,7 +41,6 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             nods = NoticeOfDeparture.find_all_by_permit_guid(permit_guid, mine_guid)
         else:
             nods = NoticeOfDeparture.find_all_by_mine_guid(mine_guid)
-        print(i for i in nods)
         return nods
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
