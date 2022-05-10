@@ -9,6 +9,7 @@ metadata:
     component: core-web
     app.kubernetes.io/part-of: Core
     app.openshift.io/runtime: nodejs
+    app.kubernetes.io/name: core-web
 spec:
   strategy:
     type: RollingUpdate
@@ -17,12 +18,16 @@ spec:
   replicas: 3
   revisionHistoryLimit: 5
   selector:
-    name: core-web
+    matchLabels:
+      name: core-web
+      service: core-web
   template:
     metadata:
       name: core-web
       labels:
         name: core-web
+        app.kubernetes.io/name: core-web
+        service: core-web
     spec:
       containers:
         - name: app
