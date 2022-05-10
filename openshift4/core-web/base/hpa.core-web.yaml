@@ -9,6 +9,6 @@ spec:
   minReplicas: 3
   scaleTargetRef:
     apiVersion: apps.openshift.io/v1
-    kind: DeploymentConfig
+    kind: Deployment
     name: core-web
   targetCPUUtilizationPercentage: 95
