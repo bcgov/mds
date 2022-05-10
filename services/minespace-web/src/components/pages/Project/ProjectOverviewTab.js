@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import {
   getProjectSummaryDocumentTypesHash,
-  getEMLIContactTypesHash,
   getProjectSummaryStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
@@ -156,7 +155,6 @@ const mapStateToProps = (state) => ({
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
   EMLIcontactInfo: getEMLIContactsByRegion(state),
-  EMLIContactTypesHash: getEMLIContactTypesHash(state),
 });
 
 ProjectOverviewTab.propTypes = propTypes;
