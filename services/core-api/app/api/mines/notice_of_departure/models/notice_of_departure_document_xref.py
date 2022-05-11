@@ -29,3 +29,13 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return '<NoticeOfDepartureDocumentXref %r>' % self.nod_document_xref_guid
+
+    def delete(self):
+        self.mine_document.deleted_ind = True
+        super(NoticeOfDepartureDocumentXref, self).delete()
+
+    @classmethod
+    def delete_current_checklist(cls, nod_guid):
+        checklist = cls.query.filter_by(
+            nod_guid=nod_guid, deleted_ind=False, document_type='checklist').first()
+        checklist.delete()
