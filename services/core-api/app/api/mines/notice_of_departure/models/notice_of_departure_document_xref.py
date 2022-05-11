@@ -30,6 +30,10 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return '<NoticeOfDepartureDocumentXref %r>' % self.nod_document_xref_guid
 
+    @classmethod
+    def find(cls, __guid):
+        return cls.query.find(nod_xref_guid=__guid, deleted_ind=False)
+
     def delete(self):
         self.mine_document.deleted_ind = True
         super(NoticeOfDepartureDocumentXref, self).delete()

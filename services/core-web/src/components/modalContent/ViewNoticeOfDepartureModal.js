@@ -11,7 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/buttons/LinkButton";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager, removeFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate } from "@common/utils/helpers";
 
 const propTypes = {
@@ -21,6 +21,7 @@ const propTypes = {
 
 export const ViewNoticeOfDepartureModal = (props) => {
   const { noticeOfDeparture } = props;
+  const { mine_guid, permit_guid } = noticeOfDeparture;
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
@@ -64,7 +65,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
       dataIndex: "actions",
       render: () => (
         <div className="btn--middle flex">
-          <button type="button" onClick={() => {}}>
+          <button type="button" onClick={() => removeFileFromDocumentManager({mine_guid, permit_guid, ...checklist})}>
             <img name="remove" src={TRASHCAN} alt="Remove Document" />
           </button>
         </div>

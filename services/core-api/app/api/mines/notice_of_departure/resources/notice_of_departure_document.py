@@ -83,3 +83,13 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         nod.documents.append(nod_doc)
         nod.save()
         return nod
+
+
+class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
+
+    def delete(self, mine_guid, nod_guid, nod_xref_guid):
+        doc = NoticeOfDepartureDocumentXref.find(nod_xref_guid)
+        if doc == None:
+            raise NotFound('Document not found')
+
+        doc.delete()
