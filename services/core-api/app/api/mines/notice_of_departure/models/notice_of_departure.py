@@ -34,7 +34,12 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     mine = db.relationship('Mine', lazy='select')
     permit = db.relationship('Permit', lazy='joined')
-    documents = db.relationship('NoticeOfDepartureDocumentXref', lazy='select')
+    documents = db.relationship(
+        'NoticeOfDepartureDocumentXref',
+        lazy='select',
+        primaryjoin=
+        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)"
+    )
 
     mine_documents = db.relationship(
         'MineDocument',

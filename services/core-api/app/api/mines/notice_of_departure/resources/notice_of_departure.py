@@ -1,5 +1,4 @@
-from flask_restplus import Resource
-from flask_restplus import reqparse
+from flask_restplus import Resource, reqparse, inputs
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, EDIT_DO, MINESPACE_PROPONENT)
@@ -26,12 +25,29 @@ class NoticeOfDepartureResource(Resource, UserMixin):
 
         nod = NoticeOfDeparture.find_one(nod_guid, True)
         parser = reqparse.RequestParser()
+
+        parser.add_argument(
+            'nod_title',
+            type=inputs.regex('^.{1,50}$'),
+            help='Notice of Departure title (50 chars max)',
+            location='json',
+            store_missing=False)
+        parser.add_argument(
+            'permit_guid', type=str, help='Permit identifier', location='json', store_missing=False)
+        parser.add_argument(
+            'nod_description',
+            type=str,
+            help='Notice of Departure description',
+            location='json',
+            store_missing=False)
         data = parser.parse_args()
 
         nod.nod_title = data.get('nod_title')
         nod.nod_description = data.get('nod_description')
         nod.nod_type = NodType.potentially_substantial # todo: removed when this feature if being built
         nod.nod_status = NodStatus.pending_review
+
+        nod.save()
 
         return nod
 
