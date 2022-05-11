@@ -1,14 +1,21 @@
-import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { storeNoticesOfDeparture } from "@common/actions/noticeOfDepartureActions";
+import {
+  getNoticesOfDeparture,
+  getNoticeOfDeparture,
+} from "@common/selectors/noticeOfDepartureSelectors";
+import {
+  storeNoticesOfDeparture,
+  storeNoticeOfDeparture,
+} from "@common/actions/noticeOfDepartureActions";
 import { noticeOfDepartureReducer } from "@common/reducers/noticeOfDepartureReducer";
 import { NOTICES_OF_DEPARTURE } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {
   noticesOfDeparture: Mock.NOTICES_OF_DEPARTURE.records,
+  noticeOfDeparture: Mock.NOTICE_OF_DEPARTURE_DETAILS,
 };
 
-describe("mineSelectors", () => {
+describe("noticesOfDepartureSelector", () => {
   const { noticesOfDeparture } = mockState;
 
   it("`getNoticesOfDeparture` calls `noticeOfDepartureReducer.getNoticesOfDeparture`", () => {
@@ -18,5 +25,18 @@ describe("mineSelectors", () => {
       [NOTICES_OF_DEPARTURE]: storeState,
     };
     expect(getNoticesOfDeparture(localMockState)).toEqual(noticesOfDeparture);
+  });
+});
+
+describe("noticeOfDepartureSelector", () => {
+  const { noticeOfDeparture } = mockState;
+
+  it("`getNoticeOfDeparture` calls `noticeOfDepartureReducer.getNoticeOfDeparture`", () => {
+    const storeAction = storeNoticeOfDeparture(Mock.NOTICE_OF_DEPARTURE_DETAILS);
+    const storeState = noticeOfDepartureReducer({}, storeAction);
+    const localMockState = {
+      [NOTICES_OF_DEPARTURE]: storeState,
+    };
+    expect(getNoticeOfDeparture(localMockState)).toEqual(noticeOfDeparture);
   });
 });

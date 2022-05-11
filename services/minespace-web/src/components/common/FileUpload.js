@@ -25,6 +25,7 @@ const propTypes = {
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
+  maxFiles: PropTypes.number,
 };
 
 const defaultProps = {
@@ -36,6 +37,7 @@ const defaultProps = {
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
+  maxFiles: null,
 };
 
 class FileUpload extends React.Component {
@@ -90,6 +92,7 @@ class FileUpload extends React.Component {
         <FilePond
           server={this.server}
           name="file"
+          maxFiles={this.props.maxFiles}
           allowRevert={this.props.allowRevert}
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}
