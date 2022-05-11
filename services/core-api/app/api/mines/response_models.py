@@ -761,10 +761,8 @@ NOD_MODEL = api.model(
         fields.List(fields.Nested(NOD_DOCUMENT_MODEL))
     })
 
-CREATE_NOD_MODEL = api.model(
-    'NoticeOfDeparture', {
-        'permit_guid': fields.String,
-        'nod_title': fields.String,
-        'mine_manager_id': fields.Integer,
-        'nod_type': fields.String
-    })
+CREATE_NOD_MODEL = api.model('NoticeOfDeparture', {
+    'permit_guid': fields.String,
+    'nod_title': fields.String,
+    'nod_type': fields.String
+})
