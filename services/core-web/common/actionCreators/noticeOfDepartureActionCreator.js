@@ -7,6 +7,7 @@ import {
   GET_NOTICES_OF_DEPARTURE,
   GET_DETAILED_NOTICE_OF_DEPARTURE,
   UPDATE_NOTICE_OF_DEPARTURE,
+  DELETE_DOCUMENT_FROM_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "../constants/environment";
@@ -14,6 +15,7 @@ import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENT
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
@@ -114,4 +116,25 @@ export const addDocumentToNoticeOfDeparture = ({ mineGuid, noticeOfDepartureGuid
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+
+export const removeFileFromDocumentManager = ({ mine_guid, nod_guid, document_manager_guid, document_name = "" }) => {
+  if (!document_manager_guid) {
+    throw new Error("Must provide document_manager_guid");
+  }
+
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.docManUrl + NOTICES_OF_DEPARTURE_DOCUMENT(mine_guid, nod_guid, document_manager_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(DELETE_DOCUMENT_FROM_NOTICE_OF_DEPARTURE));
+      response.data;
+    })
+    .catch((err) => {
+      dispatch(error(DELETE_DOCUMENT_FROM_NOTICE_OF_DEPARTURE));
+      throw new Error(err);
+    });
 };
