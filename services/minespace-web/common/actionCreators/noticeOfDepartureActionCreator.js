@@ -6,6 +6,7 @@ import {
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
   GET_NOTICES_OF_DEPARTURE,
   GET_DETAILED_NOTICE_OF_DEPARTURE,
+  UPDATE_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "../constants/environment";
@@ -53,6 +54,30 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
     })
     .catch(() => dispatch(error(GET_NOTICES_OF_DEPARTURE)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const updateNoticeOfDeparture = ({ mineGuid, nodGuid }, payload) => (dispatch) => {
+  dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mineGuid, nodGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated notice of departure.",
+        duration: 10,
+      });
+      dispatch(success(UPDATE_NOTICE_OF_DEPARTURE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(UPDATE_NOTICE_OF_DEPARTURE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch) => {

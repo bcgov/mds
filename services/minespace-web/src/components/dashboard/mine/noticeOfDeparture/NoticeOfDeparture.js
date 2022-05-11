@@ -5,8 +5,9 @@ import { closeModal, openModal } from "@common/actions/modalActions";
 import {
   addDocumentToNoticeOfDeparture,
   createNoticeOfDeparture,
-  fetchNoticesOfDeparture,
   fetchDetailedNoticeOfDeparture,
+  fetchNoticesOfDeparture,
+  updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
@@ -26,6 +27,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfDeparture: PropTypes.func.isRequired,
+  updateNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
   addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
@@ -78,6 +80,20 @@ export const NoticeOfDeparture = (props) => {
     });
   };
 
+  const handleUpdateNoticeOfDeparture = (nodGuid, values, documentArray) => {
+    setIsLoaded(false);
+    return props
+      .updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid }, values)
+      .then(async (response) => {
+        const { nod_guid } = response.data;
+        if (documentArray.length > 0) {
+          await handleAddDocuments(documentArray, nod_guid);
+        }
+        props.closeModal();
+        handleFetchNoticesOfDeparture();
+      });
+  };
+
   const openCreateNODModal = (event) => {
     event.preventDefault();
     props.openModal({
@@ -105,6 +121,22 @@ export const NoticeOfDeparture = (props) => {
     });
   };
 
+  const openEditNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
+    const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
+      mine.mine_guid,
+      selectedNoticeOfDeparture.nod_id
+    );
+    props.openModal({
+      props: {
+        mineGuid: mine.mine_guid,
+        onSubmit: handleUpdateNoticeOfDeparture,
+        noticeOfDeparture: detailedNod,
+        title: "Edit Notice of Departure",
+      },
+      content: modalConfig.EDIT_NOTICE_OF_DEPARTURE,
+    });
+  };
+
   return (
     <Row>
       <Col span={24}>
@@ -125,6 +157,7 @@ export const NoticeOfDeparture = (props) => {
           isLoaded={isLoaded}
           data={nods}
           openViewNoticeOfDepartureModal={openViewNoticeOfDepartureModal}
+          openEditNoticeOfDepartureModal={openEditNoticeOfDepartureModal}
         />
       </Col>
     </Row>
@@ -142,6 +175,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       createNoticeOfDeparture,
+      updateNoticeOfDeparture,
       fetchNoticesOfDeparture,
       fetchDetailedNoticeOfDeparture,
       addDocumentToNoticeOfDeparture,
