@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
-import * as routes from "@/constants/routes";
+import { Table } from "antd";
 
 const propTypes = {
   projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -14,8 +12,9 @@ export class ProjectStagesTable extends Component {
     projectStages.map((stage) => ({
       key: stage.key,
       project_stage: stage.title,
-      stage_status: stage.status,
+      stage_status: !stage.status ? "Not Started" : stage.status,
       stage_status_hash: stage.statusHash,
+      link: stage.link,
       stage,
     }));
 
@@ -42,18 +41,7 @@ export class ProjectStagesTable extends Component {
       title: "",
       dataIndex: "stage",
       align: "right",
-      render: (text, record) => (
-        <Link
-          to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-            record.stage?.payload?.project_guid,
-            record.stage?.payload?.project_summary_guid
-          )}
-        >
-          <Button className="full-mobile margin-small" type="secondary">
-            Edit
-          </Button>
-        </Link>
-      ),
+      render: (text, record) => record.link(record),
     },
   ];
 

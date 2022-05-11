@@ -34,6 +34,10 @@ const Routes = () => (
       path={routes.EDIT_PROJECT_SUMMARY.route}
       component={AuthenticationGuard()(routes.EDIT_PROJECT_SUMMARY.component)}
     />
+    <Route
+      path={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.route}
+      component={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.component}
+    />
     <Route path={routes.EDIT_PROJECT.route} component={routes.EDIT_PROJECT.component} />
     {/* 404 - PAGE NOT FOUND */}
     <Route

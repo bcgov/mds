@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
@@ -15,6 +16,7 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
+import InformationRequirementsTablePage from "./InformationRequirementsTablePage";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -97,6 +99,11 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab />
                 </Tabs.TabPane>
+                {!IN_PROD() && (
+                  <Tabs.TabPane tab="irt" key="irt">
+                    <InformationRequirementsTablePage match={this.props.match} />
+                  </Tabs.TabPane>
+                )}
               </Tabs>
             </Col>
           </Row>

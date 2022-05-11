@@ -138,9 +138,6 @@ export class MineDashboard extends Component {
                       <Projects mine={mine} match={this.props.match} />
                     </Tabs.TabPane>
                   )}
-                  <Tabs.TabPane tab="IRT" key="irts">
-                    <InformationRequirementsTables />
-                  </Tabs.TabPane>
                   <Tabs.TabPane tab="Permits" key="permits">
                     <Permits mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
