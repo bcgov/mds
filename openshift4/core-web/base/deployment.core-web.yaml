@@ -49,10 +49,9 @@ spec:
             - name: NODE_ENV
               value: development
             - name: BASE_PATH
-              required: false
               value: ""
             - name: ASSET_PATH
-              value: ${{BASE_PATH}}/
+              value: ${BASE_PATH}/
             - name: IMAGE_NAMESPACE
               value: 4c2ba9-tools
             - name: KEYCLOAK_RESOURCE
