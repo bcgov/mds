@@ -1117,6 +1117,31 @@ export const PROJECT_SUMMARIES = {
   ],
 };
 
+export const INFORMATION_REQUIREMENTS_TABLE = {
+  project_guid: "66d7e698-8820-456f-ac32-14917f3ebe88",
+  status_code: "REC",
+  requirements: [
+    {
+      requirement_guid: "1b9916df-b747-4074-a2ef-88b8921cabd0",
+      required: true,
+      methods: true,
+      comment: "Comments in Application Background 2",
+    },
+    {
+      requirement_guid: "4ca346da-6727-4f4e-90cb-4d4d9c6fde1d",
+      required: true,
+      methods: true,
+      comment: "Comments in Proponent Information 2",
+    },
+  ],
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
+  REC: "Received",
+  UNR: "Under review - with reviewers",
+  APV: "Approved",
+};
+
 export const PROJECT_SUMMARY = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   project_summary_guid: "81324623978135",
