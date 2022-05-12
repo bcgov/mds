@@ -7,7 +7,7 @@ GIT_SHA=${3?"Enter GIT SHA of commit!"}
 RC_TOKEN=${4?"Enter RC Token!"}
 
 function get_revision() {
-    kubectl get deploy/busybox -n 4c2ba9-$ENV -o=json | jq '.metadata.annotations["deployment.kubernetes.io/revision"]' -r
+    kubectl get deploy/$TARGET_APP -n 4c2ba9-$ENV -o=json | jq '.metadata.annotations["deployment.kubernetes.io/revision"]' -r
 }
 
 CURRENT_STATUS=$(kubectl rollout status -w deploy/$TARGET_APP -n 4c2ba9-$ENV)
@@ -25,7 +25,7 @@ echo "Polling to watch rollout to achieve the target revision of $TARGET_REVISIO
 until [ $CURRENT_REVISION == $TARGET_REVISION ]; do
     sleep 2
     CURRENT_REVISION=$(get_revision)
-    echo "Refreshing the get revision of $TARGET_APP, currently $CURRENT_REVISION, waiting for $TARGET_REVISION"
+    echo "Refreshing the revision of $TARGET_APP, currently $CURRENT_REVISION, waiting for $TARGET_REVISION"
 done
 
 echo "Target Revision is achieved $CURRENT_REVISION"
