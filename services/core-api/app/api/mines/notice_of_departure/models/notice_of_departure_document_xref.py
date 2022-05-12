@@ -38,4 +38,5 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     def delete_current_checklist(cls, nod_guid):
         checklist = cls.query.filter_by(
             nod_guid=nod_guid, deleted_ind=False, document_type='checklist').first()
-        checklist.delete()
+        if checklist:
+            checklist.delete()
