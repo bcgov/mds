@@ -39,13 +39,13 @@ if [ $ROLLOUT_STATUS == 0 ]; then
     MSG_COLOR="#F8D210"
     EMOJI=":rocket:"
     MSG="SUCCESS"
-    false
+    MENTION=""
 else
     MSG_COLOR="#FA26A0"
     EMOJI=":skull:"
     MSG="FAILED"
     # ideally this should be a @all or @here notification. But our rocket chat bot in the bc gov tenant does not support it right now.
-    MENTION="@hitankar.ray @justin.macaulay"
+    MENTION="@hitankar.ray @justin.macaulay @cameron.wilson @Vyas"
 fi
 
 curl -X POST -H 'Content-Type: application/json' --data \
