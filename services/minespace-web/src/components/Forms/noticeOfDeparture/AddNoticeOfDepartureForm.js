@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { change, Field, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
-import { maxLength, required, requiredList, validateSelectOptions } from "@common/utils/Validate";
+import {
+  maxLength,
+  required,
+  requiredList,
+  validateSelectOptions,
+  requiredRadioButton,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
@@ -11,6 +17,7 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
+import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -20,6 +27,11 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+};
+
+const NOD_TYPE = {
+  POTENTIALLY_SUBSTANTIAL: "potentially_substantial",
+  NON_SUBSTANTIAL: "non_substantial",
 };
 
 const AddNoticeOfDepartureForm = (props) => {
@@ -93,7 +105,7 @@ const AddNoticeOfDepartureForm = (props) => {
           supporting documents. For more information on the purpose and intent of a notice of
           departure click here.
         </Typography.Text>
-        <Typography.Title level={4}>Basic Information</Typography.Title>
+        <h4 className="nod-modal-section-header">Basic Information</h4>
         <Typography.Text>
           Enter the following information about your notice of departure.
         </Typography.Text>
@@ -127,6 +139,32 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <h4 className="nod-modal-section-header">
+          Notice of Departure Self-Assessment Determination
+        </h4>
+        <Form.Item>
+          <Field
+            id="nod_type"
+            name="nod_type"
+            label="Based on the information established in your self-assessment form please determine your
+          submissions notice of departure type. If you are unsure what category you fall under,
+          please contact us."
+            component={RenderRadioButtons}
+            validate={[requiredRadioButton]}
+            customOptions={[
+              {
+                value: NOD_TYPE.NON_SUBSTANTIAL,
+                label:
+                  "This notice of departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+              },
+              {
+                value: NOD_TYPE.POTENTIALLY_SUBSTANTIAL,
+                label:
+                  "This notice of departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
+              },
+            ]}
+          />
+        </Form.Item>
         <h4 className="nod-modal-section-header">
           Upload Notice of Departure Self-Assessment Form
         </h4>

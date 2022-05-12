@@ -41,7 +41,6 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             nods = NoticeOfDeparture.find_all_by_permit_guid(permit_guid, mine_guid)
         else:
             nods = NoticeOfDeparture.find_all_by_mine_guid(mine_guid)
-        print(i for i in nods)
         return nods
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
@@ -70,6 +69,13 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             location='json',
             required=True,
             store_missing=False)
+        parser.add_argument(
+            'nod_type',
+            type=str,
+            help='Notice of Departure type',
+            location='json',
+            required=True,
+            store_missing=False)
         data = parser.parse_args()
 
         permit_guid = data.get('permit_guid')
@@ -84,7 +90,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             permit,
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
-            nod_type=NodType.potentially_substantial,
+            nod_type=NodType[data.get('nod_type')],
             nod_status=NodStatus.pending_review)
         new_nod.save()
 
