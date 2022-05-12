@@ -101,9 +101,7 @@ export class ProjectOverviewTab extends Component {
       {
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
-        status: this.props.informationRequirementsTable?.status_code
-          ? this.props.informationRequirementsTable.status_code
-          : "Not started",
+        status: this.props.informationRequirementsTable.status_code,
         project_guid: projectGuid,
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,

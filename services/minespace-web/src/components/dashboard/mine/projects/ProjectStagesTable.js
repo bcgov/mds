@@ -31,11 +31,17 @@ export class ProjectStagesTable extends Component {
     {
       title: "",
       dataIndex: "stage_status",
-      render: (text, record) => (
-        <div title="Stage Status">
-          <b>{`[${record.stage_status_hash[text]}]` || "N/A"}</b>
-        </div>
-      ),
+      render: (text, record) => {
+        const status =
+          record.stage_status === "Not Started"
+            ? record.stage_status
+            : record.stage_status_hash[text];
+        return (
+          <div title="Stage Status">
+            <b>{status || "N/A"}</b>
+          </div>
+        );
+      },
     },
     {
       title: "",

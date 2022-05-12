@@ -136,27 +136,35 @@ export class InformationRequirementsTablePage extends Component {
     return (
       this.state.isLoaded && (
         <>
-          <Row>
-            <Col span={24}>
-              <Typography.Title>{title}</Typography.Title>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <Link to={EDIT_PROJECT.dynamicRoute(this.props.project.project_summary.project_guid)}>
-                <ArrowLeftOutlined className="padding-sm--right" />
-                Back to: {this.props.project.project_title} Project Overview page
-              </Link>
-            </Col>
-          </Row>
-          <br />
+          {!this.state.activeTab && (
+            <>
+              <Row>
+                <Col span={24}>
+                  <Typography.Title>{title}</Typography.Title>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Link
+                    to={EDIT_PROJECT.dynamicRoute(this.props.project.project_summary.project_guid)}
+                  >
+                    <ArrowLeftOutlined className="padding-sm--right" />
+                    Back to: {this.props.project.project_title} Project Overview page
+                  </Link>
+                </Col>
+              </Row>
+              <br />
+            </>
+          )}
+
           <Row>
             <Steps current={this.state.current}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
             </Steps>
-            <Divider />
+            {!this.state.activeTab && <Divider />}
+            <br />
             <br />
 
             <div>{Forms[this.state.current].content}</div>
