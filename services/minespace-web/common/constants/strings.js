@@ -133,8 +133,19 @@ export const NOTICE_OF_DEPARTURE_TYPE = {
   potentially_substantial: "Potentially Substantial",
 };
 
+export const NOTICE_OF_DEPARTURE_TYPE_VALUES = {
+  non_substantial: "non_substantial",
+  potentially_substantial: "potentially_substantial",
+};
+
 export const NOTICE_OF_DEPARTURE_STATUS = {
   pending_review: "Pending Preview",
   in_review: "In Review",
   self_authorized: "Self Authorized",
+};
+
+export const NOTICE_OF_DEPARTURE_STATUS_VALUES = {
+  pending_review: "pending_review",
+  in_review: "in_review",
+  self_authorized: "self_authorized",
 };

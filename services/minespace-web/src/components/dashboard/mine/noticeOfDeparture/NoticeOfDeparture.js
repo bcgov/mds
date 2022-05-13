@@ -20,6 +20,10 @@ import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import {
+  NOTICE_OF_DEPARTURE_TYPE_VALUES,
+  NOTICE_OF_DEPARTURE_STATUS_VALUES,
+} from "@common/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -72,12 +76,18 @@ export const NoticeOfDeparture = (props) => {
 
   const handleCreateNoticeOfDeparture = (permit_guid, values, documentArray) => {
     setIsLoaded(false);
-    return props.createNoticeOfDeparture(mine.mine_guid, values).then(async (response) => {
-      const { nod_guid } = response.data;
-      await handleAddDocuments(documentArray, nod_guid);
-      props.closeModal();
-      handleFetchNoticesOfDeparture();
-    });
+    const nod_status =
+      values.nod_type === NOTICE_OF_DEPARTURE_TYPE_VALUES.non_substantial
+        ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_authorized
+        : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
+    return props
+      .createNoticeOfDeparture(mine.mine_guid, { ...values, nod_status })
+      .then(async (response) => {
+        const { nod_guid } = response.data;
+        await handleAddDocuments(documentArray, nod_guid);
+        props.closeModal();
+        handleFetchNoticesOfDeparture();
+      });
   };
 
   const handleUpdateNoticeOfDeparture = (nodGuid, values, documentArray) => {
