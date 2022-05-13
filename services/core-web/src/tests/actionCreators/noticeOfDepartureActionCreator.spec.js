@@ -204,6 +204,7 @@ describe("`removeFileFromDocumentManager` action creator", () => {
       nod_guid: nodGuid,
       document_manager_guid: docGuid
     }).then((response) => {
+      console.log(response);
       expect(response.status).toEqual(200)
     });
   });
