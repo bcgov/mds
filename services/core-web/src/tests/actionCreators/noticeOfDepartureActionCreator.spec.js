@@ -200,7 +200,8 @@ describe("`removeFileFromDocumentManager` action creator", () => {
     mockAxios.onDelete(url).reply(200);
     return removeFileFromDocumentManager({
       mineGuid,
-      nodGuid
+      nodGuid,
+      docGuid
     }).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
