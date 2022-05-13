@@ -89,7 +89,7 @@ class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
 
     def delete(self, mine_guid, nod_guid, docman_guid):
         doc = NoticeOfDepartureDocumentXref.find_by_docman_guid(docman_guid)
-        print(doc)
+
         if doc == None:
             raise NotFound('Document not found')
 
