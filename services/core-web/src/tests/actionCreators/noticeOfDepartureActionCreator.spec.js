@@ -5,6 +5,7 @@ import {
   fetchNoticesOfDeparture,
   addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
+  updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -144,6 +145,40 @@ describe("`uploadDocumentsToNoticeOfDeparture` action creator", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return addDocumentToNoticeOfDeparture(
       { mineGuid, noticeOfDepartureGuid },
+      mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateNoticeOfDeparture` action creator", () => {
+  const mineGuid = "12345-6789";
+  const nodGuid = "12345-6789";
+  const mockPayload = {
+    nod_title: "Updated Title",
+  };
+  const url = `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mineGuid, nodGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPatch(url, mockPayload).reply(200, mockResponse);
+    return updateNoticeOfDeparture(
+      { mineGuid, nodGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPatch(url).reply(418, MOCK.ERROR);
+    return updateNoticeOfDeparture(
+      { mineGuid, nodGuid },
       mockPayload
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);

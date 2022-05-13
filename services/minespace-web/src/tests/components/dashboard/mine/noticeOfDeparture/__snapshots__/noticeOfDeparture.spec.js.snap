@@ -49,6 +49,7 @@ exports[`NoticesOfDeparture renders properly 1`] = `
         ]
       }
       isLoaded={false}
+      openEditNoticeOfDepartureModal={[Function]}
       openViewNoticeOfDepartureModal={[Function]}
     />
   </Col>
