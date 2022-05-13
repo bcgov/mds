@@ -9,7 +9,7 @@ env:
 
 jobs:
   promote-image-to-prod:
-    name: promote-core-api-to-prod
+    name: promote-core-web-to-prod
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
@@ -27,11 +27,11 @@ jobs:
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.PROMOTE_TAG }}
   
-  # trigger-gitops:
-  #   runs-on: ubuntu-20.04
-  #   needs: build-frontend
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Git Ops Push
-  #       run: ./gitops/commit.sh core-api test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    needs: promote-image-to-prod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-web test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
