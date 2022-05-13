@@ -199,13 +199,14 @@ describe("`removeFileFromDocumentManager` action creator", () => {
 
   it("Request successful, returns 200 error", () => {
     mockAxios.onDelete(url).reply(200);
+    const spyRemoveFileFromDocumentManager = jest.spyOn(removeFileFromDocumentManager);
     return removeFileFromDocumentManager({
       mine_guid: mineGuid,
       nod_guid: nodGuid,
       document_manager_guid: docGuid
-    }).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
+    }).then((response) => {
+      expect(response.status).toEqual(200)
+      expect(spyRemoveFileFromDocumentManager).toHaveBeenCalledTimes(1);
     });
   });
 });
