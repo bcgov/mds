@@ -14,6 +14,7 @@ import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENT
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {

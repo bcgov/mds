@@ -19,6 +19,7 @@ exports[`MineNoticeOfDeparture renders properly 1`] = `
     </h4>
     <br />
     <Connect(MineNoticeOfDepartureTable)
+      fetchDetailedNoticeOfDeparture={[Function]}
       isLoaded={false}
       mine={
         Object {
