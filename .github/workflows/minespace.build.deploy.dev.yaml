@@ -40,3 +40,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Git Ops Push
         run: ./gitops/commit.sh minespace dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+
+  watch-deployment:
+    runs-on: ubuntu-20.04
+    needs: [trigger-gitops]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh minespace dev ${{ github.sha }} ${{ secrets.RC_TOKEN }}
