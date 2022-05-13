@@ -208,5 +208,3 @@ describe("`removeFileFromDocumentManager` action creator", () => {
     });
   });
 });
-});
-
