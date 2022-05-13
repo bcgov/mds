@@ -115,3 +115,24 @@ export const addDocumentToNoticeOfDeparture = ({ mineGuid, noticeOfDepartureGuid
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const removeFileFromDocumentManager = ({ mine_guid, nod_guid, document_manager_guid }) => {
+  if (!document_manager_guid) {
+    throw new Error("Must provide document_manager_guid");
+  }
+
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + NOTICES_OF_DEPARTURE_DOCUMENT(mine_guid, nod_guid, document_manager_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted document.",
+        duration: 10,
+      });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+};

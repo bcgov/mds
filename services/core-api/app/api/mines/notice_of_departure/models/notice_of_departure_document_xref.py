@@ -28,11 +28,15 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     document_name = association_proxy('mine_document', 'document_name')
 
     def __repr__(self):
-        return '<NoticeOfDepartureDocumentXref %r>' % self.nod_document_xref_guid
+        return '<NoticeOfDepartureDocumentXref %r>' % self.nod_xref_guid
 
     @classmethod
     def find(cls, __guid):
-        return cls.query.find(nod_xref_guid=__guid, deleted_ind=False)
+        return cls.query.filter_by(nod_xref_guid=__guid, deleted_ind=False).first()
+
+    @classmethod
+    def find_by_docman_guid(cls, __guid):
+        return cls.query.filter_by(document_manager_guid=__guid, deleted_ind=False).first()
 
     def delete(self):
         self.mine_document.deleted_ind = True

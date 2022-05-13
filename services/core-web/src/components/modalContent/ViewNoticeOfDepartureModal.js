@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Row } from "antd";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
@@ -11,23 +13,43 @@ import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/buttons/LinkButton";
-import { downloadFileFromDocumentManager, removeFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate } from "@common/utils/helpers";
+import {
+  removeFileFromDocumentManager,
+  fetchDetailedNoticeOfDeparture
+} from "@common/actionCreators/noticeOfDepartureActionCreator";
+import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
+  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  mine: CustomPropTypes.mine.isRequired
 };
 
 export const ViewNoticeOfDepartureModal = (props) => {
-  const { noticeOfDeparture } = props;
-  const { mine_guid, permit_guid } = noticeOfDeparture;
-  const checklist = noticeOfDeparture.documents.find(
+  const { noticeOfDeparture, mine } = props;
+  const { nod_guid } = noticeOfDeparture;
+
+  const checklist = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
+
+
+  const handleDeleteANoticeOfDepartureDocument = async(document) => {
+
+    await removeFileFromDocumentManager(document);
+    
+    await props.fetchDetailedNoticeOfDeparture(
+      mine.mine_guid,
+      nod_guid
+    );
+
+  };
 
   const fileColumns = [
     {
@@ -38,7 +60,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
       render: (text) => (
         <div className="nod-table-link">
           {text ? (
-            <LinkButton onClick={() => downloadFileFromDocumentManager(checklist)} title="Download">
+            <LinkButton onClick={() => downloadFileFromDocumentManager(checklist[0])} title="Download">
               {text}
             </LinkButton>
           ) : (
@@ -65,7 +87,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
       dataIndex: "actions",
       render: () => (
         <div className="btn--middle flex">
-          <button type="button" onClick={() => removeFileFromDocumentManager({mine_guid, permit_guid, ...checklist})}>
+          <button type="button" onClick={() => handleDeleteANoticeOfDepartureDocument({mine_guid: mine.mine_guid, nod_guid, ...checklist[0]})}>
             <img name="remove" src={TRASHCAN} alt="Remove Document" />
           </button>
         </div>
@@ -113,7 +135,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
         <CoreTable
           condition
           columns={fileColumns}
-          dataSource={[checklist]}
+          dataSource={checklist}
           tableProps={{ pagination: false }}
         />
         <h4 className="nod-modal-section-header padding-md--top">Application Documentation</h4>
@@ -172,4 +194,16 @@ export const ViewNoticeOfDepartureModal = (props) => {
 
 ViewNoticeOfDepartureModal.propTypes = propTypes;
 
-export default ViewNoticeOfDepartureModal;
+const mapStateToProps = (state) => ({
+  noticeOfDeparture: getNoticeOfDeparture(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchDetailedNoticeOfDeparture
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewNoticeOfDepartureModal);

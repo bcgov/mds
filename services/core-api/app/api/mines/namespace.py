@@ -176,7 +176,7 @@ api.add_resource(MineNoticeOfDepartureDocumentUploadResource,
 
 api.add_resource(
     MineNoticeOfDepartureDocumentResource,
-    '/<string:mine_guid>/notices-of-departure/<string:nod_guid>/documents/<string:nod_xref_guid>')
+    '/<string:mine_guid>/notices-of-departure/<string:nod_guid>/documents/<string:docman_guid>')
 
 api.add_resource(ExplosivesPermitResource,
                  '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>')
