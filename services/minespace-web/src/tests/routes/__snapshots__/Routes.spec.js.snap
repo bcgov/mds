@@ -97,7 +97,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(ProjectPage)",
+        "displayName": "Connect(authenticationGuard)",
         "type": [Function],
       }
     }
