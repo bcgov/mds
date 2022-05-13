@@ -14,7 +14,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.response_models import NOD_MODEL
 from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
-from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref
+from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref, DocumentType
 from app.api.services.document_manager_service import DocumentManagerService
 
 
@@ -58,6 +58,10 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         document_name = data.get('document_name')
         document_type = data.get('document_type')
         document_manager_guid = data.get('document_manager_guid')
+
+        # if checklist, then soft delete previous checklist
+        if (document_type == 'checklist'):
+            NoticeOfDepartureDocumentXref.delete_current_checklist(nod_guid)
 
         # Register new file upload
         mine_doc = MineDocument(

@@ -37,6 +37,7 @@ const defaultProps = {
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
+  maxFiles: null,
 };
 
 class FileUpload extends React.Component {
