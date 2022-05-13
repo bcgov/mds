@@ -194,14 +194,15 @@ describe("`removeFileFromDocumentManager` action creator", () => {
   const mineGuid = "12345-6789";
   const nodGuid = "12345-6789";
   const docGuid = "12345-6789";
+
   const url = `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENT(mineGuid, nodGuid, docGuid)}`;
 
   it("Request successful, returns 200 error", () => {
     mockAxios.onDelete(url).reply(200);
     return removeFileFromDocumentManager({
-      mineGuid,
-      nodGuid,
-      docGuid
+      mine_guid: mineGuid,
+      nod_guid: nodGuid,
+      document_manager_guid: docGuid
     }).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
