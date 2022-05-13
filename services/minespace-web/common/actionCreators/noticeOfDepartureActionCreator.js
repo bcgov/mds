@@ -132,6 +132,7 @@ export const removeFileFromDocumentManager = ({ mine_guid, nod_guid, document_ma
         message: "Successfully deleted document.",
         duration: 10,
       });
+      return response;
     })
     .catch((err) => {
       throw new Error(err);
