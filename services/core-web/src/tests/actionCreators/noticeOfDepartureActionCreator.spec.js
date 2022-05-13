@@ -6,6 +6,7 @@ import {
   addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
   updateNoticeOfDeparture,
+  removeFileFromDocumentManager,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -14,6 +15,7 @@ import {
   NOTICE_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICES_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENT
 } from "../../../common/constants/API";
 
 const dispatch = jest.fn();
@@ -184,6 +186,25 @@ describe("`updateNoticeOfDeparture` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeFileFromDocumentManager` action creator", () => {
+  const mineGuid = "12345-6789";
+  const nodGuid = "12345-6789";
+  const docGuid = "12345-6789";
+
+  const url = `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENT(mineGuid, nodGuid, docGuid)}`;
+
+  it("Request successful, returns 200 error", () => {
+    mockAxios.onDelete(url).reply(200);
+    return removeFileFromDocumentManager({
+      mine_guid: mineGuid,
+      nod_guid: nodGuid,
+      document_manager_guid: docGuid
+    }).then((response) => {
+      expect(response.status).toEqual(200)
     });
   });
 });
