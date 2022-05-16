@@ -8,6 +8,7 @@ on:
     paths:
       - migrations/**
       - services/core-api/**
+      - .github/workflows/core-api.build.deploy.yaml
 
 env:
   INITIAL_TAG: latest

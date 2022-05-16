@@ -7,6 +7,7 @@ on:
       - develop
     paths:
       - services/minespace-web/**
+      - minespace.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest

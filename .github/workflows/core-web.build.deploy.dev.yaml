@@ -7,7 +7,7 @@ on:
       - develop
     paths:
       - services/core-web/**
-      - .github/workflows/core-web.build.yaml
+      - .github/workflows/core-web.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
