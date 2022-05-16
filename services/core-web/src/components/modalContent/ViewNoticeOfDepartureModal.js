@@ -89,7 +89,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
           <div className="btn--middle flex">
             <Popconfirm
               placement="topRight"
-              title="Are you sure you want to cancel?"
+              title="Are you sure you want to delete this file?"
               onConfirm={() =>
                 handleDeleteANoticeOfDepartureDocument({
                   mine_guid: mine.mine_guid,
