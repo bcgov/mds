@@ -1,6 +1,7 @@
 name: CORE WEB - Build & Deploy To DEV
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
