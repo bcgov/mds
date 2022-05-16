@@ -15,15 +15,15 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import {
+  NOTICE_OF_DEPARTURE_TYPE_VALUES,
+  NOTICE_OF_DEPARTURE_STATUS_VALUES,
+} from "@common/constants/strings";
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import {
-  NOTICE_OF_DEPARTURE_TYPE_VALUES,
-  NOTICE_OF_DEPARTURE_STATUS_VALUES,
-} from "@common/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -92,8 +92,12 @@ export const NoticeOfDeparture = (props) => {
 
   const handleUpdateNoticeOfDeparture = (nodGuid, values, documentArray) => {
     setIsLoaded(false);
+    const nod_status =
+      values.nod_type === NOTICE_OF_DEPARTURE_TYPE_VALUES.non_substantial
+        ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_authorized
+        : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
     return props
-      .updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid }, values)
+      .updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid }, { ...values, nod_status })
       .then(async (response) => {
         const { nod_guid } = response.data;
         if (documentArray.length > 0) {

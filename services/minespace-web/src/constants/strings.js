@@ -37,4 +37,4 @@ export const NOTICE_OF_DEPARTURE_STATUS = {
   self_authorized: "Self Authorized",
 };
 
-export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review"];
+export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Self Authorized"];
