@@ -30,20 +30,13 @@ jobs:
 
   trigger-gitops:
     runs-on: ubuntu-20.04
+    timeout-minutes: 10
     needs: promote-image
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
         run: ./gitops/commit.sh ${{ env.IMAGE }} dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
-
-  watch-deployment:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 10
-    needs: [trigger-gitops]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:

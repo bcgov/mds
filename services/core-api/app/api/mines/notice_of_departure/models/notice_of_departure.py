@@ -21,7 +21,8 @@ class NodStatus(Enum):
     permit_amendment_required = auto(),
     additional_information_required = auto(),
     not_authorized = auto(),
-    withdrawn = auto()
+    withdrawn = auto(),
+    ministry_authorized = auto(),
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):

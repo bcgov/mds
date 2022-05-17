@@ -5,10 +5,14 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import {
   EMPTY_FIELD,
-  NOTICE_OF_DEPARTURE_STATUS,
-  NOTICE_OF_DEPARTURE_TYPE,
   EDITABLE_NOTICE_OF_DEPARTURE_STATUS,
 } from "@/constants/strings";
+
+import {
+  NOTICE_OF_DEPARTURE_TYPE,
+  NOTICE_OF_DEPARTURE_STATUS
+} from "@common/constants/strings"; 
+
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
 

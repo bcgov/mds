@@ -55,20 +55,13 @@ jobs:
 
   trigger-gitops:
     runs-on: ubuntu-20.04
+    timeout-minutes: 10
     needs: [build-backend, build-flyway]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
         run: ./gitops/commit.sh core-api dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
-
-  watch-deployment:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 10
-    needs: [trigger-gitops]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
