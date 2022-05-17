@@ -227,6 +227,55 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
           className="content--light-grey padding-md"
         >
           Pending Preview
+          <Select
+             bordered={true}
+             choiceTransitionName=""
+             defaultValue={
+               Object {
+                 "value": "pending_review",
+               }
+             }
+             labelInValue={true}
+             onChange={[Function]}
+             style={
+               Object {
+                 "width": "100%",
+               }
+             }
+             transitionName="slide-up"
+             virtual={false}
+           >
+             <Option
+               key="pending_review"
+             >
+               Pending Preview
+             </Option>
+             <Option
+               key="in_review"
+             >
+               In Review
+             </Option>
+             <Option
+               key="permit_amendment_required"
+             >
+               Permit Amendment Required
+             </Option>
+             <Option
+               key="additional_information_required"
+             >
+               Additional Information Required
+             </Option>
+             <Option
+               key="not_authorized"
+             >
+               Not Authorized
+             </Option>
+             <Option
+               key="withdrawn"
+             >
+               Withdrawn
+             </Option>
+          </Select>
         </p>
       </Col>
     </Row>
