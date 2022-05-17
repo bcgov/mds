@@ -226,55 +226,54 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
         <p
           className="content--light-grey padding-md"
         >
-          Pending Preview
           <Select
-             bordered={true}
-             choiceTransitionName=""
-             defaultValue={
-               Object {
-                 "value": "pending_review",
-               }
-             }
-             labelInValue={true}
-             onChange={[Function]}
-             style={
-               Object {
-                 "width": "100%",
-               }
-             }
-             transitionName="slide-up"
-             virtual={false}
-           >
-             <Option
-               key="pending_review"
-             >
-               Pending Preview
-             </Option>
-             <Option
-               key="in_review"
-             >
-               In Review
-             </Option>
-             <Option
-               key="permit_amendment_required"
-             >
-               Permit Amendment Required
-             </Option>
-             <Option
-               key="additional_information_required"
-             >
-               Additional Information Required
-             </Option>
-             <Option
-               key="not_authorized"
-             >
-               Not Authorized
-             </Option>
-             <Option
-               key="withdrawn"
-             >
-               Withdrawn
-             </Option>
+            bordered={true}
+            choiceTransitionName=""
+            defaultValue={
+              Object {
+                "value": "pending_review",
+              }
+            }
+            labelInValue={true}
+            onChange={[Function]}
+            style={
+              Object {
+                "width": "100%",
+              }
+            }
+            transitionName="slide-up"
+            virtual={false}
+          >
+            <Option
+              key="pending_review"
+            >
+              Pending Preview
+            </Option>
+            <Option
+              key="in_review"
+            >
+              In Review
+            </Option>
+            <Option
+              key="permit_amendment_required"
+            >
+              Permit Amendment Required
+            </Option>
+            <Option
+              key="additional_information_required"
+            >
+              Additional Information Required
+            </Option>
+            <Option
+              key="not_authorized"
+            >
+              Not Authorized
+            </Option>
+            <Option
+              key="withdrawn"
+            >
+              Withdrawn
+            </Option>
           </Select>
         </p>
       </Col>
@@ -336,6 +335,17 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
   <div
     className="right center-mobile"
   >
+    <Button
+      block={false}
+      className="full-mobile nod-update-button"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Update
+    </Button>
     <Button
       block={false}
       className="full-mobile nod-cancel-button"
