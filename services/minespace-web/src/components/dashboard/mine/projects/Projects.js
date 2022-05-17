@@ -53,14 +53,14 @@ export class Projects extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Typography.Title level={4}>All Projects</Typography.Title>
+          <Typography.Title level={4}>Major Mine Applications</Typography.Title>
           <Typography.Paragraph>
-            The first step in applying for a new or amending an existing production mineral or coal
-            mining permit issued under the Mines Act is to submit a project description. A{" "}
+            A{" "}
             <Typography.Text className="color-primary" strong>
-              project description&nbsp;
-            </Typography.Text>{" "}
-            is a high level overview of a production mining project used for assessment.{" "}
+              Major Mine Application&nbsp;
+            </Typography.Text>
+            is an application to the Chief Permitting Officer to authorize the construction and
+            operation of a coal or mineral mine through a permit issued under the Mines Act.{" "}
           </Typography.Paragraph>
           <Typography.Paragraph>
             If you are proposing induced polarization surveys or exploration drilling within the

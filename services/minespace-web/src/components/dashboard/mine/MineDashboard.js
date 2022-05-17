@@ -134,7 +134,7 @@ export class MineDashboard extends Component {
                     <Overview mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
                   {isMajorMine && (
-                    <Tabs.TabPane tab="Projects" key="applications">
+                    <Tabs.TabPane tab="Applications" key="applications">
                       <Projects mine={mine} match={this.props.match} />
                     </Tabs.TabPane>
                   )}
