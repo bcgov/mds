@@ -255,6 +255,11 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
               In Review
             </Option>
             <Option
+              key="ministry_authorized"
+            >
+              Ministry Authorized
+            </Option>
+            <Option
               key="permit_amendment_required"
             >
               Permit Amendment Required
