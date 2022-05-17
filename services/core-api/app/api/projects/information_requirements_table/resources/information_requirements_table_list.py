@@ -18,7 +18,6 @@ from app.api.projects.information_requirements_table.models.requirements import 
 
 class InformationRequirementsTableListResource(Resource, UserMixin):
     # Only create new requirements when row has filled in required/methods or comments
-    # If not filled in use default requirement
     def build_irt_payload_from_excel(self, import_file, project_guid):
         temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx')
         temp_file.write(import_file.read())
@@ -32,45 +31,70 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             requirement.description.strip().lower() for requirement in valid_requirements
         ]
         invalid_reqs = []
-        # Create new Information Requirements Table object(needed for FK on Requirements)
-        new_information_requirements_table = InformationRequirementsTable._schema().load({
-            'project_guid':
-            project_guid,
-            'status_code':
-            'REC',
-            'requirements': []
-        })
-        new_information_requirements_table.save()
 
         # Start parsing at specific row to avoid metadata in template
         worksheet_to_parse = excel_dict.sanitize_sheet_items[7:]
         for row in worksheet_to_parse:
+            ## Parse requirements.description from "Information" cell in spreadsheet and cross reference with DB source of truth to determine validity
             information_cell = row.get('Information', '')
-            # Split on spaces
+            # Split Information cell on spaces to separate out description from appendix prefix
             information_cell_split = information_cell.split()
             # Rejoin words with spaces after removing appendix reference
             sanitized_information_cell = ' '.join(information_cell_split[1:]).strip().lower()
-            print(f'SANITZED INFO: {sanitized_information_cell}')
             information_cell_is_valid = valid_requirement_descriptions.count(
                 sanitized_information_cell) > 0
-            print(valid_requirement_descriptions.count(sanitized_information_cell))
-            print(f'VALID INFO: {information_cell_is_valid}')
+            # If "Information" cell entry is not valid flag that to user(could have a bad template or added custom rows)
             if information_cell_is_valid is False:
-                return invalid_reqs.append(sanitized_information_cell)
-            active_requirement = [
-                requirement for requirement in valid_requirements if ' '.join(
-                    requirement.description[1:]).strip().lower() == sanitized_information_cell
-            ]
-            print(f'ACTIVE REQ: {active_requirement}')
-            # new_requirement_dict = {'irt_guid': new_information_requirements_table.irt_guid}
-            # return sanitized_irt_requirements.append(new_requirement_dict)
+                import_errors.append(
+                    f'"{sanitized_information_cell}" is not a valid entry in the Information column'
+                )
+                continue
 
-        print(f'INVALID: {invalid_reqs}')
-        temp_file.close()
-        if import_errors is not None:
-            return BadRequest(
-                f'The following validation errors occurred on import: \n{import_errors.join("\n")}')
-        return sanitized_irt_requirements
+            required_cell = row.get('Required', False)
+            methods_cell = row.get('Methods', False)
+            comments_cell = row.get('Comments', False)
+            # If no information is provided on cell do not include it in the DB insert
+            if required_cell is 'None' and methods_cell is 'None' and comments_cell is 'None':
+                print(f'Not included!!! {row}')
+                continue
+
+            # print(valid_requirement_descriptions.count(sanitized_information_cell))
+            # print(f'VALID INFO: {information_cell_is_valid}')
+            # print(f'SANITZED INFO: {sanitized_information_cell}')
+            # print(f'SOURCE INFO: {valid_requirements[0].description.strip().lower()}')
+            active_requirement = [
+                requirement for requirement in valid_requirements
+                if requirement.description.strip().lower() == sanitized_information_cell
+            ]
+            # print(f'ACTIVE REQ: {active_requirement}')
+            if active_requirement and information_cell_is_valid:
+                print(f'REQ: {active_requirement} VALID: {information_cell_is_valid}')
+                new_requirement_dict = {
+                    'requirement_guid': active_requirement[0].requirement_guid,
+                    'required': required_cell,
+                    'methods': methods_cell,
+                    'comments': comments_cell
+                }
+                sanitized_irt_requirements.append(new_requirement_dict)
+
+        # print(f'INVALID: {invalid_reqs}')
+
+        # new_information_requirements_table = InformationRequirementsTable._schema().load({
+        #     'project_guid':
+        #     project_guid,
+        #     'status_code':
+        #     'REC',
+        #     'requirements':
+        #     sanitized_irt_requirements
+        # })
+        # new_information_requirements_table.save()
+
+        # temp_file.close()
+        # print(f'Sanitized Output: {sanitized_irt_requirements}')
+        # if import_errors is not None:
+        #     return BadRequest(
+        # f'The following validation errors occurred on import: \n{import_errors.join("\n")}')
+        return 201
 
     parser = CustomReqparser()
     parser.add_argument(
@@ -90,7 +114,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         # irt = InformationRequirementsTable._schema().load(request.json['irt'])
         data = self.parser.parse_args()
         import_file = data.get('file')
-        print(f'IMPORT FILE: {import_file}')
         self.build_irt_payload_from_excel(import_file, project_guid)
         # irt.save()
 
