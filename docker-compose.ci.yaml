@@ -38,7 +38,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -59,7 +59,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -79,6 +79,7 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
+      - PLATFORM=CIT
     depends_on:
       postgres:
         condition: service_healthy
@@ -115,7 +116,7 @@ services:
     container_name: mds_frontend
     build:
       context: services/core-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/core-web/src/:/app/src/
     ports:
@@ -128,7 +129,7 @@ services:
     container_name: mds_minespace
     build:
       context: services/minespace-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/minespace-web/src/:/app/src/
     ports:
@@ -140,7 +141,7 @@ services:
     restart: always
     container_name: docgen_api
     image: bcgovimages/common-document-generation-service:2.4.1
-    command: ["npm", "run", "start"]
+    command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
