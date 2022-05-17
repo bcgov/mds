@@ -7,8 +7,8 @@ import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS,
-  NOTICE_OF_DEPARTURE_TYPE,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
+  NOTICE_OF_DEPARTURE_TYPE,
 } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
@@ -18,9 +18,9 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import { formatDate } from "@common/utils/helpers";
 import {
   fetchDetailedNoticeOfDeparture,
+  fetchNoticesOfDeparture,
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
-  fetchNoticesOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 
@@ -28,6 +28,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  fetchNoticesOfDeparture: PropTypes.func.isRequired,
   updateNoticeOfDeparture: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
 };
@@ -50,18 +51,20 @@ export const ViewNoticeOfDepartureModal = (props) => {
   };
 
   const statuses = (() => {
-    const { self_authorized, ...coreStatuses} = NOTICE_OF_DEPARTURE_STATUS_VALUES;
+    const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
     return Object.values(coreStatuses);
   })();
 
+  // eslint-disable-next-line no-return-assign
+  const handleChangeNodStatus = ({ value }) => (props.noticeOfDeparture.nod_status = value);
 
-  const handleChangeNodStatus = ({value}) => props.noticeOfDeparture.nod_status = value;
-
-  const updateNoticeOfDepartureStatus = async () => { 
-    await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, noticeOfDeparture );
+  const updateNoticeOfDepartureStatus = async () => {
+    await props.updateNoticeOfDeparture(
+      { mineGuid: mine.mine_guid, nodGuid: nod_guid },
+      noticeOfDeparture
+    );
     await props.fetchNoticesOfDeparture(mine.mine_guid);
     props.closeModal();
-
   };
 
   const fileColumns = (isSortable) => {
@@ -191,7 +194,13 @@ export const ViewNoticeOfDepartureModal = (props) => {
                 virtual={false}
                 labelInValue
                 onChange={handleChangeNodStatus}
-                defaultValue={{ value: noticeOfDeparture.nod_status }}
+                defaultValue={{
+                  value:
+                    noticeOfDeparture.nod_status !==
+                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_authorized
+                      ? noticeOfDeparture.nod_status
+                      : NOTICE_OF_DEPARTURE_STATUS.self_authorized,
+                }}
                 style={{ width: "100%" }}
               >
                 {statuses.map((value) => (
@@ -254,7 +263,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchDetailedNoticeOfDeparture,
       updateNoticeOfDeparture,
-      fetchNoticesOfDeparture
+      fetchNoticesOfDeparture,
     },
     dispatch
   );
