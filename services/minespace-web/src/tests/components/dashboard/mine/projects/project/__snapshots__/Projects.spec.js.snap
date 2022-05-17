@@ -8,19 +8,18 @@ exports[`Projects renders properly 1`] = `
     <Title
       level={4}
     >
-      All Projects
+      Major Mine Applications
     </Title>
     <Paragraph>
-      The first step in applying for a new or amending an existing production mineral or coal mining permit issued under the Mines Act is to submit a project description. A
+      A
        
       <Text
         className="color-primary"
         strong={true}
       >
-        project description 
+        Major Mine Application 
       </Text>
-       
-      is a high level overview of a production mining project used for assessment.
+      is an application to the Chief Permitting Officer to authorize the construction and operation of a coal or mineral mine through a permit issued under the Mines Act.
        
     </Paragraph>
     <Paragraph>
