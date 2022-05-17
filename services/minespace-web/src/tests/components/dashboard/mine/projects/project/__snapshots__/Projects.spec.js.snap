@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Projects renders properly 1`] = `
+<Row>
+  <Col
+    span={24}
+  >
+    <Title
+      level={4}
+    >
+      Major Mine Applications
+    </Title>
+    <Paragraph>
+      A
+       
+      <Text
+        className="color-primary"
+        strong={true}
+      >
+        Major Mine Application 
+      </Text>
+      is an application to the Chief Permitting Officer to authorize the construction and operation of a coal or mineral mine through a permit issued under the Mines Act.
+       
+    </Paragraph>
+    <Paragraph>
+      If you are proposing induced polarization surveys or exploration drilling within the permit mine area of an operating production mineral or coal mine (
+      <a
+        href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        HSRC
+      </a>
+       10.1.2), please submit a 
+      <a
+        href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-deemed-authorizations"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Notification of Deemed Authorization
+      </a>
+       application through 
+      <a
+        href="https://portal.nrs.gov.bc.ca/web/client/home"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        FrontCounter BC
+      </a>
+      .
+    </Paragraph>
+    <Paragraph>
+      If you are proposing exploration work (
+      <a
+        href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        HSRC
+      </a>
+       9.1.1) outside of the permit mine area of an operating production mineral or coal mine that does not consist of an expansion to the production mining area, please submit a Notice of Work application through
+       
+      <a
+        href="https://portal.nrs.gov.bc.ca/web/client/home"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        FrontCounter BC
+      </a>
+       to amend your MX or CX permit.
+    </Paragraph>
+    <Paragraph>
+      If you are unsure how to proceed, please email the Major Mines Office at 
+      <a
+        href="mailto:permrecl@gov.bc.ca"
+      >
+        permrecl@gov.bc.ca
+      </a>
+       or contact the 
+      <a
+        href=" https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/office-chief-inspector"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Regional Mines Office
+      </a>
+       closest to your project location.
+    </Paragraph>
+    <Paragraph>
+      <Connect(AuthorizationWrapper)>
+        <Link
+          to="/mines/undefined/project-description/new/basic-information"
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="primary"
+          >
+            <ForwardRef(PlusCircleFilled) />
+            Create New Project
+          </Button>
+        </Link>
+      </Connect(AuthorizationWrapper)>
+    </Paragraph>
+    <ProjectsTable
+      isLoaded={false}
+      mine={Object {}}
+      projects={
+        Object {
+          "records": Array [
+            Object {
+              "contacts": Array [],
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "project_guid": "8132462392222",
+              "project_summary": Object {},
+              "proponent_project_id": "Test-ID",
+            },
+          ],
+        }
+      }
+    />
+  </Col>
+</Row>
+`;

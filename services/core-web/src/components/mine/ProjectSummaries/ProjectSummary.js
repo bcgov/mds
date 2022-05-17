@@ -11,15 +11,12 @@ import {
   getProjectSummaryPermitTypesHash,
   getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
-import {
-  getProjectSummary,
-  getFormattedProjectSummary,
-} from "@common/selectors/projectSummarySelectors";
+import { getProjectSummary, getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import {
   fetchProjectSummaryById,
   updateProjectSummary,
   removeDocumentFromProjectSummary,
-} from "@common/actionCreators/projectSummaryActionCreator";
+} from "@common/actionCreators/projectActionCreator";
 import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
