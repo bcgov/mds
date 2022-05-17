@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Popconfirm, Row } from "antd";
+import { Button, Col, Popconfirm, Row, Select } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -8,6 +8,7 @@ import {
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
+  NOTICE_OF_DEPARTURE_STATUS_VALUES,
 } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
@@ -18,6 +19,8 @@ import { formatDate } from "@common/utils/helpers";
 import {
   fetchDetailedNoticeOfDeparture,
   removeFileFromDocumentManager,
+  updateNoticeOfDeparture,
+  fetchNoticesOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 
@@ -25,6 +28,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  updateNoticeOfDeparture: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
 };
 
@@ -43,6 +47,21 @@ export const ViewNoticeOfDepartureModal = (props) => {
     await removeFileFromDocumentManager(document);
 
     await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, nod_guid);
+  };
+
+  const statuses = (() => {
+    const { self_authorized, ...coreStatuses} = NOTICE_OF_DEPARTURE_STATUS_VALUES;
+    return Object.values(coreStatuses);
+  })();
+
+
+  const handleChangeNodStatus = ({value}) => props.noticeOfDeparture.nod_status = value;
+
+  const updateNoticeOfDepartureStatus = async () => { 
+    await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, noticeOfDeparture );
+    await props.fetchNoticesOfDeparture(mine.mine_guid);
+    props.closeModal();
+
   };
 
   const fileColumns = (isSortable) => {
@@ -168,7 +187,17 @@ export const ViewNoticeOfDepartureModal = (props) => {
           <Col span={12}>
             <p className="field-title">NOD Review Status</p>
             <p className="content--light-grey padding-md">
-              {NOTICE_OF_DEPARTURE_STATUS[noticeOfDeparture.nod_status] || EMPTY_FIELD}
+              <Select
+                virtual={false}
+                labelInValue
+                onChange={handleChangeNodStatus}
+                defaultValue={{ value: noticeOfDeparture.nod_status }}
+                style={{ width: "100%" }}
+              >
+                {statuses.map((value) => (
+                  <Select.Option key={value}>{NOTICE_OF_DEPARTURE_STATUS[value]}</Select.Option>
+                ))}
+              </Select>
             </p>
           </Col>
         </Row>
@@ -196,6 +225,13 @@ export const ViewNoticeOfDepartureModal = (props) => {
 
       <div className="right center-mobile">
         <Button
+          className="full-mobile nod-update-button"
+          type="primary"
+          onClick={updateNoticeOfDepartureStatus}
+        >
+          Update
+        </Button>
+        <Button
           className="full-mobile nod-cancel-button"
           type="secondary"
           onClick={props.closeModal}
@@ -217,6 +253,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchDetailedNoticeOfDeparture,
+      updateNoticeOfDeparture,
+      fetchNoticesOfDeparture
     },
     dispatch
   );

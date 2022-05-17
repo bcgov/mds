@@ -7,6 +7,7 @@ import { closeModal, openModal } from "@common/actions/modalActions";
 import {
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
+  updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
@@ -25,6 +26,7 @@ const propTypes = {
   fetchPermits: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  updateNoticeOfDeparture: PropTypes.func.isRequired,
 };
 
 export const MineNoticeOfDeparture = (props) => {
@@ -72,6 +74,8 @@ export const MineNoticeOfDeparture = (props) => {
         nods={nods}
         mine={mine}
         openViewNodModal={openNoticeOfDepartureModal}
+        updateNoticeOfDeparture={updateNoticeOfDeparture}
+        fetchNoticesOfDeparture={fetchNoticesOfDeparture}
         fetchDetailedNoticeOfDeparture={fetchDetailedNoticeOfDeparture}
       />
       <br />
@@ -101,6 +105,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchNoticesOfDeparture,
       fetchDetailedNoticeOfDeparture,
+      updateNoticeOfDeparture,
       openModal,
       closeModal,
       fetchPermits,
