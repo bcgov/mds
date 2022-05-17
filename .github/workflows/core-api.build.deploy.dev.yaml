@@ -8,6 +8,7 @@ on:
     paths:
       - migrations/**
       - services/core-api/**
+      - .github/workflows/core-api.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
@@ -63,6 +64,7 @@ jobs:
 
   watch-deployment:
     runs-on: ubuntu-20.04
+    timeout-minutes: 10
     needs: [trigger-gitops]
     steps:
       - name: Checkout

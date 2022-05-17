@@ -6,6 +6,7 @@ import {
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
   GET_NOTICES_OF_DEPARTURE,
   GET_DETAILED_NOTICE_OF_DEPARTURE,
+  UPDATE_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "../constants/environment";
@@ -13,6 +14,7 @@ import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENT
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
@@ -55,6 +57,30 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateNoticeOfDeparture = ({ mineGuid, nodGuid }, payload) => (dispatch) => {
+  dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mineGuid, nodGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated notice of departure.",
+        duration: 10,
+      });
+      dispatch(success(UPDATE_NOTICE_OF_DEPARTURE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(UPDATE_NOTICE_OF_DEPARTURE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch) => {
   dispatch(request(GET_DETAILED_NOTICE_OF_DEPARTURE));
   dispatch(showLoading());
@@ -89,4 +115,26 @@ export const addDocumentToNoticeOfDeparture = ({ mineGuid, noticeOfDepartureGuid
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const removeFileFromDocumentManager = ({ mine_guid, nod_guid, document_manager_guid }) => {
+  if (!document_manager_guid) {
+    throw new Error("Must provide document_manager_guid");
+  }
+
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + NOTICES_OF_DEPARTURE_DOCUMENT(mine_guid, nod_guid, document_manager_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted document.",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 };

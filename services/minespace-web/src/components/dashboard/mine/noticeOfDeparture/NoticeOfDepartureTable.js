@@ -7,19 +7,27 @@ import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
+  EDITABLE_NOTICE_OF_DEPARTURE_STATUS,
 } from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
+import { EditIcon } from "@/assets/icons";
 
 const propTypes = {
   data: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
   openViewNoticeOfDepartureModal: PropTypes.func.isRequired,
+  openEditNoticeOfDepartureModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
 
 const NoticeOfDepartureTable = (props) => {
-  const handleOpenModal = (event, noticeOfDeparture) => {
+  const handleOpenViewModal = (event, noticeOfDeparture) => {
     event.preventDefault();
     props.openViewNoticeOfDepartureModal(noticeOfDeparture);
+  };
+
+  const handleOpenEditModal = (event, noticeOfDeparture) => {
+    event.preventDefault();
+    props.openEditNoticeOfDepartureModal(noticeOfDeparture);
   };
 
   const columns = [
@@ -65,10 +73,17 @@ const NoticeOfDepartureTable = (props) => {
         <div title="" align="right">
           <Row>
             <Button type="primary" size="small" ghost>
-              <EyeOutlined
-                onClick={(event) => handleOpenModal(event, record)}
-                className="icon-xs--darkestgrey"
-              />
+              {!EDITABLE_NOTICE_OF_DEPARTURE_STATUS.includes(record.nod_status) ? (
+                <EyeOutlined
+                  onClick={(event) => handleOpenViewModal(event, record)}
+                  className="icon-xs--darkestgrey"
+                />
+              ) : (
+                <EditIcon
+                  onClick={(event) => handleOpenEditModal(event, record)}
+                  className="icon-xs--darkestgrey"
+                />
+              )}
             </Button>
           </Row>
         </div>

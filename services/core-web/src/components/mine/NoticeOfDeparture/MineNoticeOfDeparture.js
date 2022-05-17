@@ -55,6 +55,7 @@ export const MineNoticeOfDeparture = (props) => {
         noticeOfDeparture: detailedNoticeOfDeparture.data,
         title,
         clearOnSubmit: true,
+        mine
       },
       width: "50vw",
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,
@@ -71,6 +72,7 @@ export const MineNoticeOfDeparture = (props) => {
         nods={nods}
         mine={mine}
         openViewNodModal={openNoticeOfDepartureModal}
+        fetchDetailedNoticeOfDeparture={fetchDetailedNoticeOfDeparture}
       />
       <br />
     </div>
