@@ -9,7 +9,7 @@ env:
 
 jobs:
   promote-image-to-prod:
-    name: promote-core-api-to-prod
+    name: promote-core-web-to-prod
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
@@ -26,12 +26,21 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/frontend:${{ env.PROMOTE_TAG }}
-  
-  # trigger-gitops:
-  #   runs-on: ubuntu-20.04
-  #   needs: build-frontend
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Git Ops Push
-  #       run: ./gitops/commit.sh core-api test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: promote-image-to-prod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-web test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh core-web prod ${{ github.sha }} ${{ secrets.RC_TOKEN }}

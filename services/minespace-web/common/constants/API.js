@@ -88,6 +88,8 @@ export const NOTICE_OF_DEPARTURE = (mineGuid, noticeOfDepartureGuid) =>
   `/mines/${mineGuid}/notices-of-departure/${noticeOfDepartureGuid}`;
 export const NOTICES_OF_DEPARTURE_DOCUMENTS = (mineGuid, noticeOfDepartureGuid) =>
   `/mines/${mineGuid}/notices-of-departure/${noticeOfDepartureGuid}/documents`;
+export const NOTICES_OF_DEPARTURE_DOCUMENT = (mineGuid, noticeOfDepartureGuid, documentGuid) =>
+  `/mines/${mineGuid}/notices-of-departure/${noticeOfDepartureGuid}/documents/${documentGuid}`;
 
 // Explosive Storage & Use Permits
 export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/explosives-permits`;

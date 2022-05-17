@@ -133,8 +133,29 @@ export const NOTICE_OF_DEPARTURE_TYPE = {
   potentially_substantial: "Potentially Substantial",
 };
 
+export const NOTICE_OF_DEPARTURE_TYPE_VALUES = {
+  non_substantial: "non_substantial",
+  potentially_substantial: "potentially_substantial",
+};
+
 export const NOTICE_OF_DEPARTURE_STATUS = {
   pending_review: "Pending Preview",
   in_review: "In Review",
   self_authorized: "Self Authorized",
+  ministry_authorized: "Ministry Authorized",
+  permit_amendment_required: "Permit Amendment Required",
+  additional_information_required: "Additional Information Required",
+  not_authorized: "Not Authorized",
+  withdrawn: "Withdrawn",
+};
+
+export const NOTICE_OF_DEPARTURE_STATUS_VALUES = {
+  pending_review: "pending_review",
+  in_review: "in_review",
+  self_authorized: "self_authorized",
+  ministry_authorized: "ministry_authorized",
+  permit_amendment_required: "permit_amendment_required",
+  additional_information_required: "additional_information_required",
+  not_authorized: "not_authorized",
+  withdrawn: "withdrawn",
 };

@@ -76,6 +76,12 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             location='json',
             required=True,
             store_missing=False)
+        parser.add_argument(
+            'nod_status',
+            type=str,
+            help='Notice of Departure Status',
+            location='json',
+            store_missing=False)
         data = parser.parse_args()
 
         permit_guid = data.get('permit_guid')
@@ -84,14 +90,13 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         if not permit:
             raise NotFound('Either permit does not exist or does not belong to the mine')
-
         new_nod = NoticeOfDeparture.create(
             permit._context_mine,
             permit,
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
             nod_type=NodType[data.get('nod_type')],
-            nod_status=NodStatus.pending_review)
+            nod_status=NodStatus[data.get('nod_status')])
         new_nod.save()
 
         return new_nod

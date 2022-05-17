@@ -1,12 +1,13 @@
 name: CORE WEB - Build & Deploy To DEV
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
     paths:
       - services/core-web/**
-      - .github/workflows/core-web.build.yaml
+      - .github/workflows/core-web.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
@@ -32,11 +33,20 @@ jobs:
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
 
-  # trigger-gitops:
-  #   runs-on: ubuntu-20.04
-  #   needs: build-frontend
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Git Ops Push
-  #       run: ./gitops/commit.sh core-web dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: build-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh core-web dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh core-web dev ${{ github.sha }} ${{ secrets.RC_TOKEN }}

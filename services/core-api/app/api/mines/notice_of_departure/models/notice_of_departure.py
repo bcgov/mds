@@ -17,7 +17,12 @@ class NodType(Enum):
 class NodStatus(Enum):
     pending_review = auto()
     in_review = auto()
-    self_authorized = auto()
+    self_authorized = auto(),
+    permit_amendment_required = auto(),
+    additional_information_required = auto(),
+    not_authorized = auto(),
+    withdrawn = auto(),
+    ministry_authorized = auto(),
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):

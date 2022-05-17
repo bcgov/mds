@@ -1,56 +1,49 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { change, Field, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
-import {
-  maxLength,
-  required,
-  requiredList,
-  validateSelectOptions,
-  requiredRadioButton,
-} from "@common/utils/Validate";
+import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
-import { NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
+import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
+import { EMPTY_FIELD, NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import { formatDate } from "@/utils/helpers";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
 };
 
-const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
+// eslint-disable-next-line import/no-mutable-exports
+let AddNoticeOfDepartureForm = (props) => {
+  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture } = props;
+  const { permit, nod_guid } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
-  const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
 
-  useEffect(() => {
-    if (permits.length > 0) {
-      setPermitOptions(
-        permits.map((permit) => ({
-          label: permit.permit_no,
-          value: permit.permit_guid,
-        }))
-      );
-    }
-    change("uploadedFiles", []);
-  }, []);
+  const checklist = noticeOfDeparture.documents.find(
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+  );
 
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
-    const { permitNumber } = values;
-    onSubmit(permitNumber, values, documentArray).finally(() => setSubmitting(false));
+    onSubmit(nod_guid, values, documentArray).finally(() => setSubmitting(false));
   };
 
   const onFileLoad = (documentName, document_manager_guid, documentType) => {
@@ -85,12 +78,6 @@ const AddNoticeOfDepartureForm = (props) => {
     );
   };
 
-  const hasChecklist = () => {
-    return documentArray.some(
-      (file) => file.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
-    );
-  };
-
   return (
     <div>
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
@@ -99,7 +86,7 @@ const AddNoticeOfDepartureForm = (props) => {
           supporting documents. For more information on the purpose and intent of a notice of
           departure click here.
         </Typography.Text>
-        <h4 className="nod-modal-section-header">Basic Information</h4>
+        <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
           Enter the following information about your notice of departure.
         </Typography.Text>
@@ -107,29 +94,24 @@ const AddNoticeOfDepartureForm = (props) => {
           <Field
             id="nodTitle"
             name="nod_title"
-            placeholder="Departure Project Title"
             component={renderConfig.FIELD}
             validate={[required, maxLength(50)]}
           />
         </Form.Item>
-        <Row gutter={16}>
+        <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Permit #">
-              <Field
-                id="permitGuid"
-                name="permit_guid"
-                placeholder="Select Permit #"
-                component={renderConfig.SELECT}
-                validate={[requiredList, validateSelectOptions(permitOptions)]}
-                data={permitOptions}
-              />
-            </Form.Item>
+            <p className="field-title">Permit #</p>
+            <p className="content--light-grey padding-sm">{permit.permit_no || EMPTY_FIELD}</p>
+          </Col>
+          <Col span={12}>
+            <p className="field-title">NOD #</p>
+            <p className="content--light-grey padding-sm">{nod_guid || EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Field
           id="nod_description"
           name="nod_description"
-          label="Description"
+          label="Departure Summary"
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
@@ -169,6 +151,8 @@ const AddNoticeOfDepartureForm = (props) => {
         </Typography.Text>
         <Form.Item className="margin-y-large">
           <Field
+            name="nod_self_assessment_form"
+            id="nod_self_assessment_form"
             onFileLoad={(documentName, document_manager_guid) => {
               onFileLoad(
                 documentName,
@@ -183,9 +167,28 @@ const AddNoticeOfDepartureForm = (props) => {
             maxFiles={1}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
-            validate={[required]}
           />
         </Form.Item>
+        <Row>
+          <Col span={16}>
+            <p className="field-title">Uploaded File</p>
+            <p>{checklist?.document_name || EMPTY_FIELD}</p>
+          </Col>
+          <Col span={5}>
+            <p className="field-title">Upload Date</p>
+            <p>{formatDate(checklist?.create_timestamp) || EMPTY_FIELD}</p>
+          </Col>
+          <Col span={3}>
+            <p className="field-title">&nbsp;</p>
+            <LinkButton
+              className="nod-table-link"
+              onClick={() => downloadFileFromDocumentManager(checklist)}
+              title={checklist?.document_name}
+            >
+              Download
+            </LinkButton>
+          </Col>
+        </Row>
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -198,7 +201,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || !hasChecklist()}
+            disabled={submitting}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
@@ -213,10 +216,19 @@ const AddNoticeOfDepartureForm = (props) => {
 
 AddNoticeOfDepartureForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_NOTICE_OF_DEPARTURE,
-  onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
+const mapStateToProps = (state) => ({
+  initialValues: getNoticeOfDeparture(state),
+});
+
+AddNoticeOfDepartureForm = reduxForm({
+  form: FORM.EDIT_NOTICE_OF_DEPARTURE,
+  onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
   destroyOnUnmount: true,
   forceUnregisterOnUnmount: true,
   touchOnBlur: true,
+  enableReinitialize: true,
 })(AddNoticeOfDepartureForm);
+
+AddNoticeOfDepartureForm = connect(mapStateToProps)(AddNoticeOfDepartureForm);
+
+export default AddNoticeOfDepartureForm;
