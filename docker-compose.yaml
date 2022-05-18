@@ -46,8 +46,7 @@ services:
       - ./migrations/sql:/flyway/sql
       - ./migrations/scripts:/flyway/scripts
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   ####################### Backend Definition #######################
   backend:
@@ -69,6 +68,7 @@ services:
       - document_manager_backend
       - tusd
       - filesystem_provider
+      - docgen-api
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
@@ -121,6 +121,7 @@ services:
     command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/minespace-web/src:/app/src
+      - ./services/minespace-web/common:/app/common
     ports:
       - 3020:3020
     depends_on:
