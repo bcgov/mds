@@ -100,7 +100,7 @@ export class ProjectPage extends Component {
                   <ProjectOverviewTab />
                 </Tabs.TabPane>
                 {!IN_PROD() && (
-                  <Tabs.TabPane tab="irt" key="irt">
+                  <Tabs.TabPane tab="IRT" key="irt">
                     <InformationRequirementsTablePage match={this.props.match} />
                   </Tabs.TabPane>
                 )}

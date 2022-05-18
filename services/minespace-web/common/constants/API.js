@@ -144,6 +144,10 @@ export const PROJECT_SUMMARY_DOCUMENT = (
 
 // Information Requirements Table (IRT)
 export const IRT_TEMPLATE_DOWNLOAD = `/projects/irt-template-download`;
+export const IMPORT_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
+  `/projects/${projectGuid}/final-irt-import`;
+export const IMPORT_LOCAL_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
+  `/projects/${projectGuid}/final-irt-import-local`;
 
 // Users
 export const CORE_USER = "/users/core";
