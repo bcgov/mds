@@ -26,9 +26,11 @@ jobs:
       - name: Login
         run: |
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
-      - name: Build n Tag
+      - name: Pull
         run: |
           docker pull ${{ env.image }}:${{ env.version }}
+      - name: Tag
+        run: |
           docker image tag ${{ env.image }}:${{ env.version }} ${{ env.NAME }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
