@@ -9,12 +9,12 @@ SUCCESS=${5?"Success-0 or Fail-1?"}
 
 if [ $SUCCESS == 0 ]; then
     MSG_COLOR="#F8D210"
-    EMOJI=":rocket:"
+    EMOJI=":white_check_mark:"
     MSG="SUCCESS"
     MENTION=""
 else
     MSG_COLOR="#FA26A0"
-    EMOJI=":skull:"
+    EMOJI=":x:"
     MSG="FAILED"
     # ideally this should be a @all or @here notification. But our rocket chat bot in the bc gov tenant does not support it right now.
     MENTION="@hitankar.ray @justin.macaulay @cameron.wilson @Vyas"
