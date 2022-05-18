@@ -1,10 +1,10 @@
 name: Build tusd
 
-on: 
+on:
   push:
     branches:
       - develop
-    path:
+    paths:
       - services/tusd/**
       - .github/workflows/build-tusd.yaml
 
