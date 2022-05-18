@@ -1,4 +1,4 @@
-name: Build tusd
+name: Build docgen
 
 on: 
   pull_request:    
@@ -17,7 +17,7 @@ env:
   image: docker.io/bcgovimages/common-document-generation-service:2.4.1
 
 jobs:
-  build-tusd:
+  build-docgen:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
