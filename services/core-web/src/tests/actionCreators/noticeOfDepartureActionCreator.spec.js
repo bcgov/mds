@@ -5,6 +5,8 @@ import {
   fetchNoticesOfDeparture,
   addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
+  updateNoticeOfDeparture,
+  removeFileFromDocumentManager,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -13,6 +15,7 @@ import {
   NOTICE_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICES_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE_DOCUMENT
 } from "../../../common/constants/API";
 
 const dispatch = jest.fn();
@@ -149,6 +152,59 @@ describe("`uploadDocumentsToNoticeOfDeparture` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateNoticeOfDeparture` action creator", () => {
+  const mineGuid = "12345-6789";
+  const nodGuid = "12345-6789";
+  const mockPayload = {
+    nod_title: "Updated Title",
+  };
+  const url = `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mineGuid, nodGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPatch(url, mockPayload).reply(200, mockResponse);
+    return updateNoticeOfDeparture(
+      { mineGuid, nodGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPatch(url).reply(418, MOCK.ERROR);
+    return updateNoticeOfDeparture(
+      { mineGuid, nodGuid },
+      mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeFileFromDocumentManager` action creator", () => {
+  const mineGuid = "12345-6789";
+  const nodGuid = "12345-6789";
+  const docGuid = "12345-6789";
+
+  const url = `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENT(mineGuid, nodGuid, docGuid)}`;
+
+  it("Request successful, returns 200 error", () => {
+    mockAxios.onDelete(url).reply(200);
+    return removeFileFromDocumentManager({
+      mine_guid: mineGuid,
+      nod_guid: nodGuid,
+      document_manager_guid: docGuid
+    }).then((response) => {
+      expect(response.status).toEqual(200)
     });
   });
 });

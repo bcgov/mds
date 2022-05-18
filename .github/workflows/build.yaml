@@ -113,7 +113,7 @@ jobs:
       matrix:
         include:
           - name: nris
-          - name: frontend
+          #- name: frontend
           - name: docman
           - name: docgen
           - name: nginx

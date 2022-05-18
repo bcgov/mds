@@ -20,7 +20,7 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
+          # - name: frontend
           - name: flyway
           - name: tusd
           - name: docgen
@@ -63,7 +63,7 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
+          # - name: frontend
           - name: docgen
           - name: dbbackup
           - name: metabase

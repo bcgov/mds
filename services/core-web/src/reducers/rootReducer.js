@@ -47,7 +47,7 @@ import {
   orgbookReducer,
   explosivesPermitReducer,
   externalAuthorizationReducer,
-  projectSummaryReducer,
+  projectReducer,
   noticeOfDepartureReducer,
 } from "@common/reducers";
 import * as reducerTypes from "@common/constants/reducerTypes";
@@ -79,7 +79,7 @@ export const reducerObject = {
   ...orgbookReducer,
   ...explosivesPermitReducer,
   ...externalAuthorizationReducer,
-  ...projectSummaryReducer,
+  ...projectReducer,
   ...noticeOfDepartureReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),

@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectOverviewTab renders properly 1`] = `
+<Row
+  gutter={
+    Array [
+      0,
+      16,
+    ]
+  }
+>
+  <Col
+    lg={
+      Object {
+        "span": 14,
+      }
+    }
+    xl={
+      Object {
+        "span": 16,
+      }
+    }
+  >
+    <Title
+      level={4}
+    >
+      Overview
+    </Title>
+    <Text
+      strong={true}
+    >
+      PROJECT DESCRIPTION
+    </Text>
+    <Paragraph>
+      Sample description.
+    </Paragraph>
+    <Text
+      strong={true}
+    >
+      KEY DATES
+    </Text>
+    <Row>
+      <Col
+        lg={12}
+      >
+        <Descriptions
+          column={2}
+          layout="vertical"
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Estimated IRT Submission"
+            span={12}
+          >
+            Unknown
+          </DescriptionsItem>
+          <DescriptionsItem
+            className="vertical-description"
+            label="Desired date to receive permit/amendment(s)"
+            span={12}
+          >
+            Unknown
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+      <Col
+        lg={12}
+      >
+        <Descriptions
+          column={2}
+          layout="vertical"
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Estimated Permit Application Submission"
+            span={12}
+          >
+            Unknown
+          </DescriptionsItem>
+          <DescriptionsItem
+            className="vertical-description"
+            label="Anticipated work start"
+            span={12}
+          >
+            Unknown
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+    </Row>
+    <Title
+      level={4}
+    >
+      Project Stages
+    </Title>
+    <ProjectStagesTable
+      projectStages={
+        Array [
+          Object {
+            "key": undefined,
+            "payload": Object {
+              "documents": Array [],
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "project_summary_description": "Sample description.",
+              "project_summary_guid": "81324623978135",
+              "status_code": "OPN",
+              "submission_date": "2021-11-19",
+            },
+            "status": "OPN",
+            "statusHash": Object {
+              "CLD": "Closed",
+              "OPN": "Open",
+              "WDN": "Withdrawn",
+            },
+            "title": "Project description",
+          },
+        ]
+      }
+    />
+    <Title
+      level={4}
+    >
+      Project Documents
+    </Title>
+    <DocumentTable
+      categoryDataIndex="project_summary_document_type_code"
+      documentCategoryOptionsHash={
+        Object {
+          "GEN": "General",
+        }
+      }
+      documentParent="project summary"
+      documents={Array []}
+      uploadDateIndex="upload_date"
+    />
+  </Col>
+  <Col
+    lg={
+      Object {
+        "offset": 1,
+        "span": 9,
+      }
+    }
+    xl={
+      Object {
+        "offset": 1,
+        "span": 7,
+      }
+    }
+  >
+    <Row
+      gutter={
+        Array [
+          0,
+          16,
+        ]
+      }
+    >
+      <Col
+        span={24}
+      >
+        <Card
+          title="Project Contacts"
+        />
+      </Col>
+      <Col
+        span={24}
+      >
+        <Card
+          title="Ministry Contacts"
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;

@@ -92,6 +92,18 @@ exports[`PrivateRoutes  renders properly 1`] = `
     path="/projects/:projectGuid/project-description/:projectSummaryGuid/:tab"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/projects/:projectGuid/:tab"
+  />
+  <Route
     render={[Function]}
   />
 </Switch>

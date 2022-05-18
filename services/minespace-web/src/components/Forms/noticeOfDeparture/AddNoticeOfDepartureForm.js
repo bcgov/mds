@@ -12,6 +12,7 @@ import {
 } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -20,18 +21,11 @@ import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/No
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
-};
-
-const NOD_TYPE = {
-  POTENTIALLY_SUBSTANTIAL: "potentially_substantial",
-  NON_SUBSTANTIAL: "non_substantial",
 };
 
 const AddNoticeOfDepartureForm = (props) => {
@@ -153,12 +147,12 @@ const AddNoticeOfDepartureForm = (props) => {
             validate={[requiredRadioButton]}
             customOptions={[
               {
-                value: NOD_TYPE.NON_SUBSTANTIAL,
+                value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
                 label:
                   "This notice of departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
               },
               {
-                value: NOD_TYPE.POTENTIALLY_SUBSTANTIAL,
+                value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
                 label:
                   "This notice of departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
               },

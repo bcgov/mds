@@ -26,8 +26,9 @@ export const NOTICE_OF_DEPARTURE_TYPE = {
   potentially_substantial: "Potentially Substantial",
 };
 
-export const NOTICE_OF_DEPARTURE_STATUS = {
-  pending_review: "Pending Preview",
-  in_review: "In Review",
-  self_authorized: "Self Authorized",
+export const NOD_TYPE_FIELD_VALUE = {
+  POTENTIALLY_SUBSTANTIAL: "potentially_substantial",
+  NON_SUBSTANTIAL: "non_substantial",
 };
+
+export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Self Authorized"];

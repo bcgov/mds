@@ -249,17 +249,14 @@ h5.ant-typography,
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
   color: $primary-color;
-  text-transform: uppercase;
   font-weight: bold;
 }
 
 .ant-table-header-column {
-  text-transform: uppercase;
   font-weight: bold;
 }
 
 .ant-table-column-sorters {
-  text-transform: uppercase;
   font-weight: 700;
 }
 
@@ -318,6 +315,10 @@ tr.ant-table-expanded-row {
 
 .ant-descriptions-item {
   margin-right: $padding-lg;
+}
+
+th.ant-descriptions-item.vertical-description {
+  padding-bottom: 0px !important;
 }
 
 .ant-descriptions-row {

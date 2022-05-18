@@ -7,6 +7,7 @@ on:
       - develop
     paths:
       - services/minespace-web/**
+      - .github/workflows/minespace.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
@@ -34,9 +35,26 @@ jobs:
 
   trigger-gitops:
     runs-on: ubuntu-20.04
+    timeout-minutes: 10
     needs: [build-minespace]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
         run: ./gitops/commit.sh minespace dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh minespace dev ${{ github.sha }} ${{ secrets.RC_TOKEN }}
+
+  run-if-failed:
+    runs-on: ubuntu-20.04
+    needs: [trigger-gitops]
+    if: always() && (needs.trigger-gitops.result == 'failure')
+    steps:
+      - name: Notification
+        run: ./gitops/watch-deployment.sh minespace dev ${{ github.sha }} ${{ secrets.RC_TOKEN }} 1

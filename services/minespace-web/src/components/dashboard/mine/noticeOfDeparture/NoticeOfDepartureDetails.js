@@ -5,9 +5,11 @@ import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import {
   EMPTY_FIELD,
-  NOTICE_OF_DEPARTURE_STATUS,
-  NOTICE_OF_DEPARTURE_TYPE,
 } from "@/constants/strings";
+import {
+  NOTICE_OF_DEPARTURE_TYPE,
+  NOTICE_OF_DEPARTURE_STATUS
+} from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 
