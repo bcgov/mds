@@ -29,9 +29,11 @@ jobs:
       - name: Pull
         run: |
           docker pull ${{ env.image }}:${{ env.version }}
-      - name: Tag
+      - name: Tag pulled image (1/2)
         run: |
           docker image tag ${{ env.image }}:${{ env.version }} ${{ env.NAME }}:${{ env.INITIAL_TAG }}
+      - name: Tag pulled image (2/2)
+        run: |
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
       - name: Push
