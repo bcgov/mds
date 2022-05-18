@@ -144,6 +144,9 @@ export const PROJECT_SUMMARY_DOCUMENT = (
     params
   )}`;
 
+// Information Requirements Table (IRT)
+export const IRT_TEMPLATE_DOWNLOAD = `/projects/irt-template-download`;
+
 // Users
 export const CORE_USER = "/users/core";
 
