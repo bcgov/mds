@@ -81,8 +81,7 @@ services:
       - FLYWAY_CONNECT_RETRIES=60
       - PLATFORM=CIT
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   ####################### Backend Definition #######################
   backend:
