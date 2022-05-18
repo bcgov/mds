@@ -14,6 +14,7 @@ from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, MINESPA
 from app.api.projects.response_models import IRT_MODEL
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.models.requirements import Requirements
+from app.api.projects.project.models.project import Project
 
 
 class InformationRequirementsTableListResource(Resource, UserMixin):
@@ -120,6 +121,9 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         data = self.parser.parse_args()
         import_file = data.get('file')
         try:
+            project = Project.find_by_project_guid(project_guid)
+            if project is None:
+                raise BadRequest('Cannot import IRT, the project supplied does not exist')
             existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
             if existing_irt:
                 raise BadRequest('Cannot import IRT, this project already has one imported')
