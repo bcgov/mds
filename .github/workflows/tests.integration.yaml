@@ -2,6 +2,9 @@ name: Integration Tests
 
 on:
   pull_request:
+    paths:
+      - migrations/**
+      - services/core-api/**
 
 jobs:
   tests-verify-migrations:
