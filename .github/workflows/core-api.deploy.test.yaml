@@ -50,3 +50,11 @@ jobs:
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
         run: ./gitops/watch-deployment.sh core-api test ${{ github.sha }} ${{ secrets.RC_TOKEN }}
+
+  run-if-failed:
+    runs-on: ubuntu-20.04
+    needs: [trigger-gitops]
+    if: always() && (needs.trigger-gitops.result == 'failure')
+    steps:
+      - name: Notification
+        run: ./gitops/watch-deployment.sh core-api test ${{ github.sha }} ${{ secrets.RC_TOKEN }} 1
