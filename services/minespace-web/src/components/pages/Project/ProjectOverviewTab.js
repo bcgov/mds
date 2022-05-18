@@ -6,13 +6,18 @@ import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
+  getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
-import { getProjectSummary, getProject } from "@common/selectors/projectSelectors";
+import {
+  getProjectSummary,
+  getProject,
+  getInformationRequirementsTable,
+} from "@common/selectors/projectSelectors";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
 const propTypes = {
@@ -21,6 +26,8 @@ const propTypes = {
   EMLIcontactInfo: PropTypes.arrayOf(CustomPropTypes.EMLIContactInfo).isRequired,
   project: CustomPropTypes.project.isRequired,
   projectSummary: CustomPropTypes.projectSummary.isRequired,
+  informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
+  informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -59,6 +66,7 @@ export class ProjectOverviewTab extends Component {
   };
 
   render() {
+    const projectGuid = this.props.project.project_guid;
     const {
       project_summary_description,
       expected_draft_irt_submission_date,
@@ -73,6 +81,14 @@ export class ProjectOverviewTab extends Component {
         status: this.props.projectSummary.status_code,
         payload: this.props.projectSummary,
         statusHash: this.props.projectSummaryStatusCodesHash,
+      },
+      {
+        title: "IRT",
+        key: this.props.informationRequirementsTable.information_requirements_table_id,
+        status: this.props.informationRequirementsTable.status_code,
+        project_guid: projectGuid,
+        payload: this.props.informationRequirementsTable,
+        statusHash: this.props.informationRequirementsTableStatusCodesHash,
       },
     ];
 
@@ -154,6 +170,10 @@ const mapStateToProps = (state) => ({
   projectSummary: getProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  informationRequirementsTable: getInformationRequirementsTable(state),
+  informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
+    state
+  ),
   EMLIcontactInfo: getEMLIContactsByRegion(state),
 });
 

@@ -10,6 +10,13 @@ export const projectSummary = shape({
   documents: PropTypes.arrayOf(mineDocument),
 });
 
+export const informationRequirementsTable = shape({
+  information_requirements_table_id: PropTypes.number,
+  information_requirements_table_guid: PropTypes.string,
+  status_code: PropTypes.string,
+  create_timestamp: PropTypes.string,
+});
+
 export const project = shape({
   project_id: PropTypes.number,
   project_guid: PropTypes.string,

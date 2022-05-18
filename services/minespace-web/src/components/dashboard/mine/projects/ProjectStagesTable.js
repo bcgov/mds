@@ -32,28 +32,50 @@ export class ProjectStagesTable extends Component {
     {
       title: "",
       dataIndex: "stage_status",
-      render: (text, record) => (
-        <div title="Stage Status">
-          <b>{`[${record.stage_status_hash[text]}]` || "N/A"}</b>
-        </div>
-      ),
+      render: (text, record) => {
+        const status = record.stage_status ? record.stage_status_hash[text] : "Not Started";
+        return (
+          <div title="Stage Status">
+            <b>{status || "N/A"}</b>
+          </div>
+        );
+      },
     },
     {
       title: "",
       dataIndex: "stage",
       align: "right",
-      render: (text, record) => (
-        <Link
-          to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-            record.stage?.payload?.project_guid,
-            record.stage?.payload?.project_summary_guid
-          )}
-        >
-          <Button className="full-mobile margin-small" type="secondary">
-            Edit
-          </Button>
-        </Link>
-      ),
+      render: (text, record) => {
+        let link;
+        if (record.project_stage === "Project description") {
+          link = (
+            <Link
+              to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+                record.stage?.payload?.project_guid,
+                record.stage?.payload?.project_summary_guid
+              )}
+            >
+              <Button className="full-mobile margin-small" type="secondary">
+                Edit
+              </Button>
+            </Link>
+          );
+        }
+        if (record.project_stage === "IRT") {
+          link = (
+            <Link
+              to={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                record.stage?.project_guid
+              )}
+            >
+              <Button className="full-mobile margin-small" type="secondary">
+                {record.stage_status ? "View" : "Start"}
+              </Button>
+            </Link>
+          );
+        }
+        return link;
+      },
     },
   ];
 
