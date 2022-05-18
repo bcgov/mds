@@ -16,6 +16,9 @@ fi
 # Make flyway binary discoverable
 export PATH="$FLYWAY_HOME:$PATH"
 
+# Run repair
+flyway repair
+
 # Run migrations for mds database
 flyway migrate
 
