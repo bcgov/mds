@@ -1,7 +1,9 @@
-name: Unit Tests
+name: CORE WEB - Unit Tests
 
 on:
   pull_request:
+    paths:
+      - services/core-web/**
 
 jobs:
   tests-unit-frontend:
@@ -18,18 +20,3 @@ jobs:
       - name: Run frontend tests
         run: |
           cd services/core-web/ && npm ci && npm run test
-
-  tests-unit-minespace:
-    name: tests-unit-minespace
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 10.x
-
-      - name: Run minespace tests
-        run: |
-          cd services/minespace-web/ && npm ci && npm run test
