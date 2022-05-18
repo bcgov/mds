@@ -10,7 +10,7 @@ from app.api.now_applications.models.now_application_document_identity_xref impo
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
     'bonds', 'reclamation_invoices', 'explosives_permits', 'project_summaries',
-    'notices_of_depature'
+    'notices_of_depature', 'irt'
 ]
 
 

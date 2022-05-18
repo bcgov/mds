@@ -34,9 +34,7 @@ export class ProjectStagesTable extends Component {
       dataIndex: "stage_status",
       render: (text, record) => {
         const status =
-          record.stage_status === "Not Started"
-            ? record.stage_status
-            : record.stage_status_hash[text];
+          record.stage_status === undefined ? "Not Started" : record.stage_status_hash[text];
         return (
           <div title="Stage Status">
             <b>{status || "N/A"}</b>

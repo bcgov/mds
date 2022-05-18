@@ -8,8 +8,6 @@ export class IRTDownloadTemplate extends Component {
   downloadIRTTemplate = (url) => {
     const anchor = document.createElement("a");
     anchor.href = url;
-
-    anchor.download = "IRT_Template.xlsx";
     anchor.style.display = "none";
     document.body.append(anchor);
     anchor.click();
@@ -19,7 +17,7 @@ export class IRTDownloadTemplate extends Component {
   render() {
     return (
       <Row>
-        <Col span={24}>
+        <Col>
           <Typography.Title level={4}>IRT template</Typography.Title>
           <Typography.Paragraph>
             The first step in composing an IRT is to download the official{" "}

@@ -11,6 +11,7 @@ import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import IRTDownloadTemplate from "../../Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
+import IRTFileImport from "../../Forms/projects/informationRequirementsTable/IRTFileImport";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -36,11 +37,7 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
   },
   {
     title: "Import",
-    content: (
-      <>
-        <br />
-      </>
-    ),
+    content: <IRTFileImport projectGuid={props.project.project_guid} />,
     buttons: [
       <Button
         id="step-back"
