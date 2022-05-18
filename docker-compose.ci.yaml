@@ -47,6 +47,7 @@ services:
   postgres:
     restart: always
     container_name: mds_postgres
+    user: postgres
     build:
       context: migrations
       dockerfile: Dockerfile.dev

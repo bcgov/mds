@@ -1,7 +1,7 @@
 FROM mdillon/postgis:9.6-alpine
 
 # Copy only migration scripts for creation
-RUN echo "CREATE USER postgres" >> /docker-entrypoint-initdb.d/01-create-user.sql
+RUN echo "CREATE USER postgres;CREATE DATABASE mds_test WITH ENCODING 'UTF8' LC_COLLATE='en_US.utf8' LC_CTYPE='en_US.utf8' OWNER mds;" >> /docker-entrypoint-initdb.d/01-create-user.sql
 
 # Set the working directory to container entrypoint
 WORKDIR /docker-entrypoint-initdb.d
