@@ -19,6 +19,8 @@ exports[`MineNoticeOfDeparture renders properly 1`] = `
     </h4>
     <br />
     <Connect(MineNoticeOfDepartureTable)
+      fetchDetailedNoticeOfDeparture={[Function]}
+      fetchNoticesOfDeparture={[Function]}
       isLoaded={false}
       mine={
         Object {
@@ -75,6 +77,8 @@ exports[`MineNoticeOfDeparture renders properly 1`] = `
           },
         }
       }
+      openViewNodModal={[Function]}
+      updateNoticeOfDeparture={[Function]}
     />
     <br />
   </div>

@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -19,6 +19,7 @@ from app.api.incidents.resources.mine_incident_notes import MineIncidentNoteReso
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.tailings.resources.tailings_list import MineTailingsStorageFacilityListResource
+from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
@@ -47,6 +48,8 @@ from app.api.now_applications.resources.now_application_list_resource import NOW
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
+from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
 
 
 @pytest.mark.parametrize(
@@ -72,7 +75,8 @@ from app.api.projects.project_summary.resources.project_summary import ProjectSu
      (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineStatusXrefListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
-     (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
+     (MineTailingsStorageFacilityListResource, "post", [EDIT_TSF]),
+     (MineTailingsStorageFacilityResource, "put", [EDIT_TSF, MINESPACE_PROPONENT]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]), (MineTypeListResource, "post", [MINE_EDIT]),
      (MineTypeResource, "delete", [MINE_EDIT]),
      (MineVarianceDocumentUploadResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
@@ -135,7 +139,13 @@ from app.api.projects.project_summary.resources.project_summary import ProjectSu
      (MineIncidentNoteListResource, 'get', [VIEW_ALL]),
      (MineIncidentNoteListResource, 'post', [MINE_ADMIN, EDIT_INCIDENTS]),
      (MineIncidentNoteResource, 'get', [VIEW_ALL]),
-     (MineIncidentNoteResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS])])
+     (MineIncidentNoteResource, 'delete', [MINE_ADMIN, EDIT_INCIDENTS]),
+     (InformationRequirementsTableResource, 'put',
+      [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
+     (InformationRequirementsTableResource, 'delete',
+      [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
+     (RequirementsResource, 'put', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
+     (RequirementsResource, 'delete', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())

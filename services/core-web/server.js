@@ -57,6 +57,12 @@ app.get(`/health`, (req, res) => {
   });
 });
 
+app.get(`/version`, (req, res) => {
+  res.json({
+    status: process.env.COMMIT_ID || "N/A",
+  });
+});
+
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}/vendor/`, vendorServe);
 app.use(`${BASE_PATH}*`, staticServe);

@@ -34,6 +34,7 @@ exports[`NoticesOfDeparture renders properly 1`] = `
       data={
         Array [
           Object {
+            "nod_description": "some description",
             "nod_guid": "4ca454f5-7982-4936-bfb9-84f5976fdefe",
             "nod_title": "ff",
             "permit": Object {
@@ -48,6 +49,7 @@ exports[`NoticesOfDeparture renders properly 1`] = `
         ]
       }
       isLoaded={false}
+      openEditNoticeOfDepartureModal={[Function]}
       openViewNoticeOfDepartureModal={[Function]}
     />
   </Col>

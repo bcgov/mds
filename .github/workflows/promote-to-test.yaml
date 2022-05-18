@@ -20,8 +20,7 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
-          # - name: backend
+          # - name: frontend
           - name: flyway
           - name: tusd
           - name: docgen
@@ -29,9 +28,7 @@ jobs:
           - name: metabase
           - name: metabase-postgres
           - name: docman
-          # - name: filesystem-provider
           - name: nris
-          - name: minespace
           - name: schemaspy
     steps:
       - name: Install oc
@@ -66,16 +63,13 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: frontend
-          # - name: backend
+          # - name: frontend
           - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
           - name: docman
-          # - name: filesystem-provider
           - name: nris
-          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1

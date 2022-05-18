@@ -355,7 +355,19 @@ html {
 }
 
 .margin-large {
-  margin: $default-margin-lg;
+  &--left {
+    margin-left: $default-margin-lg !important;
+  }
+  &--right {
+    margin-right: $default-margin-lg !important;
+  }
+  &--top {
+    margin-top: $default-margin-lg !important;
+  }
+  &--bottom {
+    margin-bottom: $default-margin-lg !important;
+  }
+  margin: $default-margin-lg !important;
 }
 
 .margin-xlarge {

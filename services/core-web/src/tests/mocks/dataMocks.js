@@ -6830,19 +6830,50 @@ export const NOTICES_OF_DEPARTURE = {
     {
       nod_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
       nod_title: "Some title",
+      nod_description: "Some description",
       create_timestamp: "2020-04-20 11:58",
       update_timestamp: "2020-04-20 11:58",
       submission_timestamp: "2020-04-20 11:58",
       permit: {
         permit_id: 1,
-        permit_guid: '10d3ec917-179f-4dbc-80a3-4c993fdfe596',
+        permit_guid: "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
         permit_no: "M-7594809",
         permit_status_code: "C",
         current_permittee: "Haynes, Park and Brown",
         permit_prefix: "M",
       },
-      nod_status: 'pending_review',
-      nod_type: 'potentially_substaintial'
+      nod_status: "pending_review",
+      nod_type: "potentially_substaintial",
+    },
+  ],
+};
+
+export const NOTICE_OF_DEPARTURE_DETAILS = {
+  nod_guid: "56c75a01-248f-4e2c-961a-131790205682",
+  nod_title: "Test with checklist 1",
+  nod_description: "Checklist description",
+  create_timestamp: "2022-05-05T15:44:48.204164+00:00",
+  update_timestamp: "2022-05-05T15:44:48.205068+00:00",
+  submission_timestamp: "2022-05-05T15:44:48.205086",
+  permit: {
+    permit_id: 10,
+    permit_guid: "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
+    permit_no: "CX-6515762",
+    permit_status_code: "O",
+    current_permittee: "Richardson-Weiss",
+    permit_prefix: "C",
+  },
+  nod_status: "pending_review",
+  nod_type: "potentially_substantial",
+  documents: [
+    {
+      document_type: "checklist",
+      create_timestamp: "2022-05-05T15:44:49.419460+00:00",
+      mine_document_guid: "f678c3b6-8514-43fb-a147-a6caf5deeb50",
+      mine_guid: "29050da9-5d9e-4a80-9f6d-1d06f02fc589",
+      document_manager_guid: "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
+      document_name: "Excel_Comments_Template.xlsx",
+      upload_date: null,
     },
   ],
 };

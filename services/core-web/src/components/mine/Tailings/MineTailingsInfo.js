@@ -188,7 +188,7 @@ export class MineTailingsInfo extends Component {
               <br />
               <div className="inline-flex between">
                 <h4 className="uppercase">Tailing Storage Facilities</h4>
-                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <AuthorizationWrapper permission={Permission.EDIT_TSF}>
                   <AddButton
                     onClick={(event) =>
                       this.openTailingsModal(event, this.handleAddTailings, "Add TSF")

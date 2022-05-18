@@ -52,6 +52,8 @@ from app.api.projects.project_summary.models.project_summary_authorization impor
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+from app.api.projects.information_requirements_table.models.information_requirements_table_status_code import InformationRequirementsTableStatusCode
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 
@@ -83,12 +85,14 @@ def create_mine_and_tailing_storage_facility(mine_kwargs={}, tsf_kwargs={}, num_
 
 
 class FactoryRegistry:
+
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         FACTORY_LIST.append(cls)
 
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
+
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
@@ -100,6 +104,7 @@ from tests.now_application_factories import *
 
 
 class MineDocumentFactory(BaseFactory):
+
     class Meta:
         model = MineDocument
 
@@ -113,6 +118,7 @@ class MineDocumentFactory(BaseFactory):
 
 
 class MineStatusFactory(BaseFactory):
+
     class Meta:
         model = MineStatus
 
@@ -126,6 +132,7 @@ class MineStatusFactory(BaseFactory):
 
 
 class MineTypeDetailFactory(BaseFactory):
+
     class Meta:
         model = MineTypeDetail
 
@@ -144,6 +151,7 @@ class MineTypeDetailFactory(BaseFactory):
 
 
 class MineTypeFactory(BaseFactory):
+
     class Meta:
         model = MineType
 
@@ -180,6 +188,7 @@ class MineTypeFactory(BaseFactory):
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
+
     class Meta:
         model = MineTailingsStorageFacility
 
@@ -194,6 +203,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
 
 class MineCommentFactory(BaseFactory):
+
     class Meta:
         model = MineComment
 
@@ -205,6 +215,7 @@ class MineCommentFactory(BaseFactory):
 
 
 class VarianceFactory(BaseFactory):
+
     class Meta:
         model = Variance
 
@@ -243,6 +254,7 @@ class VarianceFactory(BaseFactory):
 
 
 class VarianceDocumentFactory(BaseFactory):
+
     class Meta:
         model = VarianceDocumentXref
 
@@ -259,6 +271,7 @@ class VarianceDocumentFactory(BaseFactory):
 
 
 class ProjectSummaryDocumentFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryDocumentXref
 
@@ -311,6 +324,7 @@ def RandomTenureTypeCode(permit_no):
 
 
 class MineVerifiedStatusFactory(BaseFactory):
+
     class Meta:
         model = MineVerifiedStatus
 
@@ -322,6 +336,7 @@ class MineVerifiedStatusFactory(BaseFactory):
 
 
 class MineIncidentFactory(BaseFactory):
+
     class Meta:
         model = MineIncident
 
@@ -370,6 +385,7 @@ class MineIncidentFactory(BaseFactory):
 
 
 class MineIncidentNoteFactory(BaseFactory):
+
     class Meta:
         model = MineIncidentNote
 
@@ -387,6 +403,7 @@ class MineIncidentNoteFactory(BaseFactory):
 
 
 class MineIncidentDocumentFactory(BaseFactory):
+
     class Meta:
         model = MineIncidentDocumentXref
 
@@ -403,6 +420,7 @@ class MineIncidentDocumentFactory(BaseFactory):
 
 
 class MineReportFactory(BaseFactory):
+
     class Meta:
         model = MineReport
 
@@ -437,6 +455,7 @@ class MineReportFactory(BaseFactory):
 
 
 class MineReportCommentFactory(BaseFactory):
+
     class Meta:
         model = MineReportComment
 
@@ -450,6 +469,7 @@ class MineReportCommentFactory(BaseFactory):
 
 
 class MineReportSubmissionFactory(BaseFactory):
+
     class Meta:
         model = MineReportSubmission
 
@@ -474,6 +494,7 @@ class MineReportSubmissionFactory(BaseFactory):
 
 
 class AddressFactory(BaseFactory):
+
     class Meta:
         model = Address
 
@@ -490,6 +511,7 @@ class AddressFactory(BaseFactory):
 
 
 class PartyFactory(BaseFactory):
+
     class Meta:
         model = Party
 
@@ -531,6 +553,7 @@ class PartyFactory(BaseFactory):
 
 
 class PartyBusinessRoleFactory(BaseFactory):
+
     class Meta:
         model = PartyBusinessRoleAppointment
 
@@ -544,6 +567,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
 
 class MinePartyAppointmentFactory(BaseFactory):
+
     class Meta:
         model = MinePartyAppointment
 
@@ -571,6 +595,7 @@ class MinePartyAppointmentFactory(BaseFactory):
 
 
 class PartyOrgBookEntityFactory(BaseFactory):
+
     class Meta:
         model = PartyOrgBookEntity
 
@@ -586,6 +611,7 @@ class PartyOrgBookEntityFactory(BaseFactory):
 
 
 class CoreUserFactory(BaseFactory):
+
     class Meta:
         model = CoreUser
 
@@ -597,6 +623,7 @@ class CoreUserFactory(BaseFactory):
 
 
 class IdirUserDetailFactory(BaseFactory):
+
     class Meta:
         model = IdirUserDetail
 
@@ -609,6 +636,7 @@ class IdirUserDetailFactory(BaseFactory):
 
 
 class MinespaceUserFactory(BaseFactory):
+
     class Meta:
         model = MinespaceUser
 
@@ -617,6 +645,7 @@ class MinespaceUserFactory(BaseFactory):
 
 
 class SubscriptionFactory(BaseFactory):
+
     class Meta:
         model = Subscription
 
@@ -628,6 +657,7 @@ class SubscriptionFactory(BaseFactory):
 
 
 class MineFactory(BaseFactory):
+
     class Meta:
         model = Mine
 
@@ -740,6 +770,7 @@ class MineFactory(BaseFactory):
 
 
 class PermitFactory(BaseFactory):
+
     class Meta:
         model = Permit
 
@@ -800,6 +831,7 @@ class PermitFactory(BaseFactory):
 
 
 class MinePermitXrefFactory(BaseFactory):
+
     class Meta:
         model = MinePermitXref
 
@@ -812,6 +844,7 @@ class MinePermitXrefFactory(BaseFactory):
 
 
 class PermitAmendmentFactory(BaseFactory):
+
     class Meta:
         model = PermitAmendment
 
@@ -850,6 +883,7 @@ class PermitAmendmentFactory(BaseFactory):
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
+
     class Meta:
         model = PermitAmendmentDocument
 
@@ -862,6 +896,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
 
 
 class PermitConditionsFactory(BaseFactory):
+
     class Meta:
         model = PermitConditions
 
@@ -877,6 +912,7 @@ class PermitConditionsFactory(BaseFactory):
 
 
 class StandardPermitConditionsFactory(BaseFactory):
+
     class Meta:
         model = StandardPermitConditions
 
@@ -889,6 +925,7 @@ class StandardPermitConditionsFactory(BaseFactory):
 
 
 class BondFactory(BaseFactory):
+
     class Meta:
         model = Bond
 
@@ -914,6 +951,7 @@ class BondFactory(BaseFactory):
 
 
 class ReclamationInvoiceFactory(BaseFactory):
+
     class Meta:
         model = ReclamationInvoice
 
@@ -924,6 +962,7 @@ class ReclamationInvoiceFactory(BaseFactory):
 
 
 class ExplosivesPermitFactory(BaseFactory):
+
     class Meta:
         model = ExplosivesPermit
 
@@ -988,6 +1027,7 @@ class ExplosivesPermitFactory(BaseFactory):
 
 
 class ExplosivesPermitMagazineFactory(BaseFactory):
+
     class Meta:
         model = ExplosivesPermitMagazine
 
@@ -1012,6 +1052,7 @@ class ExplosivesPermitMagazineFactory(BaseFactory):
 
 
 class ProjectFactory(BaseFactory):
+
     class Meta:
         model = Project
 
@@ -1028,6 +1069,7 @@ class ProjectFactory(BaseFactory):
 
 
 class ProjectSummaryFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummary
 
@@ -1060,6 +1102,7 @@ class ProjectSummaryFactory(BaseFactory):
 
 
 class ProjectSummaryContactFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryContact
 
@@ -1079,6 +1122,7 @@ class ProjectSummaryContactFactory(BaseFactory):
 
 
 class ProjectContactFactory(BaseFactory):
+
     class Meta:
         model = ProjectContact
 
@@ -1098,6 +1142,7 @@ class ProjectContactFactory(BaseFactory):
 
 
 class ProjectSummaryAuthorizationFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryAuthorization
 
@@ -1112,6 +1157,7 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
 
 
 class EMLIContactTypeFactory(BaseFactory):
+
     class Meta:
         model = EMLIContactType
 
@@ -1122,6 +1168,7 @@ class EMLIContactTypeFactory(BaseFactory):
 
 
 class EMLIContactFactory(BaseFactory):
+
     class Meta:
         model = EMLIContact
 
@@ -1151,6 +1198,7 @@ class EMLIContactFactory(BaseFactory):
 
 
 class NoticeOfDepartureFactory(BaseFactory):
+
     class Meta:
         model = NoticeOfDeparture
 
@@ -1163,4 +1211,18 @@ class NoticeOfDepartureFactory(BaseFactory):
     permit_guid = factory.SelfAttribute('permit.permit_guid')
 
     nod_title = factory.Faker('text', max_nb_chars=50)
+    nod_description = factory.Faker('text', max_nb_chars=3000)
     deleted_ind = False
+
+
+class InformationRequirementsTableFactory(BaseFactory):
+
+    class Meta:
+        model = InformationRequirementsTable
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    irt_guid = GUID
+    status_code = 'REC'

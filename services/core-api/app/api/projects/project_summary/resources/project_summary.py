@@ -8,7 +8,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
-from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project.models.project import Project
 

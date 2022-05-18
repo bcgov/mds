@@ -1,0 +1,29 @@
+.nod-modal-section-header {
+  color: #000;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 1rem;
+}
+
+.nod-section-padding {
+  padding: 11px;
+}
+
+.nod-cancel-button {
+  transition: all 0.1s ease-in-out;
+  background: #FFFFFF;
+  border-radius: 4px;
+  color: #5E46A1;
+  &:hover {
+    color: #FFFFFF;
+  }
+}
+
+.nod-divider {
+  color: $med-grey;
+}
+
+.nod-table-link {
+  color: #333;
+}

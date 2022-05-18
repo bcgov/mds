@@ -7,7 +7,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 
-from app.api.projects.project.response_models import PROJECT_MODEL
+from app.api.projects.response_models import PROJECT_MODEL
 from app.api.projects.project.models.project import Project
 
 

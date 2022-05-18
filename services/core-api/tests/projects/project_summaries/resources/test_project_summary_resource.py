@@ -2,7 +2,7 @@ import json
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
 from flask_restplus import marshal
-from app.api.projects.project_summary.response_models import PROJECT_SUMMARY_MODEL
+from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 
 
 def test_get_project_summary_by_project_summary_guid(test_client, db_session, auth_headers):

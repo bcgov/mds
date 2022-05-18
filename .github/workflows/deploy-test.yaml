@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - config: frontend
+          # - config: frontend
           # - config: backend
           - config: dbbackup
           - config: docgen
@@ -34,7 +34,6 @@ jobs:
           - config: filesystem-provider
           - config: nris
           - config: nris-etl
-          - config: minespace
           - config: fider
           - config: schemaspy
     steps:

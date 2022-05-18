@@ -24,6 +24,8 @@ class Project(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
 
     project_summary = db.relationship("ProjectSummary", uselist=False, back_populates="project")
+    information_requirements_table = db.relationship(
+        "InformationRequirementsTable", uselist=False, back_populates="project")
     project_lead = db.relationship(
         'Party', lazy='select', primaryjoin='Party.party_guid == Project.project_lead_party_guid')
     contacts = db.relationship(

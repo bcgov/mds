@@ -17,7 +17,7 @@ parameters:
   - name: PATH_PREFIX
     value: ""
   - name: CORE_SERVICE_URL
-    value: http://frontend:3000
+    value: http://core-web:3000
   - name: TUSD_SERVICE_URL
     value: http://tusd:1080/files/
   - name: API_SERVICE_URL

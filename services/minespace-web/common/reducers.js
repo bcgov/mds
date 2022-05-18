@@ -19,7 +19,7 @@ import securitiesReducerObject from "./reducers/securitiesReducer";
 import orgbookReducerObject from "./reducers/orgbookReducer";
 import explosivesPermitReducerObject from "./reducers/explosivesPermitReducer";
 import externalAuthorizationReducerObject from "./reducers/externalAuthorizationReducer";
-import projectSummaryReducerObject from "./reducers/projectSummaryReducer";
+import projectReducerObject from "./reducers/projectReducer";
 import noticeOfDepartureReducerObject from "./reducers/noticeOfDepartureReducer";
 
 export const complianceReducer = complianceReducerObject;
@@ -42,5 +42,5 @@ export const securitiesReducer = securitiesReducerObject;
 export const orgbookReducer = orgbookReducerObject;
 export const explosivesPermitReducer = explosivesPermitReducerObject;
 export const externalAuthorizationReducer = externalAuthorizationReducerObject;
-export const projectSummaryReducer = projectSummaryReducerObject;
+export const projectReducer = projectReducerObject;
 export const noticeOfDepartureReducer = noticeOfDepartureReducerObject;
