@@ -6,6 +6,8 @@ ENV=${2?"Enter ENV Name !"}
 GIT_SHA=${3?"Enter GIT SHA of commit!"}
 RC_TOKEN=${4?"Enter RC Token!"}
 
+REPO_LOCATION=$(git rev-parse --show-toplevel)
+
 function get_revision() {
     kubectl get deploy/$TARGET_APP -n 4c2ba9-$ENV -o=json | jq '.metadata.annotations["deployment.kubernetes.io/revision"]' -r
 }
@@ -35,38 +37,7 @@ kubectl rollout status -w deploy/$TARGET_APP -n 4c2ba9-$ENV
 
 ROLLOUT_STATUS=$?
 
-if [ $ROLLOUT_STATUS == 0 ]; then
-    MSG_COLOR="#F8D210"
-    EMOJI=":rocket:"
-    MSG="SUCCESS"
-    MENTION=""
-else
-    MSG_COLOR="#FA26A0"
-    EMOJI=":skull:"
-    MSG="FAILED"
-    # ideally this should be a @all or @here notification. But our rocket chat bot in the bc gov tenant does not support it right now.
-    MENTION="@hitankar.ray @justin.macaulay @cameron.wilson @Vyas"
-fi
-
-curl -X POST -H 'Content-Type: application/json' --data \
-    '{
-    "alias": "GitOpsBot",
-    "text": "'"$EMOJI Deployment Message for $TARGET_APP $ENV $MENTION"'",
-    "attachments": [
-        {
-            "title": "'"Argo CD: $TARGET_APP"'",
-            "title_link": "'"https://argocd-shared.apps.silver.devops.gov.bc.ca/applications/mds-$TARGET_APP-$ENV"'",
-            "text": "'"Deployment $MSG - $TARGET_APP - $ENV"'",
-            "color": "'"$MSG_COLOR"'"
-        },
-        {
-            "title": "Github: Commit",
-            "title_link": "'"https://github.com/bcgov/mds/commit/$GIT_SHA"'",
-            "text": "'"Deployment $MSG - $TARGET_APP - $ENV"'",
-            "color": "'"$MSG_COLOR"'"
-        }
-    ]
-}' https://chat.developer.gov.bc.ca/hooks/$RC_TOKEN
+$REPO_LOCATION/gitops/notify.sh $TARGET_APP $ENV $GIT_SHA $RC_TOKEN $ROLLOUT_STATUS
 
 # Set exit code to make github actions fail
 if [ $ROLLOUT_STATUS == 1 ]; then
