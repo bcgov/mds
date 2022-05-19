@@ -40,4 +40,4 @@ jobs:
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
       - name: Push
         run: |
-          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+          docker push -f --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
