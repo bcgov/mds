@@ -1,5 +1,5 @@
-FROM boxfuse/flyway:5.2.4-alpine
-
+FROM flyway/flyway:7.14-alpine
+USER root
 RUN apk add gettext
 
 COPY sql/* /flyway/sql/
