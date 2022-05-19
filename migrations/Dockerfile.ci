@@ -1,4 +1,4 @@
-FROM boxfuse/flyway:5.2.4-alpine
+FROM flyway/flyway:7.14-alpine
 ENV FLYWAY_HOME=/flyway
 
 USER 0
