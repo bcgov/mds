@@ -1,5 +1,6 @@
 # Backend API
 
+
 The project uses a Python 3.6 runtime environment and [Flask
 REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the
 API.
