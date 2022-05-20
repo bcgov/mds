@@ -32,8 +32,8 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
-import MineProjectSummary from "@/components/mine/ProjectSummaries/MineProjectSummary";
-import ProjectSummary from "@/components/mine/ProjectSummaries/ProjectSummary";
+import MineProjectSummary from "@/components/mine/Projects/MineProjectSummary";
+import ProjectSummary from "@/components/mine/Projects/ProjectSummary";
 import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
@@ -43,6 +43,7 @@ import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
 import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
+import Project from "@/components/mine/Projects/Project";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -159,7 +160,7 @@ export const MINE_NOTICES_OF_DEPARTURE = {
   component: MineNoticeOfDeparture,
 };
 
-// Project Descriptions(Project Summaries)
+// Projects
 export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
@@ -167,12 +168,18 @@ export const MINE_PRE_APPLICATIONS = {
 };
 
 export const PRE_APPLICATIONS = {
-  route: "/pre-applications/:mineGuid/project-description/:projectSummaryGuid",
-  dynamicRoute: (mineGuid, projectSummaryGuid) =>
-    `/pre-applications/${mineGuid}/project-description/${projectSummaryGuid}`,
-  hashRoute: (mineGuid, projectSummaryGuid, link) =>
-    `/pre-applications/${mineGuid}/project-description/${projectSummaryGuid}/${link}`,
+  route: "/pre-applications/:projectGuid/project-description/:projectSummaryGuid",
+  dynamicRoute: (projectGuid, projectSummaryGuid) =>
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}`,
+  hashRoute: (projectGuid, projectSummaryGuid, link) =>
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${link}`,
   component: ProjectSummary,
+};
+
+export const PROJECTS = {
+  route: "/pre-applications/:projectGuid/:tab",
+  dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
+  component: Project,
 };
 
 export const MINE_NOW_APPLICATIONS = {

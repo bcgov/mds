@@ -10,7 +10,11 @@ const MineDashboardRoutes = () => (
     <Route exact path={routes.MINE_PERMITS.route} component={routes.MINE_PERMITS.component} />
     <Route exact path={routes.MINE_SECURITIES.route} component={routes.MINE_SECURITIES.component} />
     <Route exact path={routes.MINE_VARIANCES.route} component={routes.MINE_VARIANCES.component} />
-    <Route exact path={routes.MINE_NOTICES_OF_DEPARTURE.route} component={routes.MINE_NOTICES_OF_DEPARTURE.component} />
+    <Route
+      exact
+      path={routes.MINE_NOTICES_OF_DEPARTURE.route}
+      component={routes.MINE_NOTICES_OF_DEPARTURE.component}
+    />
     <Route
       exact
       path={routes.MINE_PRE_APPLICATIONS.route}
@@ -21,6 +25,7 @@ const MineDashboardRoutes = () => (
       path={routes.PRE_APPLICATIONS.route}
       component={routes.PRE_APPLICATIONS.component}
     />
+    <Route exact path={routes.PROJECTS.route} component={routes.PROJECTS.component} />
     <Route
       exact
       path={routes.MINE_NOW_APPLICATIONS.route}
