@@ -32,3 +32,6 @@ export const NOD_TYPE_FIELD_VALUE = {
 };
 
 export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Self Authorized"];
+
+export const NOTICE_OF_DEPARTURE_DOWNLOAD_LINK =
+  "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting";
