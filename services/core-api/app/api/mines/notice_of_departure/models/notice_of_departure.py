@@ -7,6 +7,7 @@ from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from sqlalchemy import desc
 
 
 class NodType(Enum):
@@ -85,13 +86,13 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).all()
+        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).order_by(NoticeOfDeparture.create_timestamp.desc()).all()
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-        query = cls.query.filter_by(permit_guid=__guid, deleted_ind=False)
+        query = cls.query.filter_by(permit_guid=__guid, deleted_ind=False).order_by(NoticeOfDeparture.create_timestamp.desc())
         if mine_guid:
-            query = cls.query.filter_by(permit_guid=__guid, mine_guid=mine_guid, deleted_ind=False)
+            query = cls.query.filter_by(permit_guid=__guid, mine_guid=mine_guid, deleted_ind=False).order_by(NoticeOfDeparture.create_timestamp.desc())
         return query.all()
 
     def save(self, commit=True):
