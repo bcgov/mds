@@ -86,7 +86,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).order_by(NoticeOfDeparture.create_timestamp.desc()).all()
+        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid, mine_guid=None):
