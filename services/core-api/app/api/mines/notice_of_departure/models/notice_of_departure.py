@@ -95,8 +95,8 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         return query.all()
 
     def save(self, commit=True):
-        self.updated_by = User().get_user_username()
-        self.updated_timestamp = datetime.utcnow()
+        self.update_user = User().get_user_username()
+        self.update_timestamp = datetime.utcnow()
         super(NoticeOfDeparture, self).save(commit)
 
     def delete(self):
