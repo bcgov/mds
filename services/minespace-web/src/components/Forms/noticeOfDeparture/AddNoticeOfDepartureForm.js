@@ -12,7 +12,7 @@ import {
 } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
-import { NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
+import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -163,9 +163,12 @@ const AddNoticeOfDepartureForm = (props) => {
           Upload Notice of Departure Self-Assessment Form
         </h4>
         <Typography.Text>
-          Please upload your completed Self-assessment form (click here to download) below. Remember
-          your completed form must be signed by the Mine Manager and any supporting information
-          included or uploaded.
+          Please upload your completed Self-assessment form (
+          <a href={NOTICE_OF_DEPARTURE_DOWNLOAD_LINK} target="_blank" rel="noreferrer">
+            click here to download
+          </a>
+          ) below. Remember your completed form must be signed by the Mine Manager and any
+          supporting information included or uploaded.
         </Typography.Text>
         <Form.Item className="margin-y-large">
           <Field
