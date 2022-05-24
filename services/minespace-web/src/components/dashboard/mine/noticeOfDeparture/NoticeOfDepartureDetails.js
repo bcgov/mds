@@ -1,15 +1,13 @@
 import React from "react";
 import { Col, Divider, Row } from "antd";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import {
   EMPTY_FIELD,
-} from "@/constants/strings";
-import {
+  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
+  NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
-  NOTICE_OF_DEPARTURE_STATUS
 } from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 
@@ -29,9 +27,15 @@ export const NoticeOfDepartureDetails = (props) => {
     documents,
     submission_timestamp,
   } = noticeOfDeparture;
+
   const checklist =
     documents.find((doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) ||
     {};
+
+  const otherDocuments = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+  );
+
   const submitted = formatDate(submission_timestamp);
 
   return (
@@ -83,11 +87,11 @@ export const NoticeOfDepartureDetails = (props) => {
             <p className="field-title">Uploaded File(s)</p>
             <p>{checklist.document_name || EMPTY_FIELD}</p>
           </Col>
-          <Col>
+          <Col span={5}>
             <p className="field-title">Upload Date</p>
             <p>{formatDate(checklist.create_timestamp) || EMPTY_FIELD}</p>
           </Col>
-          <Col>
+          <Col span={3}>
             <p className="field-title">&nbsp;</p>
             <p>
               {checklist.document_name ? (
@@ -103,6 +107,41 @@ export const NoticeOfDepartureDetails = (props) => {
             </p>
           </Col>
         </Row>
+        {otherDocuments.length > 0 && (
+          <div>
+            <h4 className="nod-modal-section-header">Application Documentation</h4>
+            <Row>
+              <Col span={16}>
+                <p className="field-title">Uploaded File</p>
+              </Col>
+              <Col span={5}>
+                <p className="field-title">Upload Date</p>
+              </Col>
+              <Col span={3}>
+                <p className="field-title">&nbsp;</p>
+              </Col>
+            </Row>
+            {otherDocuments.map((document) => (
+              <Row>
+                <Col span={16}>
+                  <p>{document?.document_name || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={5}>
+                  <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={3}>
+                  <LinkButton
+                    className="nod-table-link"
+                    onClick={() => downloadFileFromDocumentManager(document)}
+                    title={document?.document_name}
+                  >
+                    Download
+                  </LinkButton>
+                </Col>
+              </Row>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

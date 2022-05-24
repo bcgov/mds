@@ -74,13 +74,10 @@ export const ViewNoticeOfDepartureModal = (props) => {
         dataIndex: "document_name",
         sortField: "document_name",
         sorter: isSortable ? (a, b) => a.document_name.localeCompare(b.document_name) : false,
-        render: (text) => (
+        render: (text, record) => (
           <div className="nod-table-link">
             {text ? (
-              <LinkButton
-                onClick={() => downloadFileFromDocumentManager(checklist[0])}
-                title="Download"
-              >
+              <LinkButton onClick={() => downloadFileFromDocumentManager(record)} title="Download">
                 {text}
               </LinkButton>
             ) : (
@@ -107,7 +104,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
       },
       {
         dataIndex: "actions",
-        render: () => (
+        render: (text, record) => (
           <div className="btn--middle flex">
             <Popconfirm
               placement="topRight"
@@ -116,7 +113,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
                 handleDeleteANoticeOfDepartureDocument({
                   mine_guid: mine.mine_guid,
                   nod_guid,
-                  ...checklist[0],
+                  ...record,
                 })
               }
               okText="Yes"
