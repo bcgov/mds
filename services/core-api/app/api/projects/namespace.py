@@ -13,7 +13,7 @@ from app.api.projects.information_requirements_table.resources.information_requi
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_status_code import InformationRequirementsTableStatusCodeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_download import InformationRequirementsTableDownloadResource
-from app.api.projects.information_requirements_table.resources.Information_requirements_table_import import InformationRequirementsTableListImportResource, InformationRequirementsTableImportLocalResource
+from app.api.projects.information_requirements_table.resources.Information_requirements_table_upload import InformationRequirementsTableListUploadResource, InformationRequirementsTableImportLocalResource
 from app.api.projects.information_requirements_table.resources.requirements_list import RequirementsListResource
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
 
@@ -42,7 +42,7 @@ api.add_resource(ProjectSummaryAuthorizationTypeResource, '/project-summary-auth
 
 # Information Requirements Table (IRT)
 api.add_resource(InformationRequirementsTableDownloadResource, '/irt-template-download')
-api.add_resource(InformationRequirementsTableListImportResource,
+api.add_resource(InformationRequirementsTableListUploadResource,
                  '/<string:project_guid>/final-irt-import')
 api.add_resource(InformationRequirementsTableImportLocalResource,
                  '/<string:project_guid>/final-irt-import-local')

@@ -9,6 +9,6 @@ class InformationRequirementsTableDownloadResource(Resource, UserMixin):
     @api.doc(description='Get the Information Requirements Table (IRT) template.')
     @api.response(200, 'Successfully downloaded.')
     def get(self):
-        fn = Config.TEMPLATE_FOLDER_IRT + Config.TEMPLATE_IRT
+        filename = Config.TEMPLATE_FOLDER_IRT + Config.TEMPLATE_IRT
         return send_file(
-            filename_or_fp=fn, attachment_filename=Config.TEMPLATE_IRT, as_attachment=True)
+            filename_or_fp=filename, attachment_filename=Config.TEMPLATE_IRT, as_attachment=True)

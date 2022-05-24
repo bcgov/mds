@@ -113,20 +113,16 @@ export class InformationRequirementsTablePage extends Component {
 
   handleFetchData = () => {
     const { projectGuid, tab } = this.props.match?.params;
-    if (projectGuid) {
-      return this.props
-        .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, activeTab: tab }));
-    }
-    return this.props.fetchProjectById(projectGuid).then(() => {
-      this.setState({ isLoaded: true, activeTab: tab });
-    });
+
+    return this.props
+      .fetchProjectById(projectGuid)
+      .then(() => this.setState({ isLoaded: true, activeTab: tab }));
   };
 
   render() {
     const title = this.state.isEditMode
-      ? `Edit IRT - ${this.props.project?.project_summary?.project_summary_title}`
-      : `Final IRT - ${this.props.project?.project_summary?.project_summary_title}`;
+      ? `Edit IRT - ${this.props.project?.project_title}`
+      : `Final IRT - ${this.props.project?.project_title}`;
 
     const Forms = StepForms(this.props, this.state, this.next, this.prev);
 

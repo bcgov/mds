@@ -160,11 +160,10 @@ class Config(object):
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
 
     #Templates
-    TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', '/app/app/templates')
+    TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', 'templates')
 
     TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/projects/')
-    TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT',
-                                  'IRT Template - Import to Core _V 2022_05_18.xlsx')
+    TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template.xlsx')
 
 
 class TestConfig(Config):
