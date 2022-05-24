@@ -30,7 +30,6 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             store_missing=False)
         args = parser.parse_args()
 
-        print(CreateTable(NoticeOfDepartureDocumentXref.__table__).compile(dialect=dialect()))
         nods = []
 
         permit_guid = args.get('permit_guid')
