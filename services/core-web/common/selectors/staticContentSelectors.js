@@ -55,6 +55,7 @@ export const {
   getEMLIContactTypes,
   getProjectSummaryAuthorizationTypes,
   getProjectSummaryPermitTypes,
+  getInformationRequirementsTableStatusCodes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -781,6 +782,17 @@ export const getDropdownProjectSummaryStatusCodes = createSelectorWrapper(
 
 export const getProjectSummaryStatusCodesHash = createSelector(
   [getDropdownProjectSummaryStatusCodes],
+  createLabelHash
+);
+
+export const getDropdownInformationRequirementsTableStatusCode = createSelectorWrapper(
+  getInformationRequirementsTableStatusCodes,
+  createDropDownList,
+  ["description", "information_requirements_table_status_code"]
+);
+
+export const getInformationRequirementsTableStatusCodesHash = createSelector(
+  [getDropdownInformationRequirementsTableStatusCode],
   createLabelHash
 );
 

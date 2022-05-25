@@ -27,3 +27,13 @@ export const storeProjectSummary = (payload) => ({
 export const clearProjectSummary = () => ({
   type: actionTypes.CLEAR_PROJECT_SUMMARY,
 });
+
+export const storeInformationRequirementsTable = (payload) => ({
+  type: actionTypes.STORE_INFORMATION_REQUIREMENTS_TABLE,
+  payload,
+});
+
+export const clearInformationRequirementsTable = (payload) => ({
+  type: actionTypes.CLEAR_INFORMATION_REQUIREMENTS_TABLE,
+  payload,
+});

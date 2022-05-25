@@ -105,22 +105,6 @@ PROJECT_CONTACT_MODEL = api.model(
         'is_primary': fields.Boolean
     })
 
-PROJECT_MODEL = api.model(
-    'Project', {
-        'project_guid': fields.String,
-        'project_id': fields.Integer,
-        'project_title': fields.String,
-        'mine_name': fields.String,
-        'mine_guid': fields.String,
-        'proponent_project_id': fields.String,
-        'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
-        'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL),
-        'update_user': fields.String,
-        'update_timestamp': fields.DateTime,
-        'create_user': fields.String,
-        'create_timestamp': fields.DateTime
-    })
-
 REQUIREMENTS_MODEL = api.model(
     'Requirements', {
         'requirement_guid': fields.String,
@@ -156,4 +140,21 @@ IRT_MODEL = api.model(
         'project_guid': fields.String,
         'status_code': fields.String,
         'requirements': fields.List(fields.Nested(IRT_REQUIREMENTS_MODEL))
+    })
+
+PROJECT_MODEL = api.model(
+    'Project', {
+        'project_guid': fields.String,
+        'project_id': fields.Integer,
+        'project_title': fields.String,
+        'mine_name': fields.String,
+        'mine_guid': fields.String,
+        'proponent_project_id': fields.String,
+        'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
+        'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL),
+        'information_requirements_table': fields.Nested(IRT_MODEL),
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
     })
