@@ -8,6 +8,7 @@ const initialState = {
   projectSummaries: [],
   projectSummary: {},
   projectSummaryPageData: {},
+  informationRequirementsTable: {},
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -44,6 +45,16 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         projectSummary: {},
       };
+    case actionTypes.STORE_INFORMATION_REQUIREMENTS_TABLE:
+      return {
+        ...state,
+        informationRequirementsTable: action.payload,
+      };
+    case actionTypes.CLEAR_INFORMATION_REQUIREMENTS_TABLE:
+      return {
+        ...state,
+        informationRequirementsTable: {},
+      };
     default:
       return state;
   }
@@ -59,5 +70,7 @@ export const getProjectPageData = (state) => state[PROJECTS].projectPageData;
 export const getProjectSummaries = (state) => state[PROJECTS].projectSummaries;
 export const getProjectSummary = (state) => state[PROJECTS].projectSummary;
 export const getProjectSummaryPageData = (state) => state[PROJECTS].projectSummaryPageData;
+export const getInformationRequirementsTable = (state) =>
+  state[PROJECTS].informationRequirementsTable;
 
 export default projectReducerObject;

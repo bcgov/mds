@@ -11,6 +11,9 @@ const setupProps = () => {
   props.projectSummaryStatusCodesHash = MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH;
   props.EMLIcontactInfo = [];
   props.projectSummary = MOCK.PROJECT_SUMMARY;
+  props.informationRequirementsTable = MOCK.INFORMATION_REQUIREMENTS_TABLE;
+  props.informationRequirementsTableStatusCodesHash =
+    MOCK.INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH;
   props.project = MOCK.PROJECT;
 };
 
