@@ -139,7 +139,7 @@ export const NOTICE_OF_DEPARTURE_TYPE_VALUES = {
 };
 
 export const NOTICE_OF_DEPARTURE_STATUS = {
-  pending_review: "Pending Preview",
+  pending_review: "Pending Review",
   in_review: "In Review",
   self_authorized: "Self Authorized",
   ministry_authorized: "Ministry Authorized",

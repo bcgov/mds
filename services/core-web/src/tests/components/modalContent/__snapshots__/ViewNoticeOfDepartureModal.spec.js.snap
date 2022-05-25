@@ -247,7 +247,7 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
             <Option
               key="pending_review"
             >
-              Pending Preview
+              Pending Review
             </Option>
             <Option
               key="in_review"
