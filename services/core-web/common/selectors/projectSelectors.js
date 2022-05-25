@@ -9,6 +9,7 @@ export const {
   getProject,
   getProjects,
   getProjectPageData,
+  getInformationRequirementsTable,
 } = projectReducer;
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {
