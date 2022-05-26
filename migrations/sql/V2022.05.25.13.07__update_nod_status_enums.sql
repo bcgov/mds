@@ -26,9 +26,9 @@ CREATE TYPE nod_status AS ENUM (
   'withdrawn'
   );
 
-ALTER TABLE notice_of_departure SET nod_status = 'self_determined_non_substantial' WHERE nod_status = 'self_authorized';
-ALTER TABLE notice_of_departure SET nod_status = 'determined_non_substantial' WHERE nod_status = 'ministry_authorized';
-ALTER TABLE notice_of_departure SET nod_status = 'information_required' WHERE nod_status = 'additional_information_required';
-ALTER TABLE notice_of_departure SET nod_status = 'determined_substantial' WHERE nod_status = 'permit_amendment_required';
+UPDATE notice_of_departure SET nod_status = 'self_determined_non_substantial' WHERE nod_status = 'self_authorized';
+UPDATE notice_of_departure SET nod_status = 'determined_non_substantial' WHERE nod_status = 'ministry_authorized';
+UPDATE notice_of_departure SET nod_status = 'information_required' WHERE nod_status = 'additional_information_required';
+UPDATE notice_of_departure SET nod_status = 'determined_substantial' WHERE nod_status = 'permit_amendment_required';
 
 ALTER TABLE notice_of_departure ALTER nod_status TYPE nod_status USING nod_status::nod_status;

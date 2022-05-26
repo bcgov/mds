@@ -17,12 +17,12 @@ class NodType(Enum):
 
 class NodStatus(Enum):
     pending_review = auto()
-    in_review = auto()
-    self_determined_non_substantial = auto(),
+    in_review = auto(),
     information_required = auto(),
+    self_determined_non_substantial = auto(),
     determined_non_substantial = auto(),
-    withdrawn = auto(),
-    determined_substantial = auto()
+    determined_substantial = auto(),
+    withdrawn = auto()
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):

@@ -59,16 +59,6 @@ export const NoticeOfDepartureDetails = (props) => {
         <Divider className="nod-divider" />
         <Row justify="space-between" gutter={24}>
           <Col span={12}>
-            <p className="field-title">Mine Manager</p>
-            <p className="content--light-grey padding-sm">{EMPTY_FIELD}</p>
-          </Col>
-          <Col span={12}>
-            <p className="field-title">Ministry Contact</p>
-            <p className="content--light-grey padding-sm">{EMPTY_FIELD}</p>
-          </Col>
-        </Row>
-        <Row justify="space-between" gutter={24}>
-          <Col span={12}>
             <p className="field-title">Submitted</p>
             <p className="content--light-grey padding-sm">{submitted || EMPTY_FIELD}</p>
           </Col>
