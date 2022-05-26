@@ -131,7 +131,6 @@ export const NoticeOfDepartureDetails = (props) => {
                 </Col>
                 <Col span={3}>
                   <LinkButton
-                    className="nod-table-link"
                     onClick={() => downloadFileFromDocumentManager(document)}
                     title={document?.document_name}
                   >
