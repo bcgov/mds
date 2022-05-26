@@ -69,7 +69,7 @@ exports[`MineNoticeOfDepartureTable renders properly 1`] = `
         "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
         "nod_description": "Some description",
         "nod_id": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-        "nod_status": "Pending Preview",
+        "nod_status": "Pending Review",
         "nod_title": "Some title",
         "nod_type": "N/A",
         "permit": Object {
