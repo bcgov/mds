@@ -17,13 +17,12 @@ class NodType(Enum):
 
 class NodStatus(Enum):
     pending_review = auto()
-    in_review = auto()
-    self_authorized = auto(),
-    permit_amendment_required = auto(),
-    additional_information_required = auto(),
-    not_authorized = auto(),
-    withdrawn = auto(),
-    ministry_authorized = auto(),
+    in_review = auto(),
+    information_required = auto(),
+    self_determined_non_substantial = auto(),
+    determined_non_substantial = auto(),
+    determined_substantial = auto(),
+    withdrawn = auto()
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -86,13 +85,17 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
+        return cls.query.filter_by(
+            mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-        query = cls.query.filter_by(permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
+        query = cls.query.filter_by(
+            permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
         if mine_guid:
-            query = cls.query.filter_by(permit_guid=__guid, mine_guid=mine_guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
+            query = cls.query.filter_by(
+                permit_guid=__guid, mine_guid=mine_guid,
+                deleted_ind=False).order_by(cls.create_timestamp.desc())
         return query.all()
 
     def save(self, commit=True):

@@ -247,7 +247,7 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
             <Option
               key="pending_review"
             >
-              Pending Preview
+              Pending Review
             </Option>
             <Option
               key="in_review"
@@ -255,24 +255,24 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
               In Review
             </Option>
             <Option
-              key="ministry_authorized"
+              key="information_required"
             >
-              Ministry Authorized
+              Information Required
             </Option>
             <Option
-              key="permit_amendment_required"
+              key="self_determined_non_substantial"
             >
-              Permit Amendment Required
+              Self Determined Non Substantial
             </Option>
             <Option
-              key="additional_information_required"
+              key="determined_non_substantial"
             >
-              Additional Information Required
+              Determined Non Substantial
             </Option>
             <Option
-              key="not_authorized"
+              key="determined_substantial"
             >
-              Not Authorized
+              Determined Substantial
             </Option>
             <Option
               key="withdrawn"
