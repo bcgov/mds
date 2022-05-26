@@ -22,10 +22,12 @@ const propTypes = {
   onFileLoad: PropTypes.func,
   onRemoveFile: PropTypes.func,
   addFileStart: PropTypes.func,
+  importIrtSpreadsheet: PropTypes.func,
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
   maxFiles: PropTypes.number,
+  projectGuid: PropTypes.string,
 };
 
 const defaultProps = {
@@ -34,10 +36,12 @@ const defaultProps = {
   onFileLoad: () => {},
   onRemoveFile: () => {},
   addFileStart: () => {},
+  importIrtSpreadsheet: () => {},
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
   maxFiles: null,
+  projectGuid: null,
 };
 
 class FileUpload extends React.Component {
@@ -46,6 +50,7 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
+        const projectGuid = this.props.projectGuid;
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -70,6 +75,9 @@ class FileUpload extends React.Component {
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
+            if (projectGuid) {
+              this.props.importIrtSpreadsheet(projectGuid, file);
+            }
           },
         });
         upload.start();
