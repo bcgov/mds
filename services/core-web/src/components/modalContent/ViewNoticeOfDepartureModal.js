@@ -197,9 +197,9 @@ export const ViewNoticeOfDepartureModal = (props) => {
                 defaultValue={{
                   value:
                     noticeOfDeparture.nod_status !==
-                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_authorized
+                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
                       ? noticeOfDeparture.nod_status
-                      : NOTICE_OF_DEPARTURE_STATUS.self_authorized,
+                      : NOTICE_OF_DEPARTURE_STATUS.self_determined_non_substantial,
                 }}
                 style={{ width: "100%" }}
               >
