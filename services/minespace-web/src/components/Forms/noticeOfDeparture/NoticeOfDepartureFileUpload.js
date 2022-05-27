@@ -12,8 +12,13 @@ const propTypes = {
   allowMultiple: PropTypes.bool.isRequired,
   maxFiles: PropTypes.number.isRequired,
   setUploading: PropTypes.func.isRequired,
+  labelIdle: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   acceptedFileTypesMap: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  labelIdle: undefined,
 };
 
 export const NoticeOfDepartureFileUpload = (props) => {
@@ -26,6 +31,7 @@ export const NoticeOfDepartureFileUpload = (props) => {
     maxFiles,
     setUploading,
     acceptedFileTypesMap,
+    labelIdle,
   } = props;
   return (
     <Field
@@ -38,6 +44,7 @@ export const NoticeOfDepartureFileUpload = (props) => {
       uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mineGuid)}
       acceptedFileTypesMap={acceptedFileTypesMap}
       onFileLoad={onFileLoad}
+      labelIdle={labelIdle}
       onRemoveFile={onRemoveFile}
       allowRevert
       allowMultiple={allowMultiple}
@@ -46,5 +53,6 @@ export const NoticeOfDepartureFileUpload = (props) => {
 };
 
 NoticeOfDepartureFileUpload.propTypes = propTypes;
+NoticeOfDepartureFileUpload.defaultProps = defaultProps;
 
 export default NoticeOfDepartureFileUpload;

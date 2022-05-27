@@ -13,7 +13,7 @@ import {
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
-import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -189,6 +189,7 @@ const AddNoticeOfDepartureForm = (props) => {
             allowMultiple
             component={NoticeOfDepartureFileUpload}
             maxFiles={1}
+            labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
             validate={[required]}
@@ -222,7 +223,8 @@ const AddNoticeOfDepartureForm = (props) => {
             onProcessFiles={() => setUploading(false)}
             component={NoticeOfDepartureFileUpload}
             setUploading={setUploading}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
+            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
           />

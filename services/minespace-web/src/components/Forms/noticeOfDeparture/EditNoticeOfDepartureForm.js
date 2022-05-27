@@ -178,6 +178,7 @@ let AddNoticeOfDepartureForm = (props) => {
             allowMultiple
             setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
+            labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
             maxFiles={1}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
@@ -204,7 +205,7 @@ let AddNoticeOfDepartureForm = (props) => {
           </Col>
         </Row>
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
-        <Typography.Text>
+        <Typography.Text className="">
           Please support your notice of departure by uploading additional supporting application
           documents. These items documents can include:
         </Typography.Text>
@@ -224,6 +225,7 @@ let AddNoticeOfDepartureForm = (props) => {
                 NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
               );
             }}
+            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
