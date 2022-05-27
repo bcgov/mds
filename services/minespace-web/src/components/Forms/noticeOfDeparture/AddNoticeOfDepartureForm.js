@@ -31,6 +31,7 @@ const propTypes = {
 const AddNoticeOfDepartureForm = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
+  const [hasChecklist, setHasChecklist] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
@@ -70,24 +71,25 @@ const AddNoticeOfDepartureForm = (props) => {
         document_manager_guid,
       },
     ]);
+    if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(true);
+    }
   };
 
   useEffect(() => {
     change("uploadedFiles", documentArray);
   }, [documentArray]);
 
-  const onRemoveFile = (fileItem) => {
+  const onRemoveFile = (_, fileItem) => {
+    const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
+    if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(false);
+    }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
     );
     setUploadedFiles(
       uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
-    );
-  };
-
-  const hasChecklist = () => {
-    return documentArray.some(
-      (file) => file.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
     );
   };
 
@@ -231,7 +233,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || !hasChecklist()}
+            disabled={submitting || !hasChecklist}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
