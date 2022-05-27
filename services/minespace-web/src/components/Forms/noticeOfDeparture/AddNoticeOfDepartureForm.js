@@ -13,7 +13,7 @@ import {
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -222,7 +222,7 @@ const AddNoticeOfDepartureForm = (props) => {
             onProcessFiles={() => setUploading(false)}
             component={NoticeOfDepartureFileUpload}
             setUploading={setUploading}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
           />

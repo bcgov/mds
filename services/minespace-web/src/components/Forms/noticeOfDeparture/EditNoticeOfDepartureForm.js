@@ -9,7 +9,7 @@ import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -229,7 +229,7 @@ let AddNoticeOfDepartureForm = (props) => {
             allowMultiple
             setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
           />
