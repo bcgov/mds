@@ -8,7 +8,7 @@ from tests.factories import ProjectFactory
 
 def test_get_project_summaries_by_project_guid(test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True, post__project=0)
-    project = ProjectFactory(mine=mine, post__project_summary=0)
+    project = ProjectFactory(mine=mine, post=0)
     ProjectSummaryFactory(project=project)
 
     get_resp = test_client.get(
