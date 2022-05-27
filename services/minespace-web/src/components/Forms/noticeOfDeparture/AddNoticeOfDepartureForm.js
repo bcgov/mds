@@ -32,6 +32,7 @@ const AddNoticeOfDepartureForm = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
@@ -74,6 +75,7 @@ const AddNoticeOfDepartureForm = (props) => {
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(true);
     }
+    setUploading(false);
   };
 
   useEffect(() => {
@@ -183,6 +185,7 @@ const AddNoticeOfDepartureForm = (props) => {
             }}
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
+            setUploading={setUploading}
             allowMultiple
             component={NoticeOfDepartureFileUpload}
             maxFiles={1}
@@ -215,7 +218,10 @@ const AddNoticeOfDepartureForm = (props) => {
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
+            onProcessFileStart={() => setUploading(true)}
+            onProcessFiles={() => setUploading(false)}
             component={NoticeOfDepartureFileUpload}
+            setUploading={setUploading}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
@@ -233,7 +239,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || !hasChecklist}
+            disabled={submitting || !hasChecklist || uploading}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"

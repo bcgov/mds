@@ -36,6 +36,7 @@ let AddNoticeOfDepartureForm = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -67,6 +68,7 @@ let AddNoticeOfDepartureForm = (props) => {
         document_manager_guid,
       },
     ]);
+    setUploading(false);
   };
 
   useEffect(() => {
@@ -174,6 +176,7 @@ let AddNoticeOfDepartureForm = (props) => {
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
+            setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
             maxFiles={1}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
@@ -224,6 +227,7 @@ let AddNoticeOfDepartureForm = (props) => {
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
+            setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
@@ -276,7 +280,7 @@ let AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting}
+            disabled={submitting || uploading}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
