@@ -75,7 +75,6 @@ const AddNoticeOfDepartureForm = (props) => {
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(true);
     }
-    setUploading(false);
   };
 
   useEffect(() => {

@@ -68,7 +68,6 @@ let AddNoticeOfDepartureForm = (props) => {
         document_manager_guid,
       },
     ]);
-    setUploading(false);
   };
 
   useEffect(() => {

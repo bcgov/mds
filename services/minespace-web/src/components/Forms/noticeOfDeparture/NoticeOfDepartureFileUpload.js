@@ -47,6 +47,7 @@ export const NoticeOfDepartureFileUpload = (props) => {
       labelIdle={labelIdle}
       onRemoveFile={onRemoveFile}
       allowRevert
+      onprocessfiles={() => setUploading(false)}
       allowMultiple={allowMultiple}
     />
   );
