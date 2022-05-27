@@ -1069,7 +1069,6 @@ class ProjectFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory(MineFactory, minimal=True)
-        project_lead = factory.SubFactory(PartyBusinessRoleFactory)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     project_guid = GUID
@@ -1078,7 +1077,6 @@ class ProjectFactory(BaseFactory):
     contacts = []
 
     proponent_project_id = None
-    project_lead_party_guid = factory.SelfAttribute('project_lead.party_guid')
 
     @factory.post_generation
     def project_summary(obj, create, extracted, **kwargs):
