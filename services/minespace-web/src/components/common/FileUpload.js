@@ -20,6 +20,7 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  onAbort: PropTypes.func,
   onRemoveFile: PropTypes.func,
   addFileStart: PropTypes.func,
   importIrtSpreadsheet: PropTypes.func,
@@ -34,6 +35,7 @@ const defaultProps = {
   maxFileSize: "750MB",
   acceptedFileTypesMap: {},
   onFileLoad: () => {},
+  onAbort: () => {},
   onRemoveFile: () => {},
   addFileStart: () => {},
   importIrtSpreadsheet: () => {},
@@ -105,6 +107,7 @@ class FileUpload extends React.Component {
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}
           onaddfilestart={this.props.addFileStart}
+          onprocessfileabort={this.props.onAbort}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
