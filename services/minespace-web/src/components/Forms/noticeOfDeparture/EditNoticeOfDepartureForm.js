@@ -41,6 +41,10 @@ let AddNoticeOfDepartureForm = (props) => {
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
 
+  const otherDocuments = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+  );
+
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
     onSubmit(nod_guid, values, documentArray).finally(() => setSubmitting(false));
@@ -145,9 +149,16 @@ let AddNoticeOfDepartureForm = (props) => {
           Upload Notice of Departure Self-Assessment Form
         </h4>
         <Typography.Text>
-          Please upload your completed Self-assessment form (click here to download) below. Remember
-          your completed form must be signed by the Mine Manager and any supporting information
-          included or uploaded.
+          Please upload your completed Self-assessment form (
+          <a
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
+            target="_blank"
+            rel="noreferrer"
+          >
+            click here to download
+          </a>
+          ) below. Remember your completed form must be signed by the Mine Manager and any
+          supporting information included or uploaded.
         </Typography.Text>
         <Form.Item className="margin-y-large">
           <Field
@@ -189,6 +200,70 @@ let AddNoticeOfDepartureForm = (props) => {
             </LinkButton>
           </Col>
         </Row>
+        <h4 className="nod-modal-section-header">Upload Application Documents</h4>
+        <Typography.Text>
+          Please support your notice of departure by uploading additional supporting application
+          documents. These items documents can include:
+        </Typography.Text>
+        <ul>
+          <li>A detailed project description</li>
+          <li>Location (with map, showing Mine boundary)</li>
+          <li>Total disturbance area</li>
+          <li>Total new disturbance area</li>
+          <li>Relevant supporting info (management plans, field surveys, etc...)</li>
+        </ul>
+        <Form.Item className="margin-y-large">
+          <Field
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+              );
+            }}
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            allowMultiple
+            component={NoticeOfDepartureFileUpload}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
+            validate={[required]}
+          />
+        </Form.Item>
+        {otherDocuments.length > 0 && (
+          <div>
+            <Row>
+              <Col span={16}>
+                <p className="field-title">Uploaded File</p>
+              </Col>
+              <Col span={5}>
+                <p className="field-title">Upload Date</p>
+              </Col>
+              <Col span={3}>
+                <p className="field-title">&nbsp;</p>
+              </Col>
+            </Row>
+            {otherDocuments.map((document) => (
+              <Row>
+                <Col span={16}>
+                  <p>{document?.document_name || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={5}>
+                  <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={3}>
+                  <LinkButton
+                    className="nod-table-link"
+                    onClick={() => downloadFileFromDocumentManager(document)}
+                    title={document?.document_name}
+                  >
+                    Download
+                  </LinkButton>
+                </Col>
+              </Row>
+            ))}
+          </div>
+        )}
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"

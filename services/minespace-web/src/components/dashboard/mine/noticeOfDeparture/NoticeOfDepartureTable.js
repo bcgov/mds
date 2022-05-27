@@ -57,20 +57,19 @@ const NoticeOfDepartureTable = (props) => {
       title: "Submitted",
       dataIndex: "submitted_at",
       key: "submitted_at",
-      sorter: (a, b) => (a.permit.permit_no > b.permit.permit_no ? -1 : 1),
+      sorter: (a, b) => (a.submitted_at > b.submitted_at ? -1 : 1),
     },
     {
       title: "Type",
       dataIndex: "nod_type",
       key: "nod_type",
-      sorter: (a, b) => (a.type > b.type ? -1 : 1),
+      sorter: (a, b) => (a.nod_type > b.nod_type ? -1 : 1),
     },
     {
       title: "Status",
       dataIndex: "nod_status",
       key: "nod_status",
-      sorter: (a, b) => (a.status > b.status ? -1 : 1),
-      defaultSortOrder: "ascend",
+      sorter: (a, b) => (a.nod_status > b.nod_status ? -1 : 1),
     },
     {
       render: (text, record) => (
