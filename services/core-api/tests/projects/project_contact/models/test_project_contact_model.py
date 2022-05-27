@@ -12,8 +12,8 @@ def test_find_project_contact_by_guid(db_session):
 
 def test_find_project_contacts_by_project_guid(db_session):
     batch_size = 2
-    project = ProjectFactory(post=2)
-    # ProjectContactFactory.create_batch(project=project, size=batch_size)
+    project = ProjectFactory(project_contact=0)
+    ProjectContactFactory.create_batch(project=project, size=batch_size)
 
     project_guid = project.project_guid
 

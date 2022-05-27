@@ -13,8 +13,8 @@ def test_project_find_by_project_guid(db_session):
 
 def test_project_find_by_mine_guid(db_session):
     batch_size = 3
-    mine = MineFactory(minimal=True, post=3)
-    # ProjectFactory.create_batch(mine=mine, size=batch_size)
+    mine = MineFactory(minimal=True, project=0)
+    ProjectFactory.create_batch(mine=mine, size=batch_size)
 
     mine_guid = mine.mine_guid
 
