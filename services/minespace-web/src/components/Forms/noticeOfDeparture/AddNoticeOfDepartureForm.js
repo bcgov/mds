@@ -189,6 +189,36 @@ const AddNoticeOfDepartureForm = (props) => {
             validate={[required]}
           />
         </Form.Item>
+        <h4 className="nod-modal-section-header">Upload Application Documents</h4>
+        <Typography.Text>
+          Please support your notice of departure by uploading additional supporting application
+          documents. These items documents can include:
+        </Typography.Text>
+        <ul>
+          <li>A detailed project description</li>
+          <li>Location (with map, showing Mine boundary)</li>
+          <li>Total disturbance area</li>
+          <li>Total new disturbance area</li>
+          <li>Relevant supporting info (management plans, field surveys, etc...)</li>
+        </ul>
+        <Form.Item className="margin-y-large">
+          <Field
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+              );
+            }}
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            allowMultiple
+            component={NoticeOfDepartureFileUpload}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
+            validate={[required]}
+          />
+        </Form.Item>
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
