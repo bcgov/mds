@@ -53,7 +53,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             comments_cell = row.get('Comments')
             # Add 2 to offset zero-based "idx" and starting_row_number beginning at table header
             row_number = idx + starting_row_number + 2
-            # If "Information" cell entry is not valid flag that to user(could have a bad template or added custom rows)
+            # If "Information" cell entry is not valid, flag that to user(could have a bad template or added custom rows)
             if information_cell_is_valid is False:
                 import_errors.append(
                     f'Row {row_number} - "{" ".join(information_cell_split[1:]).strip()}" is not a valid entry in the Information column.'
@@ -108,17 +108,19 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         'file',
         location='files',
         type=FileStorage,
-        required=True,
+        required=False,
     )
 
     @api.doc(
-        description='Create a new Information Requirements Table (IRT).',
+        description=
+        'Import an Information Requirements Table (IRT) spreadsheet and create a new Information Requirements Table (IRT).',
         params={'project_guid': 'GUID of the project associated to a IRT'})
     @api.expect(IRT_MODEL)
     @api.marshal_with(IRT_MODEL, code=201)
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, project_guid):
         data = self.parser.parse_args()
+        print(f'DATA: {data}')
         import_file = data.get('file')
         try:
             project = Project.find_by_project_guid(project_guid)

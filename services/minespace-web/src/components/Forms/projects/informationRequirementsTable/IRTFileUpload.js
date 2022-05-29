@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { IMPORT_INFORMATION_REQUIREMENTS_TABLE } from "@common/constants/API";
+import { INFORMATION_REQUIREMENTS_TABLE } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
@@ -17,14 +17,13 @@ export const IRTFileUpload = (props) => (
     id="fileUpload"
     name="fileUpload"
     component={FileUpload}
-    uploadUrl={IMPORT_INFORMATION_REQUIREMENTS_TABLE(props.projectGuid)}
+    uploadUrl={INFORMATION_REQUIREMENTS_TABLE(props.projectGuid)}
     acceptedFileTypesMap={props.acceptedFileTypesMap}
     onFileLoad={props.onFileLoad}
     onRemoveFile={props.onRemoveFile}
     importIrtSpreadsheet={props.importIrtSpreadsheet}
     projectGuid={props.projectGuid}
     allowRevert
-    allowMultiple
   />
 );
 

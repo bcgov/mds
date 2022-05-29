@@ -76,6 +76,7 @@ class FileUpload extends React.Component {
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
             if (projectGuid) {
+              console.log("ON SUCCESS: ", file);
               this.props.importIrtSpreadsheet(projectGuid, file);
             }
           },

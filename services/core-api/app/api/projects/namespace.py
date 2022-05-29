@@ -13,7 +13,9 @@ from app.api.projects.information_requirements_table.resources.information_requi
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_status_code import InformationRequirementsTableStatusCodeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_download import InformationRequirementsTableDownloadResource
-from app.api.projects.information_requirements_table.resources.Information_requirements_table_upload import InformationRequirementsTableListUploadResource, InformationRequirementsTableImportLocalResource
+from app.api.projects.information_requirements_table.resources.Information_requirements_table_upload import InformationRequirementsTableImportLocalResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table_document_upload import InformationRequirementsTableDocumentUploadResource
 from app.api.projects.information_requirements_table.resources.requirements_list import RequirementsListResource
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
 
@@ -41,11 +43,12 @@ api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-type
 api.add_resource(ProjectSummaryAuthorizationTypeResource, '/project-summary-authorization-types')
 
 # Information Requirements Table (IRT)
-api.add_resource(InformationRequirementsTableDownloadResource, '/irt-template-download')
-api.add_resource(InformationRequirementsTableListUploadResource,
-                 '/<string:project_guid>/final-irt-import')
-api.add_resource(InformationRequirementsTableImportLocalResource,
-                 '/<string:project_guid>/final-irt-import-local')
+api.add_resource(InformationRequirementsTableDownloadResource,
+                 '/information-requirements-table/template-download')
+api.add_resource(InformationRequirementsTableDocumentUploadResource,
+                 '/<string:project_guid>/information-requirements-table/documents')
+# api.add_resource(InformationRequirementsTableImportLocalResource,
+#                  '/<string:project_guid>/information-requirements-table')
 
 api.add_resource(InformationRequirementsTableResource,
                  '/<string:project_guid>/information-requirements-table/<string:irt_guid>')

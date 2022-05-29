@@ -9,7 +9,7 @@ import { Typography, Row, Col } from "antd";
 import { bindActionCreators, compose } from "redux";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 import * as FORM from "@/constants/forms";
-import { EXCEL } from "@/constants/fileTypes";
+import { MODERN_EXCEL } from "@/constants/fileTypes";
 import { withRouter } from "react-router-dom";
 
 const propTypes = {
@@ -25,7 +25,7 @@ export class IRTFileImport extends Component {
   };
 
   acceptedFileTypesMap = {
-    ...EXCEL,
+    ...MODERN_EXCEL,
   };
 
   onFileLoad = (fileName, document_manager_guid) => {
@@ -73,7 +73,8 @@ export class IRTFileImport extends Component {
 }
 
 IRTFileImport.propTypes = propTypes;
-const selector = formValueSelector(FORM.IMPORT_INFORMATION_REQUIREMENTS_TABLE);
+
+const selector = formValueSelector(FORM.INFORMATION_REQUIREMENTS_TABLE);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
 });
@@ -90,7 +91,7 @@ const mapDispatchToProps = (dispatch) =>
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: FORM.IMPORT_INFORMATION_REQUIREMENTS_TABLE,
+    form: FORM.INFORMATION_REQUIREMENTS_TABLE,
     destroyOnUnmount: false,
     touchOnBlur: true,
     forceUnregisterOnUnmount: true,
