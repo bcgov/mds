@@ -18,7 +18,7 @@ from app.api.projects.project.models.project import Project
 
 
 class InformationRequirementsTableListResource(Resource, UserMixin):
-    def convert_boolean_string(self, boolean_string):
+    def convert_excel_boolean_string(self, boolean_string):
         return {'True': True, 'False': False}.get(boolean_string, False)
 
     # Only create new requirements when row has filled in required/methods or comments
@@ -48,8 +48,8 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             information_cell_is_valid = valid_requirement_descriptions.count(
                 sanitized_information_cell) > 0
 
-            required_cell = self.convert_boolean_string(row.get('Required'))
-            methods_cell = self.convert_boolean_string(row.get('Methods'))
+            required_cell = self.convert_excel_boolean_string(row.get('Required'))
+            methods_cell = self.convert_excel_boolean_string(row.get('Methods'))
             comments_cell = row.get('Comments')
             # Add 2 to offset zero-based "idx" and starting_row_number beginning at table header
             row_number = idx + starting_row_number + 2
@@ -73,22 +73,21 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             ]
             is_row_top_level_category = True if active_requirement[
                 0].parent_requirement_id is None else False
-            # If the "Information" requirement provided does not match DB, an empty row is provided, or the row contains a top level category do not create a requirement
+            # If the "Information" requirement provided does not match DB, an empty row is provided, or the row contains a top level category do not create an irt_requirements_xref
             if active_requirement and is_empty_row is False and is_row_top_level_category is False:
                 new_requirement_dict = {
                     'information': sanitized_information_cell,
                     'requirement_guid': active_requirement[0].requirement_guid,
                     'required': required_cell,
                     'methods': methods_cell,
-                    'comments': comments_cell
+                    'comment': comments_cell
                 }
                 sanitized_irt_requirements.append(new_requirement_dict)
 
         if import_errors:
-            formatted_import_errors = ',\\n'.join(import_errors)
+            temp_file.close()
             raise BadRequest(
-                f'The following validation errors occurred during import: {formatted_import_errors}.'
-            )
+                f'The following validation errors occurred during import: {import_errors}.')
 
         new_information_requirements_table = InformationRequirementsTable._schema().load({
             'project_guid':
@@ -108,7 +107,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         'file',
         location='files',
         type=FileStorage,
-        required=False,
+        required=True,
     )
 
     @api.doc(
@@ -120,17 +119,19 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, project_guid):
         data = self.parser.parse_args()
-        print(f'DATA: {data}')
         import_file = data.get('file')
         try:
             project = Project.find_by_project_guid(project_guid)
             if project is None:
-                raise BadRequest('Cannot import IRT, the project supplied does not exist')
-            existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
-            if existing_irt:
-                raise BadRequest('Cannot import IRT, this project already has one imported')
+                raise BadRequest('Cannot import IRT, the project supplied cannot be found')
+
+            # TODO: Potentially enable this after further requirements from testing have surfaced
+            # existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
+            # if existing_irt:
+            #     raise BadRequest('Cannot import IRT, this project already has one imported')
+
             new_information_requirements_table = self.build_irt_payload_from_excel(
                 import_file, project_guid)
-            return 201, new_information_requirements_table
+            return new_information_requirements_table, 201
         except BadRequest as err:
             raise err
