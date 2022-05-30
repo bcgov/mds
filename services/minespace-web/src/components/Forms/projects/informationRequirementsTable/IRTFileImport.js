@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, change, formValueSelector, reduxForm } from "redux-form";
-import { importIrtSpreadsheet } from "@common/actionCreators/projectActionCreator";
+import { createInformationRequirementsTable } from "@common/actionCreators/projectActionCreator";
 import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
@@ -14,7 +14,7 @@ import { withRouter } from "react-router-dom";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
-  importIrtSpreadsheet: PropTypes.func.isRequired,
+  createInformationRequirementsTable: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   projectGuid: PropTypes.string.isRequired,
 };
@@ -59,7 +59,7 @@ export class IRTFileImport extends Component {
                 name="final_irt"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
-                importIrtSpreadsheet={this.props.importIrtSpreadsheet}
+                createInformationRequirementsTable={this.props.createInformationRequirementsTable}
                 projectGuid={this.props.projectGuid}
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 component={IRTFileUpload}
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       change,
-      importIrtSpreadsheet,
+      createInformationRequirementsTable,
     },
     dispatch
   );

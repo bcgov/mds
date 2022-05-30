@@ -192,7 +192,7 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importIrtSpreadsheet = (
+export const createInformationRequirementsTable = (
   projectGuid,
   file,
   message = "Successfully imported final IRT."
