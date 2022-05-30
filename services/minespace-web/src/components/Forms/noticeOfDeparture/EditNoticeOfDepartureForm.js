@@ -31,7 +31,7 @@ const propTypes = {
 };
 
 // eslint-disable-next-line import/no-mutable-exports
-let AddNoticeOfDepartureForm = (props) => {
+let EditNoticeOfDepartureForm = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
@@ -295,21 +295,21 @@ let AddNoticeOfDepartureForm = (props) => {
   );
 };
 
-AddNoticeOfDepartureForm.propTypes = propTypes;
+EditNoticeOfDepartureForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   initialValues: getNoticeOfDeparture(state),
 });
 
-AddNoticeOfDepartureForm = reduxForm({
+EditNoticeOfDepartureForm = reduxForm({
   form: FORM.EDIT_NOTICE_OF_DEPARTURE,
   onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
   destroyOnUnmount: true,
   forceUnregisterOnUnmount: true,
   touchOnBlur: true,
   enableReinitialize: true,
-})(AddNoticeOfDepartureForm);
+})(EditNoticeOfDepartureForm);
 
-AddNoticeOfDepartureForm = connect(mapStateToProps)(AddNoticeOfDepartureForm);
+EditNoticeOfDepartureForm = connect(mapStateToProps)(EditNoticeOfDepartureForm);
 
-export default AddNoticeOfDepartureForm;
+export default EditNoticeOfDepartureForm;
