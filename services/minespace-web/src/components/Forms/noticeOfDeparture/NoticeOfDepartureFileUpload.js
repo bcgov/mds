@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
@@ -13,6 +12,13 @@ const propTypes = {
   allowMultiple: PropTypes.bool.isRequired,
   maxFiles: PropTypes.number.isRequired,
   setUploading: PropTypes.func.isRequired,
+  labelIdle: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  acceptedFileTypesMap: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  labelIdle: undefined,
 };
 
 export const NoticeOfDepartureFileUpload = (props) => {
@@ -24,6 +30,8 @@ export const NoticeOfDepartureFileUpload = (props) => {
     allowMultiple,
     maxFiles,
     setUploading,
+    acceptedFileTypesMap,
+    labelIdle,
   } = props;
   return (
     <Field
@@ -34,15 +42,18 @@ export const NoticeOfDepartureFileUpload = (props) => {
       maxFiles={maxFiles}
       onAbort={() => setUploading(false)}
       uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mineGuid)}
-      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+      acceptedFileTypesMap={acceptedFileTypesMap}
       onFileLoad={onFileLoad}
+      labelIdle={labelIdle}
       onRemoveFile={onRemoveFile}
       allowRevert
+      onprocessfiles={() => setUploading(false)}
       allowMultiple={allowMultiple}
     />
   );
 };
 
 NoticeOfDepartureFileUpload.propTypes = propTypes;
+NoticeOfDepartureFileUpload.defaultProps = defaultProps;
 
 export default NoticeOfDepartureFileUpload;
