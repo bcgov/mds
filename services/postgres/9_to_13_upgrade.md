@@ -32,12 +32,18 @@ sed -i '/REFRESH MATERIALIZED VIEW public.now_application_gis_export_view;/d' tm
 
 Gzip the update `tmp.sql` 
 
-Run restore: `./backup.sh -r postgres13:5432/mds -f <INSERT_FILENAME>`
+Run Restore Roles: `psql -h postgres13 -U postgres -f /tmp/roles.sql`
+
+Run Restore: `./backup.sh -r postgres13:5432/mds -f <INSERT_FILENAME>`
 
 
 ### Step 4
 
-Run the following manually after backup
+Run the following manually after backup (the below section failed to run due to missing raster artifacts in new db)
+
+Login to the new postgres db - `psql -h postgres13 -p 5432 -U postgres`
+
+Connect to mds database `\c mds` 
 
 ```
 CREATE EXTENSION IF NOT EXISTS postgis_raster;
