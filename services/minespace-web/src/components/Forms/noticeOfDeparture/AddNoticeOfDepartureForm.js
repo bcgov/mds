@@ -218,8 +218,6 @@ const AddNoticeOfDepartureForm = (props) => {
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
-            onProcessFileStart={() => setUploading(true)}
-            onProcessFiles={() => setUploading(false)}
             component={NoticeOfDepartureFileUpload}
             setUploading={setUploading}
             labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
