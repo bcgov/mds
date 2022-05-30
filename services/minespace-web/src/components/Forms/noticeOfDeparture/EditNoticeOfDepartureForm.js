@@ -9,7 +9,7 @@ import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,9 +36,14 @@ let AddNoticeOfDepartureForm = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+  );
+
+  const otherDocuments = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
 
   const handleNoticeOfDepartureSubmit = (values) => {
@@ -145,9 +150,16 @@ let AddNoticeOfDepartureForm = (props) => {
           Upload Notice of Departure Self-Assessment Form
         </h4>
         <Typography.Text>
-          Please upload your completed Self-assessment form (click here to download) below. Remember
-          your completed form must be signed by the Mine Manager and any supporting information
-          included or uploaded.
+          Please upload your completed Self-assessment form (
+          <a
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
+            target="_blank"
+            rel="noreferrer"
+          >
+            click here to download
+          </a>
+          ) below. Remember your completed form must be signed by the Mine Manager and any
+          supporting information included or uploaded.
         </Typography.Text>
         <Form.Item className="margin-y-large">
           <Field
@@ -163,7 +175,9 @@ let AddNoticeOfDepartureForm = (props) => {
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
             allowMultiple
+            setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
+            labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
             maxFiles={1}
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
@@ -189,6 +203,72 @@ let AddNoticeOfDepartureForm = (props) => {
             </LinkButton>
           </Col>
         </Row>
+        <h4 className="nod-modal-section-header">Upload Application Documents</h4>
+        <Typography.Text className="">
+          Please support your notice of departure by uploading additional supporting application
+          documents. These items documents can include:
+        </Typography.Text>
+        <ul>
+          <li>A detailed project description</li>
+          <li>Location (with map, showing Mine boundary)</li>
+          <li>Total disturbance area</li>
+          <li>Total new disturbance area</li>
+          <li>Relevant supporting info (management plans, field surveys, etc...)</li>
+        </ul>
+        <Form.Item className="margin-y-large">
+          <Field
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+              );
+            }}
+            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            allowMultiple
+            setUploading={setUploading}
+            component={NoticeOfDepartureFileUpload}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
+            validate={[required]}
+          />
+        </Form.Item>
+        {otherDocuments.length > 0 && (
+          <div>
+            <Row>
+              <Col span={16}>
+                <p className="field-title">Uploaded File</p>
+              </Col>
+              <Col span={5}>
+                <p className="field-title">Upload Date</p>
+              </Col>
+              <Col span={3}>
+                <p className="field-title">&nbsp;</p>
+              </Col>
+            </Row>
+            {otherDocuments.map((document) => (
+              <Row>
+                <Col span={16}>
+                  <p>{document?.document_name || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={5}>
+                  <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
+                </Col>
+                <Col span={3}>
+                  <LinkButton
+                    className="nod-table-link"
+                    onClick={() => downloadFileFromDocumentManager(document)}
+                    title={document?.document_name}
+                  >
+                    Download
+                  </LinkButton>
+                </Col>
+              </Row>
+            ))}
+          </div>
+        )}
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -201,7 +281,7 @@ let AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting}
+            disabled={submitting || uploading}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
