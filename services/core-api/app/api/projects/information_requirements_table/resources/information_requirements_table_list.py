@@ -125,10 +125,10 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if project is None:
                 raise BadRequest('Cannot import IRT, the project supplied cannot be found')
 
-            # TODO: Potentially enable this after further requirements from testing have surfaced
-            # existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
-            # if existing_irt:
-            #     raise BadRequest('Cannot import IRT, this project already has one imported')
+            # TODO: Add in check later that will look at status to determine if we can override the existing records, will also need to add support in the model
+            existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
+            if existing_irt:
+                raise BadRequest('Cannot import IRT, this project already has one imported')
 
             new_information_requirements_table = self.build_irt_payload_from_excel(
                 import_file, project_guid)
