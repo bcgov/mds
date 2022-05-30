@@ -20,6 +20,10 @@ export PATH="$FLYWAY_HOME:$PATH"
 # Run migrations for mds database
 flyway migrate
 
+if [ "$PLATFORM" == "K8S" ]; then
+    flyway repair
+fi
+
 # Run migrations for mds_test database
 if [ "$PLATFORM" != "K8S" ]; then
     flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate
