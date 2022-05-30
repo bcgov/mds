@@ -1,2 +1,0 @@
-CREATE DATABASE mds;
-CREATE DATABASE mds_test;
