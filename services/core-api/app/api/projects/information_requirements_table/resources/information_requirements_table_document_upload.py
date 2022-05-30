@@ -18,7 +18,7 @@ class InformationRequirementsTableDocumentUploadResource(Resource, UserMixin):
         if not project:
             raise NotFound('Project not found.')
 
-        mine = Mine.find_by_mine_guid(project.mine_guid)
+        mine = Mine.find_by_mine_guid(str(project.mine_guid))
 
         if not mine:
             raise NotFound('Mine not found.')
