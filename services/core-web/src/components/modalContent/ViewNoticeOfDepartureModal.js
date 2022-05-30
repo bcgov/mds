@@ -237,13 +237,17 @@ export const ViewNoticeOfDepartureModal = (props) => {
         >
           Update
         </Button>
-        <Button
-          className="full-mobile nod-cancel-button"
-          type="secondary"
-          onClick={props.closeModal}
+        <Popconfirm
+          placement="top"
+          title="Are you sure you want to cancel?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={props.closeModal}
         >
-          Cancel
-        </Button>
+          <Button className="full-mobile nod-cancel-button" type="secondary">
+            Cancel
+          </Button>
+        </Popconfirm>
       </div>
     </div>
   );

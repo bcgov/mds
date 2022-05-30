@@ -96,6 +96,7 @@ export const NoticeOfDeparture = (props) => {
       values.nod_type === NOTICE_OF_DEPARTURE_TYPE_VALUES.non_substantial
         ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
         : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
+
     return props
       .updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid }, { ...values, nod_status })
       .then(async (response) => {
