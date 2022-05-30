@@ -29,6 +29,8 @@ const propTypes = {
   allowMultiple: PropTypes.bool,
   maxFiles: PropTypes.number,
   projectGuid: PropTypes.string,
+  labelIdle: PropTypes.string,
+  onprocessfiles: PropTypes.func,
 };
 
 const defaultProps = {
@@ -44,6 +46,8 @@ const defaultProps = {
   allowMultiple: true,
   maxFiles: null,
   projectGuid: null,
+  onprocessfiles: () => {},
+  labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
 };
 
 class FileUpload extends React.Component {
@@ -107,6 +111,8 @@ class FileUpload extends React.Component {
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}
           onaddfilestart={this.props.addFileStart}
+          onprocessfiles={this.props.onprocessfiles}
+          labelIdle={this.props.labelIdle}
           onprocessfileabort={this.props.onAbort}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
