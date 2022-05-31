@@ -79,8 +79,7 @@ services:
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   ####################### Backend Definition #######################
   backend:
