@@ -157,7 +157,5 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
-  prometheus_data: {}
-  grafana_storage: {}
   core_api_logs: {}
   core_web_logs: {}
