@@ -1,7 +1,13 @@
-name: Integration Tests
+name: CORE-API Integration Tests
 
 on:
   pull_request:
+    paths:
+      - migrations/**
+      - services/core-api/**
+      - services/postgres/**
+      - docker-compose
+      - docker-compose.ci.yaml
 
 jobs:
   tests-verify-migrations:
