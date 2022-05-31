@@ -18,6 +18,7 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres-verify/mds
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
+      - PLATFORM=ci
     depends_on:
       - postgres-verify
 
@@ -78,6 +79,7 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
+      - PLATFORM=ci
     depends_on:
       - postgres
 
