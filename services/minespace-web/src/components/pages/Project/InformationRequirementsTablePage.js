@@ -19,7 +19,8 @@ const propTypes = {
   clearInformationRequirementsTable: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: {
-      mineGuid: PropTypes.string,
+      projectGuid: PropTypes.string,
+      tab: PropTypes.string,
     },
   }).isRequired,
 };
