@@ -43,8 +43,8 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         'NoticeOfDepartureDocumentXref',
         lazy='select',
         primaryjoin=
-        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)"
-    )
+        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)",
+        order_by='desc(NoticeOfDepartureDocumentXref.create_timestamp)')
 
     mine_documents = db.relationship(
         'MineDocument',

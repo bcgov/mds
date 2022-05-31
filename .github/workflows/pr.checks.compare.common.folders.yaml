@@ -1,5 +1,10 @@
 name: Compare Common Redux folder
-on: [pull_request]
+
+on:
+  pull_request:
+    paths:
+      - services/core-web/**
+      - services/minespace-web/**
 
 jobs:
   common-folder-compare:
