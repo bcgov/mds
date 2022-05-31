@@ -9,7 +9,7 @@ import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -25,13 +25,14 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
-let AddNoticeOfDepartureForm = (props) => {
-  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture } = props;
+let EditNoticeOfDepartureForm = (props) => {
+  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -74,13 +75,14 @@ let AddNoticeOfDepartureForm = (props) => {
     change("uploadedFiles", documentArray);
   }, [documentArray]);
 
-  const onRemoveFile = (fileItem) => {
+  const onRemoveFile = (_, fileItem) => {
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
     );
     setUploadedFiles(
       uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
     );
+    setUploading(false);
   };
 
   return (
@@ -230,7 +232,7 @@ let AddNoticeOfDepartureForm = (props) => {
             allowMultiple
             setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
           />
@@ -276,12 +278,11 @@ let AddNoticeOfDepartureForm = (props) => {
             okText="Yes"
             cancelText="No"
             onConfirm={closeModal}
-            disabled={submitting}
           >
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || uploading}
+            disabled={submitting || uploading || (pristine && documentArray.length === 0)}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
@@ -294,21 +295,21 @@ let AddNoticeOfDepartureForm = (props) => {
   );
 };
 
-AddNoticeOfDepartureForm.propTypes = propTypes;
+EditNoticeOfDepartureForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   initialValues: getNoticeOfDeparture(state),
 });
 
-AddNoticeOfDepartureForm = reduxForm({
+EditNoticeOfDepartureForm = reduxForm({
   form: FORM.EDIT_NOTICE_OF_DEPARTURE,
   onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
   destroyOnUnmount: true,
   forceUnregisterOnUnmount: true,
   touchOnBlur: true,
   enableReinitialize: true,
-})(AddNoticeOfDepartureForm);
+})(EditNoticeOfDepartureForm);
 
-AddNoticeOfDepartureForm = connect(mapStateToProps)(AddNoticeOfDepartureForm);
+EditNoticeOfDepartureForm = connect(mapStateToProps)(EditNoticeOfDepartureForm);
 
-export default AddNoticeOfDepartureForm;
+export default EditNoticeOfDepartureForm;
