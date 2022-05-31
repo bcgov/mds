@@ -351,17 +351,29 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
     >
       Update
     </Button>
-    <Button
-      block={false}
-      className="full-mobile nod-cancel-button"
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[MockFunction]}
-      type="secondary"
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="top"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
     >
-      Cancel
-    </Button>
+      <Button
+        block={false}
+        className="full-mobile nod-cancel-button"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
   </div>
 </div>
 `;
