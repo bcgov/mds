@@ -21,7 +21,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up --exit-code-from flyway-verify flyway-verify
+          docker-compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway-verify flyway-verify
 
   tests-integration-backend:
     name: tests-integration-backend
