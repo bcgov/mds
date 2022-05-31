@@ -54,6 +54,7 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
         id="step2-next"
         style={{ display: "inline", float: "right" }}
         type="tertiary"
+        className="full-mobile"
         onClick={() => next()}
         disabled={state.submitting}
       >
@@ -160,10 +161,12 @@ export class InformationRequirementsTablePage extends Component {
             {!this.state.activeTab && <Divider />}
             <br />
             <br />
-
-            <div>{Forms[this.state.current].content}</div>
-
-            {Forms[this.state.current].buttons}
+            <Col span={24}>
+              <div>{Forms[this.state.current].content}</div>
+            </Col>
+            <Col xs={24} md={6}>
+              <div>{Forms[this.state.current].buttons}</div>
+            </Col>
           </Row>
         </>
       )

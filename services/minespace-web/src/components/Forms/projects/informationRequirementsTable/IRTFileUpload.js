@@ -22,7 +22,9 @@ export const IRTFileUpload = (props) => (
     onFileLoad={props.onFileLoad}
     onRemoveFile={props.onRemoveFile}
     allowRevert
-    allowMultiple={false}
+    // Allow multiple is true and maxFiles is 1 due to a styling issue that messes up the filepond-hopper when allowMultiple is false
+    allowMultiple
+    maxFiles={1}
     afterSuccess={{
       action: props.createInformationRequirementsTable,
       actionGuid: props.projectGuid,

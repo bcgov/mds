@@ -43,7 +43,7 @@ export class IRTFileImport extends Component {
     return (
       <>
         <Row>
-          <Col>
+          <Col span={24}>
             <Typography.Title level={4}>Import final IRT file</Typography.Title>
             <Typography.Paragraph>
               Please upload your final IRT file.
@@ -51,6 +51,7 @@ export class IRTFileImport extends Component {
                 <li>You cannot upload ZIP files</li>
                 <li>The allowed file types are: {acceptFileTypeArray.join(", ")}</li>
                 <li>Maximum individual file size is 400 MB</li>
+                <li>You can only upload one file at a time</li>
               </ul>
             </Typography.Paragraph>
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
