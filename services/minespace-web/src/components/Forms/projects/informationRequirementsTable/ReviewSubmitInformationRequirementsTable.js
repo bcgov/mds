@@ -28,7 +28,7 @@ function ReviewSubmitInformationRequirementsTable(props) {
 
 const Subrequirement = (props) => (
   <>
-    <Col span={24}>
+    <Col style={{ width: "100%" }} span={24}>
       <p>
         <Highlight>{`${props.sub_requirement.step} ${props.sub_requirement.description}`}</Highlight>
       </p>
