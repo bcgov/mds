@@ -196,7 +196,7 @@ let EditNoticeOfDepartureForm = (props) => {
           </Col>
           <Col span={3}>
             <p className="field-title">&nbsp;</p>
-            {checklist.document_name ? (
+            {checklist?.document_name ? (
               <LinkButton
                 className="nod-table-link"
                 onClick={() => downloadFileFromDocumentManager(checklist)}
