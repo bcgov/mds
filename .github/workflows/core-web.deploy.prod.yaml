@@ -43,7 +43,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-web prod ${{ github.sha }} ${{ secrets.RC_TOKEN }}
+        run: ./gitops/watch-deployment.sh core-web prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
@@ -51,4 +51,4 @@ jobs:
     if: always() && (needs.trigger-gitops.result == 'failure')
     steps:
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-web prod ${{ github.sha }} ${{ secrets.RC_TOKEN }} 1
+        run: ./gitops/watch-deployment.sh core-web prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
