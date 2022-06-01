@@ -91,3 +91,10 @@ class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
             raise NotFound('Document not found')
 
         doc.delete()
+
+        nod = NoticeOfDeparture.find_one(nod_guid)
+
+        if not nod:
+            raise NotFound('Unable to fetch Notice of departure.')
+
+        nod.save()
