@@ -11,7 +11,7 @@ if [ $SUCCESS == 0 ]; then
     MSG_COLOR=65280
     EMOJI=":white_check_mark:"
     MSG="SUCCESS"
-    MENTION="@here"
+    MENTION=""
 else
     MSG_COLOR=14177041
     EMOJI=":x:"
