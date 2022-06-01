@@ -40,7 +40,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         valid_requirement_descriptions = [
             requirement.description.strip().lower() for requirement in valid_requirements
         ]
-
         # Start parsing at specific row to avoid metadata in template
         starting_row_number = 7
         worksheet_to_parse = excel_dict.sanitize_sheet_items[starting_row_number:]
@@ -54,7 +53,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             sanitized_information_cell = ' '.join(information_cell_split[1:]).strip().lower()
             information_cell_is_valid = valid_requirement_descriptions.count(
                 sanitized_information_cell) > 0
-
             required_cell = self.convert_excel_boolean_string(row.get('Required'))
             methods_cell = self.convert_excel_boolean_string(row.get('Methods'))
             comments_cell = row.get('Comments')
@@ -72,6 +70,12 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                     f'Row {row_number} - "Required" or "Methods" cells is checked off and requires "Comments" to be provided.'
                 )
                 continue
+            # If "Required" and "Methods" cell entry is false and "Comments" are set add error
+            if (required_cell is False and methods_cell is False) and comments_cell != 'None':
+                import_errors.append(
+                    f'Row {row_number} - "Required" or "Methods" cells needs to be checked off to include "Comments".'
+                )
+                continue
 
             is_empty_row = required_cell is False and methods_cell is False and comments_cell == 'None'
             temporal_active_requirements = [
@@ -86,11 +90,11 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                         active_requirement.append(temporal_active_requirement)
                     elif not parent and not information_section[1]:
                         active_requirement.append(temporal_active_requirement)
+            else:
+                active_requirement.extend(temporal_active_requirements)
 
-            is_row_top_level_category = True if active_requirement and active_requirement[
-                0].parent_requirement_id is None else False
             # If the "Information" requirement provided does not match DB, an empty row is provided, or the row contains a top level category do not create an irt_requirements_xref
-            if active_requirement and is_empty_row is False and is_row_top_level_category is False:
+            if active_requirement and is_empty_row is False:
                 new_requirement_dict = {
                     'information': sanitized_information_cell,
                     'requirement_guid': active_requirement[0].requirement_guid,
@@ -99,12 +103,10 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                     'comment': comments_cell
                 }
                 sanitized_irt_requirements.append(new_requirement_dict)
-
         if import_errors:
             temp_file.close()
             raise BadRequest(
                 f'The following validation errors occurred during import: {import_errors}.')
-
         new_information_requirements_table = InformationRequirementsTable._schema().load({
             'project_guid':
             project_guid,
@@ -114,7 +116,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             sanitized_irt_requirements
         })
         new_information_requirements_table.save()
-
         temp_file.close()
         return new_information_requirements_table
 
