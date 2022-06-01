@@ -3,6 +3,7 @@ import tempfile
 from flask_restplus import Resource
 from flask import request
 from sheet2dict import Worksheet
+from flask import current_app
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from werkzeug.datastructures import FileStorage
@@ -20,6 +21,11 @@ from app.api.projects.project.models.project import Project
 class InformationRequirementsTableListResource(Resource, UserMixin):
     def convert_excel_boolean_string(self, boolean_string):
         return {'True': True, 'False': False}.get(boolean_string, False)
+
+    def get_parent_requirement_id(self, requirement):
+        while requirement.parent_requirement_id is not None:
+            requirement = Requirements.find_by_requirement_id(requirement.parent_requirement_id)
+        return requirement
 
     # Only create new requirements when row has filled in required/methods or comments
     def build_irt_payload_from_excel(self, import_file, project_guid):
@@ -44,6 +50,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             # Split Information cell on spaces to separate out description from appendix prefix
             information_cell_split = information_cell.split()
             # Rejoin words with spaces after removing appendix reference
+            information_section = information_cell_split[0].split('.')
             sanitized_information_cell = ' '.join(information_cell_split[1:]).strip().lower()
             information_cell_is_valid = valid_requirement_descriptions.count(
                 sanitized_information_cell) > 0
@@ -67,11 +74,20 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 continue
 
             is_empty_row = required_cell is False and methods_cell is False and comments_cell == 'None'
-            active_requirement = [
+            temporal_active_requirements = [
                 requirement for requirement in valid_requirements
                 if requirement.description.strip().lower() == sanitized_information_cell
             ]
-            is_row_top_level_category = True if active_requirement[
+            active_requirement = []
+            if len(temporal_active_requirements) > 1:
+                for temporal_active_requirement in temporal_active_requirements:
+                    parent = self.get_parent_requirement_id(temporal_active_requirement)
+                    if parent.requirement_id == int(information_section[0]):
+                        active_requirement.append(temporal_active_requirement)
+                    elif not parent and not information_section[1]:
+                        active_requirement.append(temporal_active_requirement)
+
+            is_row_top_level_category = True if active_requirement and active_requirement[
                 0].parent_requirement_id is None else False
             # If the "Information" requirement provided does not match DB, an empty row is provided, or the row contains a top level category do not create an irt_requirements_xref
             if active_requirement and is_empty_row is False and is_row_top_level_category is False:
@@ -125,9 +141,9 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if project is None:
                 raise BadRequest('Cannot import IRT, the project supplied cannot be found')
 
-            existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
-            if existing_irt and existing_irt.status_code == 'REC':
-                raise BadRequest('Cannot import IRT, this project already has one imported')
+            # existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
+            # if existing_irt and existing_irt.status_code == 'REC':
+            #     raise BadRequest('Cannot import IRT, this project already has one imported')
 
             new_information_requirements_table = self.build_irt_payload_from_excel(
                 import_file, project_guid)
