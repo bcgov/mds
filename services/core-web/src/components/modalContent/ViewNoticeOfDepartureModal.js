@@ -74,13 +74,10 @@ export const ViewNoticeOfDepartureModal = (props) => {
         dataIndex: "document_name",
         sortField: "document_name",
         sorter: isSortable ? (a, b) => a.document_name.localeCompare(b.document_name) : false,
-        render: (text) => (
+        render: (text, record) => (
           <div className="nod-table-link">
             {text ? (
-              <LinkButton
-                onClick={() => downloadFileFromDocumentManager(checklist[0])}
-                title="Download"
-              >
+              <LinkButton onClick={() => downloadFileFromDocumentManager(record)} title="Download">
                 {text}
               </LinkButton>
             ) : (
@@ -107,7 +104,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
       },
       {
         dataIndex: "actions",
-        render: () => (
+        render: (text, record) => (
           <div className="btn--middle flex">
             <Popconfirm
               placement="topRight"
@@ -116,7 +113,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
                 handleDeleteANoticeOfDepartureDocument({
                   mine_guid: mine.mine_guid,
                   nod_guid,
-                  ...checklist[0],
+                  ...record,
                 })
               }
               okText="Yes"
@@ -197,9 +194,9 @@ export const ViewNoticeOfDepartureModal = (props) => {
                 defaultValue={{
                   value:
                     noticeOfDeparture.nod_status !==
-                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_authorized
+                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
                       ? noticeOfDeparture.nod_status
-                      : NOTICE_OF_DEPARTURE_STATUS.self_authorized,
+                      : NOTICE_OF_DEPARTURE_STATUS.self_determined_non_substantial,
                 }}
                 style={{ width: "100%" }}
               >
@@ -240,13 +237,17 @@ export const ViewNoticeOfDepartureModal = (props) => {
         >
           Update
         </Button>
-        <Button
-          className="full-mobile nod-cancel-button"
-          type="secondary"
-          onClick={props.closeModal}
+        <Popconfirm
+          placement="top"
+          title="Are you sure you want to cancel?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={props.closeModal}
         >
-          Cancel
-        </Button>
+          <Button className="full-mobile nod-cancel-button" type="secondary">
+            Cancel
+          </Button>
+        </Popconfirm>
       </div>
     </div>
   );

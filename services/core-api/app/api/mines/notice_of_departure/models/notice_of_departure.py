@@ -7,6 +7,7 @@ from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from sqlalchemy import desc
 
 
 class NodType(Enum):
@@ -16,13 +17,12 @@ class NodType(Enum):
 
 class NodStatus(Enum):
     pending_review = auto()
-    in_review = auto()
-    self_authorized = auto(),
-    permit_amendment_required = auto(),
-    additional_information_required = auto(),
-    not_authorized = auto(),
-    withdrawn = auto(),
-    ministry_authorized = auto(),
+    in_review = auto(),
+    information_required = auto(),
+    self_determined_non_substantial = auto(),
+    determined_non_substantial = auto(),
+    determined_substantial = auto(),
+    withdrawn = auto()
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -43,8 +43,8 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         'NoticeOfDepartureDocumentXref',
         lazy='select',
         primaryjoin=
-        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)"
-    )
+        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)",
+        order_by='desc(NoticeOfDepartureDocumentXref.create_timestamp)')
 
     mine_documents = db.relationship(
         'MineDocument',
@@ -85,18 +85,22 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(mine_guid=__guid, deleted_ind=False).all()
+        return cls.query.filter_by(
+            mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
 
     @classmethod
     def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-        query = cls.query.filter_by(permit_guid=__guid, deleted_ind=False)
+        query = cls.query.filter_by(
+            permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
         if mine_guid:
-            query = cls.query.filter_by(permit_guid=__guid, mine_guid=mine_guid, deleted_ind=False)
+            query = cls.query.filter_by(
+                permit_guid=__guid, mine_guid=mine_guid,
+                deleted_ind=False).order_by(cls.create_timestamp.desc())
         return query.all()
 
     def save(self, commit=True):
-        self.updated_by = User().get_user_username()
-        self.updated_timestamp = datetime.utcnow()
+        self.update_user = User().get_user_username()
+        self.update_timestamp = datetime.utcnow()
         super(NoticeOfDeparture, self).save(commit)
 
     def delete(self):

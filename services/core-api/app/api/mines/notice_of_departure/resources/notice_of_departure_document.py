@@ -74,11 +74,8 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
         # Associate NOD & MineDocument to create NOD Document
         # Add fields specific to NOD Documents
-        mine_doc.save()
         nod_doc = NoticeOfDepartureDocumentXref(
-            mine_document_guid=mine_doc.mine_document_guid,
-            nod_guid=nod_guid,
-            document_type=document_type)
+            mine_document=mine_doc, nod_guid=nod_guid, document_type=document_type)
 
         nod.documents.append(nod_doc)
         nod.save()
@@ -94,3 +91,10 @@ class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
             raise NotFound('Document not found')
 
         doc.delete()
+
+        nod = NoticeOfDeparture.find_one(nod_guid)
+
+        if not nod:
+            raise NotFound('Unable to fetch Notice of departure.')
+
+        nod.save()

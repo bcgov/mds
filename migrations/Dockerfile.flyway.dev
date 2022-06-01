@@ -1,5 +1,7 @@
 FROM flyway/flyway:7.14-alpine
+
 USER root
+
 RUN apk add gettext
 
 COPY sql/* /flyway/sql/

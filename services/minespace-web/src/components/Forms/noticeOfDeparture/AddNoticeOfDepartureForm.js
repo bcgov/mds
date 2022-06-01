@@ -12,8 +12,8 @@ import {
 } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
-import { NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
+import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -31,6 +31,8 @@ const propTypes = {
 const AddNoticeOfDepartureForm = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
+  const [hasChecklist, setHasChecklist] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
@@ -70,24 +72,25 @@ const AddNoticeOfDepartureForm = (props) => {
         document_manager_guid,
       },
     ]);
+    if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(true);
+    }
   };
 
   useEffect(() => {
     change("uploadedFiles", documentArray);
   }, [documentArray]);
 
-  const onRemoveFile = (fileItem) => {
+  const onRemoveFile = (_, fileItem) => {
+    const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
+    if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(false);
+    }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
     );
     setUploadedFiles(
       uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
-    );
-  };
-
-  const hasChecklist = () => {
-    return documentArray.some(
-      (file) => file.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
     );
   };
 
@@ -163,9 +166,12 @@ const AddNoticeOfDepartureForm = (props) => {
           Upload Notice of Departure Self-Assessment Form
         </h4>
         <Typography.Text>
-          Please upload your completed Self-assessment form (click here to download) below. Remember
-          your completed form must be signed by the Mine Manager and any supporting information
-          included or uploaded.
+          Please upload your completed Self-assessment form (
+          <a href={NOTICE_OF_DEPARTURE_DOWNLOAD_LINK} target="_blank" rel="noreferrer">
+            click here to download
+          </a>
+          ) below. Remember your completed form must be signed by the Mine Manager and any
+          supporting information included or uploaded.
         </Typography.Text>
         <Form.Item className="margin-y-large">
           <Field
@@ -178,11 +184,45 @@ const AddNoticeOfDepartureForm = (props) => {
             }}
             onRemoveFile={onRemoveFile}
             mineGuid={mineGuid}
+            setUploading={setUploading}
             allowMultiple
             component={NoticeOfDepartureFileUpload}
             maxFiles={1}
+            labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
+            validate={[required]}
+          />
+        </Form.Item>
+        <h4 className="nod-modal-section-header">Upload Application Documents</h4>
+        <Typography.Text>
+          Please support your notice of departure by uploading additional supporting application
+          documents. These items documents can include:
+        </Typography.Text>
+        <ul>
+          <li>A detailed project description</li>
+          <li>Location (with map, showing Mine boundary)</li>
+          <li>Total disturbance area</li>
+          <li>Total new disturbance area</li>
+          <li>Relevant supporting info (management plans, field surveys, etc...)</li>
+        </ul>
+        <Form.Item className="margin-y-large">
+          <Field
+            onFileLoad={(documentName, document_manager_guid) => {
+              onFileLoad(
+                documentName,
+                document_manager_guid,
+                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+              );
+            }}
+            onRemoveFile={onRemoveFile}
+            mineGuid={mineGuid}
+            allowMultiple
+            component={NoticeOfDepartureFileUpload}
+            setUploading={setUploading}
+            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
+            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
             validate={[required]}
           />
         </Form.Item>
@@ -198,7 +238,7 @@ const AddNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || !hasChecklist()}
+            disabled={submitting || !hasChecklist || uploading}
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"

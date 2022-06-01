@@ -6,6 +6,7 @@ import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/pages/ReturnPage";
 import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
+import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 
 export const HOME = {
   route: "/",
@@ -45,6 +46,12 @@ export const EDIT_PROJECT = {
   route: "/projects/:projectGuid/:tab",
   dynamicRoute: (projectGuid, activeTab = "overview") => `/projects/${projectGuid}/${activeTab}`,
   component: ProjectPage,
+};
+
+export const ADD_INFORMATION_REQUIREMENTS_TABLE = {
+  route: "/projects/:projectGuid/information-requirements-table",
+  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/information-requirements-table/new`,
+  component: InformationRequirementsTablePage,
 };
 
 export const MINE_DASHBOARD = {
