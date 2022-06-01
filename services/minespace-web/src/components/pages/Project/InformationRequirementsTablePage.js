@@ -182,6 +182,9 @@ export class InformationRequirementsTablePage extends Component {
       : `Final IRT - ${this.props.project?.project_title}`;
 
     const Forms = StepForms(this.props, this.state, this.next, this.prev, this.handleTabChange);
+    // Button placement on last stage is below content which is offset due to vertical tabs
+    const buttonGroupColumnConfig =
+      this.state.current === 2 ? { md: { span: 6, offset: 6 } } : { md: 6 };
 
     return (
       this.state.isLoaded && (
@@ -218,7 +221,7 @@ export class InformationRequirementsTablePage extends Component {
             <Col span={24}>
               <div>{Forms[this.state.current].content}</div>
             </Col>
-            <Col xs={24} md={6}>
+            <Col xs={24} {...buttonGroupColumnConfig}>
               <div>{Forms[this.state.current].buttons}</div>
             </Col>
           </Row>

@@ -96,7 +96,7 @@ export class InformationRequirementsTableForm extends Component {
     return (
       <Form layout="vertical">
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Tabs
               tabPosition="left"
               activeKey={this.state.activeTab}
