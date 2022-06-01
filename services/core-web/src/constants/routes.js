@@ -32,7 +32,7 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
-import MineProjectSummary from "@/components/mine/Projects/MineProjectSummary";
+import MineProject from "@/components/mine/Projects/MineProject";
 import ProjectSummary from "@/components/mine/Projects/ProjectSummary";
 import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
 import HomePage from "@/components/dashboard/HomePage";
@@ -164,7 +164,7 @@ export const MINE_NOTICES_OF_DEPARTURE = {
 export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
-  component: MineProjectSummary,
+  component: MineProject,
 };
 
 export const PRE_APPLICATIONS = {

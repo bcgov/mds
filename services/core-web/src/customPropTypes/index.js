@@ -14,7 +14,7 @@ import * as ApplicationPageFromRoute from "@/customPropTypes/applicationPageFrom
 import * as Securities from "@/customPropTypes/securities";
 import * as ExplosivePermits from "@/customPropTypes/explosivesPermit";
 import * as ExternalAuthorizations from "@/customPropTypes/externalAuthorizations";
-import * as ProjectSummaries from "@/customPropTypes/projectSummaries";
+import * as Projects from "@/customPropTypes/projects";
 import * as NoticeOfDeparture from "@/customPropTypes/noticeOfDeparture";
 
 export default {
@@ -33,6 +33,6 @@ export default {
   ...Securities,
   ...ExplosivePermits,
   ...ExternalAuthorizations,
-  ...ProjectSummaries,
+  ...Projects,
   ...NoticeOfDeparture,
 };
