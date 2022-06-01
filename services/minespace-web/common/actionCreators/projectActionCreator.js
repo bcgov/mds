@@ -161,6 +161,12 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
       dispatch(projectActions.storeProject(response.data));
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data.project_summary));
+      dispatch(success(reducerTypes.GET_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(
+        projectActions.storeInformationRequirementsTable(
+          response.data.information_requirements_table
+        )
+      );
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT));
@@ -218,4 +224,20 @@ export const importIrtSpreadsheet = (
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchRequirements = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_REQUIREMENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.REQUIREMENTS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_REQUIREMENTS));
+      dispatch(projectActions.storeRequirements(response.data));
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_REQUIREMENTS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading));
 };

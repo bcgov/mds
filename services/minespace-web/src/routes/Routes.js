@@ -36,7 +36,11 @@ const Routes = () => (
     />
     <Route
       path={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.route}
-      component={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.component}
+      component={AuthenticationGuard()(routes.ADD_INFORMATION_REQUIREMENTS_TABLE.component)}
+    />
+    <Route
+      path={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.route}
+      component={AuthenticationGuard()(routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.component)}
     />
     <Route
       path={routes.EDIT_PROJECT.route}

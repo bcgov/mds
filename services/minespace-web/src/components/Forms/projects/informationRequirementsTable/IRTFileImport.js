@@ -43,7 +43,7 @@ export class IRTFileImport extends Component {
     return (
       <>
         <Row>
-          <Col>
+          <Col span={24}>
             <Typography.Title level={4}>Import final IRT file</Typography.Title>
             <Typography.Paragraph>
               Please upload your final IRT file.

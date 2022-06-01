@@ -150,6 +150,10 @@ export const IMPORT_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
   `/projects/${projectGuid}/final-irt-import`;
 export const IMPORT_LOCAL_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
   `/projects/${projectGuid}/final-irt-import-local`;
+export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid, irtGuid) =>
+  `/projects/${projectGuid}/information-requirements-table/${irtGuid}`;
+export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;
+export const REQUIREMENTS = `/projects/requirements`;
 
 // Users
 export const CORE_USER = "/users/core";

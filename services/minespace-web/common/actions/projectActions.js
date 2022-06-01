@@ -37,3 +37,12 @@ export const clearInformationRequirementsTable = (payload) => ({
   type: actionTypes.CLEAR_INFORMATION_REQUIREMENTS_TABLE,
   payload,
 });
+
+export const storeRequirements = (payload) => ({
+  type: actionTypes.STORE_REQUIREMENTS,
+  payload,
+});
+
+export const clearRequirements = () => ({
+  type: actionTypes.CLEAR_REQUIREMENTS,
+});

@@ -1,22 +1,27 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Divider, Steps } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getProject, getInformationRequirementsTable } from "@common/selectors/projectSelectors";
+import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
-import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import { fetchProjectById, fetchRequirements } from "@common/actionCreators/projectActionCreator";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import * as routes from "@/constants/routes";
 import IRTDownloadTemplate from "../../Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
 import IRTFileImport from "../../Forms/projects/informationRequirementsTable/IRTFileImport";
+import { InformationRequirementsTableForm } from "../../Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
+  fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       mineGuid: PropTypes.string,
@@ -24,7 +29,19 @@ const propTypes = {
   }).isRequired,
 };
 
-const StepForms = (props, state, next, prev, handleIRTSubmit) => [
+const tabs = [
+  "intro-project-overview",
+  "baseline-information",
+  "mine-plan",
+  "reclamation-closure-plan",
+  "modelling-mitigation-discharges",
+  "environmental-assessment-predictions",
+  "environmental-monitoring",
+  "health-safety",
+  "management-plan",
+];
+
+const StepForms = (props, state, next, prev, handleTabChange, handleIRTSubmit) => [
   {
     title: "Download template",
     content: <IRTDownloadTemplate />,
@@ -36,7 +53,7 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
     ],
   },
   {
-    title: "Import",
+    title: "Import File",
     content: <IRTFileImport projectGuid={props.project.project_guid} />,
     buttons: [
       <Button
@@ -53,7 +70,14 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
         id="step2-next"
         style={{ display: "inline", float: "right" }}
         type="tertiary"
-        onClick={() => next()}
+        onClick={() => {
+          props.history.replace(
+            `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              props.project?.project_guid
+            )}`
+          );
+          next();
+        }}
         disabled={state.submitting}
       >
         Next
@@ -61,11 +85,16 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
     ],
   },
   {
-    title: "Review / Submit",
+    title: "Review & Submit",
     content: (
-      <>
-        <br />
-      </>
+      <InformationRequirementsTableForm
+        project={props.project}
+        informationRequirementsTable={props.project.information_requirements_table}
+        requirements={props.requirements}
+        tab={props.match.params.tab}
+        isEditMode={state.isEditMode}
+        handleTabChange={handleTabChange}
+      />
     ),
     buttons: [
       <Button
@@ -73,7 +102,12 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
         style={{ display: "inline", float: "left" }}
         type="tertiary"
         className="full-mobile"
-        onClick={() => prev()}
+        onClick={() => {
+          prev();
+          props.history.push(
+            routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project.project_guid)
+          );
+        }}
         disabled={state.submitting}
       >
         Back
@@ -82,7 +116,9 @@ const StepForms = (props, state, next, prev, handleIRTSubmit) => [
         type="primary"
         style={{ display: "inline", float: "right" }}
         htmlType="submit"
-        onClick={(event) => handleIRTSubmit(event)}
+        onClick={(event) => {
+          handleIRTSubmit(event);
+        }}
         disabled={state.submitting}
       >
         Submit final IRT
@@ -97,6 +133,8 @@ export class InformationRequirementsTablePage extends Component {
     submitting: false,
     isLoaded: false,
     isEditMode: false,
+    activeTab: tabs[0],
+    informationRequirementsTable: [],
   };
 
   componentDidMount() {
@@ -107,16 +145,34 @@ export class InformationRequirementsTablePage extends Component {
     this.props.clearInformationRequirementsTable();
   }
 
+  handleTabChange = (activeTab) => {
+    const url = routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+      this.props.match.params?.projectGuid,
+      activeTab
+    );
+    this.setState({ activeTab });
+    this.props.history.push(url);
+  };
+
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
+  onChange = (value) => {
+    this.setState({ current: value });
+  };
+
   handleFetchData = () => {
-    const { projectGuid, tab } = this.props.match?.params;
+    const { projectGuid } = this.props.match?.params;
 
     return this.props
       .fetchProjectById(projectGuid)
-      .then(() => this.setState({ isLoaded: true, activeTab: tab }));
+      .then(() => this.props.fetchRequirements())
+      .then(() => this.setState({ isLoaded: true }));
+  };
+
+  handleIRTSubmit = () => {
+    this.setState({ submitting: true });
   };
 
   render() {
@@ -124,12 +180,12 @@ export class InformationRequirementsTablePage extends Component {
       ? `Edit IRT - ${this.props.project?.project_title}`
       : `Final IRT - ${this.props.project?.project_title}`;
 
-    const Forms = StepForms(this.props, this.state, this.next, this.prev);
+    const Forms = StepForms(this.props, this.state, this.next, this.prev, this.handleTabChange);
 
     return (
       this.state.isLoaded && (
         <>
-          {!this.state.activeTab && (
+          {!this.state.projectActiveTab && (
             <>
               <Row>
                 <Col span={24}>
@@ -151,18 +207,21 @@ export class InformationRequirementsTablePage extends Component {
           )}
 
           <Row>
-            <Steps current={this.state.current}>
+            <Steps current={this.state.current} onChange={this.onChange}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
             </Steps>
-            {!this.state.activeTab && <Divider />}
+            {!this.state.projectActiveTab && <Divider />}
             <br />
             <br />
 
-            <div>{Forms[this.state.current].content}</div>
-
-            {Forms[this.state.current].buttons}
+            <Col span={24}>
+              <div>{Forms[this.state.current].content}</div>
+            </Col>
+            <Col xs={24} md={6}>
+              <div>{Forms[this.state.current].buttons}</div>
+            </Col>
           </Row>
         </>
       )
@@ -171,8 +230,8 @@ export class InformationRequirementsTablePage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  informationRequirementsTable: getInformationRequirementsTable(state),
   project: getProject(state),
+  requirements: getRequirements(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -180,10 +239,13 @@ const mapDispatchToProps = (dispatch) =>
     {
       clearInformationRequirementsTable,
       fetchProjectById,
+      fetchRequirements,
     },
     dispatch
   );
 
 InformationRequirementsTablePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(InformationRequirementsTablePage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(InformationRequirementsTablePage)
+);
