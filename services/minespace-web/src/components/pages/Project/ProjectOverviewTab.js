@@ -8,17 +8,17 @@ import {
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
-import * as Strings from "@/constants/strings";
-import { formatDate } from "@/utils/helpers";
-import CustomPropTypes from "@/customPropTypes";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
-import DocumentTable from "@/components/common/DocumentTable";
-import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import {
   getProjectSummary,
   getProject,
   getInformationRequirementsTable,
 } from "@common/selectors/projectSelectors";
+import * as Strings from "@/constants/strings";
+import { formatDate } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
+import DocumentTable from "@/components/common/DocumentTable";
+import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
 const propTypes = {
