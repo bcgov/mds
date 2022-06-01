@@ -12,12 +12,9 @@ def test_project_summary_find_by_project_summary_guid(db_session):
 
 def test_project_summary_find_by_project_guid(db_session):
     batch_size = 1
-    project = ProjectFactory()
-    ProjectSummaryFactory.create_batch(project=project, size=batch_size)
+    project = ProjectFactory.create_batch(size=batch_size)
+    project_summaries = ProjectSummary.find_by_project_guid(str(project[0].project_guid), True)
 
-    project_guid = project.project_guid
-
-    project_summaries = ProjectSummary.find_by_project_guid(str(project_guid), True)
     assert len(project_summaries) == batch_size
-    assert all(project_summary.project_guid == project_guid
+    assert all(project_summary.project_guid == project[0].project_guid
                for project_summary in project_summaries)

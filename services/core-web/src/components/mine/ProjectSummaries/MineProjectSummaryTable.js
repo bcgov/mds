@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,7 +8,6 @@ import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticConten
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
@@ -40,7 +39,7 @@ const transformRowData = (projectSummaries) => {
       project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
       project_name: projectSummary.project_summary_title,
       project_summary_lead_name: projectSummary.project_summary_lead_name || Strings.EMPTY_FIELD,
-      project_proponent_id: projectSummary.proponent_project_id || Strings.EMPTY_FIELD,
+      proponent_project_id: projectSummary.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
       first_submitted_date: formatDate(projectSummary.submission_date) || Strings.EMPTY_FIELD,
       last_updated_date: formatDate(projectSummary.update_timestamp),
@@ -57,10 +56,10 @@ export const MineProjectSummaryTable = (props) => {
       render: (text) => <div title="Project name">{text}</div>,
     },
     {
-      key: "project_proponent_id",
-      title: "Project Proponent ID",
-      dataIndex: "project_proponent_id",
-      render: (text) => <div title="Project Proponent ID">{text}</div>,
+      key: "proponent_project_id",
+      title: "Project ID",
+      dataIndex: "proponent_project_id",
+      render: (text) => <div title="Project ID">{text}</div>,
     },
     {
       key: "project_summary_lead_name",
@@ -70,69 +69,42 @@ export const MineProjectSummaryTable = (props) => {
     },
     {
       key: "project_contact",
-      title: "Project contact",
+      title: "Proponent contact",
       dataIndex: "project_contact",
-      render: (text) => <div title="Project contact">{text}</div>,
+      render: (text) => <div title="Proponent contact">{text}</div>,
     },
     {
       key: "project_stage",
-      title: "Project stage",
+      title: "Overall Project stage",
       dataIndex: "project_stage",
       render: (text) => (
-        <div title="Project stage">
+        <div title="Overall Project stage">
           {props.projectSummaryStatusCodesHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
     },
     {
-      key: "first_submitted_date",
-      title: "First submitted date",
-      dataIndex: "first_submitted_date",
-      render: (text) => <div title="First submitted date">{text}</div>,
-      sorter: dateSorter("first_submitted_date"),
-    },
-    {
       key: "last_updated_date",
-      title: "Last updated date",
+      title: "Last Submission date",
       dataIndex: "last_updated_date",
       render: (text) => <div title="Last updated date">{text}</div>,
       sorter: dateSorter("last_updated_date"),
       sortOrder: "descend",
     },
     {
-      title: "Files",
-      dataIndex: "documents",
+      title: "",
+      dataIndex: "project",
       render: (text, record) => (
-        <div title="Files">
-          {record.documents.length > 0
-            ? record.documents.map((file) => (
-                <div key={file.mine_document_guid} title={file.document_name}>
-                  <DocumentLink
-                    documentManagerGuid={file.document_manager_guid}
-                    documentName={file.document_name}
-                    deletePermission={props.deleteFilePermission}
-                    handleDelete={props.handleDeleteFile}
-                    deleteFilePayload={{
-                      projectGuid: record?.projectSummary?.project_guid,
-                      projectSummaryGuid: record?.projectSummary?.project_summary_guid,
-                      mineDocumentGuid: file?.mine_document_guid,
-                    }}
-                  />
-                </div>
-              ))
-            : Strings.EMPTY_FIELD}
-        </div>
-      ),
-    },
-    {
-      dataIndex: "projectSummary",
-      render: (record) => (
-        <div className="btn--middle flex">
-          <Link
-            to={router.PRE_APPLICATIONS.dynamicRoute(record.mine_guid, record.project_summary_guid)}
-          >
-            <Button type="primary">Open</Button>
-          </Link>
+        <div title="" align="right">
+          <Row gutter={1}>
+            <Col span={12}>
+              <Link to={router.PRE_APPLICATIONS.dynamicRoute(record.mine_guid, record.key)}>
+                <Button type="primary" disabled={record.is_historic}>
+                  Open
+                </Button>
+              </Link>
+            </Col>
+          </Row>
         </div>
       ),
     },
