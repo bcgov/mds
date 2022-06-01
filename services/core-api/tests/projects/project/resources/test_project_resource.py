@@ -19,7 +19,7 @@ def test_get_project_by_project_guid(test_client, db_session, auth_headers):
 
 def test_get_projects_by_mine_guid(test_client, db_session, auth_headers):
     batch_size = 3
-    mine = MineFactory(minimal=True)
+    mine = MineFactory(minimal=True, project=0)
     ProjectFactory.create_batch(mine=mine, size=batch_size)
 
     get_resp = test_client.get(

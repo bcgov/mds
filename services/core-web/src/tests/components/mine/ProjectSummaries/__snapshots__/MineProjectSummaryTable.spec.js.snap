@@ -11,10 +11,10 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "title": "Project name",
       },
       Object {
-        "dataIndex": "project_proponent_id",
-        "key": "project_proponent_id",
+        "dataIndex": "proponent_project_id",
+        "key": "proponent_project_id",
         "render": [Function],
-        "title": "Project Proponent ID",
+        "title": "Project ID",
       },
       Object {
         "dataIndex": "project_summary_lead_name",
@@ -26,20 +26,13 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "dataIndex": "project_contact",
         "key": "project_contact",
         "render": [Function],
-        "title": "Project contact",
+        "title": "Proponent contact",
       },
       Object {
         "dataIndex": "project_stage",
         "key": "project_stage",
         "render": [Function],
-        "title": "Project stage",
-      },
-      Object {
-        "dataIndex": "first_submitted_date",
-        "key": "first_submitted_date",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "First submitted date",
+        "title": "Overall Project stage",
       },
       Object {
         "dataIndex": "last_updated_date",
@@ -47,16 +40,12 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         "render": [Function],
         "sortOrder": "descend",
         "sorter": [Function],
-        "title": "Last updated date",
+        "title": "Last Submission date",
       },
       Object {
-        "dataIndex": "documents",
+        "dataIndex": "project",
         "render": [Function],
-        "title": "Files",
-      },
-      Object {
-        "dataIndex": "projectSummary",
-        "render": [Function],
+        "title": "",
       },
     ]
   }
@@ -85,10 +74,10 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
         },
         "project_contact": "N/A",
         "project_name": "Sample title",
-        "project_proponent_id": "25789-x",
         "project_stage": "OPN",
         "project_summary_id": "N/A",
         "project_summary_lead_name": "N/A",
+        "proponent_project_id": "25789-x",
       },
     ]
   }

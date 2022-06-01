@@ -768,6 +768,17 @@ class MineFactory(BaseFactory):
 
         MineCommentFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
+    @factory.post_generation
+    def project(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        if obj.major_mine_ind:
+            ProjectFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
 
 class PermitFactory(BaseFactory):
 
@@ -1061,11 +1072,32 @@ class ProjectFactory(BaseFactory):
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     project_guid = GUID
+    proponent_project_id = factory.Faker('sentence', nb_words=1)
     project_title = 'Test Project Title'
     contacts = []
 
     proponent_project_id = None
-    project_lead_party_guid = None
+
+    @factory.post_generation
+    def project_summary(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ProjectSummaryFactory.create_batch(size=extracted, project=obj, **kwargs)
+
+    @factory.post_generation
+    def project_contact(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        proj_contact = ProjectContactFactory.create_batch(size=extracted, project=obj, **kwargs)
+        obj.contacts.extend(proj_contact)
 
 
 class ProjectSummaryFactory(BaseFactory):

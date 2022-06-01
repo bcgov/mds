@@ -29,7 +29,7 @@ const AssignInspectors = (props) => {
     <LoadingWrapper condition={props.isLoaded}>
       {!isEditMode && props.isAdminView && (
         <div className="right">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} ignoreDelay>
             <Button type="secondary" onClick={() => setEditMode(true)}>
               <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
               Edit

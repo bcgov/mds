@@ -58,7 +58,7 @@ export class MineProjectSummary extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Pre-applications</h2>
+          <h2>Major Projects</h2>
           <br />
         </div>
         <div>
