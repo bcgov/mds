@@ -142,9 +142,9 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if project is None:
                 raise BadRequest('Cannot import IRT, the project supplied cannot be found')
 
-            # existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
-            # if existing_irt and existing_irt.status_code == 'REC':
-            #     raise BadRequest('Cannot import IRT, this project already has one imported')
+            existing_irt = InformationRequirementsTable.find_by_project_guid(project_guid)
+            if existing_irt and existing_irt.status_code == 'REC':
+                raise BadRequest('Cannot import IRT, this project already has one imported')
 
             new_information_requirements_table = self.build_irt_payload_from_excel(
                 import_file, project_guid)
