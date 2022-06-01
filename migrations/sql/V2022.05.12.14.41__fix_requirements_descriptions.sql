@@ -9,4 +9,5 @@ VALUES (158, 2, 'Water Quality', 7, 'system-mds', 'system-mds');
 INSERT INTO requirements(requirement_id, parent_requirement_id, description, display_order, create_user, update_user)
 VALUES
   (159, (SELECT requirement_id FROM requirements WHERE description = 'Water Quality' LIMIT 1), 'Surface Water Quality', 1, 'system-mds', 'system-mds'),
-  (160, (SELECT requirement_id FROM requirements WHERE description = 'Water Quality' LIMIT 1), 'Groundwater Quality', 2, 'system-mds', 'system-mds');
+  (160, (SELECT requirement_id FROM requirements WHERE description = 'Water Quality' LIMIT 1), 'Groundwater Quality', 2, 'system-mds', 'system-mds'),
+  (161, 5, 'Summary', 1, 'system-mds', 'system-mds');
