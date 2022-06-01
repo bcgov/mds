@@ -7,13 +7,12 @@ on:
       - develop
     path:
       - services/core-api/**
-      - .github/workflows/docgen.build.yaml
+      - .github/workflows/docgen.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
   TAG: dev
   NAME: docgen
-  CONTEXT: services/core-api/
   image: docker.io/bcgovimages/common-document-generation-service
   version: 2.4.1
 
