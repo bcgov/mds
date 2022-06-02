@@ -72,7 +72,7 @@ export class MineNavigation extends Component {
             {isMajorMine && (
               <Menu.Item key="pre-applications">
                 <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
-                  Pre-applications
+                  Major Projects
                 </Link>
               </Menu.Item>
             )}

@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import { remove } from "lodash";
 import { Typography, Row, Col } from "antd";
 import { bindActionCreators, compose } from "redux";
+import { withRouter } from "react-router-dom";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 import * as FORM from "@/constants/forms";
 import { MODERN_EXCEL } from "@/constants/fileTypes";
-import { withRouter } from "react-router-dom";
 
 const propTypes = {
   change: PropTypes.func.isRequired,

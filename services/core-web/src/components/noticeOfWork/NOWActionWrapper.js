@@ -27,6 +27,7 @@ const propTypes = {
   applicationDelay: PropTypes.objectOf(PropTypes.string),
   tab: PropTypes.string,
   allowAfterProcess: PropTypes.bool,
+  ignoreDelay: PropTypes.bool,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
@@ -40,6 +41,7 @@ const defaultProps = {
   noticeOfWork: {},
   progress: {},
   isDisabledReviewButton: false,
+  ignoreDelay: false,
 };
 
 export class NOWActionWrapper extends Component {
@@ -114,7 +116,9 @@ export class NOWActionWrapper extends Component {
   };
 
   render() {
-    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
+    const isApplicationDelayed = this.props.ignoreDelay
+      ? false
+      : !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||

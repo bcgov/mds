@@ -196,13 +196,17 @@ let EditNoticeOfDepartureForm = (props) => {
           </Col>
           <Col span={3}>
             <p className="field-title">&nbsp;</p>
-            <LinkButton
-              className="nod-table-link"
-              onClick={() => downloadFileFromDocumentManager(checklist)}
-              title={checklist?.document_name}
-            >
-              Download
-            </LinkButton>
+            {checklist?.document_name ? (
+              <LinkButton
+                className="nod-table-link"
+                onClick={() => downloadFileFromDocumentManager(checklist)}
+                title={checklist?.document_name}
+              >
+                Download
+              </LinkButton>
+            ) : (
+              <p>{EMPTY_FIELD}</p>
+            )}
           </Col>
         </Row>
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
