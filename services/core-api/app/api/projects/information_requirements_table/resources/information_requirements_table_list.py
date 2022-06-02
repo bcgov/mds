@@ -107,17 +107,8 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             temp_file.close()
             raise BadRequest(
                 f'The following validation errors occurred during import: {import_errors}.')
-        new_information_requirements_table = InformationRequirementsTable._schema().load({
-            'project_guid':
-            project_guid,
-            'status_code':
-            'REC',
-            'requirements':
-            sanitized_irt_requirements
-        })
-        new_information_requirements_table.save()
         temp_file.close()
-        return new_information_requirements_table
+        return sanitized_irt_requirements
 
     parser = CustomReqparser()
     parser.add_argument(
@@ -146,8 +137,17 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if existing_irt and existing_irt.status_code == 'REC':
                 raise BadRequest('Cannot import IRT, this project already has one imported')
 
-            new_information_requirements_table = self.build_irt_payload_from_excel(
+            sanitized_irt_requirements = self.build_irt_payload_from_excel(
                 import_file, project_guid)
+            new_information_requirements_table = InformationRequirementsTable._schema().load({
+                'project_guid':
+                project_guid,
+                'status_code':
+                'REC',
+                'requirements':
+                sanitized_irt_requirements
+            })
+            new_information_requirements_table.save()
             return new_information_requirements_table, 201
         except BadRequest as err:
             raise err
