@@ -35,7 +35,7 @@ export class InformationRequirementsTableForm extends Component {
   mergedRequirements = [];
 
   componentDidMount() {
-    this.mergedRequirements = this.mergeById(
+    this.mergedRequirements = this.deepMergeById(
       this.props.requirements,
       this.props.informationRequirementsTable.requirements
     );
@@ -51,15 +51,13 @@ export class InformationRequirementsTableForm extends Component {
   }
 
   /* eslint-disable no-param-reassign */
-  mergeById = (r1, r2) =>
-    r1.map((item) => {
-      item.sub_requirements = item.sub_requirements.map((sub_item) => ({
-        ...sub_item,
-        ...r2.find((r2_item) => r2_item.requirement_guid === sub_item.requirement_guid),
-      }));
-
-      return item;
-    });
+  deepMergeById = (r1, r2) =>
+    r1.map(({ requirement_guid, sub_requirements, ...rest }) => ({
+      requirement_guid,
+      ...rest,
+      ...r2.find((i) => i.requirement_guid === requirement_guid),
+      sub_requirements: this.deepMergeById(sub_requirements, r2),
+    }));
 
   render() {
     const renderTabComponent = (tab, tabIndex, requirements) =>
