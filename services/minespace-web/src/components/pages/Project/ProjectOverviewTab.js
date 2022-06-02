@@ -8,16 +8,17 @@ import {
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@/constants/strings";
+import { formatDate } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import DocumentTable from "@/components/common/DocumentTable";
+import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import {
   getProjectSummary,
   getProject,
   getInformationRequirementsTable,
 } from "@common/selectors/projectSelectors";
-import * as Strings from "@/constants/strings";
-import { formatDate } from "@/utils/helpers";
-import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
-import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
 const propTypes = {
@@ -82,15 +83,17 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.projectSummary,
         statusHash: this.props.projectSummaryStatusCodesHash,
       },
-      {
+    ];
+    if (!IN_PROD()) {
+      projectStages.push({
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
         status: this.props.informationRequirementsTable.status_code,
         project_guid: projectGuid,
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
-      },
-    ];
+      });
+    }
 
     return (
       <Row gutter={[0, 16]}>

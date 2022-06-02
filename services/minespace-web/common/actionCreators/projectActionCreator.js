@@ -192,29 +192,29 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importIrtSpreadsheet = (
+export const createInformationRequirementsTable = (
   projectGuid,
   file,
-  message = "Successfully imported final IRT"
+  message = "Successfully imported final IRT."
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
   const customContentType = { "Content-Type": "multipart/form-data" };
-  dispatch(request(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+  dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      ENVIRONMENT.apiUrl + API.IMPORT_LOCAL_INFORMATION_REQUIREMENTS_TABLE(projectGuid),
+      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid),
       formData,
       createRequestHeader(customContentType)
     )
     .then((response) => {
       notification.success({ message, duration: 10 });
-      dispatch(success(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
