@@ -66,13 +66,13 @@ export class ProjectOverviewTab extends Component {
       expected_project_start_date,
       project_guid,
       project_summary_guid,
-    } = this.props.projectSummary;
+    } = this.props.project.project_summary;
     const projectStages = [
       {
         title: "Project description",
-        key: this.props.projectSummary.project_summary_id,
-        status: this.props.projectSummary.status_code,
-        payload: this.props.projectSummary,
+        key: this.props.project.project_summary.project_summary_id,
+        status: this.props.project.project_summary.status_code,
+        payload: this.props.project.project_summary,
         statusHash: this.props.projectSummaryStatusCodesHash,
         link: (
           <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>

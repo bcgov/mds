@@ -75,29 +75,23 @@ export class Project extends Component {
           }
         >
           <h1>
-            {this.props.formattedProjectSummary.project_summary_title}
+            {this.props.project.project_title}
             <span className="padding-sm--left">
-              <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
+              <Tag title={`Mine: ${this.props.project.mine_name}`}>
                 <Link
                   style={{ textDecoration: "none" }}
-                  to={routes.MINE_GENERAL.dynamicRoute(
-                    this.props.formattedProjectSummary.mine_guid
-                  )}
-                  disabled={!this.props.formattedProjectSummary.mine_guid}
+                  to={routes.MINE_GENERAL.dynamicRoute(this.props.project.mine_guid)}
+                  disabled={!this.props.project.mine_guid}
                 >
                   <EnvironmentOutlined className="padding-sm--right" />
-                  {this.props.formattedProjectSummary.mine_name}
+                  {this.props.project.mine_name}
                 </Link>
               </Tag>
             </span>
           </h1>
-          <Link
-            to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-              this.props.formattedProjectSummary.mine_guid
-            )}
-          >
+          <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.project.mine_guid)}>
             <ArrowLeftOutlined className="padding-sm--right" />
-            Back to: {this.props.formattedProjectSummary.mine_name} Major projects
+            Back to: {this.props.project.mine_name} Major projects
           </Link>
         </div>
         <Tabs
