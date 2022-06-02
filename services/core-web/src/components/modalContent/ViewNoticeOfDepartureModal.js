@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Popconfirm, Row, Select } from "antd";
+import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -12,10 +12,11 @@ import {
 } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
+import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, resetForm } from "@common/utils/helpers";
 import {
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
@@ -23,18 +24,27 @@ import {
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
+import { Field, reduxForm } from "redux-form";
+import { renderConfig } from "@/components/common/config";
+import { validateSelectOptions } from "@common/utils/Validate";
 
 const propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   closeModal: PropTypes.func.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   updateNoticeOfDeparture: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
 };
 
-export const ViewNoticeOfDepartureModal = (props) => {
-  const { noticeOfDeparture, mine } = props;
+// eslint-disable-next-line import/no-mutable-exports
+let ViewNoticeOfDepartureModal = (props) => {
+  const [statusOptions, setStatusOptions] = React.useState([]);
+  const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
   const { nod_guid } = noticeOfDeparture;
 
   const checklist = noticeOfDeparture.documents.filter(
@@ -44,25 +54,30 @@ export const ViewNoticeOfDepartureModal = (props) => {
     (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
 
+  useEffect(() => {
+    const statuses = (() => {
+      const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
+      return Object.values(coreStatuses);
+    })();
+
+    setStatusOptions(
+      statuses.map((status) => {
+        return {
+          value: status,
+          label: NOTICE_OF_DEPARTURE_STATUS[status],
+        };
+      })
+    );
+  }, []);
+
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
 
     await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, nod_guid);
   };
 
-  const statuses = (() => {
-    const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
-    return Object.values(coreStatuses);
-  })();
-
-  // eslint-disable-next-line no-return-assign
-  const handleChangeNodStatus = ({ value }) => (props.noticeOfDeparture.nod_status = value);
-
-  const updateNoticeOfDepartureStatus = async () => {
-    await props.updateNoticeOfDeparture(
-      { mineGuid: mine.mine_guid, nodGuid: nod_guid },
-      noticeOfDeparture
-    );
+  const updateNoticeOfDepartureSubmit = async (values) => {
+    await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
     await props.fetchNoticesOfDeparture(mine.mine_guid);
     props.closeModal();
   };
@@ -131,7 +146,7 @@ export const ViewNoticeOfDepartureModal = (props) => {
 
   return (
     <div>
-      <div>
+      <Form layout="vertical" onSubmit={handleSubmit(updateNoticeOfDepartureSubmit)}>
         <h4 className="nod-modal-section-header">Basic Information</h4>
         <div className="content--light-grey nod-section-padding">
           <div className="inline-flex padding-sm">
@@ -186,25 +201,17 @@ export const ViewNoticeOfDepartureModal = (props) => {
           </Col>
           <Col span={12}>
             <p className="field-title">NOD Review Status</p>
-            <p className="content--light-grey padding-md">
-              <Select
-                virtual={false}
-                labelInValue
-                onChange={handleChangeNodStatus}
-                defaultValue={{
-                  value:
-                    noticeOfDeparture.nod_status !==
-                    NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
-                      ? noticeOfDeparture.nod_status
-                      : NOTICE_OF_DEPARTURE_STATUS.self_determined_non_substantial,
-                }}
-                style={{ width: "100%" }}
-              >
-                {statuses.map((value) => (
-                  <Select.Option key={value}>{NOTICE_OF_DEPARTURE_STATUS[value]}</Select.Option>
-                ))}
-              </Select>
-            </p>
+            <div>
+              <Form.Item>
+                <Field
+                  id="nod_status"
+                  name="nod_status"
+                  validate={[validateSelectOptions(statusOptions)]}
+                  component={renderConfig.SELECT}
+                  data={statusOptions}
+                />
+              </Form.Item>
+            </div>
           </Col>
         </Row>
         <Row justify="space-between" className="padding-md--top">
@@ -227,28 +234,29 @@ export const ViewNoticeOfDepartureModal = (props) => {
             </div>
           </Col>
         </Row>
-      </div>
-
-      <div className="right center-mobile">
-        <Button
-          className="full-mobile nod-update-button"
-          type="primary"
-          onClick={updateNoticeOfDepartureStatus}
-        >
-          Update
-        </Button>
-        <Popconfirm
-          placement="top"
-          title="Are you sure you want to cancel?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={props.closeModal}
-        >
-          <Button className="full-mobile nod-cancel-button" type="secondary">
-            Cancel
+        <div className="right center-mobile">
+          <Button
+            className="full-mobile nod-update-button"
+            type="primary"
+            htmlType="submit"
+            onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
+            disabled={pristine}
+          >
+            Update
           </Button>
-        </Popconfirm>
-      </div>
+          <Popconfirm
+            placement="top"
+            title="Are you sure you want to cancel?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={props.closeModal}
+          >
+            <Button className="full-mobile nod-cancel-button" type="secondary">
+              Cancel
+            </Button>
+          </Popconfirm>
+        </div>
+      </Form>
     </div>
   );
 };
@@ -257,6 +265,7 @@ ViewNoticeOfDepartureModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
+  initialValues: getNoticeOfDeparture(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -269,4 +278,18 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewNoticeOfDepartureModal);
+ViewNoticeOfDepartureModal = reduxForm({
+  form: FORM.NOTICE_OF_DEPARTURE_FORM,
+  onSubmitSuccess: resetForm(FORM.NOTICE_OF_DEPARTURE_FORM),
+  destroyOnUnmount: true,
+  forceUnregisterOnUnmount: true,
+  touchOnBlur: true,
+  enableReinitialize: true,
+})(ViewNoticeOfDepartureModal);
+
+ViewNoticeOfDepartureModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewNoticeOfDepartureModal);
+
+export default ViewNoticeOfDepartureModal;
