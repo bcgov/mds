@@ -1,7 +1,10 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ViewNoticeOfDepartureModal } from "@/components/modalContent/ViewNoticeOfDepartureModal";
-import { NOTICE_OF_DEPARTURE_DETAILS, MINE_RESPONSE } from "@/tests/mocks/dataMocks";
+// eslint-disable-next-line import/no-unresolved
+import ViewNoticeOfDepartureModal from "@/components/modalContent/ViewNoticeOfDepartureModal";
+import { MINE_RESPONSE, NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
+import { Provider } from "react-redux";
+import { store } from "@/App";
 
 const dispatchProps = {};
 const props = {};
@@ -13,9 +16,12 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   // eslint-disable-next-line prefer-destructuring
   props.noticeOfDeparture = NOTICE_OF_DEPARTURE_DETAILS;
+  props.initialValues = NOTICE_OF_DEPARTURE_DETAILS;
   // eslint-disable-next-line prefer-destructuring
   props.mine = MINE_RESPONSE[0];
   props.fetchDetailedNoticeOfDeparture = jest.fn();
+  props.pristine = false;
+  props.handleSubmit = jest.fn();
 };
 
 beforeEach(() => {
@@ -25,7 +31,11 @@ beforeEach(() => {
 
 describe("ViewNoticeOfDepartureModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewNoticeOfDepartureModal {...dispatchProps} {...props} />);
+    const component = shallow(
+      <Provider store={store}>
+        <ViewNoticeOfDepartureModal {...dispatchProps} {...props} />
+      </Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });

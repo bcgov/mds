@@ -38,6 +38,7 @@ let EditNoticeOfDepartureForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [hasChecklist, setHasChecklist] = useState(false);
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -46,6 +47,12 @@ let EditNoticeOfDepartureForm = (props) => {
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
+
+  useEffect(() => {
+    if (checklist) {
+      setHasChecklist(true);
+    }
+  }, [checklist]);
 
   const handleNoticeOfDepartureSubmit = (values) => {
     setSubmitting(true);
@@ -69,6 +76,9 @@ let EditNoticeOfDepartureForm = (props) => {
         document_manager_guid,
       },
     ]);
+    if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(true);
+    }
   };
 
   useEffect(() => {
@@ -76,6 +86,10 @@ let EditNoticeOfDepartureForm = (props) => {
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
+    const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
+    if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      setHasChecklist(false);
+    }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
     );
@@ -286,7 +300,9 @@ let EditNoticeOfDepartureForm = (props) => {
             <Button disabled={submitting}>Cancel</Button>
           </Popconfirm>
           <Button
-            disabled={submitting || uploading || (pristine && documentArray.length === 0)}
+            disabled={
+              submitting || uploading || (pristine && documentArray.length === 0) || !hasChecklist
+            }
             type="primary"
             className="full-mobile margin-small"
             htmlType="submit"
