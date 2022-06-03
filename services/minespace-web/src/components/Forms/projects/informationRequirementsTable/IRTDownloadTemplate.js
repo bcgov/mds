@@ -60,7 +60,9 @@ export class IRTDownloadTemplate extends Component {
                 type="primary"
                 className="full-mobile"
                 onClick={() =>
-                  this.downloadIRTTemplate(ENVIRONMENT.apiUrl + API.IRT_TEMPLATE_DOWNLOAD)
+                  this.downloadIRTTemplate(
+                    ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
+                  )
                 }
               >
                 <DownloadOutlined className="padding-sm--right icon-sm" />

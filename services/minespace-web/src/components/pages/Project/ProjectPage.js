@@ -46,7 +46,9 @@ export class ProjectPage extends Component {
       this.props
         .fetchProjectById(projectGuid)
         .then(() => {
-          return this.props.fetchMineRecordById(this.props.project.mine_guid);
+          if (this.props?.project?.mine_guid) {
+            return this.props.fetchMineRecordById(this.props.project.mine_guid);
+          }
         })
         .then(({ data }) => {
           this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);

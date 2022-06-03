@@ -23,12 +23,14 @@ const propTypes = {
   onAbort: PropTypes.func,
   onRemoveFile: PropTypes.func,
   addFileStart: PropTypes.func,
-  importIrtSpreadsheet: PropTypes.func,
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
   maxFiles: PropTypes.number,
-  projectGuid: PropTypes.string,
+  afterSuccess: PropTypes.shape({
+    action: PropTypes.func,
+    actionGuid: PropTypes.string,
+  }),
   labelIdle: PropTypes.string,
   onprocessfiles: PropTypes.func,
 };
@@ -40,12 +42,11 @@ const defaultProps = {
   onAbort: () => {},
   onRemoveFile: () => {},
   addFileStart: () => {},
-  importIrtSpreadsheet: () => {},
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
   maxFiles: null,
-  projectGuid: null,
+  afterSuccess: null,
   onprocessfiles: () => {},
   labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
 };
@@ -56,7 +57,6 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
-        const projectGuid = this.props.projectGuid;
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -81,8 +81,9 @@ class FileUpload extends React.Component {
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
-            if (projectGuid) {
-              this.props.importIrtSpreadsheet(projectGuid, file);
+            // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
+            if (this.props?.afterSuccess?.action) {
+              this.props.afterSuccess.action(this.props.afterSuccess?.actionGuid, file);
             }
           },
         });
