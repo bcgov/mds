@@ -3,18 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
-import {
-  getProjectSummaryStatusCodesHash,
-  getProjectSummaryDocumentTypesHash,
-  getTransformedChildProjectSummaryAuthorizationTypesHash,
-  getProjectSummaryPermitTypesHash,
-  getDropdownProjectSummaryStatusCodes,
-} from "@common/selectors/staticContentSelectors";
-import {
-  getProjectSummary,
-  getFormattedProjectSummary,
-  getProject,
-} from "@common/selectors/projectSelectors";
+import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
@@ -23,21 +12,16 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
 import NullScreen from "@/components/common/NullScreen";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
-  formattedProjectSummary: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
-  ).isRequired,
+  project: CustomPropTypes.project.isRequired,
   match: PropTypes.shape({
     params: {
       projectGuid: PropTypes.string,
     },
   }).isRequired,
-  projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectById: PropTypes.func.isRequired,
-  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
 };
 
 export class Project extends Component {
@@ -55,8 +39,7 @@ export class Project extends Component {
     if (projectGuid) {
       return this.props
         .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true }))
-        .catch(() => this.setState({ isLoaded: false, isValid: false }));
+        .then(() => this.setState({ isLoaded: true, isValid: true }));
     }
     return null;
   };
@@ -109,6 +92,15 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
+          {!IN_PROD() && (
+            <Tabs.TabPane tab="IRT" key="irt" disabled>
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <div className="padding-lg">
+                  <></>
+                </div>
+              </LoadingWrapper>
+            </Tabs.TabPane>
+          )}
         </Tabs>
       </div>
     );
@@ -120,15 +112,6 @@ Project.propTypes = propTypes;
 const mapStateToProps = (state) => {
   return {
     project: getProject(state),
-    projectSummary: getProjectSummary(state),
-    formattedProjectSummary: getFormattedProjectSummary(state),
-    projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
-    projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
-    projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
-      state
-    ),
-    projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
-    projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
   };
 };
 
