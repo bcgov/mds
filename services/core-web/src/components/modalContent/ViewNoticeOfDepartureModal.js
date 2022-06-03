@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { connect } from "react-redux";
@@ -14,6 +14,7 @@ import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
+import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate, resetForm } from "@common/utils/helpers";
@@ -24,9 +25,11 @@ import {
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, change } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { validateSelectOptions } from "@common/utils/Validate";
+import FileUpload from "@/components/common/FileUpload";
+import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -44,6 +47,9 @@ const propTypes = {
 // eslint-disable-next-line import/no-mutable-exports
 let ViewNoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
+  const [documentArray, setDocumentArray] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
   const { nod_guid } = noticeOfDeparture;
 
@@ -53,6 +59,38 @@ let ViewNoticeOfDepartureModal = (props) => {
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
+
+  const onFileLoad = (documentName, document_manager_guid, documentType) => {
+    setUploadedFiles([
+      ...uploadedFiles,
+      {
+        documentType,
+        documentName,
+        document_manager_guid,
+      },
+    ]);
+    setDocumentArray([
+      ...documentArray,
+      {
+        document_type: documentType,
+        document_name: documentName,
+        document_manager_guid,
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    change("uploadedFiles", documentArray);
+  }, [documentArray]);
+
+  const onRemoveFile = (_, fileItem) => {
+    setDocumentArray(
+      documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
+    );
+    setUploadedFiles(
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+    );
+  };
 
   useEffect(() => {
     const statuses = (() => {
@@ -194,6 +232,21 @@ let ViewNoticeOfDepartureModal = (props) => {
           dataSource={otherDocuments}
           tableProps={{ pagination: false }}
         />
+        <Row>
+          <Form.Item>
+            <Field
+              id="fileUpload"
+              name="fileUpload"
+              component={FileUpload}
+              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
+              acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+              onFileLoad={onFileLoad}
+              onRemoveFile={onRemoveFile}
+              allowRevert
+              allowMultiple
+            />
+          </Form.Item>
+        </Row>
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
             <p className="field-title">Technical Operations Director</p>
