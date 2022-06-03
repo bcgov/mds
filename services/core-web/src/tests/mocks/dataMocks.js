@@ -6425,6 +6425,34 @@ export const EXPLOSIVES_PERMITS = {
   },
 };
 
+export const PROJECTS = {
+  records: [
+    {
+      project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
+      project_title: "Test Project Title",
+      mine_name: "Sample Mine",
+      mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+      contacts: [],
+      project_summary: {
+        documents: [],
+      },
+      information_requirements_table: {},
+    },
+  ],
+};
+
+export const PROJECT = {
+  project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
+  project_title: "Test Project Title",
+  mine_name: "Sample Mine",
+  mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+  contacts: [],
+  project_summary: {
+    documents: [],
+  },
+  information_requirements_table: {},
+};
+
 export const PROJECT_SUMMARIES = {
   records: [
     {
