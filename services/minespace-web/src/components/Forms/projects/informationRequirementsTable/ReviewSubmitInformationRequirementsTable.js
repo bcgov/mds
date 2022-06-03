@@ -23,19 +23,22 @@ const ReviewSubmitInformationRequirementsTable = ({ requirements }) => {
   );
 };
 
+// Apply font size depending the level of requirement description:
+// 1.1 => 16px bold. , 1.2.1 => 14px bold, 1.2.1.1 => 14 px
+const DescriptionTextSytle = (step) => {
+  if (step.match(/\./g).length === 2) {
+    return { fontWeight: "bold", fontSize: "16px" };
+  } if (step.match(/\./g).length === 3) {
+    return { fontWeight: "bold", fontSize: "14px" };
+  } 
+    return { fontSize: "14px" };
+  
+};
+
 const Subrequirement = ({ sub_requirement }) => (
   <>
     <Col span={24}>
-      <span
-        id="description"
-        style={
-          sub_requirement.step.match(/\./g).length === 2
-            ? { fontWeight: "bold", fontSize: "16px" }
-            : sub_requirement.step.match(/\./g).length === 3
-            ? { fontWeight: "bold", fontSize: "14px" }
-            : { fontSize: "14px" }
-        }
-      >
+      <span id="description" style={DescriptionTextSytle(sub_requirement.step)}>
         {`${sub_requirement.step} ${sub_requirement.description}`}
       </span>
 
