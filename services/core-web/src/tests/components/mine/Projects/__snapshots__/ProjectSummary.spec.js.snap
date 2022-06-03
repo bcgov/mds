@@ -32,13 +32,13 @@ exports[`ProjectSummary renders properly 1`] = `
       </span>
     </h1>
     <Link
-      to="/mine-dashboard/60300a07-376c-46f1-a984-88a813f91438/permits-and-approvals/pre-applications"
+      to="/pre-applications/undefined/overview"
     >
       <ForwardRef(ArrowLeftOutlined)
         className="padding-sm--right"
       />
       Back to: 
-       Pre-application submissions
+       Project overview
     </Link>
   </div>
   <div
@@ -74,22 +74,7 @@ exports[`ProjectSummary renders properly 1`] = `
           className="side-menu--content"
         >
           <Connect(ReduxForm)
-            fetchProjectSummaryById={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "testMineGuid",
-                    "testProjectSummaryGuid",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": Promise {},
-                  },
-                ],
-              }
-            }
+            fetchProjectSummaryById={[MockFunction]}
             formattedProjectSummary={
               Object {
                 "contacts": Array [],
