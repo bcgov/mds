@@ -27,6 +27,7 @@ const propTypes = {
 export class Project extends Component {
   state = {
     isLoaded: false,
+    isValid: true,
     activeTab: "overview",
   };
 
@@ -39,7 +40,8 @@ export class Project extends Component {
     if (projectGuid) {
       return this.props
         .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true }));
+        .then(() => this.setState({ isLoaded: true, isValid: true }))
+        .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return null;
   };
