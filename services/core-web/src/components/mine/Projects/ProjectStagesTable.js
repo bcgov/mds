@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
-import * as routes from "@/constants/routes";
+import { Table } from "antd";
 
 const propTypes = {
   projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
