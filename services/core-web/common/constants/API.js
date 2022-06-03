@@ -145,6 +145,8 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   )}`;
 
 // Information Requirements Table (IRT)
+export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;
+export const REQUIREMENTS = `/projects/requirements`;
 export const INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD = `/projects/information-requirements-table/template-download`;
 export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS = (projectGuid) =>
   `/projects/${projectGuid}/information-requirements-table/documents`;
