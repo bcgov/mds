@@ -131,13 +131,30 @@ export class ProjectOverviewTab extends Component {
           </Row>
           <Typography.Title level={4}>Project Stages</Typography.Title>
           <ProjectStagesTable projectStages={projectStages} />
+          <br />
           <Typography.Title level={4}>Project Documents</Typography.Title>
           <DocumentTable
-            documents={this.props.projectSummary.documents}
+            documents={this.props.projectSummary.documents.reduce(
+              (docs, doc) => [
+                {
+                  key: doc.mine_document_guid,
+                  mine_document_guid: doc.mine_document_guid,
+                  document_manager_guid: doc.document_manager_guid,
+                  name: doc.document_name,
+                  category: this.props.projectSummaryDocumentTypesHash[
+                    doc.project_summary_document_type_code
+                  ],
+                  uploaded: doc.upload_date,
+                },
+                ...docs,
+              ],
+              []
+            )}
             documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
             documentParent="project summary"
             categoryDataIndex="project_summary_document_type_code"
             uploadDateIndex="upload_date"
+            isViewOnly
           />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
