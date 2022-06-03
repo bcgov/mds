@@ -1,8 +1,9 @@
 import React from "react";
-import { Checkbox, Col, Collapse, Input } from "antd";
+import { Checkbox, Col, Collapse, Input, Typography } from "antd";
 import customPropTypes from "@/customPropTypes";
 
 const { Panel } = Collapse;
+const { Title } = Typography;
 
 const propTypes = {
   requirements: customPropTypes.requirements.isRequired,
@@ -15,7 +16,7 @@ const ReviewSubmitInformationRequirementsTable = ({ requirements }) => {
   return (
     <Collapse defaultActiveKey={["1"]}>
       <br />
-      <Panel header={<span>{`${requirements?.description}`}</span>} key="1">
+      <Panel header={<Title level={5}>{`${requirements?.description}`}</Title>} key="1">
         {requirements !== undefined ? renderSubrequirement(requirements?.sub_requirements) : null}
       </Panel>
     </Collapse>

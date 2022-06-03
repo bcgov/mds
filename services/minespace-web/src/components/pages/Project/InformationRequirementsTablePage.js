@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
-import { Row, Col, Button, Typography, Divider, Steps } from "antd";
+import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import Callout from "@/components/common/Callout";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
 import { fetchProjectById, fetchRequirements } from "@common/actionCreators/projectActionCreator";
@@ -42,7 +43,7 @@ const tabs = [
   "management-plan",
 ];
 
-const StepForms = (props, state, next, prev, handleTabChange, handleIRTSubmit) => [
+const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSubmit) => [
   {
     title: "Download template",
     content: <IRTDownloadTemplate />,
@@ -88,14 +89,26 @@ const StepForms = (props, state, next, prev, handleTabChange, handleIRTSubmit) =
   {
     title: "Review & Submit",
     content: (
-      <InformationRequirementsTableForm
-        project={props.project}
-        informationRequirementsTable={props.project.information_requirements_table}
-        requirements={props.requirements}
-        tab={props.match.params.tab}
-        isEditMode={state.isEditMode}
-        handleTabChange={handleTabChange}
-      />
+      <>
+        <Typography.Title level={4}>Review and Submit</Typography.Title>
+        <Callout
+          message={
+            <>
+              Review imported data before submission. Check the requirements and comments fields
+              that are required for the project.
+            </>
+          }
+        />
+
+        <InformationRequirementsTableForm
+          project={props.project}
+          informationRequirementsTable={props.project.information_requirements_table}
+          requirements={props.requirements}
+          tab={props.match.params.tab}
+          isEditMode={state.isEditMode}
+          handleTabChange={handleTabChange}
+        />
+      </>
     ),
     buttons: [
       <Button
@@ -113,6 +126,20 @@ const StepForms = (props, state, next, prev, handleTabChange, handleIRTSubmit) =
       >
         Back
       </Button>,
+      <Popconfirm
+        placement="top"
+        title="Are you sure you want to cancel the submission for this IRT?"
+        okText="Yes"
+        cancelText="No"
+        onConfirm={() => {
+          this.close();
+        }}
+        disabled={state.submitting}
+      >
+        <Button type="secondary" className="full-mobile" disabled={state.submitting}>
+          Cancel
+        </Button>
+      </Popconfirm>,
       <Button
         type="primary"
         style={{ display: "inline", float: "right" }}
@@ -122,7 +149,7 @@ const StepForms = (props, state, next, prev, handleTabChange, handleIRTSubmit) =
         }}
         disabled={state.submitting}
       >
-        Submit final IRT
+        Submit IRT
       </Button>,
     ],
   },
@@ -159,6 +186,8 @@ export class InformationRequirementsTablePage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
+  close = () => {};
+
   onChange = (value) => {
     this.setState({ current: value });
   };
@@ -181,7 +210,14 @@ export class InformationRequirementsTablePage extends Component {
       ? `Edit IRT - ${this.props.project?.project_title}`
       : `Final IRT - ${this.props.project?.project_title}`;
 
-    const Forms = StepForms(this.props, this.state, this.next, this.prev, this.handleTabChange);
+    const Forms = StepForms(
+      this.props,
+      this.state,
+      this.next,
+      this.prev,
+      this.close,
+      this.handleTabChange
+    );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
       this.state.current === 2 ? { md: { span: 6, offset: 6 } } : { md: 6 };
