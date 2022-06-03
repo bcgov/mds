@@ -26,10 +26,8 @@ jobs:
       matrix:
         include:
           - name: nginx
-          #- name: frontend
           - name: flyway
           - name: tusd
-          - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
@@ -70,7 +68,6 @@ jobs:
         include:
           - name: nginx
           - name: frontend
-          - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
