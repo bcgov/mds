@@ -12,14 +12,13 @@ import * as Strings from "@common/constants/strings";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import { getProjectSummary, getProject } from "@common/selectors/projectSelectors";
+import { getProject } from "@common/selectors/projectSelectors";
 import ProjectStagesTable from "./ProjectStagesTable";
 
 const propTypes = {
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
-  projectSummary: CustomPropTypes.projectSummary.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -66,6 +65,7 @@ export class ProjectOverviewTab extends Component {
       expected_project_start_date,
       project_guid,
       project_summary_guid,
+      documents,
     } = this.props.project.project_summary;
     const projectStages = [
       {
@@ -134,7 +134,7 @@ export class ProjectOverviewTab extends Component {
           <br />
           <Typography.Title level={4}>Project Documents</Typography.Title>
           <DocumentTable
-            documents={this.props.projectSummary.documents.reduce(
+            documents={documents.reduce(
               (docs, doc) => [
                 {
                   key: doc.mine_document_guid,
@@ -169,7 +169,6 @@ export class ProjectOverviewTab extends Component {
 
 const mapStateToProps = (state) => ({
   project: getProject(state),
-  projectSummary: getProjectSummary(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
 });

@@ -12,10 +12,8 @@ import MineProjectTable from "./MineProjectTable";
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projects: PropTypes.arrayOf(CustomPropTypes.projectSummary).isRequired,
   fetchProjectsByMine: PropTypes.func.isRequired,
-  removeDocumentFromProjectSummary: PropTypes.func.isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 

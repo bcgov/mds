@@ -11,7 +11,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
-  projectSummaries: PropTypes.arrayOf(CustomPropTypes.projectSummary).isRequired,
+  projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -28,10 +28,8 @@ const transformRowData = (projects) => {
       project_stage: project.project_summary.status_code,
       project_id: project.project_id || Strings.EMPTY_FIELD,
       project_name: project.project_title,
-      // project_summary_lead_name: project.project_summary_lead_name || Strings.EMPTY_FIELD,
       proponent_project_id: project.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
-      // first_submitted_date: formatDate(projectSummary.submission_date) || Strings.EMPTY_FIELD,
       last_updated_date: formatDate(project.update_timestamp),
     };
   });
