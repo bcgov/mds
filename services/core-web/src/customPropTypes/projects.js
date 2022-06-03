@@ -13,4 +13,5 @@ export const project = PropTypes.shape({
   project_title: PropTypes.string,
   mine_name: PropTypes.string,
   mine_guid: PropTypes.string,
+  project_summary: projectSummary,
 });
