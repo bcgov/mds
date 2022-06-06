@@ -1,10 +1,10 @@
-## SQL scripts for ETL and Migrations
+## Flyway Migrations
 
 This folder contains following:
 
 ```
-|-- Dockerfile (Dockerfile definition for OpenShift build)
-|-- Dockerfile.dev (Dockerfile definition for local development)
+|-- Dockerfile.flyway.dev (Dockerfile definition for local development)
+|-- Dockerfile.flyway.ci (Openshift Build)
 |-- sql\ (Directory containing SQL scripts for migrations to be run by Flyway)
 ```
 

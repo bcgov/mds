@@ -14,9 +14,6 @@ parameters:
     displayName: Database Config Name
     description: Configuration name for the database
     value: postgresql
-  - name: DB_HOST
-    displayName: Database Host Name
-    value: postgresql
   - name: TAG
     value: dev
   - name: JWT_OIDC_WELL_KNOWN_CONFIG
@@ -153,12 +150,9 @@ objects:
                   protocol: TCP
               env:
                 - name: DB_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
-                      key: database-docman-user
+                  value: "docman"
                 - name: DB_HOST
-                  value: ${DB_HOST}
+                  value: postgres13
                 - name: DB_PASS
                   valueFrom:
                     secretKeyRef:
@@ -167,10 +161,7 @@ objects:
                 - name: DB_PORT
                   value: "5432"
                 - name: DB_NAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
-                      key: database-name
+                  value: "mds"
                 - name: UWSGI_PROCESSES
                   value: ${UWSGI_PROCESSES}
                 - name: UWSGI_THREADS
@@ -345,12 +336,9 @@ objects:
                 - /app/celery.sh
               env:
                 - name: DB_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
-                      key: database-docman-user
+                  value: "docman"
                 - name: DB_HOST
-                  value: ${DB_HOST}
+                  value: postgres13
                 - name: DB_PASS
                   valueFrom:
                     secretKeyRef:
@@ -359,10 +347,7 @@ objects:
                 - name: DB_PORT
                   value: "5432"
                 - name: DB_NAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
-                      key: database-name
+                  value: "mds"
                 - name: NRIS_DB_PORT
                   value: "1521"
                 - name: UWSGI_PROCESSES

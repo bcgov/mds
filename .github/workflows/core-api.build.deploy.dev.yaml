@@ -46,7 +46,7 @@ jobs:
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
       - name: Build n Tag
         run: |
-          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.MIG_CONTEXT }} -f ${{ env.MIG_CONTEXT }}Dockerfile.ci
+          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.MIG_CONTEXT }} -f ${{ env.MIG_CONTEXT }}Dockerfile.flyway.ci
           docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.TAG }}
       - name: Push
