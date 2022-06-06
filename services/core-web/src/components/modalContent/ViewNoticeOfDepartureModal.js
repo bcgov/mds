@@ -19,13 +19,14 @@ import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate, resetForm } from "@common/utils/helpers";
 import {
+  addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { Field, reduxForm, change } from "redux-form";
+import { change, Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { validateSelectOptions } from "@common/utils/Validate";
 import FileUpload from "@/components/common/FileUpload";
@@ -39,6 +40,7 @@ const propTypes = {
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   updateNoticeOfDeparture: PropTypes.func.isRequired,
+  addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
@@ -59,6 +61,19 @@ let ViewNoticeOfDepartureModal = (props) => {
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
+
+  const handleAddDocuments = (noticeOfDepartureGuid) => {
+    documentArray.forEach((document) =>
+      props.addDocumentToNoticeOfDeparture(
+        { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+        {
+          document_type: document.document_type,
+          document_name: document.document_name,
+          document_manager_guid: document.document_manager_guid,
+        }
+      )
+    );
+  };
 
   const onFileLoad = (documentName, document_manager_guid, documentType) => {
     setUploadedFiles([
@@ -116,6 +131,9 @@ let ViewNoticeOfDepartureModal = (props) => {
 
   const updateNoticeOfDepartureSubmit = async (values) => {
     await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
+    if (documentArray.length > 0) {
+      await handleAddDocuments(nod_guid);
+    }
     await props.fetchNoticesOfDeparture(mine.mine_guid);
     props.closeModal();
   };
@@ -232,21 +250,30 @@ let ViewNoticeOfDepartureModal = (props) => {
           dataSource={otherDocuments}
           tableProps={{ pagination: false }}
         />
-        <Row>
-          <Form.Item>
+        <Form.Item>
+          <div className="nod-modal-section-header padding-md--top">
+            <h4 className="nod-modal-section-header padding-md--top">
+              Upload Ministry Decision Documentation
+            </h4>
             <Field
               id="fileUpload"
               name="fileUpload"
               component={FileUpload}
               uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
               acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-              onFileLoad={onFileLoad}
+              onFileLoad={(documentName, document_manager_guid) => {
+                onFileLoad(
+                  documentName,
+                  document_manager_guid,
+                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+                );
+              }}
               onRemoveFile={onRemoveFile}
               allowRevert
               allowMultiple
             />
-          </Form.Item>
-        </Row>
+          </div>
+        </Form.Item>
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
             <p className="field-title">Technical Operations Director</p>
@@ -293,7 +320,7 @@ let ViewNoticeOfDepartureModal = (props) => {
             type="primary"
             htmlType="submit"
             onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
-            disabled={pristine}
+            disabled={pristine && documentArray.length === 0}
           >
             Update
           </Button>
@@ -327,6 +354,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchDetailedNoticeOfDeparture,
       updateNoticeOfDeparture,
       fetchNoticesOfDeparture,
+      addDocumentToNoticeOfDeparture,
     },
     dispatch
   );
