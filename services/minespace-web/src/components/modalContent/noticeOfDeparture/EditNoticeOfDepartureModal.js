@@ -32,10 +32,6 @@ const AddNoticeOfDepartureModal = (props) => {
     </div>
   );
 };
-//
-// const mapStateToProps = (state) => ({
-//   editNoticeOfDepartureFormValues: getFormValues(FORM.EDIT_NOTICE_OF_DEPARTURE)(state) || {},
-// });
 
 AddNoticeOfDepartureModal.propTypes = propTypes;
 

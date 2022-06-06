@@ -59,7 +59,10 @@ let ViewNoticeOfDepartureModal = (props) => {
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
   const otherDocuments = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+  );
+  const decision = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
   );
 
   const handleAddDocuments = (noticeOfDepartureGuid) => {
@@ -250,6 +253,19 @@ let ViewNoticeOfDepartureModal = (props) => {
           dataSource={otherDocuments}
           tableProps={{ pagination: false }}
         />
+        {decision.length > 0 && (
+          <div>
+            <h4 className="nod-modal-section-header padding-md--top">
+              Ministry Decision Documentation
+            </h4>
+            <CoreTable
+              condition
+              columns={fileColumns(false)}
+              dataSource={decision}
+              tableProps={{ pagination: false }}
+            />
+          </div>
+        )}
         <Form.Item>
           <div className="nod-modal-section-header padding-md--top">
             <h4 className="nod-modal-section-header padding-md--top">
