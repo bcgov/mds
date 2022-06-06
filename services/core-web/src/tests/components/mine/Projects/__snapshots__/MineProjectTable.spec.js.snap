@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineProjectSummaryTable renders properly 1`] = `
+exports[`MineProjectTable renders properly 1`] = `
 <CoreTable
   columns={
     Array [
@@ -53,31 +53,25 @@ exports[`MineProjectSummaryTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
-        "documents": Array [],
-        "first_submitted_date": "N/A",
-        "key": "81324623978135",
+        "key": "35633148-57f8-4967-be35-7f89abfbd02e",
         "last_updated_date": undefined,
-        "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-        "projectSummary": Object {
+        "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+        "project": Object {
           "contacts": Array [],
-          "documents": Array [],
-          "expected_draft_irt_submission_date": "2020-11-10T22:18:19+00:00",
-          "expected_permit_application_date": "2020-11-12T22:18:19+00:00",
-          "expected_permit_receipt_date": "2020-11-20T22:18:19+00:00",
-          "expected_project_start_date": "2020-11-22T22:18:19+00:00",
-          "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-          "project_summary_description": "Sample description",
-          "project_summary_guid": "81324623978135",
-          "project_summary_title": "Sample title",
-          "proponent_project_id": "25789-x",
-          "status_code": "OPN",
+          "information_requirements_table": Object {},
+          "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          "mine_name": "Sample Mine",
+          "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+          "project_summary": Object {
+            "documents": Array [],
+          },
+          "project_title": "Test Project Title",
         },
         "project_contact": "N/A",
-        "project_name": "Sample title",
-        "project_stage": "OPN",
-        "project_summary_id": "N/A",
-        "project_summary_lead_name": "N/A",
-        "proponent_project_id": "25789-x",
+        "project_id": "N/A",
+        "project_name": "Test Project Title",
+        "project_stage": undefined,
+        "proponent_project_id": "N/A",
       },
     ]
   }

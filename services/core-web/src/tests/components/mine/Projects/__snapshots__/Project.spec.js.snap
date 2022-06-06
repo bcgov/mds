@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project renders properly 1`] = `
+<div
+  className="page"
+>
+  <div
+    className=" padding-lg view--header"
+  >
+    <h1>
+      Test Project Title
+      <span
+        className="padding-sm--left"
+      >
+        <Tag
+          title="Mine: Sample Mine"
+        >
+          <Link
+            disabled={false}
+            style={
+              Object {
+                "textDecoration": "none",
+              }
+            }
+            to="/mine-dashboard/40fb0ca4-4dfb-4660-a184-6d031a21f3e9/mine-information/general"
+          >
+            <ForwardRef(EnvironmentOutlined)
+              className="padding-sm--right"
+            />
+            Sample Mine
+          </Link>
+        </Tag>
+      </span>
+    </h1>
+    <Link
+      to="/mine-dashboard/40fb0ca4-4dfb-4660-a184-6d031a21f3e9/permits-and-approvals/pre-applications"
+    >
+      <ForwardRef(ArrowLeftOutlined)
+        className="padding-sm--right"
+      />
+      Back to: 
+      Sample Mine
+       Major projects
+    </Link>
+  </div>
+  <Tabs
+    activeKey="overview"
+    animated={
+      Object {
+        "inkBar": true,
+        "tabPane": false,
+      }
+    }
+    centered={true}
+    className="now-tabs"
+    size="large"
+    style={
+      Object {
+        "margin": "0",
+      }
+    }
+  >
+    <TabPane
+      key="overview"
+      tab="Overview"
+    >
+      <LoadingWrapper
+        condition={false}
+      >
+        <div
+          className="padding-lg"
+        >
+          <Connect(ProjectOverviewTab) />
+        </div>
+      </LoadingWrapper>
+    </TabPane>
+    <TabPane
+      disabled={true}
+      key="irt"
+      tab="IRT"
+    >
+      <LoadingWrapper
+        condition={false}
+      >
+        <div
+          className="padding-lg"
+        />
+      </LoadingWrapper>
+    </TabPane>
+  </Tabs>
+</div>
+`;

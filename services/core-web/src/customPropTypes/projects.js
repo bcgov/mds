@@ -8,4 +8,10 @@ export const projectSummary = PropTypes.shape({
   documents: PropTypes.arrayOf(mineDocument),
 });
 
-export default projectSummary;
+export const project = PropTypes.shape({
+  project_guid: PropTypes.string,
+  project_title: PropTypes.string,
+  mine_name: PropTypes.string,
+  mine_guid: PropTypes.string,
+  project_summary: projectSummary,
+});

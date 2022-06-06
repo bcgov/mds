@@ -11,43 +11,31 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
-  projectSummaries: PropTypes.arrayOf(CustomPropTypes.projectSummary).isRequired,
+  projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  deleteFilePermission: PropTypes.string,
-  // eslint-disable-next-line react/no-unused-prop-types
-  handleDeleteFile: PropTypes.func,
 };
 
-const defaultProps = {
-  deleteFilePermission: null,
-  handleDeleteFile: () => {},
-};
-
-const transformRowData = (projectSummaries) => {
-  return projectSummaries.map((projectSummary) => {
-    const contact = projectSummary?.contacts?.find((c) => c.is_primary);
+const transformRowData = (projects) => {
+  return projects.map((project) => {
+    const contact = project?.contacts?.find((c) => c.is_primary);
 
     return {
-      key: projectSummary.project_summary_guid,
-      projectSummary,
-      mine_guid: projectSummary.mine_guid,
-      project_stage: projectSummary.status_code,
-      documents: projectSummary.documents,
-      project_summary_id: projectSummary.project_summary_id || Strings.EMPTY_FIELD,
-      project_name: projectSummary.project_summary_title,
-      project_summary_lead_name: projectSummary.project_summary_lead_name || Strings.EMPTY_FIELD,
-      proponent_project_id: projectSummary.proponent_project_id || Strings.EMPTY_FIELD,
+      key: project.project_guid,
+      project,
+      mine_guid: project.mine_guid,
+      project_stage: project.project_summary.status_code,
+      project_id: project.project_id || Strings.EMPTY_FIELD,
+      project_name: project.project_title,
+      proponent_project_id: project.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
-      first_submitted_date: formatDate(projectSummary.submission_date) || Strings.EMPTY_FIELD,
-      last_updated_date: formatDate(projectSummary.update_timestamp),
+      last_updated_date: formatDate(project.update_timestamp),
     };
   });
 };
 
-export const MineProjectSummaryTable = (props) => {
+export const MineProjectTable = (props) => {
   const columns = [
     {
       key: "project_name",
@@ -98,10 +86,8 @@ export const MineProjectSummaryTable = (props) => {
         <div title="" align="right">
           <Row gutter={1}>
             <Col span={12}>
-              <Link to={router.PRE_APPLICATIONS.dynamicRoute(record.mine_guid, record.key)}>
-                <Button type="primary" disabled={record.is_historic}>
-                  Open
-                </Button>
+              <Link to={router.PROJECTS.dynamicRoute(record.key)}>
+                <Button type="primary">Open</Button>
               </Link>
             </Col>
           </Row>
@@ -114,7 +100,7 @@ export const MineProjectSummaryTable = (props) => {
     <CoreTable
       condition={props.isLoaded}
       columns={columns}
-      dataSource={transformRowData(props.projectSummaries)}
+      dataSource={transformRowData(props.projects)}
       tableProps={{
         align: "left",
       }}
@@ -122,11 +108,10 @@ export const MineProjectSummaryTable = (props) => {
   );
 };
 
-MineProjectSummaryTable.propTypes = propTypes;
-MineProjectSummaryTable.defaultProps = defaultProps;
+MineProjectTable.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
 });
 
-export default connect(mapStateToProps)(MineProjectSummaryTable);
+export default connect(mapStateToProps)(MineProjectTable);
