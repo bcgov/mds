@@ -1,5 +1,3 @@
-
-
 ### Postgres 9 -> 13.3 Upgrade steps
 
 
