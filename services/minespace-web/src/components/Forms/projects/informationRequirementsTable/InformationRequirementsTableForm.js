@@ -60,36 +60,9 @@ export class InformationRequirementsTableForm extends Component {
     }));
 
   render() {
-    const renderTabComponent = (tab, tabIndex, requirements) =>
-      ({
-        "intro-project-overview": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "baseline-information": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "mine-plan": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "reclamation-closure-plan": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "modelling-mitigation-discharges": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "environmental-assessment-predictions": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "environmental-monitoring": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "health-safety": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-        "management-plan": (
-          <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
-        ),
-      }[tab]);
+    const renderTabComponent = (requirements, tabIndex) => (
+      <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
+    );
 
     return (
       <Form layout="vertical">
@@ -109,11 +82,7 @@ export class InformationRequirementsTableForm extends Component {
                     key={tab}
                     className="vertical-tabs--tabpane"
                   >
-                    {renderTabComponent(
-                      tabs[this.state.tabIndex],
-                      this.state.tabIndex,
-                      this.mergedRequirements
-                    )}
+                    {renderTabComponent(this.mergedRequirements, this.state.tabIndex)}
                   </Tabs.TabPane>
                 );
               })}
