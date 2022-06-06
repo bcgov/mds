@@ -21,10 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # - config: frontend
-          # - config: backend
           - config: dbbackup
-          - config: docgen
           - config: postgresql
           - config: nginx
           - config: redis

@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectOverviewTab renders properly 1`] = `
+<Row
+  gutter={
+    Array [
+      0,
+      16,
+    ]
+  }
+>
+  <Col
+    lg={
+      Object {
+        "span": 14,
+      }
+    }
+    xl={
+      Object {
+        "span": 16,
+      }
+    }
+  >
+    <Title
+      level={4}
+    >
+      Overview
+    </Title>
+    <Text
+      strong={true}
+    >
+      PROJECT DESCRIPTION
+    </Text>
+    <Paragraph />
+    <Text
+      strong={true}
+    >
+      KEY DATES
+    </Text>
+    <Row>
+      <Col
+        lg={12}
+      >
+        <Descriptions
+          column={2}
+          layout="vertical"
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Estimated IRT Submission"
+            span={12}
+          >
+            N/A
+          </DescriptionsItem>
+          <DescriptionsItem
+            className="vertical-description"
+            label="Desired date to receive permit/amendment(s)"
+            span={12}
+          >
+            N/A
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+      <Col
+        lg={12}
+      >
+        <Descriptions
+          column={2}
+          layout="vertical"
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Estimated Permit Application Submission"
+            span={12}
+          >
+            N/A
+          </DescriptionsItem>
+          <DescriptionsItem
+            className="vertical-description"
+            label="Anticipated work start"
+            span={12}
+          >
+            N/A
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+    </Row>
+    <Title
+      level={4}
+    >
+      Project Stages
+    </Title>
+    <ProjectStagesTable
+      projectStages={
+        Array [
+          Object {
+            "key": undefined,
+            "link": <ForwardRef
+              to="/pre-applications/undefined/project-description/undefined"
+            >
+              <ForwardRef(InternalButton)
+                block={false}
+                className="full-mobile margin-small"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="secondary"
+              >
+                View
+              </ForwardRef(InternalButton)>
+            </ForwardRef>,
+            "payload": Object {
+              "documents": Array [],
+            },
+            "status": undefined,
+            "statusHash": Object {
+              "ASG": "Submitted",
+              "COM": "Complete",
+              "DFT": "Draft",
+              "IAT": "Inactive",
+              "OHD": "On Hold",
+              "SUB": "Submitted",
+              "UNP": "Under review",
+              "UNR": "Under review",
+              "WDN": "Withdrawn",
+            },
+            "title": "Project description",
+          },
+        ]
+      }
+    />
+    <br />
+    <Title
+      level={4}
+    >
+      Project Documents
+    </Title>
+    <DocumentTable
+      categoryDataIndex="project_summary_document_type_code"
+      documentCategoryOptionsHash={
+        Object {
+          "GEN": "General",
+        }
+      }
+      documentParent="project summary"
+      documents={Array []}
+      isViewOnly={true}
+      removeDocument={[Function]}
+      uploadDateIndex="upload_date"
+    />
+  </Col>
+  <Col
+    lg={
+      Object {
+        "offset": 1,
+        "span": 9,
+      }
+    }
+    xl={
+      Object {
+        "offset": 1,
+        "span": 7,
+      }
+    }
+  >
+    <Row>
+      <Col
+        span={24}
+      >
+        <Card
+          headStyle={
+            Object {
+              "minHeight": "unset",
+            }
+          }
+          title="Project Contacts"
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;

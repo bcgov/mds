@@ -1,19 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineProjectSummary renders properly 1`] = `
+exports[`MineProject renders properly 1`] = `
 <div
   className="tab__content"
 >
   <div>
     <h2>
-      Pre-applications
+      Major Projects
     </h2>
     <br />
   </div>
   <div>
-    <Connect(MineProjectSummaryTable)
-      deleteFilePermission="role_admin"
-      handleDeleteFile={[Function]}
+    <Connect(MineProjectTable)
       isLoaded={false}
       mine={
         Object {
@@ -73,7 +71,6 @@ exports[`MineProjectSummary renders properly 1`] = `
           },
         }
       }
-      projectSummaries={Array []}
       projectSummaryStatusCodesHash={
         Object {
           "ASG": "Assigned",
@@ -86,6 +83,21 @@ exports[`MineProjectSummary renders properly 1`] = `
           "UNR": "Under review - with reviewers",
           "WDN": "Withdrawn",
         }
+      }
+      projects={
+        Array [
+          Object {
+            "contacts": Array [],
+            "information_requirements_table": Object {},
+            "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            "mine_name": "Sample Mine",
+            "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+            "project_summary": Object {
+              "documents": Array [],
+            },
+            "project_title": "Test Project Title",
+          },
+        ]
       }
     />
   </div>

@@ -3,6 +3,10 @@ export const EXCEL = {
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 };
 
+export const MODERN_EXCEL = {
+  ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+};
+
 export const PDF = {
   ".pdf": "application/pdf",
 };

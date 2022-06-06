@@ -59,7 +59,7 @@ def test_delete_project_summary_bad_status_code(test_client, db_session, auth_he
 
 def test_update_project_summary_assign_project_lead(test_client, db_session, auth_headers):
     '''Assigning a project lead will change status code to ASG'''
-    project = ProjectFactory()
+    project = ProjectFactory(project_summary=0)
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)

@@ -9,6 +9,7 @@ exports[`NOWActionWrapper renders properly 1`] = `
       "push": [MockFunction],
     }
   }
+  ignoreDelay={false}
   isDisabledReviewButton={true}
   location={
     Object {

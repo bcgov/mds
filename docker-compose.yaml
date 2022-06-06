@@ -5,9 +5,10 @@ services:
   postgres:
     restart: always
     container_name: mds_postgres
+    user: postgres
     build:
-      context: migrations
-      dockerfile: Dockerfile.dev
+      context: services/postgres
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
@@ -17,7 +18,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -45,9 +46,7 @@ services:
       - ./migrations/sql:/flyway/sql
       - ./migrations/scripts:/flyway/scripts
     depends_on:
-      postgres:
-        condition: service_healthy
-
+      - postgres
   ####################### Backend Definition #######################
   backend:
     restart: always
@@ -69,7 +68,7 @@ services:
       - tusd
       - filesystem_provider
     healthcheck:
-      test: ["CMD", "curl", "localhost:5000/health"]
+      test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -83,7 +82,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli","ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -95,7 +94,7 @@ services:
     container_name: mds_frontend
     build:
       context: services/core-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/core-web/src:/app/src
     ports:
@@ -104,7 +103,7 @@ services:
       - backend
     env_file: ./services/core-web/.env
     healthcheck:
-      test: ["CMD", "curl", "localhost:3000/health"]
+      test: [ "CMD", "curl", "localhost:3000/health" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -117,7 +116,7 @@ services:
     container_name: mds_minespace
     build:
       context: services/minespace-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/minespace-web/src:/app/src
     ports:
@@ -126,7 +125,7 @@ services:
       - backend
     env_file: ./services/minespace-web/.env
     healthcheck:
-      test: ["CMD", "curl", "localhost:3020/health"]
+      test: [ "CMD", "curl", "localhost:3020/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -147,7 +146,7 @@ services:
       - nris_migrate
     env_file: ./services/nris-api/backend/.env
     healthcheck:
-      test: ["CMD", "curl", "localhost:5500/health"]
+      test: [ "CMD", "curl", "localhost:5500/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -235,7 +234,7 @@ services:
     restart: always
     container_name: docgen_api
     image: bcgovimages/common-document-generation-service:2.4.1
-    command: ["npm", "run", "start"]
+    command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030

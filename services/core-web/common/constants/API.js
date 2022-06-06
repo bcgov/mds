@@ -122,7 +122,7 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
-// Projects(Project Summaries, IRT)
+// Projects(Project & Project Summaries)
 export const PROJECTS = (mineGuid) => `/projects?${queryString.stringify({ mine_guid: mineGuid })}`;
 export const PROJECT = (projectGuid) => `/projects/${projectGuid}`;
 export const PROJECT_PROJECT_SUMMARIES = (projectGuid, params = {}) =>
@@ -145,11 +145,13 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   )}`;
 
 // Information Requirements Table (IRT)
-export const IRT_TEMPLATE_DOWNLOAD = `/projects/irt-template-download`;
-export const IMPORT_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
-  `/projects/${projectGuid}/final-irt-import`;
-export const IMPORT_LOCAL_INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
-  `/projects/${projectGuid}/final-irt-import-local`;
+export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;
+export const REQUIREMENTS = `/projects/requirements`;
+export const INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD = `/projects/information-requirements-table/template-download`;
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS = (projectGuid) =>
+  `/projects/${projectGuid}/information-requirements-table/documents`;
+export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid) =>
+  `/projects/${projectGuid}/information-requirements-table`;
 
 // Users
 export const CORE_USER = "/users/core";

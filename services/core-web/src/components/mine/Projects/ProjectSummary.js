@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import ProjectSummarySideMenu from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
+import ProjectSummarySideMenu from "@/components/mine/Projects/ProjectSummarySideMenu";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
@@ -80,10 +80,10 @@ export class ProjectSummary extends Component {
   };
 
   handleFetchData = (params) => {
-    const { mineGuid, projectSummaryGuid } = params;
-    if (mineGuid && projectSummaryGuid) {
+    const { projectGuid, projectSummaryGuid } = params;
+    if (projectGuid && projectSummaryGuid) {
       return this.props
-        .fetchProjectSummaryById(mineGuid, projectSummaryGuid)
+        .fetchProjectSummaryById(projectGuid, projectSummaryGuid)
         .then(() => this.setState({ isLoaded: true, isValid: true }))
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
@@ -147,13 +147,9 @@ export class ProjectSummary extends Component {
               </Tag>
             </span>
           </h1>
-          <Link
-            to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-              this.props.formattedProjectSummary.mine_guid
-            )}
-          >
+          <Link to={routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)}>
             <ArrowLeftOutlined className="padding-sm--right" />
-            Back to: {this.props.formattedProjectSummary.mine_name} Pre-application submissions
+            Back to: {this.props.formattedProjectSummary.mine_name} Project overview
           </Link>
         </div>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>

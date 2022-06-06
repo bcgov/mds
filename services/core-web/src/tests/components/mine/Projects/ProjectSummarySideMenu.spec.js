@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ProjectSummarySideMenu } from "@/components/mine/ProjectSummaries/ProjectSummarySideMenu";
+import { ProjectSummarySideMenu } from "@/components/mine/Projects/ProjectSummarySideMenu";
 
 const props = {};
 

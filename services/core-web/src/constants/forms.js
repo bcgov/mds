@@ -79,3 +79,6 @@ export const EMLI_CONTACT_FORM = "EMLI_CONTACT_FORM";
 
 // Project Descriptions
 export const PROJECT_SUMMARY = "PROJECT_SUMMARY";
+
+// Notice of Departure
+export const NOTICE_OF_DEPARTURE_FORM = "NOTICE_OF_DEPARTURE_FORM";

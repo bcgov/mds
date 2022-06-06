@@ -46,7 +46,7 @@ jobs:
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
       - name: Build n Tag
         run: |
-          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.MIG_CONTEXT }} -f ${{ env.MIG_CONTEXT }}Dockerfile.ci
+          docker build -t ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ env.MIG_CONTEXT }} -f ${{ env.MIG_CONTEXT }}Dockerfile.flyway.ci
           docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.MIG }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}:${{ env.TAG }}
       - name: Push
@@ -69,7 +69,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.RC_TOKEN }}
+        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
@@ -77,4 +77,4 @@ jobs:
     if: always() && (needs.trigger-gitops.result == 'failure')
     steps:
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.RC_TOKEN }} 1
+        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1

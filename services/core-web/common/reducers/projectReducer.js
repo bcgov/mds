@@ -8,7 +8,8 @@ const initialState = {
   projectSummaries: [],
   projectSummary: {},
   projectSummaryPageData: {},
-  informationRequirementsTable: {},
+  informationRequirementsTable: [],
+  requirements: [],
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -45,6 +46,16 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         projectSummary: {},
       };
+    case actionTypes.STORE_REQUIREMENTS:
+      return {
+        ...state,
+        requirements: action.payload.records,
+      };
+    case actionTypes.CLEAR_REQUIREMENTS:
+      return {
+        ...state,
+        requirements: [],
+      };
     case actionTypes.STORE_INFORMATION_REQUIREMENTS_TABLE:
       return {
         ...state,
@@ -70,6 +81,7 @@ export const getProjectPageData = (state) => state[PROJECTS].projectPageData;
 export const getProjectSummaries = (state) => state[PROJECTS].projectSummaries;
 export const getProjectSummary = (state) => state[PROJECTS].projectSummary;
 export const getProjectSummaryPageData = (state) => state[PROJECTS].projectSummaryPageData;
+export const getRequirements = (state) => state[PROJECTS].requirements;
 export const getInformationRequirementsTable = (state) =>
   state[PROJECTS].informationRequirementsTable;
 

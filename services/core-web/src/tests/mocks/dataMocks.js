@@ -6425,6 +6425,34 @@ export const EXPLOSIVES_PERMITS = {
   },
 };
 
+export const PROJECTS = {
+  records: [
+    {
+      project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
+      project_title: "Test Project Title",
+      mine_name: "Sample Mine",
+      mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+      contacts: [],
+      project_summary: {
+        documents: [],
+      },
+      information_requirements_table: {},
+    },
+  ],
+};
+
+export const PROJECT = {
+  project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
+  project_title: "Test Project Title",
+  mine_name: "Sample Mine",
+  mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+  contacts: [],
+  project_summary: {
+    documents: [],
+  },
+  information_requirements_table: {},
+};
+
 export const PROJECT_SUMMARIES = {
   records: [
     {
@@ -6748,6 +6776,78 @@ export const PROJECT_SUMMARY_CHILD_AUTHORIZATION_TYPES_HASH = {
     description: "Water licence",
     parent: { code: "WATER_SUSTAINABILITY_ACT", description: "Water Sustainability Act" },
   },
+};
+
+export const REQUIREMENTS = {
+  records: [
+    {
+      requirement_guid: "d9996a84-30b0-4de6-b171-c959bdae0e3f",
+      requirement_id: 1,
+      parent_requirement_id: null,
+      description: "Introduction and Project Overview",
+      display_order: 1,
+      deleted_ind: false,
+      sub_requirements: [
+        {
+          requirement_guid: "56e58309-9f63-401c-b26d-bfdc867ebe5c",
+          requirement_id: 12,
+          parent_requirement_id: 1,
+          description: "Project Overview",
+          display_order: 3,
+          deleted_ind: false,
+          sub_requirements: [
+            {
+              requirement_guid: "9e43699d-da0c-49e4-849e-18fc74d33a4f",
+              requirement_id: 78,
+              parent_requirement_id: 12,
+              description: "Project History",
+              display_order: 1,
+              deleted_ind: false,
+              sub_requirements: [],
+              step: "1.3.1.",
+            },
+          ],
+          step: "1.3.",
+        },
+        {
+          requirement_guid: "808a2f93-9774-49ae-bc85-82be8ce3ea2f",
+          requirement_id: 13,
+          parent_requirement_id: 1,
+          description: "Regulatory Framework",
+          display_order: 4,
+          deleted_ind: false,
+          sub_requirements: [],
+          step: "1.4.",
+        },
+      ],
+      step: "1.",
+    },
+  ],
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE = {
+  irt_id: 1,
+  irt_guid: "9a5a10ce-ead2-4346-8a85-b3320c5b454b",
+  project_guid: "fba9b698-6d40-4df1-9914-84008c3c586f",
+  status_code: "REC",
+  requirements: [
+    {
+      irt_requirements_xref_guid: "38c5de09-3aef-4269-b606-e0f6b37f0775",
+      requirement_guid: "1fc02704-b8d9-48e9-abbd-67db21855d48",
+      deleted_ind: false,
+      required: "True",
+      methods: "True",
+      comment: "1",
+    },
+    {
+      irt_requirements_xref_guid: "2d98e665-ca1f-4cf5-8aae-ac5e7fb54b9a",
+      requirement_guid: "b509efe1-422e-42eb-aaeb-ce7ebaaea25c",
+      deleted_ind: false,
+      required: "True",
+      methods: "True",
+      comment: "2",
+    },
+  ],
 };
 
 export const EMLI_TYPE_CODES_DROPDOWN = [

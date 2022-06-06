@@ -161,6 +161,12 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
       dispatch(projectActions.storeProject(response.data));
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data.project_summary));
+      dispatch(success(reducerTypes.GET_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(
+        projectActions.storeInformationRequirementsTable(
+          response.data.information_requirements_table
+        )
+      );
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT));
@@ -192,30 +198,46 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importIrtSpreadsheet = (
+export const createInformationRequirementsTable = (
   projectGuid,
   file,
-  message = "Successfully imported final IRT"
+  message = "Successfully imported final IRT."
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
   const customContentType = { "Content-Type": "multipart/form-data" };
-  dispatch(request(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+  dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      ENVIRONMENT.apiUrl + API.IMPORT_LOCAL_INFORMATION_REQUIREMENTS_TABLE(projectGuid),
+      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid),
       formData,
       createRequestHeader(customContentType)
     )
     .then((response) => {
       notification.success({ message, duration: 10 });
-      dispatch(success(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.IMPORT_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchRequirements = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_REQUIREMENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.REQUIREMENTS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_REQUIREMENTS));
+      dispatch(projectActions.storeRequirements(response.data));
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_REQUIREMENTS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading));
 };

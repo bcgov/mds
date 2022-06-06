@@ -46,7 +46,10 @@ export class ProjectPage extends Component {
       this.props
         .fetchProjectById(projectGuid)
         .then(() => {
-          return this.props.fetchMineRecordById(this.props.project.mine_guid);
+          if (this.props?.project?.mine_guid) {
+            return this.props.fetchMineRecordById(this.props.project.mine_guid);
+          }
+          return null;
         })
         .then(({ data }) => {
           this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
@@ -100,7 +103,7 @@ export class ProjectPage extends Component {
                   <ProjectOverviewTab />
                 </Tabs.TabPane>
                 {!IN_PROD() && (
-                  <Tabs.TabPane tab="IRT" key="irt">
+                  <Tabs.TabPane tab="IRT" key="information-requirements-table/new">
                     <InformationRequirementsTablePage match={this.props.match} />
                   </Tabs.TabPane>
                 )}

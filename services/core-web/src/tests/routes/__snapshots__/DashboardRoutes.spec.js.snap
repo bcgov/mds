@@ -216,7 +216,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(MineProjectSummary)",
+        "displayName": "Connect(MineProject)",
         "type": [Function],
       }
     }
@@ -234,7 +234,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/pre-applications/:mineGuid/project-description/:projectSummaryGuid"
+    path="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Project)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/pre-applications/:projectGuid/:tab"
   />
   <Route
     component={

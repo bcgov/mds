@@ -8,6 +8,7 @@ import {
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import {
   getProjectSummary,
   getProject,
@@ -82,15 +83,17 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.projectSummary,
         statusHash: this.props.projectSummaryStatusCodesHash,
       },
-      {
+    ];
+    if (!IN_PROD()) {
+      projectStages.push({
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
         status: this.props.informationRequirementsTable.status_code,
         project_guid: projectGuid,
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
-      },
-    ];
+      });
+    }
 
     return (
       <Row gutter={[0, 16]}>

@@ -21,7 +21,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
@@ -75,7 +74,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: docgen
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
@@ -113,9 +111,7 @@ jobs:
       matrix:
         include:
           - name: nris
-          #- name: frontend
           - name: docman
-          - name: docgen
           - name: nginx
           - name: metabase
           - name: metabase-postgres

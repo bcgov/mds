@@ -1,141 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
-<div>
-  <div>
-    <h4
-      className="nod-modal-section-header"
-    >
-      Basic Information
-    </h4>
-    <div
-      className="content--light-grey nod-section-padding"
-    >
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title margin-large--right"
-        >
-          Departure Project Title
-        </p>
-        <p>
-          Test with checklist 1
-        </p>
-      </div>
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title margin-large--right"
-        >
-          Departure Summary
-        </p>
-        <p>
-          Checklist description
-        </p>
-      </div>
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title margin-large--right"
-        >
-          Permit #
-        </p>
-        <p>
-          CX-6515762
-        </p>
-      </div>
-      <div>
-        <div
-          className="inline-flex padding-sm"
-        >
-          <p
-            className="field-title margin-large--right"
-          >
-            NOD #
-          </p>
-          <p>
-            56c75a01-248f-4e2c-961a-131790205682
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-sm"
-        >
-          <p
-            className="field-title margin-large--right"
-          >
-            Declared Type
-          </p>
-          <p>
-            Potentially Substantial
-          </p>
-        </div>
-      </div>
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title margin-large--right"
-        >
-          Mine Manager
-        </p>
-        <p>
-          N/A
-        </p>
-      </div>
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title margin-large--right"
-        >
-          Submitted
-        </p>
-        <p>
-          May 05 2022
-        </p>
-      </div>
-    </div>
-    <h4
-      className="nod-modal-section-header padding-md--top"
-    >
-      Self-Assessment Form
-    </h4>
-    <CoreTable
-      columns={
-        Array [
-          Object {
-            "dataIndex": "document_name",
-            "render": [Function],
-            "sortField": "document_name",
-            "sorter": false,
-            "title": "Name",
-          },
-          Object {
-            "dataIndex": "document_category",
-            "render": [Function],
-            "sortField": "document_category",
-            "sorter": false,
-            "title": "Category",
-          },
-          Object {
-            "dataIndex": "create_timestamp",
-            "render": [Function],
-            "sortField": "create_timestamp",
-            "sorter": false,
-            "title": "Uploaded",
-          },
-          Object {
-            "dataIndex": "actions",
-            "render": [Function],
-          },
-        ]
-      }
-      condition={true}
-      dataSource={
-        Array [
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <Connect(ReduxForm)
+    closeModal={[MockFunction]}
+    fetchDetailedNoticeOfDeparture={[MockFunction]}
+    handleSubmit={[MockFunction]}
+    initialValues={
+      Object {
+        "create_timestamp": "2022-05-05T15:44:48.204164+00:00",
+        "documents": Array [
           Object {
             "create_timestamp": "2022-05-05T15:44:49.419460+00:00",
             "document_manager_guid": "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
@@ -145,235 +47,56 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
             "mine_guid": "29050da9-5d9e-4a80-9f6d-1d06f02fc589",
             "upload_date": null,
           },
-        ]
+        ],
+        "nod_description": "Checklist description",
+        "nod_guid": "56c75a01-248f-4e2c-961a-131790205682",
+        "nod_status": "pending_review",
+        "nod_title": "Test with checklist 1",
+        "nod_type": "potentially_substantial",
+        "permit": Object {
+          "current_permittee": "Richardson-Weiss",
+          "permit_guid": "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
+          "permit_id": 10,
+          "permit_no": "CX-6515762",
+          "permit_prefix": "C",
+          "permit_status_code": "O",
+        },
+        "submission_timestamp": "2022-05-05T15:44:48.205086",
+        "update_timestamp": "2022-05-05T15:44:48.205068+00:00",
       }
-      tableProps={
-        Object {
-          "pagination": false,
-        }
+    }
+    noticeOfDeparture={
+      Object {
+        "create_timestamp": "2022-05-05T15:44:48.204164+00:00",
+        "documents": Array [
+          Object {
+            "create_timestamp": "2022-05-05T15:44:49.419460+00:00",
+            "document_manager_guid": "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
+            "document_name": "Excel_Comments_Template.xlsx",
+            "document_type": "checklist",
+            "mine_document_guid": "f678c3b6-8514-43fb-a147-a6caf5deeb50",
+            "mine_guid": "29050da9-5d9e-4a80-9f6d-1d06f02fc589",
+            "upload_date": null,
+          },
+        ],
+        "nod_description": "Checklist description",
+        "nod_guid": "56c75a01-248f-4e2c-961a-131790205682",
+        "nod_status": "pending_review",
+        "nod_title": "Test with checklist 1",
+        "nod_type": "potentially_substantial",
+        "permit": Object {
+          "current_permittee": "Richardson-Weiss",
+          "permit_guid": "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
+          "permit_id": 10,
+          "permit_no": "CX-6515762",
+          "permit_prefix": "C",
+          "permit_status_code": "O",
+        },
+        "submission_timestamp": "2022-05-05T15:44:48.205086",
+        "update_timestamp": "2022-05-05T15:44:48.205068+00:00",
       }
-    />
-    <h4
-      className="nod-modal-section-header padding-md--top"
-    >
-      Application Documentation
-    </h4>
-    <CoreTable
-      columns={
-        Array [
-          Object {
-            "dataIndex": "document_name",
-            "render": [Function],
-            "sortField": "document_name",
-            "sorter": [Function],
-            "title": "Name",
-          },
-          Object {
-            "dataIndex": "document_category",
-            "render": [Function],
-            "sortField": "document_category",
-            "sorter": [Function],
-            "title": "Category",
-          },
-          Object {
-            "dataIndex": "create_timestamp",
-            "render": [Function],
-            "sortField": "create_timestamp",
-            "sorter": [Function],
-            "title": "Uploaded",
-          },
-          Object {
-            "dataIndex": "actions",
-            "render": [Function],
-          },
-        ]
-      }
-      condition={true}
-      dataSource={Array []}
-      tableProps={
-        Object {
-          "pagination": false,
-        }
-      }
-    />
-    <Row
-      className="padding-md--top"
-      gutter={24}
-      justify="space-between"
-    >
-      <Col
-        span={12}
-      >
-        <p
-          className="field-title"
-        >
-          Technical Operations Director
-        </p>
-        <p
-          className="content--light-grey padding-md"
-        >
-          N/A
-        </p>
-      </Col>
-      <Col
-        span={12}
-      >
-        <p
-          className="field-title"
-        >
-          NOD Review Status
-        </p>
-        <p
-          className="content--light-grey padding-md"
-        >
-          <Select
-            bordered={true}
-            choiceTransitionName=""
-            defaultValue={
-              Object {
-                "value": "pending_review",
-              }
-            }
-            labelInValue={true}
-            onChange={[Function]}
-            style={
-              Object {
-                "width": "100%",
-              }
-            }
-            transitionName="slide-up"
-            virtual={false}
-          >
-            <Option
-              key="pending_review"
-            >
-              Pending Review
-            </Option>
-            <Option
-              key="in_review"
-            >
-              In Review
-            </Option>
-            <Option
-              key="information_required"
-            >
-              Information Required
-            </Option>
-            <Option
-              key="self_determined_non_substantial"
-            >
-              Self Determined Non Substantial
-            </Option>
-            <Option
-              key="determined_non_substantial"
-            >
-              Determined Non Substantial
-            </Option>
-            <Option
-              key="determined_substantial"
-            >
-              Determined Substantial
-            </Option>
-            <Option
-              key="withdrawn"
-            >
-              Withdrawn
-            </Option>
-          </Select>
-        </p>
-      </Col>
-    </Row>
-    <Row
-      className="padding-md--top"
-      justify="space-between"
-    >
-      <Col
-        span={8}
-      >
-        <div
-          className="inline-flex padding-sm"
-        >
-          <p
-            className="field-title"
-          >
-            Created By
-          </p>
-          <p>
-            N/A
-          </p>
-        </div>
-      </Col>
-      <Col
-        span={8}
-      >
-        <div
-          className="inline-flex padding-sm"
-        >
-          <p
-            className="field-title"
-          >
-            Updated By
-          </p>
-          <p>
-            N/A
-          </p>
-        </div>
-      </Col>
-      <Col
-        span={8}
-      >
-        <div
-          className="inline-flex padding-sm"
-        >
-          <p
-            className="field-title"
-          >
-            Updated Date
-          </p>
-          <p>
-            May 05 2022
-          </p>
-        </div>
-      </Col>
-    </Row>
-  </div>
-  <div
-    className="right center-mobile"
-  >
-    <Button
-      block={false}
-      className="full-mobile nod-update-button"
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[Function]}
-      type="primary"
-    >
-      Update
-    </Button>
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
-      okText="Yes"
-      okType="primary"
-      onConfirm={[MockFunction]}
-      placement="top"
-      title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
-    >
-      <Button
-        block={false}
-        className="full-mobile nod-cancel-button"
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-  </div>
-</div>
+    }
+    pristine={false}
+  />
+</ContextProvider>
 `;

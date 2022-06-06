@@ -5,14 +5,14 @@ import { connect } from "react-redux";
 import { Typography, Checkbox } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Field, FormSection, change, getFormValues } from "redux-form";
-import { renderConfig } from "@/components/common/config";
-import * as FORM from "@/constants/forms";
-import Callout from "@/components/common/Callout";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
 } from "@common/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import { renderConfig } from "@/components/common/config";
+import * as FORM from "@/constants/forms";
+import Callout from "@/components/common/Callout";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

@@ -28,7 +28,6 @@ jobs:
         include:
           # - config: frontend
           - config: dbbackup
-          - config: docgen
           - config: postgresql
           - config: nginx
           - config: redis

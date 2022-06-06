@@ -161,8 +161,7 @@ class Config(object):
 
     #Templates
     TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', 'templates')
-
-    TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/projects/')
+    TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/project/')
     TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template.xlsx')
 
 
