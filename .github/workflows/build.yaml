@@ -111,9 +111,7 @@ jobs:
       matrix:
         include:
           - name: nris
-          #- name: frontend
           - name: docman
-          - name: docgen
           - name: nginx
           - name: metabase
           - name: metabase-postgres
