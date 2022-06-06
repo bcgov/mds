@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Table, Row, Col } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import { dateSorter } from "@common/utils/helpers";
 import { formatDate } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
 

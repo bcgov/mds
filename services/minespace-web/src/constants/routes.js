@@ -49,8 +49,15 @@ export const EDIT_PROJECT = {
 };
 
 export const ADD_INFORMATION_REQUIREMENTS_TABLE = {
-  route: "/projects/:projectGuid/information-requirements-table",
+  route: "/projects/:projectGuid/information-requirements-table/new",
   dynamicRoute: (projectGuid) => `/projects/${projectGuid}/information-requirements-table/new`,
+  component: InformationRequirementsTablePage,
+};
+
+export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
+  route: "/projects/:projectGuid/information-requirements-table/review/:tab",
+  dynamicRoute: (projectGuid, tab = "intro-project-overview") =>
+    `/projects/${projectGuid}/information-requirements-table/review/${tab}`,
   component: InformationRequirementsTablePage,
 };
 

@@ -9,6 +9,7 @@ export const {
   getProject,
   getProjects,
   getProjectPageData,
+  getRequirements,
   getInformationRequirementsTable,
 } = projectReducer;
 

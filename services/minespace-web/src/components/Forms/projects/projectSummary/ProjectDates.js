@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { Typography } from "antd";
 import { connect } from "react-redux";
-import Callout from "@/components/common/Callout";
 import { dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
+import Callout from "@/components/common/Callout";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 

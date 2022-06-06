@@ -97,11 +97,23 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(InformationRequirementsTablePage)",
+        "displayName": "Connect(authenticationGuard)",
         "type": [Function],
       }
     }
-    path="/projects/:projectGuid/information-requirements-table"
+    path="/projects/:projectGuid/information-requirements-table/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/projects/:projectGuid/information-requirements-table/review/:tab"
   />
   <Route
     component={

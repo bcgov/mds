@@ -128,8 +128,8 @@ IRT_REQUIREMENTS_MODEL = api.model(
         'irt_requirements_xref_guid': fields.String,
         'requirement_guid': fields.String,
         'deleted_ind': fields.Boolean,
-        'required': fields.String,
-        'methods': fields.String,
+        'required': fields.Boolean,
+        'methods': fields.Boolean,
         'comment': fields.String
     })
 
