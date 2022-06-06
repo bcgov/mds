@@ -36,7 +36,6 @@ jobs:
           - config: docman
           - config: filesystem-provider
           - config: nris
-          - config: fider
           - config: schemaspy
     steps:
       - name: Check out the repo
