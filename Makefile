@@ -22,7 +22,7 @@ endif
 
 lite:
 	@echo "+\n++ Building minimum topology for local dev ...\n+"
-	@docker-compose up -d frontend
+	@docker-compose up -d --build frontend
 
 rebuild:
 	@echo "+\n++ Rebuilding your current in-use containers ...\n+"
