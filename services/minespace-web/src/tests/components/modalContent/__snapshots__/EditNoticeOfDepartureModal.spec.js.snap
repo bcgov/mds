@@ -52,6 +52,7 @@ exports[`EditNoticeOfDepartureModal renders properly 1`] = `
         ],
         "nod_description": "Checklist description",
         "nod_guid": "56c75a01-248f-4e2c-961a-131790205682",
+        "nod_no": "NOD-X-45564456-01",
         "nod_status": "pending_review",
         "nod_title": "Test with checklist 1",
         "nod_type": "potentially_substantial",
