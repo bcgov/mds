@@ -28,7 +28,7 @@ services:
     container_name: mds_flyway
     build:
       context: migrations
-      dockerfile: Dockerfile.flyway.dev
+      dockerfile: Dockerfile.flyway.M1.dev
     environment:
       - FLYWAY_USER=mds
       - FLYWAY_HOME=/flyway
