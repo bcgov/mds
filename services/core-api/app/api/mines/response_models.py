@@ -732,6 +732,8 @@ NOD_MODEL = api.model(
     'NoticeOfDeparture', {
         'nod_guid':
         fields.String,
+        'nod_no':
+        fields.String,
         'nod_title':
         fields.String,
         'nod_description':

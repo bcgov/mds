@@ -223,7 +223,7 @@ let ViewNoticeOfDepartureModal = (props) => {
           <div>
             <div className="inline-flex padding-sm">
               <p className="field-title margin-large--right">NOD #</p>
-              <p>{noticeOfDeparture.nod_guid || EMPTY_FIELD}</p>
+              <p>{noticeOfDeparture.nod_no || EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-sm">
               <p className="field-title margin-large--right">Declared Type</p>
@@ -292,8 +292,8 @@ let ViewNoticeOfDepartureModal = (props) => {
         </Form.Item>
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
-            <p className="field-title">Technical Operations Director</p>
-            <p className="content--light-grey padding-md">{EMPTY_FIELD}</p>
+            <p className="field-title">Updated Date</p>
+            <p className="content--light-grey padding-md">{formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}</p>
           </Col>
           <Col span={12}>
             <p className="field-title">NOD Review Status</p>
@@ -307,26 +307,6 @@ let ViewNoticeOfDepartureModal = (props) => {
                   data={statusOptions}
                 />
               </Form.Item>
-            </div>
-          </Col>
-        </Row>
-        <Row justify="space-between" className="padding-md--top">
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Created By</p>
-              <p>{noticeOfDeparture.created_by || EMPTY_FIELD}</p>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Updated By</p>
-              <p>{noticeOfDeparture.updated_by || EMPTY_FIELD}</p>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Updated Date</p>
-              <p>{formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}</p>
             </div>
           </Col>
         </Row>

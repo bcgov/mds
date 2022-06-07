@@ -7,7 +7,7 @@ from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
 from app.api.utils.include.user_info import User
-from sqlalchemy import desc
+from sqlalchemy.sql import text
 
 
 class NodType(Enum):
@@ -29,6 +29,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'notice_of_departure'
 
     nod_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue(), primary_key=True)
+    nod_no = db.Column(db.String(36), nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
     nod_title = db.Column(db.String(50), nullable=False)
@@ -69,7 +70,10 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             nod_title=nod_title,
             nod_description=nod_description,
             nod_type=nod_type,
-            nod_status=nod_status)
+            nod_status=nod_status,
+            nod_no=text(
+                f'\'NOD-\' || (SELECT permit_no FROM permit WHERE permit_guid = \'{permit.permit_guid}\') || \'-\' || (SELECT TO_CHAR((SELECT COUNT(*) FROM notice_of_departure nod WHERE permit_guid = \'{permit.permit_guid}\') + 1, \'fm00\'))'
+            ))
 
         if add_to_session:
             new_nod.save(commit=False)

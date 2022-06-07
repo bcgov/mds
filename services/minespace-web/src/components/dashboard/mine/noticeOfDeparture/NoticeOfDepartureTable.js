@@ -43,9 +43,9 @@ const NoticeOfDepartureTable = (props) => {
     },
     {
       title: "NOD #",
-      dataIndex: "nod_id",
-      key: "nod_id",
-      sorter: (a, b) => (a.nod_guid > b.nod_guid ? -1 : 1),
+      dataIndex: "nod_no",
+      key: "nod_no",
+      sorter: (a, b) => (a.nod_no > b.nod_no ? -1 : 1),
     },
     {
       title: "Permit #",
@@ -101,13 +101,15 @@ const NoticeOfDepartureTable = (props) => {
         create_timestamp,
         update_timestamp,
         nod_guid,
+        nod_no,
         nod_type,
         nod_status,
         ...other
       }) => ({
         ...other,
         key: nod_guid,
-        nod_id: nod_guid,
+        nod_guid,
+        nod_no,
         nod_status: NOTICE_OF_DEPARTURE_STATUS[nod_status] || EMPTY_FIELD,
         nod_type: NOTICE_OF_DEPARTURE_TYPE[nod_type] || EMPTY_FIELD,
         updated_at: formatDate(update_timestamp),
