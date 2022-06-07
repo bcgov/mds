@@ -48,26 +48,28 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
     def update(self, irt_json, add_to_session=True):
         self.status_code = irt_json['status_code']
 
-        for updated_req in irt_json['requirements']:
-            saved = False
-            for requirement in self.requirements:
-                if str(requirement.requirement_guid) == str(updated_req['requirement_guid']):
-                    requirement.update(updated_req['required'], updated_req['methods'],
-                                       updated_req['comment'])
-                    requirement.save()
-                    saved = True
-                    break
+        if 'requirements' in irt_json.keys():
+            for updated_req in irt_json['requirements']:
+                saved = False
+                for requirement in self.requirements:
+                    if str(requirement.requirement_guid) == str(updated_req['requirement_guid']):
+                        requirement.update(updated_req['required'], updated_req['methods'],
+                                           updated_req['comment'])
+                        requirement.save()
+                        saved = True
+                        break
 
-            if not saved:
-                new_req = IRTRequirementsXref.create(irt_json['irt_guid'],
-                                                     updated_req['requirement_guid'],
-                                                     updated_req['required'],
-                                                     updated_req['methods'], updated_req['comment'])
-                self.requirements.append(new_req)
-                self.save()
+                if not saved:
+                    new_req = IRTRequirementsXref.create(irt_json['irt_guid'],
+                                                         updated_req['requirement_guid'],
+                                                         updated_req['required'],
+                                                         updated_req['methods'],
+                                                         updated_req['comment'])
+                    self.requirements.append(new_req)
+                    self.save()
 
         if add_to_session:
-            self.save(commit=False)
+            self.save()
 
         return self
 
