@@ -127,6 +127,11 @@ html {
 .flex-start {
   justify-content: flex-start;
 }
+
+.flex-between {
+  justify-content: space-between;
+}
+
 .grid {
   display: grid;
 }
@@ -146,6 +151,7 @@ html {
 }
 
 .flex {
+  @include flex;
   &-mobile {
     @include mobile {
       @include flex;
@@ -265,6 +271,10 @@ html {
   vertical-align: middle;
 }
 
+.items-center {
+  align-items: center;
+}
+
 .card-buttons {
   flex-direction: column;
 }
@@ -348,6 +358,10 @@ html {
     padding-left: $default-padding-xxl;
   }
   padding: $default-padding-xxl;
+}
+
+.margin-none {
+  margin: 0;
 }
 
 .margin-small {

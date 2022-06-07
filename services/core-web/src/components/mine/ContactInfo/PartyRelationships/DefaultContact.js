@@ -29,40 +29,37 @@ const defaultProps = {
   editPermission: Permission.EDIT_PARTIES,
 };
 
+const cardHeadStyle = {
+  minHeight: "0px",
+};
+
 export const DefaultContact = (props) => (
   <Card
+    headStyle={cardHeadStyle}
+    bordered={false}
     title={
-      <div className="inline-flex between wrap">
-        <div>
-          <h3>{props.partyRelationshipTitle}</h3>
-          {props.partyRelationshipSubTitle && <p>{props.partyRelationshipSubTitle}</p>}
+      <div className="flex flex-between">
+        <div className="flex items-center">
+          <h4 className="margin-large--right">{props.partyRelationshipTitle}</h4>
+          {props.partyRelationshipSubTitle && <p>({props.partyRelationshipSubTitle})</p>}
         </div>
         {!props.compact && (
-          <div className="right">
-            <Link
-              to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-                props.mine.mine_guid,
-                props.partyRelationship.mine_party_appt_type_code
-              )}
-            >
-              <Button style={{ marginRight: "0" }}>See History</Button>
-            </Link>
-          </div>
+          <Link
+            to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+              props.mine.mine_guid,
+              props.partyRelationship.mine_party_appt_type_code
+            )}
+          >
+            <Button className="margin-none">See History</Button>
+          </Link>
         )}
       </div>
     }
-    bordered={false}
   >
-    <div>
-      <h4>
-        <Link
-          style={{ fontSize: "1.5rem", fontWeight: "bold" }}
-          to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}
-        >
-          {props.partyRelationship.party.name}
-        </Link>
-      </h4>
-      <br />
+    <div className="default-contact">
+      <Link to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}>
+        <h4 className="link-colour">{props.partyRelationship.party.name}</h4>
+      </Link>
       <h6>Email Address</h6>
       {props.partyRelationship.party.email && props.partyRelationship.party.email !== "Unknown" ? (
         <a href={`mailto:${props.partyRelationship.party.email}`}>
@@ -71,14 +68,10 @@ export const DefaultContact = (props) => (
       ) : (
         <span>{Strings.EMPTY_FIELD}</span>
       )}
-      <br />
-      <br />
       <h6>Phone Number</h6>
       {props.partyRelationship.party.phone_no}{" "}
       {props.partyRelationship.party.phone_ext ? `x${props.partyRelationship.party.phone_ext}` : ""}
       {!props.compact && [
-        <br />,
-        <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
         <span>
           {formatDate(props.partyRelationship.start_date) || "Unknown"}
