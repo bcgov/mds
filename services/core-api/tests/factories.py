@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
-
+from random import randrange
 import factory
 import factory.fuzzy
 
@@ -1239,9 +1239,9 @@ class NoticeOfDepartureFactory(BaseFactory):
         permit = factory.SubFactory('tests.factories.PermitFactory')
 
     nod_guid = GUID
+    nod_no = f'NOD-X-45564456-{randrange(1,10)}'
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     permit_guid = factory.SelfAttribute('permit.permit_guid')
-
     nod_title = factory.Faker('text', max_nb_chars=50)
     nod_description = factory.Faker('text', max_nb_chars=3000)
     deleted_ind = False
