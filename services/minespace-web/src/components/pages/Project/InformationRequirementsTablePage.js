@@ -8,7 +8,11 @@ import PropTypes from "prop-types";
 import Callout from "@/components/common/Callout";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
-import { fetchProjectById, fetchRequirements } from "@common/actionCreators/projectActionCreator";
+import {
+  fetchProjectById,
+  fetchRequirements,
+  updateInformationRequirementsTable,
+} from "@common/actionCreators/projectActionCreator";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
@@ -19,6 +23,7 @@ import { InformationRequirementsTableForm } from "../../Forms/projects/informati
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  updateInformationRequirementsTable: PropTypes.func.isRequired,
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
@@ -43,7 +48,7 @@ const tabs = [
   "management-plan",
 ];
 
-const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSubmit) => [
+const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTUpdate) => [
   {
     title: "Download template",
     content: <IRTDownloadTemplate />,
@@ -132,7 +137,7 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSu
         okText="Yes"
         cancelText="No"
         onConfirm={() => {
-          this.close();
+          close();
         }}
         disabled={state.submitting}
       >
@@ -140,17 +145,34 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSu
           Cancel
         </Button>
       </Popconfirm>,
-      <Button
-        type="primary"
-        style={{ display: "inline", float: "right" }}
-        htmlType="submit"
-        onClick={(event) => {
-          handleIRTSubmit(event);
-        }}
-        disabled={state.submitting}
-      >
-        Submit IRT
-      </Button>,
+      <>
+        {props.project?.information_requirements_table?.status_code === "REC" ? (
+          <Link
+            to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              props.project?.project_guid
+            )}
+          >
+            <Button
+              type="primary"
+              style={{ display: "inline", float: "right" }}
+              htmlType="submit"
+              onClick={() => handleIRTUpdate({ status_code: "UNR" }, "IRT submitted ")}
+              disabled={state.submitting}
+            >
+              Submit IRT
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            type="primary"
+            style={{ display: "inline", float: "right" }}
+            htmlType="submit"
+            disabled={state.submitting}
+          >
+            Update
+          </Button>
+        )}
+      </>,
     ],
   },
 ];
@@ -201,8 +223,25 @@ export class InformationRequirementsTablePage extends Component {
       .then(() => this.setState({ isLoaded: true }));
   };
 
-  handleIRTSubmit = () => {
-    this.setState({ submitting: true });
+  handleIRTUpdate = (values, message) => {
+    const projectGuid = this.props.project.project_guid;
+    const informationRequirementsTableGuid = this.props.project.information_requirements_table
+      .irt_guid;
+    return this.props
+      .updateInformationRequirementsTable(
+        {
+          projectGuid,
+          informationRequirementsTableGuid,
+        },
+        values,
+        message
+      )
+      .then(() => {
+        this.handleFetchData();
+      })
+      .then(() => {
+        this.setState({ submitting: false });
+      });
   };
 
   render() {
@@ -216,7 +255,8 @@ export class InformationRequirementsTablePage extends Component {
       this.next,
       this.prev,
       this.close,
-      this.handleTabChange
+      this.handleTabChange,
+      this.handleIRTUpdate
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
@@ -278,6 +318,7 @@ const mapDispatchToProps = (dispatch) =>
       clearInformationRequirementsTable,
       fetchProjectById,
       fetchRequirements,
+      updateInformationRequirementsTable,
     },
     dispatch
   );

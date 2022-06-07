@@ -38,8 +38,10 @@ class InformationRequirementsTableResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     @api.marshal_with(IRT_MODEL, code=200)
     def put(self, project_guid, irt_guid):
-        data = request.json['irt']
+
+        data = request.json
         irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
+
         if irt is None:
             raise NotFound('Information Requirements Table (IRT) not found.')
 
