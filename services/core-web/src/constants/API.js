@@ -20,3 +20,7 @@ export const NOW_DOCUMENT_GENERATION = (token) =>
 
 export const EXPLOSIVES_PERMIT_DOCUMENT_GENERATION = (token) =>
   `/documents/explosives-permit?${queryString.stringify(token)}`;
+
+// NODs
+export const NOTICE_OF_DEPARTURE_DOCUMENTS = (mineGuid) =>
+  `/mines/${mineGuid}/notices-of-departure/documents`;
