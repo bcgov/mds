@@ -547,12 +547,12 @@ export class NOWPermitGeneration extends Component {
             isDraft && (
               <>
                 {" "}
-                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT" ignoreDelay>
                   <Button type="danger" onClick={(event) => this.openDeleteDraftPermitModal(event)}>
                     Delete Draft
                   </Button>
                 </NOWActionWrapper>
-                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT" ignoreDelay>
                   <Button type="secondary" onClick={this.props.toggleEditMode}>
                     <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                     Edit
