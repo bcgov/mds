@@ -1322,6 +1322,7 @@ export const NOTICES_OF_DEPARTURE = {
   records: [
     {
       nod_guid: "4ca454f5-7982-4936-bfb9-84f5976fdefe",
+      nod_no: "NOD-X-45564456-01",
       nod_title: "ff",
       nod_description: "some description",
       permit: {
@@ -1338,6 +1339,7 @@ export const NOTICES_OF_DEPARTURE = {
 
 export const NOTICE_OF_DEPARTURE_DETAILS = {
   nod_guid: "56c75a01-248f-4e2c-961a-131790205682",
+  nod_no: "NOD-X-45564456-01",
   nod_title: "Test with checklist 1",
   nod_description: "Checklist description",
   create_timestamp: "2022-05-05T15:44:48.204164+00:00",

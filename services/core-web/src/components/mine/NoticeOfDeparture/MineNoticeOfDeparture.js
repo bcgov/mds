@@ -49,7 +49,7 @@ export const MineNoticeOfDeparture = (props) => {
     event.preventDefault();
     const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
       mineGuid,
-      selectedNoticeOfDeparture.nod_id
+      selectedNoticeOfDeparture.nod_guid
     );
     const title = "View Notice of Departure";
     props.openModal({

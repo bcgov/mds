@@ -7,6 +7,7 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
       Object {
         "nod_description": "some description",
         "nod_guid": "4ca454f5-7982-4936-bfb9-84f5976fdefe",
+        "nod_no": "NOD-X-45564456-01",
         "nod_title": "ff",
         "permit": Object {
           "current_permittee": "Haynes, Park and Brown",
