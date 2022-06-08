@@ -22,6 +22,8 @@ spec:
 
     # Recommended for contributors who actively push to your project.
     writers:
+      - hitankar-freshworks
+      - matbusby-fw
 
     # Recommended for project managers who need to manage the repository without
     # access to sensitive or destructive actions.
@@ -31,8 +33,6 @@ spec:
     # project.
     readers:
       - will-freshworks
-      - matbusby-fw
-      - hitankar-freshworks
       - fwkendall
 
     # Recommended for contributors who need to manage issues and pull requests
