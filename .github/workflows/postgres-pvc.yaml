@@ -20,7 +20,7 @@ jobs:
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
 
       - name: Show Log Files
-        run: oc exec $(oc get pods -l deploymentconfig=postgresql -o jsonpath="{.items[0].metadata.name}" | awk '{$1=$1};1') -- sh -c 'ls /var/lib/pgsql/data/userdata/pg_log' -n 4c2ba9-prod
+        run: oc exec $(oc get pods -l deploymentconfig=postgresql -o jsonpath="{.items[0].metadata.name}" -n 4c2ba9-prod | awk '{$1=$1};1') -n 4c2ba9-prod -- sh -c 'ls /var/lib/pgsql/data/userdata/pg_log'
 
       - name: Clean Logs
-        run: oc exec $(oc get pods -l deploymentconfig=postgresql -o jsonpath="{.items[0].metadata.name}" | awk '{$1=$1};1') -- sh -c 'cd /var/lib/pgsql/data/userdata/pg_log; rm postgresql-*.log -f' -n 4c2ba9-prod
+        run: oc exec $(oc get pods -l deploymentconfig=postgresql -o jsonpath="{.items[0].metadata.name}" -n 4c2ba9-prod | awk '{$1=$1};1') -n 4c2ba9-prod -- sh -c 'cd /var/lib/pgsql/data/userdata/pg_log; rm postgresql-*.log -f'
