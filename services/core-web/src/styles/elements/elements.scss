@@ -212,6 +212,10 @@ hr {
   @extend h5;
 }
 
+.link-colour {
+  color: $hover-blue;
+}
+
 // Used for the footer of the PartySelectField. Not yet sure if this is reusuable or justifies its own component file.
 .footer-text {
   font-weight: 500;

@@ -63,4 +63,5 @@ export const USER_ROLES = {
   role_edit_project_summaries: "core_edit_project_summaries",
   role_edit_incidents: "core_edit_incidents",
   role_edit_tsf: "core_edit_tsf",
+  role_abandoned_mines: "core_abandoned_mines",
 };

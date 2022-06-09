@@ -23,3 +23,4 @@ export const EDIT_EMLI_CONTACTS = "role_edit_emli_contacts";
 export const EDIT_PROJECT_SUMMARIES = "role_edit_project_summaries";
 export const EDIT_INCIDENTS = "role_edit_incidents";
 export const EDIT_TSF = "role_edit_tsf";
+export const ABANDONED_MINES = "role_abandoned_mines";
