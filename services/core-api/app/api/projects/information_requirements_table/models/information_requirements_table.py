@@ -1,5 +1,6 @@
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
+from app.api.services.email_service import EmailService
 from app.extensions import db
 from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -14,7 +15,9 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
     status_code = db.Column(
         db.String(3),
-        db.ForeignKey('information_requirements_table_status_code.information_requirements_table_status_code'),
+        db.ForeignKey(
+            'information_requirements_table_status_code.information_requirements_table_status_code'
+        ),
         nullable=False)
 
     project = db.relationship("Project", back_populates="information_requirements_table")
@@ -44,6 +47,37 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                 project_guid=_id, deleted_ind=False).order_by(cls.irt_id.desc()).first()
         except ValueError:
             return None
+
+    # TODO: fix the link variable to link tot he actual IRT page of a the project in question.
+    def send_irt_submit_email(self, is_edit):
+        project_lead_email = self.project.project_lead.email
+        recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email
+                      ] if project_lead_email is not None else [MAJOR_MINES_OFFICE_EMAIL]
+
+        subject = f'IRT Submitted for {self.project.mine_name}'
+        body = f'<p>{self.project.mine_name} (Mine no: {self.project.mine_no}) has updated {self.project.project_title} by submitting an IRT.</p>'
+
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
+
+    def send_irt_approval_email(self, is_edit):
+        recipients = [contact.email for contact in self.project.contacts]
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+        # project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{mine.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
+
+        # body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
+        #        f'contact with you regarding your submission.</p>'
+        # body += f'<p><a href="{project_description_link}">{project_description_link}</a></p>'
+        # body += f'<p>If you indicated that your project involves a permit under the Environmental Management Act, '\
+        #         f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
+        #         f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
+
+        subject = f'IRT Notification for {self.project.mine.mine_name}:{self.project.project_title}'
+        body = f'<p>An IRT has been approved for {self.project.mine.mine_name}:(Mine no: {self.project.mine.mine_no})-{self.project.project_title}.</p>'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
     def update(self, irt_json, add_to_session=True):
         self.status_code = irt_json['status_code']
