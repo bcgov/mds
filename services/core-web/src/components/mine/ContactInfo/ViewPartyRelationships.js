@@ -275,12 +275,17 @@ export class ViewPartyRelationships extends Component {
     }
   };
 
-  renderMenu = (partyRelationshipGroupingLevels) => (
+  renderMenu = (partyRelationshipGroupingLevels, isAbandonedMines) => (
     <Menu>
       {partyRelationshipGroupingLevels.map((group) => [
         this.props.partyRelationshipTypes
           .filter((x) => x.grouping_level === group)
           .filter((x) => x.mine_party_appt_type_code !== "AGT")
+          .filter(
+            (x) =>
+              isAbandonedMines ||
+              (x.mine_party_appt_type_code !== "DAM" && x.mine_party_appt_type_code !== "CCS")
+          )
           .map((value) => (
             <Menu.Item key={value.mine_party_appt_type_code}>
               <button
@@ -443,6 +448,7 @@ export class ViewPartyRelationships extends Component {
     const partyRelationshipGroupingLevels = [
       ...uniq(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
+    const isAbandonedMines = this.props.userRoles.includes(USER_ROLES[Permission.ABANDONED_MINES]);
     return (
       <div>
         <div className="inline-flex between">
@@ -461,7 +467,7 @@ export class ViewPartyRelationships extends Component {
             <AuthorizationWrapper permission={Permission.EDIT_MINES}>
               <Dropdown
                 className="full-height"
-                overlay={this.renderMenu(partyRelationshipGroupingLevels)}
+                overlay={this.renderMenu(partyRelationshipGroupingLevels, isAbandonedMines)}
                 placement="bottomLeft"
               >
                 <div>

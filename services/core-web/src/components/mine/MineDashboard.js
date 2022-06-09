@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { Menu, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
-import { DownOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  MessageOutlined,
+  CloseOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
@@ -316,7 +321,18 @@ export class MineDashboard extends Component {
         </Drawer>
         {this.state.isLoaded && (
           <div>
-            <div className="tab__content">
+            {mine.mine_status[0].status_values.includes("ABN") && (
+              <div className="abandoned-mine">
+                <div className="flex items-center">
+                  <ExclamationCircleOutlined className="margin-large--right" />
+                  <div>
+                    <h4>This is an abandoned mine</h4>
+                    <p>Contact the director of abandoned mines for access to this site</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="tab__content dashboard-tab">
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-lg--right">{mine.mine_name}</h1>
