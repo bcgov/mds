@@ -21,7 +21,7 @@ import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
-  requirements: CustomPropTypes.requirements.isRequired,
+  requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
