@@ -47,3 +47,9 @@ GRANT USAGE ON SCHEMA mms_now_submissions TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA mms_now_submissions TO metabase;
 GRANT USAGE ON SCHEMA docman TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA docman TO metabase;
+
+
+/**
+Allow mds user to READ anything on the nris schema - For GIS Materialized view public.now_application_gis_export_view
+**/
+GRANT SELECT ON ALL TABLES IN SCHEMA nris TO mds;
