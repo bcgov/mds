@@ -785,14 +785,14 @@ export const getProjectSummaryStatusCodesHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownInformationRequirementsTableStatusCode = createSelectorWrapper(
+export const getDropdownInformationRequirementsTableStatusCodes = createSelectorWrapper(
   getInformationRequirementsTableStatusCodes,
   createDropDownList,
   ["description", "information_requirements_table_status_code"]
 );
 
 export const getInformationRequirementsTableStatusCodesHash = createSelector(
-  [getDropdownInformationRequirementsTableStatusCode],
+  [getDropdownInformationRequirementsTableStatusCodes],
   createLabelHash
 );
 
