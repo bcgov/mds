@@ -221,7 +221,7 @@ export class NOWProgressActions extends Component {
     return (
       <div className="inline-flex progress-actions">
         <>
-          {!(isApplicationDelayed || isProcessed) && showActions && (
+          {!isProcessed && showActions && (
             <>
               {!this.props.progress[this.props.tab] && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
