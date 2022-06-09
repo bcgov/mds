@@ -74,6 +74,12 @@ export class Project extends Component {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
     }
+
+    // TODO: Improve response model to make this check more robust
+    const hasInformationRequirementsTable = Boolean(
+      this.props.project.information_requirements_table?.irt_guid
+    );
+
     return (
       <div className="page">
         <div
@@ -120,7 +126,11 @@ export class Project extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
           {!IN_PROD() && (
-            <Tabs.TabPane tab="IRT" key="intro-project-overview">
+            <Tabs.TabPane
+              tab="IRT"
+              key="intro-project-overview"
+              disabled={!hasInformationRequirementsTable}
+            >
               <LoadingWrapper condition={this.state.isLoaded}>
                 <div className="padding-lg">
                   <InformationRequirementsTableTab match={this.props.match} />

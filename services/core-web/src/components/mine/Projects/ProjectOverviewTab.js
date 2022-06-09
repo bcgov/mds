@@ -88,12 +88,16 @@ export class ProjectOverviewTab extends Component {
         ),
       },
     ];
+    // TODO: Improve response model to make this check more robust
+    const hasInformationRequirementsTable = Boolean(
+      this.props.project.information_requirements_table?.irt_guid
+    );
 
     if (!IN_PROD()) {
       projectStages.push({
         title: "Final IRT",
-        key: this.props.project.information_requirements_table.irt_id,
-        status: this.props.project.information_requirements_table.status_code,
+        key: this.props.project.information_requirements_table?.irt_id || 0,
+        status: this.props.project.information_requirements_table?.status_code,
         payload: this.props.project.information_requirements_table,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         link: (
@@ -103,7 +107,11 @@ export class ProjectOverviewTab extends Component {
               this.props.project.information_requirements_table.irt_guid
             )}
           >
-            <Button className="full-mobile margin-small" type="secondary">
+            <Button
+              className="full-mobile margin-small"
+              type="secondary"
+              disabled={!hasInformationRequirementsTable}
+            >
               View
             </Button>
           </Link>
