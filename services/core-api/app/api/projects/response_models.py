@@ -117,11 +117,12 @@ REQUIREMENTS_MODEL = api.model(
         'step': fields.String
     })
 
-IRT_STATUS_CODE_MODEL = api.model('InformationRequirementsTableStatusCode', {
-    'status_code': fields.String,
-    'description': fields.String,
-    'display_order': fields.Integer
-})
+IRT_STATUS_CODE_MODEL = api.model(
+    'InformationRequirementsTableStatusCode', {
+        'information_requirements_table_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    })
 
 IRT_REQUIREMENTS_MODEL = api.model(
     'IRTRequirementsXref', {
