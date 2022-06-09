@@ -9,6 +9,7 @@ from app.extensions import db
 class DocumentType(Enum):
     checklist = auto()
     other = auto()
+    decision = auto()
 
 
 class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
@@ -48,3 +49,10 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
             nod_guid=nod_guid, deleted_ind=False, document_type='checklist').first()
         if checklist:
             checklist.delete()
+
+    @classmethod
+    def delete_current_decision(cls, nod_guid):
+        decision = cls.query.filter_by(
+            nod_guid=nod_guid, deleted_ind=False, document_type='decision').first()
+        if decision:
+            decision.delete()

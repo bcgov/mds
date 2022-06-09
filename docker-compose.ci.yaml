@@ -18,17 +18,17 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres-verify/mds
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
+      - PLATFORM=ci
     depends_on:
-      postgres-verify:
-        condition: service_healthy
+      - postgres-verify
 
   ####################### Postgres Verification Definition #######################
   postgres-verify:
     restart: always
     container_name: mds_postgres_verify
     build:
-      context: migrations
-      dockerfile: Dockerfile.dev
+      context: services/postgres
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
@@ -38,7 +38,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -48,18 +48,18 @@ services:
     restart: always
     container_name: mds_postgres
     build:
-      context: migrations
-      dockerfile: Dockerfile.dev
+      context: services/postgres
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
-      - POSTGRES_DB=mds_test
+      - POSTGRES_DB=mds
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -79,9 +79,9 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
+      - PLATFORM=ci
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   ####################### Backend Definition #######################
   backend:
@@ -115,7 +115,7 @@ services:
     container_name: mds_frontend
     build:
       context: services/core-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/core-web/src/:/app/src/
     ports:
@@ -128,7 +128,7 @@ services:
     container_name: mds_minespace
     build:
       context: services/minespace-web
-    command: ["npm", "run", "serve"]
+    command: [ "npm", "run", "serve" ]
     volumes:
       - ./services/minespace-web/src/:/app/src/
     ports:
@@ -140,7 +140,7 @@ services:
     restart: always
     container_name: docgen_api
     image: bcgovimages/common-document-generation-service:2.4.1
-    command: ["npm", "run", "start"]
+    command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
@@ -157,7 +157,5 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
-  prometheus_data: {}
-  grafana_storage: {}
   core_api_logs: {}
   core_web_logs: {}

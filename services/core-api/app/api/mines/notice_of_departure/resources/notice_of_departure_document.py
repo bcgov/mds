@@ -63,6 +63,10 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
         if (document_type == 'checklist'):
             NoticeOfDepartureDocumentXref.delete_current_checklist(nod_guid)
 
+        # if decision, then soft delete previous decision
+        if (document_type == 'decision'):
+            NoticeOfDepartureDocumentXref.delete_current_decision(nod_guid)
+
         # Register new file upload
         mine_doc = MineDocument(
             mine_guid=mine_guid,

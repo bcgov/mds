@@ -6929,6 +6929,7 @@ export const NOTICES_OF_DEPARTURE = {
   records: [
     {
       nod_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      nod_no: "NOD-X-45564456-01",
       nod_title: "Some title",
       nod_description: "Some description",
       create_timestamp: "2020-04-20 11:58",

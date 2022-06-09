@@ -43,13 +43,15 @@ export class MineNoticeOfDepartureTable extends Component {
         create_timestamp,
         update_timestamp,
         nod_guid,
+        nod_no,
         nod_type,
         nod_status,
         ...other
       }) => ({
         ...other,
         key: nod_guid,
-        nod_id: nod_guid,
+        nod_guid,
+        nod_no,
         nod_status: NOTICE_OF_DEPARTURE_STATUS[nod_status] || EMPTY_FIELD,
         nod_type: NOTICE_OF_DEPARTURE_TYPE[nod_type] || EMPTY_FIELD,
         updated_at: formatDate(update_timestamp),
@@ -68,8 +70,8 @@ export class MineNoticeOfDepartureTable extends Component {
       },
       {
         title: "NOD",
-        dataIndex: "nod_id",
-        sortField: "nod_id",
+        dataIndex: "nod_no",
+        sortField: "nod_no",
         render: (text) => <div title="Id">{text}</div>,
       },
       {

@@ -1,5 +1,5 @@
-#!/bin/sh
-set -exv -o pipefail
+#!/bin/bash
+set -euxo pipefail
 
 # Change directory to Flyway home
 cd $FLYWAY_HOME
@@ -15,7 +15,6 @@ fi
 
 # Make flyway binary discoverable
 export PATH="$FLYWAY_HOME:$PATH"
-
 
 # Run migrations for mds database
 flyway migrate

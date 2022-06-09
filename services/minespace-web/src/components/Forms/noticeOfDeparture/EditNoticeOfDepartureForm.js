@@ -126,7 +126,7 @@ let EditNoticeOfDepartureForm = (props) => {
           </Col>
           <Col span={12}>
             <p className="field-title">NOD #</p>
-            <p className="content--light-grey padding-sm">{nod_guid || EMPTY_FIELD}</p>
+            <p className="content--light-grey padding-sm">{nod_no || EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Field

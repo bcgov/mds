@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { connect } from "react-redux";
@@ -14,19 +14,23 @@ import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
+import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate, resetForm } from "@common/utils/helpers";
 import {
+  addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { Field, reduxForm } from "redux-form";
+import { change, Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { validateSelectOptions } from "@common/utils/Validate";
+import FileUpload from "@/components/common/FileUpload";
+import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -36,6 +40,7 @@ const propTypes = {
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   updateNoticeOfDeparture: PropTypes.func.isRequired,
+  addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
@@ -44,6 +49,9 @@ const propTypes = {
 // eslint-disable-next-line import/no-mutable-exports
 let ViewNoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
+  const [documentArray, setDocumentArray] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
   const { nod_guid } = noticeOfDeparture;
 
@@ -51,8 +59,56 @@ let ViewNoticeOfDepartureModal = (props) => {
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
   );
   const otherDocuments = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
   );
+  const decision = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+  );
+
+  const handleAddDocuments = (noticeOfDepartureGuid) => {
+    documentArray.forEach((document) =>
+      props.addDocumentToNoticeOfDeparture(
+        { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+        {
+          document_type: document.document_type,
+          document_name: document.document_name,
+          document_manager_guid: document.document_manager_guid,
+        }
+      )
+    );
+  };
+
+  const onFileLoad = (documentName, document_manager_guid, documentType) => {
+    setUploadedFiles([
+      ...uploadedFiles,
+      {
+        documentType,
+        documentName,
+        document_manager_guid,
+      },
+    ]);
+    setDocumentArray([
+      ...documentArray,
+      {
+        document_type: documentType,
+        document_name: documentName,
+        document_manager_guid,
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    change("uploadedFiles", documentArray);
+  }, [documentArray]);
+
+  const onRemoveFile = (_, fileItem) => {
+    setDocumentArray(
+      documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
+    );
+    setUploadedFiles(
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+    );
+  };
 
   useEffect(() => {
     const statuses = (() => {
@@ -78,6 +134,9 @@ let ViewNoticeOfDepartureModal = (props) => {
 
   const updateNoticeOfDepartureSubmit = async (values) => {
     await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
+    if (documentArray.length > 0) {
+      await handleAddDocuments(nod_guid);
+    }
     await props.fetchNoticesOfDeparture(mine.mine_guid);
     props.closeModal();
   };
@@ -164,7 +223,7 @@ let ViewNoticeOfDepartureModal = (props) => {
           <div>
             <div className="inline-flex padding-sm">
               <p className="field-title margin-large--right">NOD #</p>
-              <p>{noticeOfDeparture.nod_guid || EMPTY_FIELD}</p>
+              <p>{noticeOfDeparture.nod_no || EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-sm">
               <p className="field-title margin-large--right">Declared Type</p>
@@ -194,10 +253,47 @@ let ViewNoticeOfDepartureModal = (props) => {
           dataSource={otherDocuments}
           tableProps={{ pagination: false }}
         />
+        {decision.length > 0 && (
+          <div>
+            <h4 className="nod-modal-section-header padding-md--top">
+              Ministry Decision Documentation
+            </h4>
+            <CoreTable
+              condition
+              columns={fileColumns(false)}
+              dataSource={decision}
+              tableProps={{ pagination: false }}
+            />
+          </div>
+        )}
+        <Form.Item>
+          <div className="nod-modal-section-header padding-md--top">
+            <h4 className="nod-modal-section-header padding-md--top">
+              Upload Ministry Decision Documentation
+            </h4>
+            <Field
+              id="fileUpload"
+              name="fileUpload"
+              component={FileUpload}
+              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
+              acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+              onFileLoad={(documentName, document_manager_guid) => {
+                onFileLoad(
+                  documentName,
+                  document_manager_guid,
+                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+                );
+              }}
+              onRemoveFile={onRemoveFile}
+              allowRevert
+              allowMultiple
+            />
+          </div>
+        </Form.Item>
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
-            <p className="field-title">Technical Operations Director</p>
-            <p className="content--light-grey padding-md">{EMPTY_FIELD}</p>
+            <p className="field-title">Updated Date</p>
+            <p className="content--light-grey padding-md">{formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}</p>
           </Col>
           <Col span={12}>
             <p className="field-title">NOD Review Status</p>
@@ -214,33 +310,13 @@ let ViewNoticeOfDepartureModal = (props) => {
             </div>
           </Col>
         </Row>
-        <Row justify="space-between" className="padding-md--top">
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Created By</p>
-              <p>{noticeOfDeparture.created_by || EMPTY_FIELD}</p>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Updated By</p>
-              <p>{noticeOfDeparture.updated_by || EMPTY_FIELD}</p>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="inline-flex padding-sm">
-              <p className="field-title">Updated Date</p>
-              <p>{formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}</p>
-            </div>
-          </Col>
-        </Row>
         <div className="right center-mobile">
           <Button
             className="full-mobile nod-update-button"
             type="primary"
             htmlType="submit"
             onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
-            disabled={pristine}
+            disabled={pristine && documentArray.length === 0}
           >
             Update
           </Button>
@@ -274,6 +350,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchDetailedNoticeOfDeparture,
       updateNoticeOfDeparture,
       fetchNoticesOfDeparture,
+      addDocumentToNoticeOfDeparture,
     },
     dispatch
   );

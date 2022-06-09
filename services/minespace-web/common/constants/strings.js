@@ -126,6 +126,7 @@ export const APPLICATION_TYPES_BY_PERMIT_PREFIX = {
 export const NOTICE_OF_DEPARTURE_DOCUMENT_TYPE = {
   CHECKLIST: "checklist",
   OTHER: "other",
+  DECISION: "decision",
 };
 
 export const NOTICE_OF_DEPARTURE_TYPE = {
