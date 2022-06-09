@@ -126,6 +126,27 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             },
             "title": "Project description",
           },
+          Object {
+            "key": undefined,
+            "link": <ForwardRef
+              to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"
+            >
+              <ForwardRef(InternalButton)
+                block={false}
+                className="full-mobile margin-small"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="secondary"
+              >
+                View
+              </ForwardRef(InternalButton)>
+            </ForwardRef>,
+            "payload": Object {},
+            "status": undefined,
+            "statusHash": undefined,
+            "title": "Final IRT",
+          },
         ]
       }
     />

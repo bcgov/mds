@@ -53,6 +53,7 @@ exports[`Project renders properly 1`] = `
     }
     centered={true}
     className="now-tabs"
+    onTabClick={[Function]}
     size="large"
     style={
       Object {
@@ -75,8 +76,7 @@ exports[`Project renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
-      disabled={true}
-      key="irt"
+      key="intro-project-overview"
       tab="IRT"
     >
       <LoadingWrapper
@@ -84,7 +84,17 @@ exports[`Project renders properly 1`] = `
       >
         <div
           className="padding-lg"
-        />
+        >
+          <Connect(authorizationGuard)
+            match={
+              Object {
+                "params": Object {
+                  "projectGuid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                },
+              }
+            }
+          />
+        </div>
       </LoadingWrapper>
     </TabPane>
   </Tabs>
