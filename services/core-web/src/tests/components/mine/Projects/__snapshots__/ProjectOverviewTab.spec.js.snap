@@ -127,13 +127,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "title": "Project description",
           },
           Object {
-            "key": undefined,
+            "key": 0,
             "link": <ForwardRef
               to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"
             >
               <ForwardRef(InternalButton)
                 block={false}
                 className="full-mobile margin-small"
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
