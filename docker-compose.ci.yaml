@@ -79,7 +79,7 @@ services:
       - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
-      - PLATFORM=ci
+      - PLATFORM=TEST
     depends_on:
       - postgres
 
