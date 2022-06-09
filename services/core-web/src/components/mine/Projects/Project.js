@@ -10,6 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
+import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import NullScreen from "@/components/common/NullScreen";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
@@ -20,6 +21,9 @@ const propTypes = {
     params: {
       projectGuid: PropTypes.string,
     },
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func,
   }).isRequired,
   fetchProjectById: PropTypes.func.isRequired,
 };
@@ -44,6 +48,26 @@ export class Project extends Component {
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return null;
+  };
+
+  handleTabChange = (activeTab) => {
+    this.setState({ activeTab });
+    const {
+      project_guid,
+      information_requirements_table: { irt_guid },
+    } = this.props.project;
+    let url = routes.PROJECTS.dynamicRoute(project_guid);
+    switch (activeTab) {
+      case "overview":
+        url = routes.PROJECTS.dynamicRoute(project_guid);
+        break;
+      case "intro-project-overview":
+        url = routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(project_guid, irt_guid);
+        break;
+      default:
+        url = routes.PROJECTS.dynamicRoute(project_guid);
+    }
+    this.props.history.replace(url);
   };
 
   render() {
@@ -86,6 +110,7 @@ export class Project extends Component {
           className="now-tabs"
           style={{ margin: "0" }}
           centered
+          onTabClick={this.handleTabChange}
         >
           <Tabs.TabPane tab="Overview" key="overview">
             <LoadingWrapper condition={this.state.isLoaded}>
@@ -95,10 +120,10 @@ export class Project extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
           {!IN_PROD() && (
-            <Tabs.TabPane tab="IRT" key="irt" disabled>
+            <Tabs.TabPane tab="IRT" key="intro-project-overview">
               <LoadingWrapper condition={this.state.isLoaded}>
                 <div className="padding-lg">
-                  <></>
+                  <InformationRequirementsTableTab match={this.props.match} />
                 </div>
               </LoadingWrapper>
             </Tabs.TabPane>
