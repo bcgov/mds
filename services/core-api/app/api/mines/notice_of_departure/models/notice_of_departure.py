@@ -7,7 +7,8 @@ from sqlalchemy.orm import lazyload
 from app.extensions import db
 from app.api.constants import *
 from app.api.utils.include.user_info import User
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, select, table, column, literal_column
+from sqlalchemy.sql.functions import func
 
 
 class NodType(Enum):
@@ -64,6 +65,20 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
                nod_type,
                nod_status,
                add_to_session=True):
+
+        # generate subquery to get nod no in database layer
+        nod_table = table(NoticeOfDeparture.__tablename__, column('permit_guid', ))
+
+        count_query_compiled = select([
+            func.count('*')
+        ]).select_from(nod_table).where(nod_table.c.permit_guid == str(permit.permit_guid)).compile(
+            compile_kwargs={"literal_binds": True})
+
+        compiled = func.to_char(text(f'({count_query_compiled}) + 1'),
+                                'fm000').compile(compile_kwargs={"literal_binds": True})
+
+        nod_no_subquery = select([literal_column(f'\'NOD-{permit.permit_no}-\' || {compiled}')])
+
         new_nod = cls(
             permit_guid=permit.permit_guid,
             mine_guid=mine.mine_guid,
@@ -71,9 +86,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             nod_description=nod_description,
             nod_type=nod_type,
             nod_status=nod_status,
-            nod_no=text(
-                f'\'NOD-\' || (SELECT permit_no FROM permit WHERE permit_guid = \'{permit.permit_guid}\') || \'-\' || (SELECT TO_CHAR((SELECT COUNT(*) FROM notice_of_departure nod WHERE permit_guid = \'{permit.permit_guid}\') + 1, \'fm00\'))'
-            ))
+            nod_no=nod_no_subquery)
 
         if add_to_session:
             new_nod.save(commit=False)

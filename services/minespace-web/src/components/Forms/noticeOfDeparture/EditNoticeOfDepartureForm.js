@@ -33,7 +33,7 @@ const propTypes = {
 // eslint-disable-next-line import/no-mutable-exports
 let EditNoticeOfDepartureForm = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
-  const { permit, nod_guid } = noticeOfDeparture;
+  const { permit, nod_guid, nod_no } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
