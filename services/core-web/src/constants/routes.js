@@ -44,6 +44,7 @@ import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDas
 import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
+import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -180,6 +181,13 @@ export const PROJECTS = {
   route: "/pre-applications/:projectGuid/:tab",
   dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
   component: Project,
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE = {
+  route: "/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab",
+  dynamicRoute: (projectGuid, irtGuid, tab = "intro-project-overview") =>
+    `/pre-applications/${projectGuid}/information-requirements-table/${irtGuid}/${tab}`,
+  component: InformationRequirementsTableTab,
 };
 
 export const MINE_NOW_APPLICATIONS = {

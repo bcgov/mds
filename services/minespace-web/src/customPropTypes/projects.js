@@ -51,6 +51,18 @@ export const requirements = shape({
   sub_requirements: PropTypes.arrayOf(subRequirements),
 });
 
+export const projectContact = PropTypes.shape({
+  project_guid: PropTypes.string,
+  project_contact_guid: PropTypes.string,
+  name: PropTypes.string,
+  phone_number: PropTypes.string,
+  email: PropTypes.string,
+  job_title: PropTypes.string,
+  phone_extension: PropTypes.string,
+  company_name: PropTypes.string,
+  is_primary: PropTypes.boolean,
+});
+
 export const project = shape({
   project_id: PropTypes.number,
   project_guid: PropTypes.string,
@@ -58,5 +70,5 @@ export const project = shape({
   project_title: PropTypes.string,
   project_summary: projectSummary,
   information_requirements_table: informationRequirementsTable,
-  contacts: PropTypes.arrayOf(mineDocument),
+  contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
 });
