@@ -34,7 +34,7 @@ export const NoticeOfDepartureDetails = (props) => {
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
   );
-  const decision = documents.find(
+  const decision = documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
   );
 
@@ -123,8 +123,8 @@ export const NoticeOfDepartureDetails = (props) => {
         {documentSection({ documentArray: [checklist], title: "Self-Assessment Form" })}
         {otherDocuments.length > 0 &&
           documentSection({ documentArray: otherDocuments, title: "Other Documents" })}
-        {decision &&
-          documentSection({ documentArray: [decision], title: "Ministry Decision Documentation" })}
+        {decision.length > 0 &&
+          documentSection({ documentArray: decision, title: "Ministry Decision Documentation" })}
       </div>
     </div>
   );
