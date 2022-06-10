@@ -6,8 +6,10 @@ import PropTypes from "prop-types";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
+  getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate } from "@common/utils/helpers";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import * as Strings from "@common/constants/strings";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -16,6 +18,7 @@ import { getProject } from "@common/selectors/projectSelectors";
 import ProjectStagesTable from "./ProjectStagesTable";
 
 const propTypes = {
+  informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
@@ -64,14 +67,16 @@ export class ProjectOverviewTab extends Component {
       expected_permit_receipt_date,
       expected_project_start_date,
       project_guid,
+      project_summary_id,
       project_summary_guid,
+      status_code,
       documents,
     } = this.props.project.project_summary;
     const projectStages = [
       {
         title: "Project description",
-        key: this.props.project.project_summary.project_summary_id,
-        status: this.props.project.project_summary.status_code,
+        key: project_summary_id,
+        status: status_code,
         payload: this.props.project.project_summary,
         statusHash: this.props.projectSummaryStatusCodesHash,
         link: (
@@ -83,6 +88,36 @@ export class ProjectOverviewTab extends Component {
         ),
       },
     ];
+    // TODO: Improve response model to make this check more robust
+    const hasInformationRequirementsTable = Boolean(
+      this.props.project.information_requirements_table?.irt_guid
+    );
+
+    if (!IN_PROD()) {
+      projectStages.push({
+        title: "Final IRT",
+        key: this.props.project.information_requirements_table?.irt_id || 0,
+        status: this.props.project.information_requirements_table?.status_code,
+        payload: this.props.project.information_requirements_table,
+        statusHash: this.props.informationRequirementsTableStatusCodesHash,
+        link: (
+          <Link
+            to={routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              project_guid,
+              this.props.project.information_requirements_table.irt_guid
+            )}
+          >
+            <Button
+              className="full-mobile margin-small"
+              type="secondary"
+              disabled={!hasInformationRequirementsTable}
+            >
+              View
+            </Button>
+          </Link>
+        ),
+      });
+    }
 
     return (
       <Row gutter={[0, 16]}>
@@ -171,6 +206,9 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
+    state
+  ),
 });
 
 ProjectOverviewTab.propTypes = propTypes;
