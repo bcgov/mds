@@ -1,5 +1,6 @@
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
+from app.config import Config
 from app.api.services.email_service import EmailService
 from app.extensions import db
 from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
@@ -63,15 +64,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
     def send_irt_approval_email(self, is_edit):
         recipients = [contact.email for contact in self.project.contacts]
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
-        # project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{mine.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
-
-        # body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
-        #        f'contact with you regarding your submission.</p>'
-        # body += f'<p><a href="{project_description_link}">{project_description_link}</a></p>'
-        # body += f'<p>If you indicated that your project involves a permit under the Environmental Management Act, '\
-        #         f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
-        #         f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}'
 
         subject = f'IRT Notification for {self.project.mine.mine_name}:{self.project.project_title}'
         body = f'<p>An IRT has been approved for {self.project.mine.mine_name}:(Mine no: {self.project.mine.mine_no})-{self.project.project_title}.</p>'
