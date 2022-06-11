@@ -55,7 +55,7 @@ export class InformationRequirementsTableForm extends Component {
     r1.map(({ requirement_guid, sub_requirements, ...rest }) => ({
       requirement_guid,
       ...rest,
-      ...r2.find((i) => i.requirement_guid === requirement_guid),
+      ...r2?.find((i) => i.requirement_guid === requirement_guid),
       sub_requirements: this.deepMergeById(sub_requirements, r2),
     }));
 
