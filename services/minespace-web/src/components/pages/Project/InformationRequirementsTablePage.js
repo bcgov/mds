@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
-import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
+import { Row, Col, Button, Typography, Steps } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import Callout from "@/components/common/Callout";
@@ -48,9 +48,18 @@ const tabs = [
   "management-plan",
 ];
 
-const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTUpdate) => [
+const StepForms = (
+  props,
+  state,
+  next,
+  prev,
+  close,
+  handleTabChange,
+  handleIRTUpdate,
+  importIsSuccessful
+) => [
   {
-    title: "Download template",
+    title: "Download Template",
     content: <IRTDownloadTemplate />,
     buttons: [
       null,
@@ -61,7 +70,12 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTUp
   },
   {
     title: "Import File",
-    content: <IRTFileImport projectGuid={props.project.project_guid} />,
+    content: (
+      <IRTFileImport
+        projectGuid={props.project.project_guid}
+        importIsSuccessful={importIsSuccessful}
+      />
+    ),
     buttons: [
       <Button
         id="step-back"
@@ -78,14 +92,16 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTUp
         style={{ display: "inline", float: "right" }}
         type="tertiary"
         onClick={() => {
-          props.history.replace(
+          next();
+          props.history.push(
             `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
               props.project?.project_guid
             )}`
           );
-          next();
         }}
-        disabled={state.submitting}
+        disabled={
+          !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+        }
       >
         Next
       </Button>,
@@ -131,20 +147,6 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTUp
       >
         Back
       </Button>,
-      <Popconfirm
-        placement="top"
-        title="Are you sure you want to cancel the submission for this IRT?"
-        okText="Yes"
-        cancelText="No"
-        onConfirm={() => {
-          close();
-        }}
-        disabled={state.submitting}
-      >
-        <Button type="secondary" className="full-mobile" disabled={state.submitting}>
-          Cancel
-        </Button>
-      </Popconfirm>,
       <>
         {props.project?.information_requirements_table?.status_code === "REC" ? (
           <Link
@@ -185,6 +187,7 @@ export class InformationRequirementsTablePage extends Component {
     isEditMode: false,
     activeTab: tabs[0],
     informationRequirementsTable: [],
+    uploadedSuccessfully: false,
   };
 
   componentDidMount() {
@@ -210,8 +213,8 @@ export class InformationRequirementsTablePage extends Component {
 
   close = () => {};
 
-  onChange = (value) => {
-    this.setState({ current: value });
+  importIsSuccessful = () => {
+    this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
   };
 
   handleFetchData = () => {
@@ -256,11 +259,12 @@ export class InformationRequirementsTablePage extends Component {
       this.prev,
       this.close,
       this.handleTabChange,
-      this.handleIRTUpdate
+      this.handleIRTUpdate,
+      this.importIsSuccessful
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
-      this.state.current === 2 ? { md: { span: 7, offset: 6 } } : { md: 6 };
+      this.state.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
 
     return (
       this.state.isLoaded && (
@@ -287,7 +291,7 @@ export class InformationRequirementsTablePage extends Component {
           )}
 
           <Row>
-            <Steps current={this.state.current} onChange={this.onChange}>
+            <Steps current={this.state.current}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
