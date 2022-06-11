@@ -15,6 +15,7 @@ import { MODERN_EXCEL } from "@/constants/fileTypes";
 const propTypes = {
   change: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
+  importIsSuccessful: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   projectGuid: PropTypes.string.isRequired,
 };
@@ -63,6 +64,7 @@ export class IRTFileImport extends Component {
                 createInformationRequirementsTable={this.props.createInformationRequirementsTable}
                 projectGuid={this.props.projectGuid}
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
+                importIsSuccessful={this.props.importIsSuccessful}
                 component={IRTFileUpload}
               />
             </Form.Item>
