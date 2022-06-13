@@ -7,6 +7,7 @@ import FileUpload from "@/components/common/FileUpload";
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
+  importIsSuccessful: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
   projectGuid: PropTypes.string.isRequired,
@@ -21,6 +22,7 @@ export const IRTFileUpload = (props) => (
     acceptedFileTypesMap={props.acceptedFileTypesMap}
     onFileLoad={props.onFileLoad}
     onRemoveFile={props.onRemoveFile}
+    importIsSuccessful={props.importIsSuccessful}
     allowRevert
     // Allow multiple is true and maxFiles is 1 due to a styling issue that messes up the filepond-hopper when allowMultiple is false
     allowMultiple
