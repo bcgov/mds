@@ -226,6 +226,34 @@ export const createInformationRequirementsTable = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateInformationRequirementsTable = (
+  { projectGuid, irtGuid },
+  payload,
+  message = "Successfully update information requirements table."
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, irtGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchRequirements = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_REQUIREMENTS));
   dispatch(showLoading());
