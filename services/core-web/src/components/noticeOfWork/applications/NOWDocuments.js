@@ -402,6 +402,7 @@ export class NOWDocuments extends Component {
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
                 tab={this.props.isAdminView ? "" : "REV"}
+                ignoreDelay
               >
                 {!this.props.isFinalPackageTable && (
                   <Popconfirm
@@ -439,6 +440,7 @@ export class NOWDocuments extends Component {
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
                 tab={this.props.isAdminView ? "" : "REV"}
+                ignoreDelay
               >
                 <Tooltip
                   title="You cannot remove a document that is a part of the Permit, Referral, or Consultation Package."
@@ -632,6 +634,7 @@ export class NOWDocuments extends Component {
                 permission={Permission.EDIT_PERMITS}
                 tab={this.props.isAdminView ? "" : "REV"}
                 allowAfterProcess={this.props.allowAfterProcess}
+                ignoreDelay
               >
                 <AddButton
                   className="position-right"

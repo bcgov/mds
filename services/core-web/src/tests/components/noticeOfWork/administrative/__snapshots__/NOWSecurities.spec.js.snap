@@ -6,6 +6,7 @@ exports[`NOWSecurities renders properly 1`] = `
     className="right"
   >
     <withRouter(Connect(NOWActionWrapper))
+      ignoreDelay={true}
       permission="role_edit_permits"
     >
       <Button

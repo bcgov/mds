@@ -54,7 +54,7 @@ export class NOWSecurities extends Component {
       <div>
         <div className="right">
           {!this.state.isEditMode && (
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} ignoreDelay>
               <Button type="secondary" onClick={this.toggleEditMode}>
                 <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
                 Edit

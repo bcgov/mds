@@ -312,6 +312,7 @@ export const NOWSubmissionDocuments = (props) => {
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
+              ignoreDelay
             >
               {!props.isFinalPackageTable && (
                 <Popconfirm
@@ -346,6 +347,7 @@ export const NOWSubmissionDocuments = (props) => {
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
+              ignoreDelay
             >
               <Tooltip
                 title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
@@ -666,6 +668,7 @@ export const NOWSubmissionDocuments = (props) => {
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
               allowAfterProcess={props.allowAfterProcess}
+              ignoreDelay
             >
               <AddButton
                 className="position-right"

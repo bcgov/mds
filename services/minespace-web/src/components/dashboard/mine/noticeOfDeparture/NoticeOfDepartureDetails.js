@@ -64,12 +64,16 @@ export const NoticeOfDepartureDetails = (props) => {
               <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
             </Col>
             <Col span={3}>
-              <LinkButton
-                onClick={() => downloadFileFromDocumentManager(document)}
-                title={document?.document_name}
-              >
-                Download
-              </LinkButton>
+              {document?.document_name ? (
+                <LinkButton
+                  onClick={() => downloadFileFromDocumentManager(document)}
+                  title={document?.document_name}
+                >
+                  Download
+                </LinkButton>
+              ) : (
+                <p>{EMPTY_FIELD}</p>
+              )}
             </Col>
           </Row>
         ))}
@@ -124,7 +128,10 @@ export const NoticeOfDepartureDetails = (props) => {
         {otherDocuments.length > 0 &&
           documentSection({ documentArray: otherDocuments, title: "Other Documents" })}
         {decision.length > 0 &&
-          documentSection({ documentArray: decision, title: "Ministry Decision Documentation" })}
+          documentSection({
+            documentArray: decision,
+            title: "Ministry Decision Documentation",
+          })}
       </div>
     </div>
   );
