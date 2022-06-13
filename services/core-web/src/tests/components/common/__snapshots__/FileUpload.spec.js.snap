@@ -21,6 +21,8 @@ exports[`FileUpload renders properly 1`] = `
     maxFileSize="750MB"
     name="file"
     onaddfilestart={[MockFunction]}
+    onprocessfileabort={[Function]}
+    onprocessfiles={[Function]}
     onremovefile={[MockFunction]}
     server={
       Object {
