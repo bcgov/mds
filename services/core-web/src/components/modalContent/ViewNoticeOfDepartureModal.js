@@ -279,7 +279,7 @@ let ViewNoticeOfDepartureModal = (props) => {
               component={FileUpload}
               addFileStart={() => setUploading(true)}
               onAbort={() => setUploading(false)}
-              onprocessfiles={() => setUploading(false)}
+              onProcessFiles={() => setUploading(false)}
               uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
               acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
               onFileLoad={(documentName, document_manager_guid) => {
