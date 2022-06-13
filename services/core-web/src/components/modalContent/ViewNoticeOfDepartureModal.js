@@ -51,6 +51,7 @@ let ViewNoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
   const { nod_guid } = noticeOfDeparture;
@@ -108,6 +109,7 @@ let ViewNoticeOfDepartureModal = (props) => {
     setUploadedFiles(
       uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
     );
+    setUploading(false);
   };
 
   useEffect(() => {
@@ -275,6 +277,9 @@ let ViewNoticeOfDepartureModal = (props) => {
               id="fileUpload"
               name="fileUpload"
               component={FileUpload}
+              addFileStart={() => setUploading(true)}
+              onAbort={() => setUploading(false)}
+              onprocessfiles={() => setUploading(false)}
               uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
               acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
               onFileLoad={(documentName, document_manager_guid) => {
@@ -293,7 +298,9 @@ let ViewNoticeOfDepartureModal = (props) => {
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
             <p className="field-title">Updated Date</p>
-            <p className="content--light-grey padding-md">{formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}</p>
+            <p className="content--light-grey padding-md">
+              {formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}
+            </p>
           </Col>
           <Col span={12}>
             <p className="field-title">NOD Review Status</p>
@@ -316,7 +323,7 @@ let ViewNoticeOfDepartureModal = (props) => {
             type="primary"
             htmlType="submit"
             onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
-            disabled={pristine && documentArray.length === 0}
+            disabled={(pristine && documentArray.length === 0) || uploading}
           >
             Update
           </Button>
