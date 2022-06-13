@@ -17,6 +17,7 @@ exports[`NOWDocuments renders properly 1`] = `
     >
       <withRouter(Connect(NOWActionWrapper))
         allowAfterProcess={false}
+        ignoreDelay={true}
         permission="role_edit_permits"
         tab="REV"
       >
