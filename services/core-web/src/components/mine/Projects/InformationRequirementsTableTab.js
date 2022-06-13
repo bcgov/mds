@@ -11,7 +11,11 @@ import CustomPropTypes from "@/customPropTypes";
 import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
 import { formatDate } from "@common/utils/helpers";
-import { fetchRequirements, fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import {
+  fetchRequirements,
+  fetchProjectById,
+  updateInformationRequirementsTable,
+} from "@common/actionCreators/projectActionCreator";
 import { getInformationRequirementsTableStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import {
   getProject,
@@ -38,6 +42,7 @@ const propTypes = {
   }).isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   fetchRequirements: PropTypes.func.isRequired,
+  updateInformationRequirementsTable: PropTypes.func.isRequired,
 };
 
 const sideMenuOptions = [
@@ -136,8 +141,18 @@ export class InformationRequirementsTableTab extends Component {
     return null;
   };
 
-  handleUpdateIRT = (values) => {
-    
+  handleUpdateIRT = (event, values) => {
+    event.preventDefault();
+    const { projectGuid, irtGuid } = this.props.match.params;
+    return this.props
+      .updateInformationRequirementsTable(
+        {
+          projectGuid,
+          irtGuid,
+        },
+        values
+      )
+      .then(() => this.handleFetchData());
   };
 
   render() {
@@ -212,8 +227,11 @@ export class InformationRequirementsTableTab extends Component {
               <Tabs.TabPane tab={tab.title} key={tab.href} className="vertical-tabs--tabpane">
                 <div>
                   <UpdateInformationRequirementsTableForm
-                    initialValues={{ status_code: statusCode }}
+                    initialValues={{
+                      status_code: statusCode,
+                    }}
                     displayValues={{
+                      statusCode,
                       updateUser,
                       updateDate,
                       informationRequirementsTableStatusCodesHash: this.props
@@ -249,6 +267,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchProjectById,
       fetchRequirements,
+      updateInformationRequirementsTable,
     },
     dispatch
   );
