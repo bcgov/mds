@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+  onValuesChange={true}
+>
+  <Col
+    span={24}
+  >
+    <Alert
+      description={
+        <ForwardRef>
+          <ForwardRef
+            md={18}
+            xs={24}
+          >
+            <p>
+              Final IRT was submitted by 
+              test
+               on
+               
+              Jun 13 2022
+              , waiting for ministry review.
+            </p>
+            <b>
+              Please note that updating this status will notify the project proponent.
+            </b>
+          </ForwardRef>
+          <ForwardRef
+            md={6}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <ForwardRef
+                component={[Function]}
+                data={
+                  Array [
+                    Object {
+                      "isActive": true,
+                      "label": "Pending Review",
+                      "subType": null,
+                      "value": "REC",
+                    },
+                    Object {
+                      "isActive": true,
+                      "label": "In Review",
+                      "subType": null,
+                      "value": "UNR",
+                    },
+                    Object {
+                      "isActive": true,
+                      "label": "Review Complete",
+                      "subType": null,
+                      "value": "APV",
+                    },
+                    Object {
+                      "isActive": true,
+                      "label": "Change Requested",
+                      "subType": null,
+                      "value": "CHR",
+                    },
+                  ]
+                }
+                id="status_code"
+                label=""
+                name="status_code"
+                placeholder="Action"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </ForwardRef>
+        </ForwardRef>
+      }
+      message="Pending Review"
+      showIcon={true}
+      type="warning"
+    />
+  </Col>
+</Form>
+`;
