@@ -27,6 +27,8 @@ const propTypes = {
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
+  onProcessFiles: PropTypes.func,
+  onAbort: PropTypes.func,
 };
 
 const defaultProps = {
@@ -38,6 +40,8 @@ const defaultProps = {
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
+  onProcessFiles: () => {},
+  onAbort: () => {},
 };
 
 class FileUpload extends React.Component {
@@ -132,6 +136,8 @@ class FileUpload extends React.Component {
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
+          onprocessfiles={this.props.onProcessFiles}
+          onprocessfileabort={this.props.onAbort}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {
