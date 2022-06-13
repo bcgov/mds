@@ -8,7 +8,6 @@ import { maxLength, required, requiredRadioButton } from "@common/utils/Validate
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -16,8 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 import { EMPTY_FIELD, NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import { formatDate } from "@/utils/helpers";
-import LinkButton from "@/components/common/LinkButton";
+import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -45,7 +43,11 @@ let EditNoticeOfDepartureForm = (props) => {
   );
 
   const otherDocuments = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type !== NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+  );
+
+  const decision = noticeOfDeparture.documents.filter(
+    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
   );
 
   useEffect(() => {
@@ -199,30 +201,8 @@ let EditNoticeOfDepartureForm = (props) => {
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
           />
         </Form.Item>
-        <Row>
-          <Col span={16}>
-            <p className="field-title">Uploaded File</p>
-            <p>{checklist?.document_name || EMPTY_FIELD}</p>
-          </Col>
-          <Col span={5}>
-            <p className="field-title">Upload Date</p>
-            <p>{formatDate(checklist?.create_timestamp) || EMPTY_FIELD}</p>
-          </Col>
-          <Col span={3}>
-            <p className="field-title">&nbsp;</p>
-            {checklist?.document_name ? (
-              <LinkButton
-                className="nod-table-link"
-                onClick={() => downloadFileFromDocumentManager(checklist)}
-                title={checklist?.document_name}
-              >
-                Download
-              </LinkButton>
-            ) : (
-              <p>{EMPTY_FIELD}</p>
-            )}
-          </Col>
-        </Row>
+        {checklist && documentSection({ title: "", documentArray: [checklist] })}
+
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
         <Typography.Text className="">
           Please support your notice of departure by uploading additional supporting application
@@ -255,40 +235,13 @@ let EditNoticeOfDepartureForm = (props) => {
             validate={[required]}
           />
         </Form.Item>
-        {otherDocuments.length > 0 && (
-          <div>
-            <Row>
-              <Col span={16}>
-                <p className="field-title">Uploaded File</p>
-              </Col>
-              <Col span={5}>
-                <p className="field-title">Upload Date</p>
-              </Col>
-              <Col span={3}>
-                <p className="field-title">&nbsp;</p>
-              </Col>
-            </Row>
-            {otherDocuments.map((document) => (
-              <Row>
-                <Col span={16}>
-                  <p>{document?.document_name || EMPTY_FIELD}</p>
-                </Col>
-                <Col span={5}>
-                  <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
-                </Col>
-                <Col span={3}>
-                  <LinkButton
-                    className="nod-table-link"
-                    onClick={() => downloadFileFromDocumentManager(document)}
-                    title={document?.document_name}
-                  >
-                    Download
-                  </LinkButton>
-                </Col>
-              </Row>
-            ))}
-          </div>
-        )}
+        {otherDocuments.length > 0 && documentSection({ title: "", documentArray: otherDocuments })}
+        {decision.length > 0 &&
+          documentSection({
+            title: "Ministry Decision Documentation",
+            documentArray: decision,
+          })}
+
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
