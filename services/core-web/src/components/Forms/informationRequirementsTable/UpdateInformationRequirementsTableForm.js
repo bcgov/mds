@@ -6,60 +6,68 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Alert } from "antd";
-import { required, requiredList } from "@common/utils/Validate";
-import { resetForm, formatDate } from "@common/utils/helpers";
+import { required } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { getDropdownInformationRequirementsTableStatusCodes } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
-  // getDropdownInformationRequirementsTableStatusCodes: PropTypes.objectOf(PropTypes.any).isRequired,
-  // informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // handleSubmit: PropTypes.func.isRequired,
-  // updateUser: PropTypes.string.isRequired,
-  // updateDate: PropTypes.string.isRequired,
-  // formValues: PropTypes.objectOf(PropTypes.any),
-  // handleChange: PropTypes.func.isRequired,
-  // handleSearch: PropTypes.func.isRequired,
+  dropdownInformationRequirementsTableStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
+  displayValues: PropTypes.shape({
+    statusCode: PropTypes.string,
+    updateUser: PropTypes.string,
+    updateDate: PropTypes.string,
+    informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string),
+  }).isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  pristine: PropTypes.bool.isRequired,
 };
 
 export const UpdateInformationRequirementsTableForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onSubmit={(e) => props.handleSubmit(e, props.formValues)} onValuesChange>
     <Col span={24}>
-      <Row>
-        <Col span={18}>
-          <Alert
-            message={
-              props.displayValues.informationRequirementsTableStatusCodesHash[
-                props.formValues.status_code
-              ] || "N/A"
-            }
-            description={
+      <Alert
+        message={
+          props.displayValues.informationRequirementsTableStatusCodesHash[
+            props.displayValues.statusCode
+          ] || "N/A"
+        }
+        description={
+          <Row>
+            <Col xs={24} md={18}>
               <p>
                 Final IRT was submitted by {props.displayValues.updateUser} on{" "}
-                {formatDate(props.displayValues.updateDate)}, waiting for ministry review.
+                {props.displayValues.updateDate}, waiting for ministry review.
               </p>
-            }
-            type="warning"
-            showIcon
-          />
-        </Col>
-        <Col span={6}>
-          <Form.Item>
-            <Field
-              id="status_code"
-              name="status_code"
-              label=""
-              placeholder="Action"
-              component={renderConfig.SELECT}
-              validate={[required]}
-              data={props.dropdownInformationRequirementsTableStatusCodes.filter(
-                (sc) => sc.value !== props.formValues.status_code
+              <b>Please note that updating this status will notify the project proponent.</b>
+            </Col>
+            <Col xs={24} md={6}>
+              <Form.Item>
+                <Field
+                  id="status_code"
+                  name="status_code"
+                  label=""
+                  placeholder="Action"
+                  component={renderConfig.SELECT}
+                  validate={[required]}
+                  data={props.dropdownInformationRequirementsTableStatusCodes}
+                />
+              </Form.Item>
+              {!props.pristine && (
+                <div className="right center-mobile">
+                  <Button className="full-mobile" type="primary" htmlType="submit">
+                    Update Status
+                  </Button>
+                </div>
               )}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
+            </Col>
+          </Row>
+        }
+        type="warning"
+        showIcon
+      />
     </Col>
   </Form>
 );
