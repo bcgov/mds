@@ -6850,6 +6850,40 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
   ],
 };
 
+export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
+  REC: "Pending Review",
+  UNR: "In Review",
+  APV: "Review Complete",
+  CHR: "Change Requested",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
+  {
+    value: "REC",
+    label: "Pending Review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNR",
+    label: "In Review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "APV",
+    label: "Review Complete",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "CHR",
+    label: "Change Requested",
+    subType: null,
+    isActive: true,
+  },
+];
+
 export const EMLI_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",

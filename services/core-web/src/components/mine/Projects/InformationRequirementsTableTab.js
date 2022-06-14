@@ -8,8 +8,15 @@ import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
+import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
-import { fetchRequirements, fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import { formatDate } from "@common/utils/helpers";
+import {
+  fetchRequirements,
+  fetchProjectById,
+  updateInformationRequirementsTable,
+} from "@common/actionCreators/projectActionCreator";
+import { getInformationRequirementsTableStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import {
   getProject,
   getInformationRequirementsTable,
@@ -23,6 +30,7 @@ const propTypes = {
   project: CustomPropTypes.project.isRequired,
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
+  informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectGuid: PropTypes.string,
@@ -34,6 +42,7 @@ const propTypes = {
   }).isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   fetchRequirements: PropTypes.func.isRequired,
+  updateInformationRequirementsTable: PropTypes.func.isRequired,
 };
 
 const sideMenuOptions = [
@@ -132,8 +141,32 @@ export class InformationRequirementsTableTab extends Component {
     return null;
   };
 
+  handleUpdateIRT = (event, values) => {
+    event.preventDefault();
+    const { projectGuid, irtGuid } = this.props.match.params;
+    return this.props
+      .updateInformationRequirementsTable(
+        {
+          projectGuid,
+          informationRequirementsTableGuid: irtGuid,
+        },
+        values
+      )
+      .then(() => this.handleFetchData());
+  };
+
   render() {
-    const { project_title, mine_name, mine_guid, project_guid } = this.props.project;
+    const {
+      project_title,
+      mine_name,
+      mine_guid,
+      project_guid,
+      information_requirements_table,
+    } = this.props.project;
+    const updateUser = information_requirements_table?.update_user;
+    const updateDate = formatDate(information_requirements_table?.update_timestamp);
+    const statusCode = information_requirements_table?.status_code;
+
     this.mergedRequirements = this.deepMergeById(
       this.props.requirements,
       this.props.informationRequirementsTable.requirements
@@ -192,10 +225,25 @@ export class InformationRequirementsTableTab extends Component {
           >
             {sideMenuOptions.map((tab, idx) => (
               <Tabs.TabPane tab={tab.title} key={tab.href} className="vertical-tabs--tabpane">
-                <ReviewInformationRequirementsTable
-                  requirements={this.mergedRequirements[idx]}
-                  isLoaded={this.state.isLoaded}
-                />
+                <div>
+                  <UpdateInformationRequirementsTableForm
+                    initialValues={{
+                      status_code: statusCode,
+                    }}
+                    displayValues={{
+                      statusCode,
+                      updateUser,
+                      updateDate,
+                      informationRequirementsTableStatusCodesHash: this.props
+                        .informationRequirementsTableStatusCodesHash,
+                    }}
+                    handleSubmit={this.handleUpdateIRT}
+                  />
+                  <ReviewInformationRequirementsTable
+                    requirements={this.mergedRequirements[idx]}
+                    isLoaded={this.state.isLoaded}
+                  />
+                </div>
               </Tabs.TabPane>
             ))}
           </Tabs>
@@ -209,6 +257,9 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   informationRequirementsTable: getInformationRequirementsTable(state),
   requirements: getRequirements(state),
+  informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
+    state
+  ),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -216,6 +267,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchProjectById,
       fetchRequirements,
+      updateInformationRequirementsTable,
     },
     dispatch
   );

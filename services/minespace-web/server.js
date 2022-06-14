@@ -55,7 +55,7 @@ app.get(`/health`, (req, res) => {
 
 app.get(`/version`, (req, res) => {
   res.json({
-    status: process.env.COMMIT_ID || "N/A",
+    commit: process.env.COMMIT_ID || "N/A",
   });
 });
 

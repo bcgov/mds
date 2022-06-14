@@ -14,7 +14,9 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
     status_code = db.Column(
         db.String(3),
-        db.ForeignKey('information_requirements_table_status_code.information_requirements_table_status_code'),
+        db.ForeignKey(
+            'information_requirements_table_status_code.information_requirements_table_status_code'
+        ),
         nullable=False)
 
     project = db.relationship("Project", back_populates="information_requirements_table")

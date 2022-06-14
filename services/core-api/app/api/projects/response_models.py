@@ -140,7 +140,11 @@ IRT_MODEL = api.model(
         'irt_guid': fields.String,
         'project_guid': fields.String,
         'status_code': fields.String,
-        'requirements': fields.List(fields.Nested(IRT_REQUIREMENTS_MODEL))
+        'requirements': fields.List(fields.Nested(IRT_REQUIREMENTS_MODEL)),
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
     })
 
 PROJECT_MODEL = api.model(
