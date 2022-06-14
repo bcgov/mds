@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.config import Config
 from app.api.services.email_service import EmailService
 from app.extensions import db
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
@@ -50,24 +51,24 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     # TODO: fix the link variable to link tot he actual IRT page of a the project in question.
-    def send_irt_submit_email(self, is_edit):
-        project_lead_email = self.project.project_lead.email
+    def send_irt_submit_email(self):
+        project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email
                       ] if project_lead_email is not None else [MAJOR_MINES_OFFICE_EMAIL]
 
         subject = f'IRT Submitted for {self.project.mine_name}'
         body = f'<p>{self.project.mine_name} (Mine no: {self.project.mine_no}) has updated {self.project.project_title} by submitting an IRT.</p>'
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.project.mine_guid}/reports/code-required-reports'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 
-    def send_irt_approval_email(self, is_edit):
+    def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]
         link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}'
 
-        subject = f'IRT Notification for {self.project.mine.mine_name}:{self.project.project_title}'
-        body = f'<p>An IRT has been approved for {self.project.mine.mine_name}:(Mine no: {self.project.mine.mine_no})-{self.project.project_title}.</p>'
+        subject = f'IRT Notification for {self.project.mine_name}:{self.project.project_title}'
+        body = f'<p>An IRT has been approved for {self.project.mine_name}:(Mine no: {self.project.mine_no})-{self.project.project_title}.</p>'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
 
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
