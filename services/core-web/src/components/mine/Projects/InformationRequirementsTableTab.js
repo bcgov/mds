@@ -148,7 +148,7 @@ export class InformationRequirementsTableTab extends Component {
       .updateInformationRequirementsTable(
         {
           projectGuid,
-          irtGuid,
+          informationRequirementsTableGuid: irtGuid,
         },
         values
       )
