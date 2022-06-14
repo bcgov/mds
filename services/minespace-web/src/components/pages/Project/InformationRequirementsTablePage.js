@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
-import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
+import { Row, Col, Button, Typography, Steps } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import Callout from "@/components/common/Callout";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
-import { fetchProjectById, fetchRequirements } from "@common/actionCreators/projectActionCreator";
+import {
+  fetchProjectById,
+  fetchRequirements,
+  updateInformationRequirementsTable,
+} from "@common/actionCreators/projectActionCreator";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
@@ -19,6 +23,7 @@ import { InformationRequirementsTableForm } from "../../Forms/projects/informati
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  updateInformationRequirementsTable: PropTypes.func.isRequired,
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
@@ -27,6 +32,11 @@ const propTypes = {
     params: {
       projectGuid: PropTypes.string,
       tab: PropTypes.string,
+    },
+  }).isRequired,
+  location: PropTypes.shape({
+    state: {
+      current: PropTypes.number,
     },
   }).isRequired,
 };
@@ -43,9 +53,17 @@ const tabs = [
   "management-plan",
 ];
 
-const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSubmit) => [
+const StepForms = (
+  props,
+  state,
+  next,
+  prev,
+  handleTabChange,
+  handleIRTUpdate,
+  importIsSuccessful
+) => [
   {
-    title: "Download template",
+    title: "Download Template",
     content: <IRTDownloadTemplate />,
     buttons: [
       null,
@@ -56,7 +74,12 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSu
   },
   {
     title: "Import File",
-    content: <IRTFileImport projectGuid={props.project.project_guid} />,
+    content: (
+      <IRTFileImport
+        projectGuid={props.project.project_guid}
+        importIsSuccessful={importIsSuccessful}
+      />
+    ),
     buttons: [
       <Button
         id="step-back"
@@ -73,14 +96,17 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSu
         style={{ display: "inline", float: "right" }}
         type="tertiary"
         onClick={() => {
-          props.history.replace(
-            `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              props.project?.project_guid
-            )}`
-          );
           next();
+          props.history.push({
+            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              props.project?.project_guid
+            )}`,
+            state: { current: 2 },
+          });
         }}
-        disabled={state.submitting}
+        disabled={
+          !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+        }
       >
         Next
       </Button>,
@@ -126,31 +152,19 @@ const StepForms = (props, state, next, prev, close, handleTabChange, handleIRTSu
       >
         Back
       </Button>,
-      <Popconfirm
-        placement="top"
-        title="Are you sure you want to cancel the submission for this IRT?"
-        okText="Yes"
-        cancelText="No"
-        onConfirm={() => {
-          this.close();
-        }}
-        disabled={state.submitting}
+      <Link
+        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project?.project_guid)}
       >
-        <Button type="secondary" className="full-mobile" disabled={state.submitting}>
-          Cancel
+        <Button
+          type="primary"
+          style={{ display: "inline", float: "right" }}
+          htmlType="submit"
+          onClick={() => handleIRTUpdate({ status_code: "UNR" }, "IRT submitted ")}
+          disabled={state.submitting}
+        >
+          Submit IRT
         </Button>
-      </Popconfirm>,
-      <Button
-        type="primary"
-        style={{ display: "inline", float: "right" }}
-        htmlType="submit"
-        onClick={(event) => {
-          handleIRTSubmit(event);
-        }}
-        disabled={state.submitting}
-      >
-        Submit IRT
-      </Button>,
+      </Link>,
     ],
   },
 ];
@@ -163,6 +177,7 @@ export class InformationRequirementsTablePage extends Component {
     isEditMode: false,
     activeTab: tabs[0],
     informationRequirementsTable: [],
+    uploadedSuccessfully: false,
   };
 
   componentDidMount() {
@@ -186,10 +201,8 @@ export class InformationRequirementsTablePage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  close = () => {};
-
-  onChange = (value) => {
-    this.setState({ current: value });
+  importIsSuccessful = () => {
+    this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
   };
 
   handleFetchData = () => {
@@ -201,8 +214,25 @@ export class InformationRequirementsTablePage extends Component {
       .then(() => this.setState({ isLoaded: true }));
   };
 
-  handleIRTSubmit = () => {
-    this.setState({ submitting: true });
+  handleIRTUpdate = (values, message) => {
+    const projectGuid = this.props.project.project_guid;
+    const informationRequirementsTableGuid = this.props.project.information_requirements_table
+      .irt_guid;
+    return this.props
+      .updateInformationRequirementsTable(
+        {
+          projectGuid,
+          informationRequirementsTableGuid,
+        },
+        values,
+        message
+      )
+      .then(() => {
+        this.handleFetchData();
+      })
+      .then(() => {
+        this.setState({ submitting: false });
+      });
   };
 
   render() {
@@ -215,12 +245,15 @@ export class InformationRequirementsTablePage extends Component {
       this.state,
       this.next,
       this.prev,
-      this.close,
-      this.handleTabChange
+      this.handleTabChange,
+      this.handleIRTUpdate,
+      this.importIsSuccessful
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
-      this.state.current === 2 ? { md: { span: 7, offset: 6 } } : { md: 6 };
+      this.props.location?.state?.current === 2 || this.state.current === 2
+        ? { md: { span: 4, offset: 5 } }
+        : { md: 4 };
 
     return (
       this.state.isLoaded && (
@@ -245,9 +278,8 @@ export class InformationRequirementsTablePage extends Component {
               <br />
             </>
           )}
-
           <Row>
-            <Steps current={this.state.current} onChange={this.onChange}>
+            <Steps current={this.props.location.state?.current || this.state.current}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
@@ -255,10 +287,10 @@ export class InformationRequirementsTablePage extends Component {
             <br />
             <br />
             <Col span={24}>
-              <div>{Forms[this.state.current].content}</div>
+              <div>{Forms[this.props.location.state?.current || this.state.current].content}</div>
             </Col>
             <Col xs={24} {...buttonGroupColumnConfig}>
-              <div>{Forms[this.state.current].buttons}</div>
+              <div>{Forms[this.props.location.state?.current || this.state.current].buttons}</div>
             </Col>
           </Row>
         </>
@@ -278,6 +310,7 @@ const mapDispatchToProps = (dispatch) =>
       clearInformationRequirementsTable,
       fetchProjectById,
       fetchRequirements,
+      updateInformationRequirementsTable,
     },
     dispatch
   );

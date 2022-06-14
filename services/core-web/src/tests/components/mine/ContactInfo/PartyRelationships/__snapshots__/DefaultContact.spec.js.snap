@@ -9,36 +9,42 @@ exports[`DefaultContact renders properly 1`] = `
     }
   }
   title={
-    <div
-      className="flex flex-between"
-    >
+    <div>
       <div
-        className="flex items-center"
+        className="flex flex-between"
       >
-        <h4
-          className="margin-large--right"
+        <div
+          className="flex items-center"
         >
-          Permittee
-        </h4>
-        <p>
-          (
-          Permittee since
-          )
-        </p>
+          <h4
+            className="margin-large--right"
+          >
+            Permittee
+          </h4>
+          <p>
+            (
+            Permittee since
+            )
+          </p>
+        </div>
       </div>
-      <ForwardRef
-        to="/dashboard/3124624567/history/PMT"
+      <div
+        className="padding-md--top"
       >
-        <ForwardRef(InternalButton)
-          block={false}
-          className="margin-none"
-          ghost={false}
-          htmlType="button"
-          loading={false}
+        <ForwardRef
+          to="/dashboard/3124624567/history/PMT"
         >
-          See History
-        </ForwardRef(InternalButton)>
-      </ForwardRef>
+          <ForwardRef(InternalButton)
+            block={false}
+            className="margin-none"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+          >
+            See History
+          </ForwardRef(InternalButton)>
+        </ForwardRef>
+      </div>
     </div>
   }
 >
