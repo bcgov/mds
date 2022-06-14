@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import moment from "moment";
+import { isFuture } from "date-fns";
 import { Menu, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
 import {
   DownOutlined,
@@ -90,12 +90,9 @@ const defaultProps = {
 };
 
 const hasDAMRole = (partyRelationships) => {
-  const today = moment().utc();
   return partyRelationships.reduce((acc, pr) => {
-    if (
-      pr.mine_party_appt_type_code === "DAM" &&
-      (!pr.end_date || today.isSameOrBefore(pr.end_date, "day"))
-    ) {
+    const endDate = pr.end_date ? new Date(pr.end_date) : null;
+    if (pr.mine_party_appt_type_code === "DAM" && (!endDate || isFuture(endDate))) {
       acc = true;
     }
     return acc;
@@ -103,12 +100,9 @@ const hasDAMRole = (partyRelationships) => {
 };
 
 const hasCCSRole = (partyRelationships) => {
-  const today = moment().utc();
   return partyRelationships.reduce((acc, pr) => {
-    if (
-      pr.mine_party_appt_type_code === "CCS" &&
-      (!pr.end_date || today.isSameOrBefore(pr.end_date, "day"))
-    ) {
+    const endDate = pr.end_date ? new Date(pr.end_date) : null;
+    if (pr.mine_party_appt_type_code === "CCS" && (!endDate || isFuture(endDate))) {
       acc = true;
     }
     return acc;
