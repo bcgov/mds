@@ -165,7 +165,7 @@ MINE_REPORT_TYPE = {
 PERMIT_LINKED_CONTACT_TYPES = ['PMT', 'THD', 'LDO', 'MOR']
 
 MDS_EMAIL = 'mds@gov.bc.ca'
-MAJOR_MINES_OFFICE_EMAIL = 'justin.macaulay@nttdata.com'                                           #'PermRecl@gov.bc.ca'
+MAJOR_MINES_OFFICE_EMAIL = 'PermRecl@gov.bc.ca'
 VARIANCE_APPLICATION_EMAIL = 'hermanus.henning@gov.bc.ca'
 MINESPACE_TSF_UPDATE_EMAIL = [
     'permrecl@gov.bc.ca', 'mark.smith@gov.bc.ca', 'victor.marques@gov.bc.ca', MDS_EMAIL
