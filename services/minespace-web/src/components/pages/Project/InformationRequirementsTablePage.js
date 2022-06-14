@@ -266,7 +266,7 @@ export class InformationRequirementsTablePage extends Component {
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
-      this.props.location.state?.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
+      this.props.location?.state?.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
 
     return (
       this.state.isLoaded && (
