@@ -152,34 +152,19 @@ const StepForms = (
       >
         Back
       </Button>,
-      <>
-        {props.project?.information_requirements_table?.status_code === "REC" ? (
-          <Link
-            to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              props.project?.project_guid
-            )}
-          >
-            <Button
-              type="primary"
-              style={{ display: "inline", float: "right" }}
-              htmlType="submit"
-              onClick={() => handleIRTUpdate({ status_code: "UNR" }, "IRT submitted ")}
-              disabled={state.submitting}
-            >
-              Submit IRT
-            </Button>
-          </Link>
-        ) : (
-          <Button
-            type="primary"
-            style={{ display: "inline", float: "right" }}
-            htmlType="submit"
-            disabled={state.submitting}
-          >
-            Update
-          </Button>
-        )}
-      </>,
+      <Link
+        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project?.project_guid)}
+      >
+        <Button
+          type="primary"
+          style={{ display: "inline", float: "right" }}
+          htmlType="submit"
+          onClick={() => handleIRTUpdate({ status_code: "UNR" }, "IRT submitted ")}
+          disabled={state.submitting}
+        >
+          Submit IRT
+        </Button>
+      </Link>,
     ],
   },
 ];
@@ -266,7 +251,9 @@ export class InformationRequirementsTablePage extends Component {
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
-      this.props.location?.state?.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
+      this.props.location?.state?.current === 2 || this.state.current === 2
+        ? { md: { span: 4, offset: 5 } }
+        : { md: 4 };
 
     return (
       this.state.isLoaded && (

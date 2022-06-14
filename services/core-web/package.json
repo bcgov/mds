@@ -33,6 +33,7 @@
     "axios-mock-adapter": "^1.17.0",
     "core-js": "^3.1.4",
     "cypress": "^9.5.1",
+    "date-fns": "^2.28.0",
     "dotenv": "^9.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",

@@ -39,20 +39,24 @@ export const DefaultContact = (props) => {
       headStyle={cardHeadStyle}
       bordered={false}
       title={
-        <div className="flex flex-between">
-          <div className="flex items-center">
-            <h4 className="margin-large--right">{props.partyRelationshipTitle}</h4>
-            {props.partyRelationshipSubTitle && <p>({props.partyRelationshipSubTitle})</p>}
+        <div>
+          <div className="flex flex-between">
+            <div className="flex items-center">
+              <h4 className="margin-large--right">{props.partyRelationshipTitle}</h4>
+              {props.partyRelationshipSubTitle && <p>({props.partyRelationshipSubTitle})</p>}
+            </div>
           </div>
           {!props.compact && (
-            <Link
-              to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-                props.mine.mine_guid,
-                props.partyRelationship.mine_party_appt_type_code
-              )}
-            >
-              <Button className="margin-none">See History</Button>
-            </Link>
+            <div className="padding-md--top">
+              <Link
+                to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+                  props.mine.mine_guid,
+                  props.partyRelationship.mine_party_appt_type_code
+                )}
+              >
+                <Button className="margin-none">See History</Button>
+              </Link>
+            </div>
           )}
         </div>
       }

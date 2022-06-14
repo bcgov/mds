@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
+import { isFuture } from "date-fns";
 import { Menu, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
 import {
   DownOutlined,
@@ -36,12 +37,13 @@ import { storePermits } from "@common/actions/permitActions";
 import { storeMine } from "@common/actions/mineActions";
 import * as Strings from "@common/constants/strings";
 import { detectProdEnvironment } from "@common/utils/environmentUtils";
+import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
-import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
 import {
@@ -80,6 +82,31 @@ const propTypes = {
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+};
+
+const defaultProps = {
+  partyRelationships: [],
+};
+
+const hasDAMRole = (partyRelationships) => {
+  return partyRelationships.reduce((acc, pr) => {
+    const endDate = pr.end_date ? new Date(pr.end_date) : null;
+    if (pr.mine_party_appt_type_code === "DAM" && (!endDate || isFuture(endDate))) {
+      acc = true;
+    }
+    return acc;
+  }, false);
+};
+
+const hasCCSRole = (partyRelationships) => {
+  return partyRelationships.reduce((acc, pr) => {
+    const endDate = pr.end_date ? new Date(pr.end_date) : null;
+    if (pr.mine_party_appt_type_code === "CCS" && (!endDate || isFuture(endDate))) {
+      acc = true;
+    }
+    return acc;
+  }, false);
 };
 
 export class MineDashboard extends Component {
@@ -300,6 +327,8 @@ export class MineDashboard extends Component {
       </Menu>
     );
 
+    const DAMRole = hasDAMRole(this.props.partyRelationships);
+    const CSSRole = hasCCSRole(this.props.partyRelationships);
     return (
       <div>
         <Drawer
@@ -321,13 +350,19 @@ export class MineDashboard extends Component {
         </Drawer>
         {this.state.isLoaded && (
           <div>
-            {mine.mine_status[0].status_values.includes("ABN") && (
+            {(DAMRole || CSSRole) && (
               <div className="abandoned-mine">
                 <div className="flex items-center">
                   <ExclamationCircleOutlined className="margin-large--right" />
                   <div>
                     <h4>This is an abandoned mine</h4>
-                    <p>Contact the director of abandoned mines for access to this site</p>
+                    <p>
+                      Contact the{" "}
+                      {DAMRole
+                        ? "Director of Abandoned Mines"
+                        : "Manager, Crown Contaminated Sites"}{" "}
+                      for access to this site
+                    </p>
                   </div>
                 </div>
               </div>
@@ -403,6 +438,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   subscribed: getIsUserSubscribed(state),
   userInfo: getUserInfo(state),
+  partyRelationships: getPartyRelationships(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -430,5 +466,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineDashboard.propTypes = propTypes;
+MineDashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);

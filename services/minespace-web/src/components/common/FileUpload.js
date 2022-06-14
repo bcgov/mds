@@ -86,10 +86,7 @@ class FileUpload extends React.Component {
             // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
             if (this.props?.afterSuccess?.action) {
               try {
-                var resp = await this.props.afterSuccess.action(
-                  this.props.afterSuccess?.actionGuid,
-                  file
-                );
+                await this.props.afterSuccess.action(this.props.afterSuccess?.actionGuid, file);
                 this.props.importIsSuccessful();
               } catch (err) {}
             }
