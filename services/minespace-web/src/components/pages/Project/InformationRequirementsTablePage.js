@@ -34,6 +34,11 @@ const propTypes = {
       tab: PropTypes.string,
     },
   }).isRequired,
+  location: PropTypes.shape({
+    state: {
+      current: PropTypes.number,
+    },
+  }).isRequired,
 };
 
 const tabs = [
@@ -53,7 +58,6 @@ const StepForms = (
   state,
   next,
   prev,
-  close,
   handleTabChange,
   handleIRTUpdate,
   importIsSuccessful
@@ -93,11 +97,12 @@ const StepForms = (
         type="tertiary"
         onClick={() => {
           next();
-          props.history.push(
-            `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          props.history.push({
+            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
               props.project?.project_guid
-            )}`
-          );
+            )}`,
+            state: { current: 2 },
+          });
         }}
         disabled={
           !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
@@ -211,8 +216,6 @@ export class InformationRequirementsTablePage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  close = () => {};
-
   importIsSuccessful = () => {
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
   };
@@ -257,14 +260,13 @@ export class InformationRequirementsTablePage extends Component {
       this.state,
       this.next,
       this.prev,
-      this.close,
       this.handleTabChange,
       this.handleIRTUpdate,
       this.importIsSuccessful
     );
     // Button placement on last stage is below content which is offset due to vertical tabs
     const buttonGroupColumnConfig =
-      this.state.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
+      this.props.location.state?.current === 2 ? { md: { span: 7, offset: 7 } } : { md: 4 };
 
     return (
       this.state.isLoaded && (
@@ -289,9 +291,8 @@ export class InformationRequirementsTablePage extends Component {
               <br />
             </>
           )}
-
           <Row>
-            <Steps current={this.state.current}>
+            <Steps current={this.props.location.state?.current || this.state.current}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
@@ -299,10 +300,10 @@ export class InformationRequirementsTablePage extends Component {
             <br />
             <br />
             <Col span={24}>
-              <div>{Forms[this.state.current].content}</div>
+              <div>{Forms[this.props.location.state?.current || this.state.current].content}</div>
             </Col>
             <Col xs={24} {...buttonGroupColumnConfig}>
-              <div>{Forms[this.state.current].buttons}</div>
+              <div>{Forms[this.props.location.state?.current || this.state.current].buttons}</div>
             </Col>
           </Row>
         </>
