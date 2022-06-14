@@ -40,6 +40,7 @@ class InformationRequirementsTableResource(Resource, UserMixin):
     def put(self, project_guid, irt_guid):
         data = request.json
         irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
+
         if irt is None:
             raise NotFound('Information Requirements Table (IRT) not found.')
 

@@ -210,7 +210,7 @@ export const createInformationRequirementsTable = (
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid),
+      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLES(projectGuid),
       formData,
       createRequestHeader(customContentType)
     )
@@ -227,15 +227,16 @@ export const createInformationRequirementsTable = (
 };
 
 export const updateInformationRequirementsTable = (
-  { projectGuid, irtGuid },
+  { projectGuid, informationRequirementsTableGuid },
   payload,
-  message = "Successfully update information requirements table."
+  message = "Successfully update information requirements table"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, irtGuid),
+      ENVIRONMENT.apiUrl +
+        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
       payload,
       createRequestHeader()
     )

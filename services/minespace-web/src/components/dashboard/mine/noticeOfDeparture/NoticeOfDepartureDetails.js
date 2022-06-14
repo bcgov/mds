@@ -15,6 +15,47 @@ const propTypes = {
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
 };
 
+export const documentSection = ({ documentArray, title }) => {
+  return (
+    <div>
+      <h4 className="nod-modal-section-header">{title}</h4>
+      <Row>
+        <Col span={16}>
+          <p className="field-title">Uploaded File</p>
+        </Col>
+        <Col span={5}>
+          <p className="field-title">Upload Date</p>
+        </Col>
+        <Col span={3}>
+          <p className="field-title">&nbsp;</p>
+        </Col>
+      </Row>
+      {documentArray.map((document) => (
+        <Row>
+          <Col span={16}>
+            <p>{document?.document_name || EMPTY_FIELD}</p>
+          </Col>
+          <Col span={5}>
+            <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
+          </Col>
+          <Col span={3}>
+            {document?.document_name ? (
+              <LinkButton
+                onClick={() => downloadFileFromDocumentManager(document)}
+                title={document?.document_name}
+              >
+                Download
+              </LinkButton>
+            ) : (
+              <p>{EMPTY_FIELD}</p>
+            )}
+          </Col>
+        </Row>
+      ))}
+    </div>
+  );
+};
+
 export const NoticeOfDepartureDetails = (props) => {
   const { noticeOfDeparture } = props;
   const {
@@ -39,47 +80,6 @@ export const NoticeOfDepartureDetails = (props) => {
   );
 
   const submitted = formatDate(submission_timestamp);
-
-  const documentSection = ({ documentArray, title }) => {
-    return (
-      <div>
-        <h4 className="nod-modal-section-header">{title}</h4>
-        <Row>
-          <Col span={16}>
-            <p className="field-title">Uploaded File</p>
-          </Col>
-          <Col span={5}>
-            <p className="field-title">Upload Date</p>
-          </Col>
-          <Col span={3}>
-            <p className="field-title">&nbsp;</p>
-          </Col>
-        </Row>
-        {documentArray.map((document) => (
-          <Row>
-            <Col span={16}>
-              <p>{document?.document_name || EMPTY_FIELD}</p>
-            </Col>
-            <Col span={5}>
-              <p>{formatDate(document?.create_timestamp) || EMPTY_FIELD}</p>
-            </Col>
-            <Col span={3}>
-              {document?.document_name ? (
-                <LinkButton
-                  onClick={() => downloadFileFromDocumentManager(document)}
-                  title={document?.document_name}
-                >
-                  Download
-                </LinkButton>
-              ) : (
-                <p>{EMPTY_FIELD}</p>
-              )}
-            </Col>
-          </Row>
-        ))}
-      </div>
-    );
-  };
 
   return (
     <div>
