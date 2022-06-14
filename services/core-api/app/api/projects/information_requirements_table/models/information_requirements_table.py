@@ -59,17 +59,17 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         subject = f'IRT Submitted for {self.project.mine_name}'
         body = f'<p>{self.project.mine_name} (Mine no: {self.project.mine_no}) has updated {self.project.project_title} by submitting an IRT.</p>'
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.project.mine_guid}/reports/code-required-reports'
-        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        link = f'{Config.CORE_PRODUCTION_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
+        body += f'<p>View IRT in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 
     def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}'
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/review/intro-project-overview'
 
         subject = f'IRT Notification for {self.project.mine_name}:{self.project.project_title}'
         body = f'<p>An IRT has been approved for {self.project.mine_name}:(Mine no: {self.project.mine_no})-{self.project.project_title}.</p>'
-        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        body += f'<p>View IRT in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
 
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
