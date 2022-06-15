@@ -37,5 +37,5 @@ cypress.env.json
 
 # debug
 debug
-devops
+/devops
 gitops/tenant-gitops-4c2ba9
