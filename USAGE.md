@@ -6,9 +6,11 @@ This file describes how to run the project and develop against it.
 
 ## Requirements
 
+- Git
 - Docker
-- Make
-- NodeJS 10
+- Docker Compose
+- NodeJS
+- [Make](https://www.gnu.org/software/make/manual/make.html)
 
 ## Getting Started
 
@@ -16,6 +18,15 @@ This file describes how to run the project and develop against it.
 - On Windows, note the following:
   - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
   - Drive sharing is disabled by default, make sure to share your local drive in docker settings
+
+
+### Developing with M1 Mac
+
+To develop with M1 Mac, there are no additional requirements. 
+
+The make file supports context switching based on the CPU architecture of the machine host. 
+
+If you require to run additional docker-compose commands, use `docker-compose` with `-f` flag pointing to `docker-compose.M1.yaml`
 
 ### Setting up local development
 
@@ -67,38 +78,16 @@ There are two approaches to having test data in your system. If you are a
 public contributor, choose "Using Flask". View the Makefile for more
 information on what these commands are doing. This is useful for
 troubleshooting if anything fails to work as expected.
+### Seeding data 
 
-### Using Flask
-
-This will connect to a locally running docker postgres container
-(`mds_postgres`) and generate 1000 mine records with random data. This has
-already been done for you in the rebuild-all-local step, but if you need more
-data:
-
+Use the following make command to seed test data locally.
 ```
-make generate-rand1000
-```
-
-or if you require less data...
-
-```
-make generate-rand100
-```
-
-### Seeding data with Test environment Database
-
-NOTE: You need access to the Test Openshift environment and oc cli tools.
-NOTE: You must have only your postgres container running with no external tools attached (eg: dbeaver), otherwise some commands will fail
-
-```
-make database-seed && make database-dump-clean
+make seeddb
 ```
 
 ## Developing workflow tips for MDS
 
-If you are planning to run the frontend on your host machine, ensure you are
-using Node 10 (lts/dubnium) and npm 6. You may choose to use a version manager
-such as [nvm](https://github.com/nvm-sh/nvm) if working on multiple projects.
+You may choose to use a version manager such as [nvm](https://github.com/nvm-sh/nvm) or [asdf](https://asdf-vm.com/) if working on multiple projects.
 
 ### Browser Caching
 
@@ -109,17 +98,6 @@ To address this, you may:
 - Periodically clear the cache.
 - Disable cache (available in Chrome/Chromium)
 - Open an Incognito window (Chrome/Chromium)
-
-### Container Information
-
-- The mds_backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
-- The mds_frontend container exposes port 3000 and can be accessed at http://localhost:3000
-- The mds_keycloak container exposes port 8080 and can be accessed at http://keycloak:8080
-- The mds_postgres container exposes port 5432 and can be connected to with the admin account (mds/test); for example:
-
-```
-psql --dbname=mds --username=mds --host=localhost --password --port=5432
-```
 
 ### Using the Document Manager and Document Generator locally
 
