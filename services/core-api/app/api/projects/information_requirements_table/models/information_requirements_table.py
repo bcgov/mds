@@ -50,7 +50,6 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
-    # TODO: fix the link variable to link tot he actual IRT page of a the project in question.
     def send_irt_submit_email(self):
         project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email
