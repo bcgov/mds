@@ -51,6 +51,13 @@ class Project(AuditMixin, Base):
             return mine.mine_name
         return None
 
+    @hybrid_property
+    def mine_no(self):
+        mine = Mine.find_by_mine_guid(str(self.mine_guid))
+        if mine:
+            return mine.mine_no
+        return None
+
     @classmethod
     def find_by_project_guid(cls, project_guid):
         return cls.query.filter_by(project_guid=project_guid).one_or_none()

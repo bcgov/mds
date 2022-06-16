@@ -5,7 +5,6 @@ import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Steps } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import Callout from "@/components/common/Callout";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
 import {
@@ -13,6 +12,7 @@ import {
   fetchRequirements,
   updateInformationRequirementsTable,
 } from "@common/actionCreators/projectActionCreator";
+import Callout from "@/components/common/Callout";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
