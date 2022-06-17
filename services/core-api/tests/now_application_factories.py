@@ -14,6 +14,7 @@ from tests.now_submission_factories import NOWSubmissionFactory
 
 
 class BlastingOperationFactory(BaseFactory):
+
     class Meta:
         model = app_models.BlastingOperation
 
@@ -28,6 +29,7 @@ class BlastingOperationFactory(BaseFactory):
 
 
 class StateOfLandFactory(BaseFactory):
+
     class Meta:
         model = app_models.StateOfLand
 
@@ -45,6 +47,7 @@ class StateOfLandFactory(BaseFactory):
 
 
 class EquipmentFactory(BaseFactory):
+
     class Meta:
         model = app_models.Equipment
 
@@ -54,6 +57,7 @@ class EquipmentFactory(BaseFactory):
 
 
 class ActivitySummaryBaseFactory(BaseFactory):
+
     class Meta:
         model = app_models.ActivitySummaryBase
 
@@ -69,6 +73,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
 
 
 class ActivityDetailBaseFactory(BaseFactory):
+
     class Meta:
         model = app_models.ActivityDetailBase
 
@@ -99,11 +104,13 @@ class ActivityDetailBaseFactory(BaseFactory):
 
 
 class CampDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.CampDetail
 
 
 class CampFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.Camp
 
@@ -126,11 +133,13 @@ class CampFactory(ActivitySummaryBaseFactory):
 
 
 class CutLinesPolarizationSurveyDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.CutLinesPolarizationSurveyDetail
 
 
 class CutLinesPolarizationSurveyFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.CutLinesPolarizationSurvey
 
@@ -146,6 +155,7 @@ class CutLinesPolarizationSurveyFactory(ActivitySummaryBaseFactory):
 
 
 class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.ExplorationSurfaceDrilling
 
@@ -163,11 +173,13 @@ class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
 
 
 class ExplorationSurfaceDrillingDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.ExplorationSurfaceDrillingDetail
 
 
 class MechanicalTrenchingFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.MechanicalTrenching
 
@@ -183,11 +195,13 @@ class MechanicalTrenchingFactory(ActivitySummaryBaseFactory):
 
 
 class MechanicalTrenchingDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.MechanicalTrenchingDetail
 
 
 class PlacerOperationFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.PlacerOperation
 
@@ -209,11 +223,13 @@ class PlacerOperationFactory(ActivitySummaryBaseFactory):
 
 
 class PlacerOperationDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.PlacerOperationDetail
 
 
 class SandGravelQuarryOperationFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.SandGravelQuarryOperation
 
@@ -229,11 +245,13 @@ class SandGravelQuarryOperationFactory(ActivitySummaryBaseFactory):
 
 
 class SandGravelQuarryOperationDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.SandGravelQuarryOperationDetail
 
 
 class SurfaceBulkFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.SurfaceBulkSample
 
@@ -253,11 +271,13 @@ class SurfaceBulkFactory(ActivitySummaryBaseFactory):
 
 
 class SurfaceBulkDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.SurfaceBulkSampleDetail
 
 
 class WaterSupplyFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.WaterSupply
 
@@ -273,6 +293,7 @@ class WaterSupplyFactory(ActivitySummaryBaseFactory):
 
 
 class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.WaterSupplyDetail
 
@@ -285,6 +306,7 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
 
 
 class ExplorationAccessFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.ExplorationAccess
 
@@ -300,11 +322,13 @@ class ExplorationAccessFactory(ActivitySummaryBaseFactory):
 
 
 class ExplorationAccessDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.ExplorationAccessDetail
 
 
 class SettlingPondFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.SettlingPond
 
@@ -325,6 +349,7 @@ class SettlingPondFactory(ActivitySummaryBaseFactory):
 
 
 class SettlingPondDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.SettlingPondDetail
 
@@ -333,6 +358,7 @@ class SettlingPondDetailFactory(ActivityDetailBaseFactory):
 
 
 class UndergroundExplorationFactory(ActivitySummaryBaseFactory):
+
     class Meta:
         model = app_models.UndergroundExploration
 
@@ -353,6 +379,7 @@ class UndergroundExplorationFactory(ActivitySummaryBaseFactory):
 
 
 class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
+
     class Meta:
         model = app_models.UndergroundExplorationDetail
 
@@ -360,6 +387,7 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
 
 class NOWApplicationProgressFactory(BaseFactory):
+
     class Meta:
         model = app_models.NOWApplicationProgress
 
@@ -374,6 +402,7 @@ class NOWApplicationProgressFactory(BaseFactory):
 
 
 class NOWApplicationDelayFactory(BaseFactory):
+
     class Meta:
         model = app_models.NOWApplicationDelay
 
@@ -388,6 +417,7 @@ class NOWApplicationDelayFactory(BaseFactory):
 
 
 class NOWApplicationReviewFactory(BaseFactory):
+
     class Meta:
         model = app_models.NOWApplicationReview
 
@@ -398,6 +428,7 @@ class NOWApplicationReviewFactory(BaseFactory):
 
 
 class NOWApplicationFactory(BaseFactory):
+
     class Meta:
         model = app_models.NOWApplication
 
@@ -440,11 +471,11 @@ class NOWApplicationFactory(BaseFactory):
     annual_summary_submitted = False
     is_first_year_of_multi = False
     verified_by_user_date = factory.Faker('past_datetime')
-    decision_by_user_date = factory.Faker('past_datetime')
     req_access_authorization_numbers = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
     relationship_to_applicant = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
     liability_adjustment = factory.fuzzy.FuzzyInteger(1, 10000)
-    crown_grant_or_district_lot_numbers = factory.Faker('sentence', nb_words=5, variable_nb_words=True)
+    crown_grant_or_district_lot_numbers = factory.Faker(
+        'sentence', nb_words=5, variable_nb_words=True)
     adjusted_annual_maximum_tonnage = factory.fuzzy.FuzzyInteger(1, 10000)
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
@@ -477,6 +508,7 @@ class NOWApplicationFactory(BaseFactory):
 
 
 class NOWApplicationIdentityFactory(BaseFactory):
+
     class Meta:
         model = app_models.NOWApplicationIdentity
 

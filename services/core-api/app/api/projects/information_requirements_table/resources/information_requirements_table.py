@@ -11,6 +11,7 @@ from app.api.projects.information_requirements_table.models.information_requirem
 
 
 class InformationRequirementsTableResource(Resource, UserMixin):
+
     @api.doc(
         description='Get a Information Requirements Table by GUID.',
         params={
@@ -43,6 +44,11 @@ class InformationRequirementsTableResource(Resource, UserMixin):
 
         if irt is None:
             raise NotFound('Information Requirements Table (IRT) not found.')
+
+        if irt.status_code != 'UNR' and data['status_code'] == 'UNR':
+            irt.send_irt_submit_email()
+        if irt.status_code != 'APV' and data['status_code'] == 'APV':
+            irt.send_irt_approval_email()
 
         irt_updated = irt.update(data)
 
