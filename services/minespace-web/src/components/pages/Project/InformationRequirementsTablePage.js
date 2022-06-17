@@ -181,6 +181,9 @@ export class InformationRequirementsTablePage extends Component {
   };
 
   componentDidMount() {
+    this.setState((prevState) => ({
+      current: this.props.location?.state?.current || prevState.current,
+    }));
     this.handleFetchData();
   }
 
