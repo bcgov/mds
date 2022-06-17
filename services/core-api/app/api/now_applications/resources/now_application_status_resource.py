@@ -317,9 +317,11 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         # Handle rejected and withdrawn statuses
         elif now_application_status_code in ['REJ', 'WDN', 'NPR']:
             for progress in now_application_identity.now_application.application_progress:
-                progress.end_date = datetime.now(tz=timezone.utc)
+                if progress.end_date > datetime.now(tz=timezone.utc) or progress.end_date is None:
+                    progress.end_date = datetime.now(tz=timezone.utc)
             for delay in now_application_identity.application_delays:
-                delay.end_date = datetime.now(tz=timezone.utc)
+                if delay.end_date > datetime.now(tz=timezone.utc) or delay.end_date is None:
+                    delay.end_date = datetime.now(tz=timezone.utc)
 
         # Update the status code
         now_application_identity.now_application.decision_by_user_date = datetime.utcnow()
