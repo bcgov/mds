@@ -158,3 +158,10 @@ export const NOTICE_OF_DEPARTURE_STATUS_VALUES = {
   determined_substantial: "determined_substantial",
   withdrawn: "withdrawn",
 };
+
+export const CALLOUT_SEVERITY = {
+  info: "info",
+  success: "success",
+  warning: "warning",
+  danger: "danger",
+};
