@@ -24,6 +24,7 @@ exports[`ProjectDates renders properly 1`] = `
         will work with you on a more definitive schedule.
       </React.Fragment>
     }
+    severity="info"
   />
   <Field
     component={[Function]}

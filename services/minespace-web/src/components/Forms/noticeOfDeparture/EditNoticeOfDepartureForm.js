@@ -16,6 +16,7 @@ import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/No
 import { EMPTY_FIELD, NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
+import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -31,7 +32,7 @@ const propTypes = {
 // eslint-disable-next-line import/no-mutable-exports
 let EditNoticeOfDepartureForm = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
-  const { permit, nod_guid, nod_no } = noticeOfDeparture;
+  const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
@@ -103,6 +104,7 @@ let EditNoticeOfDepartureForm = (props) => {
 
   return (
     <div>
+      <NoticeOfDepartureCallout nodStatus={nod_status} />
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Text>
           Please complete the following form to submit your notice of departure and any relevant
