@@ -99,7 +99,8 @@ const StepForms = (
           next();
           props.history.push({
             pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              props.project?.project_guid
+              props.project?.project_guid,
+              props.project?.information_requirements_table?.irt_guid
             )}`,
             state: { current: 2 },
           });
@@ -148,12 +149,15 @@ const StepForms = (
             routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project.project_guid)
           );
         }}
-        disabled={state.submitting}
+        disabled={props.project?.information_requirements_table?.status_code === "APV"}
       >
         Back
       </Button>,
       <Link
-        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project?.project_guid)}
+        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          props.project?.project_guid,
+          props.project?.information_requirements_table?.irt_guid
+        )}
       >
         <Button
           type="primary"
@@ -194,6 +198,7 @@ export class InformationRequirementsTablePage extends Component {
   handleTabChange = (activeTab) => {
     const url = routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
       this.props.match.params?.projectGuid,
+      this.props.match.params?.irtGuid,
       activeTab
     );
     this.setState({ activeTab });
@@ -205,6 +210,7 @@ export class InformationRequirementsTablePage extends Component {
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
   importIsSuccessful = () => {
+    this.handleFetchData();
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
   };
 

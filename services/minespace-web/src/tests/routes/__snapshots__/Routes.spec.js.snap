@@ -113,7 +113,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    path="/projects/:projectGuid/information-requirements-table/review/:tab"
+    path="/projects/:projectGuid/information-requirements-table/:irtGuid/review/:tab"
   />
   <Route
     component={
