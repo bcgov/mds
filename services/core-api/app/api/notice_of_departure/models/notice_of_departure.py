@@ -9,6 +9,7 @@ from app.api.constants import *
 from app.api.utils.include.user_info import User
 from sqlalchemy.sql import text, select, table, column, literal_column
 from sqlalchemy.sql.functions import func
+from sqlalchemy import desc, asc
 
 
 class NodType(Enum):
@@ -67,7 +68,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
 
         # generate subquery to get nod no in database layer
-        nod_table = table(NoticeOfDeparture.__tablename__, column('permit_guid', ))
+        nod_table = table(NoticeOfDeparture.__tablename__, column('permit_guid'))
 
         count_query_compiled = select([
             func.count('*')
@@ -101,19 +102,37 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod
-    def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(
-            mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
+    def find_all(cls, mine_guid=None, permit_guid=None, order_by=None, order=None):
 
-    @classmethod
-    def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-        query = cls.query.filter_by(
-            permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
+        query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
-            query = cls.query.filter_by(
-                permit_guid=__guid, mine_guid=mine_guid,
-                deleted_ind=False).order_by(cls.create_timestamp.desc())
+            query = query.filter_by(mine_guid=mine_guid)
+        if permit_guid:
+            query = query.filter_by(permit_guid=permit_guid)
+
+        print(order_by, order)
+        if (order_by):
+            if (order == 'asc'):
+                query.order_by(asc(text(order_by)))
+            else:
+                query.order_by(desc(text(order_by)))
+
         return query.all()
+
+    # @classmethod
+    # def find_all_by_mine_guid(cls, __guid):
+    #     return cls.query.filter_by(
+    #         mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
+
+    # @classmethod
+    # def find_all_by_permit_guid(cls, __guid, mine_guid=None):
+    #     query = cls.query.filter_by(
+    #         permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
+    #     if mine_guid:
+    #         query = cls.query.filter_by(
+    #             permit_guid=__guid, mine_guid=mine_guid,
+    #             deleted_ind=False).order_by(cls.create_timestamp.desc())
+    #     return query.all()
 
     def save(self, commit=True):
         self.update_user = User().get_user_username()
