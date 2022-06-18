@@ -45,18 +45,25 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             location='args',
             choices=list(Order),
             store_missing=False)
+        parser.add_argument(
+            'page', type=int, help='page for pagination', location='args', store_missing=False)
+        parser.add_argument(
+            'per_page', type=int, help='records per page', location='args', store_missing=False)
         args = parser.parse_args()
 
         nods = []
 
         permit_guid = args.get('permit_guid')
         mine_guid = args.get('mine_guid')
+        page = args.get('page')
+        per_page = args.get('per_page') if args.get('per_page') else 10 # default per page is 10
+
         order_by = str(
             OrderBy.update_timestamp) if args.get('order_by') == None else args.get('order_by')
         order = str(Order.desc) if args.get('order') == None else args.get('order')
 
-        nods = NoticeOfDeparture.find_all(mine_guid, permit_guid, order_by, order)
-        return {'total': len(nods), 'records': nods}
+        nods = NoticeOfDeparture.find_all(mine_guid, permit_guid, order_by, order, page, per_page)
+        return nods
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.expect(CREATE_NOD_MODEL)

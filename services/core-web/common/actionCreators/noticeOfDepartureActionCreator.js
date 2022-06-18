@@ -14,7 +14,7 @@ import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
-  NOTICES_OF_DEPARTURE_DOCUMENT
+  NOTICES_OF_DEPARTURE_DOCUMENT,
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
@@ -22,12 +22,12 @@ import {
   storeNoticeOfDeparture,
 } from "../actions/noticeOfDepartureActions";
 
-export const createNoticeOfDeparture = (mine_guid, payload) => (dispatch) => {
+export const createNoticeOfDeparture = (payload) => (dispatch) => {
   dispatch(request(CREATE_NOTICE_OF_DEPARTURE));
   dispatch(showLoading("modal"));
 
   return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE(mine_guid)}`, payload, createRequestHeader())
+    .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully created notice of departure.",
@@ -46,8 +46,14 @@ export const createNoticeOfDeparture = (mine_guid, payload) => (dispatch) => {
 export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
   dispatch(request(GET_NOTICES_OF_DEPARTURE));
   dispatch(showLoading());
+  const headers = {
+    ...createRequestHeader(),
+    params: {
+      mine_guid,
+    },
+  };
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE(mine_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, headers)
     .then((response) => {
       dispatch(success(GET_NOTICES_OF_DEPARTURE));
       dispatch(storeNoticesOfDeparture(response.data));
@@ -57,15 +63,11 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateNoticeOfDeparture = ({ mineGuid, nodGuid }, payload) => (dispatch) => {
+export const updateNoticeOfDeparture = ({ nodGuid }, payload) => (dispatch) => {
   dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .patch(
-      `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mineGuid, nodGuid)}`,
-      payload,
-      createRequestHeader()
-    )
+    .patch(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully updated notice of departure.",
@@ -81,11 +83,11 @@ export const updateNoticeOfDeparture = ({ mineGuid, nodGuid }, payload) => (disp
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch) => {
+export const fetchDetailedNoticeOfDeparture = (nod_guid) => (dispatch) => {
   dispatch(request(GET_DETAILED_NOTICE_OF_DEPARTURE));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(mine_guid, nod_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nod_guid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(GET_DETAILED_NOTICE_OF_DEPARTURE));
       dispatch(storeNoticeOfDeparture(response.data));
@@ -95,14 +97,14 @@ export const fetchDetailedNoticeOfDeparture = (mine_guid, nod_guid) => (dispatch
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addDocumentToNoticeOfDeparture = ({ mineGuid, noticeOfDepartureGuid }, payload) => (
+export const addDocumentToNoticeOfDeparture = ({ noticeOfDepartureGuid }, payload) => (
   dispatch
 ) => {
   dispatch(showLoading("modal"));
   dispatch(request(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENTS(mineGuid, noticeOfDepartureGuid)}`,
+      `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENTS(noticeOfDepartureGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -117,14 +119,14 @@ export const addDocumentToNoticeOfDeparture = ({ mineGuid, noticeOfDepartureGuid
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const removeFileFromDocumentManager = ({ mine_guid, nod_guid, document_manager_guid }) => {
+export const removeFileFromDocumentManager = ({ nod_guid, document_manager_guid }) => {
   if (!document_manager_guid) {
     throw new Error("Must provide document_manager_guid");
   }
 
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl + NOTICES_OF_DEPARTURE_DOCUMENT(mine_guid, nod_guid, document_manager_guid)}`,
+      `${ENVIRONMENT.apiUrl + NOTICES_OF_DEPARTURE_DOCUMENT(nod_guid, document_manager_guid)}`,
       createRequestHeader()
     )
     .then((response) => {

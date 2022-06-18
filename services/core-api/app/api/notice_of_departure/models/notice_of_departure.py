@@ -128,7 +128,13 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod
-    def find_all(cls, mine_guid=None, permit_guid=None, order_by=None, order=None):
+    def find_all(cls,
+                 mine_guid=None,
+                 permit_guid=None,
+                 order_by=None,
+                 order=None,
+                 page=None,
+                 per_page=None):
 
         query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
@@ -141,7 +147,13 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
                 query = query.order_by(cls.__dict__[order_by].asc())
             else:
                 query = query.order_by(cls.__dict__[order_by].desc())
-        return query.all()
+
+        if (page):
+            result = query.paginate(page, per_page, error_out=False)
+            return dict([('total', result.total), ('records', result.items)])
+
+        result = query.all()
+        return dict([('total', len(result)), ('records', result)])
 
     def save(self, commit=True):
         self.update_user = User().get_user_username()
