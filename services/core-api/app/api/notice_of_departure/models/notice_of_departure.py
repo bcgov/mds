@@ -13,18 +13,41 @@ from sqlalchemy import desc, asc
 
 
 class NodType(Enum):
-    non_substantial = auto()
-    potentially_substantial = auto()
+    non_substantial = "non_substantial"
+    potentially_substantial = "potentially_substantial"
+
+    def __str__(self):
+        return self.value
 
 
 class NodStatus(Enum):
-    pending_review = auto()
-    in_review = auto(),
-    information_required = auto(),
-    self_determined_non_substantial = auto(),
-    determined_non_substantial = auto(),
-    determined_substantial = auto(),
-    withdrawn = auto()
+    pending_review = "pending_review"
+    in_review = "in_review"
+    information_required = "information_required"
+    self_determined_non_substantial = "self_determined_non_substantial"
+    determined_non_substantial = "determined_non_substantial"
+    determined_substantial = "determined_substantial"
+    withdrawn = "withdrawn"
+
+    def __str__(self):
+        return self.value
+
+
+class OrderBy(Enum):
+    nod_no = 'nod_no'
+    nod_title = 'nod_title'
+    nod_description = 'nod_description'
+    nod_type = 'nod_type'
+    nod_status = 'nod_status'
+    update_timestamp = 'update_timestamp'
+
+    def __str__(self):
+        return self.value
+
+
+class Order(Enum):
+    asc = 'asc'
+    desc = 'desc'
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -110,12 +133,11 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         if permit_guid:
             query = query.filter_by(permit_guid=permit_guid)
 
-        print(order_by, order)
         if (order_by):
             if (order == 'asc'):
-                query.order_by(asc(text(order_by)))
+                query.order_by(asc(text(order_by.value)))
             else:
-                query.order_by(desc(text(order_by)))
+                query.order_by(desc(text(order_by.value)))
 
         return query.all()
 

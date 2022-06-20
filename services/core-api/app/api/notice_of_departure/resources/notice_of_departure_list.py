@@ -6,15 +6,15 @@ from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
                                              EDIT_DO)
-from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
-from app.api.notice_of_departure.dto import NOD_MODEL, CREATE_NOD_MODEL
+from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus, OrderBy, Order
+from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NOD_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
 
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    @api.marshal_with(NOD_MODEL, code=200, envelope='records')
+    @api.marshal_with(NOD_MODEL_LIST, code=200)
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument(
@@ -33,19 +33,17 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             store_missing=False)
         parser.add_argument(
             'order_by',
-            type=str,
+            type=OrderBy,
             help='order by',
             location='args',
-            required=False,
-            default='update_timestamp',
+            choices=list(OrderBy),
             store_missing=False)
         parser.add_argument(
             'order',
-            type=str,
+            type=Order,
             help='order direction',
             location='args',
-            required=False,
-            default='asc',
+            choices=list(Order),
             store_missing=False)
         args = parser.parse_args()
 
@@ -53,11 +51,12 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         permit_guid = args.get('permit_guid')
         mine_guid = args.get('mine_guid')
-        order_by = args.get('order_by')
-        order = args.get('order')
+        order_by = OrderBy.update_timestamp if args.get('order_by') == None else args.get(
+            'order_by')
+        order = 'desc' if args.get('order') == None else args.get('order')
 
         nods = NoticeOfDeparture.find_all(mine_guid, permit_guid, order_by, order)
-        return nods
+        return {'total': len(nods), 'records': nods}
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.expect(CREATE_NOD_MODEL)
@@ -94,16 +93,18 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             store_missing=False)
         parser.add_argument(
             'nod_type',
-            type=str,
+            type=NodType,
             help='Notice of Departure type',
             location='json',
             required=True,
+            choices=list(NodType),
             store_missing=False)
         parser.add_argument(
             'nod_status',
-            type=str,
-            help='Notice of Departure Status',
+            type=NodStatus,
+            help='Notice of Departure status',
             location='json',
+            choices=list(NodStatus),
             store_missing=False)
         data = parser.parse_args()
 
@@ -119,8 +120,9 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             permit,
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
-            nod_type=NodType[data.get('nod_type')],
-            nod_status=NodStatus[data.get('nod_status')])
+            nod_type=data.get('nod_type'),
+            nod_status=NodStatus.pending_review
+            if data.get('nod_status') == None else data.get('nod_status'))
         new_nod.save()
 
         return new_nod
