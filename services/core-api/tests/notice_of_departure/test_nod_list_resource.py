@@ -35,7 +35,7 @@ class TestNodListResource:
         NoticeOfDepartureFactory.create_batch(size=batch_size, mine=mine, permit=another_permit)
 
         get_resp = test_client.get(
-            f'/notices-of-departure?permit_guid={mine.permit_guid}',
+            f'/notices-of-departure?permit_guid={permit.permit_guid}',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
