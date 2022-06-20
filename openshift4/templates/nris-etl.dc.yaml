@@ -185,5 +185,5 @@ objects:
               dnsPolicy: ClusterFirst
               securityContext: {}
               schedulerName: default-scheduler
-      successfulJobsHistoryLimit: 5
-      failedJobsHistoryLimit: 5
+      successfulJobsHistoryLimit: 1
+      failedJobsHistoryLimit: 2
