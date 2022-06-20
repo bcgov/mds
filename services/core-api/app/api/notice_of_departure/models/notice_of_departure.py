@@ -49,6 +49,9 @@ class Order(Enum):
     asc = 'asc'
     desc = 'desc'
 
+    def __str__(self):
+        return self.value
+
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'notice_of_departure'
@@ -135,26 +138,10 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
         if (order_by):
             if (order == 'asc'):
-                query.order_by(asc(text(order_by.value)))
+                query = query.order_by(cls.__dict__[order_by].asc())
             else:
-                query.order_by(desc(text(order_by.value)))
-
+                query = query.order_by(cls.__dict__[order_by].desc())
         return query.all()
-
-    # @classmethod
-    # def find_all_by_mine_guid(cls, __guid):
-    #     return cls.query.filter_by(
-    #         mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
-
-    # @classmethod
-    # def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-    #     query = cls.query.filter_by(
-    #         permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
-    #     if mine_guid:
-    #         query = cls.query.filter_by(
-    #             permit_guid=__guid, mine_guid=mine_guid,
-    #             deleted_ind=False).order_by(cls.create_timestamp.desc())
-    #     return query.all()
 
     def save(self, commit=True):
         self.update_user = User().get_user_username()
