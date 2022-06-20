@@ -5,7 +5,7 @@ from app.api.notice_of_departure.resources.notice_of_departure_document import M
 
 api = Namespace('notices-of-departure', description='NOD related operations')
 
-api.add_resource(NoticeOfDepartureListResource, '/')
+api.add_resource(NoticeOfDepartureListResource, '')
 
 api.add_resource(NoticeOfDepartureResource, '/<string:nod_guid>')
 
