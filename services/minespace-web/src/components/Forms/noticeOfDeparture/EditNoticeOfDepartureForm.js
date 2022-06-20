@@ -107,10 +107,6 @@ let EditNoticeOfDepartureForm = (props) => {
 
   const handleWithdraw = () => {
     delete noticeOfDeparture.nod_status;
-    console.log("noticeofdeparture", {
-      nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn,
-      ...noticeOfDeparture,
-    });
     onSubmit(
       nod_guid,
       { ...noticeOfDeparture, nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn },
@@ -283,7 +279,7 @@ let EditNoticeOfDepartureForm = (props) => {
           </div>
         )}
 
-        <div className="ant-modal-footer inline-flex between">
+        <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
             title="Are you sure you want to cancel?"

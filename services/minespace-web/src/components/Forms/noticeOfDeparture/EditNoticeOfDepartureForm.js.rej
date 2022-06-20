@@ -1,0 +1,7 @@
+diff a/services/minespace-web/src/components/Forms/noticeOfDeparture/EditNoticeOfDepartureForm.js b/services/minespace-web/src/components/Forms/noticeOfDeparture/EditNoticeOfDepartureForm.js	(rejected hunks)
+@@ -110 +110,4 @@ let EditNoticeOfDepartureForm = (props) => {
+-    console.log('noticeofdeparture', {nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn, ...noticeOfDeparture })
++    console.log("noticeofdeparture", {
++      nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn,
++      ...noticeOfDeparture,
++    });
