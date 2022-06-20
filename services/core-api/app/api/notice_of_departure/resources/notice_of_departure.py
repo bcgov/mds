@@ -42,23 +42,28 @@ class NoticeOfDepartureResource(Resource, UserMixin):
             store_missing=False)
         parser.add_argument(
             'nod_type',
-            type=str,
+            type=NodType,
             help='Notice of Departure type',
             location='json',
-            required=True,
+            choices=list(NodType),
             store_missing=False)
         parser.add_argument(
             'nod_status',
-            type=str,
-            help='Notice of Departure Status',
+            type=NodStatus,
+            help='Notice of Departure status',
             location='json',
+            choices=list(NodStatus),
             store_missing=False)
         data = parser.parse_args()
 
-        nod.nod_title = data.get('nod_title')
-        nod.nod_description = data.get('nod_description')
-        nod.nod_status = NodStatus[data.get('nod_status')]
-        nod.nod_type = NodType[data.get('nod_type')]
+        if (data.get('nod_title')):
+            nod.nod_title = data.get('nod_title')
+        if (data.get('nod_description')):
+            nod.nod_description = data.get('nod_description')
+        if (data.get('nod_status')):
+            nod.nod_status = data.get('nod_status')
+        if (data.get('nod_type')):
+            nod.nod_type = data.get('nod_type')
 
         nod.save()
 
