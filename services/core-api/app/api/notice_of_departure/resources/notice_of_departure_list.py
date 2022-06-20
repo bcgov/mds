@@ -51,9 +51,9 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         permit_guid = args.get('permit_guid')
         mine_guid = args.get('mine_guid')
-        order_by = OrderBy.update_timestamp if args.get('order_by') == None else args.get(
-            'order_by')
-        order = 'desc' if args.get('order') == None else args.get('order')
+        order_by = str(
+            OrderBy.update_timestamp) if args.get('order_by') == None else args.get('order_by')
+        order = str(Order.desc) if args.get('order') == None else args.get('order')
 
         nods = NoticeOfDeparture.find_all(mine_guid, permit_guid, order_by, order)
         return {'total': len(nods), 'records': nods}
