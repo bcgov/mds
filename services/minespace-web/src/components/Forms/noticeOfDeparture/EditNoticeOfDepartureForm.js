@@ -256,7 +256,7 @@ let EditNoticeOfDepartureForm = (props) => {
             documentArray: decision,
           })}
         {nod_status === NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review && (
-          <div className="content--light-grey padding-lg">
+          <div className="content--light-grey padding-lg margin-large--bottom">
             <h4 className="nod-modal-section-header">Withdraw Submission</h4>
             <Typography.Text>
               If you would like to withdraw this submission you may do so by clicking below. If you
