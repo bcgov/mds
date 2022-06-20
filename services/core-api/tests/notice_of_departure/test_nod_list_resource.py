@@ -19,6 +19,7 @@ class TestNodListResource:
         get_resp = test_client.get(
             f'/notices-of-departure?mine_guid={mine.mine_guid}',
             headers=auth_headers['full_auth_header'])
+        print(get_resp.data)
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
@@ -37,6 +38,7 @@ class TestNodListResource:
         get_resp = test_client.get(
             f'/notices-of-departure?permit_guid={permit.permit_guid}',
             headers=auth_headers['full_auth_header'])
+
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
