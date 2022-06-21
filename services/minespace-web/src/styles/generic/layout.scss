@@ -146,6 +146,12 @@
 
 .margin-large {
   margin: $default-margin-lg;
+  &--bottom {
+    margin-bottom: $default-margin-lg;
+  }
+  &--top {
+    margin-top: $default-margin-lg;
+  }
 }
 
 .margin-xlarge {

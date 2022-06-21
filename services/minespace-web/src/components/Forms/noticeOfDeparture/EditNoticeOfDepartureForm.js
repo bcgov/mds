@@ -6,7 +6,10 @@ import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import {
+  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
+  NOTICE_OF_DEPARTURE_STATUS_VALUES,
+} from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
@@ -100,6 +103,13 @@ let EditNoticeOfDepartureForm = (props) => {
       uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
     );
     setUploading(false);
+  };
+  const handleWithdraw = () => {
+    onSubmit(
+      nod_guid,
+      { ...noticeOfDeparture, nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn },
+      []
+    ).finally(() => setSubmitting(false));
   };
 
   return (
@@ -243,6 +253,30 @@ let EditNoticeOfDepartureForm = (props) => {
             title: "Ministry Decision Documentation",
             documentArray: decision,
           })}
+        {nod_status === NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review && (
+          <div className="content--light-grey padding-lg margin-large--bottom">
+            <h4 className="nod-modal-section-header">Withdraw Submission</h4>
+            <Typography.Text>
+              If you would like to withdraw this submission you may do so by clicking below. If you
+              choose to submit this Notice of Departure again you will need to begin a new
+              submission.
+            </Typography.Text>
+            <div className="margin-y-large">
+              <Popconfirm
+                title="Are you sure you want to withdraw this Notice of Departure?"
+                placement="top"
+                okText="yes"
+                cancelText="no"
+                onConfirm={handleWithdraw}
+              >
+                <Button type="primary" className="full-mobile">
+                  Withdraw Submission
+                </Button>
+              </Popconfirm>
+            </div>
+          </div>
+        )}
+
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -261,7 +295,7 @@ let EditNoticeOfDepartureForm = (props) => {
             className="full-mobile margin-small"
             htmlType="submit"
           >
-            Submit
+            Submit Notice of Departure
           </Button>
         </div>
       </Form>
