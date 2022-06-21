@@ -104,9 +104,7 @@ let EditNoticeOfDepartureForm = (props) => {
     );
     setUploading(false);
   };
-
   const handleWithdraw = () => {
-    delete noticeOfDeparture.nod_status;
     onSubmit(
       nod_guid,
       { ...noticeOfDeparture, nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn },
