@@ -25,7 +25,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
           - name: flyway
           - name: tusd
           - name: dbbackup
@@ -66,7 +65,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
           - name: frontend
           - name: dbbackup
           - name: metabase

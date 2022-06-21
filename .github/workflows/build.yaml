@@ -20,7 +20,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
@@ -44,14 +43,12 @@ jobs:
           -p TAG=${{env.INITIAL_TAG}} \
           | oc -n ${{secrets.NS_TOOLS}} apply -f -
 
-
   build:
     name: build
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         include:
-          - name: nginx
           - name: dbbackup
           - name: metabase
     steps:
@@ -73,7 +70,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
           - name: dbbackup
           - name: metabase
           - name: metabase-postgres
@@ -112,7 +108,6 @@ jobs:
         include:
           - name: nris
           - name: docman
-          - name: nginx
           - name: metabase
           - name: metabase-postgres
           - name: dbbackup
