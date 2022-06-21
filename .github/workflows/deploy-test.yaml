@@ -24,7 +24,6 @@ jobs:
         include:
           - config: dbbackup
           - config: postgresql
-          - config: nginx
           - config: redis
           - config: metabase
           - config: metabase-postgres
