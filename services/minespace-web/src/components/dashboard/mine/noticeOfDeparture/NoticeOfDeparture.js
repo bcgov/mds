@@ -81,7 +81,7 @@ export const NoticeOfDeparture = (props) => {
         ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
         : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
     return props
-      .createNoticeOfDeparture(mine.mine_guid, { ...values, nod_status })
+      .createNoticeOfDeparture({ ...values, nod_status, mine_guid: mine.mine_guid })
       .then(async (response) => {
         const { nod_guid } = response.data;
         await handleAddDocuments(documentArray, nod_guid);
