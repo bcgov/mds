@@ -14,7 +14,7 @@ import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
-  NOTICES_OF_DEPARTURE_DOCUMENT
+  NOTICES_OF_DEPARTURE_DOCUMENT,
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
@@ -46,8 +46,14 @@ export const createNoticeOfDeparture = (payload) => (dispatch) => {
 export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
   dispatch(request(GET_NOTICES_OF_DEPARTURE));
   dispatch(showLoading());
+  const headers = {
+    ...createRequestHeader(),
+    params: {
+      mine_guid,
+    },
+  };
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE(mine_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE(mine_guid)}`, headers)
     .then((response) => {
       dispatch(success(GET_NOTICES_OF_DEPARTURE));
       dispatch(storeNoticesOfDeparture(response.data));
@@ -61,11 +67,7 @@ export const updateNoticeOfDeparture = ({ nodGuid }, payload) => (dispatch) => {
   dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .patch(
-      `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`,
-      payload,
-      createRequestHeader()
-    )
+    .patch(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully updated notice of departure.",

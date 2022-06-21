@@ -182,4 +182,4 @@ api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine
 
 api.add_resource(EPICResource, '/<string:mine_guid>/epic')
 
-api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/documents')
+api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_guid>/notices-of-departure/documents')

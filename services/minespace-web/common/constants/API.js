@@ -83,7 +83,7 @@ export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 
 // Permits - Notices of Departure
-export const NOTICES_OF_DEPARTURE = (mineGuid) => `/notices-of-departure?mine_guid=${mineGuid}`;
+export const NOTICES_OF_DEPARTURE = () => `/notices-of-departure`;
 export const NOTICE_OF_DEPARTURE = (noticeOfDepartureGuid) =>
   `/notices-of-departure/${noticeOfDepartureGuid}`;
 export const NOTICES_OF_DEPARTURE_DOCUMENTS = (noticeOfDepartureGuid) =>
