@@ -131,7 +131,7 @@ let ViewNoticeOfDepartureModal = (props) => {
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
 
-    await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, nod_guid);
+    await props.fetchDetailedNoticeOfDeparture(nod_guid);
   };
 
   const updateNoticeOfDepartureSubmit = async (values) => {
@@ -280,7 +280,7 @@ let ViewNoticeOfDepartureModal = (props) => {
               addFileStart={() => setUploading(true)}
               onAbort={() => setUploading(false)}
               onProcessFiles={() => setUploading(false)}
-              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
+              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS()}
               acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
               onFileLoad={(documentName, document_manager_guid) => {
                 onFileLoad(

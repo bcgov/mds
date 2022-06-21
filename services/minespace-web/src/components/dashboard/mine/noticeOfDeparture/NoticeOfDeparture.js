@@ -124,7 +124,6 @@ export const NoticeOfDeparture = (props) => {
 
   const openViewNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
     const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
-      mine.mine_guid,
       selectedNoticeOfDeparture.nod_guid
     );
     props.openModal({
@@ -138,7 +137,6 @@ export const NoticeOfDeparture = (props) => {
 
   const openEditNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
     const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
-      mine.mine_guid,
       selectedNoticeOfDeparture.nod_guid
     );
     props.openModal({

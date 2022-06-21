@@ -43,7 +43,6 @@ describe("`createNoticeOfDeparture` action creator", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
     return createNoticeOfDeparture(
-      mineGuid,
       mockPayload
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -54,7 +53,7 @@ describe("`createNoticeOfDeparture` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createNoticeOfDeparture(mineGuid)(dispatch).catch(() => {
+    return createNoticeOfDeparture()(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -95,7 +94,6 @@ describe("`fetchDetailedNoticeOfDeparture` action creator", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
     return fetchDetailedNoticeOfDeparture(
-      mineGuid,
       nodGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -107,7 +105,6 @@ describe("`fetchDetailedNoticeOfDeparture` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchDetailedNoticeOfDeparture(
-      mineGuid,
       nodGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
