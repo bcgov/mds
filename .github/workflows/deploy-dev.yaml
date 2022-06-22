@@ -1,12 +1,7 @@
 name: Update dev infra
 
 on:
-  push:
-    branches:
-      - develop
-    paths:
-      - openshift4/templates/**.dc.yaml
-      - .github/workflows/deploy-dev.yaml
+  workflow_dispatch:
 
 env:
   TAG: dev

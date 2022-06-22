@@ -2,13 +2,6 @@ name: Update test infra
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - Update dev infra
-    types:
-      - completed
-    tags:
-      - test
 
 env:
   TAG: test
