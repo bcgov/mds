@@ -53,7 +53,7 @@ export const fetchNoticesOfDeparture = (mine_guid) => (dispatch) => {
     },
   };
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE(mine_guid)}`, headers)
+    .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, headers)
     .then((response) => {
       dispatch(success(GET_NOTICES_OF_DEPARTURE));
       dispatch(storeNoticesOfDeparture(response.data));
