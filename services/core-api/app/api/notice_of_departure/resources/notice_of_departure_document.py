@@ -12,9 +12,9 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.response_models import NOD_MODEL
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
-from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref, DocumentType
+from app.api.notice_of_departure.dto import NOD_MODEL
+from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref, DocumentType
 from app.api.services.document_manager_service import DocumentManagerService
 
 
