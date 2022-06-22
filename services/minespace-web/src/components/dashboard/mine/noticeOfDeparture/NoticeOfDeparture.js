@@ -81,7 +81,7 @@ export const NoticeOfDeparture = (props) => {
         ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
         : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
     return props
-      .createNoticeOfDeparture(mine.mine_guid, { ...values, nod_status })
+      .createNoticeOfDeparture({ ...values, nod_status, mine_guid: mine.mine_guid })
       .then(async (response) => {
         const { nod_guid } = response.data;
         await handleAddDocuments(documentArray, nod_guid);
@@ -131,7 +131,6 @@ export const NoticeOfDeparture = (props) => {
 
   const openViewNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
     const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
-      mine.mine_guid,
       selectedNoticeOfDeparture.nod_guid
     );
     props.openModal({
@@ -145,7 +144,6 @@ export const NoticeOfDeparture = (props) => {
 
   const openEditNoticeOfDepartureModal = async (selectedNoticeOfDeparture) => {
     const { data: detailedNod } = await props.fetchDetailedNoticeOfDeparture(
-      mine.mine_guid,
       selectedNoticeOfDeparture.nod_guid
     );
     props.openModal({
