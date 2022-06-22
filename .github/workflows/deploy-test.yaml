@@ -22,8 +22,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - config: dbbackup
-          - config: postgresql
           - config: redis
           - config: metabase
           - config: metabase-postgres
