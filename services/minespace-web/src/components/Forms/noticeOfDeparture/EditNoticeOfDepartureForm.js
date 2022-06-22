@@ -116,14 +116,9 @@ let EditNoticeOfDepartureForm = (props) => {
     <div>
       <NoticeOfDepartureCallout nodStatus={nod_status} />
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
-        <Typography.Text>
-          Please complete the following form to submit your notice of departure and any relevant
-          supporting documents. For more information on the purpose and intent of a notice of
-          departure click here.
-        </Typography.Text>
         <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
-          Enter the following information about your notice of departure.
+          Enter the following information about your Notice of Departure.
         </Typography.Text>
         <Form.Item label="Project Title">
           <Field
@@ -158,7 +153,7 @@ let EditNoticeOfDepartureForm = (props) => {
             id="nod_type"
             name="nod_type"
             label="Based on the information established in your self-assessment form please determine your
-          submissions notice of departure type. If you are unsure what category you fall under,
+          submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us."
             component={RenderRadioButtons}
             validate={[requiredRadioButton]}
@@ -166,12 +161,12 @@ let EditNoticeOfDepartureForm = (props) => {
               {
                 value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
                 label:
-                  "This notice of departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+                  "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
               },
               {
                 value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
                 label:
-                  "This notice of departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
+                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
               },
             ]}
           />
@@ -217,7 +212,7 @@ let EditNoticeOfDepartureForm = (props) => {
 
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
         <Typography.Text className="">
-          Please support your notice of departure by uploading additional supporting application
+          Please support your Notice of Departure by uploading additional supporting application
           documents. These items documents can include:
         </Typography.Text>
         <ul>
