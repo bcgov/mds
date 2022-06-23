@@ -12,9 +12,8 @@ class NoticeOfDepartureResource(Resource, UserMixin):
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.marshal_with(NOD_MODEL, code=200)
     def get(self, nod_guid):
-
-        nod = NoticeOfDeparture.find_one(nod_guid, True)
-
+        nod = NoticeOfDeparture.find_one(
+            nod_guid, include_documents=True, include_primary_contact_only=True)
         return nod
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
