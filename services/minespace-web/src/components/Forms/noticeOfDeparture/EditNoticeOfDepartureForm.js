@@ -260,8 +260,8 @@ let EditNoticeOfDepartureForm = (props) => {
               <Popconfirm
                 title="Are you sure you want to withdraw this Notice of Departure?"
                 placement="top"
-                okText="yes"
-                cancelText="no"
+                okText="Yes"
+                cancelText="No"
                 onConfirm={handleWithdraw}
               >
                 <Button type="primary" className="full-mobile">
