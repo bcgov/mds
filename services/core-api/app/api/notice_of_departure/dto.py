@@ -10,6 +10,15 @@ NOD_DOCUMENT_MODEL = api.inherit(
         'create_timestamp': fields.DateTime
     })
 
+NOD_CONTACT_MODEL = api.model(
+    'NoticeOfDepartureContact', {
+        'first_name': fields.String,
+        'last_name': fields.String,
+        'email': fields.String,
+        'phone_number': fields.String,
+        'is_primary': fields.Boolean
+    })
+
 NOD_MODEL = api.model(
     'NoticeOfDeparture', {
         'nod_guid':
@@ -47,7 +56,9 @@ NOD_MODEL = api.model(
         'nod_type':
         fields.String(enum=NodType, attribute='nod_type.name'),
         'documents':
-        fields.List(fields.Nested(NOD_DOCUMENT_MODEL))
+        fields.List(fields.Nested(NOD_DOCUMENT_MODEL)),
+        'nod_contacts':
+        fields.List(fields.Nested(NOD_CONTACT_MODEL))
     })
 
 NOD_MODEL_LIST = api.model('NoticeOfDepartureList', {
@@ -63,4 +74,5 @@ CREATE_NOD_MODEL = api.model(
         'nod_description': fields.String,
         'nod_type': fields.String,
         'nod_status': fields.String,
+        'nod_contacts': fields.List(fields.Nested(NOD_CONTACT_MODEL)),
     })
