@@ -28,7 +28,7 @@ exports[`NoticesOfDeparture renders properly 1`] = `
       Notices of Departure
     </Title>
     <Paragraph>
-      The below table displays all of the  notices of departure and their associated permits  associated with this mine.
+      The below table displays all of the  Notices of Departure and their associated permits  associated with this mine.
     </Paragraph>
     <NoticeOfDepartureTable
       data={

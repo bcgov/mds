@@ -98,7 +98,7 @@ const AddNoticeOfDepartureForm = (props) => {
     <div>
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Text>
-          Please complete the following form to submit your notice of departure and any relevant
+          Please complete the following form to submit your Notice of Departure and any relevant
           supporting documents. For more information on the purpose and intent of a notice of
           departure{" "}
           <a
@@ -113,7 +113,7 @@ const AddNoticeOfDepartureForm = (props) => {
         <h4 className="nod-modal-section-header">Basic Information</h4>
         <div className="margin-large--bottom">
           <Typography.Text>
-            Enter the following information about your notice of departure.
+            Enter the following information about your Notice of Departure.
           </Typography.Text>
         </div>
         <Form.Item label="Departure Project Title">

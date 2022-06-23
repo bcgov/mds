@@ -30,7 +30,7 @@ export const createNoticeOfDeparture = (payload) => (dispatch) => {
     .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully created notice of departure.",
+        message: "Successfully created Notice of Departure.",
         duration: 10,
       });
       dispatch(success(CREATE_NOTICE_OF_DEPARTURE));
@@ -70,7 +70,7 @@ export const updateNoticeOfDeparture = ({ nodGuid }, payload) => (dispatch) => {
     .patch(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully updated notice of departure.",
+        message: "Successfully updated Notice of Departure.",
         duration: 10,
       });
       dispatch(success(UPDATE_NOTICE_OF_DEPARTURE));

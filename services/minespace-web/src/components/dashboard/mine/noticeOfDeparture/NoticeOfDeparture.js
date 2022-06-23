@@ -170,7 +170,7 @@ export const NoticeOfDeparture = (props) => {
         </Button>
         <Typography.Title level={4}>Notices of Departure</Typography.Title>
         <Typography.Paragraph>
-          The below table displays all of the&nbsp; notices of departure and their associated
+          The below table displays all of the&nbsp; Notices of Departure and their associated
           permits &nbsp;associated with this mine.
         </Typography.Paragraph>
         <NoticeOfDepartureTable
