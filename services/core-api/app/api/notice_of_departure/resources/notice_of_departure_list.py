@@ -58,10 +58,9 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
         page = args.get('page')
         per_page = args.get('per_page') if args.get('per_page') else 10 # default per page is 10
 
-        order_by = str(
-            OrderBy.update_timestamp) if args.get('order_by') == None else args.get('order_by')
-        order = str(Order.desc) if args.get('order') == None else args.get('order')
-
+        order_by = str(OrderBy.update_timestamp) if args.get('order_by') == None else str(
+            args.get('order_by'))
+        order = str(Order.desc) if args.get('order') == None else str(args.get('order'))
         nods = NoticeOfDeparture.find_all(mine_guid, permit_guid, order_by, order, page, per_page)
         return nods
 
