@@ -12,9 +12,9 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.response_models import NOD_MODEL
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
-from app.api.mines.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref, DocumentType
+from app.api.notice_of_departure.dto import NOD_MODEL
+from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.notice_of_departure.models.notice_of_departure_document_xref import NoticeOfDepartureDocumentXref, DocumentType
 from app.api.services.document_manager_service import DocumentManagerService
 
 
@@ -36,13 +36,12 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
     @api.doc(
         description='Associate an uploaded file with a notice of depature.',
         params={
-            'mine_guid': 'guid for the mine with which the notice of departure is associated',
             'nod_guid':
             'GUID for the notice of departure to which the document should be associated'
         })
     @api.marshal_with(NOD_MODEL, code=200)
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
-    def put(self, mine_guid, nod_guid):
+    def put(self, nod_guid):
         parser = CustomReqparser()
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
@@ -65,7 +64,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
         # Register new file upload
         mine_doc = MineDocument(
-            mine_guid=mine_guid,
+            mine_guid=nod.mine_guid,
             document_manager_guid=document_manager_guid,
             document_name=document_name)
 
@@ -84,7 +83,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
 class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
 
-    def delete(self, mine_guid, nod_guid, docman_guid):
+    def delete(self, nod_guid, docman_guid):
         doc = NoticeOfDepartureDocumentXref.find_by_docman_guid(docman_guid)
 
         if doc == None:

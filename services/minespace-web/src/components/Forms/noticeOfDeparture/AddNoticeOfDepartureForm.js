@@ -7,8 +7,8 @@ import {
   maxLength,
   required,
   requiredList,
-  validateSelectOptions,
   requiredRadioButton,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
@@ -98,15 +98,25 @@ const AddNoticeOfDepartureForm = (props) => {
     <div>
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Text>
-          Please complete the following form to submit your notice of departure and any relevant
+          Please complete the following form to submit your Notice of Departure and any relevant
           supporting documents. For more information on the purpose and intent of a notice of
-          departure click here.
+          departure{" "}
+          <a
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Click Here
+          </a>
+          .
         </Typography.Text>
         <h4 className="nod-modal-section-header">Basic Information</h4>
-        <Typography.Text>
-          Enter the following information about your notice of departure.
-        </Typography.Text>
-        <Form.Item label="Project Title">
+        <div className="margin-large--bottom">
+          <Typography.Text>
+            Enter the following information about your Notice of Departure.
+          </Typography.Text>
+        </div>
+        <Form.Item label="Departure Project Title">
           <Field
             id="nodTitle"
             name="nod_title"
@@ -132,7 +142,7 @@ const AddNoticeOfDepartureForm = (props) => {
         <Field
           id="nod_description"
           name="nod_description"
-          label="Description"
+          label="Departure Summary"
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
@@ -144,7 +154,7 @@ const AddNoticeOfDepartureForm = (props) => {
             id="nod_type"
             name="nod_type"
             label="Based on the information established in your self-assessment form please determine your
-          submissions notice of departure type. If you are unsure what category you fall under,
+          submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us."
             component={RenderRadioButtons}
             validate={[requiredRadioButton]}
@@ -152,12 +162,12 @@ const AddNoticeOfDepartureForm = (props) => {
               {
                 value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
                 label:
-                  "This notice of departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+                  "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
               },
               {
                 value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
                 label:
-                  "This notice of departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
+                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
               },
             ]}
           />
@@ -196,7 +206,7 @@ const AddNoticeOfDepartureForm = (props) => {
         </Form.Item>
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
         <Typography.Text>
-          Please support your notice of departure by uploading additional supporting application
+          Please support your Notice of Departure by uploading additional supporting application
           documents. These items documents can include:
         </Typography.Text>
         <ul>

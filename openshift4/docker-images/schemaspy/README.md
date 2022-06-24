@@ -1,1 +1,0 @@
-Referenced from https://github.com/bcgov/SchemaSpy
