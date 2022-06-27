@@ -99,8 +99,8 @@ const AddNoticeOfDepartureForm = (props) => {
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Text>
           Please complete the following form to submit your Notice of Departure and any relevant
-          supporting documents. For more information on the purpose and intent of a notice of
-          departure{" "}
+          supporting documents. For more information on the purpose and intent of a Notice of
+          Departure{" "}
           <a
             href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
             target="_blank"
@@ -167,7 +167,7 @@ const AddNoticeOfDepartureForm = (props) => {
               {
                 value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
                 label:
-                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
+                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
               },
             ]}
           />

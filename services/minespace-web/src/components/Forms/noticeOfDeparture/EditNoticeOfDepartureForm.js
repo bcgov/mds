@@ -166,7 +166,7 @@ let EditNoticeOfDepartureForm = (props) => {
               {
                 value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
                 label:
-                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as notice of departure)",
+                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
               },
             ]}
           />
