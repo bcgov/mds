@@ -19,13 +19,13 @@ spec:
           volumes:
             - name: mds-db-backup-data
               persistentVolumeClaim:
-                claimName: mds-db-backup-data
+                claimName: mds-pg13-backup-data
           containers:
             - name: refresh
               image: image-registry.apps.silver.devops.gov.bc.ca/openshift/postgresql
               args:
                 - /bin/sh
-                - '-c'
+                - "-c"
                 - |-
                   echo "Fetching paths..."
                   YESTERDAY=$(date +%Y-%m-%d -d "yesterday")
