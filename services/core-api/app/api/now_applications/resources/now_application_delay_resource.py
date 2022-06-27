@@ -108,6 +108,9 @@ class NOWApplicationDelayResource(Resource, UserMixin):
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
 
+        if not now_delay:
+            raise NotFound('Notice of Work Application Delay not found')
+
         start_date = data.get("start_date", None)
         end_date = data.get("end_date", None)
         date_override = data.get("date_override", False)
