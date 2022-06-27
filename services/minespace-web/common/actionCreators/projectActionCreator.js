@@ -201,10 +201,12 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
 export const createInformationRequirementsTable = (
   projectGuid,
   file,
+  documentGuid,
   message = "Successfully imported final IRT."
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("document_guid", documentGuid);
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
@@ -227,18 +229,23 @@ export const createInformationRequirementsTable = (
 };
 
 export const updateInformationRequirementsTable = (
-  { projectGuid, informationRequirementsTableGuid },
-  payload,
+  projectGuid,
+  irtGuid,
+  file,
+  documentGuid,
   message = "Successfully update information requirements table"
 ) => (dispatch) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("document_guid", documentGuid);
+  const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl +
-        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
-      payload,
-      createRequestHeader()
+      ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, irtGuid),
+      formData,
+      createRequestHeader(customContentType)
     )
     .then((response) => {
       notification.success({

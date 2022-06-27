@@ -117,11 +117,24 @@ REQUIREMENTS_MODEL = api.model(
         'step': fields.String
     })
 
+IRT_DOCUMENT_MODEL = api.inherit('InformationRequirementsTableDocument', MINE_DOCUMENT_MODEL, {
+    'irt_id': fields.Integer,
+    'information_requirements_table_document_type_code': fields.String
+})
+
 IRT_STATUS_CODE_MODEL = api.model(
     'InformationRequirementsTableStatusCode', {
         'information_requirements_table_status_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean,
+    })
+
+IRT_DOCUMENT_TYPE_MODEL = api.model(
+    'InformationRequirementsTableDocumentType', {
+        'information_requirements_table_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer
     })
 
 IRT_REQUIREMENTS_MODEL = api.model(
@@ -141,6 +154,7 @@ IRT_MODEL = api.model(
         'project_guid': fields.String,
         'status_code': fields.String,
         'requirements': fields.List(fields.Nested(IRT_REQUIREMENTS_MODEL)),
+        'documents': fields.List(fields.Nested(IRT_DOCUMENT_MODEL)),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,

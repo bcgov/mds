@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import customPropTypes from "@/customPropTypes";
 import { Field, change, formValueSelector, reduxForm } from "redux-form";
-import { createInformationRequirementsTable } from "@common/actionCreators/projectActionCreator";
+import {
+  createInformationRequirementsTable,
+  updateInformationRequirementsTable,
+} from "@common/actionCreators/projectActionCreator";
+import { getProject } from "@common/selectors/projectSelectors";
 import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
@@ -11,12 +16,16 @@ import { withRouter } from "react-router-dom";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 import * as FORM from "@/constants/forms";
 import { MODERN_EXCEL } from "@/constants/fileTypes";
+import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
+  updateInformationRequirementsTable: PropTypes.func.isRequired,
   importIsSuccessful: PropTypes.func.isRequired,
+  project: customPropTypes.project.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectGuid: PropTypes.string.isRequired,
 };
 
@@ -56,12 +65,23 @@ export class IRTFileImport extends Component {
               </ul>
             </Typography.Paragraph>
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
+              <DocumentTable
+                documents={this.props.project?.information_requirements_table?.documents}
+                documentCategoryOptionsHash={
+                  this.props.informationRequirementsTableDocumentTypesHash
+                }
+                documentParent="Information Requirements Table"
+                categoryDataIndex="information_requirements_table_document_type_code"
+                uploadDateIndex="upload_date"
+              />
               <Field
                 id="final_irt"
                 name="final_irt"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
                 createInformationRequirementsTable={this.props.createInformationRequirementsTable}
+                updateInformationRequirementsTable={this.props.updateInformationRequirementsTable}
+                irtGuid={this.props.project?.information_requirements_table?.irt_guid}
                 projectGuid={this.props.projectGuid}
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 importIsSuccessful={this.props.importIsSuccessful}
@@ -80,6 +100,7 @@ IRTFileImport.propTypes = propTypes;
 const selector = formValueSelector(FORM.INFORMATION_REQUIREMENTS_TABLE);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
+  project: getProject(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -87,6 +108,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       change,
       createInformationRequirementsTable,
+      updateInformationRequirementsTable,
     },
     dispatch
   );

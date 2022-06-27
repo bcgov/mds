@@ -16,6 +16,7 @@ import Callout from "@/components/common/Callout";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
+import { getInformationRequirementsTableDocumentTypesHash } from "@common/selectors/staticContentSelectors";
 import IRTDownloadTemplate from "../../Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
 import IRTFileImport from "../../Forms/projects/informationRequirementsTable/IRTFileImport";
 import { InformationRequirementsTableForm } from "../../Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
@@ -27,7 +28,8 @@ const propTypes = {
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
+  informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       projectGuid: PropTypes.string,
@@ -76,7 +78,10 @@ const StepForms = (
     title: "Import File",
     content: (
       <IRTFileImport
-        projectGuid={props.project?.project_guid}
+        projectGuid={props.project.project_guid}
+        informationRequirementsTableDocumentTypesHash={
+          props.informationRequirementsTableDocumentTypesHash
+        }
         importIsSuccessful={importIsSuccessful}
       />
     ),
@@ -217,8 +222,8 @@ export class InformationRequirementsTablePage extends Component {
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
   importIsSuccessful = () => {
-    this.handleFetchData();
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
+    this.handleFetchData();
   };
 
   handleFetchData = () => {
@@ -317,6 +322,9 @@ export class InformationRequirementsTablePage extends Component {
 const mapStateToProps = (state) => ({
   project: getProject(state),
   requirements: getRequirements(state),
+  informationRequirementsTableDocumentTypesHash: getInformationRequirementsTableDocumentTypesHash(
+    state
+  ),
 });
 
 const mapDispatchToProps = (dispatch) =>

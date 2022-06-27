@@ -3,10 +3,6 @@ import tempfile
 from flask_restplus import Resource
 from flask import request
 from sheet2dict import Worksheet
-from flask import current_app
-
-from app.api.utils.custom_reqparser import CustomReqparser
-from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
@@ -19,16 +15,19 @@ from app.api.projects.project.models.project import Project
 
 
 class InformationRequirementsTableListResource(Resource, UserMixin):
+    @classmethod
     def convert_excel_boolean_string(self, boolean_string):
         return {'True': True, 'False': False}.get(boolean_string, False)
 
+    @classmethod
     def get_parent_requirement_id(self, requirement):
         while requirement.parent_requirement_id is not None:
             requirement = Requirements.find_by_requirement_id(requirement.parent_requirement_id)
         return requirement
 
     # Only create new requirements when row has filled in required/methods or comments
-    def build_irt_payload_from_excel(self, import_file, project_guid):
+    @classmethod
+    def build_irt_payload_from_excel(cls, import_file):
         temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx')
         temp_file.write(import_file.read())
         excel_dict = Worksheet()
@@ -53,8 +52,10 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             sanitized_information_cell = ' '.join(information_cell_split[1:]).strip().lower()
             information_cell_is_valid = valid_requirement_descriptions.count(
                 sanitized_information_cell) > 0
-            required_cell = self.convert_excel_boolean_string(row.get('Required'))
-            methods_cell = self.convert_excel_boolean_string(row.get('Methods'))
+            required_cell = InformationRequirementsTableListResource.convert_excel_boolean_string(
+                row.get('Required'))
+            methods_cell = InformationRequirementsTableListResource.convert_excel_boolean_string(
+                row.get('Methods'))
             comments_cell = row.get('Comments')
             # Add 2 to offset zero-based "idx" and starting_row_number beginning at table header
             row_number = idx + starting_row_number + 2
@@ -85,7 +86,8 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             active_requirement = []
             if len(temporal_active_requirements) > 1:
                 for temporal_active_requirement in temporal_active_requirements:
-                    parent = self.get_parent_requirement_id(temporal_active_requirement)
+                    parent = InformationRequirementsTableListResource.get_parent_requirement_id(
+                        temporal_active_requirement)
                     if parent.requirement_id == int(information_section[0]):
                         active_requirement.append(temporal_active_requirement)
                     elif not parent and not information_section[1]:
@@ -110,14 +112,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         temp_file.close()
         return sanitized_irt_requirements
 
-    parser = CustomReqparser()
-    parser.add_argument(
-        'file',
-        location='files',
-        type=FileStorage,
-        required=True,
-    )
-
     @api.doc(
         description=
         'Import an Information Requirements Table (IRT) spreadsheet and create a new Information Requirements Table (IRT).',
@@ -126,8 +120,9 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
     @api.marshal_with(IRT_MODEL, code=201)
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, project_guid):
-        data = self.parser.parse_args()
-        import_file = data.get('file')
+        import_file = request.files.get('file')
+        document_guid = request.form.get('document_guid')
+
         try:
             project = Project.find_by_project_guid(project_guid)
             if project is None:
@@ -137,17 +132,12 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if existing_irt and existing_irt.status_code == 'REC':
                 raise BadRequest('Cannot import IRT, this project already has one imported')
 
-            sanitized_irt_requirements = self.build_irt_payload_from_excel(
-                import_file, project_guid)
-            new_information_requirements_table = InformationRequirementsTable._schema().load({
-                'project_guid':
-                project_guid,
-                'status_code':
-                'REC',
-                'requirements':
-                sanitized_irt_requirements
-            })
-            new_information_requirements_table.save()
-            return new_information_requirements_table, 201
+            sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
+                import_file)
+
+            new_irt = InformationRequirementsTable.save_new_irt(project, sanitized_irt_requirements,
+                                                                import_file, document_guid)
+            return new_irt
+
         except BadRequest as err:
             raise err
