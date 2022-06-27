@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { ENVIRONMENT } from "@common/constants/environment";
+import LinkButton from "@/components/common/LinkButton";
 import * as API from "@common/constants/API";
 
 export class IRTDownloadTemplate extends Component {
@@ -21,13 +22,15 @@ export class IRTDownloadTemplate extends Component {
           <Typography.Title level={4}>Download IRT template</Typography.Title>
           <Typography.Paragraph>
             The first step in composing an IRT is to download the official{" "}
-            <a
-              href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/industrial-waste/industrial-waste/mining-smelt-energy/2019_09_24_information_requirements_table.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <LinkButton
+              onClick={() =>
+                this.downloadIRTTemplate(
+                  ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
+                )
+              }
             >
               IRT template
-            </a>
+            </LinkButton>
             . This template is to be used for the final IRT submission, make sure the IRT template
             structure is not modified or the submission might fail.
           </Typography.Paragraph>
@@ -38,7 +41,7 @@ export class IRTDownloadTemplate extends Component {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Join Application Information Requirements for Mines Act and Environmental Management
+              Joint Application Information Requirements for Mines Act and Environmental Management
               Act Permits
             </a>
           </Typography.Paragraph>
