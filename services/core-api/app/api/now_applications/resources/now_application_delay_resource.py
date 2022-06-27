@@ -20,6 +20,7 @@ from app.api.now_applications.response_models import NOW_APPLICATION_DELAY_TYPE,
 
 
 class NOWApplicationDelayTypeResource(Resource, UserMixin):
+
     @api.doc(description='Get a list of all Notice of Work Delay Reasons.', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY_TYPE, code=200, envelope='records')
@@ -28,6 +29,7 @@ class NOWApplicationDelayTypeResource(Resource, UserMixin):
 
 
 class NOWApplicationDelayListResource(Resource, UserMixin):
+
     @api.doc(description='Get a list of all Notice of Work Delay Reasons.', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
@@ -90,17 +92,24 @@ class NOWApplicationDelayResource(Resource, UserMixin):
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
     def put(self, now_application_guid, now_application_delay_guid):
         data = request.json
-        now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
-        if not now_app:
-            raise NotFound('Notice of Work Application not found')
 
-        # change NoW status back to previous state
-        if now_app.now_application is not None:
-            now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
-        now_app.save()
+        ### This block is what was causing the issue when a now progress was being edited and cause the now_application status to revert.
+        ### I am leaving it in in case it is needed down the road but as it stands we could think of a scenario where you could Edit a progress and this was still valid.
+
+        # now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        # if not now_app:
+        #     raise NotFound('Notice of Work Application not found')
+
+        # # change NoW status back to previous state
+        # if now_app.now_application is not None:
+        #     now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
+        # now_app.save()
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
+
+        if not now_delay:
+            raise NotFound('Notice of Work Application Delay not found')
 
         start_date = data.get("start_date", None)
         end_date = data.get("end_date", None)
