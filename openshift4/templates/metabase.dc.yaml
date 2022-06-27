@@ -89,7 +89,7 @@ objects:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
               namespace: ${IMAGE_NAMESPACE}
-      replicas: 3
+      replicas: 2
       revisionHistoryLimit: 5
       selector:
         name: ${NAME}
