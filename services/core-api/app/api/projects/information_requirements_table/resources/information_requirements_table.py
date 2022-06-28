@@ -49,16 +49,19 @@ class InformationRequirementsTableResource(Resource, UserMixin):
             if irt is None:
                 raise NotFound('Information Requirements Table (IRT) not found.')
 
-            sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(import_file)
+            if import_file and document_guid:
+                sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
+                    import_file)
+                irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
+                data = {'status_code': 'REC'}
 
             if irt.status_code != 'APV' and data['status_code'] == 'APV':
-                irt_updated = irt.update()
+                irt_updated = irt.update(data)
                 irt.send_irt_approval_email()
             elif irt.status_code != 'UNR' and data['status_code'] == 'UNR':
-                irt.send_irt_submit_email()    
-                irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
-            else:
-                irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
+                irt.send_irt_submit_email()
+                irt_updated = irt.update(data)
+
             return irt_updated
 
         except BadRequest as err:

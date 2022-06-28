@@ -4,7 +4,7 @@ import customPropTypes from "@/customPropTypes";
 import { Field, change, formValueSelector, reduxForm } from "redux-form";
 import {
   createInformationRequirementsTable,
-  updateInformationRequirementsTable,
+  updateInformationRequirementsTableByFile,
 } from "@common/actionCreators/projectActionCreator";
 import { getProject } from "@common/selectors/projectSelectors";
 import { Form } from "@ant-design/compatible";
@@ -21,7 +21,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 const propTypes = {
   change: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
-  updateInformationRequirementsTable: PropTypes.func.isRequired,
+  updateInformationRequirementsTableByFile: PropTypes.func.isRequired,
   importIsSuccessful: PropTypes.func.isRequired,
   project: customPropTypes.project.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
@@ -80,7 +80,9 @@ export class IRTFileImport extends Component {
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
                 createInformationRequirementsTable={this.props.createInformationRequirementsTable}
-                updateInformationRequirementsTable={this.props.updateInformationRequirementsTable}
+                updateInformationRequirementsTableByFile={
+                  this.props.updateInformationRequirementsTableByFile
+                }
                 irtGuid={this.props.project?.information_requirements_table?.irt_guid}
                 projectGuid={this.props.projectGuid}
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
@@ -108,7 +110,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       change,
       createInformationRequirementsTable,
-      updateInformationRequirementsTable,
+      updateInformationRequirementsTableByFile,
     },
     dispatch
   );

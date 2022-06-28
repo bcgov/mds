@@ -84,52 +84,54 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
-    def update(self, irt_data, import_file, document_guid, add_to_session=True):
-        self.status_code = 'REC'
+    def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
+        if import_file and document_guid:
+            self.status_code = 'REC'
+            for requirement in self.requirements:
+                requirement_to_update = list(
+                    filter(
+                        lambda imported_requirement: imported_requirement['requirement_guid'] ==
+                        requirement['requirement_guid'], irt_data))
 
-        for requirement in self.requirements:
-            requirement_to_update = list(
-                filter(
-                    lambda imported_requirement: imported_requirement['requirement_guid'] ==
-                    requirement['requirement_guid'], irt_data))
+                if len(requirement_to_update) > 0:
+                    requirement.update(requirement_to_update[0]['required'],
+                                       requirement_to_update[0]['methods'],
+                                       requirement_to_update[0]['comment'])
+                else:
+                    requirement.delete()
+                requirement.save()
 
-            if len(requirement_to_update) > 0:
-                requirement.update(requirement_to_update[0]['required'],
-                                   requirement_to_update[0]['methods'],
-                                   requirement_to_update[0]['comment'])
-            else:
-                requirement.delete()
-            requirement.save()
+            for new_requirement in irt_data:
+                requirement_found = list(
+                    filter(
+                        lambda requirement: requirement['requirement_guid'] == new_requirement[
+                            'requirement_guid'], self.requirements))
 
-        for new_requirement in irt_data:
-            requirement_found = list(
-                filter(
-                    lambda requirement: requirement['requirement_guid'] == new_requirement[
-                        'requirement_guid'], self.requirements))
+                if len(requirement_found) == 0:
+                    new_req = IRTRequirementsXref.create(self.irt_guid,
+                                                         new_requirement['requirement_guid'],
+                                                         new_requirement['required'],
+                                                         new_requirement['methods'],
+                                                         new_requirement['comment'])
+                    self.requirements.append(new_req)
+                    self.save()
 
-            if len(requirement_found) == 0:
-                new_req = IRTRequirementsXref.create(self.irt_guid,
-                                                     new_requirement['requirement_guid'],
-                                                     new_requirement['required'],
-                                                     new_requirement['methods'],
-                                                     new_requirement['comment'])
-                self.requirements.append(new_req)
-                self.save()
+            project = Project.find_by_project_guid(self.project_guid)
+            mine_doc = MineDocument(
+                mine_guid=str(project.mine_guid),
+                document_manager_guid=str(document_guid),
+                document_name=import_file.filename)
 
-        project = Project.find_by_project_guid(self.project_guid)
-        mine_doc = MineDocument(
-            mine_guid=str(project.mine_guid),
-            document_manager_guid=str(document_guid),
-            document_name=import_file.filename)
+            irt_template = InformationRequirementsTableDocumentXref(
+                mine_document_guid=str(mine_doc.mine_document_guid),
+                irt_id=self.irt_id,
+                information_requirements_table_document_type_code='TEM')
 
-        irt_template = InformationRequirementsTableDocumentXref(
-            mine_document_guid=str(mine_doc.mine_document_guid),
-            irt_id=self.irt_id,
-            information_requirements_table_document_type_code='TEM')
-
-        irt_template.mine_document = mine_doc
-        if irt_template:
-            self.documents.append(irt_template)
+            irt_template.mine_document = mine_doc
+            if irt_template:
+                self.documents.append(irt_template)
+        else:
+            self.status_code = irt_data['status_code']
 
         if add_to_session:
             self.save()
