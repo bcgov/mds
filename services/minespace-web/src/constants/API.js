@@ -25,7 +25,6 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categorie
 // NODs
 export const NOTICE_OF_DEPARTURE_DOCUMENTS = (mineGuid) =>
   `/mines/${mineGuid}/notices-of-departure/documents`;
-export const NOTICES_OF_DEPARTURE = (mineGuid) => `/mines/${mineGuid}/notices-of-departure`;
 
 // Reports
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;

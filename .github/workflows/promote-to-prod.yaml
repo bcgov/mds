@@ -25,15 +25,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
-          - name: flyway
-          - name: tusd
-          - name: dbbackup
           - name: metabase
           - name: metabase-postgres
           - name: docman
           - name: nris
-          - name: schemaspy
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -66,9 +61,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nginx
-          - name: frontend
-          - name: dbbackup
           - name: metabase
           - name: metabase-postgres
           - name: docman

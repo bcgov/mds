@@ -48,7 +48,6 @@ export const MineNoticeOfDeparture = (props) => {
   const openNoticeOfDepartureModal = async (event, selectedNoticeOfDeparture) => {
     event.preventDefault();
     const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
-      mineGuid,
       selectedNoticeOfDeparture.nod_guid
     );
     const title = "View Notice of Departure";
@@ -57,7 +56,7 @@ export const MineNoticeOfDeparture = (props) => {
         noticeOfDeparture: detailedNoticeOfDeparture.data,
         title,
         clearOnSubmit: true,
-        mine
+        mine,
       },
       width: "50vw",
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,

@@ -1,5 +1,6 @@
 from enum import Enum, auto
 from datetime import datetime
+from re import sub
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -9,21 +10,49 @@ from app.api.constants import *
 from app.api.utils.include.user_info import User
 from sqlalchemy.sql import text, select, table, column, literal_column
 from sqlalchemy.sql.functions import func
+from app.api.services.email_service import EmailService
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 
 
 class NodType(Enum):
-    non_substantial = auto()
-    potentially_substantial = auto()
+    non_substantial = "non_substantial"
+    potentially_substantial = "potentially_substantial"
+
+    def __str__(self):
+        return self.value
 
 
 class NodStatus(Enum):
-    pending_review = auto()
-    in_review = auto(),
-    information_required = auto(),
-    self_determined_non_substantial = auto(),
-    determined_non_substantial = auto(),
-    determined_substantial = auto(),
-    withdrawn = auto()
+    pending_review = "pending_review"
+    in_review = "in_review"
+    information_required = "information_required"
+    self_determined_non_substantial = "self_determined_non_substantial"
+    determined_non_substantial = "determined_non_substantial"
+    determined_substantial = "determined_substantial"
+    withdrawn = "withdrawn"
+
+    def __str__(self):
+        return self.value
+
+
+class OrderBy(Enum):
+    nod_no = 'nod_no'
+    nod_title = 'nod_title'
+    nod_description = 'nod_description'
+    nod_type = 'nod_type'
+    nod_status = 'nod_status'
+    update_timestamp = 'update_timestamp'
+
+    def __str__(self):
+        return self.value
+
+
+class Order(Enum):
+    asc = 'asc'
+    desc = 'desc'
+
+    def __str__(self):
+        return self.value
 
 
 class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
@@ -39,7 +68,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     nod_status = db.Column(db.Enum(NodStatus), nullable=False)
     submission_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    mine = db.relationship('Mine', lazy='select')
+    mine = db.relationship('Mine', lazy='joined')
     permit = db.relationship('Permit', lazy='joined')
     documents = db.relationship(
         'NoticeOfDepartureDocumentXref',
@@ -67,7 +96,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
 
         # generate subquery to get nod no in database layer
-        nod_table = table(NoticeOfDeparture.__tablename__, column('permit_guid', ))
+        nod_table = table(NoticeOfDeparture.__tablename__, column('permit_guid'))
 
         count_query_compiled = select([
             func.count('*')
@@ -89,7 +118,11 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             nod_no=nod_no_subquery)
 
         if add_to_session:
-            new_nod.save(commit=False)
+            new_nod.save()
+
+        if (new_nod.nod_type == NodType.potentially_substantial):
+            new_nod.nod_submission_email()
+
         return new_nod
 
     @classmethod
@@ -101,19 +134,32 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(nod_guid=__guid, deleted_ind=False).first()
 
     @classmethod
-    def find_all_by_mine_guid(cls, __guid):
-        return cls.query.filter_by(
-            mine_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc()).all()
+    def find_all(cls,
+                 mine_guid=None,
+                 permit_guid=None,
+                 order_by=None,
+                 order=None,
+                 page=None,
+                 per_page=None):
 
-    @classmethod
-    def find_all_by_permit_guid(cls, __guid, mine_guid=None):
-        query = cls.query.filter_by(
-            permit_guid=__guid, deleted_ind=False).order_by(cls.create_timestamp.desc())
+        query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
-            query = cls.query.filter_by(
-                permit_guid=__guid, mine_guid=mine_guid,
-                deleted_ind=False).order_by(cls.create_timestamp.desc())
-        return query.all()
+            query = query.filter_by(mine_guid=mine_guid)
+        if permit_guid:
+            query = query.filter_by(permit_guid=permit_guid)
+
+        if (order_by):
+            if (order == 'asc'):
+                query = query.order_by(cls.__dict__[order_by].asc())
+            else:
+                query = query.order_by(cls.__dict__[order_by].desc())
+
+        if (page):
+            result = query.paginate(page, per_page, error_out=False)
+            return dict([('total', result.total), ('records', result.items)])
+
+        result = query.all()
+        return dict([('total', len(result)), ('records', result)])
 
     def save(self, commit=True):
         self.update_user = User().get_user_username()
@@ -125,3 +171,12 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             for document in self.mine_documents:
                 document.deleted_ind = True
         super(NoticeOfDeparture, self).delete()
+
+    def nod_submission_email(self):
+        recipients = [MAJOR_MINES_OFFICE_EMAIL]
+
+        subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
+        body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval " report.</p>'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)

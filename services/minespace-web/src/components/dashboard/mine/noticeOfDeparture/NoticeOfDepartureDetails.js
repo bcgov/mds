@@ -10,6 +10,7 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
+import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 
 const propTypes = {
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
@@ -84,6 +85,7 @@ export const NoticeOfDepartureDetails = (props) => {
   return (
     <div>
       <div className="nod-section-padding">
+        <NoticeOfDepartureCallout nodStatus={nod_status} />
         <h4 className="nod-modal-section-header">Basic Information</h4>
         <div>
           <p className="field-title">Departure Project Title</p>

@@ -15,7 +15,7 @@ import {
   NOTICE_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICES_OF_DEPARTURE,
-  NOTICES_OF_DEPARTURE_DOCUMENT
+  NOTICES_OF_DEPARTURE_DOCUMENT,
 } from "../../../common/constants/API";
 
 const dispatch = jest.fn();
@@ -42,10 +42,7 @@ describe("`createNoticeOfDeparture` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createNoticeOfDeparture(
-      mineGuid,
-      mockPayload
-    )(dispatch).then(() => {
+    return createNoticeOfDeparture(mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -54,7 +51,7 @@ describe("`createNoticeOfDeparture` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createNoticeOfDeparture(mineGuid)(dispatch).catch(() => {
+    return createNoticeOfDeparture()(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -94,10 +91,7 @@ describe("`fetchDetailedNoticeOfDeparture` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchDetailedNoticeOfDeparture(
-      mineGuid,
-      nodGuid
-    )(dispatch).then(() => {
+    return fetchDetailedNoticeOfDeparture(nodGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -106,10 +100,7 @@ describe("`fetchDetailedNoticeOfDeparture` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchDetailedNoticeOfDeparture(
-      mineGuid,
-      nodGuid
-    )(dispatch).then(() => {
+    return fetchDetailedNoticeOfDeparture(nodGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -202,9 +193,9 @@ describe("`removeFileFromDocumentManager` action creator", () => {
     return removeFileFromDocumentManager({
       mine_guid: mineGuid,
       nod_guid: nodGuid,
-      document_manager_guid: docGuid
+      document_manager_guid: docGuid,
     }).then((response) => {
-      expect(response.status).toEqual(200)
+      expect(response.status).toEqual(200);
     });
   });
 });

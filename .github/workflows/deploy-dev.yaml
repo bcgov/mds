@@ -1,12 +1,7 @@
 name: Update dev infra
 
 on:
-  push:
-    branches:
-      - develop
-    paths:
-      - openshift4/templates/**.dc.yaml
-      - .github/workflows/deploy-dev.yaml
+  workflow_dispatch:
 
 env:
   TAG: dev
@@ -20,9 +15,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - config: dbbackup
-          - config: postgresql
-          - config: nginx
           - config: redis
           - config: metabase
           - config: metabase-postgres
@@ -31,7 +23,6 @@ jobs:
           - config: nris
           - config: nris-etl
           - config: fider
-          - config: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
