@@ -64,7 +64,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
     def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/review/intro-project-overview'
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/review/intro-project-overview'
 
         subject = f'IRT Notification for {self.project.mine_name}:{self.project.project_title}'
         body = f'<p>An IRT has been approved for {self.project.mine_name}:(Mine no: {self.project.mine_no})-{self.project.project_title}.</p>'

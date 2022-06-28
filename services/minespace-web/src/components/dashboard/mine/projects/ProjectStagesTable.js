@@ -65,9 +65,19 @@ export class ProjectStagesTable extends Component {
         if (record.project_stage === "IRT") {
           link = (
             <Link
-              to={routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                record.stage?.project_guid
-              )}
+              to={
+                record.stage_status === "APV"
+                  ? {
+                      pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                        record.stage?.project_guid,
+                        record.stage?.payload?.irt_guid
+                      )}`,
+                      state: { current: 2 },
+                    }
+                  : routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                      record.stage?.project_guid
+                    )
+              }
             >
               <Button className="full-mobile margin-small" type="secondary">
                 {record.stage_status ? "View" : "Start"}
