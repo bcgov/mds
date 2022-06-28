@@ -59,6 +59,7 @@ class Config(object):
                                               'https://minespace.gov.bc.ca')
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
+    MAJOR_MINES_OFFICE_EMAIL = os.environ.get('MAJOR_MINES_OFFICE_EMAIL', 'PermRecl@gov.bc.ca')
     EMA_AUTH_LINK = os.environ.get(
         'EMA_AUTH_LINK',
         'https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization'

@@ -1,5 +1,6 @@
 from enum import Enum, auto
 from datetime import datetime
+from re import sub
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -9,7 +10,8 @@ from app.api.constants import *
 from app.api.utils.include.user_info import User
 from sqlalchemy.sql import text, select, table, column, literal_column
 from sqlalchemy.sql.functions import func
-from sqlalchemy import desc, asc
+from app.api.services.email_service import EmailService
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 
 
 class NodType(Enum):
@@ -66,7 +68,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     nod_status = db.Column(db.Enum(NodStatus), nullable=False)
     submission_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    mine = db.relationship('Mine', lazy='select')
+    mine = db.relationship('Mine', lazy='joined')
     permit = db.relationship('Permit', lazy='joined')
     documents = db.relationship(
         'NoticeOfDepartureDocumentXref',
@@ -116,7 +118,11 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             nod_no=nod_no_subquery)
 
         if add_to_session:
-            new_nod.save(commit=False)
+            new_nod.save()
+
+        if (new_nod.nod_type == NodType.potentially_substantial):
+            new_nod.nod_submission_email()
+
         return new_nod
 
     @classmethod
@@ -165,3 +171,12 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             for document in self.mine_documents:
                 document.deleted_ind = True
         super(NoticeOfDeparture, self).delete()
+
+    def nod_submission_email(self):
+        recipients = [MAJOR_MINES_OFFICE_EMAIL]
+
+        subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
+        body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval " report.</p>'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
