@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { change, Field, reduxForm } from "redux-form";
+import { change, Field, FieldArray, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
@@ -20,6 +20,7 @@ import { EMPTY_FIELD, NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
+import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -145,6 +146,7 @@ let EditNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <FieldArray name="contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>

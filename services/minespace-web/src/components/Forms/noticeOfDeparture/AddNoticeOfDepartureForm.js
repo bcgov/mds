@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { change, Field, reduxForm } from "redux-form";
+import { change, Field, reduxForm, FieldArray, getFormValues } from "redux-form";
+import { connect } from "react-redux";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import {
@@ -9,9 +10,12 @@ import {
   requiredList,
   requiredRadioButton,
   validateSelectOptions,
+  phoneNumber,
+  email,
 } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { resetForm, normalizePhone } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { compose } from "redux";
 import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
@@ -26,10 +30,78 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export const renderContacts = (props) => {
+  const { fields, formValues } = props;
+  if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
+    fields.pop();
+  } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
+    fields.push({});
+  }
+  return (
+    <div className="margin-large--bottom">
+      {fields.length > 0 && (
+        <Typography.Title level={5} className="nod-modal-section-header">
+          Primary Contact
+        </Typography.Title>
+      )}
+      {fields.map((contact, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Row gutter={16} key={index}>
+          <Col span={12}>
+            <Form.Item label="First Name">
+              <Field
+                id={`${contact}.first_name`}
+                name={`${contact}.first_name`}
+                placeholder="First Name"
+                component={renderConfig.FIELD}
+                validate={[required, maxLength(200)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Last Name">
+              <Field
+                id={`${contact}.last_name`}
+                name={`${contact}.last_name`}
+                placeholder="Last Name"
+                component={renderConfig.FIELD}
+                validate={[required, maxLength(200)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Field
+              name={`${contact}.phone_number`}
+              id={`${contact}.phone_number`}
+              label="Phone Number"
+              placeholder="XXX-XXX-XXXX"
+              component={renderConfig.FIELD}
+              validate={[phoneNumber, maxLength(12), required]}
+              normalize={normalizePhone}
+            />
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Email">
+              <Field
+                id={`${contact}.email`}
+                name={`${contact}.email`}
+                component={renderConfig.FIELD}
+                placeholder="example@example.com"
+                validate={[email, required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      ))}
+    </div>
+  );
 };
 
 const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
+  const { permits, onSubmit, closeModal, handleSubmit, mineGuid, formValues } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -146,6 +218,7 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <FieldArray name="contacts" component={renderContacts} props={{ formValues }} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -263,10 +336,16 @@ const AddNoticeOfDepartureForm = (props) => {
 
 AddNoticeOfDepartureForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_NOTICE_OF_DEPARTURE,
-  onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
-  destroyOnUnmount: true,
-  forceUnregisterOnUnmount: true,
-  touchOnBlur: true,
-})(AddNoticeOfDepartureForm);
+export default compose(
+  connect((state) => ({
+    formValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
+  })),
+  reduxForm({
+    form: FORM.ADD_NOTICE_OF_DEPARTURE,
+    onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
+    initialValues: { contacts: [{}] },
+    touchOnBlur: false,
+    forceUnregisterOnUnmount: true,
+    enableReinitialize: true,
+  })
+)(AddNoticeOfDepartureForm);
