@@ -1,3 +1,5 @@
+#information_requirements_table_list.py
+
 import tempfile
 
 from flask_restplus import Resource
@@ -125,6 +127,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
 
         try:
             project = Project.find_by_project_guid(project_guid)
+            new_irt = None
             if project is None:
                 raise BadRequest('Cannot import IRT, the project supplied cannot be found')
 
@@ -132,12 +135,19 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if existing_irt and existing_irt.status_code == 'REC':
                 raise BadRequest('Cannot import IRT, this project already has one imported')
 
-            sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
-                import_file)
+            if import_file and document_guid:
+                sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
+                    import_file)
 
-            new_irt = InformationRequirementsTable.save_new_irt(project, sanitized_irt_requirements,
-                                                                import_file, document_guid)
-            return new_irt
+                new_irt = InformationRequirementsTable.save_new_irt(project,
+                                                                    sanitized_irt_requirements,
+                                                                    import_file, document_guid)
+            else:
+                raise BadRequest(
+                    'Cannot create a new IRT, requirements must be imported using the IRT template file.'
+                )
+
+            return new_irt, 201
 
         except BadRequest as err:
             raise err
