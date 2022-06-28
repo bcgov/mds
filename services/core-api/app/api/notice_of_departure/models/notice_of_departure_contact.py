@@ -18,7 +18,7 @@ class NoticeOfDepartureContact(SoftDeleteMixin, AuditMixin, Base):
     is_primary = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
-        return f'{self.__class__.__name__} {self.notice_of_departure_contact_guid}'
+        return f'{self.__class__.__name__} {self.nod_contact_guid}'
 
     @classmethod
     def create(cls, nod_guid, first_name, last_name, email, phone_number, is_primary):
