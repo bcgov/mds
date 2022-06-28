@@ -27,7 +27,7 @@ const propTypes = {
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       projectGuid: PropTypes.string,
@@ -76,7 +76,7 @@ const StepForms = (
     title: "Import File",
     content: (
       <IRTFileImport
-        projectGuid={props.project.project_guid}
+        projectGuid={props.project?.project_guid}
         importIsSuccessful={importIsSuccessful}
       />
     ),
@@ -96,10 +96,10 @@ const StepForms = (
         style={{ display: "inline", float: "right" }}
         type="tertiary"
         onClick={() => {
-          next();
           props.history.push({
             pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              props.project?.project_guid
+              props.project?.project_guid,
+              props.project?.information_requirements_table?.irt_guid
             )}`,
             state: { current: 2 },
           });
@@ -128,9 +128,9 @@ const StepForms = (
 
         <InformationRequirementsTableForm
           project={props.project}
-          informationRequirementsTable={props.project.information_requirements_table}
+          informationRequirementsTable={props.project?.information_requirements_table}
           requirements={props.requirements}
-          tab={props.match.params.tab}
+          tab={props.match?.params?.tab}
           isEditMode={state.isEditMode}
           handleTabChange={handleTabChange}
         />
@@ -143,17 +143,22 @@ const StepForms = (
         type="tertiary"
         className="full-mobile"
         onClick={() => {
-          prev();
-          props.history.push(
-            routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project.project_guid)
-          );
+          props.history.push({
+            pathname: `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              props.project.project_guid
+            )}`,
+            state: { current: 1 },
+          });
         }}
-        disabled={state.submitting}
+        disabled={props.project?.information_requirements_table?.status_code === "APV"}
       >
         Back
       </Button>,
       <Link
-        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(props.project?.project_guid)}
+        to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          props.project?.project_guid,
+          props.project?.information_requirements_table?.irt_guid
+        )}
       >
         <Button
           type="primary"
@@ -181,7 +186,14 @@ export class InformationRequirementsTablePage extends Component {
   };
 
   componentDidMount() {
-    this.handleFetchData();
+    const { history } = this.props;
+    this.handleFetchData().then(() => {
+      this.setState((prevState) => ({
+        current: this.props.location?.state?.current || prevState.current,
+      }));
+      // eslint-disable-next-line no-unused-expressions
+      history?.replace();
+    });
   }
 
   componentWillUnmount() {
@@ -189,12 +201,15 @@ export class InformationRequirementsTablePage extends Component {
   }
 
   handleTabChange = (activeTab) => {
-    const url = routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-      this.props.match.params?.projectGuid,
-      activeTab
-    );
-    this.setState({ activeTab });
-    this.props.history.push(url);
+    const { projectGuid, irtGuid } = this.props.match.params;
+    this.props.history.push({
+      pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+        projectGuid,
+        irtGuid,
+        activeTab
+      )}`,
+      state: { current: 2 },
+    });
   };
 
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
@@ -202,6 +217,7 @@ export class InformationRequirementsTablePage extends Component {
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
   importIsSuccessful = () => {
+    this.handleFetchData();
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
   };
 
@@ -218,6 +234,7 @@ export class InformationRequirementsTablePage extends Component {
     const projectGuid = this.props.project.project_guid;
     const informationRequirementsTableGuid = this.props.project.information_requirements_table
       .irt_guid;
+    this.setState({ submitting: true });
     return this.props
       .updateInformationRequirementsTable(
         {
@@ -229,8 +246,6 @@ export class InformationRequirementsTablePage extends Component {
       )
       .then(() => {
         this.handleFetchData();
-      })
-      .then(() => {
         this.setState({ submitting: false });
       });
   };
