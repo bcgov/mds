@@ -2,26 +2,26 @@ from flask_restplus import Resource, reqparse, inputs
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, EDIT_DO, MINESPACE_PROPONENT)
-from app.api.mines.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodStatus, NodType
-from app.api.mines.response_models import NOD_MODEL, CREATE_NOD_MODEL
+from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodStatus, NodType
+from app.api.notice_of_departure.dto import NOD_MODEL, CREATE_NOD_MODEL
 
 
 class NoticeOfDepartureResource(Resource, UserMixin):
 
-    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Nod guid.'})
+    @api.doc(params={'nod_guid': 'Nod guid.'})
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.marshal_with(NOD_MODEL, code=200)
-    def get(self, mine_guid, nod_guid):
+    def get(self, nod_guid):
 
         nod = NoticeOfDeparture.find_one(nod_guid, True)
 
         return nod
 
-    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Nod guid.'})
+    @api.doc(params={'nod_guid': 'Nod guid.'})
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.expect(CREATE_NOD_MODEL)
     @api.marshal_with(NOD_MODEL, code=200)
-    def patch(self, mine_guid, nod_guid):
+    def patch(self, nod_guid):
 
         nod = NoticeOfDeparture.find_one(nod_guid, True)
         parser = reqparse.RequestParser()
@@ -42,30 +42,35 @@ class NoticeOfDepartureResource(Resource, UserMixin):
             store_missing=False)
         parser.add_argument(
             'nod_type',
-            type=str,
+            type=NodType,
             help='Notice of Departure type',
             location='json',
-            required=True,
+            choices=list(NodType),
             store_missing=False)
         parser.add_argument(
             'nod_status',
-            type=str,
-            help='Notice of Departure Status',
+            type=NodStatus,
+            help='Notice of Departure status',
             location='json',
+            choices=list(NodStatus),
             store_missing=False)
         data = parser.parse_args()
 
-        nod.nod_title = data.get('nod_title')
-        nod.nod_description = data.get('nod_description')
-        nod.nod_status = NodStatus[data.get('nod_status')]
-        nod.nod_type = NodType[data.get('nod_type')]
+        if (data.get('nod_title')):
+            nod.nod_title = data.get('nod_title')
+        if (data.get('nod_description')):
+            nod.nod_description = data.get('nod_description')
+        if (data.get('nod_status')):
+            nod.nod_status = data.get('nod_status')
+        if (data.get('nod_type')):
+            nod.nod_type = data.get('nod_type')
 
         nod.save()
 
         return nod
 
-    @api.doc(params={'mine_guid': 'Mine guid.', 'nod_guid': 'Nod guid.'})
+    @api.doc(params={'nod_guid': 'Nod guid.'})
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
-    def delete(self, mine_guid, nod_guid):
+    def delete(self, nod_guid):
         nod = NoticeOfDeparture.find_one(nod_guid, True)
         nod.delete(nod_guid)

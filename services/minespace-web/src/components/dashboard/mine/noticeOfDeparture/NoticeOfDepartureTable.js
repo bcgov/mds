@@ -2,16 +2,9 @@ import React from "react";
 import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { NOTICE_OF_DEPARTURE_TYPE, NOTICE_OF_DEPARTURE_STATUS } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  EMPTY_FIELD,
-  EDITABLE_NOTICE_OF_DEPARTURE_STATUS,
-} from "@/constants/strings";
-
-import {
-  NOTICE_OF_DEPARTURE_TYPE,
-  NOTICE_OF_DEPARTURE_STATUS
-} from "@common/constants/strings"; 
+import { EMPTY_FIELD, EDITABLE_NOTICE_OF_DEPARTURE_STATUS } from "@/constants/strings";
 
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";

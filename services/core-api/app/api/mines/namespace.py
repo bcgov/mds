@@ -17,9 +17,6 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import PermitAmendmentVCResource
-from app.api.mines.notice_of_departure.resources.notice_of_departure_list import NoticeOfDepartureListResource
-from app.api.mines.notice_of_departure.resources.notice_of_departure import NoticeOfDepartureResource
-from app.api.mines.notice_of_departure.resources.notice_of_departure_document import MineNoticeOfDepartureDocumentUploadResource, MineNoticeOfDepartureNewDocumentUploadResource, MineNoticeOfDepartureDocumentResource
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.explosives_permit.resources.explosives_permit import ExplosivesPermitResource
 from app.api.mines.explosives_permit.resources.explosives_permit_list import ExplosivesPermitListResource
@@ -51,6 +48,7 @@ from app.api.mines.permits.permit_conditions.resources.permit_condition_type_res
 from app.api.mines.work_information.resources.work_information_list import MineWorkInformationListResource
 from app.api.mines.work_information.resources.work_information import MineWorkInformationResource
 from app.api.mines.external_authorizations.resources.epic_resource import EPICResource
+from app.api.notice_of_departure.resources.notice_of_departure_document import MineNoticeOfDepartureNewDocumentUploadResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -164,20 +162,6 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
-api.add_resource(NoticeOfDepartureListResource, '/<string:mine_guid>/notices-of-departure')
-
-api.add_resource(NoticeOfDepartureResource,
-                 '/<string:mine_guid>/notices-of-departure/<string:nod_guid>')
-
-api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource,
-                 '/<string:mine_guid>/notices-of-departure/documents')
-api.add_resource(MineNoticeOfDepartureDocumentUploadResource,
-                 '/<string:mine_guid>/notices-of-departure/<string:nod_guid>/documents')
-
-api.add_resource(
-    MineNoticeOfDepartureDocumentResource,
-    '/<string:mine_guid>/notices-of-departure/<string:nod_guid>/documents/<string:docman_guid>')
-
 api.add_resource(ExplosivesPermitResource,
                  '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>')
 api.add_resource(ExplosivesPermitListResource, '/<string:mine_guid>/explosives-permits')
@@ -197,3 +181,5 @@ api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
 api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')
 
 api.add_resource(EPICResource, '/<string:mine_guid>/epic')
+
+api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_guid>/notices-of-departure/documents')

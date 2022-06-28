@@ -131,7 +131,7 @@ let ViewNoticeOfDepartureModal = (props) => {
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
 
-    await props.fetchDetailedNoticeOfDeparture(mine.mine_guid, nod_guid);
+    await props.fetchDetailedNoticeOfDeparture(nod_guid);
   };
 
   const updateNoticeOfDepartureSubmit = async (values) => {

@@ -71,8 +71,22 @@ export class ProjectPage extends Component {
 
   handleTabChange = (activeTab) => {
     this.setState({ activeTab });
-    const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
-    this.props.history.push(url);
+    if (activeTab === "overview") {
+      const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
+      this.props.history.push(url);
+    } else if (activeTab === "intro-project-overview") {
+      const url = router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+        this.props.match.params?.projectGuid,
+        this.props.project?.information_requirements_table?.irt_guid,
+        activeTab
+      );
+      this.props.history.push({ pathname: url, state: { current: 2 } });
+    } else if (activeTab === "new") {
+      const url = router.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+        this.props.match.params?.projectGuid
+      );
+      this.props.history.push(url);
+    }
   };
 
   render() {
@@ -102,11 +116,16 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab />
                 </Tabs.TabPane>
-                {!IN_PROD() && (
-                  <Tabs.TabPane tab="IRT" key="information-requirements-table/new">
-                    <InformationRequirementsTablePage match={this.props.match} />
-                  </Tabs.TabPane>
-                )}
+                {!IN_PROD() &&
+                  (this.props.project?.information_requirements_table?.irt_guid ? (
+                    <Tabs.TabPane tab="IRT" key="intro-project-overview">
+                      <InformationRequirementsTablePage />
+                    </Tabs.TabPane>
+                  ) : (
+                    <Tabs.TabPane tab="IRT" key="new">
+                      <InformationRequirementsTablePage />
+                    </Tabs.TabPane>
+                  ))}
               </Tabs>
             </Col>
           </Row>

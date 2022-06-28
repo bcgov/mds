@@ -28,6 +28,7 @@ from app.api.verify.namespace import api as verify_api
 from app.api.orgbook.namespace import api as orgbook_api
 from app.api.EMLI_contacts.namespace import api as EMLI_contacts_api
 from app.api.projects.namespace import api as projects_api
+from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -35,6 +36,7 @@ from app.config import Config
 from app.extensions import db, jwt, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -101,25 +103,29 @@ def register_routes(app):
     root_api_namespace.add_namespace(orgbook_api)
     root_api_namespace.add_namespace(EMLI_contacts_api)
     root_api_namespace.add_namespace(projects_api)
-
+    root_api_namespace.add_namespace(notice_of_departure_api)
 
     @root_api_namespace.route('/version/')
     class VersionCheck(Resource):
+
         def get(self):
             return {'commit': os.environ.get('COMMIT_ID', 'local')}
 
     # General Service status
     @root_api_namespace.route('/health')
     class Healthcheck(Resource):
+
         def get_health(self):
             service = {
-                'database': False,
-                'cache' : False,
-                'nris' : False,
-                'docgen': False,
-                'docman': False
+                'database': True,
+                'cache': True,
+                'nris': True,
+                'docgen': True,
+                'docman': True
             }
             status = 200
+            if (Config.ENVIRONMENT_NAME == 'local'):
+                return service, status
 
             try:
                 service['database'] = get_database_status()
@@ -161,30 +167,28 @@ def register_routes(app):
         def get(self):
             return self.get_health()
 
-    # Liveness Endpoint to make sure that python server is ready to accept connections and container / server is running. 
+    # Liveness Endpoint to make sure that python server is ready to accept connections and container / server is running.
     @root_api_namespace.route('/health/live')
     class Livenesscheck(Resource):
+
         def get(self):
             return {'live': True}
 
-    # Readiness Endpoint to make sure that the container is ready to process the request it receives. Dependencies must be available 
+    # Readiness Endpoint to make sure that the container is ready to process the request it receives. Dependencies must be available
     @root_api_namespace.route('/health/ready')
     class Readinesscheck(Resource):
+
         def get(self):
             try:
                 get_database_status()
                 get_cache_status()
-                return {
-                    'ready': True
-                }
+                return {'ready': True}
             except Exception as error:
                 app.logger.error("Readiness Check Failed " + str(error))
-                return {
-                    'ready': False
-                }, 503
-    
+                return {'ready': False}, 503
+
     def get_database_status():
-        return db.session.query("up").from_statement(text("SELECT 1 as up")).all()[0][0] == 1;
+        return db.session.query("up").from_statement(text("SELECT 1 as up")).all()[0][0] == 1
 
     def get_cache_status():
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
