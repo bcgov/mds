@@ -10,14 +10,17 @@ NOD_DOCUMENT_MODEL = api.inherit(
         'create_timestamp': fields.DateTime
     })
 
-NOD_CONTACT_MODEL = api.model(
-    'NoticeOfDepartureContact', {
+NOD_CONTACT_CREATE_MODEL = api.model(
+    'NoticeOfDepartureCreateContact', {
         'first_name': fields.String,
         'last_name': fields.String,
         'email': fields.String,
         'phone_number': fields.String,
         'is_primary': fields.Boolean
     })
+
+NOD_CONTACT_MODEL = api.inherit('NoticeOfDepartureContact', NOD_CONTACT_CREATE_MODEL,
+                                {'nod_contact_guid': fields.String})
 
 NOD_MODEL = api.model(
     'NoticeOfDeparture', {
@@ -68,28 +71,11 @@ NOD_MODEL_LIST = api.model('NoticeOfDepartureList', {
 
 CREATE_NOD_MODEL = api.model(
     'NoticeOfDeparture', {
-        'mine_guid':
-        fields.String,
-        'permit_guid':
-        fields.String,
-        'nod_title':
-        fields.String,
-        'nod_description':
-        fields.String,
-        'nod_type':
-        fields.String,
-        'nod_status':
-        fields.String,
-        'nod_contacts':
-        fields.List(
-            fields.Nested(
-                api.model(
-                    'NoticeOfDepartureContact', {
-                        'nod_contact_guid': fields.String,
-                        'first_name': fields.String,
-                        'last_name': fields.String,
-                        'email': fields.String,
-                        'phone_number': fields.String,
-                        'is_primary': fields.Boolean
-                    }))),
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'nod_title': fields.String,
+        'nod_description': fields.String,
+        'nod_type': fields.String,
+        'nod_status': fields.String,
+        'nod_contacts': fields.List(fields.Nested(NOD_CONTACT_CREATE_MODEL)),
     })
