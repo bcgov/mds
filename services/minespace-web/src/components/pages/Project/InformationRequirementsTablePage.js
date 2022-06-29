@@ -191,13 +191,10 @@ export class InformationRequirementsTablePage extends Component {
   };
 
   componentDidMount() {
-    const { history } = this.props;
     this.handleFetchData().then(() => {
       this.setState((prevState) => ({
         current: this.props.location?.state?.current || prevState.current,
       }));
-      // eslint-disable-next-line no-unused-expressions
-      history?.replace();
     });
   }
 
