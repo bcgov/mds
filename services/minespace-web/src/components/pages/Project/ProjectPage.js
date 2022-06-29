@@ -117,7 +117,7 @@ export class ProjectPage extends Component {
                   <ProjectOverviewTab />
                 </Tabs.TabPane>
                 {!IN_PROD() &&
-                  (this.props.project?.information_requirements_table?.irt_guid ? (
+                  (this.props.project?.information_requirements_table?.status_code === "APV" ? (
                     <Tabs.TabPane tab="IRT" key="intro-project-overview">
                       <InformationRequirementsTablePage />
                     </Tabs.TabPane>

@@ -8,6 +8,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 from app.api.projects.response_models import IRT_MODEL
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 
 
 class InformationRequirementsTableResource(Resource, UserMixin):
@@ -39,20 +40,32 @@ class InformationRequirementsTableResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     @api.marshal_with(IRT_MODEL, code=200)
     def put(self, project_guid, irt_guid):
+        import_file = request.files.get('file')
+        document_guid = request.form.get('document_guid')
         data = request.json
-        irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
 
-        if irt is None:
-            raise NotFound('Information Requirements Table (IRT) not found.')
+        try:
+            irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
+            if irt is None:
+                raise NotFound('Information Requirements Table (IRT) not found.')
 
-        if irt.status_code != 'UNR' and data['status_code'] == 'UNR':
-            irt.send_irt_submit_email()
-        if irt.status_code != 'APV' and data['status_code'] == 'APV':
-            irt.send_irt_approval_email()
+            if import_file and document_guid:
+                sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
+                    import_file)
+                irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
+                data = {'status_code': 'REC'}
 
-        irt_updated = irt.update(data)
+            if irt.status_code != 'APV' and data['status_code'] == 'APV':
+                irt_updated = irt.update(data)
+                irt.send_irt_approval_email()
+            elif irt.status_code != 'UNR' and data['status_code'] == 'UNR':
+                irt.send_irt_submit_email()
+                irt_updated = irt.update(data)
 
-        return irt_updated
+            return irt_updated
+
+        except BadRequest as err:
+            raise err
 
     @api.doc(
         description='Delete a Information Requirements Table (IRT).',

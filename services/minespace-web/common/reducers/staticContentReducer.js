@@ -24,6 +24,7 @@ const initialState = {
   projectSummaryStatusCodes: [],
   projectSummaryDocumentTypes: [],
   informationRequirementsTableStatusCodes: [],
+  informationRequirementsTableDocumentTypes: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
@@ -102,6 +103,8 @@ export const getProjectSummaryDocumentTypes = (state) =>
   state[STATIC_CONTENT].projectSummaryDocumentTypes;
 export const getInformationRequirementsTableStatusCodes = (state) =>
   state[STATIC_CONTENT].informationRequirementsTableStatusCodes;
+export const getInformationRequirementsTableDocumentTypes = (state) =>
+  state[STATIC_CONTENT].informationRequirementsTableDocumentTypes;
 export const getMineReportDefinitionOptions = (state) =>
   state[STATIC_CONTENT].mineReportDefinitionOptions;
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;

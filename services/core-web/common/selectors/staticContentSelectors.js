@@ -56,6 +56,7 @@ export const {
   getProjectSummaryAuthorizationTypes,
   getProjectSummaryPermitTypes,
   getInformationRequirementsTableStatusCodes,
+  getInformationRequirementsTableDocumentTypes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -815,6 +816,17 @@ export const getDropdownProjectSummaryDocumentTypes = createSelectorWrapper(
 
 export const getProjectSummaryDocumentTypesHash = createSelector(
   [getDropdownProjectSummaryDocumentTypes],
+  createLabelHash
+);
+
+export const getDropdownInformationRequirementsTableDocumentTypes = createSelectorWrapper(
+  getInformationRequirementsTableDocumentTypes,
+  createDropDownList,
+  ["description", "information_requirements_table_document_type_code", "active_ind"]
+);
+
+export const getInformationRequirementsTableDocumentTypesHash = createSelector(
+  [getDropdownInformationRequirementsTableDocumentTypes],
   createLabelHash
 );
 

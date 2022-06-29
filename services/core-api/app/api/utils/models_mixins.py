@@ -320,3 +320,9 @@ class SoftDeleteMixin(object):
 
         if commit == True:
             self.save()
+
+    def undelete(self, commit=True):
+        self.deleted_ind = False
+
+        if commit == True:
+            self.save()

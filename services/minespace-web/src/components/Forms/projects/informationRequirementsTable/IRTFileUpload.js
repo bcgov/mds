@@ -9,7 +9,9 @@ const propTypes = {
   onRemoveFile: PropTypes.func.isRequired,
   importIsSuccessful: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
+  updateInformationRequirementsTableByFile: PropTypes.func.isRequired,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
+  irtGuid: PropTypes.string.isRequired,
   projectGuid: PropTypes.string.isRequired,
 };
 
@@ -28,8 +30,12 @@ export const IRTFileUpload = (props) => (
     allowMultiple
     maxFiles={1}
     afterSuccess={{
-      action: props.createInformationRequirementsTable,
-      actionGuid: props.projectGuid,
+      action: [
+        props.createInformationRequirementsTable,
+        props.updateInformationRequirementsTableByFile,
+      ],
+      projectGuid: props.projectGuid,
+      irtGuid: props.irtGuid,
     }}
   />
 );

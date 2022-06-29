@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate, formatDateTime, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -43,9 +43,25 @@ export const DocumentTable = (props) => {
     {
       title: "Upload Date",
       dataIndex: props.uploadDateIndex,
-      render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Upload Date">
+          {props.documentParent === "Information Requirements Table"
+            ? formatDateTime(text)
+            : formatDate(text) || Strings.EMPTY_FIELD}
+        </div>
+      ),
     },
   ];
+
+  const userColumn = {
+    title: "User",
+    dataIndex: "create_user",
+    render: (text) => (text ? <div title="User">{text}</div> : null),
+  };
+
+  if (props.documentParent === "Information Requirements Table") {
+    columns.push(userColumn);
+  }
 
   return (
     <div>
