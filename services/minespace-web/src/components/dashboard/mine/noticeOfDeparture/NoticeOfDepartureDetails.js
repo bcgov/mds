@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Divider, Row } from "antd";
+import { Col, Divider, Row, Typography } from "antd";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   EMPTY_FIELD,
@@ -68,6 +68,7 @@ export const NoticeOfDepartureDetails = (props) => {
     nod_status,
     documents,
     submission_timestamp,
+    nod_contacts,
   } = noticeOfDeparture;
 
   const checklist =
@@ -105,6 +106,39 @@ export const NoticeOfDepartureDetails = (props) => {
           <p className="field-title">Departure Summary</p>
           <p className="content--light-grey padding-sm">{nod_description || EMPTY_FIELD}</p>
         </div>
+        {nod_contacts.length > 0 && (
+          <div className="margin-large--bottom">
+            <Typography.Title level={5} className="nod-modal-section-header">
+              Primary Contact
+            </Typography.Title>
+            {nod_contacts.map((contact) => (
+              <Row gutter={16} key={contact.nod_contact_guid}>
+                <Col span={12}>
+                  <p className="field-title">First Name</p>
+                  <p className="content--light-grey padding-sm">
+                    {contact.first_name || EMPTY_FIELD}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p className="field-title">Last Name</p>
+                  <p className="content--light-grey padding-sm">
+                    {contact.last_name || EMPTY_FIELD}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p className="field-title">Phone</p>
+                  <p className="content--light-grey padding-sm">
+                    {contact.phone_number || EMPTY_FIELD}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p className="field-title">Email</p>
+                  <p className="content--light-grey padding-sm">{contact.email || EMPTY_FIELD}</p>
+                </Col>
+              </Row>
+            ))}
+          </div>
+        )}
         <Divider className="nod-divider" />
         <Row justify="space-between" gutter={24}>
           <Col span={12}>

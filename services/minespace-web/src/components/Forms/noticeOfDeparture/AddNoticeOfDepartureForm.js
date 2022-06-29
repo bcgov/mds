@@ -14,9 +14,9 @@ import {
   email,
 } from "@common/utils/Validate";
 import { resetForm, normalizePhone } from "@common/utils/helpers";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE, NOD_TYPE_FIELD_VALUE } from "@common/constants/strings";
 import { compose } from "redux";
-import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
+import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -38,7 +38,7 @@ export const renderContacts = (props) => {
   if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
     fields.pop();
   } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.push({});
+    fields.push({ is_primary: true });
   }
   return (
     <div className="margin-large--bottom">
@@ -218,7 +218,7 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <FieldArray name="contacts" component={renderContacts} props={{ formValues }} />
+        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -343,7 +343,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_NOTICE_OF_DEPARTURE,
     onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
-    initialValues: { contacts: [{}] },
+    initialValues: { nod_contacts: [{ is_primary: true }] },
     touchOnBlur: false,
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
