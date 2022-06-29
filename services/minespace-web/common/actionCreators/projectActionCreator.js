@@ -202,7 +202,7 @@ export const createInformationRequirementsTable = (
   projectGuid,
   file,
   documentGuid,
-  message = "Successfully imported final IRT."
+  message = "Successfully created information requirements table"
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -233,7 +233,7 @@ export const updateInformationRequirementsTableByFile = (
   informationRequirementsTableGuid,
   file,
   documentGuid,
-  message = "Successfully imported information requirements table"
+  message = "Successfully updated information requirements table"
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -268,7 +268,7 @@ export const updateInformationRequirementsTableByFile = (
 export const updateInformationRequirementsTable = (
   { projectGuid, informationRequirementsTableGuid },
   payload,
-  message = "Successfully update information requirements table"
+  message = "Successfully updated information requirements table"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
