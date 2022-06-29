@@ -79,3 +79,8 @@ CREATE_NOD_MODEL = api.model(
         'nod_status': fields.String,
         'nod_contacts': fields.List(fields.Nested(NOD_CONTACT_CREATE_MODEL)),
     })
+
+UPDATE_NOD_MODEL = api.inherit('NoticeOfDepartureUpdate', CREATE_NOD_MODEL, {
+    'nod_guid': fields.String,
+    'nod_contacts': fields.List(fields.Nested(NOD_CONTACT_MODEL)),
+})
