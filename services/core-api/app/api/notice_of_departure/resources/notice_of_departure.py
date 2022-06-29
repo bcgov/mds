@@ -3,7 +3,8 @@ from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, EDIT_DO, MINESPACE_PROPONENT)
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodStatus, NodType
-from app.api.notice_of_departure.dto import NOD_MODEL, CREATE_NOD_MODEL
+from app.api.notice_of_departure.dto import NOD_MODEL, UPDATE_NOD_MODEL
+from app.api.notice_of_departure.utils.validators import contact_validator
 
 
 class NoticeOfDepartureResource(Resource, UserMixin):
@@ -18,11 +19,10 @@ class NoticeOfDepartureResource(Resource, UserMixin):
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
-    @api.expect(CREATE_NOD_MODEL)
+    @api.expect(UPDATE_NOD_MODEL)
     @api.marshal_with(NOD_MODEL, code=200)
     def patch(self, nod_guid):
 
-        nod = NoticeOfDeparture.find_one(nod_guid, True)
         parser = reqparse.RequestParser()
 
         parser.add_argument(
@@ -53,20 +53,25 @@ class NoticeOfDepartureResource(Resource, UserMixin):
             location='json',
             choices=list(NodStatus),
             store_missing=False)
+        parser.add_argument(
+            'nod_contacts',
+            help='Notice of Departure contacts',
+            location='json',
+            required=True,
+            type=contact_validator,
+            store_missing=False)
         data = parser.parse_args()
 
-        if (data.get('nod_title')):
-            nod.nod_title = data.get('nod_title')
-        if (data.get('nod_description')):
-            nod.nod_description = data.get('nod_description')
-        if (data.get('nod_status')):
-            nod.nod_status = data.get('nod_status')
-        if (data.get('nod_type')):
-            nod.nod_type = data.get('nod_type')
+        update_nod = NoticeOfDeparture.find_one(nod_guid)
+        print(update_nod)
+        update_nod.update(
+            nod_title=data.get('nod_title'),
+            nod_description=data.get('nod_description'),
+            nod_status=data.get('nod_status'),
+            nod_type=data.get('nod_type'),
+            nod_contacts=data.get('nod_contacts'))
 
-        nod.save()
-
-        return nod
+        return update_nod
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])

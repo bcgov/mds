@@ -128,6 +128,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         if not permit:
             raise NotFound('Either permit does not exist or does not belong to the mine')
+
         new_nod = NoticeOfDeparture.create(
             permit._context_mine,
             permit,
@@ -137,6 +138,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             nod_contacts=data.get('nod_contacts'),
             nod_status=NodStatus.pending_review
             if data.get('nod_status') == None else data.get('nod_status'))
+
         new_nod.save()
 
         return new_nod

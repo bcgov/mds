@@ -145,6 +145,28 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
         return new_nod
 
+    def update(self, nod_title, nod_description, nod_type, nod_contacts, nod_status):
+
+        self.nod_title = nod_title
+        self.nod_description = nod_description
+        self.nod_type = nod_type
+        self.nod_status = nod_status
+        self.nod_contacts = []
+
+        for nod_contact in nod_contacts:
+            contact = NoticeOfDepartureContact.find_one(nod_contact.nod_contact_guid)
+
+            contact.first_name = nod_contact.first_name
+            contact.last_name = nod_contact.last_name
+            contact.email = nod_contact.email
+            contact.phone_number = nod_contact.phone_number
+            contact.is_primary = nod_contact.is_primary
+
+            contact.save()
+            self.nod_contacts.append(contact)
+
+        self.save()
+
     @classmethod
     def find_one(cls, __guid, include_documents=False, include_primary_contact_only=False):
         query = cls.query.filter_by(nod_guid=__guid)
@@ -154,7 +176,6 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
             query = query.options(lazyload(NoticeOfDeparture.primary_nod_contact))
         else:
             query = query.options(lazyload(NoticeOfDeparture.nod_contacts))
-
         return query.first()
 
     @classmethod

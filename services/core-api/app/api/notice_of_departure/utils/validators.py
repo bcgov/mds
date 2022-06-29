@@ -6,6 +6,10 @@ def contact_validator(values):
     if values == None:
         return values
     CONTACT_SCHEMA = {
+        'nod_contact_guid': {
+            'required': False,
+            'type': 'string'
+        },
         'first_name': {
             'required': True,
             'type': 'string',
