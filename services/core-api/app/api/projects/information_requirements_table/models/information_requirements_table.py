@@ -94,6 +94,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                         requirement['requirement_guid'], irt_data))
 
                 if len(requirement_to_update) > 0:
+                    requirement.undelete()
                     requirement.update(requirement_to_update[0]['required'],
                                        requirement_to_update[0]['methods'],
                                        requirement_to_update[0]['comment'])
