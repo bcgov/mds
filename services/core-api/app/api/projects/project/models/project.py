@@ -18,6 +18,7 @@ class Project(AuditMixin, Base):
     project_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     project_id = db.Column(db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_title = db.Column(db.String(300), nullable=False)
+    mrc_review_required = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     proponent_project_id = db.Column(db.String(20), nullable=True)
 
     project_lead_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
