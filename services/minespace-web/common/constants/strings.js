@@ -159,6 +159,11 @@ export const NOTICE_OF_DEPARTURE_STATUS_VALUES = {
   withdrawn: "withdrawn",
 };
 
+export const NOD_TYPE_FIELD_VALUE = {
+  POTENTIALLY_SUBSTANTIAL: "potentially_substantial",
+  NON_SUBSTANTIAL: "non_substantial",
+};
+
 export const CALLOUT_SEVERITY = {
   info: "info",
   success: "success",

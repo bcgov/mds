@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { change, Field, reduxForm } from "redux-form";
+import { change, Field, FieldArray, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
@@ -9,17 +9,20 @@ import { resetForm } from "@common/utils/helpers";
 import {
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
+  NOD_TYPE_FIELD_VALUE,
 } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
+import { compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
-import { EMPTY_FIELD, NOD_TYPE_FIELD_VALUE } from "@/constants/strings";
+import { EMPTY_FIELD } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
+import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -33,7 +36,7 @@ const propTypes = {
 };
 
 // eslint-disable-next-line import/no-mutable-exports
-let EditNoticeOfDepartureForm = (props) => {
+const EditNoticeOfDepartureForm = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
@@ -145,6 +148,7 @@ let EditNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
+        <FieldArray name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -304,15 +308,13 @@ const mapStateToProps = (state) => ({
   initialValues: getNoticeOfDeparture(state),
 });
 
-EditNoticeOfDepartureForm = reduxForm({
-  form: FORM.EDIT_NOTICE_OF_DEPARTURE,
-  onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
-  destroyOnUnmount: true,
-  forceUnregisterOnUnmount: true,
-  touchOnBlur: true,
-  enableReinitialize: true,
-})(EditNoticeOfDepartureForm);
-
-EditNoticeOfDepartureForm = connect(mapStateToProps)(EditNoticeOfDepartureForm);
-
-export default EditNoticeOfDepartureForm;
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.EDIT_NOTICE_OF_DEPARTURE,
+    onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
+    touchOnBlur: false,
+    forceUnregisterOnUnmount: true,
+    enableReinitialize: true,
+  })
+)(EditNoticeOfDepartureForm);

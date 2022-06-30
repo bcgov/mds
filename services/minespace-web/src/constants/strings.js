@@ -26,11 +26,6 @@ export const NOTICE_OF_DEPARTURE_TYPE = {
   potentially_substantial: "Potentially Substantial",
 };
 
-export const NOD_TYPE_FIELD_VALUE = {
-  POTENTIALLY_SUBSTANTIAL: "potentially_substantial",
-  NON_SUBSTANTIAL: "non_substantial",
-};
-
 export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Information Required"];
 
 export const NOTICE_OF_DEPARTURE_DOWNLOAD_LINK =

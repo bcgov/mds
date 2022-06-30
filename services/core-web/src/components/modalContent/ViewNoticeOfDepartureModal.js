@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 import {
   EMPTY_FIELD,
+  NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
@@ -17,7 +18,7 @@ import { TRASHCAN } from "@/constants/assets";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate, resetForm } from "@common/utils/helpers";
+import { formatDate, normalizePhone, resetForm } from "@common/utils/helpers";
 import {
   addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
@@ -26,9 +27,15 @@ import {
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { change, Field, reduxForm } from "redux-form";
+import { change, Field, FieldArray, getFormValues, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
-import { validateSelectOptions } from "@common/utils/Validate";
+import {
+  email,
+  maxLength,
+  phoneNumber,
+  required,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
@@ -44,16 +51,82 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-// eslint-disable-next-line import/no-mutable-exports
-let ViewNoticeOfDepartureModal = (props) => {
+export const renderContacts = (props) => {
+  const { fields, formValues } = props;
+  if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
+    fields.pop();
+  } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
+    fields.push({ is_primary: true });
+  }
+  return (
+    <div className="margin-large--bottom">
+      {fields.length > 0 && (
+        <p className="nod-modal-section-sub-header margin-large--top">Primary Contact</p>
+      )}
+      {fields.map((contact, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Row gutter={16} key={index}>
+          <Col span={12}>
+            <Form.Item label="First Name">
+              <Field
+                id={`${contact}.first_name`}
+                name={`${contact}.first_name`}
+                placeholder="First Name"
+                component={renderConfig.FIELD}
+                validate={[required, maxLength(200)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Last Name">
+              <Field
+                id={`${contact}.last_name`}
+                name={`${contact}.last_name`}
+                placeholder="Last Name"
+                component={renderConfig.FIELD}
+                validate={[required, maxLength(200)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Phone Number">
+              <Field
+                name={`${contact}.phone_number`}
+                id={`${contact}.phone_number`}
+                placeholder="XXX-XXX-XXXX"
+                component={renderConfig.FIELD}
+                validate={[phoneNumber, maxLength(12), required]}
+                normalize={normalizePhone}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Email">
+              <Field
+                id={`${contact}.email`}
+                name={`${contact}.email`}
+                component={renderConfig.FIELD}
+                placeholder="example@example.com"
+                validate={[email, required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      ))}
+    </div>
+  );
+};
+
+const ViewNoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
+  const { noticeOfDeparture, mine, handleSubmit, pristine, formValues } = props;
   const { nod_guid } = noticeOfDeparture;
 
   const checklist = noticeOfDeparture.documents.filter(
@@ -241,6 +314,7 @@ let ViewNoticeOfDepartureModal = (props) => {
             <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
           </div>
         </div>
+        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
         <CoreTable
           condition
@@ -349,6 +423,7 @@ ViewNoticeOfDepartureModal.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
   initialValues: getNoticeOfDeparture(state),
+  formValues: getFormValues(FORM.NOTICE_OF_DEPARTURE_FORM)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -362,18 +437,13 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-ViewNoticeOfDepartureModal = reduxForm({
-  form: FORM.NOTICE_OF_DEPARTURE_FORM,
-  onSubmitSuccess: resetForm(FORM.NOTICE_OF_DEPARTURE_FORM),
-  destroyOnUnmount: true,
-  forceUnregisterOnUnmount: true,
-  touchOnBlur: true,
-  enableReinitialize: true,
-})(ViewNoticeOfDepartureModal);
-
-ViewNoticeOfDepartureModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: FORM.NOTICE_OF_DEPARTURE_FORM,
+    onSubmitSuccess: resetForm(FORM.NOTICE_OF_DEPARTURE_FORM),
+    touchOnBlur: false,
+    forceUnregisterOnUnmount: true,
+    enableReinitialize: true,
+  })
 )(ViewNoticeOfDepartureModal);
-
-export default ViewNoticeOfDepartureModal;
