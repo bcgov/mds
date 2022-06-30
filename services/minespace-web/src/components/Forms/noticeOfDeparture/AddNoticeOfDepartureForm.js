@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { change, Field, reduxForm, FieldArray, getFormValues } from "redux-form";
-import { connect } from "react-redux";
+import { change, Field, reduxForm, FieldArray } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import {
@@ -30,16 +29,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const renderContacts = (props) => {
-  const { fields, formValues } = props;
-  if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.pop();
-  } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.push({ is_primary: true });
-  }
+  const { fields } = props;
   return (
     <div className="margin-large--bottom">
       {fields.length > 0 && (
@@ -101,7 +94,7 @@ export const renderContacts = (props) => {
 };
 
 const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit, mineGuid, formValues } = props;
+  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -218,7 +211,7 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
+        <FieldArray name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -337,9 +330,6 @@ const AddNoticeOfDepartureForm = (props) => {
 AddNoticeOfDepartureForm.propTypes = propTypes;
 
 export default compose(
-  connect((state) => ({
-    formValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
-  })),
   reduxForm({
     form: FORM.ADD_NOTICE_OF_DEPARTURE,
     onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),

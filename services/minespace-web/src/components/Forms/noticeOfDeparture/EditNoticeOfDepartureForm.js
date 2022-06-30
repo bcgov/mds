@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { change, Field, FieldArray, getFormValues, reduxForm } from "redux-form";
+import { change, Field, FieldArray, reduxForm } from "redux-form";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
@@ -33,20 +33,11 @@ const propTypes = {
   pristine: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
 const EditNoticeOfDepartureForm = (props) => {
-  const {
-    onSubmit,
-    closeModal,
-    handleSubmit,
-    mineGuid,
-    noticeOfDeparture,
-    pristine,
-    formValues,
-  } = props;
+  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -157,7 +148,7 @@ const EditNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
+        <FieldArray name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -315,7 +306,6 @@ EditNoticeOfDepartureForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   initialValues: getNoticeOfDeparture(state),
-  formValues: getFormValues(FORM.EDIT_NOTICE_OF_DEPARTURE)(state) || {},
 });
 
 export default compose(
