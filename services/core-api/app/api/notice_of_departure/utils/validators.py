@@ -26,7 +26,7 @@ def contact_validator(values):
             'regex': '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         },
         'phone_number': {
-            'required': False,
+            'required': True,
             'type': 'string',
             'regex': '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$'
         },
