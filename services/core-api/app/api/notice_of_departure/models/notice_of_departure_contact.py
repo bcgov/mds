@@ -12,7 +12,7 @@ class NoticeOfDepartureContact(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     nod_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('notice_of_departure.nod_guid'))
     first_name = db.Column(db.String(200), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(254), nullable=False)
     phone_number = db.Column(db.String(12), nullable=False)
     is_primary = db.Column(db.Boolean, nullable=False)
