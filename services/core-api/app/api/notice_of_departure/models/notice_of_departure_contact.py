@@ -21,18 +21,17 @@ class NoticeOfDepartureContact(SoftDeleteMixin, AuditMixin, Base):
         return f'{self.__class__.__name__} {self.nod_contact_guid}'
 
     @classmethod
-    def create(cls, nod_contact_guid, first_name, last_name, email, phone_number, is_primary):
+    def create(cls, nod_guid, first_name, last_name, email, phone_number, is_primary):
+        new_contact = cls(
+            nod_guid=nod_guid,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone_number=phone_number,
+            is_primary=is_primary)
 
-        cls.query.filter_by(nod_contact_guid=nod_contact_guid).update(first_name, last_name, email,
-                                                                      phone_number, phone_number)
-
-        cls.save(commit=False)
-
-    @classmethod
-    def find_one(cls, __guid):
-        query = cls.query.filter_by(nod_contact_guid=__guid)
-
-        return query.first()
+        new_contact.save(commit=False)
+        return new_contact
 
     def delete(self, commit=True):
         self.deleted_ind = True
