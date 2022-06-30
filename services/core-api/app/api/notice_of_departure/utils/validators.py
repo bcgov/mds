@@ -13,7 +13,7 @@ def contact_validator(values):
         'first_name': {
             'required': True,
             'type': 'string',
-            'maxlength': 100
+            'maxlength': 200
         },
         'last_name': {
             'required': True,
