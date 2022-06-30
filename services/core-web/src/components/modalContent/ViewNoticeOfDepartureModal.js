@@ -63,7 +63,9 @@ export const renderContacts = (props) => {
   }
   return (
     <div className="margin-large--bottom">
-      {fields.length > 0 && <h5 className="nod-modal-section-header">Primary Contact</h5>}
+      {fields.length > 0 && (
+        <p className="nod-modal-section-sub-header margin-large--top">Primary Contact</p>
+      )}
       {fields.map((contact, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <Row gutter={16} key={index}>
@@ -90,15 +92,16 @@ export const renderContacts = (props) => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Field
-              name={`${contact}.phone_number`}
-              id={`${contact}.phone_number`}
-              label="Phone Number"
-              placeholder="XXX-XXX-XXXX"
-              component={renderConfig.FIELD}
-              validate={[phoneNumber, maxLength(12), required]}
-              normalize={normalizePhone}
-            />
+            <Form.Item label="Phone Number">
+              <Field
+                name={`${contact}.phone_number`}
+                id={`${contact}.phone_number`}
+                placeholder="XXX-XXX-XXXX"
+                component={renderConfig.FIELD}
+                validate={[phoneNumber, maxLength(12), required]}
+                normalize={normalizePhone}
+              />
+            </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item label="Email">
@@ -124,7 +127,6 @@ const ViewNoticeOfDepartureModal = (props) => {
   const [uploading, setUploading] = useState(false);
 
   const { noticeOfDeparture, mine, handleSubmit, pristine, formValues } = props;
-  console.log("xxxxx", noticeOfDeparture);
   const { nod_guid } = noticeOfDeparture;
 
   const checklist = noticeOfDeparture.documents.filter(
@@ -303,7 +305,6 @@ const ViewNoticeOfDepartureModal = (props) => {
               <p>{NOTICE_OF_DEPARTURE_TYPE[noticeOfDeparture.nod_type] || EMPTY_FIELD}</p>
             </div>
           </div>
-          <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
           <div className="inline-flex padding-sm">
             <p className="field-title margin-large--right">Mine Manager</p>
             <p>{formatDate(noticeOfDeparture.mine_manager_name) || EMPTY_FIELD}</p>
@@ -313,6 +314,7 @@ const ViewNoticeOfDepartureModal = (props) => {
             <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
           </div>
         </div>
+        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
         <CoreTable
           condition
