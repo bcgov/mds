@@ -151,18 +151,17 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         self.nod_description = nod_description
         self.nod_type = nod_type
         self.nod_status = nod_status
-        self.nod_contacts = []
 
+        # todo: optimize to not fetch the contacts before updating them
         for nod_contact in nod_contacts:
-            contact = NoticeOfDepartureContact.find_one(nod_contact.nod_contact_guid)
-
-            contact.first_name = nod_contact.first_name
-            contact.last_name = nod_contact.last_name
-            contact.email = nod_contact.email
-            contact.phone_number = nod_contact.phone_number
-            contact.is_primary = nod_contact.is_primary
-
-            contact.save()
+            contact = NoticeOfDepartureContact.find_one(nod_contact['nod_contact_guid'])
+            contact.first_name = nod_contact['first_name']
+            contact.last_name = nod_contact['last_name']
+            contact.email = nod_contact['email']
+            contact.phone_number = nod_contact['phone_number']
+            contact.is_primary = nod_contact['is_primary']
+            contact.update_user = User().get_user_username()
+            contact.update_timestamp = datetime.utcnow()
             self.nod_contacts.append(contact)
 
         self.save()

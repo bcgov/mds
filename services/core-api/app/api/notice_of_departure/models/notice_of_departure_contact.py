@@ -29,18 +29,6 @@ class NoticeOfDepartureContact(SoftDeleteMixin, AuditMixin, Base):
         cls.save(commit=False)
 
     @classmethod
-    def update(cls, nod_contact_guid, first_name, last_name, email, phone_number, is_primary):
-        update_contact = cls(
-            nod_contact_guid=nod_contact_guid,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone_number=phone_number,
-            is_primary=is_primary,
-        )
-        update_contact.save(commit=False)
-
-    @classmethod
     def find_one(cls, __guid):
         query = cls.query.filter_by(nod_contact_guid=__guid)
 

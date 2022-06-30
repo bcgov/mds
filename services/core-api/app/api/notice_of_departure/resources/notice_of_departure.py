@@ -63,7 +63,7 @@ class NoticeOfDepartureResource(Resource, UserMixin):
         data = parser.parse_args()
 
         update_nod = NoticeOfDeparture.find_one(nod_guid)
-        print(update_nod)
+
         update_nod.update(
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
