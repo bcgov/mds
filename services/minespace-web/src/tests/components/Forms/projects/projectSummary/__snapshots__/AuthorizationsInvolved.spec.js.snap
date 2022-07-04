@@ -8,7 +8,33 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
     Authorizations potentially involved in the project
   </Title>
   <Callout
-    message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application."
+    message={
+      <React.Fragment>
+        <p>
+          Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application.
+        </p>
+        <br />
+        <ForwardRef
+          component={[Function]}
+          fieldName="mrc_review_required"
+          formName="ADD_EDIT_PROJECT_SUMMARY"
+          id="mrc_review_required"
+          label={
+            <React.Fragment>
+              <b>
+                Does your project require a coordinated review of application information by the Mine Review Committee (MRC), under Section 9 of the Mines Act?
+              </b>
+            </React.Fragment>
+          }
+          name="mrc_review_required"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </React.Fragment>
+    }
     severity="info"
   />
 </Fragment>

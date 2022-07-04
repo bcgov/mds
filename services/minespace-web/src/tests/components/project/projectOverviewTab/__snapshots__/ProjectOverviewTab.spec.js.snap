@@ -134,6 +134,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
               "status_code": "REC",
             },
             "project_guid": "8132462392222",
+            "required": undefined,
             "status": "REC",
             "statusHash": Object {
               "APV": "Approved",
