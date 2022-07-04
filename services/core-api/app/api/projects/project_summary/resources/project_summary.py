@@ -153,7 +153,8 @@ class ProjectSummaryResource(Resource, UserMixin):
         # Update project.
         project.update(
             data.get('project_summary_title'), data.get('proponent_project_id'),
-            data.get('project_summary_lead_party_guid'), data.get('contacts', []))
+            data.get('project_summary_lead_party_guid'), data.get('mrc_review_required', False),
+            data.get('contacts', []))
         project.save()
 
         return project_summary
