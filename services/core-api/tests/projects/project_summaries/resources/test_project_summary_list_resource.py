@@ -27,7 +27,8 @@ def test_post_project_summary_minimum(test_client, db_session, auth_headers):
     data = {
         'mine_guid': mine.mine_guid,
         'project_summary_title': 'Test title',
-        'status_code': 'DFT'
+        'status_code': 'DFT',
+        'mrc_review_required': True
     }
 
     post_resp = test_client.post(
@@ -55,7 +56,9 @@ def test_post_project_summary_with_authorizations(test_client, db_session, auth_
             'project_summary_permit_type': ['NEW'],
             'project_summary_authorization_type': 'MINES_ACT_PERMIT',
             'existing_permits_authorizations': ['1234-x']
-        }]
+        }],
+        'mrc_review_required':
+        True
     }
 
     post_resp = test_client.post(
