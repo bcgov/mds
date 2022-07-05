@@ -19,6 +19,7 @@ spec:
     admins:
       - vyasworks
       - wilson496
+      - sidsayani
 
     # Recommended for contributors who actively push to your project.
     writers:
@@ -47,7 +48,7 @@ spec:
     maintainers:
       - wilson496@github
       - vyasworks@github
-
+      - sidsayani@github
     # Project Readers have read-only access to the Project in the Argo CD UI
     readers:
       - will-freshworks@github
