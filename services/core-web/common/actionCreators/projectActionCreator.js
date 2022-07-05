@@ -201,10 +201,12 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
 export const createInformationRequirementsTable = (
   projectGuid,
   file,
-  message = "Successfully imported final IRT."
+  documentGuid,
+  message = "Successfully created information requirements table"
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("document_guid", documentGuid);
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
@@ -226,10 +228,47 @@ export const createInformationRequirementsTable = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateInformationRequirementsTableByFile = (
+  projectGuid,
+  informationRequirementsTableGuid,
+  file,
+  documentGuid,
+  message = "Successfully updated information requirements table"
+) => (dispatch) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  if (documentGuid) {
+    formData.append("document_guid", documentGuid);
+  }
+  const customContentType = { "Content-Type": "multipart/form-data" };
+  dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl +
+        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+      formData,
+      createRequestHeader(customContentType)
+    )
+    .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const updateInformationRequirementsTable = (
   { projectGuid, informationRequirementsTableGuid },
   payload,
-  message = "Successfully update information requirements table"
+  message = "Successfully updated information requirements table"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());

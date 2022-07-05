@@ -15,6 +15,7 @@ from app.api.projects.information_requirements_table.resources.information_requi
 from app.api.projects.information_requirements_table.resources.information_requirements_table_download import InformationRequirementsTableDownloadResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_document_upload import InformationRequirementsTableDocumentUploadResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table_document_types import InformationRequirementsTableDocumentTypeResource
 from app.api.projects.information_requirements_table.resources.requirements_list import RequirementsListResource
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
 
@@ -51,5 +52,6 @@ api.add_resource(InformationRequirementsTableResource,
 api.add_resource(InformationRequirementsTableListResource,
                  '/<string:project_guid>/information-requirements-table')
 api.add_resource(InformationRequirementsTableStatusCodeResource, '/irt-status-codes')
+api.add_resource(InformationRequirementsTableDocumentTypeResource, '/information-requirements-table-document-types')
 api.add_resource(RequirementsResource, '/requirements/<string:requirement_guid>')
 api.add_resource(RequirementsListResource, '/requirements')

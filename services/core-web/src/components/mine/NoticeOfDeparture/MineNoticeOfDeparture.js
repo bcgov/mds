@@ -56,7 +56,7 @@ export const MineNoticeOfDeparture = (props) => {
         noticeOfDeparture: detailedNoticeOfDeparture.data,
         title,
         clearOnSubmit: true,
-        mine
+        mine,
       },
       width: "50vw",
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,

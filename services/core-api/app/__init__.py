@@ -117,13 +117,15 @@ def register_routes(app):
 
         def get_health(self):
             service = {
-                'database': False,
-                'cache': False,
-                'nris': False,
-                'docgen': False,
-                'docman': False
+                'database': True,
+                'cache': True,
+                'nris': True,
+                'docgen': True,
+                'docman': True
             }
             status = 200
+            if (Config.ENVIRONMENT_NAME == 'local'):
+                return service, status
 
             try:
                 service['database'] = get_database_status()

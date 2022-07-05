@@ -1,5 +1,3 @@
-from email.policy import default
-import uuid
 from flask_restplus import Resource, reqparse, inputs
 from werkzeug.exceptions import NotFound
 from app.extensions import api
@@ -7,8 +5,9 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
                                              EDIT_DO)
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus, OrderBy, Order
-from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NOD_MODEL
+from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NOD_MODEL, NOD_CONTACT_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.notice_of_departure.utils.validators import contact_validator
 
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
@@ -112,6 +111,14 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             location='json',
             choices=list(NodStatus),
             store_missing=False)
+        parser.add_argument(
+            'nod_contacts',
+            help='Notice of Departure contacts',
+            location='json',
+            required=True,
+            type=contact_validator,
+            store_missing=False)
+
         data = parser.parse_args()
 
         permit_guid = data.get('permit_guid')
@@ -121,14 +128,17 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         if not permit:
             raise NotFound('Either permit does not exist or does not belong to the mine')
+
         new_nod = NoticeOfDeparture.create(
             permit._context_mine,
             permit,
             nod_title=data.get('nod_title'),
             nod_description=data.get('nod_description'),
             nod_type=data.get('nod_type'),
+            nod_contacts=data.get('nod_contacts'),
             nod_status=NodStatus.pending_review
             if data.get('nod_status') == None else data.get('nod_status'))
+
         new_nod.save()
 
         return new_nod

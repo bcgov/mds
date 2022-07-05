@@ -37,7 +37,9 @@ export class InformationRequirementsTableForm extends Component {
   componentDidMount() {
     this.mergedRequirements = this.deepMergeById(
       this.props.requirements,
-      this.props.informationRequirementsTable.requirements
+      this.props.informationRequirementsTable?.requirements.filter(
+        ({ deleted_ind }) => deleted_ind === false
+      )
     );
     this.setState({ tabIndex: tabs.indexOf(this.props.tab) });
   }

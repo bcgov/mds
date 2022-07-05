@@ -58,3 +58,12 @@ class IRTRequirementsXref(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=False)
 
         return self
+
+    def delete(self):
+        self.deleted_ind = True
+        self.save()
+
+        return None, 204
+
+    def __getitem__(self, item):
+        return getattr(self, item)

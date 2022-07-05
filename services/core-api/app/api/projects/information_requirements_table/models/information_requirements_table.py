@@ -5,6 +5,9 @@ from app.api.services.email_service import EmailService
 from app.extensions import db
 from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 from app.api.projects.information_requirements_table.models.irt_requirements_xref import IRTRequirementsXref
+from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
+from app.api.projects.project.models.project import Project
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
@@ -24,6 +27,15 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
     project = db.relationship("Project", back_populates="information_requirements_table")
     requirements = db.relationship('IRTRequirementsXref', lazy='joined')
+
+    documents = db.relationship('InformationRequirementsTableDocumentXref', lazy='select')
+    mine_documents = db.relationship(
+        'MineDocument',
+        lazy='select',
+        secondary='information_requirements_table_document_xref',
+        secondaryjoin=
+        'and_(foreign(InformationRequirementsTableDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+    )
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.irt_id}, {self.irt_guid}'
@@ -72,28 +84,55 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
-    def update(self, irt_json, add_to_session=True):
-        self.status_code = irt_json['status_code']
+    def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
+        if import_file and document_guid:
+            self.status_code = 'REC'
+            for requirement in self.requirements:
+                requirement_to_update = list(
+                    filter(
+                        lambda imported_requirement: imported_requirement['requirement_guid'] ==
+                        requirement['requirement_guid'], irt_data))
 
-        if 'requirements' in irt_json.keys():
-            for updated_req in irt_json['requirements']:
-                saved = False
-                for requirement in self.requirements:
-                    if str(requirement.requirement_guid) == str(updated_req['requirement_guid']):
-                        requirement.update(updated_req['required'], updated_req['methods'],
-                                           updated_req['comment'])
-                        requirement.save()
-                        saved = True
-                        break
+                if len(requirement_to_update) > 0:
+                    requirement.undelete()
+                    requirement.update(requirement_to_update[0]['required'],
+                                       requirement_to_update[0]['methods'],
+                                       requirement_to_update[0]['comment'])
+                else:
+                    requirement.delete()
+                requirement.save()
 
-                if not saved:
-                    new_req = IRTRequirementsXref.create(irt_json['irt_guid'],
-                                                         updated_req['requirement_guid'],
-                                                         updated_req['required'],
-                                                         updated_req['methods'],
-                                                         updated_req['comment'])
+            for new_requirement in irt_data:
+                requirement_found = list(
+                    filter(
+                        lambda requirement: requirement['requirement_guid'] == new_requirement[
+                            'requirement_guid'], self.requirements))
+
+                if len(requirement_found) == 0:
+                    new_req = IRTRequirementsXref.create(self.irt_guid,
+                                                         new_requirement['requirement_guid'],
+                                                         new_requirement['required'],
+                                                         new_requirement['methods'],
+                                                         new_requirement['comment'])
                     self.requirements.append(new_req)
                     self.save()
+
+            project = Project.find_by_project_guid(self.project_guid)
+            mine_doc = MineDocument(
+                mine_guid=str(project.mine_guid),
+                document_manager_guid=str(document_guid),
+                document_name=import_file.filename)
+
+            irt_template = InformationRequirementsTableDocumentXref(
+                mine_document_guid=str(mine_doc.mine_document_guid),
+                irt_id=self.irt_id,
+                information_requirements_table_document_type_code='TEM')
+
+            irt_template.mine_document = mine_doc
+            if irt_template:
+                self.documents.append(irt_template)
+        else:
+            self.status_code = irt_data['status_code']
 
         if add_to_session:
             self.save()
@@ -107,3 +146,32 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                 requirement.delete()
 
         super(InformationRequirementsTable, self).delete()
+
+    def save_new_irt(project, requirements, import_file, document_guid):
+        new_information_requirements_table = InformationRequirementsTable._schema().load({
+            'project_guid':
+            project.project_guid,
+            'status_code':
+            'REC',
+            'requirements':
+            requirements
+        })
+
+        new_information_requirements_table.save(commit=False)
+
+        mine_doc = MineDocument(
+            mine_guid=str(project.mine_guid),
+            document_manager_guid=str(document_guid),
+            document_name=import_file.filename)
+
+        irt_template = InformationRequirementsTableDocumentXref(
+            mine_document_guid=str(mine_doc.mine_document_guid),
+            irt_id=new_information_requirements_table.irt_id,
+            information_requirements_table_document_type_code='TEM')
+
+        irt_template.mine_document = mine_doc
+        new_information_requirements_table.documents.append(irt_template)
+
+        new_information_requirements_table.save()
+
+        return new_information_requirements_table, 201

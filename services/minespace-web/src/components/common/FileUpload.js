@@ -29,7 +29,8 @@ const propTypes = {
   maxFiles: PropTypes.number,
   afterSuccess: PropTypes.shape({
     action: PropTypes.func,
-    actionGuid: PropTypes.string,
+    projectGuid: PropTypes.string,
+    irtGuid: PropTypes.string,
   }),
   labelIdle: PropTypes.string,
   onprocessfiles: PropTypes.func,
@@ -86,7 +87,20 @@ class FileUpload extends React.Component {
             // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
             if (this.props?.afterSuccess?.action) {
               try {
-                await this.props.afterSuccess.action(this.props.afterSuccess?.actionGuid, file);
+                if (this.props.afterSuccess?.irtGuid) {
+                  await this.props.afterSuccess.action[1](
+                    this.props.afterSuccess?.projectGuid,
+                    this.props.afterSuccess?.irtGuid,
+                    file,
+                    documentGuid
+                  );
+                } else {
+                  await this.props.afterSuccess.action[0](
+                    this.props.afterSuccess?.projectGuid,
+                    file,
+                    documentGuid
+                  );
+                }
                 this.props.importIsSuccessful();
               } catch (err) {}
             }
