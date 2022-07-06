@@ -127,6 +127,8 @@ class Application(Base):
     minenumber = db.Column(db.String)
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
+    gatelatitude = db.Column(db.Numeric(9, 7))
+    gatelongitude = db.Column(db.Numeric(11, 7))
     nameofproperty = db.Column(db.String)
     minepurpose = db.Column(db.String)
     tenurenumbers = db.Column(db.String)

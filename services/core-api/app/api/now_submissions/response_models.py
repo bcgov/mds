@@ -108,13 +108,14 @@ SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
         'width': fields.Integer,
     })
 
-SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
-    'type': fields.String,
-    'disturbedarea': fields.Arbitrary,
-    'timbervolume': fields.Arbitrary,
-    'length': fields.Integer,
-    'width': fields.Integer,
-})
+SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
+    'SAND_GRAVEL_QUARRY_ACTIVITY', {
+        'type': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
+    })
 
 UNDER_EXP_NEW_ACTIVITY = api.model(
     'UNDER_EXP_NEW_ACTIVITY', {
@@ -223,13 +224,14 @@ BUILDING_ACTIVITY = api.model(
         'width': fields.Integer,
     })
 
-STAGING_AREA_ACTIVITY = api.model('STAGING_AREA_ACTIVITY', {
-    'name': fields.String,
-    'disturbedarea': fields.Arbitrary,
-    'timbervolume': fields.Arbitrary,
-    'length': fields.Integer,
-    'width': fields.Integer,
-})
+STAGING_AREA_ACTIVITY = api.model(
+    'STAGING_AREA_ACTIVITY', {
+        'name': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+        'length': fields.Integer,
+        'width': fields.Integer,
+    })
 
 APPLICATION = api.model(
     'Application', {
@@ -255,6 +257,8 @@ APPLICATION = api.model(
         'minepurpose': fields.String,
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
+        'gatelatitude': fields.Fixed(decimals=7),
+        'gatelongitude': fields.Fixed(decimals=7),
         'nameofproperty': fields.String,
         'tenurenumbers': fields.String,
         'crowngrantlotnumbers': fields.String,
