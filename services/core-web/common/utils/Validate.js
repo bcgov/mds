@@ -10,7 +10,7 @@ class Validator {
 
   CAN_POSTAL_CODE_REGEX = /(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)/;
 
-  EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+$/;
+  EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
 

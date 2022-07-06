@@ -27,7 +27,7 @@ import {
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { change, Field, FieldArray, getFormValues, reduxForm } from "redux-form";
+import { change, Field, FieldArray, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import {
   email,
@@ -51,16 +51,11 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const renderContacts = (props) => {
-  const { fields, formValues } = props;
-  if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.pop();
-  } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.push({ is_primary: true });
-  }
+  const { fields } = props;
+
   return (
     <div className="margin-large--bottom">
       {fields.length > 0 && (
@@ -314,7 +309,7 @@ const ViewNoticeOfDepartureModal = (props) => {
             <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
           </div>
         </div>
-        <FieldArray name="nod_contacts" component={renderContacts} props={{ formValues }} />
+        <FieldArray name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
         <CoreTable
           condition
@@ -423,7 +418,6 @@ ViewNoticeOfDepartureModal.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
   initialValues: getNoticeOfDeparture(state),
-  formValues: getFormValues(FORM.NOTICE_OF_DEPARTURE_FORM)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
