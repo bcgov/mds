@@ -55,12 +55,8 @@ const propTypes = {
 };
 
 export const renderContacts = (props) => {
-  const { fields, formValues } = props;
-  if (fields.length > 0 && formValues.nod_type === NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.pop();
-  } else if (fields.length < 1 && formValues.nod_type !== NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL) {
-    fields.push({ is_primary: true });
-  }
+  const { fields } = props;
+
   return (
     <div className="margin-large--bottom">
       {fields.length > 0 && (
