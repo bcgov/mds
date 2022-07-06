@@ -16,6 +16,7 @@ export class ProjectStagesTable extends Component {
       project_stage: stage.title,
       stage_status: stage.status,
       stage_status_hash: stage.statusHash,
+      stage_required: stage.required,
       stage,
     }));
 
@@ -40,6 +41,18 @@ export class ProjectStagesTable extends Component {
             <b>{status || "N/A"}</b>
           </div>
         );
+      },
+    },
+    {
+      title: "",
+      dataIndex: "stage_required",
+      render: (text, record) => {
+        const label = record.stage_required ? "Required" : "Optional";
+        return record.stage_required !== null ? (
+          <div title="Stage Required">
+            <b>{label || "N/A"}</b>
+          </div>
+        ) : null;
       },
     },
     {

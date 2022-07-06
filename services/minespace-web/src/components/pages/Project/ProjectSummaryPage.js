@@ -21,6 +21,7 @@ import {
   createProjectSummary,
   updateProjectSummary,
   fetchProjectById,
+  updateProject,
 } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
@@ -43,6 +44,7 @@ const propTypes = {
   createProjectSummary: PropTypes.func.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
   clearProjectSummary: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
@@ -187,15 +189,22 @@ export class ProjectSummaryPage extends Component {
 
   handleUpdateProjectSummary(values, message) {
     const { project_guid: projectGuid, project_summary_guid: projectSummaryGuid } = values;
+    const payload = this.handleTransformPayload(values);
     return this.props
       .updateProjectSummary(
         {
           projectGuid,
           projectSummaryGuid,
         },
-        this.handleTransformPayload(values),
+        payload,
         message
       )
+      .then(() => {
+        this.props.updateProject(
+          { projectGuid },
+          { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts }
+        );
+      })
       .then(() => {
         this.handleFetchData();
       });
@@ -266,7 +275,14 @@ export class ProjectSummaryPage extends Component {
                   className="vertical-tabs--tabpane"
                 >
                   <ProjectSummaryForm
-                    initialValues={this.state.isEditMode ? this.props.formattedProjectSummary : {}}
+                    initialValues={
+                      this.state.isEditMode
+                        ? {
+                            ...this.props.formattedProjectSummary,
+                            mrc_review_required: this.props.project.mrc_review_required,
+                          }
+                        : {}
+                    }
                     mineGuid={mineGuid}
                     isEditMode={this.state.isEditMode}
                     handleSaveData={this.handleSaveData}
@@ -305,6 +321,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       clearProjectSummary,
       fetchProjectById,
+      updateProject,
       submit,
       reset,
       touch,

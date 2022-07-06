@@ -61,6 +61,12 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
+        'mrc_review_required',
+        type=bool,
+        store_missing=False,
+        required=True,
+    )
+    parser.add_argument(
         'documents',
         type=list,
         location='json',
@@ -119,9 +125,10 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         if mine is None:
             raise NotFound('Mine not found')
 
-        # Until the Minespace user workflow is ironed out we will be creating a project first and then assign the description to it.
         new_project = Project.create(mine, data.get('project_summary_title'),
-                                     data.get('proponent_project_id'), data.get('contacts', []))
+                                     data.get('proponent_project_id'),
+                                     data.get('mrc_review_required', False),
+                                     data.get('contacts', []))
 
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None
