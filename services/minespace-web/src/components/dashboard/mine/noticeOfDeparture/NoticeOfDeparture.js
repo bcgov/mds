@@ -22,8 +22,6 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -207,6 +205,4 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfDeparture.propTypes = propTypes;
 NoticeOfDeparture.defaultProps = defaultProps;
 
-export default AuthorizationGuard(Permission.IN_TESTING)(
-  connect(mapStateToProps, mapDispatchToProps)(NoticeOfDeparture)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfDeparture);
