@@ -145,6 +145,15 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             },
             "title": "IRT",
           },
+          Object {
+            "key": undefined,
+            "payload": undefined,
+            "project_guid": "8132462392222",
+            "required": true,
+            "status": undefined,
+            "statusHash": undefined,
+            "title": "Application",
+          },
         ]
       }
     />

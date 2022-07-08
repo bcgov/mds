@@ -170,3 +170,15 @@ export const CALLOUT_SEVERITY = {
   warning: "warning",
   danger: "danger",
 };
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
+  PRIMARY: "primary",
+  SPATIAL: "spatial",
+  SUPPORTING: "supporting",
+};
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
+  PRIMARY: "PRM",
+  SPATIAL: "SPT",
+  SUPPORTING: "SPR",
+};

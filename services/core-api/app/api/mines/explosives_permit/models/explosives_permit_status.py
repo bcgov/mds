@@ -13,7 +13,7 @@ class ExplosivesPermitStatus(AuditMixin, Base):
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f'{self.__class__.__name__} {self.explosives_permit_document_type_code}'
+        return f'{self.__class__.__name__} {self.explosives_permit_status_code}'
 
     @classmethod
     def get_all(cls):

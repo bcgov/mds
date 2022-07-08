@@ -17,6 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
+import MajorMineApplicationPage from "./MajorMineApplicationPage";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -89,6 +90,11 @@ export class ProjectPage extends Component {
         this.props.match.params?.projectGuid
       );
       this.props.history.push(url);
+    } else if (activeTab === "major-mine-application") {
+      const url = router.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(
+        this.props.match.params?.projectGuid
+      );
+      this.props.history.push(url);
     }
   };
 
@@ -149,6 +155,11 @@ export class ProjectPage extends Component {
                       mrcReviewRequired={mrcReviewRequired}
                     />
                   </Tabs.TabPane>
+                 )}
+                 {!IN_PROD() && (
+                   <Tabs.TabPane tab="Application" key="major-mine-application">
+                     <MajorMineApplicationPage />
+                   </Tabs.TabPane>
                 )}
               </Tabs>
             </Col>
