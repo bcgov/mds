@@ -32,7 +32,6 @@ export const EditMinespaceUser = (props) => (
               placeholder="Enter the users Email (BCeID username if email is not available)"
               component={RenderField}
               allowClear
-              disabled
             />
           </Form.Item>
         </Col>
