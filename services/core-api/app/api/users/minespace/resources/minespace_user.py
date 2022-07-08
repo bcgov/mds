@@ -77,6 +77,11 @@ class MinespaceUserResource(Resource, UserMixin):
         if not contact:
             raise NotFound('Contact not found.')
         data = self.parser.parse_args()
+
+        if data.get('email_or_username'):
+            if contact.email_or_username != data.get('email_or_username'):
+                contact.email_or_username = data.get('email_or_username')
+
         if not data.get('mine_guids'):
             raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
 
