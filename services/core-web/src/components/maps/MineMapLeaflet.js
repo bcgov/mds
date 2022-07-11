@@ -231,6 +231,7 @@ class MineMapLeaflet extends Component {
       primaryLengthUnit: "kilometers",
       activeColor: "#3c3636",
       completedColor: "#5e46a1",
+      primaryAreaUnit: 'hectares',
     });
     measureControl.addTo(this.map);
   };
