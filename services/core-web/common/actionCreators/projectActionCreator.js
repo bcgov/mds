@@ -62,6 +62,30 @@ export const updateProjectSummary = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateProject = (
+  { projectGuid },
+  payload,
+  message = "Successfully updated project."
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PROJECT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PROJECT));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PROJECT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Typography, Checkbox } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Typography, Checkbox, Tooltip } from "antd";
+import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Field, FormSection, change, getFormValues } from "redux-form";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
@@ -11,6 +11,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import { renderConfig } from "@/components/common/config";
+import { requiredRadioButton } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import Callout from "@/components/common/Callout";
 import CustomPropTypes from "@/customPropTypes";
@@ -85,7 +86,64 @@ export const AuthorizationsInvolved = (props) => {
       <Typography.Title level={3}>
         Authorizations potentially involved in the project
       </Typography.Title>
-      <Callout message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application." />
+      <Callout
+        message="Please select the authorizations that you anticipate needing for this project, based
+        on your current understanding. This is to assist in planning and may not be the
+        complete list for the final application."
+      />
+      <br />
+      <Typography.Title level={5}>
+        Mines Review Committee
+        <Tooltip
+          overlayClassName="minespace-tooltip"
+          title={
+            <p>
+              Learn more about the{" "}
+              <a
+                href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations/mine-mrc#:~:text=A%20Mine%20Review%20Committee%20(MRC,of%20the%20coordinated%20authorizations%20process."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Mines Review Committee
+              </a>
+              .
+            </p>
+          }
+          placement="right"
+          mouseEnterDelay={0.3}
+        >
+          <InfoCircleOutlined className="padding-sm" />
+        </Tooltip>
+      </Typography.Title>
+      <Field
+        id="mrc_review_required"
+        name="mrc_review_required"
+        fieldName="mrc_review_required"
+        formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+        label={
+          <>
+            <p>
+              Mine review committees (MRCs) are a key part of the coordinated authorizations
+              process. An MRC is an advisory committee established by the Chief Permitting Officer
+              (CPO) under Section 9 of the Mines Act. By bringing together multiple ministries,
+              Indigenous nations, federal and local governments, and other reviewers, MRCs increase
+              efficiency and effectiveness by reducing duplication of effort and by focusing on the
+              project as a whole.
+            </p>
+            <p>
+              <b>
+                Does your project require a coordinated review by a Mine Review Committee, under
+                Section 9 of the Mines Act?
+              </b>{" "}
+              This response will be reviewed by the Major Mines Office and confirmed by the Chief
+              Permitting Officer.
+            </p>
+          </>
+        }
+        component={renderConfig.RADIO}
+        validate={[requiredRadioButton]}
+      />
+      <br />
       {props.transformedProjectSummaryAuthorizationTypes.map((authorization) => {
         return (
           <React.Fragment key={authorization.code}>

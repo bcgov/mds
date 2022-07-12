@@ -694,3 +694,6 @@ ON now_application_identity (mms_cid);
 -- 			msub.mms_cid,
 -- 			na.create_timestamp,
 -- 			na.update_timestamp;
+
+-- Set Permissions to mds owner 
+-- ALTER MATERIALIZED VIEW now_application_gis_export_view OWNER TO mds;

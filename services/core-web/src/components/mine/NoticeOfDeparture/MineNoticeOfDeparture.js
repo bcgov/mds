@@ -13,9 +13,7 @@ import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
-import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 
 const propTypes = {
@@ -26,12 +24,12 @@ const propTypes = {
   fetchPermits: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
-  updateNoticeOfDeparture: PropTypes.func.isRequired,
 };
 
 export const MineNoticeOfDeparture = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mines, mineGuid, nods } = props;
+  const mine = mines[mineGuid];
 
   const handleFetchPermits = () => {
     props.fetchPermits(mineGuid).then(() => setIsLoaded(true));
@@ -63,7 +61,7 @@ export const MineNoticeOfDeparture = (props) => {
     });
   };
 
-  const renderNoticeOfDepartureTables = (mine) => (
+  const renderNoticeOfDepartureTables = (selectedMine) => (
     <div>
       <br />
       <h4 className="uppercase">Notices of Departure</h4>
@@ -71,7 +69,7 @@ export const MineNoticeOfDeparture = (props) => {
       <MineNoticeOfDepartureTable
         isLoaded={isLoaded}
         nods={nods}
-        mine={mine}
+        mine={selectedMine}
         openViewNodModal={openNoticeOfDepartureModal}
         updateNoticeOfDeparture={updateNoticeOfDeparture}
         fetchNoticesOfDeparture={fetchNoticesOfDeparture}
@@ -81,7 +79,6 @@ export const MineNoticeOfDeparture = (props) => {
     </div>
   );
 
-  const mine = mines[mineGuid];
   return (
     <div className="tab__content">
       <div>
@@ -114,6 +111,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineNoticeOfDeparture.propTypes = propTypes;
 
-export default AuthorizationGuard(Permission.IN_TESTING)(
-  connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);

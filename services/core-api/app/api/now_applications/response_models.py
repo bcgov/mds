@@ -487,6 +487,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Fixed(decimals=7),
         'longitude':
         fields.Fixed(decimals=7),
+        'gate_latitude':
+        fields.Fixed(decimals=7),
+        'gate_longitude':
+        fields.Fixed(decimals=7),
         'property_name':
         fields.String,
         'tenure_number':
@@ -649,6 +653,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'is_first_year_of_multi': fields.Boolean,
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
+        'gate_latitude': fields.Fixed(decimals=7),
+        'gate_longitude': fields.Fixed(decimals=7),
         'property_name': fields.String,
         'tenure_number': fields.String,
         'unreclaimed_disturbance_previous_year': fields.Integer,

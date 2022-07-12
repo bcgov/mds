@@ -133,6 +133,7 @@ export const DELETE_VARIANCE = "DELETE_VARIANCE";
 
 // Projects
 export const PROJECTS = "PROJECTS";
+export const UPDATE_PROJECT = "UPDATE_PROJECT";
 export const PROJECT_SUMMARIES = "PROJECT_SUMMARIES";
 export const GET_PROJECTS = "GET_PROJECTS";
 export const GET_PROJECT = "GET_PROJECT";

@@ -6,7 +6,6 @@ import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -88,13 +87,11 @@ export class MineNavigation extends Component {
                 Other Ministry Applications and Authorizations
               </Link>
             </Menu.Item>
-            {!IN_PROD() && (
-              <Menu.Item key="nods">
-                <Link to={routes.MINE_NOTICES_OF_DEPARTURE.dynamicRoute(this.props.mine.mine_guid)}>
-                  Notices of Departure
-                </Link>
-              </Menu.Item>
-            )}
+            <Menu.Item key="nods">
+              <Link to={routes.MINE_NOTICES_OF_DEPARTURE.dynamicRoute(this.props.mine.mine_guid)}>
+                Notices of Departure
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu

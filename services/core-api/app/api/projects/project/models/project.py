@@ -18,6 +18,7 @@ class Project(AuditMixin, Base):
     project_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     project_id = db.Column(db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_title = db.Column(db.String(300), nullable=False)
+    mrc_review_required = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     proponent_project_id = db.Column(db.String(20), nullable=True)
 
     project_lead_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
@@ -67,11 +68,18 @@ class Project(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=mine_guid).all()
 
     @classmethod
-    def create(cls, mine, project_title, proponent_project_id, contacts=[], add_to_session=True):
+    def create(cls,
+               mine,
+               project_title,
+               proponent_project_id,
+               mrc_review_required,
+               contacts=[],
+               add_to_session=True):
         project = cls(
             project_title=project_title,
             proponent_project_id=proponent_project_id,
-            mine_guid=mine.mine_guid)
+            mine_guid=mine.mine_guid,
+            mrc_review_required=mrc_review_required)
 
         mine.projects.append(project)
         if add_to_session:
@@ -98,6 +106,7 @@ class Project(AuditMixin, Base):
                project_title,
                proponent_project_id,
                project_lead_party_guid,
+               mrc_review_required,
                contacts=[],
                add_to_session=True):
 
@@ -105,6 +114,7 @@ class Project(AuditMixin, Base):
         self.project_title = project_title
         self.proponent_project_id = proponent_project_id
         self.project_lead_party_guid = project_lead_party_guid
+        self.mrc_review_required = mrc_review_required
 
         # Delete deleted contacts.
         updated_contact_ids = [contact.get('project_contact_guid') for contact in contacts]
