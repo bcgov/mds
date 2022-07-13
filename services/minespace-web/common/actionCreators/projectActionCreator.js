@@ -222,12 +222,9 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createInformationRequirementsTable = (
-  projectGuid,
-  file,
-  documentGuid,
-  message = "Successfully created information requirements table"
-) => (dispatch) => {
+export const createInformationRequirementsTable = (projectGuid, file, documentGuid) => (
+  dispatch
+) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("document_guid", documentGuid);
@@ -241,7 +238,6 @@ export const createInformationRequirementsTable = (
       createRequestHeader(customContentType)
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
@@ -256,8 +252,7 @@ export const updateInformationRequirementsTableByFile = (
   projectGuid,
   informationRequirementsTableGuid,
   file,
-  documentGuid,
-  message = "Successfully updated information requirements table"
+  documentGuid
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -275,10 +270,6 @@ export const updateInformationRequirementsTableByFile = (
       createRequestHeader(customContentType)
     )
     .then((response) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
       dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })

@@ -12,7 +12,9 @@ import {
   fetchRequirements,
   updateInformationRequirementsTable,
 } from "@common/actionCreators/projectActionCreator";
+import { closeModal, openModal } from "@common/actions/modalActions";
 import Callout from "@/components/common/Callout";
+import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_PROJECT } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
@@ -202,6 +204,15 @@ export class InformationRequirementsTablePage extends Component {
     this.props.clearInformationRequirementsTable();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.uploadedSuccessfully !== prevState.uploadedSuccessfully &&
+      this.state.uploadedSuccessfully
+    ) {
+      return this.openIRTImportSuccessModal();
+    }
+  }
+
   handleTabChange = (activeTab) => {
     const { projectGuid, irtGuid } = this.props.match.params;
     this.props.history.push({
@@ -250,6 +261,27 @@ export class InformationRequirementsTablePage extends Component {
         this.handleFetchData();
         this.setState({ submitting: false });
       });
+  };
+
+  openIRTImportSuccessModal = () => {
+    const { project = {} } = this.props;
+    const { project_guid: projectGuid } = project;
+    const irtGuid = project?.information_requirements_table?.irt_guid;
+
+    return this.props.openModal({
+      props: {
+        title: "Import Successful",
+        navigateForward: () =>
+          this.props.history.push({
+            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              projectGuid,
+              irtGuid
+            )}`,
+            state: { current: 2 },
+          }),
+      },
+      content: modalConfig.IMPORT_IRT_SUCCESS,
+    });
   };
 
   render() {
@@ -327,6 +359,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      openModal,
+      closeModal,
       clearInformationRequirementsTable,
       fetchProjectById,
       fetchRequirements,
