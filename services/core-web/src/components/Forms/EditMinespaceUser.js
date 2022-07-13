@@ -13,7 +13,10 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
 };
 
 export const EditMinespaceUser = (props) => (
@@ -41,6 +44,8 @@ export const EditMinespaceUser = (props) => (
               placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
+              onChange={props.handleChange}
+              onSearch={props.handleSearch}
               validate={[requiredList]}
             />
           </Form.Item>
