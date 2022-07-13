@@ -1,5 +1,4 @@
 from werkzeug.exceptions import NotFound
-from flask import request, current_app
 from flask_restplus import Resource
 
 from app.extensions import api
@@ -19,21 +18,15 @@ class MajorMineApplicationDocumentUploadResource(Resource, UserMixin):
         })
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def post(self, project_guid):
-        # current_app.logger.debug(f'In POST to upload resource ...')
         project = Project.find_by_project_guid(project_guid)
 
-        # current_app.logger.debug(f'project: {project}')
         if not project:
             raise NotFound('Project not found.')
 
         mine = Mine.find_by_mine_guid(str(project.mine_guid))
-        # current_app.logger.debug(f'mine: {mine}')
 
         if not mine:
             raise NotFound('Mine not found.')
 
-        tmp = DocumentManagerService.initializeFileUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'major_mine_application')
-
-        # current_app.logger.debug(f'DocumentManagerService: {tmp}')
-        return tmp

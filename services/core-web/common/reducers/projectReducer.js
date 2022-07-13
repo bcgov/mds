@@ -10,6 +10,7 @@ const initialState = {
   projectSummaryPageData: {},
   informationRequirementsTable: [],
   requirements: [],
+  majorMinesApplication: {},
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -66,6 +67,17 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         informationRequirementsTable: {},
       };
+    case actionTypes.STORE_MAJOR_MINES_APPLICATION:
+      return {
+        ...state,
+        majorMinesApplication: action.payload,
+      };
+    case actionTypes.CLEAR_MAJOR_MINES_APPLICATION:
+      return {
+        ...state,
+        majorMinesApplication: {},
+      };
+
     default:
       return state;
   }
@@ -84,5 +96,6 @@ export const getProjectSummaryPageData = (state) => state[PROJECTS].projectSumma
 export const getRequirements = (state) => state[PROJECTS].requirements;
 export const getInformationRequirementsTable = (state) =>
   state[PROJECTS].informationRequirementsTable;
+export const getMajorMinesApplication = (state) => state[PROJECTS].majorMinesApplication;
 
 export default projectReducerObject;

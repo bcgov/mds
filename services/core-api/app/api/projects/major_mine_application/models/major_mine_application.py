@@ -79,18 +79,19 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         if add_to_session:
             major_mine_application.save(commit=False)
 
-        for doc in documents:
-            mine_doc = MineDocument(
-                mine_guid=project.mine_guid,
-                document_name=doc.get('document_name'),
-                document_manager_guid=doc.get('document_manager_guid'))
-            major_mine_application_doc = MajorMineApplicationDocumentXref(
-                mine_document_guid=mine_doc.mine_document_guid,
-                major_mine_application_id=major_mine_application.major_mine_application_id,
-                major_mine_application_document_type_code=doc.get(
-                    'major_mine_application_document_type'))
-            major_mine_application_doc.mine_document = mine_doc
-            major_mine_application.documents.append(major_mine_application_doc)
+        if documents:
+            for doc in documents:
+                mine_doc = MineDocument(
+                    mine_guid=project.mine_guid,
+                    document_name=doc.get('document_name'),
+                    document_manager_guid=doc.get('document_manager_guid'))
+                major_mine_application_doc = MajorMineApplicationDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    major_mine_application_id=major_mine_application.major_mine_application_id,
+                    major_mine_application_document_type_code=doc.get(
+                        'major_mine_application_document_type'))
+                major_mine_application_doc.mine_document = mine_doc
+                major_mine_application.documents.append(major_mine_application_doc)
 
         if add_to_session:
             major_mine_application.save(commit=False)

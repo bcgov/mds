@@ -1,7 +1,6 @@
 from app.extensions import api
 from flask_restplus import Resource
 from werkzeug.exceptions import NotFound, InternalServerError
-from flask import current_app
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -24,12 +23,11 @@ class MajorMineApplicationListResource(Resource, UserMixin):
         params={'project_guid': 'GUID of the project associated to the major mine application'})
     @api.expect(MAJOR_MINE_APPLICATION_MODEL)
     @api.marshal_with(MAJOR_MINE_APPLICATION_MODEL, code=201)
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, project_guid):
         data = self.parser.parse_args()
-        current_app.logger.debug(f'data: {data}')
         project = Project.find_by_project_guid(project_guid)
 
-        current_app.logger.debug(f'project: {project}')
         if project is None:
             raise NotFound('Project not found')
 
@@ -44,4 +42,4 @@ class MajorMineApplicationListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        return major_mine_application
+        return major_mine_application, 201

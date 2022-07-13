@@ -38,6 +38,16 @@ export const clearInformationRequirementsTable = (payload) => ({
   payload,
 });
 
+export const storeMajorMinesApplication = (payload) => ({
+  type: actionTypes.STORE_MAJOR_MINES_APPLICATION,
+  payload,
+});
+
+export const clearMajorMinesApplication = (payload) => ({
+  type: actionTypes.CLEAR_MAJOR_MINES_APPLICATION,
+  payload,
+});
+
 export const storeRequirements = (payload) => ({
   type: actionTypes.STORE_REQUIREMENTS,
   payload,
