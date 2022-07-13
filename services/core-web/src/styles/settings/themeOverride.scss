@@ -16,12 +16,12 @@
 // VERTICAL TABS
 .vertical-tabs {
   &.ant-tabs {
-    padding-top: 0px !important;
+    padding-top: 0 !important;
   }
   &.ant-tabs .ant-tabs-ink-bar {
     background: transparent;
-    height: 0px;
-    top: 0px;
+    height: 0;
+    top: 0;
   }
   &.ant-tabs .ant-tabs-tab {
     color: #3D6DE7;
@@ -109,7 +109,7 @@
 // DRAWER
 .ant-drawer-body {
   -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
+  -ms-flex: 1;
   flex-grow: 1;
   padding: 24px;
   height: 100vh;
@@ -124,7 +124,7 @@
 .ant-btn-secondary {
   position: inherit;
   margin: 10px;
-  padding: 0px 11px;
+  padding: 0 11px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
 
@@ -234,11 +234,11 @@
   box-shadow: none;
   &:hover {
     border-style: none !important;
-    border: 0px;
+    border: 0;
   }
   &:focus {
     border-style: none !important;
-    border: 0px;
+    border: 0;
   }
 }
 
@@ -267,11 +267,11 @@
   height: 420px;
 
   &.ant-card-hoverable:hover {
-    box-shadow: 0px 4px 4px #7c66ad;
+    box-shadow: 0 4px 4px #7c66ad;
   }
 
   &.selected {
-    box-shadow: rgb(124, 102, 173) 0px 0px 10px 3px;
+    box-shadow: rgb(124, 102, 173) 0 0 10px 3px;
   }
 
   &.inherit-height {
@@ -287,14 +287,14 @@
 
   .ant-card-head {
     height: 70px;
-    align-items: "center";
+    align-items: center;
   }
 }
 
 .ant-card {
   margin-bottom: 20px;
   text-align: left;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .ant-card-body {
@@ -542,7 +542,6 @@
 input {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
   font-variant: tabular-nums;
   list-style: none;
   font-feature-settings: "tnum";
@@ -602,6 +601,9 @@ select {
   -ms-user-select: none;
   user-select: none;
   padding: 4px 11px;
+}
+.ant-select-multiple.ant-select-sm .ant-select-selection-search-input {
+  margin-top: -12px;
 }
 
 // update HTML select component to look like the ant design select. This block of code changes the default icon
