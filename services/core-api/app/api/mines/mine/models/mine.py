@@ -233,6 +233,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_mine_name(cls, term=None, major=None):
+        MINE_LIST_RESULT_LIMIT = None if is_minespace_user() else 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
@@ -242,7 +243,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         if major is not None:
             mines_q = mines_q.filter_by(major_mine_ind=major)
 
-        response = mines_q.all()
+        response = mines_q.limit(
+            MINE_LIST_RESULT_LIMIT).all() if MINE_LIST_RESULT_LIMIT else mines_q.all()
 
         return response
 
