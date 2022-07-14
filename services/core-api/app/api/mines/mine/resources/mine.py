@@ -15,7 +15,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
 
 #namespace imports
-from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
+from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL, MINE_SEARCH_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 
@@ -448,6 +448,7 @@ class MineListSearch(Resource):
             'term': 'Search term in mine name, mine number, and permit.'
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.marshal_with(MINE_SEARCH_MODEL, code=200, envelope='mines')
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')
@@ -456,27 +457,11 @@ class MineListSearch(Resource):
             major = request.args.get('major')
 
         if search_term:
-            mines = Mine.find_by_name_no_permit(search_term, major=major)
-
+            result = Mine.find_by_name_no_permit(search_term, major=major)
         else:
-            mines = Mine.find_by_mine_name(name_search, major=major)
-        result = list(
-            map(
-                lambda x: {
-                    'mine_guid':
-                    str(x.mine_guid),
-                    'mine_name':
-                    x.mine_name,
-                    'mine_no':
-                    x.mine_no,
-                    'latitude':
-                    str(x.latitude) if x.latitude else '',
-                    'longitude':
-                    str(x.longitude) if x.longitude else '',
-                    'mine_location_description':
-                    x.mine_location_description if x.mine_location_description else '',
-                }, mines))
-        return {'mines': result}
+            result = Mine.find_by_mine_name(name_search, major=major)
+
+        return result
 
 
 # Functions shared by the MineListResource and the MineResource

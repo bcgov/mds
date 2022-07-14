@@ -11,8 +11,6 @@ exports[`NewMinespaceUser renders properly 1`] = `
     forceUnregisterOnUnmount={false}
     form="ADD_MINESPACE_USER"
     getFormState={[Function]}
-    handleChange={[Function]}
-    handleSearch={[Function]}
     initialValues={
       Object {
         "proponent_mine_access": Array [],
