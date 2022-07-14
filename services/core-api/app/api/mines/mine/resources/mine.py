@@ -1,4 +1,4 @@
-#library imports
+# library imports
 import uuid
 from decimal import Decimal
 from datetime import datetime
@@ -8,13 +8,13 @@ from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
 
-#app imports
+# app imports
 from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user, MINE_EDIT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
 
-#namespace imports
+# namespace imports
 from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL, MINE_SEARCH_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
@@ -53,8 +53,7 @@ class MineListResource(Resource, UserMixin):
     parser.add_argument(
         'mine_status',
         action='split',
-        help=
-        'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
+        help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         required=True,
         location='json')
     parser.add_argument(
@@ -314,8 +313,7 @@ class MineResource(Resource, UserMixin):
     parser.add_argument(
         'mine_status',
         action='split',
-        help=
-        'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
+        help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         store_missing=False,
         location='json')
     parser.add_argument(
@@ -392,7 +390,7 @@ class MineResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        if is_minespace_user() is not True: 
+        if is_minespace_user() is not True:
             lat = data.get('latitude')
             lon = data.get('longitude')
             if (lat and not lon) or (not lat and lon):
@@ -445,21 +443,26 @@ class MineListSearch(Resource):
     @api.doc(
         params={
             'name': 'Search term in mine name.',
-            'term': 'Search term in mine name, mine number, and permit.'
+            'term': 'Search term in mine name, mine number, and permit.',
+            'guids': 'Get mine by guids'
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_SEARCH_MODEL, code=200, envelope='mines')
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')
+        guids = [x.strip() for x in request.args.get('guids').split(',')] if request.args.get('guids') else None
+
         major = None
         if 'major' in request.args:
             major = request.args.get('major')
 
         if search_term:
             result = Mine.find_by_name_no_permit(search_term, major=major)
+        elif guids:
+            result = Mine.find_by_mine_name(guids=guids, major=major)
         else:
-            result = Mine.find_by_mine_name(name_search, major=major)
+            result = Mine.find_by_mine_name(name_search=name_search, major=major)
 
         return result
 

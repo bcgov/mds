@@ -1,4 +1,5 @@
-import uuid, re
+import uuid
+import re
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
@@ -19,9 +20,12 @@ class MinespaceUser(SoftDeleteMixin, Base):
 
     minespace_user_mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 
-    @hybrid_property
-    def mines(self):
-        return [x.mine_guid for x in self.minespace_user_mines]
+    mines = db.relationship(
+        'Mine',
+        lazy='select',
+        secondary='minespace_user_mds_mine_access',
+        secondaryjoin='and_(foreign(MinespaceUserMine.mine_guid) == remote(Mine.mine_guid),Mine.deleted_ind == False)'
+    )
 
     @classmethod
     def get_all(cls):
@@ -52,4 +56,3 @@ class MinespaceUser(SoftDeleteMixin, Base):
         if not email_or_username:
             raise AssertionError('Identifier is not provided.')
         return email_or_username
-    

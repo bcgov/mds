@@ -73,12 +73,12 @@ const columns = [
   },
 ];
 
-const lookupMineName = (mine_guids, mines) =>
-  mine_guids.map((mine_guid) => {
-    const mine_record = mines.find((mine) => mine.mine_guid === mine_guid);
+const lookupMineName = (mines) =>
+  mines.map((mine) => {
+    const { mine_guid, mine_name, mine_no } = mine;
     return {
       mine_guid,
-      mine_name: mine_record ? `${mine_record.mine_name}-${mine_record.mine_no}` : "",
+      mine_name: `${mine_name}-${mine_no}`,
     };
   });
 
@@ -87,7 +87,7 @@ const transformRowData = (minespaceUsers, mines, deleteFunc, handleOpenModal) =>
     key: user.user_id,
     emptyField: Strings.EMPTY_FIELD,
     email_or_username: user.email_or_username,
-    mineNames: lookupMineName(user.mines, mines),
+    mineNames: lookupMineName(user.mines),
     user_id: user.user_id,
     delete: deleteFunc,
     update: handleOpenModal,

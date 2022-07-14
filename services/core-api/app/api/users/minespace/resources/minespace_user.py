@@ -38,7 +38,7 @@ class MinespaceUserListResource(Resource, UserMixin):
         new_user = MinespaceUser.create_minespace_user(data.get('email_or_username'))
         new_user.save()
         for guid in data.get('mine_guids'):
-            guid = uuid.UUID(guid)               #ensure good formatting
+            guid = uuid.UUID(guid)  # ensure good formatting
             new_mum = MinespaceUserMine.create(new_user.user_id, guid)
             new_mum.save()
         return new_user
@@ -48,7 +48,7 @@ class MinespaceUserResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('email_or_username', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
-    
+
     @api.marshal_with(MINESPACE_USER_MODEL)
     @requires_role_mine_admin
     def get(self, user_id):
@@ -85,13 +85,13 @@ class MinespaceUserResource(Resource, UserMixin):
         if not data.get('mine_guids'):
             raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')
 
-        existing_mines = contact.mines # list of mines already existing in the user's mine list
-        updated_mines = data.get('mine_guids') # updated list of mines to be applied to the user
+        existing_mines = [mine.mine_guid for mine in contact.mines]  # list of mines already existing in the user's mine list
+        updated_mines = data.get('mine_guids')  # updated list of mines to be applied to the user
 
         for delete_mine in existing_mines:
             if str(delete_mine) not in updated_mines:
                 minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(delete_mine, user_id)
-                if minespace_user_mine:  
+                if minespace_user_mine:
                     minespace_user_mine.delete()
 
         # Cycle through list of mines. Mines have to exist before being added to the user.
@@ -102,8 +102,6 @@ class MinespaceUserResource(Resource, UserMixin):
             existing_minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(guid, user_id)
             current_app.logger.info('Existing Mine: {}'.format(existing_minespace_user_mine))
             if not existing_minespace_user_mine:
-                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)       
+                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)
         contact.save()
         return contact
-
-        

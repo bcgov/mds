@@ -22,9 +22,6 @@ const defaultProps = {
 };
 
 export class UpdateMinespaceUser extends Component {
-  componentDidMount() {
-    this.props.fetchMineNameList();
-  }
 
   handleSearch = (name) => {
     if (name.length > 0) {

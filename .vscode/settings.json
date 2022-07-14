@@ -4,7 +4,7 @@
   "files.trimFinalNewlines": true,
   "editor.renderWhitespace": "none",
   "editor.formatOnSave": true,
-  "python.formatting.provider": "yapf",
+  "python.formatting.provider": "autopep8",
   "python.formatting.yapfArgs": [
     "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
   ],

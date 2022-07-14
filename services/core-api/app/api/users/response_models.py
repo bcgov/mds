@@ -6,5 +6,10 @@ MINESPACE_USER_MODEL = api.model(
         'user_id': fields.String,
         'keycloak_guid': fields.String,
         'email_or_username': fields.String,
-        'mines': fields.List(fields.String),
+        'mines': fields.List(fields.Nested(
+            api.model('Mine', {
+                'mine_guid': fields.String,
+                'mine_no': fields.String,
+                'mine_name': fields.String,
+            }))),
     })
