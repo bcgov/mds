@@ -243,7 +243,8 @@ export const createInformationRequirementsTable = (projectGuid, file, documentGu
     })
     .catch((err) => {
       dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
+      // throw new Error(err);
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -275,7 +276,8 @@ export const updateInformationRequirementsTableByFile = (
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
+      // throw new Error(err);
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

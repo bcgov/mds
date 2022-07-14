@@ -190,6 +190,8 @@ export class InformationRequirementsTablePage extends Component {
     activeTab: tabs[0],
     informationRequirementsTable: [],
     uploadedSuccessfully: false,
+    importFailed: false,
+    importErrors: null,
   };
 
   componentDidMount() {
@@ -205,13 +207,24 @@ export class InformationRequirementsTablePage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
+    console.log("ERRORS: ", prevState, this.state);
+    if (this.state.importFailed !== prevState.importFailed && this.state.importFailed) {
+      return this.openIRTImportErrorModal(this.state.importErrors);
+    } else if (
       this.state.uploadedSuccessfully !== prevState.uploadedSuccessfully &&
       this.state.uploadedSuccessfully
     ) {
       return this.openIRTImportSuccessModal();
     }
   }
+
+  marshalImportIRTError = (error) => {
+    // Transform single quotes on object properties to double to allow JSON parse
+    const formattedError = error.replaceAll("'", '"');
+    const regex = /({"row_number": \d+, "section": \d+})/g;
+    const errorMatch = formattedError.match(regex);
+    return errorMatch.map((e) => JSON.parse(e));
+  };
 
   handleTabChange = (activeTab) => {
     const { projectGuid, irtGuid } = this.props.match.params;
@@ -229,7 +242,13 @@ export class InformationRequirementsTablePage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  importIsSuccessful = () => {
+  importIsSuccessful = (success, err) => {
+    // err?.response?.data?.message
+    console.log("IMPORTSUCCESSERROR: ", success, err);
+    if (!success) {
+      const formattedError = this.marshalImportIRTError(err?.response?.data?.message);
+      return this.setState({ importFailed: true, importErrors: formattedError });
+    }
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
     this.handleFetchData();
   };
@@ -281,6 +300,16 @@ export class InformationRequirementsTablePage extends Component {
           }),
       },
       content: modalConfig.IMPORT_IRT_SUCCESS,
+    });
+  };
+
+  openIRTImportErrorModal = (errors = []) => {
+    return this.props.openModal({
+      props: {
+        title: "Import Failed",
+        errors,
+      },
+      content: modalConfig.IMPORT_IRT_FAILURE,
     });
   };
 

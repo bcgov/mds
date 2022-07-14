@@ -5,7 +5,7 @@ import tempfile
 from flask_restplus import Resource
 from flask import request
 from sheet2dict import Worksheet
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, HTTPException
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
@@ -36,6 +36,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         excel_dict.xlsx_to_dict(path=temp_file.file, select_sheet='Sheet1')
         # Retrieve all valid requirements to cross reference with worksheet "Information" cell content
         import_errors = []
+        new_import_errors = []
         sanitized_irt_requirements = []
         valid_requirements = Requirements.get_all()
         valid_requirement_descriptions = [
@@ -63,21 +64,33 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             row_number = idx + starting_row_number + 2
             # If "Information" cell entry is not valid, flag that to user(could have a bad template or added custom rows)
             if information_cell_is_valid is False:
-                import_errors.append(
-                    f'Row {row_number} - "{" ".join(information_cell_split[1:]).strip()}" is not a valid entry in the Information column.'
-                )
+                # import_errors.append(
+                #     f'Row {row_number} - "{" ".join(information_cell_split[1:]).strip()}" is not a valid entry in the Information column.'
+                # )
+                import_errors.append({
+                    "row_number": row_number,
+                    "section": int(information_section[0])
+                })
                 continue
-            # If "Required" or "Methods" cell entry is true and "Comments" are 'None' add error
-            if (required_cell is True or methods_cell is True) and comments_cell == 'None':
-                import_errors.append(
-                    f'Row {row_number} - "Required" or "Methods" cells is checked off and requires "Comments" to be provided.'
-                )
+            # If "Methods" cell entry is true and "Comments" are 'None' add error
+            if methods_cell is True and comments_cell == 'None':
+                # import_errors.append(
+                #     f'Row {row_number} - "Methods" cells is checked off and requires "Comments" to be provided.'
+                # )
+                import_errors.append({
+                    "row_number": row_number,
+                    "section": int(information_section[0])
+                })
                 continue
             # If "Required" and "Methods" cell entry is false and "Comments" are set add error
             if (required_cell is False and methods_cell is False) and comments_cell != 'None':
-                import_errors.append(
-                    f'Row {row_number} - "Required" or "Methods" cells needs to be checked off to include "Comments".'
-                )
+                # import_errors.append(
+                #     f'Row {row_number} - "Required" or "Methods" cells needs to be checked off to include "Comments".'
+                # )
+                import_errors.append({
+                    "row_number": row_number,
+                    "section": int(information_section[0])
+                })
                 continue
 
             is_empty_row = required_cell is False and methods_cell is False and comments_cell == 'None'
@@ -109,8 +122,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 sanitized_irt_requirements.append(new_requirement_dict)
         if import_errors:
             temp_file.close()
-            raise BadRequest(
-                f'The following validation errors occurred during import: {import_errors}.')
+            raise BadRequest(import_errors)
         temp_file.close()
         return sanitized_irt_requirements
 
