@@ -15,6 +15,7 @@ from app.api.mines.work_information.models.mine_work_information import MineWork
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
+from app.api.utils.access_decorators import is_minespace_user
 
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -63,8 +64,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(Permit.create_timestamp)',
         lazy='select',
         secondary='mine_permit_xref',
-        secondaryjoin=
-        'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
     )
 
     # across all permit_identities
@@ -74,15 +74,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineType',
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
-        primaryjoin=
-        'and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
+        primaryjoin='and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
         lazy='selectin')
 
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
-        primaryjoin=
-        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
+        primaryjoin='and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
@@ -91,8 +89,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineIncident',
         backref='mine',
         lazy='select',
-        primaryjoin=
-        'and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
+        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
 
     mine_reports = db.relationship('MineReport', lazy='select')
 
@@ -100,8 +97,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'ExplosivesPermit',
         backref='mine',
         lazy='select',
-        primaryjoin=
-        'and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
+        primaryjoin='and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
 
     projects = db.relationship(
         'Project',
@@ -113,15 +109,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
-        primaryjoin=
-        'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
+        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
     )
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin=
-        'and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
+        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
@@ -232,18 +226,24 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_name(cls, term=None, major=None):
+    def find_by_mine_name(cls, name_search=None, guids=None, major=None):
+
         mine_table = table(Mine.__tablename__, column('latitude'), column('longitude'), column('mine_guid'),
                            column('mine_location_description'), column('mine_name'), column('mine_no'),
                            column('deleted_ind'), column('major_mine_ind'))
 
         mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
 
-        if term:
-            mines_q = mines_q.where(mine_table.c.mine_name.ilike('%{}%'.format(term)))
+        if name_search:
+            mines_q = mines_q.where(mine_table.c.mine_name.ilike('%{}%'.format(name_search)))
+        elif guids:
+            mines_q = mines_q.where(mine_table.c.mine_guid.in_(guids))
 
         if major is not None:
             mines_q = mines_q.where(mine_table.c.major_mine_ind == major)
+
+        if not (is_minespace_user()):
+            mines_q = mines_q.limit(100)
 
         connection = db.engine.connect()
         results = connection.execute(mines_q).fetchall()

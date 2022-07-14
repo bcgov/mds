@@ -452,14 +452,18 @@ class MineListSearch(Resource):
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')
+        guids = [x.strip() for x in request.args.get('guids').split(',')] if request.args.get('guids') else None
+
         major = None
         if 'major' in request.args:
             major = request.args.get('major')
 
         if search_term:
             result = Mine.find_by_name_no_permit(search_term, major=major)
+        elif guids:
+            result = Mine.find_by_mine_name(guids=guids, major=major)
         else:
-            result = Mine.find_by_mine_name(name_search, major=major)
+            result = Mine.find_by_mine_name(name_search=name_search, major=major)
 
         return result
 
