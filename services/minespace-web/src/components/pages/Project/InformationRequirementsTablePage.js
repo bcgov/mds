@@ -27,6 +27,7 @@ const propTypes = {
   project: CustomPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   updateInformationRequirementsTable: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
   clearInformationRequirementsTable: PropTypes.func.isRequired,
@@ -202,20 +203,21 @@ export class InformationRequirementsTablePage extends Component {
     });
   }
 
-  componentWillUnmount() {
-    this.props.clearInformationRequirementsTable();
-  }
-
   componentDidUpdate(prevProps, prevState) {
-    console.log("ERRORS: ", prevState, this.state);
     if (this.state.importFailed !== prevState.importFailed && this.state.importFailed) {
       return this.openIRTImportErrorModal(this.state.importErrors);
-    } else if (
+    }
+    if (
       this.state.uploadedSuccessfully !== prevState.uploadedSuccessfully &&
       this.state.uploadedSuccessfully
     ) {
       return this.openIRTImportSuccessModal();
     }
+    return null;
+  }
+
+  componentWillUnmount() {
+    this.props.clearInformationRequirementsTable();
   }
 
   marshalImportIRTError = (error) => {
@@ -243,14 +245,12 @@ export class InformationRequirementsTablePage extends Component {
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
   importIsSuccessful = (success, err) => {
-    // err?.response?.data?.message
-    console.log("IMPORTSUCCESSERROR: ", success, err);
     if (!success) {
       const formattedError = this.marshalImportIRTError(err?.response?.data?.message);
       return this.setState({ importFailed: true, importErrors: formattedError });
     }
     this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
-    this.handleFetchData();
+    return this.handleFetchData();
   };
 
   handleFetchData = () => {

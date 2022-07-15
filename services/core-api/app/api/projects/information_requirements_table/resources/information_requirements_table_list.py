@@ -5,7 +5,7 @@ import tempfile
 from flask_restplus import Resource
 from flask import request
 from sheet2dict import Worksheet
-from werkzeug.exceptions import BadRequest, HTTPException
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
