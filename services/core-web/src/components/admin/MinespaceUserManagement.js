@@ -106,6 +106,8 @@ export class MinespaceUserManagement extends Component {
         <NewMinespaceUser
           handleSubmit={this.handleCreateUser}
           minespaceUserEmailHash={this.props.minespaceUserEmailHash}
+          refresdata={this.refreshUserData}
+          handleSearch={this.ha}
         />
         <h3>MineSpace Users</h3>
         <MinespaceUserList

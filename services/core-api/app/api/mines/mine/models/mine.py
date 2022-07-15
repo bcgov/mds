@@ -237,7 +237,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
                            column('mine_location_description'), column('mine_name'), column('mine_no'),
                            column('deleted_ind'), column('major_mine_ind'))
 
-        mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
+        mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False).limit(50)
 
         if term:
             mines_q = mines_q.where(mine_table.c.mine_name.ilike('%{}%'.format(term)))
