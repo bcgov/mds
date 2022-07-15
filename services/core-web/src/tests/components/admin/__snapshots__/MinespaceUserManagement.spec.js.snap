@@ -12,6 +12,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
   <Connect(NewMinespaceUser)
     handleSubmit={[Function]}
     minespaceUserEmailHash={Object {}}
+    refresdata={[Function]}
   />
   <h3>
     MineSpace Users
