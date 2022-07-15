@@ -51,12 +51,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     # Relationships
     # Almost always used and 1:1, so these are joined
     mine_status = db.relationship(
-        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='select')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
-        lazy='joined')
+        lazy='select')
 
     # Almost always used, but faster to use selectin to load related data
     _permit_identities = db.relationship(
@@ -217,7 +217,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
+            return cls.query.filter_by(mine_guid=_id, deleted_ind=False).first()
         except (ValueError, TypeError):
             return None
 

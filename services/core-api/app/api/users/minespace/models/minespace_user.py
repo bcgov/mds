@@ -22,7 +22,7 @@ class MinespaceUser(SoftDeleteMixin, Base):
 
     mines = db.relationship(
         'Mine',
-        lazy='select',
+        lazy='joined',
         secondary='minespace_user_mds_mine_access',
         secondaryjoin='and_(foreign(MinespaceUserMine.mine_guid) == remote(Mine.mine_guid),Mine.deleted_ind == False)'
     )
