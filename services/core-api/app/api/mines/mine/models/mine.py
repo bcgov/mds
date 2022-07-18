@@ -13,6 +13,7 @@ from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from app.api.utils.access_decorators import is_minespace_user
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
@@ -237,7 +238,10 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
                            column('mine_location_description'), column('mine_name'), column('mine_no'),
                            column('deleted_ind'), column('major_mine_ind'))
 
-        mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False).limit(50)
+        mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
+
+        if not (is_minespace_user()):
+            mines_q = mines_q.limit(100)
 
         if term:
             mines_q = mines_q.where(mine_table.c.mine_name.ilike('%{}%'.format(term)))
