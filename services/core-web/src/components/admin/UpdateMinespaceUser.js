@@ -42,6 +42,12 @@ export class UpdateMinespaceUser extends Component {
     }));
   };
 
+  filterUserMines = (userMines) => {
+    return userMines.map((mine) => {
+      return this.props.minespaceUserMines.find((m) => m.mine_guid === mine);
+    });
+  };
+
   render() {
     return (
       <div>
@@ -50,7 +56,7 @@ export class UpdateMinespaceUser extends Component {
           <EditMinespaceUser
             mines={this.parseMinesAsOptions([
               ...this.props.mines,
-              ...this.props.minespaceUserMines,
+              ...this.filterUserMines(this.props.initialValues.mineNames.map((mn) => mn.mine_guid)),
             ])}
             initalValueOptions={this.props.initialValues.mineNames}
             initialValues={{
