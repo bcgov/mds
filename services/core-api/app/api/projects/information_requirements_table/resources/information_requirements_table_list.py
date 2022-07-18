@@ -64,9 +64,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             row_number = idx + starting_row_number + 2
             # If "Information" cell entry is not valid, flag that to user(could have a bad template or added custom rows)
             if information_cell_is_valid is False:
-                # import_errors.append(
-                #     f'Row {row_number} - "{" ".join(information_cell_split[1:]).strip()}" is not a valid entry in the Information column.'
-                # )
                 import_errors.append({
                     "row_number": row_number,
                     "section": int(information_section[0])
@@ -74,9 +71,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 continue
             # If "Methods" cell entry is true and "Comments" are 'None' add error
             if methods_cell is True and comments_cell == 'None':
-                # import_errors.append(
-                #     f'Row {row_number} - "Methods" cells is checked off and requires "Comments" to be provided.'
-                # )
                 import_errors.append({
                     "row_number": row_number,
                     "section": int(information_section[0])
@@ -84,9 +78,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 continue
             # If "Required" and "Methods" cell entry is false and "Comments" are set add error
             if (required_cell is False and methods_cell is False) and comments_cell != 'None':
-                # import_errors.append(
-                #     f'Row {row_number} - "Required" or "Methods" cells needs to be checked off to include "Comments".'
-                # )
                 import_errors.append({
                     "row_number": row_number,
                     "section": int(information_section[0])
