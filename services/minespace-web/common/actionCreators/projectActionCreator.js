@@ -231,7 +231,7 @@ export const createInformationRequirementsTable = (projectGuid, file, documentGu
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios()
+  return CustomAxios({ suppressErrorNotification: true })
     .post(
       ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLES(projectGuid),
       formData,
@@ -243,7 +243,6 @@ export const createInformationRequirementsTable = (projectGuid, file, documentGu
     })
     .catch((err) => {
       dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
-      // throw new Error(err);
       throw err;
     })
     .finally(() => dispatch(hideLoading()));
@@ -263,7 +262,7 @@ export const updateInformationRequirementsTableByFile = (
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios()
+  return CustomAxios({ suppressErrorNotification: true })
     .put(
       ENVIRONMENT.apiUrl +
         API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
@@ -276,7 +275,6 @@ export const updateInformationRequirementsTableByFile = (
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-      // throw new Error(err);
       throw err;
     })
     .finally(() => dispatch(hideLoading()));
