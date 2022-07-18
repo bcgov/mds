@@ -36,7 +36,6 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         excel_dict.xlsx_to_dict(path=temp_file.file, select_sheet='Sheet1')
         # Retrieve all valid requirements to cross reference with worksheet "Information" cell content
         import_errors = []
-        new_import_errors = []
         sanitized_irt_requirements = []
         valid_requirements = Requirements.get_all()
         valid_requirement_descriptions = [
