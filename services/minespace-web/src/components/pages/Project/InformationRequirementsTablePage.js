@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Steps } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
@@ -193,6 +193,7 @@ export class InformationRequirementsTablePage extends Component {
     uploadedSuccessfully: false,
     importFailed: false,
     importErrors: null,
+    hasBadRequestError: false,
   };
 
   componentDidMount() {
@@ -222,9 +223,12 @@ export class InformationRequirementsTablePage extends Component {
 
   marshalImportIRTError = (error) => {
     // Transform single quotes on object properties to double to allow JSON parse
-    const formattedError = error.replaceAll("'", '"');
+    const formattedError = error.replaceAll(`'`, `"`);
     const regex = /({"row_number": \d+, "section": \d+})/g;
     const errorMatch = formattedError.match(regex);
+    if (!errorMatch) {
+      return error;
+    }
     return errorMatch.map((e) => JSON.parse(e));
   };
 
@@ -244,13 +248,19 @@ export class InformationRequirementsTablePage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  importIsSuccessful = (success, err) => {
+  importIsSuccessful = async (success, err) => {
     if (!success) {
+      const hasBadRequestError = err?.response?.data?.message.includes("400 Bad Request: [");
       const formattedError = this.marshalImportIRTError(err?.response?.data?.message);
-      return this.setState({ importFailed: true, importErrors: formattedError });
+      await this.handleFetchData();
+      return this.setState({
+        importFailed: true,
+        importErrors: formattedError,
+        hasBadRequestError,
+      });
     }
-    this.setState((state) => ({ uploadedSuccessfully: !state.uploadedSuccessfully }));
-    return this.handleFetchData();
+    await this.handleFetchData();
+    return this.setState({ uploadedSuccessfully: true });
   };
 
   handleFetchData = () => {
@@ -259,7 +269,15 @@ export class InformationRequirementsTablePage extends Component {
     return this.props
       .fetchProjectById(projectGuid)
       .then(() => this.props.fetchRequirements())
-      .then(() => this.setState({ isLoaded: true }));
+      .then(() =>
+        this.setState({
+          isLoaded: true,
+          uploadedSuccessfully: false,
+          importFailed: false,
+          importErrors: null,
+          hasBadRequestError: false,
+        })
+      );
   };
 
   handleIRTUpdate = (values, message) => {
@@ -289,7 +307,12 @@ export class InformationRequirementsTablePage extends Component {
 
     return this.props.openModal({
       props: {
-        title: "Import Successful",
+        title: (
+          <>
+            <CheckCircleOutlined style={{ color: "green" }} />
+            {"  "}Import Successful
+          </>
+        ),
         navigateForward: () =>
           this.props.history.push({
             pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
@@ -304,10 +327,23 @@ export class InformationRequirementsTablePage extends Component {
   };
 
   openIRTImportErrorModal = (errors = []) => {
+    const title = this.state.hasBadRequestError ? (
+      <>
+        <CloseCircleOutlined style={{ color: "red" }} />
+        {"  "}Import Failed
+      </>
+    ) : (
+      <>
+        <CloseCircleOutlined style={{ color: "red" }} />
+        {"  "}Error
+      </>
+    );
+
     return this.props.openModal({
       props: {
-        title: "Import Failed",
+        title,
         errors,
+        isBadRequestError: this.state.hasBadRequestError,
       },
       content: modalConfig.IMPORT_IRT_FAILURE,
     });
