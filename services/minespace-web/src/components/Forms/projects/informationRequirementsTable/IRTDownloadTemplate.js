@@ -19,7 +19,7 @@ export class IRTDownloadTemplate extends Component {
     return (
       <Row>
         <Col>
-          <Typography.Title level={4}>Download IRT template</Typography.Title>
+          <Typography.Title level={3}>Download IRT template</Typography.Title>
           <Typography.Paragraph>
             The first step in composing an IRT is to download the official{" "}
             <LinkButton
@@ -57,6 +57,7 @@ export class IRTDownloadTemplate extends Component {
             </a>
             &nbsp;closest to your project location.
           </Typography.Paragraph>
+          <br />
           <Typography.Paragraph>
             <div>
               <Button

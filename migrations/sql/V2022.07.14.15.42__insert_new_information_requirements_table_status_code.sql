@@ -1,0 +1,1 @@
+INSERT INTO information_requirements_table_status_code (information_requirements_table_status_code, description, create_user, update_user) VALUES ('PRG', 'In Progress', 'system-mds', 'system-mds');
