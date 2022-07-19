@@ -57,10 +57,8 @@ export const MinespaceUserManagement = (props) => {
 
   useEffect(() => {
     if (minespaceUsers.length > 0) {
-      (async () => {
-        const mine_guids = uniq(flatMap(minespaceUsers, (user) => user.mines));
-        await props.fetchMinespaceUserMines(mine_guids);
-      })();
+      const mine_guids = uniq(flatMap(minespaceUsers, (user) => user.mines));
+      props.fetchMinespaceUserMines(mine_guids);
     }
   }, [minespaceUsers]);
 
