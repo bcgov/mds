@@ -240,6 +240,9 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
         mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
 
+        if (is_minespace_user()):
+            mines_q = mines_q.limit(100)
+
         if not (is_minespace_user()):
             mines_q = mines_q.limit(100)
 
