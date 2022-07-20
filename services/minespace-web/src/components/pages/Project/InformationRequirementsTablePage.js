@@ -416,16 +416,12 @@ export class InformationRequirementsTablePage extends Component {
             </Steps>
             <br />
             <br />
-
-            <div>
+            <Col span={24}>
               <InformationRequirementsTableCallout
                 informationRequirementsTableStatus={
                   this.props.project?.information_requirements_table?.status_code || "PRG"
                 }
               />
-            </div>
-
-            <Col span={24}>
               <div>{Forms[this.props.location.state?.current || this.state.current].content}</div>
             </Col>
           </Row>

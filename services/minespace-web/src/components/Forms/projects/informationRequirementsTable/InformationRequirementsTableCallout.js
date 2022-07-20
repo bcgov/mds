@@ -47,7 +47,7 @@ const InformationRequirementsTableCallout = (props) => {
   return (
     <Callout
       message={
-        <div className="bcgov-callout">
+        <div className="information-requirements-table-callout">
           <h4>{title}</h4>
           <p>{message}</p>
         </div>
