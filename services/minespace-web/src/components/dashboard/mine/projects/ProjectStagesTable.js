@@ -17,6 +17,7 @@ export class ProjectStagesTable extends Component {
       stage_status: stage.status,
       stage_status_hash: stage.statusHash,
       stage_required: stage.required,
+      navigate_to: stage.navigateTo,
       stage,
     }));
 
@@ -70,32 +71,29 @@ export class ProjectStagesTable extends Component {
               )}
             >
               <Button className="full-mobile margin-small" type="secondary">
-                Edit
+                Resume
               </Button>
             </Link>
           );
         }
         if (record.project_stage === "IRT") {
+          let buttonLabel;
+          if (!record.stage_status) {
+            buttonLabel = "Start";
+          } else if (record.stage_status === "APV") {
+            buttonLabel = "View";
+          } else {
+            buttonLabel = "Resume";
+          }
+
           link = (
-            <Link
-              to={
-                record.stage_status === "APV"
-                  ? {
-                      pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                        record.stage?.project_guid,
-                        record.stage?.payload?.irt_guid
-                      )}`,
-                      state: { current: 2 },
-                    }
-                  : routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                      record.stage?.project_guid
-                    )
-              }
+            <Button
+              className="full-mobile margin-small"
+              type="secondary"
+              onClick={() => record?.navigate_to()}
             >
-              <Button className="full-mobile margin-small" type="secondary">
-                {record.stage_status ? "View" : "Start"}
-              </Button>
-            </Link>
+              {buttonLabel}
+            </Button>
           );
         }
         return link;
