@@ -16,7 +16,7 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
-import InformationRequirementsTablePage from "./InformationRequirementsTablePage";
+import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -32,7 +32,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
-const tabs = ["overview", "irt", "toc", "application"];
+const tabs = ["overview", "irt-entry", "toc", "application"];
 
 export class ProjectPage extends Component {
   state = {
@@ -69,18 +69,21 @@ export class ProjectPage extends Component {
     }
   }
 
-  handleTabChange = (activeTab) => {
+  handleTabChange = (activeTab, irtStatus) => {
     this.setState({ activeTab });
     if (activeTab === "overview") {
       const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
       this.props.history.push(url);
-    } else if (activeTab === "intro-project-overview") {
-      const url = router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-        this.props.match.params?.projectGuid,
-        this.props.project?.information_requirements_table?.irt_guid,
-        activeTab
-      );
-      this.props.history.push({ pathname: url, state: { current: 2 } });
+    } else if (activeTab === "irt-entry") {
+      const url =
+        irtStatus === "APV"
+          ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              this.props.project.project_guid,
+              this.props.project.information_requirements_table?.irt_guid
+            )
+          : `/projects/${this.props.match.params?.projectGuid}/information-requirements-table/entry`;
+      const urlState = irtStatus === "APV" ? { state: { current: 2 } } : {};
+      this.props.history.push({ pathname: url, ...urlState });
     } else if (activeTab === "new") {
       const url = router.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
         this.props.match.params?.projectGuid
@@ -89,10 +92,29 @@ export class ProjectPage extends Component {
     }
   };
 
+  navigateFromIRTButton = (status) => {
+    if (status === "APV") {
+      return this.props.history.push({
+        pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          this.props.project.project_guid,
+          this.props.project.information_requirements_table?.irt_guid
+        ),
+        state: { current: 2 },
+      });
+    }
+    const irtTab = document.querySelector('[id*="irt-entry"]');
+    if (!irtTab) {
+      return null;
+    }
+    return irtTab.click();
+  };
+
   render() {
     const mineGuid = this.props.project.mine_guid;
     const mineName = this.props.mines[mineGuid]?.mine_name || "";
     const title = this.props.project?.project_title;
+    const irtStatus = this.props.project.information_requirements_table?.status_code;
+    const mrcReviewRequired = this.props.project?.mrc_review_required;
 
     return (
       (this.state.isLoaded && (
@@ -112,20 +134,22 @@ export class ProjectPage extends Component {
           </Row>
           <Row gutter={[0, 16]}>
             <Col span={24}>
-              <Tabs defaultActiveKey={tabs[0]} onChange={this.handleTabChange} type="card">
+              <Tabs
+                defaultActiveKey={tabs[0]}
+                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
+                type="card"
+              >
                 <Tabs.TabPane tab="Overview" key="overview">
-                  <ProjectOverviewTab />
+                  <ProjectOverviewTab irtNavigateTo={this.navigateFromIRTButton} />
                 </Tabs.TabPane>
-                {!IN_PROD() &&
-                  (this.props.project?.information_requirements_table?.status_code === "APV" ? (
-                    <Tabs.TabPane tab="IRT" key="intro-project-overview">
-                      <InformationRequirementsTablePage />
-                    </Tabs.TabPane>
-                  ) : (
-                    <Tabs.TabPane tab="IRT" key="new">
-                      <InformationRequirementsTablePage />
-                    </Tabs.TabPane>
-                  ))}
+                {!IN_PROD() && (
+                  <Tabs.TabPane tab="IRT" key="irt-entry">
+                    <InformationRequirementsTableEntryTab
+                      irt={this.props.project?.information_requirements_table}
+                      mrcReviewRequired={mrcReviewRequired}
+                    />
+                  </Tabs.TabPane>
+                )}
               </Tabs>
             </Col>
           </Row>
