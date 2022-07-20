@@ -33,7 +33,7 @@ const propTypes = {
   clearInformationRequirementsTable: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       projectGuid: PropTypes.string,
@@ -306,9 +306,25 @@ export class InformationRequirementsTablePage extends Component {
     });
   };
 
-  next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
+  next = () => {
+    if (this.props.location?.state?.current) {
+      this.setState(() => ({ current: this.props.location?.state?.current + 1 }));
+      // eslint-disable-next-line no-restricted-globals
+      this.props.history.replace(location.state, null);
+    } else {
+      this.setState((prevState) => ({ current: prevState.current + 1 }));
+    }
+  };
 
-  prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
+  prev = () => {
+    if (this.props.location?.state?.current) {
+      this.setState(() => ({ current: this.props.location?.state?.current - 1 }));
+      // eslint-disable-next-line no-restricted-globals
+      this.props.history.replace(location.state, null);
+    } else {
+      this.setState((prevState) => ({ current: prevState.current - 1 }));
+    }
+  };
 
   importIsSuccessful = () => {
     this.setState((state) => ({
@@ -404,12 +420,12 @@ export class InformationRequirementsTablePage extends Component {
             </Col>
             <Col span={12}>
               <div style={{ display: "inline", float: "right" }}>
-                <p>{Forms[this.props.location.state?.current || this.state.current].buttons}</p>
+                <p>{Forms[this.state.current].buttons}</p>
               </div>
             </Col>
           </Row>
           <Row>
-            <Steps current={this.props.location.state?.current || this.state.current}>
+            <Steps current={this.state.current}>
               {Forms.map((step) => (
                 <Steps.Step key={step.title} title={step.title} />
               ))}
@@ -422,7 +438,7 @@ export class InformationRequirementsTablePage extends Component {
                   this.props.project?.information_requirements_table?.status_code || "PRG"
                 }
               />
-              <div>{Forms[this.props.location.state?.current || this.state.current].content}</div>
+              <div>{Forms[this.state.current].content}</div>
             </Col>
           </Row>
         </>
