@@ -169,7 +169,9 @@ const StepForms = (
           type="primary"
           style={{ display: "inline", float: "right" }}
           htmlType="submit"
-          onClick={() => handleIRTUpdate({ status_code: "UNR" }, "IRT submitted ")}
+          onClick={() =>
+            handleIRTUpdate({ status_code: "UNR" }, "Final IRT submitted successfully.")
+          }
           disabled={state.submitting}
         >
           Submit IRT
