@@ -14,9 +14,14 @@ import { Typography, Row, Col } from "antd";
 import { bindActionCreators, compose } from "redux";
 import { withRouter } from "react-router-dom";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
+import { ENVIRONMENT } from "@common/constants/environment";
+import { CALLOUT_SEVERITY } from "@common/constants/strings";
+import * as API from "@common/constants/API";
 import * as FORM from "@/constants/forms";
 import { MODERN_EXCEL } from "@/constants/fileTypes";
 import DocumentTable from "@/components/common/DocumentTable";
+import Callout from "@/components/common/Callout";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -48,13 +53,36 @@ export class IRTFileImport extends Component {
     return this.props.change("final_irt", this.props.documents);
   };
 
+  downloadIRTTemplate = (url) => {
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.style.display = "none";
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+  };
+
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     return (
       <>
         <Row>
           <Col span={24}>
-            <Typography.Title level={4}>Import final IRT file</Typography.Title>
+            {this.props.project.information_requirements_table?.status_code === "CHR" && (
+              <Callout
+                severity={CALLOUT_SEVERITY.danger}
+                message={
+                  <div className="nod-callout">
+                    <h4>Action Required</h4>
+                    <p>
+                      Your submission requires changes, refer to the email from your project lead.
+                      Please review before submission.
+                    </p>
+                  </div>
+                }
+              />
+            )}
+            <Typography.Title level={4}>Import a new IRT</Typography.Title>
             <Typography.Paragraph>
               Please upload your final IRT file.
               <ul>
@@ -63,6 +91,20 @@ export class IRTFileImport extends Component {
                 <li>Maximum individual file size is 400 MB</li>
                 <li>You can only upload one file at a time</li>
               </ul>
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              Download the IRT template{" "}
+              <LinkButton
+                title="Download IRT"
+                onClick={() =>
+                  this.downloadIRTTemplate(
+                    ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
+                  )
+                }
+              >
+                here
+              </LinkButton>
+              .
             </Typography.Paragraph>
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
               <DocumentTable
