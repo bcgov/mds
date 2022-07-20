@@ -40,6 +40,13 @@ export const InformationRequirementsTableEntryTab = (props) => {
               `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
             ),
     };
+    if (irtHasChangesRequested) {
+      buttonContent.link = () =>
+        props.history.push({
+          pathname: `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`,
+          state: { current: 1 },
+        });
+    }
 
     const entryGraphic = (
       <Empty
