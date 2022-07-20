@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
+<Fragment>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title />
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Link
+        to="/projects/8132462392222/overview"
+      >
+        <ForwardRef(ArrowLeftOutlined)
+          className="padding-sm--right"
+        />
+        Back to Project Overview
+      </Link>
+    </Col>
+  </Row>
+  <Divider />
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title
+        level={4}
+      >
+        Information Requirements Table
+      </Title>
+    </Col>
+    <Col
+      span={24}
+    >
+      <div
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        <Row>
+          <Col
+            span={24}
+          >
+            <ForwardRef(CheckCircleOutlined)
+              style={
+                Object {
+                  "color": "green",
+                  "marginBottom": "3.5em",
+                  "marginTop": "7.0em",
+                  "transform": "scale(7.0)",
+                }
+              }
+            />
+          </Col>
+        </Row>
+        <br />
+        <Paragraph>
+          <Title
+            level={5}
+          >
+            Thank you, your IRT has been submitted!
+          </Title>
+          Your submission will soon be reviewed by the ministry.
+        </Paragraph>
+        <Paragraph>
+          You will be contacted when the status updates on your submission.
+        </Paragraph>
+        <div>
+          <p>
+            <Link
+              to="/projects/8132462392222/overview"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                Back to Project Overview
+              </Button>
+            </Link>
+          </p>
+          <p>
+            <Link
+              to={
+                Object {
+                  "pathname": "/projects/8132462392222/information-requirements-table/undefined/review/intro-project-overview",
+                  "state": Object {
+                    "current": 2,
+                  },
+                }
+              }
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+              >
+                View Application
+              </Button>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </Col>
+  </Row>
+</Fragment>
+`;

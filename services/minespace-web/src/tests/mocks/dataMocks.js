@@ -1101,6 +1101,7 @@ export const PROJECT = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   proponent_project_id: "Test-ID",
   project_summary: {},
+  information_requirements_table: {},
   contacts: [],
 };
 
