@@ -15,7 +15,6 @@ module.exports = {
     "airbnb",
     "prettier",
     "prettier/react",
-    "plugin:cypress/recommended",
   ],
   settings: {
     "import/resolver": {

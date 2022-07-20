@@ -3,7 +3,7 @@ const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 let { BASE_PATH } = process.env;
-let BUILD_DIR = process.env.BUILD_DIR || "build";
+let BUILD_DIR = process.env.BUILD_DIR || "../build";
 const VENDOR_DIR = process.env.VENDOR_DIR || "vendor";
 let PORT = process.env.PORT || 3000;
 if (dotenv.parsed) {
