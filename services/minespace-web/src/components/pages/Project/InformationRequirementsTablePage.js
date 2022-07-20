@@ -121,7 +121,7 @@ const StepForms = (
     title: "Review & Submit",
     content: (
       <>
-        <Typography.Title level={4}>Review and Submit</Typography.Title>
+        <Typography.Title level={4}>Review IRT before submission</Typography.Title>
         <Callout
           message={
             <>
@@ -249,7 +249,16 @@ export class InformationRequirementsTablePage extends Component {
       .then(() => {
         this.handleFetchData();
         this.setState({ submitting: false });
-      });
+      })
+      .then(() =>
+        this.props.history.push({
+          pathname: `${routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.dynamicRoute(
+            projectGuid,
+            informationRequirementsTableGuid
+          )}`,
+          state: { project: this.props.project },
+        })
+      );
   };
 
   render() {
