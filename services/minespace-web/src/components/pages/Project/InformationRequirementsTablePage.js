@@ -11,6 +11,7 @@ import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
 
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
+import { openModal } from "@common/actions/modalActions";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
 import {
   fetchProjectById,
@@ -22,6 +23,7 @@ import { getInformationRequirementsTableDocumentTypesHash } from "@common/select
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
 import IRTFileImport from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
 import { InformationRequirementsTableForm } from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
+import modalConfig from "@/components/modalContent/config";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -45,6 +47,7 @@ const propTypes = {
       current: PropTypes.number,
     },
   }).isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 const tabs = [
@@ -67,7 +70,8 @@ const StepForms = (
   handleTabChange,
   handleIRTUpdate,
   importIsSuccessful,
-  downloadIRTTemplate
+  downloadIRTTemplate,
+  openViewFileHistoryModal
 ) => [
   {
     title: "Download Template",
@@ -252,7 +256,12 @@ const StepForms = (
               Download IRT template
             </Button>
 
-            <Button type="ghost" style={{ border: "none" }} className="full-mobile">
+            <Button
+              type="ghost"
+              style={{ border: "none" }}
+              className="full-mobile"
+              onClick={(event) => openViewFileHistoryModal(event)}
+            >
               <HourglassOutlined />
               File History
             </Button>
@@ -372,6 +381,18 @@ export class InformationRequirementsTablePage extends Component {
     anchor.remove();
   };
 
+  openViewFileHistoryModal = () => {
+    this.props.openModal({
+      props: {
+        project: this.props.project,
+        title: " View File History",
+        documentCategoryOptionsHash: this.props.informationRequirementsTableDocumentTypesHash,
+        width: 650,
+      },
+      content: modalConfig.VIEW_FILE_HISTORY,
+    });
+  };
+
   render() {
     const title =
       this.props.project.information_requirements_table?.status_code !== "PRG"
@@ -386,7 +407,8 @@ export class InformationRequirementsTablePage extends Component {
       this.handleTabChange,
       this.handleIRTUpdate,
       this.importIsSuccessful,
-      this.downloadIRTTemplate
+      this.downloadIRTTemplate,
+      this.openViewFileHistoryModal
     );
 
     return (
@@ -462,6 +484,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectById,
       fetchRequirements,
       updateInformationRequirementsTable,
+      openModal,
     },
     dispatch
   );
