@@ -56,7 +56,7 @@ export const DocumentTable = (props) => {
     render: (text) => <div title="Date/Time">{formatDateTime(text) || Strings.EMPTY_FIELD}</div>,
   };
 
-  const ImportedByColumn = {
+  const importedByColumn = {
     title: "Imported By",
     dataIndex: "create_user",
     render: (text) => (text ? <div title="User">{text}</div> : null),
@@ -64,7 +64,7 @@ export const DocumentTable = (props) => {
 
   if (props.documentParent === "Information Requirements Table") {
     columns.push(uploadDateTimeColumn);
-    columns.push(ImportedByColumn);
+    columns.push(importedByColumn);
   } else {
     columns.push(uploadDateColumn);
   }

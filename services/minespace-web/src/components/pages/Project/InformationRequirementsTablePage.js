@@ -54,12 +54,12 @@ const tabs = [
   "introduction-and-project-overview",
   "baseline-information",
   "mine-plan",
-  "reclamation-closure-plan",
-  "modelling-mitigation-discharges",
+  "reclamation-and-closure-plan",
+  "modelling-mitigation-and-discharges",
   "environmental-assessment-predictions",
   "environmental-monitoring",
-  "health-safety",
-  "management-plan",
+  "health-and-safety",
+  "management-plans",
 ];
 
 const StepForms = (
