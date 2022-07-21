@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { flatMap, uniq } from "lodash";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
@@ -29,6 +29,7 @@ import { modalConfig } from "@/components/modalContent/config";
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
   minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
+  // eslint-disable-next-line react/forbid-prop-types
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
@@ -46,36 +47,62 @@ const defaultProps = {
   minespaceUserEmailHash: {},
 };
 
-export class MinespaceUserManagement extends Component {
-  state = { isLoaded: false };
+export const MinespaceUserManagement = (props) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { minespaceUsers, minespaceUserMines, minespaceUserEmailHash } = props;
 
-  componentDidMount() {
-    this.props.fetchMineNameList().then(() => {
-      this.setState({ isLoaded: true });
-    });
-    this.refreshUserData();
-  }
+  useEffect(() => {
+    props.fetchMineNameList();
+    props.fetchMinespaceUsers();
+  }, []);
 
-  handleDelete = (userId) => {
-    this.props.deleteMinespaceUser(userId).then(() => {
-      this.props.fetchMinespaceUsers();
+  useEffect(() => {
+    if (minespaceUsers.length > 0) {
+      const mine_guids = uniq(flatMap(minespaceUsers, (user) => user.mines));
+      props.fetchMinespaceUserMines(mine_guids);
+    }
+  }, [minespaceUsers]);
+
+  useEffect(() => {
+    if (minespaceUserMines.length > 0) {
+      setIsLoaded(true);
+    }
+  }, [minespaceUserMines]);
+
+  const handleDelete = (userId) => {
+    props.deleteMinespaceUser(userId).then(() => {
+      props.fetchMinespaceUsers();
     });
   };
 
-  handleCreateUser = (values) => {
-    this.props.createMinespaceUser(values).then(() => {
-      this.refreshUserData();
+  const refreshUserData = () => {
+    props.fetchMinespaceUsers().then(() => {
+      const mine_guids = flatMap(minespaceUsers, (user) => user.mines);
+      props.fetchMinespaceUserMines(uniq(mine_guids));
     });
   };
 
-  handleOpenModal = (e, record) => {
-    this.props.openModal({
+  const handleUpdate = (record) => {
+    props.updateMinespaceUserMines(record.user_id, record).then(() => {
+      props.closeModal();
+      refreshUserData();
+    });
+  };
+
+  const handleCreateUser = (values) => {
+    props.createMinespaceUser(values).then(() => {
+      refreshUserData();
+    });
+  };
+
+  const handleOpenModal = (e, record) => {
+    props.openModal({
       props: {
         title: `Update User: ${record.email_or_username}`,
-        closeModal: this.props.closeModal,
+        closeModal: props.closeModal,
         initialValues: record,
-        handleSubmit: this.handleUpdate,
-        refreshData: this.refreshUserData,
+        handleSubmit: handleUpdate,
+        refreshData: refreshUserData,
         afterClose: () => {},
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
@@ -83,44 +110,28 @@ export class MinespaceUserManagement extends Component {
     });
   };
 
-  handleUpdate = (record) => {
-    this.props.updateMinespaceUserMines(record.user_id, record).then(() => {
-      this.props.closeModal();
-      this.refreshUserData();
-    });
-  };
-
-  refreshUserData = () => {
-    this.props.fetchMinespaceUsers().then(() => {
-      const mine_guids = flatMap(this.props.minespaceUsers, (user) => user.mines);
-      this.props.fetchMinespaceUserMines(uniq(mine_guids));
-    });
-  };
-
-  render() {
-    return (
-      <div className="tab__content">
-        <h2>MineSpace User Management</h2>
-        <Divider />
-        <br />
-        <NewMinespaceUser
-          handleSubmit={this.handleCreateUser}
-          minespaceUserEmailHash={this.props.minespaceUserEmailHash}
-          refresdata={this.refreshUserData}
-          handleSearch={this.ha}
-        />
-        <h3>MineSpace Users</h3>
-        <MinespaceUserList
-          isLoaded={this.state.isLoaded}
-          minespaceUsers={this.props.minespaceUsers}
-          minespaceUserMines={this.props.minespaceUserMines}
-          handleDelete={this.handleDelete}
-          handleOpenModal={this.handleOpenModal}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="tab__content">
+      <h2>MineSpace User Management</h2>
+      <Divider />
+      <br />
+      <NewMinespaceUser
+        handleSubmit={handleCreateUser}
+        minespaceUserEmailHash={minespaceUserEmailHash}
+        refresdata={refreshUserData}
+        handleSearch={handleUpdate}
+      />
+      <h3>MineSpace Users</h3>
+      <MinespaceUserList
+        isLoaded={isLoaded}
+        minespaceUsers={minespaceUsers}
+        minespaceUserMines={minespaceUserMines}
+        handleDelete={handleDelete}
+        handleOpenModal={handleOpenModal}
+      />
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   mines: getMineNames(state),

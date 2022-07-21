@@ -1,33 +1,34 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Field, change, formValueSelector, reduxForm } from "redux-form";
+import { bindActionCreators, compose } from "redux";
 import PropTypes from "prop-types";
 import customPropTypes from "@/customPropTypes";
-import { Field, change, formValueSelector, reduxForm } from "redux-form";
+import { Alert, Typography, Row, Col } from "antd";
+import { Form } from "@ant-design/compatible";
+import { remove } from "lodash";
+import * as FORM from "@/constants/forms";
+import { ENVIRONMENT } from "@common/constants/environment";
+import LinkButton from "@/components/common/LinkButton";
+import * as API from "@common/constants/API";
+import { MODERN_EXCEL } from "@/constants/fileTypes";
+import DocumentTable from "@/components/common/DocumentTable";
 import {
   createInformationRequirementsTable,
   updateInformationRequirementsTableByFile,
 } from "@common/actionCreators/projectActionCreator";
 import { getProject } from "@common/selectors/projectSelectors";
-import { Form } from "@ant-design/compatible";
-import { connect } from "react-redux";
-import { remove } from "lodash";
-import { Typography, Row, Col } from "antd";
-import { bindActionCreators, compose } from "redux";
-import { withRouter } from "react-router-dom";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
-import { ENVIRONMENT } from "@common/constants/environment";
 import { CALLOUT_SEVERITY } from "@common/constants/strings";
-import * as API from "@common/constants/API";
-import * as FORM from "@/constants/forms";
-import { MODERN_EXCEL } from "@/constants/fileTypes";
-import DocumentTable from "@/components/common/DocumentTable";
 import Callout from "@/components/common/Callout";
-import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
   createInformationRequirementsTable: PropTypes.func.isRequired,
   updateInformationRequirementsTableByFile: PropTypes.func.isRequired,
   importIsSuccessful: PropTypes.func.isRequired,
+  downloadIRTTemplate: PropTypes.func.isRequired,
   project: customPropTypes.project.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -93,18 +94,17 @@ export class IRTFileImport extends Component {
               </ul>
             </Typography.Paragraph>
             <Typography.Paragraph>
-              Download the IRT template{" "}
+              Download{" "}
               <LinkButton
-                title="Download IRT"
-                onClick={() =>
-                  this.downloadIRTTemplate(
+                onClick={() => {
+                  this.props.downloadIRTTemplate(
                     ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
-                  )
-                }
+                  );
+                }}
               >
-                here
-              </LinkButton>
-              .
+                IRT template
+              </LinkButton>{" "}
+              here.
             </Typography.Paragraph>
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
               <DocumentTable
@@ -116,6 +116,16 @@ export class IRTFileImport extends Component {
                 categoryDataIndex="information_requirements_table_document_type_code"
                 uploadDateIndex="upload_date"
               />
+              <br />
+              {this.props.project?.information_requirements_table?.status_code === "REC" && (
+                <Alert
+                  message="Re-uploading a new file will replace all the data imported from the current final IRT."
+                  description=""
+                  type="info"
+                  showIcon
+                />
+              )}
+              <br />
               <Field
                 id="final_irt"
                 name="final_irt"
