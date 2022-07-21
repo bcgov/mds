@@ -19,7 +19,7 @@ def test_get_mines_by_list(test_client, db_session, auth_headers):
         'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
-    assert get_data['mines'] == []
+    assert get_data['mines'][0] == context
 
 
 def test_get_mines_by_list_search_by_name(test_client, db_session, auth_headers):
@@ -39,7 +39,7 @@ def test_get_mines_by_list_search_by_name(test_client, db_session, auth_headers)
         'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
-    assert get_data['mines'] == []
+    assert get_data['mines'][0] == context
     
 
 
