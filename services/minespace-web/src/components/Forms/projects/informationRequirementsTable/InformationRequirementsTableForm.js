@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Row, Col, Tabs } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import ReviewSubmitInformationRequirementsTable from "@/components/Forms/projects/informationRequirementsTable/ReviewSubmitInformationRequirementsTable";
 
 const propTypes = {
@@ -12,24 +12,13 @@ const propTypes = {
   requirements: CustomPropTypes.requirements.isRequired,
   tab: PropTypes.string.isRequired,
   handleTabChange: PropTypes.func.isRequired,
+  sideMenuOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-
-const tabs = [
-  "intro-project-overview",
-  "baseline-information",
-  "mine-plan",
-  "reclamation-closure-plan",
-  "modelling-mitigation-discharges",
-  "environmental-assessment-predictions",
-  "environmental-monitoring",
-  "health-safety",
-  "management-plan",
-];
 
 export class InformationRequirementsTableForm extends Component {
   state = {
     tabIndex: 0,
-    activeTab: tabs[0],
+    activeTab: this.props.sideMenuOptions ? this.props.sideMenuOptions[0] : null,
   };
 
   mergedRequirements = [];
@@ -41,14 +30,14 @@ export class InformationRequirementsTableForm extends Component {
         ({ deleted_ind }) => deleted_ind === false
       )
     );
-    this.setState({ tabIndex: tabs.indexOf(this.props.tab) });
+    this.setState({ tabIndex: this.props.sideMenuOptions.indexOf(this.props.tab) });
   }
 
   componentWillUpdate(nextProps) {
     const tabChanged = nextProps.tab !== this.props.tab;
     if (tabChanged) {
       // eslint-disable-next-line react/no-will-update-set-state
-      this.setState({ tabIndex: tabs.indexOf(nextProps.tab) });
+      this.setState({ tabIndex: this.props.sideMenuOptions.indexOf(nextProps.tab) });
     }
   }
 
@@ -73,11 +62,11 @@ export class InformationRequirementsTableForm extends Component {
             <Tabs
               tabPosition="left"
               activeKey={this.state.activeTab}
-              defaultActiveKey={tabs[0]}
+              defaultActiveKey={this.props.sideMenuOptions[0]}
               onChange={(tab) => this.props.handleTabChange(tab)}
               className="vertical-tabs"
             >
-              {tabs.map((tab) => {
+              {this.props.sideMenuOptions.map((tab) => {
                 return (
                   <Tabs.TabPane
                     tab={formatUrlToUpperCaseString(tab)}

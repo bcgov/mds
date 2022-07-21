@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { Table } from "antd";
 import { formatDate, formatDateTime, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -40,27 +41,32 @@ export const DocumentTable = (props) => {
       dataIndex: props.categoryDataIndex,
       render: (text) => <div title="Category">{props.documentCategoryOptionsHash[text]}</div>,
     },
-    {
-      title: "Upload Date",
-      dataIndex: props.uploadDateIndex,
-      render: (text) => (
-        <div title="Upload Date">
-          {props.documentParent === "Information Requirements Table"
-            ? formatDateTime(text)
-            : formatDate(text) || Strings.EMPTY_FIELD}
-        </div>
-      ),
-    },
   ];
 
-  const userColumn = {
-    title: "User",
+  const uploadDateColumn = {
+    title: "Upload Date",
+    dataIndex: props.uploadDateIndex,
+    render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+  };
+
+  const uploadDateTimeColumn = {
+    title: "Date/Time",
+    dataIndex: props.uploadDateIndex,
+    sorter: (a, b) => (moment(a.uploadDateIndex) > moment(b.uploadDateIndex) ? -1 : 1),
+    render: (text) => <div title="Date/Time">{formatDateTime(text) || Strings.EMPTY_FIELD}</div>,
+  };
+
+  const importedByColumn = {
+    title: "Imported By",
     dataIndex: "create_user",
     render: (text) => (text ? <div title="User">{text}</div> : null),
   };
 
   if (props.documentParent === "Information Requirements Table") {
-    columns.push(userColumn);
+    columns.push(uploadDateTimeColumn);
+    columns.push(importedByColumn);
+  } else {
+    columns.push(uploadDateColumn);
   }
 
   return (
