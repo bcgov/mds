@@ -243,6 +243,9 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         if (is_minespace_user()):
             mines_q = mines_q.limit(100)
 
+        if (is_minespace_user()):
+            mines_q = mines_q.limit(100)
+
         if not (is_minespace_user()):
             mines_q = mines_q.limit(100)
 
