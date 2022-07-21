@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
-import { Row, Col, Button, Typography, Steps } from "antd";
+import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
 import { ArrowLeftOutlined, DownloadOutlined, HourglassOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
-
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { openModal } from "@common/actions/modalActions";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
@@ -209,17 +209,26 @@ const StepForms = (
                 props.project?.information_requirements_table?.irt_guid
               )}
             >
-              <Button
-                id="submit_irt"
-                type="primary"
-                htmlType="submit"
-                onClick={() => {
-                  handleIRTUpdate({ status_code: "REC" }, "IRT submitted ");
-                }}
-                disabled={state.submitting}
-              >
-                Submit IRT
-              </Button>
+              <AuthorizationWrapper>
+                <Popconfirm
+                  placement="topRight"
+                  title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
+                  onConfirm={() =>
+                    handleIRTUpdate(
+                      {
+                        status_code: "REC",
+                      },
+                      "Successfully submitted final IRT."
+                    )
+                  }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button id="submit_irt" type="primary">
+                    Submit IRT
+                  </Button>
+                </Popconfirm>
+              </AuthorizationWrapper>
             </Link>
           </>
         ) : (
