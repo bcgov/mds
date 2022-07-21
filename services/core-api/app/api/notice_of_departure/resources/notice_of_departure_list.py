@@ -8,6 +8,7 @@ from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDepar
 from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NOD_MODEL, NOD_CONTACT_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.notice_of_departure.utils.validators import contact_validator
+from app.api.activity.utils import trigger_notifcation
 
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
@@ -55,7 +56,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
         permit_guid = args.get('permit_guid')
         mine_guid = args.get('mine_guid')
         page = args.get('page')
-        per_page = args.get('per_page') if args.get('per_page') else 10 # default per page is 10
+        per_page = args.get('per_page') if args.get('per_page') else 10  # default per page is 10
 
         order_by = str(OrderBy.update_timestamp) if args.get('order_by') == None else str(
             args.get('order_by'))
@@ -140,5 +141,9 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             if data.get('nod_status') == None else data.get('nod_status'))
 
         new_nod.save()
+
+        mine = permit._context_mine
+
+        trigger_notifcation(f'Notice of Departure Submitted for {mine.mine_name}', mine, 'NoticeOfDeparture', new_nod.nod_guid)
 
         return new_nod

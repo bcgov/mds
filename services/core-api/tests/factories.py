@@ -1,4 +1,5 @@
 import uuid
+import json
 from datetime import datetime
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
@@ -56,6 +57,7 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.activity.models.activity_notification import ActivityNotification
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -70,7 +72,7 @@ def create_mine_and_permit(mine_kwargs={},
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     for x in range(num_permits):
         permit = PermitFactory(_context_mine=mine, **permit_kwargs)
-        permit._all_mines.append(mine)           ##create mine_permit_xref
+        permit._all_mines.append(mine)  # create mine_permit_xref
         PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
         permit._context_mine = mine              # possibly redundant
     return mine, permit
@@ -96,11 +98,8 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'flush'
 
-
 from tests.now_submission_factories import *
 from tests.now_application_factories import *
-
-
 class MineDocumentFactory(BaseFactory):
     class Meta:
         model = MineDocument
@@ -419,7 +418,7 @@ class MineReportFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
-    )                                                                        #None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
     received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,

@@ -1,4 +1,5 @@
-import uuid, random
+import uuid
+import random
 from datetime import datetime
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
@@ -48,6 +49,7 @@ def randomNOWOriginatingSystem():
 def randomNOWApplicationType():
     return random.choice(['New Permit', 'Amendment'])
 
+
 def randomDrillProgramOptions():
     return random.choice(['Ground supported', 'Helicopter supported', 'Water supported', 'Combination of above'])
 
@@ -79,7 +81,7 @@ class NOWSubmissionFactory(BaseFactory):
             cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),
             fuellubstoreonsite=factory.LazyFunction(randomYesNo)
-        )                                                               #details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
+        )  # details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
 
         blasting_operation = factory.Trait(
             bcexplosivespermitissued=factory.LazyFunction(randomYesNo),
