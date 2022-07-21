@@ -385,6 +385,8 @@ MINE_SEARCH_MODEL = api.model(
         'longitude': fields.String(default=''),
         'mine_guid': fields.String,
         'mine_location_description': fields.String(default=''),
+        'deleted_ind': fields.Boolean,
+        'major_mine_ind': fields.Boolean
     })
 
 MINE_LIST_MODEL = api.model(
