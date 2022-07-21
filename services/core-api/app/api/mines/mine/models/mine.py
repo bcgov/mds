@@ -234,25 +234,20 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_mine_name(cls, term=None, major=None):
-        mine_table = table(Mine.__tablename__, column('latitude'), column('longitude'), column('mine_guid'),
-                           column('mine_location_description'), column('mine_name'), column('mine_no'),
-                           column('deleted_ind'), column('major_mine_ind'))
-
-        mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
-
-        if (is_minespace_user()):
-            mines_q = mines_q.limit(100)
-
+        MINE_LIST_RESULT_LIMIT = None if is_minespace_user() else 50
         if term:
-            mines_q = mines_q.where(mine_table.c.mine_name.ilike('%{}%'.format(term)))
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
+        else:
+            mines_q = Mine.query
 
         if major is not None:
-            mines_q = mines_q.where(mine_table.c.major_mine_ind == major)
+            mines_q = mines_q.filter_by(major_mine_ind=major)
 
-        connection = db.engine.connect()
-        results = connection.execute(mines_q).fetchall()
+        response = mines_q.limit(
+            MINE_LIST_RESULT_LIMIT).all() if MINE_LIST_RESULT_LIMIT else mines_q.all()
 
-        return results
+        return response
 
     @classmethod
     def find_by_name_no_permit(cls, term=None, major=None):
