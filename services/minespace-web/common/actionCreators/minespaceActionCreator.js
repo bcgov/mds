@@ -63,14 +63,17 @@ export const fetchMinespaceUserMines = (mine_guids) => (dispatch) => {
     .post(
       ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST,
       { mine_guids, simple: true },
-      createRequestHeader()
+      createRequestHeader({ timeout: 60000 })
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINESPACE_USER_MINES));
       dispatch(minespaceActions.storeMinespaceUserMineList(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINESPACE_USER_MINES)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => {
+      dispatch(hideLoading());
+      return true;
+    });
 };
 
 export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
