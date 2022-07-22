@@ -55,9 +55,16 @@ export const ADD_INFORMATION_REQUIREMENTS_TABLE = {
   component: InformationRequirementsTablePage,
 };
 
+export const RESUBMIT_INFORMATION_REQUIREMENTS_TABLE = {
+  route: "/projects/:projectGuid/information-requirements-table/:irtGuid/resubmit",
+  dynamicRoute: (projectGuid, irtGuid) =>
+    `/projects/${projectGuid}/information-requirements-table/${irtGuid}/resubmit`,
+  component: InformationRequirementsTablePage,
+};
+
 export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
   route: "/projects/:projectGuid/information-requirements-table/:irtGuid/review/:tab",
-  dynamicRoute: (projectGuid, irtGuid, tab = "intro-project-overview") =>
+  dynamicRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
   component: InformationRequirementsTablePage,
 };

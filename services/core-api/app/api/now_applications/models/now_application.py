@@ -21,6 +21,7 @@ from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from flask import current_app
 
 
 class NOWApplication(Base, AuditMixin):
@@ -253,19 +254,22 @@ class NOWApplication(Base, AuditMixin):
     def active_permit(self):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
-            permit_amendment_status_code='ACT').one_or_none()
+            permit_amendment_status_code='ACT',
+            deleted_ind=False).one_or_none()
 
     @hybrid_property
     def draft_permit(self):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
-            permit_amendment_status_code='DFT').one_or_none()
+            permit_amendment_status_code='DFT',
+            deleted_ind=False).one_or_none()
 
     @hybrid_property
     def remitted_permit(self):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
-            permit_amendment_status_code='RMT').one_or_none()
+            permit_amendment_status_code='RMT',
+            deleted_ind=False).one_or_none()
 
     @hybrid_property
     def permit(self):

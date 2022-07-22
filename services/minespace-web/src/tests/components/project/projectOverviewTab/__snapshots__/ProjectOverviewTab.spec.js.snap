@@ -116,6 +116,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           },
           Object {
             "key": undefined,
+            "navigateTo": [Function],
             "payload": Object {
               "project_guid": "66d7e698-8820-456f-ac32-14917f3ebe88",
               "requirements": Array [

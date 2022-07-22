@@ -10,6 +10,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
   <Divider />
   <br />
   <Connect(NewMinespaceUser)
+    handleSearch={[Function]}
     handleSubmit={[Function]}
     minespaceUserEmailHash={Object {}}
     refresdata={[Function]}

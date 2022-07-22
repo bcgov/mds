@@ -29,6 +29,7 @@ const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  irtNavigateTo: PropTypes.func.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -94,6 +95,8 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         required: this.props.project.mrc_review_required,
+        navigateTo: () =>
+          this.props.irtNavigateTo(this.props.informationRequirementsTable.status_code),
       });
     }
     // TODO: Add in ToC here
