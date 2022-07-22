@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`NoticeOfWorkTable renders properly 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
-`;

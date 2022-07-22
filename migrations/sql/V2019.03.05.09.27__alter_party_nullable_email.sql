@@ -1,2 +1,0 @@
-ALTER TABLE party
-ALTER email DROP NOT NULL;

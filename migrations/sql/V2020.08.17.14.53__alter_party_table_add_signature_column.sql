@@ -1,1 +1,0 @@
-ALTER TABLE party ADD "signature" text NULL;

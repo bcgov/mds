@@ -1,1 +1,0 @@
-ALTER TABLE mine_tailings_storage_facility ADD COLUMN IF NOT EXISTS notes varchar;

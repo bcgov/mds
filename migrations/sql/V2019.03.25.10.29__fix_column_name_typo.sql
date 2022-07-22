@@ -1,1 +1,0 @@
-ALTER TABLE application RENAME COLUMN recieved_date TO received_date;

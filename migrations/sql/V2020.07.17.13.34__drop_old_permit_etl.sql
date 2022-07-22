@@ -1,1 +1,0 @@
-DROP FUNCTION IF EXISTS transfer_permit_permitee_information();

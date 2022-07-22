@@ -1,2 +1,0 @@
-ALTER table NOW_Submissions.surface_bulk_sample_activity ADD column QUANTITY bigint;
-ALTER table MMS_NOW_Submissions.surface_bulk_sample_activity ADD column QUANTITY bigint;

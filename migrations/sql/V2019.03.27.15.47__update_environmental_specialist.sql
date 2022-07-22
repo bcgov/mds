@@ -1,1 +1,0 @@
-update mine_party_appt_type_code set description='Environmental Manager' where mine_party_appt_type_code='EVS';

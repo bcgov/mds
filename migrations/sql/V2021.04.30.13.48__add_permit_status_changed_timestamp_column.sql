@@ -1,1 +1,0 @@
-ALTER TABLE permit ADD COLUMN IF NOT EXISTS status_changed_timestamp timestamptz;

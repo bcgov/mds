@@ -1,1 +1,0 @@
-ALTER Table water_supply_detail ALTER COLUMN estimate_rate TYPE NUMERIC(14,7);

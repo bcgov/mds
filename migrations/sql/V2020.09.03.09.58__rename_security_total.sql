@@ -1,1 +1,0 @@
-ALTER TABLE permit_amendment RENAME COLUMN security_total TO security_adjustment;

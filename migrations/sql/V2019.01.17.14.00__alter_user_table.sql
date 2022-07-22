@@ -1,1 +1,0 @@
-ALTER TABLE minespace_user ALTER COLUMN email TYPE character varying (254)

@@ -1,2 +1,0 @@
-ALTER TABLE underground_exploration
-DROP COLUMN underground_exploration_type_code;

@@ -1,1 +1,0 @@
-ALTER TABLE now_application RENAME COLUMN security_total TO security_adjustment;

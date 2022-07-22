@@ -1,1 +1,0 @@
-DELETE FROM public.now_application_identity where messageid is null and mms_cid is null and now_application_id is null;

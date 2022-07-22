@@ -1,1 +1,0 @@
-ALTER TABLE state_of_land ADD COLUMN legal_description_land varchar;

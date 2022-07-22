@@ -1,1 +1,0 @@
-delete from flyway_schema_history where script='V2019.02.07.02.27__alter_expected_document_status.sql';

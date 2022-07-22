@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`RedirectRoute  renders properly 1`] = `
-<Route
-  path="/"
-  redirectTo="/dashboard/mines/?page=1&per_page=25"
-  render={[Function]}
-/>
-`;

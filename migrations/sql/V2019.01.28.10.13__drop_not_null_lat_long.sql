@@ -1,2 +1,0 @@
-ALTER TABLE mine_location ALTER COLUMN latitude DROP NOT NULL;
-ALTER TABLE mine_location ALTER COLUMN longitude DROP NOT NULL;

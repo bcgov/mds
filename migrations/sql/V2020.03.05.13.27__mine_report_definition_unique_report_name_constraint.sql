@@ -1,1 +1,0 @@
-ALTER TABLE mine_report_definition ADD CONSTRAINT mine_report_definition_report_name_unique UNIQUE (report_name);

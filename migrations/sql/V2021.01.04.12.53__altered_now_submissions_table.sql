@@ -1,1 +1,0 @@
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS isonprivateland varchar;

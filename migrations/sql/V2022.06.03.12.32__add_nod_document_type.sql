@@ -1,1 +1,0 @@
-ALTER TYPE nod_document_type ADD VALUE 'decision';
