@@ -137,6 +137,18 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
+    path="/projects/:projectGuid/information-requirements-table/:irtGuid/success"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
     path="/projects/:projectGuid/:tab"
   />
   <Route

@@ -42,26 +42,21 @@ class InformationRequirementsTableResource(Resource, UserMixin):
         import_file = request.files.get('file')
         document_guid = request.form.get('document_guid')
         data = request.json
-
         try:
             irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
             if irt is None:
                 raise NotFound('Information Requirements Table (IRT) not found.')
-
             if import_file and document_guid:
                 sanitized_irt_requirements = InformationRequirementsTableListResource.build_irt_payload_from_excel(
                     import_file)
                 irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
                 return irt_updated
-
             irt_updated = irt.update(data)
             if irt.status_code != 'APV' and data['status_code'] == 'APV':
                 irt.send_irt_approval_email()
             elif irt.status_code != 'REC' and data['status_code'] == 'REC':
                 irt.send_irt_submit_email()
-
             return irt_updated
-
         except BadRequest as err:
             raise err
 

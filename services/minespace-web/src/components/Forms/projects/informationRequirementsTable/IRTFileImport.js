@@ -4,21 +4,21 @@ import { withRouter } from "react-router-dom";
 import { Field, change, formValueSelector, reduxForm } from "redux-form";
 import { bindActionCreators, compose } from "redux";
 import PropTypes from "prop-types";
-import customPropTypes from "@/customPropTypes";
 import { Alert, Typography, Row, Col } from "antd";
 import { Form } from "@ant-design/compatible";
 import { remove } from "lodash";
-import * as FORM from "@/constants/forms";
 import { ENVIRONMENT } from "@common/constants/environment";
-import LinkButton from "@/components/common/LinkButton";
 import * as API from "@common/constants/API";
-import { MODERN_EXCEL } from "@/constants/fileTypes";
-import DocumentTable from "@/components/common/DocumentTable";
 import {
   createInformationRequirementsTable,
   updateInformationRequirementsTableByFile,
 } from "@common/actionCreators/projectActionCreator";
 import { getProject } from "@common/selectors/projectSelectors";
+import * as FORM from "@/constants/forms";
+import LinkButton from "@/components/common/LinkButton";
+import { MODERN_EXCEL } from "@/constants/fileTypes";
+import DocumentTable from "@/components/common/DocumentTable";
+import customPropTypes from "@/customPropTypes";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 
 const propTypes = {

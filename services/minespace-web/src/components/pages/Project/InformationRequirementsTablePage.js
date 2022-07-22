@@ -5,11 +5,8 @@ import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
 import { ArrowLeftOutlined, DownloadOutlined, HourglassOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as routes from "@/constants/routes";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { openModal } from "@common/actions/modalActions";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
@@ -18,8 +15,11 @@ import {
   fetchRequirements,
   updateInformationRequirementsTable,
 } from "@common/actionCreators/projectActionCreator";
-import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
 import { getInformationRequirementsTableDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as routes from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
 import IRTFileImport from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
 import { InformationRequirementsTableForm } from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
@@ -168,7 +168,13 @@ const StepForms = (
     content: (
       <>
         {props.project?.information_requirements_table?.status_code === "PRG" ? (
-          <Typography.Title level={4}>Review IRT before submission</Typography.Title>
+          <>
+            <Typography.Title level={4}>Review IRT before submission</Typography.Title>
+            <Typography.Text>
+              Review imported data before submission. Check the requirements and comments fields
+              that are required for the project.
+            </Typography.Text>
+          </>
         ) : null}
         <InformationRequirementsTableForm
           project={props.project}
@@ -378,7 +384,16 @@ export class InformationRequirementsTablePage extends Component {
       .then(() => {
         this.handleFetchData();
         this.setState({ submitting: false });
-      });
+      })
+      .then(() =>
+        this.props.history.push({
+          pathname: `${routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.dynamicRoute(
+            projectGuid,
+            informationRequirementsTableGuid
+          )}`,
+          state: { project: this.props.project },
+        })
+      );
   };
 
   downloadIRTTemplate = (url) => {

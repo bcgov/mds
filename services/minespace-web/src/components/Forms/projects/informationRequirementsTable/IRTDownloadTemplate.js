@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { ENVIRONMENT } from "@common/constants/environment";
-import LinkButton from "@/components/common/LinkButton";
 import * as API from "@common/constants/API";
+import LinkButton from "@/components/common/LinkButton";
 
 export class IRTDownloadTemplate extends Component {
   downloadIRTTemplate = (url) => {
