@@ -60,7 +60,7 @@ describe("`fetchMinespaceUserMines` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, { mine_guids }).reply(200, mockResponse);
+    mockAxios.onPost(url, { mine_guids, simple: true }).reply(200, mockResponse);
     return fetchMinespaceUserMines(mine_guids)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
