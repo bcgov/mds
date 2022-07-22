@@ -7,6 +7,8 @@ import { ArrowLeftOutlined, DownloadOutlined, HourglassOutlined } from "@ant-des
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
+import { cleanFilePondFile } from "@common/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
 import { openModal } from "@common/actions/modalActions";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
@@ -17,7 +19,6 @@ import {
 } from "@common/actionCreators/projectActionCreator";
 import { getInformationRequirementsTableDocumentTypesHash } from "@common/selectors/staticContentSelectors";
 import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
@@ -105,61 +106,34 @@ const StepForms = (
     ),
     buttons: [
       <>
-        {props.project.information_requirements_table?.status_code !== "PRG" ? (
-          <>
-            <Button
-              id="step2-next"
-              type="primary"
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project?.project_guid,
-                    props.project?.information_requirements_table?.irt_guid
-                  )}`,
-                  state: { current: 2 },
-                });
-              }}
-              disabled={
-                !state.uploadedSuccessfully &&
-                !props.project?.information_requirements_table?.irt_guid
-              }
-            >
-              Continue to Review
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              id="step-back"
-              type="tertiary"
-              className="full-mobile"
-              style={{ marginRight: "12px" }}
-              onClick={() => prev()}
-              disabled={state.submitting}
-            >
-              Back
-            </Button>
-            <Button
-              id="step2-next"
-              type="primary"
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project?.project_guid,
-                    props.project?.information_requirements_table?.irt_guid
-                  )}`,
-                  state: { current: 2 },
-                });
-              }}
-              disabled={
-                !state.uploadedSuccessfully &&
-                !props.project?.information_requirements_table?.irt_guid
-              }
-            >
-              Continue to Review
-            </Button>
-          </>
-        )}
+        <Button
+          id="step-back"
+          type="tertiary"
+          className="full-mobile"
+          style={{ marginRight: "12px" }}
+          onClick={() => prev()}
+          disabled={state.submitting}
+        >
+          Back
+        </Button>
+        <Button
+          id="step2-next"
+          type="primary"
+          onClick={() => {
+            props.history.push({
+              pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                props.project?.project_guid,
+                props.project?.information_requirements_table?.irt_guid
+              )}`,
+              state: { current: 2 },
+            });
+          }}
+          disabled={
+            !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+          }
+        >
+          Continue to Review
+        </Button>
       </>,
     ],
   },
@@ -170,12 +144,13 @@ const StepForms = (
         {props.project?.information_requirements_table?.status_code === "PRG" ? (
           <>
             <Typography.Title level={4}>Review IRT before submission</Typography.Title>
-            <Typography.Text>
+            <Typography.Paragraph>
               Review imported data before submission. Check the requirements and comments fields
               that are required for the project.
-            </Typography.Text>
+            </Typography.Paragraph>
           </>
         ) : null}
+
         <InformationRequirementsTableForm
           project={props.project}
           informationRequirementsTable={props.project?.information_requirements_table}
@@ -356,6 +331,7 @@ export class InformationRequirementsTablePage extends Component {
       isEditMode: !state.isEditMode,
     }));
     this.handleFetchData();
+    cleanFilePondFile();
   };
 
   handleFetchData = () => {
@@ -479,11 +455,13 @@ export class InformationRequirementsTablePage extends Component {
             <br />
             <br />
             <Col span={24}>
-              <InformationRequirementsTableCallout
-                informationRequirementsTableStatus={
-                  this.props.project?.information_requirements_table?.status_code || "PRG"
-                }
-              />
+              {this.state.current !== 0 && (
+                <InformationRequirementsTableCallout
+                  informationRequirementsTableStatus={
+                    this.props.project?.information_requirements_table?.status_code || "PRG"
+                  }
+                />
+              )}
               <div>{Forms[this.state.current].content}</div>
             </Col>
           </Row>
