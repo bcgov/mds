@@ -35,6 +35,13 @@ const calloutContent = (informationRequirementsTableStatus) => {
         title: "Review Complete",
         severity: CALLOUT_SEVERITY.success,
       };
+    case "CHR":
+      return {
+        message:
+          "Your submission requires changes, refer to the email from your project lead. Please review before submission.",
+        title: "Action Required",
+        severity: CALLOUT_SEVERITY.danger,
+      };
     default:
       return null;
   }
