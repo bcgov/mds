@@ -1,4 +1,5 @@
 from werkzeug.exceptions import NotFound
+from flask import request
 from flask_restplus import Resource
 
 from app.extensions import api
