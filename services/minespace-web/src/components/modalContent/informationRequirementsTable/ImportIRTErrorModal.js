@@ -18,6 +18,38 @@ export const ImportIRTErrorModal = (props) => {
     setCopySuccess(true);
   };
 
+  const renderErrorSection = (section, errors = []) => {
+    let title = null;
+    let description = null;
+    let errorSection = errors.filter((e) => e.error === section);
+
+    if (section === "INFORMATION_CELL_INVALID") {
+      title = "Additional Fields";
+      description = "";
+    } else if (section === "METHOD_TRUE_NEEDS_COMMENTS") {
+      title = "Required fields";
+      description = "Comments are required when 'Methods' are checked.";
+    }
+
+    if (!errorSection.length) {
+      return null;
+    }
+    return (
+      <>
+        <h3 style={{ color: "black" }}>
+          <b>{title}</b>
+        </h3>
+        <b>{description}</b>
+        <br />
+        {errorSection.map((es) => (
+          <p>
+            Section {e.section} Row {e.row_number}
+          </p>
+        ))}
+      </>
+    );
+  };
+
   if (props.isBadRequestError) {
     return (
       <div>
@@ -27,23 +59,12 @@ export const ImportIRTErrorModal = (props) => {
           message={
             <>
               <b>Warnings</b>
-              <p>
-                {`"Comments" fields required when "Methods" or "Required" are checked. Please update
-                and import again.`}
-              </p>
+              <p>[GENERIC COPY]</p>
             </>
           }
         />
-        <h3 style={{ color: "black" }}>
-          <b>Required sections</b>
-        </h3>
-        <b>Check below section row number(s) on your IRT file.</b>
-        {props.errors &&
-          props.errors?.map((e) => (
-            <p>
-              Section {e.section} Row {e.row_number}
-            </p>
-          ))}
+        {renderErrorSection("METHOD_TRUE_NEEDS_COMMENTS", props.errors)}
+        {renderErrorSection("INFORMATION_CELL_INVALID", props.errors)}
         <br />
         <div className="ant-modal-footer">
           <Button
