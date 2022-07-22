@@ -27,7 +27,10 @@ class MineBasicInfoResource(Resource, UserMixin):
         data = self.parser.parse_args()
         mines = data.get('mine_guids', [])
         simple = data.get('simple', False)
-return [] if not mines
+
+        if not mines:
+            return []
+
         if simple:
             mine_table = table(Mine.__tablename__, column('mine_guid'),
                                column('mine_name'), column('mine_no'),
