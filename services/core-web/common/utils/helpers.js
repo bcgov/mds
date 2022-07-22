@@ -515,5 +515,11 @@ export const formatBooleanToString = (value, defaultValue) => {
 };
 
 export const formatUrlToUpperCaseString = (url) => {
-  return startCase(url.replace("-", " "));
+  const stopWords = ["what", "which", "who", "and", "but"];
+  let urlArr = url.split("-");
+  return urlArr
+    .map((word, i) => {
+      return stopWords.includes(word) ? [word] : word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
 };

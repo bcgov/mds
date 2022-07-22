@@ -1,4 +1,4 @@
-FROM node:14.8.0
+FROM node:14.8.0 as builder
 
 # Create working directory
 RUN mkdir /app
@@ -6,13 +6,33 @@ WORKDIR /app
 
 # Install app dependencies
 COPY package.json package-lock.json ./
-
 RUN npm ci
 
+# Copy app files
 COPY . .
 
+# Run build
 RUN npm run build
 
-# Run the server
+# Remove dependencies
+RUN rm -rf /app/node_modules
+
+
+# --------------------------------------------------------#
+# Multi Stage Build: Node JS Runtime - App Runner 
+# --------------------------------------------------------#
+
+FROM node:14.8.0-alpine as runner
+
+WORKDIR /app
+
+# Copy the app files with build output
+COPY --from=builder /app ./
+
+WORKDIR /app/runner 
+
+# Install node runner deps.
+RUN npm ci
+
 EXPOSE 3020
-CMD [ "npm", "run", "production" ]
+CMD [ "node", "server.js" ]

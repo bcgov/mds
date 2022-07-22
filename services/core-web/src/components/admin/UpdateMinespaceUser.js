@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 
+import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
 import CustomPropTypes from "@/customPropTypes";
 import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 
@@ -14,18 +15,16 @@ const propTypes = {
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
   handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
 };
 
 const defaultProps = {
   mines: [],
   minespaceUserEmailHash: {},
+  minespaceUserMines: [],
 };
 
 export class UpdateMinespaceUser extends Component {
-  componentDidMount() {
-    this.props.fetchMineNameList();
-  }
-
   handleSearch = (name) => {
     if (name.length > 0) {
       this.props.fetchMineNameList({ name });
@@ -36,16 +35,31 @@ export class UpdateMinespaceUser extends Component {
     this.props.fetchMineNameList();
   };
 
+  parseMinesAsOptions = (mines) => {
+    return mines.map((mine) => ({
+      value: mine.mine_guid,
+      label: `${mine.mine_name} - ${mine.mine_no}`,
+    }));
+  };
+
+  filterUserMines = () => {
+    if (this.props.initialValues.mineNames) {
+      const userMines = this.props.initialValues.mineNames.map((mn) => mn.mine_guid);
+      return userMines.map((mine) => {
+        return this.props.minespaceUserMines.find((m) => m.mine_guid === mine);
+      });
+    }
+    return [];
+  };
+
   render() {
     return (
       <div>
         <h3>Edit Proponent</h3>
         {this.props.mines && (
           <EditMinespaceUser
-            mines={this.props.mines.map((mine) => ({
-              value: mine.mine_guid,
-              label: `${mine.mine_name} - ${mine.mine_no}`,
-            }))}
+            mines={this.parseMinesAsOptions([...this.props.mines, ...this.filterUserMines()])}
+            initalValueOptions={this.props.initialValues.mineNames}
             initialValues={{
               ...this.props.initialValues,
               mine_guids: this.props.initialValues.mineNames.map((mn) => mn.mine_guid),
@@ -63,6 +77,7 @@ export class UpdateMinespaceUser extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMineNames(state),
+  minespaceUserMines: getMinespaceUserMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

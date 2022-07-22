@@ -11,6 +11,7 @@ import ViewNoticeOfDepartureModal from "@/components/modalContent/noticeOfDepart
 import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/EditNoticeOfDepartureModal";
 import ImportIRTSuccessModal from "@/components/modalContent/informationRequirementsTable/ImportIRTSuccessModal";
 import ImportIRTErrorModal from "@/components/modalContent/informationRequirementsTable/ImportIRTErrorModal";
+import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -26,6 +27,7 @@ export const modalConfig = {
   EDIT_NOTICE_OF_DEPARTURE: EditNoticeOfDepartureModal,
   IMPORT_IRT_SUCCESS: ImportIRTSuccessModal,
   IMPORT_IRT_FAILURE: ImportIRTErrorModal,
+  VIEW_FILE_HISTORY: ViewFileHistoryModal,
 };
 
 export default modalConfig;
