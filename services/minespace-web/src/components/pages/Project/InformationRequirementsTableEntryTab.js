@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Steps, Button, Empty } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -41,6 +42,8 @@ export const InformationRequirementsTableEntryTab = (props) => {
               `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
             ),
     };
+    let content = null;
+
     if (irtHasChangesRequested) {
       buttonContent.link = () =>
         props.history.push({
@@ -49,61 +52,95 @@ export const InformationRequirementsTableEntryTab = (props) => {
         });
     }
 
-    const entryGraphic = (
+    const entryGraphic = !irtHasChangesRequested ? (
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         imageStyle={{ transform: "scale(2.0)" }}
         description={false}
       />
+    ) : (
+      <ExclamationCircleOutlined
+        style={{
+          color: "#D40D0D",
+          marginTop: "3.0em",
+          marginBottom: "4.5em",
+          transform: "scale(6.0)",
+        }}
+      />
     );
 
-    return !irtExists ? (
-      <div style={{ textAlign: "center" }}>
-        <br />
-        {entryGraphic}
-        <br />
-        <Typography.Paragraph>
-          <Typography.Title level={5}>Start new IRT submission</Typography.Title>
-          Based on your project description, an Information Requirements Table is{" "}
-          {props?.mrcReviewRequired ? <b>required</b> : <b>optional</b>}.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Start the final IRT submission process by clicking the button below.
-        </Typography.Paragraph>
-        <div>
-          <Button type="primary" onClick={buttonContent.link}>
-            {buttonContent.label}
-          </Button>
-        </div>
-      </div>
-    ) : (
-      <div style={{ textAlign: "center" }}>
-        <br />
-        {entryGraphic}
-        <br />
-        <Typography.Paragraph>
-          <Typography.Title level={5}>Resume IRT submission</Typography.Title>
-          <div style={{ width: "60%", margin: "0 auto" }}>
-            <Steps size="small" current={2}>
-              <Steps.Step title="Download Template" />
-              <Steps.Step title="Import File" />
-              <Steps.Step title="Review & Submit" />
-            </Steps>
-          </div>
+    if (!irtExists) {
+      content = (
+        <div style={{ textAlign: "center" }}>
           <br />
-          Based on your project description, an Information Requirements Table is{" "}
-          {props?.mrcReviewRequired ? <b>required</b> : <b>optional</b>}.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Resume where you left off by clicking the button below.
-        </Typography.Paragraph>
-        <div>
-          <Button type="primary" onClick={buttonContent.link}>
-            {buttonContent.label}
-          </Button>
+          {entryGraphic}
+          <br />
+          <Typography.Paragraph>
+            <Typography.Title level={5}>Start new IRT submission</Typography.Title>
+            Based on your project description, an Information Requirements Table is{" "}
+            {props?.mrcReviewRequired ? <b>required</b> : <b>optional</b>}.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            Start the final IRT submission process by clicking the button below.
+          </Typography.Paragraph>
+          <div>
+            <Button type="primary" onClick={buttonContent.link}>
+              {buttonContent.label}
+            </Button>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else if (irtExists && irtHasChangesRequested) {
+      content = (
+        <div style={{ textAlign: "center" }}>
+          <br />
+          {entryGraphic}
+          <br />
+          <Typography.Paragraph>
+            <Typography.Title level={5}>
+              Further information is required on your IRT submission
+            </Typography.Title>
+            Your submission has been reviewed and some changes are required for completing the
+            review process.
+          </Typography.Paragraph>
+          <Typography.Paragraph>Please check your inbox for more information.</Typography.Paragraph>
+          <div>
+            <Button type="primary" onClick={buttonContent.link}>
+              {buttonContent.label}
+            </Button>
+          </div>
+        </div>
+      );
+    } else {
+      content = (
+        <div style={{ textAlign: "center" }}>
+          {entryGraphic}
+          <br />
+          <Typography.Paragraph>
+            <Typography.Title level={5}>Resume IRT submission</Typography.Title>
+            <div style={{ width: "60%", margin: "0 auto" }}>
+              <Steps size="small" current={2}>
+                <Steps.Step title="Download Template" />
+                <Steps.Step title="Import File" />
+                <Steps.Step title="Review & Submit" />
+              </Steps>
+            </div>
+            <br />
+            Based on your project description, an Information Requirements Table is{" "}
+            {props?.mrcReviewRequired ? <b>required</b> : <b>optional</b>}.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            Resume where you left off by clicking the button below.
+          </Typography.Paragraph>
+          <div>
+            <Button type="primary" onClick={buttonContent.link}>
+              {buttonContent.label}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    return content;
   };
 
   return (
