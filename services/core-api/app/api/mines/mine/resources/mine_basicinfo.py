@@ -1,10 +1,7 @@
-import decimal, uuid
+from flask_restplus import Resource, reqparse
+from sqlalchemy import table, column, select
 
-from flask import request
-from flask_restplus import Resource, reqparse, inputs
-from sqlalchemy_filters import apply_sort, apply_pagination
-
-from app.extensions import jwt, api
+from app.extensions import jwt, api, db
 from app.api.mines.response_models import MINES_MODEL
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
@@ -16,6 +13,10 @@ class MineBasicInfoResource(Resource, UserMixin):
                         type=list,
                         location="json",
                         help='List of guids for mines to get basic info for.')
+    parser.add_argument('simple',
+                        type=bool,
+                        location="json",
+                        help='Boolean indicator to determine if simple of full info is returned')
 
     @api.expect(parser)
     @api.marshal_with(MINES_MODEL, code=200)
@@ -25,6 +26,23 @@ class MineBasicInfoResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         mines = data.get('mine_guids', [])
+        simple = data.get('simple', False)
 
-        mine_list = Mine.query.filter(Mine.mine_guid.in_((mines))).all()
-        return mine_list
+        if simple:
+            mine_table = table(Mine.__tablename__, column('mine_guid'),
+                               column('mine_name'), column('mine_no'),
+                               column('deleted_ind'))
+
+            mines_q = select([mine_table]).where(mine_table.c.deleted_ind == False)
+
+            if mines:
+                mines_q = mines_q.where(mine_table.c.mine_guid.in_(mines))
+
+            connection = db.engine.connect()
+            results = connection.execute(mines_q).fetchall()
+
+            return results
+
+        else:
+            mine_list = Mine.query.filter(Mine.mine_guid.in_((mines))).all()
+            return mine_list
