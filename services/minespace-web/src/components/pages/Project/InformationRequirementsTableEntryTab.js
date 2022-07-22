@@ -22,6 +22,7 @@ export const InformationRequirementsTableEntryTab = (props) => {
   const irtExists = Boolean(props?.irt?.irt_guid);
   const projectGuid = props?.irt?.project_guid || props.match.params?.projectGuid;
   const irtGuid = props?.irt?.irt_guid;
+  const irtHasChangesRequested = props?.irt?.status_code === "CHR";
 
   const renderContent = () => {
     const buttonContent = {

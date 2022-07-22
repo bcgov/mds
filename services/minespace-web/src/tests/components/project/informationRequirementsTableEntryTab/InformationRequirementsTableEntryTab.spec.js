@@ -9,6 +9,7 @@ const setupProps = () => {
   props.irt = MOCK.INFORMATION_REQUIREMENTS_TABLE;
   props.match = { params: { projectGuid: "1234-5678-x" } };
   props.history = { push: jest.fn() };
+  props.mrcReviewRequired = false;
 };
 
 beforeEach(() => {
