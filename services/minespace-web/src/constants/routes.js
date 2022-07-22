@@ -7,6 +7,7 @@ import ReturnPage from "@/components/pages/ReturnPage";
 import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
+import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
 
 export const HOME = {
   route: "/",
@@ -66,6 +67,13 @@ export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
   dynamicRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
   component: InformationRequirementsTablePage,
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
+  route: "/projects/:projectGuid/information-requirements-table/:irtGuid/success",
+  dynamicRoute: (projectGuid, irtGuid) =>
+    `/projects/${projectGuid}/information-requirements-table/${irtGuid}/success`,
+  component: InformationRequirementsTableSuccessPage,
 };
 
 export const MINE_DASHBOARD = {

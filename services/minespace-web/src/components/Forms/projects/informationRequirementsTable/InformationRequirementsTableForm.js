@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Row, Col, Tabs } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import ReviewSubmitInformationRequirementsTable from "@/components/Forms/projects/informationRequirementsTable/ReviewSubmitInformationRequirementsTable";
 
 const propTypes = {
