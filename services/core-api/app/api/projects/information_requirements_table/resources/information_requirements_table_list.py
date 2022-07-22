@@ -65,21 +65,16 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             if information_cell_is_valid is False:
                 import_errors.append({
                     "row_number": row_number,
-                    "section": int(information_section[0])
+                    "section": int(information_section[0]),
+                    "error": "INFORMATION_CELL_INVALID"
                 })
                 continue
             # If "Methods" cell entry is true and "Comments" are 'None' add error
             if methods_cell is True and comments_cell == 'None':
                 import_errors.append({
                     "row_number": row_number,
-                    "section": int(information_section[0])
-                })
-                continue
-            # If "Required" and "Methods" cell entry is false and "Comments" are set add error
-            if (required_cell is False and methods_cell is False) and comments_cell != 'None':
-                import_errors.append({
-                    "row_number": row_number,
-                    "section": int(information_section[0])
+                    "section": int(information_section[0]),
+                    "error": "METHOD_TRUE_NEED_COMMENTS"
                 })
                 continue
 
