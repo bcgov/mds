@@ -6851,6 +6851,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
+  PRG: "In Progress",
   REC: "Pending Review",
   UNR: "In Review",
   APV: "Review Complete",
@@ -6926,6 +6927,12 @@ export const MAJOR_MINES_APPLICATION = {
   update_timestamp: "2022-07-14T04:32:58.666528+00:00",
   create_user: "mining@bceid.com",
   create_timestamp: "2022-07-14T04:32:58.666414+00:00",
+};
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
+  PRM: "Primary",
+  SPT: "Spatial",
+  SPR: "Supporting",
 };
 
 export const EMLI_TYPE_CODES_DROPDOWN = [

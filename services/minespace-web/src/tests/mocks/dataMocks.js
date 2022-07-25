@@ -1138,9 +1138,61 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
-  REC: "Received",
-  UNR: "Under review - with reviewers",
-  APV: "Approved",
+  PRG: "In Progress",
+  REC: "Pending Review",
+  UNR: "In Review",
+  APV: "Review Complete",
+  CHR: "Change Requested",
+};
+
+export const MAJOR_MINES_APPLICATION = {
+  major_mine_application_id: 1,
+  major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+  project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
+  submission_project_title: "Major mine application",
+  status_code: "REC",
+  documents: [
+    {
+      major_mine_application_id: 1,
+      major_mine_application_document_type_code: "PRM",
+      mine_document_guid: "479af6fe-823d-4014-bed1-5133a007c71f",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "0ed74348-c1ed-41d5-a6ad-3e1f42cf0b41",
+      document_name: "primary-document.pdf",
+      upload_date: "2022-07-14T04:32:58.659745+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      major_mine_application_id: 1,
+      major_mine_application_document_type_code: "SPT",
+      mine_document_guid: "f9b93bd0-e3ac-4bee-918b-3bc82224f2a9",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "5a115b22-2d11-4c6d-b378-fe451389cec0",
+      document_name: "spatial-document.pdf",
+      upload_date: "2022-07-14T04:32:58.662545+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      major_mine_application_id: 1,
+      major_mine_application_document_type_code: "SPR",
+      mine_document_guid: "05463375-aa6d-4461-b7b7-bf4b2001b610",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "47465789-2dde-4185-9f3a-92a468ab732f",
+      document_name: "supporting-document.pdf",
+      upload_date: "2022-07-14T04:32:58.663901+00:00",
+      create_user: "mining@bceid.com",
+    },
+  ],
+  update_user: "mining@bceid.com",
+  update_timestamp: "2022-07-14T04:32:58.666528+00:00",
+  create_user: "mining@bceid.com",
+  create_timestamp: "2022-07-14T04:32:58.666414+00:00",
+};
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
+  PRM: "Primary",
+  SPT: "Spatial",
+  SPR: "Supporting",
 };
 
 export const PROJECT_SUMMARY = {

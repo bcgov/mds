@@ -7,7 +7,7 @@ import { Row, Col, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import customPropTypes from "@/customPropTypes";
-import { flattenObject } from "@common/utils/helpers";
+import { flattenObject, cleanFilePondFile } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { EDIT_PROJECT } from "@/constants/routes";
 import { getProject } from "@common/reducers/projectReducer";
@@ -56,7 +56,6 @@ export class MajorMineApplicationPage extends Component {
   };
 
   handleCreateMajorMineApplication = (values, message) => {
-    const fileUploads = document.getElementsByClassName("filepond--action-revert-item-processing");
     return this.props
       .createMajorMineApplication(
         { projectGuid: this.props.match.params?.projectGuid },
@@ -64,9 +63,7 @@ export class MajorMineApplicationPage extends Component {
         message
       )
       .then(() => {
-        if (fileUploads.length > 0) {
-          fileUploads.forEach((file) => file.click());
-        }
+        cleanFilePondFile();
       });
   };
 

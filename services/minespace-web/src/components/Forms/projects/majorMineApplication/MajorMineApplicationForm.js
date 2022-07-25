@@ -82,9 +82,9 @@ export class MajorMineApplicationForm extends Component {
     return this.props.change(documentTypeFieldForm, documentsForm);
   };
 
-  filterDocs = (docs, applicationDocumentTypecode) =>
+  filterDocs = (docs, applicationDocumentTypeCode) =>
     (docs || []).filter(
-      (doc) => doc?.major_mine_application_document_type_code === applicationDocumentTypecode
+      (doc) => doc?.major_mine_application_document_type_code === applicationDocumentTypeCode
     );
 
   render() {
@@ -97,7 +97,7 @@ export class MajorMineApplicationForm extends Component {
             id="submission_project_title"
             name="submission_project_title"
             component={renderConfig.FIELD}
-            validate={[maxLength(50), required]}
+            validate={[maxLength(300), required]}
           />
           <br />
           <Typography.Title level={5}>Upload primary application document</Typography.Title>
