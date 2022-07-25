@@ -4,6 +4,7 @@ import {
   storeProjectSummary,
   storeRequirements,
   storeInformationRequirementsTable,
+  storeMajorMinesApplication,
 } from "@common/actions/projectActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -16,6 +17,7 @@ const baseExpectedValue = {
   projectPageData: {},
   informationRequirementsTable: [],
   requirements: [],
+  majorMinesApplication: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -56,6 +58,16 @@ describe("projectReducer", () => {
     const result = projectReducer(
       undefined,
       storeInformationRequirementsTable(MOCK.INFORMATION_REQUIREMENTS_TABLE)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_MAJOR_MINES_APPLICATION", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.majorMinesApplication = MOCK.MAJOR_MINES_APPLICATION;
+    const result = projectReducer(
+      undefined,
+      storeMajorMinesApplication(MOCK.MAJOR_MINES_APPLICATION)
     );
     expect(result).toEqual(expectedValue);
   });

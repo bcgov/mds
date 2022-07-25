@@ -96,6 +96,15 @@ export class ProjectStagesTable extends Component {
             </Button>
           );
         }
+        if (record.project_stage === "Application") {
+          link = (
+            <Link to={routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(record.stage?.project_guid)}>
+              <Button className="full-mobile margin-small" type="secondary">
+                {record.stage_status ? "View" : "Start"}
+              </Button>
+            </Link>
+          );
+        }
         return link;
       },
     },

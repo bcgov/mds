@@ -51,6 +51,10 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
     />
     <Route
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
       path={routes.EDIT_PROJECT.route}
       component={AuthenticationGuard()(routes.EDIT_PROJECT.component)}
     />

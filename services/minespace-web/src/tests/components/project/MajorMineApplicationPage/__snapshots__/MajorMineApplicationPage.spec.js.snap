@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MajorMinesApplicationPage renders properly 1`] = `
+<Fragment>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title>
+        New major mine application for 
+      </Title>
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Link
+        to="/projects/undefined/overview"
+      >
+        <ForwardRef(ArrowLeftOutlined)
+          className="padding-sm--right"
+        />
+        Back to: 
+         Project Overview page
+      </Link>
+    </Col>
+  </Row>
+  <br />
+  <Connect(ReduxForm)
+    handleSaveData={[Function]}
+    majorMinesApplicationDocumentTypesHash={
+      Object {
+        "PRM": "Primary",
+        "SPR": "Supporting",
+        "SPT": "Spatial",
+      }
+    }
+  />
+</Fragment>
+`;

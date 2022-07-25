@@ -11,6 +11,7 @@ export const {
   getProjectPageData,
   getRequirements,
   getInformationRequirementsTable,
+  getMajorMinesApplication,
 } = projectReducer;
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {

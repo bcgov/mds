@@ -191,6 +191,8 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
           response.data.information_requirements_table
         )
       );
+      dispatch(success(reducerTypes.GET_MAJOR_MINES_APPLICATION));
+      dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT));
@@ -323,4 +325,29 @@ export const fetchRequirements = () => (dispatch) => {
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading));
+};
+
+export const createMajorMineApplication = (
+  { projectGuid },
+  payload,
+  message = "Successfully created a new major mine application"
+) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATIONS(projectGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
