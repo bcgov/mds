@@ -337,7 +337,7 @@ export class InformationRequirementsTablePage extends Component {
   marshalImportIRTError = (error) => {
     // Transform single quotes on object properties to double to allow JSON parse
     const formattedError = error.replaceAll(`'`, `"`);
-    const regex = /({"row_number": \d+, "section": \d+})/g;
+    const regex = /({"row_number": \d+, "section": \d+, "error": "\w+"})/g;
     const errorMatch = formattedError.match(regex);
     if (!errorMatch) {
       return error;
