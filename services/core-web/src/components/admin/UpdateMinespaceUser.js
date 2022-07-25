@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 
+import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
 import CustomPropTypes from "@/customPropTypes";
 import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
-import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,

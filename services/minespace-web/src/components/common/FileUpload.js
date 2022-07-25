@@ -101,8 +101,10 @@ class FileUpload extends React.Component {
                     documentGuid
                   );
                 }
-                this.props.importIsSuccessful();
-              } catch (err) {}
+                this.props.importIsSuccessful(true);
+              } catch (err) {
+                this.props.importIsSuccessful(false, err);
+              }
             }
           },
         });

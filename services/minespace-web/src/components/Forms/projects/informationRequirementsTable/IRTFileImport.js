@@ -52,6 +52,14 @@ export class IRTFileImport extends Component {
     return this.props.change("final_irt", this.props.documents);
   };
 
+  marshalImportIRTError = (error) => {
+    // Transform single quotes on object properties to double to allow JSON parse
+    const formattedError = error.replaceAll("'", '"');
+    const regex = /({'row_number': \d+, 'section': \d+})/g;
+    const errorMatch = formattedError.match(regex);
+    return errorMatch.map((e) => JSON.parse(e));
+  };
+
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     return (

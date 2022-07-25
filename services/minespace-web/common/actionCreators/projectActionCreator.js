@@ -222,32 +222,28 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createInformationRequirementsTable = (
-  projectGuid,
-  file,
-  documentGuid,
-  message = "Successfully created information requirements table"
-) => (dispatch) => {
+export const createInformationRequirementsTable = (projectGuid, file, documentGuid) => (
+  dispatch
+) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("document_guid", documentGuid);
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios()
+  return CustomAxios({ suppressErrorNotification: true })
     .post(
       ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLES(projectGuid),
       formData,
       createRequestHeader(customContentType)
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -256,8 +252,7 @@ export const updateInformationRequirementsTableByFile = (
   projectGuid,
   informationRequirementsTableGuid,
   file,
-  documentGuid,
-  message = "Successfully updated information requirements table"
+  documentGuid
 ) => (dispatch) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -267,7 +262,7 @@ export const updateInformationRequirementsTableByFile = (
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios()
+  return CustomAxios({ suppressErrorNotification: true })
     .put(
       ENVIRONMENT.apiUrl +
         API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
@@ -275,16 +270,12 @@ export const updateInformationRequirementsTableByFile = (
       createRequestHeader(customContentType)
     )
     .then((response) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
       dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
