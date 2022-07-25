@@ -9,13 +9,6 @@ const propTypes = {
 
 const calloutContent = (informationRequirementsTableStatus) => {
   switch (informationRequirementsTableStatus) {
-    case "PRG":
-      return {
-        message:
-          "Review imported data before submission. Check the requirements and comments fields that are required for the project.",
-        title: "",
-        severity: CALLOUT_SEVERITY.info,
-      };
     case "REC":
       return {
         message:
@@ -43,7 +36,11 @@ const calloutContent = (informationRequirementsTableStatus) => {
         severity: CALLOUT_SEVERITY.danger,
       };
     default:
-      return null;
+      return {
+        message: null,
+        title: null,
+        severity: null,
+      };
   }
 };
 

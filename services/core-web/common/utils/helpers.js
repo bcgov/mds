@@ -523,3 +523,10 @@ export const formatUrlToUpperCaseString = (url) => {
     })
     .join(" ");
 };
+
+export const cleanFilePondFile = () => {
+  const fileUploaded = document.getElementsByClassName("filepond--action-revert-item-processing");
+  if (fileUploaded.length > 0) {
+    fileUploaded.forEach((file) => file.click());
+  }
+};
