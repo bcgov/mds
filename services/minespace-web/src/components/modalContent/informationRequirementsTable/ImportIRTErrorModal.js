@@ -24,10 +24,10 @@ export const ImportIRTErrorModal = (props) => {
       .map((e) => `Section ${e.section} Row ${e.row_number}`)
       .join("\n");
     const commentsNeededFormattedError = commentsNeededErrors.length
-      ? `Required fields - Comments are required when "Methods are checked:\n\n${commentsNeededErrorMapMessage}`
+      ? `Required fields - Comments are required when the 'Methods' field is checked:\n\n${commentsNeededErrorMapMessage}`
       : "";
     let informationCellFormattedError = informationCellInvalidErrors.length
-      ? `Additional fields - Remove self added fields:\n\n${informationCellErrorMapMessage}`
+      ? `Unexpected fields - The following rows do not match our template and may have been modified:\n\n${informationCellErrorMapMessage}`
       : "";
     if (informationCellInvalidErrors.length && commentsNeededErrors.length) {
       informationCellFormattedError = `\n\n${informationCellFormattedError}`;
@@ -44,11 +44,11 @@ export const ImportIRTErrorModal = (props) => {
     const errorSection = errors.filter((e) => e.error === section);
 
     if (section === INFORMATION_CELL_INVALID) {
-      title = "Additional Fields";
-      description = "Remove self added fields.";
+      title = "Unexpected fields";
+      description = "The following rows do not match our template and may have been modified.";
     } else if (section === METHOD_TRUE_NEED_COMMENTS) {
       title = "Required fields";
-      description = "Comments are required when 'Methods' are checked.";
+      description = "Comments are required when the 'Methods' field is checked.";
     }
 
     if (errorSection.length === 0) {
@@ -78,8 +78,11 @@ export const ImportIRTErrorModal = (props) => {
           severity="warning"
           message={
             <>
-              <b>Warnings</b>
-              <p>[GENERIC COPY]</p>
+              <b>Import Error</b>
+              <p>
+                We found one or more error(s) during import of your Information Requirements Table
+                (IRT) file. Please review the errors below and submit your file again.
+              </p>
             </>
           }
         />
