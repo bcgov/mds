@@ -6,14 +6,13 @@ import PropTypes from "prop-types";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { Link } from "react-router-dom";
+import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import NullScreen from "@/components/common/NullScreen";
-import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -125,19 +124,17 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
-          {!IN_PROD() && (
-            <Tabs.TabPane
-              tab="IRT"
-              key="intro-project-overview"
-              disabled={!hasInformationRequirementsTable}
-            >
-              <LoadingWrapper condition={this.state.isLoaded}>
-                <div className="padding-lg">
-                  <InformationRequirementsTableTab match={this.props.match} />
-                </div>
-              </LoadingWrapper>
-            </Tabs.TabPane>
-          )}
+          <Tabs.TabPane
+            tab="IRT"
+            key="intro-project-overview"
+            disabled={!hasInformationRequirementsTable}
+          >
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <div className="padding-lg">
+                <InformationRequirementsTableTab match={this.props.match} />
+              </div>
+            </LoadingWrapper>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

@@ -87,9 +87,7 @@ export class ProjectOverviewTab extends Component {
         statusHash: this.props.projectSummaryStatusCodesHash,
         required: null,
       },
-    ];
-    if (!IN_PROD()) {
-      projectStages.push({
+      {
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
         status: this.props.informationRequirementsTable.status_code,
@@ -99,8 +97,8 @@ export class ProjectOverviewTab extends Component {
         required: this.props.project.mrc_review_required,
         navigateTo: () =>
           this.props.irtNavigateTo(this.props.informationRequirementsTable.status_code),
-      });
-    }
+      },
+    ];
     if (!IN_PROD()) {
       projectStages.push({
         title: "Application",

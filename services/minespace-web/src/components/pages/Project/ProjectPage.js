@@ -148,18 +148,16 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab irtNavigateTo={this.navigateFromIRTButton} />
                 </Tabs.TabPane>
+                <Tabs.TabPane tab="IRT" key="irt-entry">
+                  <InformationRequirementsTableEntryTab
+                    irt={this.props.project?.information_requirements_table}
+                    mrcReviewRequired={mrcReviewRequired}
+                  />
+                </Tabs.TabPane>
                 {!IN_PROD() && (
-                  <Tabs.TabPane tab="IRT" key="irt-entry">
-                    <InformationRequirementsTableEntryTab
-                      irt={this.props.project?.information_requirements_table}
-                      mrcReviewRequired={mrcReviewRequired}
-                    />
+                  <Tabs.TabPane tab="Application" key="major-mine-application">
+                    <MajorMineApplicationPage />
                   </Tabs.TabPane>
-                 )}
-                 {!IN_PROD() && (
-                   <Tabs.TabPane tab="Application" key="major-mine-application">
-                     <MajorMineApplicationPage />
-                   </Tabs.TabPane>
                 )}
               </Tabs>
             </Col>
