@@ -1,3 +1,11 @@
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+}
+
 .header-logo {
   float: left;
   margin-right: 32px;
@@ -9,17 +17,10 @@
 }
 
 .header-title {
-  color: $white;
   font-size: $heading-4-size;
   font-weight: bold;
-  & a {
-    color: $white !important;
-    text-decoration: none !important;
-  }
-}
-
-.header-menu {
-  float: right;
+  color: $white !important;
+  text-decoration: none !important;
 }
 
 #dropdown-menu-mobile-trigger {
@@ -77,4 +78,42 @@
   & a {
     text-decoration: none;
   }
+}
+
+.notification-icon {
+  color: $white;
+  font-size: 24px;
+}
+
+.notification-drawer {
+  height: 0;
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  top: 80px;
+  background-color: $white;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.notification-drawer-open {
+  height: 70vh;
+  width: 564px;
+  border: 1px solid $black;
+}
+
+.notification-drawer-background {
+  background-color: rgba($color: #000000, $alpha: 0.1);
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.notification-container {
+  position: relative;
 }
