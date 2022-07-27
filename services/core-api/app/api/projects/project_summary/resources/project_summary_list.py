@@ -64,7 +64,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         'mrc_review_required',
         type=bool,
         store_missing=False,
-        required=True,
+        required=False,
     )
     parser.add_argument(
         'documents',
