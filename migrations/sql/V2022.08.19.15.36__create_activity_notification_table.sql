@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS activity.activity_notification (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_mine_guid ON activity.activity_notification ((notification_document->'metadata'->'mine'->'mine_guid')); 
+CREATE INDEX IF NOT EXISTS idx_mine_guid ON activity.activity_notification USING gin ((notification_document->'metadata') jsonb_path_ops); 
 CREATE INDEX IF NOT EXISTS idx_notification_recipient ON activity.activity_notification (notification_recipient);
 
 ALTER TABLE activity.activity_notification
