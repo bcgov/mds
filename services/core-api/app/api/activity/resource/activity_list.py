@@ -8,11 +8,8 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
                                              EDIT_DO)
 from app.api.activity.models.activity_notification import ActivityNotification
-from app.api.activity.dto import CREATE_ACTIVITY_MODEL, ACTIVITY_NOTIFICATION_MODEL, ACTIVITY_NOTIFICATION_MODEL_LIST
+from app.api.activity.dto import CREATE_ACTIVITY_MODEL, ACTIVITY_NOTIFICATION_MODEL_LIST
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.subscription.models.subscription import Subscription
-from app.api.users.minespace.models.minespace_user import MinespaceUser
-from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 
 
 class ActivityListResource(Resource, UserMixin):
