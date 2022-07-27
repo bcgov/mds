@@ -40,10 +40,10 @@ export const MajorMineApplicationEntryTab = (props) => {
         <br />
         <Typography.Paragraph>
           <Typography.Title level={5}>Start new Major Mine Application</Typography.Title>
-          Based on your project description, a Major Mine Application is required.
+          The next stage in your project is the submission of a Major Mine Application.
         </Typography.Paragraph>
         <Typography.Paragraph>
-          Start the final submission process by clicking the button below.
+          Start the submission process by clicking the button below.
         </Typography.Paragraph>
         <div>
           <Button type="primary" onClick={buttonContent.link}>
