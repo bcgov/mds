@@ -1,12 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
+import { Badge, Button, Col, List, Row, Tabs, Typography } from "antd";
+import { BellOutlined } from "@ant-design/icons";
 
-const useOutsideAlerter = (ref, setOpen, open) => {
+const outsideClickHandler = (ref, setOpen, open) => {
   useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
-
     const handleClickOutside = (event) => {
       if (open) {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -14,38 +11,110 @@ const useOutsideAlerter = (ref, setOpen, open) => {
         }
       }
     };
-
-    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref]);
 };
 
-const propTypes = {
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
-};
+const NotificationDrawer = () => {
+  const [open, setOpen] = useState(false);
 
-const NotificationDrawer = (props) => {
-  const { open, setOpen } = props;
+  const handleCollapse = () => {
+    setOpen(!open);
+  };
 
   const modalRef = useRef(null);
-  useOutsideAlerter(modalRef, setOpen, open);
-
-  useEffect(() => {
-    console.log("open", open);
-  }, [open]);
+  outsideClickHandler(modalRef, setOpen, open);
 
   return (
-    <div ref={modalRef} className={`notification-drawer ${open ? "notification-drawer-open" : ""}`}>
-      Stuff
+    <div ref={modalRef}>
+      <Button
+        onClick={handleCollapse}
+        type="text"
+        icon={
+          <Badge className="notification-badge" count={5}>
+            <BellOutlined className="notification-icon" />
+          </Badge>
+        }
+      />
+      <div
+        ref={modalRef}
+        className={`notification-drawer ${open ? "notification-drawer-open" : ""}`}
+      >
+        <Tabs
+          defaultActiveKey="1"
+          tabBarStyle={{ backgroundColor: "#FFF" }}
+          className="notification-tabs"
+        >
+          <Tabs.TabPane
+            className="notification-tab-pane"
+            tab={<Typography.Title level={5}>Mine Activity</Typography.Title>}
+            key="1"
+          >
+            <div className="notification-list-item">
+              <div className="notification-dot" />
+              <Typography.Text>
+                Your NOD [NOD#] requires additional information to be reviewed
+              </Typography.Text>
+              <Row className="items-center margin-small" gutter={6}>
+                <Col>
+                  <Typography.Text className="notification-info-text">Gold Mine</Typography.Text>
+                </Col>
+                <Col>
+                  <div className="notification-separator" />
+                </Col>
+                <Col>
+                  <Typography.Text className="notification-info-text">Permit #</Typography.Text>
+                </Col>
+                <Col>
+                  <div className="notification-separator" />
+                </Col>
+                <Col>
+                  <Typography.Text className="notification-info-text">
+                    July 15 2022 11:00AM
+                  </Typography.Text>
+                </Col>
+              </Row>
+            </div>
+            <List.Item>
+              <div className="notification-list-item">
+                <div className="notification-dot" />
+                <Typography.Text>
+                  Review of your NOD [NOD#] Submission is Now in Progress
+                </Typography.Text>
+                <Row className="items-center margin-small" gutter={6}>
+                  <Col>
+                    <Typography.Text className="notification-info-text">Gold Mine</Typography.Text>
+                  </Col>
+                  <Col>
+                    <div className="notification-separator" />
+                  </Col>
+                  <Col>
+                    <Typography.Text className="notification-info-text">Permit #</Typography.Text>
+                  </Col>
+                  <Col>
+                    <div className="notification-separator" />
+                  </Col>
+                  <Col>
+                    <Typography.Text className="notification-info-text">
+                      July 15 2022 11:00AM
+                    </Typography.Text>
+                  </Col>
+                </Row>
+              </div>
+            </List.Item>
+            <List.Item>
+              <div className="notification-list-item">
+                <Typography.Text>Mine Activity</Typography.Text>
+              </div>
+            </List.Item>
+          </Tabs.TabPane>
+        </Tabs>
+      </div>
     </div>
   );
 };
-
-NotificationDrawer.propTypes = propTypes;
 
 export default NotificationDrawer;

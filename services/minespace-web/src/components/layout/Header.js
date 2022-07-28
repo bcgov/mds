@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Badge, Button, Col, Layout, Row } from "antd";
+import React from "react";
+import { Col, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { BellOutlined } from "@ant-design/icons";
 import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
@@ -16,12 +15,6 @@ const propTypes = {
 };
 
 export const Header = (props) => {
-  const [open, setOpen] = useState(true);
-
-  const handleCollapse = () => {
-    setOpen(!open);
-  };
-
   return (
     <Layout.Header>
       <Row type="flex" justify="center" align="top">
@@ -37,16 +30,7 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              <Button
-                onClick={!open ? handleCollapse : () => {}}
-                type="text"
-                icon={
-                  <Badge count={5}>
-                    <BellOutlined className="notification-icon" />
-                  </Badge>
-                }
-              />
-              <NotificationDrawer setOpen={setOpen} open={open} />
+              <NotificationDrawer />
             </div>
           </div>
         </Col>
