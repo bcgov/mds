@@ -99,13 +99,14 @@
   background-color: $white;
   transition: all 0.2s ease-in-out;
   z-index: 1000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .notification-drawer-open {
+  padding: 24px 40px;
+  border: 1px solid #BBBBBB;
   height: 70vh;
   width: 564px;
-  border: 1px solid $black;
 }
 
 .notification-drawer-background {
@@ -120,4 +121,59 @@
 
 .notification-container {
   position: relative;
+}
+
+.notification-drawer .ant-tabs .ant-tabs-tab {
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: $white !important;
+}
+
+.notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: unset !important;
+}
+
+.notification-separator {
+  height: 4px;
+  width: 4px;
+  background-color: #BBBBBB;
+  border-radius: 50%;
+}
+
+.notification-list-item {
+    padding: 0 24px;
+    position: relative;
+}
+
+.notification-list-item:hover {
+  background-color: gray;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notification-dot {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  transform: translateY(-50%);
+  background-color: $gov-blue;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.notification-info-text {
+  color: #606060;
+  font-size: 14px;
+  font-weight: 400;
+
+}
+
+.notification-tab-pane {
+  background-color: $white;
+}
+
+.notification-badge .ant-badge-count {
+  box-shadow: unset !important;
+  //border: unset !important;
 }
