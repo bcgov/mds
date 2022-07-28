@@ -30,7 +30,6 @@ jobs:
           - config: metabase
           - config: metabase-postgres
           - config: docman
-          - config: filesystem-provider
           - config: nris
           - config: fider
     steps:
