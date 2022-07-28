@@ -38,6 +38,7 @@ class MajorMineApplicationListResource(Resource, UserMixin):
 
         try:
             major_mine_application.save()
+            major_mine_application.send_mma_submit_email()
 
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
