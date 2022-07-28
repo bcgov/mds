@@ -6,7 +6,9 @@ from sqlalchemy.schema import FetchedValue
 from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
+from app.config import Config
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.services.email_service import EmailService
 from app.api.projects.project.models.project import Project
 from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -32,8 +34,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='major_mine_application_document_xref',
-        secondaryjoin=
-        'and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
     def __repr__(self):
@@ -63,6 +64,32 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                 deleted_ind=False).order_by(cls.major_mine_application_id.desc()).first()
         except ValueError:
             return None
+
+    def send_mma_submit_email(self):
+        recipients = [contact.email for contact in self.project.contacts]
+        primary_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "PRM"]
+        spatial_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPT"]
+        supporting_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPR"]
+
+        def generate_list_element(element):
+            return f'<li>{element}</li>'
+
+        # TODO: Update this link(add additional path traversal) when Steps(1-3) are hooked up for MMA on the frontend
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}'
+
+        subject = f'Major Mine Application Submitted for {self.project.project_title}'
+        body = '<p>The following documents have been submitted with this Major Mine Application:</p>'
+        body += '<p>Primary document(s):</p>'
+        body += f'<ul>{"".join(list(map(generate_list_element, primary_documents)))}</ul>'
+        if len(spatial_documents) > 0:
+            body += '<p>Spatial document(s):</p>'
+            body += f'<ul>{"".join(list(map(generate_list_element, spatial_documents)))}</ul>'
+        if len(supporting_documents) > 0:
+            body += '<p>Supporting document(s):</p>'
+            body += f'<ul>{"".join(list(map(generate_list_element, supporting_documents)))}</ul>'
+        body += f'<p>View Major Mine Application in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
     @classmethod
     def create(cls,
