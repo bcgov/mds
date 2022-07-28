@@ -6,10 +6,7 @@ import { change, submit, getFormSyncErrors, reset, touch } from "redux-form";
 import { Row, Col, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import customPropTypes from "@/customPropTypes";
 import { flattenObject, cleanFilePondFile } from "@common/utils/helpers";
-import * as FORM from "@/constants/forms";
-import { EDIT_PROJECT } from "@/constants/routes";
 import { getProject } from "@common/reducers/projectReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -17,8 +14,11 @@ import {
   createMajorMineApplication,
 } from "@common/actionCreators/projectActionCreator";
 import { clearMajorMinesApplication } from "@common/actions/projectActions";
-import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import { getMajorMinesApplicationDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
+import * as routes from "@/constants/routes";
+import * as FORM from "@/constants/forms";
+import customPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mines: PropTypes.arrayOf(customPropTypes.mine).isRequired,
@@ -32,6 +32,7 @@ const propTypes = {
       projectGuid: PropTypes.string,
     },
   }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   touch: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
@@ -72,13 +73,23 @@ export class MajorMineApplicationPage extends Component {
     a.href = url.url;
   };
 
-  handleSaveData = (e, values, message) => {
+  handleSaveData = async (e, values, message) => {
     e.preventDefault();
     this.props.submit(FORM.ADD_MINE_MAJOR_APPLICATION);
     this.props.touch(FORM.ADD_MINE_MAJOR_APPLICATION);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
-      return this.handleCreateMajorMineApplication(values, message);
+      await this.handleCreateMajorMineApplication(values, message);
+      await this.handleFetchData();
+      const { project = {} } = this.props;
+      const majorMineApplicationGuid = project?.major_mine_application?.major_mine_application_guid;
+      return this.props.history.push({
+        pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
+          project?.project_guid,
+          majorMineApplicationGuid
+        )}`,
+        state: { project },
+      });
     }
     return null;
   };
@@ -96,7 +107,7 @@ export class MajorMineApplicationPage extends Component {
         </Row>
         <Row>
           <Col span={24}>
-            <Link to={EDIT_PROJECT.dynamicRoute(this.props.project?.project_guid)}>
+            <Link to={routes.EDIT_PROJECT.dynamicRoute(this.props.project?.project_guid)}>
               <ArrowLeftOutlined className="padding-sm--right" />
               Back to: {this.props.project.project_title} Project Overview page
             </Link>
