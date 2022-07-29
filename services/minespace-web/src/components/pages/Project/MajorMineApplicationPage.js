@@ -251,9 +251,8 @@ export class MajorMineApplicationPage extends Component {
     const mineGuid = this.props.project?.mine_guid;
     const mineName = this.props.mines[mineGuid]?.mine_name || "";
     const title = `Major Mine Application - ${mineName}`;
-
     const primaryContact = this.props.project?.contacts
-      .filter((contact) => contact.is_primary === true)
+      ?.filter((contact) => contact.is_primary === true)
       .map((primary) => primary.name)[0];
 
     const Forms = StepForms(
