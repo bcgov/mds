@@ -63,9 +63,6 @@ const invalidDetailPayload = (values) =>
       values.determination_type_code === Strings.INCIDENT_DETERMINATION_TYPES.pending)
   );
 
-const invalidFollowUpPayload = (values) =>
-  !(values.status_code && values.followup_investigation_type_code);
-
 const actionVerb = (newIncident) => {
   if (newIncident) return <span>Save&nbsp;</span>;
   return <span>Edit&nbsp;</span>;
@@ -79,7 +76,8 @@ const StepForms = (
   handleIncidentSubmit,
   uploadedFiles,
   onFileLoad,
-  onRemoveFile
+  onRemoveFile,
+  invalidFollowUpPayload
 ) => [
   {
     title: "Initial Report",
@@ -266,6 +264,21 @@ export class AddIncidentModal extends Component {
     }));
   };
 
+  invalidFollowUpPayload = (values) => {
+    let disableSubmit = true;
+    const finalDocs = this.state.uploadedFiles.filter(
+      (file) => file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+    );
+    if (values.status_code && values.followup_investigation_type_code) {
+      if (finalDocs.length > 0) {
+        disableSubmit = false;
+      } else if (finalDocs.length === 0 && values.status_code === "PRE") {
+        disableSubmit = false;
+      }
+    }
+    return disableSubmit;
+  };
+
   render = () => {
     const Forms = StepForms(
       this.props,
@@ -275,7 +288,8 @@ export class AddIncidentModal extends Component {
       this.handleIncidentSubmit,
       this.state.uploadedFiles,
       this.onFileLoad,
-      this.onRemoveFile
+      this.onRemoveFile,
+      this.invalidFollowUpPayload
     );
 
     return (
