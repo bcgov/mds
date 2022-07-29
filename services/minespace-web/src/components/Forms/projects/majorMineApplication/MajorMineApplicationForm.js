@@ -248,5 +248,6 @@ export default compose(
     destroyOnUnmount: false,
     forceUnregisterOnUnmount: true,
     touchOnBlur: true,
+    onSubmit: () => {},
   })
 )(MajorMineApplicationForm);

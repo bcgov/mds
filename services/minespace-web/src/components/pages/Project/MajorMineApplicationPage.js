@@ -10,7 +10,6 @@ import customPropTypes from "@/customPropTypes";
 import { flattenObject } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as FORM from "@/constants/forms";
-import { EDIT_MAJOR_MINE_APPLICATION, EDIT_PROJECT } from "@/constants/routes";
 import { getProject } from "@common/reducers/projectReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -21,9 +20,8 @@ import {
 import { clearMajorMinesApplication } from "@common/actions/projectActions";
 import { getMajorMinesApplicationDocumentTypesHash } from "@common/selectors/staticContentSelectors";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
+import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationGetStarted";
 import * as routes from "@/constants/routes";
-import * as FORM from "@/constants/forms";
-import customPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mines: PropTypes.arrayOf(customPropTypes.mine).isRequired,
@@ -34,7 +32,6 @@ const propTypes = {
   fetchProjectById: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   majorMinesApplicationDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       projectGuid: PropTypes.string,
@@ -58,14 +55,16 @@ const StepForms = (props, mineName, primaryContact, state, next, prev, handleSav
     content: <MajorMineApplicationGetStarted />,
     buttons: [
       <>
-        <Button
-          id="step1-cancel"
-          type="secondary"
-          style={{ marginRight: "15px" }}
-          onClick={() => {}}
-        >
-          Cancel
-        </Button>
+        <Link to={routes.EDIT_PROJECT.dynamicRoute(props.project?.project_guid)}>
+          <Button
+            id="step1-cancel"
+            type="secondary"
+            style={{ marginRight: "15px" }}
+            onClick={() => {}}
+          >
+            Cancel
+          </Button>
+        </Link>
         <Button id="step1-next" type="primary" onClick={() => next()}>
           Next
         </Button>
@@ -140,7 +139,7 @@ const StepForms = (props, mineName, primaryContact, state, next, prev, handleSav
           type="tertiary"
           className="full-mobile"
           style={{ marginRight: "24px" }}
-          onClick={() => {}}
+          onClick={() => prev()}
         >
           Back
         </Button>
@@ -179,31 +178,25 @@ export class MajorMineApplicationPage extends Component {
   }
 
   handleFetchData = () => {
-    const { projectGuid, majorMineApplicationGuid } = this.props.match?.params;
-    if (projectGuid && majorMineApplicationGuid) {
-      return this.props
-        .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, isEditMode: true }));
-    }
-    return this.props.fetchProjectById(projectGuid).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    const { projectGuid } = this.props.match?.params;
+
+    return this.props
+      .fetchProjectById(projectGuid)
+      .then(() =>
+        this.props.project.major_mine_application?.major_mine_application_guid
+          ? this.setState({ isLoaded: true, isEditMode: true })
+          : this.setState({ isLoaded: true, isEditMode: false })
+      );
   };
 
   handleCreateMajorMineApplication = (values, message) => {
-    return this.props
-      .createMajorMineApplication(
-        {
-          projectGuid: this.props.match.params?.projectGuid,
-        },
-        values,
-        message
-      )
-      .then(({ data: { project_guid, major_mine_application_guid } }) => {
-        this.props.history.replace(
-          EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(project_guid, major_mine_application_guid)
-        );
-      });
+    return this.props.createMajorMineApplication(
+      {
+        projectGuid: this.props.match.params?.projectGuid,
+      },
+      values,
+      message
+    );
   };
 
   handleUpdateMajorMineApplication = (values, message) => {
@@ -233,9 +226,9 @@ export class MajorMineApplicationPage extends Component {
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
         await this.handleCreateMajorMineApplication(values, message);
-      }else{
+      } else {
         await this.handleUpdateMajorMineApplication(values, message);
-      }  
+      }
       await this.handleFetchData();
       const { project = {} } = this.props;
       const majorMineApplicationGuid = project?.major_mine_application?.major_mine_application_guid;
@@ -246,7 +239,6 @@ export class MajorMineApplicationPage extends Component {
         )}`,
         state: { project },
       });
-      
     }
     return null;
   };
