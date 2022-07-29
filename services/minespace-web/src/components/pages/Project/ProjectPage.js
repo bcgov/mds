@@ -17,7 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
-import MajorMineApplicationPage from "./MajorMineApplicationPage";
+import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -91,28 +91,35 @@ export class ProjectPage extends Component {
       );
       this.props.history.push(url);
     } else if (activeTab === "major-mine-application") {
-      const url = router.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(
-        this.props.match.params?.projectGuid
-      );
+      const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
       this.props.history.push(url);
     }
   };
 
-  navigateFromIRTButton = (status) => {
-    if (status === "APV") {
-      return this.props.history.push({
-        pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-          this.props.project.project_guid,
-          this.props.project.information_requirements_table?.irt_guid
-        ),
-        state: { current: 2 },
-      });
+  navigateFromProjectStagesTable = (source, status) => {
+    if (source === "IRT") {
+      if (status === "APV") {
+        return this.props.history.push({
+          pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+            this.props.project.project_guid,
+            this.props.project.information_requirements_table?.irt_guid
+          ),
+          state: { current: 2 },
+        });
+      }
+      const irtTab = document.querySelector('[id*="irt-entry"]');
+      if (!irtTab) {
+        return null;
+      }
+      return irtTab.click();
+    } if (source === "MMA") {
+      const mmaTab = document.querySelector('[id*="major-mine-application"]');
+      if (!mmaTab) {
+        return null;
+      }
+      return mmaTab.click();
     }
-    const irtTab = document.querySelector('[id*="irt-entry"]');
-    if (!irtTab) {
-      return null;
-    }
-    return irtTab.click();
+    return null;
   };
 
   render() {
@@ -146,7 +153,7 @@ export class ProjectPage extends Component {
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key="overview">
-                  <ProjectOverviewTab irtNavigateTo={this.navigateFromIRTButton} />
+                  <ProjectOverviewTab navigateForward={this.navigateFromProjectStagesTable} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="IRT" key="irt-entry">
                   <InformationRequirementsTableEntryTab
@@ -156,7 +163,7 @@ export class ProjectPage extends Component {
                 </Tabs.TabPane>
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Application" key="major-mine-application">
-                    <MajorMineApplicationPage />
+                    <MajorMineApplicationEntryTab />
                   </Tabs.TabPane>
                 )}
               </Tabs>
