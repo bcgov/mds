@@ -39,8 +39,20 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.ADD_INFORMATION_REQUIREMENTS_TABLE.component)}
     />
     <Route
+      path={routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.route}
+      component={AuthenticationGuard()(routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.component)}
+    />
+    <Route
       path={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.route}
       component={AuthenticationGuard()(routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.component)}
+    />
+    <Route
+      path={routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.route}
+      component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
+    />
+    <Route
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
     />
     <Route
       path={routes.EDIT_PROJECT.route}

@@ -1,21 +1,22 @@
 import uuid
+
 import utm
-
-from sqlalchemy.orm import validates, reconstructor
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import func, literal, select, desc, and_
-
 from geoalchemy2 import Geometry
-from app.extensions import db
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
-from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
+from sqlalchemy import func, literal, select, desc, and_, column, table
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.schema import FetchedValue
+
 from app.api.constants import *
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.utils.access_decorators import is_minespace_user
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.extensions import db
+
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -48,7 +49,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     mms_alias = db.Column(db.String)
 
     # Relationships
-    #Almost always used and 1:1, so these are joined
+    # Almost always used and 1:1, so these are joined
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
@@ -57,7 +58,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
         lazy='joined')
 
-    #Almost always used, but faster to use selectin to load related data
+    # Almost always used, but faster to use selectin to load related data
     _permit_identities = db.relationship(
         'Permit',
         order_by='desc(Permit.create_timestamp)',
@@ -67,7 +68,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
     )
 
-    #across all permit_identities
+    # across all permit_identities
     _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
 
     mine_type = db.relationship(
@@ -216,7 +217,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
             select([MineWorkInformation.work_status]).where(
                 and_(MineWorkInformation.mine_guid == cls.mine_guid,
                      MineWorkInformation.deleted_ind == False)).order_by(
-                         desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
+                desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
             literal("Unknown"))
 
     @classmethod
@@ -233,6 +234,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_mine_name(cls, term=None, major=None):
+        MINE_LIST_RESULT_LIMIT = None if is_minespace_user() else 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
@@ -242,7 +244,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         if major is not None:
             mines_q = mines_q.filter_by(major_mine_ind=major)
 
-        response = mines_q.all()
+        response = mines_q.limit(
+            MINE_LIST_RESULT_LIMIT).all() if MINE_LIST_RESULT_LIMIT else mines_q.all()
 
         return response
 

@@ -5,11 +5,6 @@ import { Link } from "react-router-dom";
 import { Tabs, Tag } from "antd";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
-import * as routes from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
-import CustomPropTypes from "@/customPropTypes";
-import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";
-import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
 import { formatDate } from "@common/utils/helpers";
 import {
   fetchRequirements,
@@ -23,8 +18,10 @@ import {
   getRequirements,
 } from "@common/selectors/projectSelectors";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
+import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";
+import CustomPropTypes from "@/customPropTypes";
+import * as routes from "@/constants/routes";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -207,11 +204,9 @@ export class InformationRequirementsTableTab extends Component {
             style={{ margin: "0" }}
             centered
           >
-            {!IN_PROD() && (
-              <Tabs.TabPane tab="IRT" key="irt">
-                <></>
-              </Tabs.TabPane>
-            )}
+            <Tabs.TabPane tab="IRT" key="irt">
+              <></>
+            </Tabs.TabPane>
           </Tabs>
         </div>
         <div>
@@ -274,6 +269,4 @@ const mapDispatchToProps = (dispatch) =>
 
 InformationRequirementsTableTab.propTypes = propTypes;
 
-export default AuthorizationGuard(Permission.IN_TESTING)(
-  connect(mapStateToProps, mapDispatchToProps)(InformationRequirementsTableTab)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(InformationRequirementsTableTab);

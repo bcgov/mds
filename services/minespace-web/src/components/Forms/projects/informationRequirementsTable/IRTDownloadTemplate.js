@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { ENVIRONMENT } from "@common/constants/environment";
-import LinkButton from "@/components/common/LinkButton";
 import * as API from "@common/constants/API";
+import LinkButton from "@/components/common/LinkButton";
 
 export class IRTDownloadTemplate extends Component {
   downloadIRTTemplate = (url) => {
@@ -19,7 +19,7 @@ export class IRTDownloadTemplate extends Component {
     return (
       <Row>
         <Col>
-          <Typography.Title level={4}>Download IRT template</Typography.Title>
+          <Typography.Title level={3}>Download IRT template</Typography.Title>
           <Typography.Paragraph>
             The first step in composing an IRT is to download the official{" "}
             <LinkButton
@@ -57,6 +57,7 @@ export class IRTDownloadTemplate extends Component {
             </a>
             &nbsp;closest to your project location.
           </Typography.Paragraph>
+          <br />
           <Typography.Paragraph>
             <div>
               <Button

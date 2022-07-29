@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 
+import { bindActionCreators } from "redux";
+import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
@@ -20,41 +20,37 @@ const defaultProps = {
   minespaceUserEmailHash: {},
 };
 
-export class NewMinespaceUser extends Component {
-  componentDidMount() {
-    this.props.fetchMineNameList();
-  }
+export const NewMinespaceUser = (props) => {
+  const { mines, minespaceUserEmailHash, handleSubmit } = props;
 
-  handleSearch = (name) => {
+  const handleSearch = (name) => {
     if (name.length > 0) {
-      this.props.fetchMineNameList({ name });
+      props.fetchMineNameList({ name });
     }
   };
 
-  handleChange = () => {
-    this.props.fetchMineNameList();
+  const handleChange = () => {
+    props.fetchMineNameList();
   };
 
-  render() {
-    return (
-      <div>
-        <h3>Create Proponent</h3>
-        {this.props.mines && (
-          <AddMinespaceUser
-            mines={this.props.mines.map((mine) => ({
-              value: mine.mine_guid,
-              label: `${mine.mine_name} - ${mine.mine_no}`,
-            }))}
-            minespaceUserEmailHash={this.props.minespaceUserEmailHash}
-            onSubmit={this.props.handleSubmit}
-            handleChange={this.handleChange}
-            handleSearch={this.handleSearch}
-          />
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h3>Create Proponent</h3>
+      {mines && (
+        <AddMinespaceUser
+          mines={mines.map((mine) => ({
+            value: mine.mine_guid,
+            label: `${mine.mine_name} - ${mine.mine_no}`,
+          }))}
+          minespaceUserEmailHash={minespaceUserEmailHash}
+          onSubmit={handleSubmit}
+          handleChange={handleChange}
+          handleSearch={handleSearch}
+        />
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   mines: getMineNames(state),

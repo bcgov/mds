@@ -7,6 +7,8 @@ import ReturnPage from "@/components/pages/ReturnPage";
 import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
+import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
+import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
 
 export const HOME = {
   route: "/",
@@ -54,11 +56,31 @@ export const ADD_INFORMATION_REQUIREMENTS_TABLE = {
   component: InformationRequirementsTablePage,
 };
 
+export const RESUBMIT_INFORMATION_REQUIREMENTS_TABLE = {
+  route: "/projects/:projectGuid/information-requirements-table/:irtGuid/resubmit",
+  dynamicRoute: (projectGuid, irtGuid) =>
+    `/projects/${projectGuid}/information-requirements-table/${irtGuid}/resubmit`,
+  component: InformationRequirementsTablePage,
+};
+
 export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
   route: "/projects/:projectGuid/information-requirements-table/:irtGuid/review/:tab",
-  dynamicRoute: (projectGuid, irtGuid, tab = "intro-project-overview") =>
+  dynamicRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
   component: InformationRequirementsTablePage,
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
+  route: "/projects/:projectGuid/information-requirements-table/:irtGuid/success",
+  dynamicRoute: (projectGuid, irtGuid) =>
+    `/projects/${projectGuid}/information-requirements-table/${irtGuid}/success`,
+  component: InformationRequirementsTableSuccessPage,
+};
+
+export const ADD_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/new",
+  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/major-mine-application/new`,
+  component: MajorMineApplicationPage,
 };
 
 export const MINE_DASHBOARD = {

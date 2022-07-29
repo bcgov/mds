@@ -7,6 +7,7 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
+  getMajorMinesApplicationStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import {
@@ -29,6 +30,8 @@ const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  irtNavigateTo: PropTypes.func.isRequired,
+  majorMinesApplicationStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -84,9 +87,7 @@ export class ProjectOverviewTab extends Component {
         statusHash: this.props.projectSummaryStatusCodesHash,
         required: null,
       },
-    ];
-    if (!IN_PROD()) {
-      projectStages.push({
+      {
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
         status: this.props.informationRequirementsTable.status_code,
@@ -94,8 +95,22 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         required: this.props.project.mrc_review_required,
+        navigateTo: () =>
+          this.props.irtNavigateTo(this.props.informationRequirementsTable.status_code),
+      },
+    ];
+    if (!IN_PROD()) {
+      projectStages.push({
+        title: "Application",
+        key: this.props.project.major_mine_application?.major_mine_application_id,
+        status: this.props.project.major_mine_application?.status_code,
+        project_guid: projectGuid,
+        payload: this.props.project.major_mine_application,
+        statusHash: this.props.majorMinesApplicationStatusCodesHash,
+        required: true,
       });
     }
+
     // TODO: Add in ToC here
     // if (!IN_PROD()) {
     //   projectStages.push({
@@ -191,6 +206,7 @@ const mapStateToProps = (state) => ({
   informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
     state
   ),
+  majorMinesApplicationStatusCodesHash: getMajorMinesApplicationStatusCodesHash(state),
   EMLIcontactInfo: getEMLIContactsByRegion(state),
 });
 
