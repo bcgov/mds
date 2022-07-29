@@ -97,7 +97,15 @@ export class ProjectStagesTable extends Component {
           );
         }
         if (record.project_stage === "Application") {
-          const buttonLabel = record.stage_status ? "Resume" : "Start";
+          let buttonLabel;
+          if (!record.stage_status) {
+            buttonLabel = "Start";
+          } else if (record.stage_status === "APV") {
+            buttonLabel = "View";
+          } else {
+            buttonLabel = "Resume";
+          }
+
           link = (
             <Button
               className="full-mobile margin-small"

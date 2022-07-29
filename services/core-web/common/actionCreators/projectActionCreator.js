@@ -351,3 +351,28 @@ export const createMajorMineApplication = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const updateMajorMineApplication = (
+  { projectGuid, majorMineApplicationGuid },
+  payload,
+  message = "Successfully updated major mine application"
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATION(projectGuid, majorMineApplicationGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

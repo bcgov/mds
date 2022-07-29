@@ -17,6 +17,4 @@ def test_get_major_mine_application_by_major_mine_application_guid(test_client, 
     assert get_data['project_guid'] == str(major_mine_application.project.project_guid)
     assert get_data['major_mine_application_guid'] == str(
         major_mine_application.major_mine_application_guid)
-    assert get_data['submission_project_title'] == str(
-        major_mine_application.submission_project_title)
     assert get_data['status_code'] == str(major_mine_application.status_code)
