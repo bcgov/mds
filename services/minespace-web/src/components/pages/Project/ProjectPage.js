@@ -112,7 +112,8 @@ export class ProjectPage extends Component {
         return null;
       }
       return irtTab.click();
-    } if (source === "MMA") {
+    }
+    if (source === "MMA") {
       const mmaTab = document.querySelector('[id*="major-mine-application"]');
       if (!mmaTab) {
         return null;
@@ -122,11 +123,29 @@ export class ProjectPage extends Component {
     return null;
   };
 
+  navigateFromMMAButton = (status) => {
+    if (status === "APV") {
+      return this.props.history.push({
+        pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+          this.props.project.project_guid,
+          this.props.project.major_mine_application?.major_mine_application_guid
+        ),
+        state: { current: 2 },
+      });
+    }
+    const mmaTab = document.querySelector('[id*="application"]');
+    if (!mmaTab) {
+      return null;
+    }
+    return mmaTab.click();
+  };
+
   render() {
     const mineGuid = this.props.project.mine_guid;
     const mineName = this.props.mines[mineGuid]?.mine_name || "";
     const title = this.props.project?.project_title;
     const irtStatus = this.props.project.information_requirements_table?.status_code;
+    const mmaStatus = this.props.project.major_mine_application?.status_code;
     const mrcReviewRequired = this.props.project?.mrc_review_required;
 
     return (
@@ -149,7 +168,7 @@ export class ProjectPage extends Component {
             <Col span={24}>
               <Tabs
                 defaultActiveKey={tabs[0]}
-                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
+                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus, mmaStatus)}
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key="overview">

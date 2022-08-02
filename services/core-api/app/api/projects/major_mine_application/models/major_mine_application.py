@@ -23,7 +23,6 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
-    submission_project_title = db.Column(db.String(300), nullable=False)
     status_code = db.Column(
         db.String,
         db.ForeignKey('major_mine_application_status_code.major_mine_application_status_code'),
@@ -94,12 +93,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def create(cls,
                project,
-               submission_project_title,
                status_code,
                documents=[],
                add_to_session=True):
         major_mine_application = cls(
-            submission_project_title=submission_project_title,
             project_guid=project.project_guid,
             status_code=status_code)
 
@@ -124,6 +121,37 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             major_mine_application.save(commit=False)
 
         return major_mine_application
+
+    def update(self,
+               project,
+               status_code,
+               documents=[],
+               add_to_session=True):
+        self.status_code = status_code
+
+        for doc in documents:
+            mine_document_guid = doc.get('mine_document_guid')
+            if mine_document_guid:
+                major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
+                major_mine_application_doc.major_mine_application_document_type_code=doc.get(
+                        'major_mine_application_document_type')
+            else:
+                mine_doc = MineDocument(
+                    mine_guid=project.mine_guid,
+                    document_name=doc.get('document_name'),
+                    document_manager_guid=doc.get('document_manager_guid'))
+                major_mine_application_doc = MajorMineApplicationDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    major_mine_application_id=self.major_mine_application_id,
+                    major_mine_application_document_type_code=doc.get(
+                        'major_mine_application_document_type'))
+                major_mine_application_doc.mine_document = mine_doc
+                self.documents.append(major_mine_application_doc)
+
+        if add_to_session:
+            self.save(commit=False)
+
+        return self
 
     def delete(self, commit=True):
         for doc in self.documents:
