@@ -18,7 +18,6 @@ jobs:
           - config: redis
           - config: metabase
           - config: metabase-postgres
-          - config: docman
           - config: filesystem-provider
           - config: nris
           - config: nris-etl
