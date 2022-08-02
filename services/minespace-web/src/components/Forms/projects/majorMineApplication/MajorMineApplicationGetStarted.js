@@ -15,6 +15,8 @@ export const MajorMineApplicationGetStarted = () => {
         <Typography.Paragraph>Information what is needed for this section</Typography.Paragraph>
         <Typography.Title level={4}>Upload Primary Document</Typography.Title>
         <Typography.Paragraph>Information what is needed for this section</Typography.Paragraph>
+        <Typography.Title level={4}>Upload Spatial Components</Typography.Title>
+        <Typography.Paragraph>Information what is needed for this section</Typography.Paragraph>
         <Typography.Title level={4}>Upload Supporting Documents</Typography.Title>
         <Typography.Paragraph>Information what is needed for this section</Typography.Paragraph>
       </Col>

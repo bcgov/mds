@@ -147,7 +147,7 @@ const StepForms = (props, mineName, primaryContact, state, next, prev, handleSav
         <Link>
           <Popconfirm
             placement="topRight"
-            title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
+            title="Are you sure you want to submit your final major mine application, no changes could be made after submitting?"
             onConfirm={() => {}}
             okText="Yes"
             cancelText="No"

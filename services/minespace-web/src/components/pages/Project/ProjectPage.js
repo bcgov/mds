@@ -70,7 +70,7 @@ export class ProjectPage extends Component {
     }
   }
 
-  handleTabChange = (activeTab, irtStatus, mmaStatus) => {
+  handleTabChange = (activeTab, irtStatus) => {
     this.setState({ activeTab });
     if (activeTab === "overview") {
       const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
@@ -112,7 +112,8 @@ export class ProjectPage extends Component {
         return null;
       }
       return irtTab.click();
-    } if (source === "MMA") {
+    }
+    if (source === "MMA") {
       const mmaTab = document.querySelector('[id*="major-mine-application"]');
       if (!mmaTab) {
         return null;
