@@ -52,7 +52,6 @@ jobs:
         include:
           - name: metabase
           - name: metabase-postgres
-          - name: docman
           - name: nris
     steps:
       - name: Install oc
