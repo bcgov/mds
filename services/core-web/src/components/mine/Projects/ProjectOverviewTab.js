@@ -9,12 +9,11 @@ import {
   getInformationRequirementsTableStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate } from "@common/utils/helpers";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import * as Strings from "@common/constants/strings";
+import { getProject } from "@common/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import { getProject } from "@common/selectors/projectSelectors";
 import ProjectStagesTable from "./ProjectStagesTable";
 
 const propTypes = {
@@ -72,6 +71,11 @@ export class ProjectOverviewTab extends Component {
       status_code,
       documents,
     } = this.props.project.project_summary;
+
+    // TODO: Improve response model to make this check more robust
+    const hasInformationRequirementsTable = Boolean(
+      this.props.project.information_requirements_table?.irt_guid
+    );
     const projectStages = [
       {
         title: "Project description",
@@ -87,14 +91,7 @@ export class ProjectOverviewTab extends Component {
           </Link>
         ),
       },
-    ];
-    // TODO: Improve response model to make this check more robust
-    const hasInformationRequirementsTable = Boolean(
-      this.props.project.information_requirements_table?.irt_guid
-    );
-
-    if (!IN_PROD()) {
-      projectStages.push({
+      {
         title: "Final IRT",
         key: this.props.project.information_requirements_table?.irt_id || 0,
         status: this.props.project.information_requirements_table?.status_code,
@@ -116,8 +113,8 @@ export class ProjectOverviewTab extends Component {
             </Button>
           </Link>
         ),
-      });
-    }
+      },
+    ];
 
     return (
       <Row gutter={[0, 16]}>

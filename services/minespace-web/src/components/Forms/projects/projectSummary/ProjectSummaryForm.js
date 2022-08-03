@@ -111,7 +111,6 @@ export class ProjectSummaryForm extends Component {
                   {!isFirst && (
                     <Button
                       type="secondary"
-                      disabled={disabledButton}
                       onClick={() => this.props.handleTabChange(tabs[this.state.tabIndex - 1])}
                     >
                       <LeftOutlined /> Back

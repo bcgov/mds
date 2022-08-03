@@ -116,7 +116,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           },
           Object {
             "key": undefined,
-            "navigateTo": [Function],
+            "navigateForward": [Function],
             "payload": Object {
               "project_guid": "66d7e698-8820-456f-ac32-14917f3ebe88",
               "requirements": Array [
@@ -139,11 +139,23 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "required": undefined,
             "status": "REC",
             "statusHash": Object {
-              "APV": "Approved",
-              "REC": "Received",
-              "UNR": "Under review - with reviewers",
+              "APV": "Review Complete",
+              "CHR": "Change Requested",
+              "PRG": "In Progress",
+              "REC": "Pending Review",
+              "UNR": "In Review",
             },
             "title": "IRT",
+          },
+          Object {
+            "key": undefined,
+            "navigateForward": [Function],
+            "payload": undefined,
+            "project_guid": "8132462392222",
+            "required": true,
+            "status": undefined,
+            "statusHash": undefined,
+            "title": "Application",
           },
         ]
       }

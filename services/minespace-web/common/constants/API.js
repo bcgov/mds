@@ -155,6 +155,14 @@ export const INFORMATION_REQUIREMENTS_TABLES = (projectGuid) =>
 export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid, irtGuid) =>
   `/projects/${projectGuid}/information-requirements-table/${irtGuid}`;
 
+// Major mine application
+export const MAJOR_MINE_APPLICATIONS = (projectGuid) =>
+  `/projects/${projectGuid}/major-mine-application`;
+export const MAJOR_MINE_APPLICATION = (projectGuid, majorMineApplicationGuid) =>
+  `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}`;
+export const MAJOR_MINE_APPLICATION_DOCUMENTS = (projectGuid) =>
+  `/projects/${projectGuid}/major-mine-application/documents`;
+
 // Users
 export const CORE_USER = "/users/core";
 

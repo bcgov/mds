@@ -7,12 +7,14 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
+  getMajorMinesApplicationStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import {
   getProjectSummary,
   getProject,
   getInformationRequirementsTable,
+  getMajorMinesApplication,
 } from "@common/selectors/projectSelectors";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
@@ -29,7 +31,10 @@ const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   informationRequirementsTable: CustomPropTypes.informationRequirementsTable.isRequired,
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  irtNavigateTo: PropTypes.func.isRequired,
+  navigateForward: PropTypes.func.isRequired,
+  majorMinesApplication: CustomPropTypes.majorMinesApplication.isRequired,
+  majorMinesApplicationStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mmaNavigateTo: PropTypes.func.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -85,9 +90,7 @@ export class ProjectOverviewTab extends Component {
         statusHash: this.props.projectSummaryStatusCodesHash,
         required: null,
       },
-    ];
-    if (!IN_PROD()) {
-      projectStages.push({
+      {
         title: "IRT",
         key: this.props.informationRequirementsTable.information_requirements_table_id,
         status: this.props.informationRequirementsTable.status_code,
@@ -95,10 +98,23 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.informationRequirementsTable,
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         required: this.props.project.mrc_review_required,
-        navigateTo: () =>
-          this.props.irtNavigateTo(this.props.informationRequirementsTable.status_code),
+        navigateForward: () =>
+          this.props.navigateForward("IRT", this.props.informationRequirementsTable.status_code),
+      },
+    ];
+    if (!IN_PROD()) {
+      projectStages.push({
+        title: "Application",
+        key: this.props.majorMinesApplication?.major_mine_application_id,
+        status: this.props.majorMinesApplication?.status_code,
+        project_guid: projectGuid,
+        payload: this.props.majorMinesApplication,
+        statusHash: this.props.majorMinesApplicationStatusCodesHash,
+        required: true,
+        navigateForward: () => this.props.navigateForward("MMA"),
       });
     }
+
     // TODO: Add in ToC here
     // if (!IN_PROD()) {
     //   projectStages.push({
@@ -194,6 +210,8 @@ const mapStateToProps = (state) => ({
   informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
     state
   ),
+  majorMinesApplication: getMajorMinesApplication(state),
+  majorMinesApplicationStatusCodesHash: getMajorMinesApplicationStatusCodesHash(state),
   EMLIcontactInfo: getEMLIContactsByRegion(state),
 });
 

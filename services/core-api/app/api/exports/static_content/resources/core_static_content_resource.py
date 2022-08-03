@@ -65,6 +65,8 @@ from app.api.projects.project_summary.models.project_summary_authorization_type 
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.information_requirements_table.models.information_requirements_table_status_code import InformationRequirementsTableStatusCode
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
+from app.api.projects.major_mine_application.models.major_mine_application_status_code import MajorMineApplicationStatusCode
+from app.api.projects.major_mine_application.models.major_mine_application_document_type import MajorMineApplicationDocumentType
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
@@ -81,7 +83,8 @@ MODELS_GET_ACTIVE = [
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
-    ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType
+    ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType
 ]
 
 

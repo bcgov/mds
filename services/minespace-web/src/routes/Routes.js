@@ -4,6 +4,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Result, Button, Typography } from "antd";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
 
 const Routes = () => (
   <Switch>
@@ -49,6 +50,20 @@ const Routes = () => (
     <Route
       path={routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.route}
       component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
+    />
+    <Route
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      path={routes.MAJOR_MINE_APPLICATION_SUCCESS.route}
+      component={AuthenticationGuard(Permission.IN_TESTING)(
+        routes.MAJOR_MINE_APPLICATION_SUCCESS.component
+      )}
     />
     <Route
       path={routes.EDIT_PROJECT.route}

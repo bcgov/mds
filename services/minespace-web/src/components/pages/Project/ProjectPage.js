@@ -17,6 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
+import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -89,24 +90,54 @@ export class ProjectPage extends Component {
         this.props.match.params?.projectGuid
       );
       this.props.history.push(url);
+    } else if (activeTab === "major-mine-application") {
+      const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
+      this.props.history.push(url);
     }
   };
 
-  navigateFromIRTButton = (status) => {
+  navigateFromProjectStagesTable = (source, status) => {
+    if (source === "IRT") {
+      if (status === "APV") {
+        return this.props.history.push({
+          pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+            this.props.project.project_guid,
+            this.props.project.information_requirements_table?.irt_guid
+          ),
+          state: { current: 2 },
+        });
+      }
+      const irtTab = document.querySelector('[id*="irt-entry"]');
+      if (!irtTab) {
+        return null;
+      }
+      return irtTab.click();
+    }
+    if (source === "MMA") {
+      const mmaTab = document.querySelector('[id*="major-mine-application"]');
+      if (!mmaTab) {
+        return null;
+      }
+      return mmaTab.click();
+    }
+    return null;
+  };
+
+  navigateFromMMAButton = (status) => {
     if (status === "APV") {
       return this.props.history.push({
-        pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+        pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
           this.props.project.project_guid,
-          this.props.project.information_requirements_table?.irt_guid
+          this.props.project.major_mine_application?.major_mine_application_guid
         ),
         state: { current: 2 },
       });
     }
-    const irtTab = document.querySelector('[id*="irt-entry"]');
-    if (!irtTab) {
+    const mmaTab = document.querySelector('[id*="application"]');
+    if (!mmaTab) {
       return null;
     }
-    return irtTab.click();
+    return mmaTab.click();
   };
 
   render() {
@@ -114,6 +145,7 @@ export class ProjectPage extends Component {
     const mineName = this.props.mines[mineGuid]?.mine_name || "";
     const title = this.props.project?.project_title;
     const irtStatus = this.props.project.information_requirements_table?.status_code;
+    const mmaStatus = this.props.project.major_mine_application?.status_code;
     const mrcReviewRequired = this.props.project?.mrc_review_required;
 
     return (
@@ -136,18 +168,21 @@ export class ProjectPage extends Component {
             <Col span={24}>
               <Tabs
                 defaultActiveKey={tabs[0]}
-                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
+                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus, mmaStatus)}
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key="overview">
-                  <ProjectOverviewTab irtNavigateTo={this.navigateFromIRTButton} />
+                  <ProjectOverviewTab navigateForward={this.navigateFromProjectStagesTable} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="IRT" key="irt-entry">
+                  <InformationRequirementsTableEntryTab
+                    irt={this.props.project?.information_requirements_table}
+                    mrcReviewRequired={mrcReviewRequired}
+                  />
                 </Tabs.TabPane>
                 {!IN_PROD() && (
-                  <Tabs.TabPane tab="IRT" key="irt-entry">
-                    <InformationRequirementsTableEntryTab
-                      irt={this.props.project?.information_requirements_table}
-                      mrcReviewRequired={mrcReviewRequired}
-                    />
+                  <Tabs.TabPane tab="Application" key="major-mine-application">
+                    <MajorMineApplicationEntryTab />
                   </Tabs.TabPane>
                 )}
               </Tabs>

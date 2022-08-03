@@ -17,7 +17,7 @@ export class ProjectStagesTable extends Component {
       stage_status: stage.status,
       stage_status_hash: stage.statusHash,
       stage_required: stage.required,
-      navigate_to: stage.navigateTo,
+      navigate_forward: stage.navigateForward,
       stage,
     }));
 
@@ -90,7 +90,27 @@ export class ProjectStagesTable extends Component {
             <Button
               className="full-mobile margin-small"
               type="secondary"
-              onClick={() => record?.navigate_to()}
+              onClick={() => record?.navigate_forward()}
+            >
+              {buttonLabel}
+            </Button>
+          );
+        }
+        if (record.project_stage === "Application") {
+          let buttonLabel;
+          if (!record.stage_status) {
+            buttonLabel = "Start";
+          } else if (record.stage_status === "APV") {
+            buttonLabel = "View";
+          } else {
+            buttonLabel = "Resume";
+          }
+
+          link = (
+            <Button
+              className="full-mobile margin-small"
+              type="secondary"
+              onClick={() => record?.navigate_forward()}
             >
               {buttonLabel}
             </Button>

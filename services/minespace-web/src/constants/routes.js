@@ -8,6 +8,8 @@ import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
+import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
+import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
 
 export const HOME = {
   route: "/",
@@ -74,6 +76,26 @@ export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
   dynamicRoute: (projectGuid, irtGuid) =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/success`,
   component: InformationRequirementsTableSuccessPage,
+};
+
+export const ADD_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/new",
+  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/major-mine-application/new`,
+  component: MajorMineApplicationPage,
+};
+
+export const EDIT_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/:majorMineApplicationGuid",
+  dynamicRoute: (projectGuid, majorMineApplicationGuid) =>
+    `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}`,
+  component: MajorMineApplicationPage,
+};
+
+export const MAJOR_MINE_APPLICATION_SUCCESS = {
+  route: "/projects/:projectGuid/major-mine-application/:mmaGuid/success",
+  dynamicRoute: (projectGuid, mmaGuid) =>
+    `/projects/${projectGuid}/major-mine-application/${mmaGuid}/success`,
+  component: MajorMineApplicationSuccessPage,
 };
 
 export const MINE_DASHBOARD = {

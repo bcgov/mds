@@ -52,13 +52,21 @@ export class IRTFileImport extends Component {
     return this.props.change("final_irt", this.props.documents);
   };
 
+  marshalImportIRTError = (error) => {
+    // Transform single quotes on object properties to double to allow JSON parse
+    const formattedError = error.replaceAll("'", '"');
+    const regex = /({'row_number': \d+, 'section': \d+})/g;
+    const errorMatch = formattedError.match(regex);
+    return errorMatch.map((e) => JSON.parse(e));
+  };
+
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     return (
       <>
         <Row>
           <Col span={24}>
-            <Typography.Title level={4}>Import a new IRT</Typography.Title>
+            <Typography.Title level={4}>Import IRT file</Typography.Title>
             <Typography.Paragraph>
               Please upload your final IRT file.
               <ul>

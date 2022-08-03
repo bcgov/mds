@@ -11,11 +11,10 @@ const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
 const formatErrorMessage = (errorMessage) => {
-  errorMessage = errorMessage.replace("(psycopg2.", "(DatabaseError.");
-  return errorMessage;
+  return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
-const CustomAxios = ({ errorToastMessage } = {}) => {
+const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = {}) => {
   const instance = axios.create();
 
   instance.interceptors.response.use(
@@ -28,12 +27,15 @@ const CustomAxios = ({ errorToastMessage } = {}) => {
       const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         window.location.reload(false);
-      } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
+      } else if (
+        (errorToastMessage === "default" || errorToastMessage === undefined) &&
+        !suppressErrorNotification
+      ) {
         notification.error({
           message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
           duration: 10,
         });
-      } else if (errorToastMessage) {
+      } else if (errorToastMessage && !suppressErrorNotification) {
         notification.error({
           message: errorToastMessage,
           duration: 10,

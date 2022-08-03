@@ -42,22 +42,22 @@ const Subrequirement = ({ sub_requirement }) => (
         {`${sub_requirement.step} ${sub_requirement.description}`}
       </span>
       <>
-        <p>
-          <Checkbox disabled checked={sub_requirement.required}>
-            Required
-          </Checkbox>
-          <Checkbox disabled checked={sub_requirement.methods}>
-            Methods
-          </Checkbox>
-        </p>
-        <p>
-          <Input.TextArea
-            disabled
-            rows={4}
-            value={sub_requirement.comment ? sub_requirement.comment : ""}
-            name="comment"
-          />
-        </p>
+        {sub_requirement?.sub_requirements?.length === 0 && (
+          <p>
+            <Checkbox disabled checked={sub_requirement.required}>
+              Required
+            </Checkbox>
+            <Checkbox disabled checked={sub_requirement.methods}>
+              Methods
+            </Checkbox>
+          </p>
+        )}
+        {sub_requirement?.sub_requirements?.length === 0 && sub_requirement.comment && (
+          <p>
+            Comments
+            <Input.TextArea rows={4} value={sub_requirement.comment} name="comment" disabled />
+          </p>
+        )}
       </>
     </Col>
     {sub_requirement.sub_requirements && renderSubrequirement(sub_requirement.sub_requirements)}

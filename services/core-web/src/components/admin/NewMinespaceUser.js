@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
 
-import CustomPropTypes from "@/customPropTypes";
-import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import { bindActionCreators } from "redux";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import CustomPropTypes from "@/customPropTypes";
+import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,

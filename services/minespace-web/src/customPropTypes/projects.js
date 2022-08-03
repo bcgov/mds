@@ -51,6 +51,13 @@ export const requirements = shape({
   sub_requirements: PropTypes.arrayOf(subRequirements),
 });
 
+export const majorMinesApplication = shape({
+  major_mine_application_id: PropTypes.number,
+  major_mine_application_guid: PropTypes.string,
+  status_code: PropTypes.string,
+  documents: PropTypes.arrayOf(mineDocument),
+});
+
 export const projectContact = PropTypes.shape({
   project_guid: PropTypes.string,
   project_contact_guid: PropTypes.string,
@@ -70,5 +77,6 @@ export const project = shape({
   project_title: PropTypes.string,
   project_summary: projectSummary,
   information_requirements_table: informationRequirementsTable,
+  major_mine_application: majorMinesApplication,
   contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
 });

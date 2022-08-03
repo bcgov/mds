@@ -3,32 +3,40 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
-import { ArrowLeftOutlined, DownloadOutlined, HourglassOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  DownloadOutlined,
+  HourglassOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
+import { cleanFilePondFile } from "@common/utils/helpers";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";
-import { openModal } from "@common/actions/modalActions";
 import { clearInformationRequirementsTable } from "@common/actions/projectActions";
 import {
   fetchProjectById,
   fetchRequirements,
   updateInformationRequirementsTable,
 } from "@common/actionCreators/projectActionCreator";
+import { closeModal, openModal } from "@common/actions/modalActions";
 import { getInformationRequirementsTableDocumentTypesHash } from "@common/selectors/staticContentSelectors";
-import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as routes from "@/constants/routes";
+import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as routes from "@/constants/routes";
+import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
 import IRTFileImport from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
 import { InformationRequirementsTableForm } from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
-import modalConfig from "@/components/modalContent/config";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   updateInformationRequirementsTable: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   requirements: PropTypes.arrayOf(CustomPropTypes.requirements).isRequired,
   fetchRequirements: PropTypes.func.isRequired,
@@ -47,7 +55,6 @@ const propTypes = {
       current: PropTypes.number,
     },
   }).isRequired,
-  openModal: PropTypes.func.isRequired,
 };
 
 const tabs = [
@@ -105,61 +112,34 @@ const StepForms = (
     ),
     buttons: [
       <>
-        {props.project.information_requirements_table?.status_code !== "PRG" ? (
-          <>
-            <Button
-              id="step2-next"
-              type="primary"
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project?.project_guid,
-                    props.project?.information_requirements_table?.irt_guid
-                  )}`,
-                  state: { current: 2 },
-                });
-              }}
-              disabled={
-                !state.uploadedSuccessfully &&
-                !props.project?.information_requirements_table?.irt_guid
-              }
-            >
-              Continue to Review
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              id="step-back"
-              type="tertiary"
-              className="full-mobile"
-              style={{ marginRight: "12px" }}
-              onClick={() => prev()}
-              disabled={state.submitting}
-            >
-              Back
-            </Button>
-            <Button
-              id="step2-next"
-              type="primary"
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project?.project_guid,
-                    props.project?.information_requirements_table?.irt_guid
-                  )}`,
-                  state: { current: 2 },
-                });
-              }}
-              disabled={
-                !state.uploadedSuccessfully &&
-                !props.project?.information_requirements_table?.irt_guid
-              }
-            >
-              Continue to Review
-            </Button>
-          </>
-        )}
+        <Button
+          id="step-back"
+          type="tertiary"
+          className="full-mobile"
+          style={{ marginRight: "12px" }}
+          onClick={() => prev()}
+          disabled={state.submitting}
+        >
+          Back
+        </Button>
+        <Button
+          id="step2-next"
+          type="primary"
+          onClick={() => {
+            props.history.push({
+              pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                props.project?.project_guid,
+                props.project?.information_requirements_table?.irt_guid
+              )}`,
+              state: { current: 2 },
+            });
+          }}
+          disabled={
+            !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+          }
+        >
+          Continue to Review
+        </Button>
       </>,
     ],
   },
@@ -170,12 +150,13 @@ const StepForms = (
         {props.project?.information_requirements_table?.status_code === "PRG" ? (
           <>
             <Typography.Title level={4}>Review IRT before submission</Typography.Title>
-            <Typography.Text>
+            <Typography.Paragraph>
               Review imported data before submission. Check the requirements and comments fields
               that are required for the project.
-            </Typography.Text>
+            </Typography.Paragraph>
           </>
         ) : null}
+
         <InformationRequirementsTableForm
           project={props.project}
           informationRequirementsTable={props.project?.information_requirements_table}
@@ -239,24 +220,25 @@ const StepForms = (
           </>
         ) : (
           <>
-            <Button
-              type="secondary"
-              htmlType="submit"
-              style={{ marginRight: "24px" }}
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project?.project_guid,
-                    props.project?.information_requirements_table?.irt_guid
-                  )}`,
-                  state: { current: 1 },
-                });
-              }}
-              disabled={state.submitting}
-            >
-              Resubmit IRT
-            </Button>
-
+            {props.project.information_requirements_table?.status_code !== "APV" && (
+              <Button
+                type="secondary"
+                htmlType="submit"
+                style={{ marginRight: "24px" }}
+                onClick={() => {
+                  props.history.push({
+                    pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                      props.project?.project_guid,
+                      props.project?.information_requirements_table?.irt_guid
+                    )}`,
+                    state: { current: 1 },
+                  });
+                }}
+                disabled={state.submitting}
+              >
+                Resubmit IRT
+              </Button>
+            )}
             <Button
               type="ghost"
               style={{ border: "none", marginRight: "12px" }}
@@ -296,6 +278,9 @@ export class InformationRequirementsTablePage extends Component {
     activeTab: tabs[0],
     informationRequirementsTable: [],
     uploadedSuccessfully: false,
+    importFailed: false,
+    importErrors: null,
+    hasBadRequestError: false,
   };
 
   componentDidMount() {
@@ -314,9 +299,33 @@ export class InformationRequirementsTablePage extends Component {
       });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.importFailed !== prevState.importFailed && this.state.importFailed) {
+      return this.openIRTImportErrorModal(this.state.importErrors);
+    }
+    if (
+      this.state.uploadedSuccessfully !== prevState.uploadedSuccessfully &&
+      this.state.uploadedSuccessfully
+    ) {
+      return this.openIRTImportSuccessModal();
+    }
+    return null;
+  }
+
   componentWillUnmount() {
     this.props.clearInformationRequirementsTable();
   }
+
+  marshalImportIRTError = (error) => {
+    // Transform single quotes on object properties to double to allow JSON parse
+    const formattedError = error.replaceAll(`'`, `"`);
+    const regex = /({"row_number": \d+, "section": \d+, "error": "\w+"})/g;
+    const errorMatch = formattedError.match(regex);
+    if (!errorMatch) {
+      return error;
+    }
+    return errorMatch.map((e) => JSON.parse(e));
+  };
 
   handleTabChange = (activeTab) => {
     const { projectGuid, irtGuid } = this.props.match.params;
@@ -350,12 +359,23 @@ export class InformationRequirementsTablePage extends Component {
     }
   };
 
-  importIsSuccessful = () => {
-    this.setState((state) => ({
-      uploadedSuccessfully: !state.uploadedSuccessfully,
-      isEditMode: !state.isEditMode,
+  importIsSuccessful = async (success, err) => {
+    if (!success) {
+      const hasBadRequestError = err?.response?.data?.message.includes("400 Bad Request: [");
+      const formattedError = this.marshalImportIRTError(err?.response?.data?.message);
+      await this.handleFetchData();
+      return this.setState({
+        importFailed: true,
+        importErrors: formattedError,
+        hasBadRequestError,
+      });
+    }
+    await this.handleFetchData();
+    this.setState((prevState) => ({
+      uploadedSuccessfully: true,
+      isEditMode: !prevState.isEditMode,
     }));
-    this.handleFetchData();
+    return cleanFilePondFile();
   };
 
   handleFetchData = () => {
@@ -364,7 +384,15 @@ export class InformationRequirementsTablePage extends Component {
     return this.props
       .fetchProjectById(projectGuid)
       .then(() => this.props.fetchRequirements())
-      .then(() => this.setState({ isLoaded: true }));
+      .then(() =>
+        this.setState({
+          isLoaded: true,
+          uploadedSuccessfully: false,
+          importFailed: false,
+          importErrors: null,
+          hasBadRequestError: false,
+        })
+      );
   };
 
   handleIRTUpdate = (values, message) => {
@@ -414,6 +442,55 @@ export class InformationRequirementsTablePage extends Component {
         width: 650,
       },
       content: modalConfig.VIEW_FILE_HISTORY,
+    });
+  };
+
+  openIRTImportSuccessModal = () => {
+    const { project = {} } = this.props;
+    const { project_guid: projectGuid } = project;
+    const irtGuid = project?.information_requirements_table?.irt_guid;
+
+    return this.props.openModal({
+      props: {
+        title: (
+          <>
+            <CheckCircleOutlined style={{ color: "green" }} />
+            {"  "}Import Successful
+          </>
+        ),
+        navigateForward: () =>
+          this.props.history.push({
+            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              projectGuid,
+              irtGuid
+            )}`,
+            state: { current: 2 },
+          }),
+      },
+      content: modalConfig.IMPORT_IRT_SUCCESS,
+    });
+  };
+
+  openIRTImportErrorModal = (errors = []) => {
+    const title = this.state.hasBadRequestError ? (
+      <>
+        <CloseCircleOutlined style={{ color: "red" }} />
+        {"  "}Import Failed
+      </>
+    ) : (
+      <>
+        <CloseCircleOutlined style={{ color: "red" }} />
+        {"  "}Error
+      </>
+    );
+
+    return this.props.openModal({
+      props: {
+        title,
+        errors,
+        isBadRequestError: this.state.hasBadRequestError,
+      },
+      content: modalConfig.IMPORT_IRT_FAILURE,
     });
   };
 
@@ -471,19 +548,23 @@ export class InformationRequirementsTablePage extends Component {
             </Col>
           </Row>
           <Row>
-            <Steps current={this.state.current}>
-              {Forms.map((step) => (
-                <Steps.Step key={step.title} title={step.title} />
-              ))}
-            </Steps>
+            {this.props.project?.information_requirements_table?.status_code !== "APV" && (
+              <Steps current={this.state.current}>
+                {Forms.map((step) => (
+                  <Steps.Step key={step.title} title={step.title} />
+                ))}
+              </Steps>
+            )}
             <br />
             <br />
             <Col span={24}>
-              <InformationRequirementsTableCallout
-                informationRequirementsTableStatus={
-                  this.props.project?.information_requirements_table?.status_code || "PRG"
-                }
-              />
+              {this.state.current !== 0 && (
+                <InformationRequirementsTableCallout
+                  informationRequirementsTableStatus={
+                    this.props.project?.information_requirements_table?.status_code || "PRG"
+                  }
+                />
+              )}
               <div>{Forms[this.state.current].content}</div>
             </Col>
           </Row>
@@ -504,11 +585,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      openModal,
+      closeModal,
       clearInformationRequirementsTable,
       fetchProjectById,
       fetchRequirements,
       updateInformationRequirementsTable,
-      openModal,
     },
     dispatch
   );
