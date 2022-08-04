@@ -106,7 +106,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: nris
           - name: metabase
           - name: metabase-postgres
           - name: dbbackup
