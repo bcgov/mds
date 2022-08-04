@@ -7,7 +7,7 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
       span={24}
     >
       <Title>
-        New major mine application for 
+        Major Mine Application - 
       </Title>
     </Col>
   </Row>
@@ -27,15 +27,144 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <Connect(ReduxForm)
-    handleSaveData={[Function]}
-    majorMinesApplicationDocumentTypesHash={
-      Object {
-        "PRM": "Primary",
-        "SPR": "Supporting",
-        "SPT": "Spatial",
+  <Row>
+    <Col
+      span={16}
+    >
+      <Title
+        level={2}
+      >
+        Create New Major Mine Application
+      </Title>
+    </Col>
+    <Col
+      span={8}
+    >
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "float": "right",
+          }
+        }
+      >
+        <p>
+          <Link
+            to="/projects/undefined/overview"
+          >
+            <Button
+              block={false}
+              ghost={false}
+              htmlType="button"
+              id="step1-cancel"
+              loading={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "marginRight": "15px",
+                }
+              }
+              type="secondary"
+            >
+              Cancel
+            </Button>
+          </Link>
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            id="step1-next"
+            loading={false}
+            onClick={[Function]}
+            type="primary"
+          >
+            Next
+          </Button>
+        </p>
+      </div>
+    </Col>
+  </Row>
+  <Row>
+    <Steps
+      current={0}
+      style={
+        Object {
+          "marginLeft": "8%",
+          "marginRight": "8%",
+        }
       }
-    }
-  />
+    >
+      <Step
+        key="Get Started"
+        title="Get Started"
+      />
+      <Step
+        key="Create Submission"
+        title="Create Submission"
+      />
+      <Step
+        key="Review & Submit"
+        title="Review & Submit"
+      />
+    </Steps>
+  </Row>
+  <br />
+  <Row>
+    <Col
+      span={24}
+    >
+      <div>
+        <MajorMineApplicationGetStarted />
+      </div>
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      span={24}
+    >
+      <div
+        style={
+          Object {
+            "display": "inline",
+            "float": "right",
+          }
+        }
+      >
+        <p>
+          <Link
+            to="/projects/undefined/overview"
+          >
+            <Button
+              block={false}
+              ghost={false}
+              htmlType="button"
+              id="step1-cancel"
+              loading={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "marginRight": "15px",
+                }
+              }
+              type="secondary"
+            >
+              Cancel
+            </Button>
+          </Link>
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            id="step1-next"
+            loading={false}
+            onClick={[Function]}
+            type="primary"
+          >
+            Next
+          </Button>
+        </p>
+      </div>
+    </Col>
+  </Row>
 </Fragment>
 `;

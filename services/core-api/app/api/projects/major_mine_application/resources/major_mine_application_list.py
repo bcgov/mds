@@ -14,7 +14,6 @@ from app.api.projects.major_mine_application.models.major_mine_application impor
 class MajorMineApplicationListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
-    parser.add_argument('submission_project_title', type=str, store_missing=False)
     parser.add_argument('status_code', type=str, store_missing=False)
     parser.add_argument('documents', type=list, location='json', store_missing=False)
 
@@ -32,12 +31,12 @@ class MajorMineApplicationListResource(Resource, UserMixin):
             raise NotFound('Project not found')
 
         major_mine_application = MajorMineApplication.create(project,
-                                                             data.get('submission_project_title'),
                                                              data.get('status_code'),
                                                              data.get('documents'))
 
         try:
             major_mine_application.save()
+            major_mine_application.send_mma_submit_email()
 
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')

@@ -1,4 +1,5 @@
-import requests, json
+import requests
+import json
 
 from enum import Enum
 from flask import current_app
@@ -39,7 +40,7 @@ MINESPACE_NO_REPLY_SIGNATURE = f'''
     <hr />
     <p>This is a no-reply email address. If you need to contact the MDS team, please email us at: <a href="mailto: {Config.MDS_EMAIL}">{Config.MDS_EMAIL}</a>.</p>
     <br />
-    <img src="{MINESPACE_LOGO_BASE64_ENCODED}" width="820" height="106" alt="MinespaceLogo">
+    <img src="{MINESPACE_LOGO_BASE64_ENCODED}" width="410" height="53" alt="MinespaceLogo">
 </div>
 '''
 

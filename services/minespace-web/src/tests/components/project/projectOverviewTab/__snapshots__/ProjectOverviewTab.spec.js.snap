@@ -116,7 +116,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           },
           Object {
             "key": undefined,
-            "navigateTo": [Function],
+            "navigateForward": [Function],
             "payload": Object {
               "project_guid": "66d7e698-8820-456f-ac32-14917f3ebe88",
               "requirements": Array [
@@ -149,6 +149,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           },
           Object {
             "key": undefined,
+            "navigateForward": [Function],
             "payload": undefined,
             "project_guid": "8132462392222",
             "required": true,

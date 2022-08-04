@@ -187,7 +187,6 @@ MAJOR_MINE_APPLICATION_MODEL = api.model(
         'major_mine_application_id': fields.Integer,
         'major_mine_application_guid': fields.String,
         'project_guid': fields.String,
-        'submission_project_title': fields.String,
         'status_code': fields.String,
         'documents': fields.List(fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_MODEL)),
         'update_user': fields.String,

@@ -6889,7 +6889,6 @@ export const MAJOR_MINES_APPLICATION = {
   major_mine_application_id: 1,
   major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
   project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
-  submission_project_title: "Major mine application",
   status_code: "REC",
   documents: [
     {

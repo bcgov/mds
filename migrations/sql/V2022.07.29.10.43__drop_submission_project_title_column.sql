@@ -1,0 +1,1 @@
+ALTER TABLE major_mine_application DROP COLUMN submission_project_title;
