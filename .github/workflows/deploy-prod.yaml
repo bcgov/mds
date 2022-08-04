@@ -29,7 +29,6 @@ jobs:
           - config: redis
           - config: metabase
           - config: metabase-postgres
-          - config: filesystem-provider
           - config: nris
           - config: fider
     steps:
