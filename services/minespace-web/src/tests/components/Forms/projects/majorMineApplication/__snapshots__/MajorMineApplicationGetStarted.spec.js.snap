@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MajorMineApplicationGetStarted renders properly 1`] = `
+<Row>
+  <Col
+    style={
+      Object {
+        "marginLeft": "15%",
+      }
+    }
+  >
+    <Title
+      level={3}
+    >
+      Getting Started with your Major Mine Submission
+    </Title>
+    <Paragraph>
+      Basic information about what a major mine submission is will go here
+    </Paragraph>
+    <Title
+      level={4}
+    >
+      Basic Information
+    </Title>
+    <Paragraph>
+      Information what is needed for this section
+    </Paragraph>
+    <Title
+      level={4}
+    >
+      Upload Primary Document
+    </Title>
+    <Paragraph>
+      Information what is needed for this section
+    </Paragraph>
+    <Title
+      level={4}
+    >
+      Upload Spatial Components
+    </Title>
+    <Paragraph>
+      Information what is needed for this section
+    </Paragraph>
+    <Title
+      level={4}
+    >
+      Upload Supporting Documents
+    </Title>
+    <Paragraph>
+      Information what is needed for this section
+    </Paragraph>
+  </Col>
+</Row>
+`;
