@@ -202,6 +202,7 @@ PROJECT_MODEL = api.model(
         'project_title': fields.String,
         'mine_name': fields.String,
         'mine_guid': fields.String,
+        'project_lead_name': fields.String,
         'proponent_project_id': fields.String,
         'mrc_review_required': fields.Boolean,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
