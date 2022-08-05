@@ -32,14 +32,15 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   majorMinesApplicationDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       projectGuid: PropTypes.string,
-    },
+      majorMineApplicationGuid: PropTypes.string,
+    }),
   }).isRequired,
   location: PropTypes.shape({
-    state: {
+    state: PropTypes.shape({
       current: PropTypes.number,
-    },
+    }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   touch: PropTypes.func.isRequired,
@@ -67,7 +68,7 @@ const StepForms = (
     title: "Get Started",
     content: <MajorMineApplicationGetStarted />,
     buttons: [
-      <>
+      <React.Fragment key="step-1-buttons">
         <Link to={routes.EDIT_PROJECT.dynamicRoute(props.project?.project_guid)}>
           <Button
             id="step1-cancel"
@@ -81,7 +82,7 @@ const StepForms = (
         <Button id="step1-next" type="primary" onClick={() => next()}>
           Next
         </Button>
-      </>,
+      </React.Fragment>,
     ],
   },
   {
@@ -108,7 +109,7 @@ const StepForms = (
       />
     ),
     buttons: [
-      <>
+      <React.Fragment key="step-2-buttons">
         <LinkButton
           style={{ marginRight: "20px" }}
           onClick={(e) =>
@@ -156,7 +157,7 @@ const StepForms = (
         >
           Review & Submit
         </Button>
-      </>,
+      </React.Fragment>,
     ],
   },
   {
@@ -169,7 +170,7 @@ const StepForms = (
       />
     ),
     buttons: [
-      <>
+      <React.Fragment key="step-3-buttons">
         <Button
           id="step-back2"
           type="tertiary"
@@ -186,34 +187,32 @@ const StepForms = (
         >
           Back
         </Button>
-        <Link>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
-            onConfirm={(e) => {
-              handleSaveData(
-                e,
-                {
-                  ...props.formValues,
-                  documents: [
-                    ...(props.formValues?.primary_documents || []),
-                    ...(props.formValues?.spatial_documents || []),
-                    ...(props.formValues?.supporting_documents || []),
-                  ],
-                  status_code: "REC",
-                },
-                "Successfully saved a draft major mine application."
-              );
-            }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
-              Submit Now
-            </Button>
-          </Popconfirm>
-        </Link>
-      </>,
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
+          onConfirm={(e) => {
+            handleSaveData(
+              e,
+              {
+                ...props.formValues,
+                documents: [
+                  ...(props.formValues?.primary_documents || []),
+                  ...(props.formValues?.spatial_documents || []),
+                  ...(props.formValues?.supporting_documents || []),
+                ],
+                status_code: "REC",
+              },
+              "Successfully saved a draft major mine application."
+            );
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
+            Submit Now
+          </Button>
+        </Popconfirm>
+      </React.Fragment>,
     ],
   },
 ];
@@ -390,7 +389,7 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   majorMinesApplicationDocumentTypesHash: getMajorMinesApplicationDocumentTypesHash(state),
   formErrors: getFormSyncErrors(FORM.ADD_MINE_MAJOR_APPLICATION)(state),
-  formValues: getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)(state),
+  formValues: getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>

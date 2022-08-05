@@ -22,10 +22,22 @@ import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMin
 
 const propTypes = {
   project: customPropTypes.project.isRequired,
-  primary_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  spatial_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  supporting_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   change: PropTypes.func.isRequired,
+  primary_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+  spatial_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+  supporting_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+};
+
+const defaultProps = {
+  primary_documents: [],
+  spatial_documents: [],
+  supporting_documents: [],
 };
 
 export class MajorMineApplicationForm extends Component {
@@ -136,6 +148,7 @@ export class MajorMineApplicationForm extends Component {
                 allowMultiple
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 component={MajorMineApplicationFileUpload}
+                uploadType="primary_document"
                 validate={[required]}
               />
               <br />
@@ -172,6 +185,7 @@ export class MajorMineApplicationForm extends Component {
                 allowMultiple
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 component={MajorMineApplicationFileUpload}
+                uploadType="spatial_document"
               />
               <br />
               <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
@@ -215,6 +229,7 @@ export class MajorMineApplicationForm extends Component {
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 allowMultiple
                 component={MajorMineApplicationFileUpload}
+                uploadType="supporting_document"
               />
             </Col>
           </Row>
@@ -225,6 +240,7 @@ export class MajorMineApplicationForm extends Component {
 }
 
 MajorMineApplicationForm.propTypes = propTypes;
+MajorMineApplicationForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.ADD_MINE_MAJOR_APPLICATION);
 const mapStateToProps = (state) => ({

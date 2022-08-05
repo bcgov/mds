@@ -78,7 +78,6 @@ export const MajorMineApplicationReviewSubmit = ({
           <Descriptions layout="vertical" colon={false}>
             <Descriptions.Item
               style={inputStyle}
-              span={12}
               label="Primary Contact"
               className="vertical-description"
             >
@@ -90,7 +89,6 @@ export const MajorMineApplicationReviewSubmit = ({
           <Descriptions layout="vertical" colon={false}>
             <Descriptions.Item
               style={inputStyle}
-              span={12}
               label="Mine Name"
               className="vertical-description"
             >

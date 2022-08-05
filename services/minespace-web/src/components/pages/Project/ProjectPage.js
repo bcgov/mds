@@ -26,9 +26,12 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchEMLIContactsByRegion: PropTypes.func.isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       mineGuid: PropTypes.string,
-    },
+      tab: PropTypes.string,
+      activeTab: PropTypes.string,
+      projectGuid: PropTypes.string,
+    }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };

@@ -31,9 +31,10 @@ const propTypes = {
   fetchPartyRelationships: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       id: PropTypes.string,
-    },
+      activeTab: PropTypes.string,
+    }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
