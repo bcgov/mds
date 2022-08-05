@@ -189,7 +189,6 @@ const StepForms = (
             >
               Back
             </Button>
-            ,
             <Link
               to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
                 props.project?.project_guid,
@@ -495,6 +494,7 @@ export class InformationRequirementsTablePage extends Component {
   };
 
   render() {
+    console.log("CURRENT: ", this.state.current);
     const title =
       this.props.project.information_requirements_table?.status_code !== "PRG"
         ? this.props.project?.project_title
