@@ -285,18 +285,18 @@ export class MajorMineApplicationPage extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        await this.handleCreateMajorMineApplication(values, message);
+        this.handleCreateMajorMineApplication(values, message);
       } else {
         await this.handleUpdateMajorMineApplication(values, message);
-      }
-      if (values?.status_code === "REC") {
-        return this.props.history.push({
-          pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
-            this.props.match.params?.projectGuid,
-            this.props.match.params?.majorMineApplicationGuid
-          )}`,
-          state: { project: this.props.project },
-        });
+        if (values?.status_code === "REC") {
+          return this.props.history.push({
+            pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
+              this.props.match.params?.projectGuid,
+              this.props.match.params?.majorMineApplicationGuid
+            )}`,
+            state: { project: this.props.project },
+          });
+        }
       }
     }
     return null;

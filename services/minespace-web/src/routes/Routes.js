@@ -27,6 +27,11 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.MINE_DASHBOARD.component)}
     />
     <Route
+      exact
+      path={routes.MAJOR_MINE_APPLICATION_SUCCESS.route}
+      component={AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)}
+    />
+    <Route
       path={routes.ADD_PROJECT_SUMMARY.route}
       component={AuthenticationGuard()(routes.ADD_PROJECT_SUMMARY.component)}
     />
@@ -61,10 +66,6 @@ const Routes = () => (
     <Route
       path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
       component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
-      path={routes.MAJOR_MINE_APPLICATION_SUCCESS.route}
-      component={AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)}
     />
     <Route
       path={routes.EDIT_PROJECT.route}

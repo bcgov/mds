@@ -8,9 +8,9 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   location: PropTypes.shape({
-    state: {
+    state: PropTypes.shape({
       project: CustomPropTypes.project,
-    },
+    }),
   }).isRequired,
 };
 
@@ -19,7 +19,7 @@ export const MajorMineApplicationSuccessPage = (props) => {
     const project = props.location.state?.project || {};
     const {
       project_guid,
-      major_mine_appliction: { major_mine_appliction_guid },
+      major_mine_application: { major_mine_application_guid },
     } = project;
 
     return (
@@ -58,7 +58,7 @@ export const MajorMineApplicationSuccessPage = (props) => {
                 to={{
                   pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                     project_guid,
-                    major_mine_appliction_guid
+                    major_mine_application_guid
                   ),
                   state: { current: 2 },
                 }}
