@@ -15,7 +15,7 @@ const Callout = (props) => {
   const { severity } = props;
 
   return (
-    <div className={`bcgov-callout--${severity} nod-callout-text`}>
+    <div className={`bcgov-callout--${severity} nod-callout-text`} style={props.style}>
       <p>{props.message}</p>
     </div>
   );
