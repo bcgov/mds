@@ -33,7 +33,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
-const tabs = ["overview", "irt-entry", "toc", "application"];
+const tabs = ["overview", "irt-entry", "toc", "application-entry"];
 
 export class ProjectPage extends Component {
   state = {
@@ -90,7 +90,7 @@ export class ProjectPage extends Component {
         this.props.match.params?.projectGuid
       );
       this.props.history.push(url);
-    } else if (activeTab === "major-mine-application") {
+    } else if (activeTab === "mma-entry") {
       const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
       this.props.history.push(url);
     }
@@ -182,7 +182,9 @@ export class ProjectPage extends Component {
                 </Tabs.TabPane>
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Application" key="major-mine-application">
-                    <MajorMineApplicationEntryTab />
+                    <MajorMineApplicationEntryTab
+                      mma={this.props.project?.major_mine_application}
+                    />
                   </Tabs.TabPane>
                 )}
               </Tabs>
