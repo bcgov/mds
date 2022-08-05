@@ -167,6 +167,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
     </Title>
     <DocumentTable
       categoryDataIndex="project_summary_document_type_code"
+      deletePayload={Object {}}
       documentCategoryOptionsHash={
         Object {
           "GEN": "General",
@@ -174,6 +175,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
       documentParent="project summary"
       documents={Array []}
+      handleDeleteDocument={[Function]}
       uploadDateIndex="upload_date"
     />
   </Col>

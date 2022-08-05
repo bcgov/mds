@@ -30,6 +30,7 @@ exports[`VarianceDetails renders properly 1`] = `
   </Descriptions>
   <DocumentTable
     categoryDataIndex="variance_document_category_code"
+    deletePayload={Object {}}
     documentParent="variance"
     documents={
       Array [
@@ -42,6 +43,7 @@ exports[`VarianceDetails renders properly 1`] = `
         },
       ]
     }
+    handleDeleteDocument={[Function]}
     uploadDateIndex="created_at"
   />
   <Descriptions
