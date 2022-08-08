@@ -55,13 +55,13 @@ export class MajorMineApplicationForm extends Component {
     this.state.uploadedFiles.push({
       document_name: fileName,
       document_manager_guid,
-      major_mine_application_document_type: documentTypeCode,
+      major_mine_application_document_type_code: documentTypeCode,
     });
 
     return this.props.change(
       documentTypeField,
       this.state.uploadedFiles.filter(
-        (file) => file?.major_mine_application_document_type === documentTypeCode
+        (file) => file?.major_mine_application_document_type_code === documentTypeCode
       )
     );
   };

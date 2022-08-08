@@ -144,11 +144,29 @@ const StepForms = (
         <Button
           id="step2-next"
           type="primary"
-          onClick={() => {
-            props.history.push({
+          onClick={async (e) => {
+            const statusCode = "DFT";
+            const payload = {
+              ...props.formValues,
+              documents: [
+                ...(props.formValues?.primary_documents || []),
+                ...(props.formValues?.spatial_documents || []),
+                ...(props.formValues?.supporting_documents || []),
+              ],
+            };
+            // Assign a status code if MMA has not been created yet
+            if (!props.formValues?.status_code) {
+              payload.status_code = statusCode;
+            }
+            const response = await handleSaveData(
+              e,
+              payload,
+              "Successfully saved a draft major mine application."
+            );
+            return props.history.push({
               pathname: `${routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                 props.project?.project_guid,
-                props.project?.major_mine_application?.major_mine_application_guid
+                response?.major_mine_application_guid
               )}`,
               state: { current: 2 },
             });
@@ -250,13 +268,17 @@ export class MajorMineApplicationPage extends Component {
   };
 
   handleCreateMajorMineApplication = (values, message) => {
-    return this.props.createMajorMineApplication(
-      {
-        projectGuid: this.props.match.params?.projectGuid,
-      },
-      values,
-      message
-    );
+    return this.props
+      .createMajorMineApplication(
+        {
+          projectGuid: this.props.match.params?.projectGuid,
+        },
+        values,
+        message
+      )
+      .then(() => {
+        this.handleFetchData();
+      });
   };
 
   handleUpdateMajorMineApplication = (values, message) => {
@@ -285,8 +307,9 @@ export class MajorMineApplicationPage extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        this.handleCreateMajorMineApplication(values, message);
-      } else {
+        const response = await this.handleCreateMajorMineApplication(values, message);
+        return response.data;
+      } 
         await this.handleUpdateMajorMineApplication(values, message);
         if (values?.status_code === "REC") {
           return this.props.history.push({
@@ -297,7 +320,7 @@ export class MajorMineApplicationPage extends Component {
             state: { project: this.props.project },
           });
         }
-      }
+      
     }
     return null;
   };
@@ -324,6 +347,7 @@ export class MajorMineApplicationPage extends Component {
       this.next,
       this.prev,
       this.handleSaveData,
+      this.handleFetchData,
       this.setConfirmedSubmission
     );
 
