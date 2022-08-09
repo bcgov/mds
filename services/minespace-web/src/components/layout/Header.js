@@ -8,6 +8,7 @@ import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
@@ -38,7 +39,7 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              {props.isAuthenticated && <NotificationDrawer />}
+              { !IN_PROD() && <NotificationDrawer /> }
             </div>
           </div>
         </Col>

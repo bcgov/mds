@@ -1,4 +1,5 @@
 // Reducers
+import activityReducerObject from "./reducers/activityReducer";
 import complianceReducerObject from "./reducers/complianceReducer";
 import authenticationReducerObject from "./reducers/authenticationReducer";
 import incidentReducerObject from "./reducers/incidentReducer";
@@ -22,6 +23,7 @@ import externalAuthorizationReducerObject from "./reducers/externalAuthorization
 import projectReducerObject from "./reducers/projectReducer";
 import noticeOfDepartureReducerObject from "./reducers/noticeOfDepartureReducer";
 
+export const activityReducer = activityReducerObject;
 export const complianceReducer = complianceReducerObject;
 export const authenticationReducer = authenticationReducerObject;
 export const incidentReducer = incidentReducerObject;

@@ -3,17 +3,19 @@ import { Badge, Button, Col, List, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getActivities } from "@common/actionCreators/activityActionCreator";
+import { fetchActivities } from "@common/actionCreators/activityActionCreator";
 import PropTypes from "prop-types";
 import { getUserInfo, isAuthenticated } from "@/selectors/authenticationSelectors";
 import { formatDateTime } from "@common/utils/helpers";
+import { getActivities, getTotalActivities } from "@common/reducers/activityReducer";
 
 const propTypes = {
-  getActivities: PropTypes.func.isRequired,
+  fetchActivities: PropTypes.func.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  activities: PropTypes.objectOf(PropTypes.string).isRequired,
+  totalActivities: PropTypes.number.isRequired,
 };
-
 
 const outsideClickHandler = (ref, setOpen, open) => {
   useEffect(() => {
@@ -33,8 +35,6 @@ const outsideClickHandler = (ref, setOpen, open) => {
 
 const NotificationDrawer = (props) => {
   const [open, setOpen] = useState(false);
-  const [activities, setActivities] = useState([]);
-  const [totalActivities, setTotalActivities] = useState(0);
 
   const handleCollapse = () => {
     setOpen(!open);
@@ -45,11 +45,7 @@ const NotificationDrawer = (props) => {
 
   useEffect(() => {
     if(props.userInfo?.preferred_username) {
-      (async () => {
-        const {data: acts} = await props.getActivities(props.userInfo?.preferred_username);
-        setActivities(acts.records);
-        setTotalActivities(acts.total || 0);
-      })();
+      props.fetchActivities(props.userInfo?.preferred_username);
     }
 
   }, [props.userInfo.preferred_username]);
@@ -60,7 +56,7 @@ const NotificationDrawer = (props) => {
         onClick={handleCollapse}
         type="text"
         icon={
-          <Badge className="notification-badge" count={totalActivities}>
+          <Badge className="notification-badge" count={props.activities?.filter(act => !act?.notification_read).length || 0}>
             <BellOutlined className="notification-icon" />
           </Badge>
         }
@@ -78,7 +74,7 @@ const NotificationDrawer = (props) => {
             tab={<Typography.Title level={5}>Mine Activity</Typography.Title>}
             key="1"
           >
-            {(activities || [])?.map((activity) => <div>
+            {(props.activities || [])?.map((activity) => <div>
                 <div className="notification-list-item">
                   <div className={!activity.notification_read? 'notification-dot': ''} />
                   <Typography.Text>
@@ -114,13 +110,15 @@ const NotificationDrawer = (props) => {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  isAuthenticated: isAuthenticated(state)
+  isAuthenticated: isAuthenticated(state),
+  activities: getActivities(state),
+  totalActivities: getTotalActivities(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      getActivities,
+      fetchActivities,
     },
     dispatch
   );
