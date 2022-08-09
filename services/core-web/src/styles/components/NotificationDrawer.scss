@@ -1,0 +1,124 @@
+.notification-icon {
+  color: #FFF;
+  font-size: 24px;
+}
+
+.notification-button {
+  font-size: unset;
+  border: transparent;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  height: 100%;
+}
+
+.notification-button svg {
+  font-size: 24px;
+}
+
+.notification-button .ant-scroll-number-only > p.ant-scroll-number-only-unit {
+  color: #FFF;
+}
+
+.notification-button:hover {
+  border: transparent;
+}
+
+.notification-drawer {
+  height: 0;
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  top: 62px;
+  background-color: #FFF;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.notification-drawer-open {
+  padding: 24px 40px;
+  border: 1px solid #BBBBBB;
+  height: 70vh;
+  width: 564px;
+}
+
+.notification-drawer-background {
+  background-color: rgba($color: #000000, $alpha: 0.1);
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-drawer .ant-tabs .ant-tabs-tab {
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #FFF !important;
+}
+
+.notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: unset !important;
+}
+
+.notification-separator {
+  height: 4px;
+  width: 4px;
+  background-color: #BBBBBB;
+  border-radius: 50%;
+}
+
+.notification-list-item {
+  padding: 0 24px;
+  position: relative;
+}
+
+.notification-list-item:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notification-dot {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  transform: translateY(-50%);
+  background-color: $gov-blue;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.notification-info-text {
+  color: #606060;
+  font-size: 14px;
+  font-weight: 400;
+
+}
+
+.notification-tab-pane {
+  background-color: #FFF;
+}
+
+.notification-badge .ant-badge-count {
+  box-shadow: unset !important;
+}
+
+.header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification-tab-header {
+  font-family: 'BCSans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
