@@ -189,7 +189,6 @@ const StepForms = (
             >
               Back
             </Button>
-            ,
             <Link
               to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
                 props.project?.project_guid,
