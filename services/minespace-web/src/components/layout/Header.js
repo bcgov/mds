@@ -23,7 +23,6 @@ const defaultProps = {
 
 
 export const Header = (props) => {
-  console.log('header props1', props)
   return (
     <Layout.Header>
       <Row type="flex" justify="center" align="top">
