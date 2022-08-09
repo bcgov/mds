@@ -1,4 +1,4 @@
-import { request } from "express";
+import { request } from "../actions/genericActions";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import { success, error } from "@/actions/genericActions";

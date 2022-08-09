@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Col, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -6,15 +7,23 @@ import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
+import { isAuthenticated } from "@/selectors/authenticationSelectors";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
   lg: PropTypes.number.isRequired,
   xl: PropTypes.number.isRequired,
   xxl: PropTypes.number.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
+const defaultProps = {
+  isAuthenticated: false,
+};
+
+
 export const Header = (props) => {
+  console.log('header props1', props)
   return (
     <Layout.Header>
       <Row type="flex" justify="center" align="top">
@@ -30,7 +39,7 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              <NotificationDrawer />
+              {props.isAuthenticated && <NotificationDrawer />}
             </div>
           </div>
         </Col>
@@ -38,6 +47,16 @@ export const Header = (props) => {
     </Layout.Header>
   );
 };
-Header.propTypes = propTypes;
 
-export default Header;
+Header.propTypes = propTypes;
+Header.defaultProps = defaultProps;
+
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: isAuthenticated(state),
+    userInfo: getUserInfo(state),
+  };
+}
+
+
+export default connect(mapStateToProps)(Header);
