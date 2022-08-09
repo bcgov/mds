@@ -267,7 +267,6 @@ export class AddIncidentModal extends Component {
 
   invalidFollowUpPayload = (values) => {
     let disableSubmit = true;
-    console.log(values);
     const finalDocs = this.state.uploadedFiles.filter(
       (file) => file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
     );
@@ -277,7 +276,7 @@ export class AddIncidentModal extends Component {
       if (
         finalDocs.length > 0 ||
         (finalDocs.length === 0 && values.status_code === "PRE") ||
-        moment(values.reported_date) <= moment("2021-01-20")
+        moment(values.reported_date) < moment("2021-01-20")
       ) {
         disableSubmit = false;
       }
