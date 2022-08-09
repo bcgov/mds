@@ -220,7 +220,7 @@ const StepForms = (
                 ],
                 status_code: "REC",
               },
-              "Successfully saved a draft major mine application."
+              "Successfully submitted a major mine application."
             );
           }}
           okText="Yes"
