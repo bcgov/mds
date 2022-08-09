@@ -18,6 +18,7 @@ import * as router from "@/constants/routes";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
+import DocumentsTab from "./DocumentsTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -36,7 +37,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
-const tabs = ["overview", "irt-entry", "toc", "application-entry"];
+const tabs = ["overview", "irt-entry", "toc", "application", "documents"];
 
 export class ProjectPage extends Component {
   state = {
@@ -96,6 +97,9 @@ export class ProjectPage extends Component {
     } else if (activeTab === "mma-entry") {
       const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
       this.props.history.push(url);
+    } else if (activeTab === "documents") {
+      const url = `/projects/${this.props.match.params?.projectGuid}/documents`;
+      this.props.history.push({ pathname: url });
     }
   };
 
@@ -188,6 +192,11 @@ export class ProjectPage extends Component {
                     <MajorMineApplicationEntryTab
                       mma={this.props.project?.major_mine_application}
                     />
+                  </Tabs.TabPane>
+                )}
+                {!IN_PROD() && (
+                  <Tabs.TabPane tab="Documents" key="documents">
+                    <DocumentsTab project={this.props.project} />
                   </Tabs.TabPane>
                 )}
               </Tabs>

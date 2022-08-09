@@ -71,11 +71,24 @@ export const DocumentTable = (props) => {
   };
 
   // TODO: If this continues to grow, refactor and pass special columns in from parent
-  if (props.documentParent === "Information Requirements Table") {
+  if (
+    (props.documentParent === "Information Requirements Table" ||
+      props.documentParent === "Major Mine Application" ||
+      props.documentParent === "Project Description") &&
+    props.component === "project-all-documents"
+  ) {
+    columns.push(uploadDateColumn);
+  } else if (
+    props.documentParent === "Information Requirements Table" &&
+    props.component !== "project-all-documents"
+  ) {
     columns.push(categoryColumn);
     columns.push(uploadDateTimeColumn);
     columns.push(importedByColumn);
-  } else if (props.documentParent === "Major Mine Application") {
+  } else if (
+    props.documentParent === "Major Mine Application" &&
+    props.component !== "project-all-documents"
+  ) {
     columns[0] = {
       title: "File Name",
       dataIndex: "document_name",
