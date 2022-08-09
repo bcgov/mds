@@ -20,9 +20,9 @@ const propTypes = {
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       mineGuid: PropTypes.string,
-    },
+    }),
   }).isRequired,
 };
 

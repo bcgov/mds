@@ -48,9 +48,11 @@ const propTypes = {
   clearProjectSummary: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       mineGuid: PropTypes.string,
-    },
+      projectGuid: PropTypes.string,
+      projectSummaryGuid: PropTypes.string,
+    }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   submit: PropTypes.func.isRequired,

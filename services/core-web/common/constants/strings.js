@@ -172,9 +172,9 @@ export const CALLOUT_SEVERITY = {
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
-  PRIMARY: "primary",
-  SPATIAL: "spatial",
-  SUPPORTING: "supporting",
+  PRIMARY: "primary_documents",
+  SPATIAL: "spatial_documents",
+  SUPPORTING: "supporting_documents",
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {

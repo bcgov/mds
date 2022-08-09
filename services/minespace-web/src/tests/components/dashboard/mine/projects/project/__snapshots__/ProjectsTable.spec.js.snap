@@ -50,6 +50,12 @@ exports[`ProjectsTable renders properly 1`] = `
         "primary_contact": "",
         "project": Object {
           "contacts": Array [],
+          "information_requirements_table": Object {
+            "irt_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+          },
+          "major_mine_application": Object {
+            "major_mine_application_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+          },
           "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
           "project_guid": "8132462392222",
           "project_summary": Object {},

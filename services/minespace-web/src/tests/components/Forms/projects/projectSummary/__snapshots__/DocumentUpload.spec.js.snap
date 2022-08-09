@@ -35,9 +35,11 @@ exports[`DocumentUpload renders properly 1`] = `
     </Row>
     <DocumentTable
       categoryDataIndex="project_summary_document_type_code"
+      deletePayload={Object {}}
       documentCategoryOptionsHash={Object {}}
       documentParent="project summary"
       documents={Array []}
+      handleDeleteDocument={[Function]}
       uploadDateIndex="upload_date"
     />
     <Field

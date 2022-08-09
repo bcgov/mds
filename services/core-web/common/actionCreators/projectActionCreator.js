@@ -376,3 +376,35 @@ export const updateMajorMineApplication = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const removeDocumentFromMajorMineApplication = (
+  projectGuid,
+  majorMineApplicationGuid,
+  mineDocumentGuid
+) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+  return CustomAxios()
+    .delete(
+      ENVIRONMENT.apiUrl +
+        API.MAJOR_MINE_APPLICATION_DOCUMENT(
+          projectGuid,
+          majorMineApplicationGuid,
+          mineDocumentGuid
+        ),
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted major mine application document.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

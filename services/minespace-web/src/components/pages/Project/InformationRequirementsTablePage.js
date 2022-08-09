@@ -45,15 +45,16 @@ const propTypes = {
   informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       projectGuid: PropTypes.string,
       tab: PropTypes.string,
-    },
+      irtGuid: PropTypes.string,
+    }),
   }).isRequired,
   location: PropTypes.shape({
-    state: {
+    state: PropTypes.shape({
       current: PropTypes.number,
-    },
+    }),
   }).isRequired,
 };
 
