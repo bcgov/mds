@@ -1,6 +1,7 @@
 // Passing props into function causes linter to not recognize use of props used in that function.
 /* eslint-disable react/no-unused-prop-types */
 import React, { Component } from "react";
+import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
@@ -266,13 +267,18 @@ export class AddIncidentModal extends Component {
 
   invalidFollowUpPayload = (values) => {
     let disableSubmit = true;
+    console.log(values);
     const finalDocs = this.state.uploadedFiles.filter(
       (file) => file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
     );
     if (values.status_code && values.followup_investigation_type_code) {
-      if (finalDocs.length > 0) {
-        disableSubmit = false;
-      } else if (finalDocs.length === 0 && values.status_code === "PRE") {
+      // The date check is in this clause because this change only went into effect after Jan 20, 2021 and they did not want to block any incidents that
+      // came in before this date. As of the time of this PR there were 84 incidents that met this criteria.
+      if (
+        finalDocs.length > 0 ||
+        (finalDocs.length === 0 && values.status_code === "PRE") ||
+        moment(values.reported_date) <= moment("2021-01-20")
+      ) {
         disableSubmit = false;
       }
     }
