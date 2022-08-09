@@ -220,25 +220,26 @@ const StepForms = (
           </>
         ) : (
           <>
-            {props.project.information_requirements_table?.status_code !== "APV" && (
-              <Button
-                type="secondary"
-                htmlType="submit"
-                style={{ marginRight: "24px" }}
-                onClick={() => {
-                  props.history.push({
-                    pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                      props.project?.project_guid,
-                      props.project?.information_requirements_table?.irt_guid
-                    )}`,
-                    state: { current: 1 },
-                  });
-                }}
-                disabled={state.submitting}
-              >
-                Resubmit IRT
-              </Button>
-            )}
+            {props.project.information_requirements_table?.status_code !== "APV" &&
+              props.project.information_requirements_table?.status_code !== "UNR" && (
+                <Button
+                  type="secondary"
+                  htmlType="submit"
+                  style={{ marginRight: "24px" }}
+                  onClick={() => {
+                    props.history.push({
+                      pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                        props.project?.project_guid,
+                        props.project?.information_requirements_table?.irt_guid
+                      )}`,
+                      state: { current: 1 },
+                    });
+                  }}
+                  disabled={state.submitting}
+                >
+                  Resubmit IRT
+                </Button>
+              )}
             <Button
               type="ghost"
               style={{ border: "none", marginRight: "12px" }}

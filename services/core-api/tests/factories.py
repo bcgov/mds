@@ -1222,7 +1222,6 @@ class MajorMineApplicationFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     major_mine_application_guid = GUID
     major_mine_application_id = factory.Faker('pyint')
-    submission_project_title = factory.Faker('text', max_nb_chars=300)
     status_code = 'REC'
     deleted_ind = False
 
