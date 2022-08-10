@@ -8,20 +8,40 @@
   border: transparent;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
   margin: 0;
   height: 100%;
+  border-radius: 0;
+}
+
+.notification-button-open {
+  background-color: #5E46A1 !important;
 }
 
 .notification-button svg {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .notification-button .ant-scroll-number-only > p.ant-scroll-number-only-unit {
   color: #FFF;
+  font-size: 10px;
+}
+
+.notification-button .ant-badge-count {
+  height: 15px;
+  min-width: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(60%, -60%);
 }
 
 .notification-button:hover {
   border: transparent;
+  background-color: #5E46A1;
 }
 
 .notification-drawer {
@@ -44,14 +64,10 @@
   width: 564px;
 }
 
-.notification-drawer-background {
-  background-color: rgba($color: #000000, $alpha: 0.1);
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  position: fixed;
+.notification-drawer .ant-tabs-content-holder {
+  max-height: calc(70vh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .notification-container {
@@ -61,11 +77,16 @@
 .notification-drawer .ant-tabs .ant-tabs-tab {
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 0;
   background-color: #FFF !important;
 }
 
 .notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
   border-bottom: unset !important;
+}
+
+.notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-tab-active > div > article {
+  color: #5E46A1;
 }
 
 .notification-separator {
@@ -78,9 +99,12 @@
 .notification-list-item {
   padding: 0 24px;
   position: relative;
+  width: 100%;
+  margin: 8px 0;
 }
 
 .notification-list-item:hover {
+  background-color: #f0f6fd !important;
   cursor: pointer;
   text-decoration: none;
 }
@@ -88,7 +112,7 @@
 .notification-dot {
   position: absolute;
   left: 0;
-  top: 12px;
+  top: 24px;
   transform: translateY(-50%);
   background-color: $gov-blue;
   height: 8px;
@@ -121,4 +145,5 @@
   font-family: 'BCSans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
+  margin-bottom: 10px;
 }

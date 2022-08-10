@@ -52,7 +52,7 @@ const NotificationDrawer = (props) => {
       <Button
         onClick={handleCollapse}
         type="text"
-        className="notification-button"
+        className={`notification-button ${open ? "notification-button-open" : ""}`}
         icon={
           <Badge
             className="notification-badge"
@@ -70,38 +70,36 @@ const NotificationDrawer = (props) => {
         >
           <Tabs.TabPane
             className="notification-tab-pane"
-            tab={<Typography.Title level={5}>Mine Activity</Typography.Title>}
+            tab={<Typography className="notification-tab-header">Mine Activity</Typography>}
             key="1"
           >
             {(props.activities || [])?.map((activity) => (
-              <div>
-                <div className="notification-list-item">
-                  <div className={!activity.notification_read ? "notification-dot" : ""} />
-                  <Typography.Text>{activity.notification_document?.message}</Typography.Text>
-                  <Row className="items-center margin-small" gutter={6}>
-                    <Col>
-                      <Typography.Text className="notification-info-text">
-                        {activity.notification_document?.metadata?.mine?.mine_name}
-                      </Typography.Text>
-                    </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
-                    <Col>
-                      <Typography.Text className="notification-info-text">
-                        {activity.notification_document?.metadata?.permit?.permit_no}
-                      </Typography.Text>
-                    </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
-                    <Col>
-                      <Typography.Text className="notification-info-text">
-                        {formatDateTime(activity.create_timestamp)}
-                      </Typography.Text>
-                    </Col>
-                  </Row>
-                </div>
+              <div className="notification-list-item">
+                <div className={!activity.notification_read ? "notification-dot" : ""} />
+                <Typography.Text>{activity.notification_document?.message}</Typography.Text>
+                <Row className="items-center margin-small" gutter={6}>
+                  <Col>
+                    <Typography.Text className="notification-info-text">
+                      {activity.notification_document?.metadata?.mine?.mine_name}
+                    </Typography.Text>
+                  </Col>
+                  <Col>
+                    <div className="notification-separator" />
+                  </Col>
+                  <Col>
+                    <Typography.Text className="notification-info-text">
+                      {activity.notification_document?.metadata?.permit?.permit_no}
+                    </Typography.Text>
+                  </Col>
+                  <Col>
+                    <div className="notification-separator" />
+                  </Col>
+                  <Col>
+                    <Typography.Text className="notification-info-text">
+                      {formatDateTime(activity.create_timestamp)}
+                    </Typography.Text>
+                  </Col>
+                </Row>
               </div>
             ))}
           </Tabs.TabPane>
