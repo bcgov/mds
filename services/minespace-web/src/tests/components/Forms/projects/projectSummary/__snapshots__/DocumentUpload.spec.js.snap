@@ -37,6 +37,7 @@ exports[`DocumentUpload renders properly 1`] = `
       categoryDataIndex="project_summary_document_type_code"
       deletePayload={Object {}}
       documentCategoryOptionsHash={Object {}}
+      documentColumns={Array []}
       documentParent="project summary"
       documents={Array []}
       handleDeleteDocument={[Function]}

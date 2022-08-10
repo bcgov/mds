@@ -95,6 +95,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         documentCategoryOptionsHash={Object {}}
+        documentColumns={Array []}
         documentParent="Major Mine Application"
         documents={Array []}
         handleDeleteDocument={[Function]}
@@ -114,6 +115,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         documentCategoryOptionsHash={Object {}}
+        documentColumns={Array []}
         documentParent="Major Mine Application"
         documents={Array []}
         handleDeleteDocument={[Function]}
@@ -133,6 +135,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         documentCategoryOptionsHash={Object {}}
+        documentColumns={Array []}
         documentParent="Major Mine Application"
         documents={Array []}
         handleDeleteDocument={[Function]}
