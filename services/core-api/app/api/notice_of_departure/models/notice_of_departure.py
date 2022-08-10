@@ -35,6 +35,20 @@ class NodStatus(Enum):
     def __str__(self):
         return self.value
 
+    def display_name(self):
+        return NodStatusName[self]
+
+
+NodStatusName = {
+    NodStatus.pending_review: 'Pending Review',
+    NodStatus.in_review: 'In Review',
+    NodStatus.information_required: 'Information Required',
+    NodStatus.self_determined_non_substantial: 'Self Determined Non Substantial',
+    NodStatus.determined_non_substantial: 'Determined Non Substantial',
+    NodStatus.determined_substantial: 'Determined Substantial',
+    NodStatus.withdrawn: 'Withdrawn',
+}
+
 
 class OrderBy(Enum):
     nod_no = 'nod_no'
@@ -74,30 +88,26 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
     documents = db.relationship(
         'NoticeOfDepartureDocumentXref',
         lazy='select',
-        primaryjoin=
-        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)",
+        primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)",
         order_by='desc(NoticeOfDepartureDocumentXref.create_timestamp)')
 
     nod_contacts = db.relationship(
         'NoticeOfDepartureContact',
         lazy='joined',
-        primaryjoin=
-        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.deleted_ind==False)",
+        primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.deleted_ind==False)",
     )
 
     primary_nod_contact = db.relationship(
         'NoticeOfDepartureContact',
         lazy='joined',
-        primaryjoin=
-        "and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.is_primary==True, NoticeOfDepartureContact.deleted_ind==False)",
+        primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.is_primary==True, NoticeOfDepartureContact.deleted_ind==False)",
     )
 
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',
         secondary='notice_of_departure_document_xref',
-        secondaryjoin=
-        'and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
     )
 
     @classmethod

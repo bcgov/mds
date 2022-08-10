@@ -81,7 +81,7 @@ class NoticeOfDepartureResource(Resource, UserMixin):
                 }
             }
 
-            message = "Notice Of Departure %s status changed from %s to %s" % (update_nod.nod_no, old_status, update_nod.nod_status)
+            message = "Notice Of Departure %s status changed from %s to %s" % (update_nod.nod_no, old_status.display_name(), update_nod.nod_status.display_name())
             trigger_notifcation(message, update_nod.mine, 'NoticeOfDeparture', update_nod.nod_guid, extra_notification_data)
 
         return update_nod
