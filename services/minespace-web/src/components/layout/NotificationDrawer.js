@@ -50,6 +50,7 @@ const NotificationDrawer = (props) => {
   return (
     <div ref={modalRef}>
       <Button
+        className="notification-button"
         onClick={handleCollapse}
         type="text"
         icon={

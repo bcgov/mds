@@ -102,17 +102,15 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
-$notification-drawer-height: 70vh;
-
 .notification-drawer-open {
   padding: 24px 0;
   border: 1px solid #BBBBBB;
-  height: $notification-drawer-height;
+  height: 70vh;
   width: 564px;
 }
 
 .notification-drawer .ant-tabs-content-holder {
-  max-height: calc($notification-drawer-height - 100px);
+  max-height: calc(70vh - 100px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -176,4 +174,11 @@ $notification-drawer-height: 70vh;
 
 .notification-badge .ant-badge-count {
   box-shadow: unset !important;
+  height: 15px;
+  min-width: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(60%, -60%);
 }
