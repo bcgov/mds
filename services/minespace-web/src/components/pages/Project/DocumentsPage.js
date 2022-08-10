@@ -3,6 +3,7 @@ import { Row, Col, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import DocumentTable from "@/components/common/DocumentTable";
+import { uploadDateColumn } from "@/components/common/DocumentColumns";
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -10,6 +11,7 @@ const propTypes = {
 };
 
 export const DocumentsPage = (props) => {
+  const documentColumns = [uploadDateColumn("upload_date")];
   return (
     <Row>
       <Col span={24}>
@@ -19,7 +21,7 @@ export const DocumentsPage = (props) => {
         <DocumentTable
           documents={props.documents}
           documentParent={props.title}
-          component="project-all-documents"
+          documentColumns={documentColumns}
           uploadDateIndex="upload_date"
         />
       </Col>
