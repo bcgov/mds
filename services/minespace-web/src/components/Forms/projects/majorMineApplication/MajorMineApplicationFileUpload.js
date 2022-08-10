@@ -12,8 +12,12 @@ const propTypes = {
   uploadType: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIdle: PropTypes.string.isRequired,
-  maxFiles: PropTypes.number.isRequired,
   allowMultiple: PropTypes.bool.isRequired,
+  maxFiles: PropTypes.number,
+};
+
+const defaultProps = {
+  maxFiles: null,
 };
 
 export const MajorMineApplicationFileUpload = (props) => (
@@ -23,7 +27,7 @@ export const MajorMineApplicationFileUpload = (props) => (
     label={props.label}
     component={FileUpload}
     uploadUrl={MAJOR_MINE_APPLICATION_DOCUMENTS(props.projectGuid)}
-    maxFiles={props.maxFiles}
+    maxFiles={props?.maxFiles}
     labelIdle={props.labelIdle}
     acceptedFileTypesMap={props.acceptedFileTypesMap}
     onFileLoad={props.onFileLoad}
@@ -34,5 +38,6 @@ export const MajorMineApplicationFileUpload = (props) => (
 );
 
 MajorMineApplicationFileUpload.propTypes = propTypes;
+MajorMineApplicationFileUpload.defaultProps = defaultProps;
 
 export default MajorMineApplicationFileUpload;

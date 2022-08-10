@@ -11,6 +11,7 @@
     "@babel/runtime-corejs3": "^7.8.3",
     "@datapunt/matomo-tracker-react": "^0.1.5",
     "@hot-loader/react-dom": "^16.13.0",
+    "@syncfusion/ej2-react-pdfviewer": "^19.4.56",
     "antd": "4.6.2",
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.17.0",

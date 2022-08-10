@@ -1,5 +1,3 @@
-#information_requirements_table_list.py
-
 import tempfile
 
 from flask_restplus import Resource
@@ -59,6 +57,8 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
             methods_cell = InformationRequirementsTableListResource.convert_excel_boolean_string(
                 row.get('Methods'))
             comments_cell = row.get('Comments')
+
+            comments_cell = None if comments_cell == 'None' else comments_cell
             # Add 2 to offset zero-based "idx" and starting_row_number beginning at table header
             row_number = idx + starting_row_number + 2
             # If "Information" cell entry is not valid, flag that to user(could have a bad template or added custom rows)
@@ -70,7 +70,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 })
                 continue
             # If "Methods" cell entry is true and "Comments" are 'None' add error
-            if methods_cell is True and comments_cell == 'None':
+            if methods_cell is True and comments_cell == None:
                 import_errors.append({
                     "row_number": row_number,
                     "section": int(information_section[0]),
@@ -78,7 +78,7 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
                 })
                 continue
 
-            is_empty_row = required_cell is False and methods_cell is False and comments_cell == 'None'
+            is_empty_row = required_cell is False and methods_cell is False and comments_cell == None
             temporal_active_requirements = [
                 requirement for requirement in valid_requirements
                 if requirement.description.strip().lower() == sanitized_information_cell

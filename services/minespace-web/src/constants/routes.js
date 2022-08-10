@@ -91,6 +91,13 @@ export const EDIT_MAJOR_MINE_APPLICATION = {
   component: MajorMineApplicationPage,
 };
 
+export const REVIEW_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/:mmaGuid/review",
+  dynamicRoute: (projectGuid, mmaGuid) =>
+    `/projects/${projectGuid}/major-mine-application/${mmaGuid}/review`,
+  component: MajorMineApplicationPage,
+};
+
 export const MAJOR_MINE_APPLICATION_SUCCESS = {
   route: "/projects/:projectGuid/major-mine-application/:mmaGuid/success",
   dynamicRoute: (projectGuid, mmaGuid) =>

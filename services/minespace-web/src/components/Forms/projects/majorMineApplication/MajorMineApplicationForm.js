@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import customPropTypes from "@/customPropTypes";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
@@ -10,22 +9,35 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Typography } from "antd";
 import { required } from "@common/utils/Validate";
-import * as routes from "@/constants/routes";
-import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
-import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@/constants/fileTypes";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@common/constants/strings";
+import * as routes from "@/constants/routes";
+import * as FORM from "@/constants/forms";
+import { renderConfig } from "@/components/common/config";
+import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@/constants/fileTypes";
+import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,
-  primary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  spatial: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  supporting: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   change: PropTypes.func.isRequired,
+  primary_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+  spatial_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+  supporting_documents: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
+};
+
+const defaultProps = {
+  primary_documents: [],
+  spatial_documents: [],
+  supporting_documents: [],
 };
 
 export class MajorMineApplicationForm extends Component {
@@ -43,13 +55,13 @@ export class MajorMineApplicationForm extends Component {
     this.state.uploadedFiles.push({
       document_name: fileName,
       document_manager_guid,
-      major_mine_application_document_type: documentTypeCode,
+      major_mine_application_document_type_code: documentTypeCode,
     });
 
     return this.props.change(
       documentTypeField,
       this.state.uploadedFiles.filter(
-        (file) => file?.major_mine_application_document_type === documentTypeCode
+        (file) => file?.major_mine_application_document_type_code === documentTypeCode
       )
     );
   };
@@ -126,7 +138,7 @@ export class MajorMineApplicationForm extends Component {
                     err,
                     fileItem,
                     MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY,
-                    this.props.primary
+                    this.props.primary_documents
                   );
                 }}
                 projectGuid={this.props.project?.project_guid}
@@ -136,6 +148,7 @@ export class MajorMineApplicationForm extends Component {
                 allowMultiple
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 component={MajorMineApplicationFileUpload}
+                uploadType="primary_document"
                 validate={[required]}
               />
               <br />
@@ -162,7 +175,7 @@ export class MajorMineApplicationForm extends Component {
                     err,
                     fileItem,
                     MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
-                    this.props.spatial
+                    this.props.spatial_documents
                   );
                 }}
                 projectGuid={this.props.project?.project_guid}
@@ -172,6 +185,7 @@ export class MajorMineApplicationForm extends Component {
                 allowMultiple
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 component={MajorMineApplicationFileUpload}
+                uploadType="spatial_document"
               />
               <br />
               <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
@@ -205,7 +219,7 @@ export class MajorMineApplicationForm extends Component {
                     err,
                     fileItem,
                     MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING,
-                    this.props.supporting
+                    this.props.supporting_documents
                   );
                 }}
                 projectGuid={this.props.project?.project_guid}
@@ -215,6 +229,7 @@ export class MajorMineApplicationForm extends Component {
                 acceptedFileTypesMap={this.acceptedFileTypesMap}
                 allowMultiple
                 component={MajorMineApplicationFileUpload}
+                uploadType="supporting_document"
               />
             </Col>
           </Row>
@@ -225,12 +240,13 @@ export class MajorMineApplicationForm extends Component {
 }
 
 MajorMineApplicationForm.propTypes = propTypes;
+MajorMineApplicationForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.ADD_MINE_MAJOR_APPLICATION);
 const mapStateToProps = (state) => ({
-  primary: selector(state, "primary"),
-  spatial: selector(state, "spatial"),
-  supporting: selector(state, "supporting"),
+  primary_documents: selector(state, "primary_documents"),
+  spatial_documents: selector(state, "spatial_documents"),
+  supporting_documents: selector(state, "supporting_documents"),
 });
 
 const mapDispatchToProps = (dispatch) =>
