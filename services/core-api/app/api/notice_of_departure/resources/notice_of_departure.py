@@ -75,9 +75,14 @@ class NoticeOfDepartureResource(Resource, UserMixin):
             nod_contacts=data.get('nod_contacts'))
 
         if (update_nod.nod_status is not old_status):
+            extra_notification_data = {
+                'permit': {
+                    'permit_no': update_nod.permit.permit_no
+                }
+            }
 
-            message = "Notice Of Departure %s status changed from %s to %s" % (update_nod.nod_no, old_status, update_nod.nod_status)
-            trigger_notifcation(message, update_nod.mine, 'NoticeOfDeparture', update_nod.nod_guid)
+            message = "Notice Of Departure %s status changed from %s to %s" % (update_nod.nod_no, old_status.display_name(), update_nod.nod_status.display_name())
+            trigger_notifcation(message, update_nod.mine, 'NoticeOfDeparture', update_nod.nod_guid, extra_notification_data)
 
         return update_nod
 

@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
 import {
+  activityReducer,
   staticContentReducer,
   mineReducer,
   partiesReducer,
@@ -35,6 +36,7 @@ export const createReducer = (reducer, name) => (state, action) => {
 export const reducerObject = {
   form: formReducer,
   loadingBar: loadingBarReducer,
+  ...activityReducer,
   ...complianceReducer,
   ...reportReducer,
   ...staticContentReducer,

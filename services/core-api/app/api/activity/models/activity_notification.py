@@ -42,6 +42,14 @@ def validate_document(document):
                 'entity_guid': {
                     'type': 'string',
                     'regex': '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                },
+                'permit': {
+                    'type': 'dict',
+                    'schema': {
+                        'permit_no': {
+                            'type': 'string'
+                        }
+                    }
                 }
             }
         }

@@ -7062,3 +7062,77 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
     },
   ],
 };
+
+export const ACTIVITIES = {
+  data: {
+    records: [
+      {
+        notification_guid: "da05d3a4-dcd3-467a-83f1-84f27d28d370",
+        notification_recipient: "ssmaaber",
+        notification_read: false,
+        notification_document: {
+          message: "Notice of Departure Submitted for Bennett Group",
+          metadata: {
+            mine: {
+              mine_no: "92433731",
+              mine_guid: "81595650-fcb3-42e0-a1d0-c92b9c2d0ed2",
+              mine_name: "Bennett Group",
+            },
+            entity: "NoticeOfDeparture",
+            permit: {
+              permit_no: "M-5830615",
+            },
+            entity_guid: "9f64f9ac-3777-4ba0-825a-3b132e60ac51",
+          },
+        },
+        create_timestamp: "2022-08-08T20:59:02.319606+00:00",
+        update_timestamp: "2022-08-08T20:59:02.319691+00:00",
+      },
+      {
+        notification_guid: "bea36249-3650-4813-95ac-ecde93d073ee",
+        notification_recipient: "ssmaaber",
+        notification_read: false,
+        notification_document: {
+          message: "Notice of Departure Submitted for Bennett Group",
+          metadata: {
+            mine: {
+              mine_no: "92433731",
+              mine_guid: "81595650-fcb3-42e0-a1d0-c92b9c2d0ed2",
+              mine_name: "Bennett Group",
+            },
+            entity: "NoticeOfDeparture",
+            permit: {
+              permit_no: "M-5830615",
+            },
+            entity_guid: "d035fd3f-5eda-4b65-94f7-b267f6dd333e",
+          },
+        },
+        create_timestamp: "2022-08-08T20:59:01.859001+00:00",
+        update_timestamp: "2022-08-08T20:59:01.859104+00:00",
+      },
+      {
+        notification_guid: "cdfa0f05-e202-4437-8ee3-1797b1dd83f8",
+        notification_recipient: "ssmaaber",
+        notification_read: false,
+        notification_document: {
+          message: "Notice of Departure Submitted for Bennett Group",
+          metadata: {
+            mine: {
+              mine_no: "92433731",
+              mine_guid: "81595650-fcb3-42e0-a1d0-c92b9c2d0ed2",
+              mine_name: "Bennett Group",
+            },
+            entity: "NoticeOfDeparture",
+            permit: {
+              permit_no: "M-5830615",
+            },
+            entity_guid: "8499a61b-87ec-4572-a181-7bc966b0b642",
+          },
+        },
+        create_timestamp: "2022-08-08T20:59:01.482269+00:00",
+        update_timestamp: "2022-08-08T20:59:01.482461+00:00",
+      },
+    ],
+    total: 3,
+  },
+};
