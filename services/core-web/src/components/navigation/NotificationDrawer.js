@@ -3,10 +3,17 @@ import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getActivities } from "@common/reducers/activityReducer";
+import { fetchActivities } from "@common/actionCreators/activityActionCreator";
 import PropTypes from "prop-types";
-import { getUserInfo, isAuthenticated } from "@common/selectors/authenticationSelectors";
 import { formatDateTime } from "@common/utils/helpers";
+import { getActivities } from "@common/selectors/activitySelectors";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
+
+const propTypes = {
+  fetchActivities: PropTypes.func.isRequired,
+  userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
+  activities: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 const outsideClickHandler = (ref, setOpen, open) => {
   useEffect(() => {
@@ -21,43 +28,36 @@ const outsideClickHandler = (ref, setOpen, open) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref]);
-};
-
-const propTypes = {
-  getActivities: PropTypes.func.isRequired,
-  userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
+  }, [ref, open]);
 };
 
 const NotificationDrawer = (props) => {
   const [open, setOpen] = useState(false);
-  const [activities, setActivities] = useState([]);
-  const [totalActivities, setTotalActivities] = useState(0);
+
+  const handleCollapse = () => {
+    setOpen(!open);
+  };
 
   const modalRef = useRef(null);
   outsideClickHandler(modalRef, setOpen, open);
 
   useEffect(() => {
     if (props.userInfo?.preferred_username) {
-      (async () => {
-        const { data: acts } = await props.getActivities(props.userInfo?.preferred_username);
-        setActivities(acts.records);
-        setTotalActivities(acts.total || 0);
-      })();
+      props.fetchActivities(props.userInfo?.preferred_username);
     }
   }, [props.userInfo.preferred_username]);
-
-  const handleCollapse = () => {
-    setOpen(!open);
-  };
 
   return (
     <div ref={modalRef}>
       <Button
         onClick={handleCollapse}
         type="text"
+        className="notification-button"
         icon={
-          <Badge className="notification-badge" count={totalActivities}>
+          <Badge
+            className="notification-badge"
+            count={props.activities?.filter((act) => !act?.notification_read).length || 0}
+          >
             <BellOutlined className="notification-icon" />
           </Badge>
         }
@@ -73,7 +73,7 @@ const NotificationDrawer = (props) => {
             tab={<Typography.Title level={5}>Mine Activity</Typography.Title>}
             key="1"
           >
-            {(activities || [])?.map((activity) => (
+            {(props.activities || [])?.map((activity) => (
               <div>
                 <div className="notification-list-item">
                   <div className={!activity.notification_read ? "notification-dot" : ""} />
@@ -111,19 +111,19 @@ const NotificationDrawer = (props) => {
   );
 };
 
-NotificationDrawer.propTypes = propTypes;
-
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  isAuthenticated: isAuthenticated(state),
+  activities: getActivities(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      getActivities,
+      fetchActivities,
     },
     dispatch
   );
 
-export default connect(mapDispatchToProps, mapStateToProps)(NotificationDrawer);
+NotificationDrawer.propTypes = propTypes;
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationDrawer);
