@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Dropdown, Menu } from "antd";
-import { DownOutlined, DownloadOutlined, FileOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DownOutlined, DownloadOutlined, FileOutlined } from "@ant-design/icons";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
@@ -81,9 +81,6 @@ export const DocumentLink = (props) => {
           )}
           <Menu.Item key="download" icon={<DownloadOutlined />}>
             Download
-          </Menu.Item>
-          <Menu.Item key="delete" icon={<DeleteOutlined />}>
-            Delete
           </Menu.Item>
         </Menu>
       }
