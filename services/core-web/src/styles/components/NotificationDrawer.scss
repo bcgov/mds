@@ -1,0 +1,149 @@
+.notification-icon {
+  color: #FFF;
+  font-size: 24px;
+}
+
+.notification-button {
+  font-size: unset;
+  border: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0;
+  height: 100%;
+  border-radius: 0;
+}
+
+.notification-button-open {
+  background-color: #5E46A1 !important;
+}
+
+.notification-button svg {
+  font-size: 20px;
+}
+
+.notification-button .ant-scroll-number-only > p.ant-scroll-number-only-unit {
+  color: #FFF;
+  font-size: 10px;
+}
+
+.notification-button .ant-badge-count {
+  height: 15px;
+  min-width: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(60%, -60%);
+}
+
+.notification-button:hover {
+  border: transparent;
+  background-color: #5E46A1;
+}
+
+.notification-drawer {
+  height: 0;
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  top: 62px;
+  background-color: #FFF;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.notification-drawer-open {
+  padding: 24px 40px;
+  border: 1px solid #BBBBBB;
+  height: 70vh;
+  width: 564px;
+}
+
+.notification-drawer .ant-tabs-content-holder {
+  max-height: calc(70vh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-drawer .ant-tabs .ant-tabs-tab {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 0;
+  background-color: #FFF !important;
+}
+
+.notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: unset !important;
+}
+
+.notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-tab-active > div > article {
+  color: #5E46A1;
+}
+
+.notification-separator {
+  height: 4px;
+  width: 4px;
+  background-color: #BBBBBB;
+  border-radius: 50%;
+}
+
+.notification-list-item {
+  padding: 0 24px;
+  position: relative;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.notification-list-item:hover {
+  background-color: #f0f6fd !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notification-dot {
+  position: absolute;
+  left: 0;
+  top: 24px;
+  transform: translateY(-50%);
+  background-color: $gov-blue;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.notification-info-text {
+  color: #606060;
+  font-size: 14px;
+  font-weight: 400;
+
+}
+
+.notification-tab-pane {
+  background-color: #FFF;
+}
+
+.notification-badge .ant-badge-count {
+  box-shadow: unset !important;
+}
+
+.header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification-tab-header {
+  font-family: 'BCSans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}

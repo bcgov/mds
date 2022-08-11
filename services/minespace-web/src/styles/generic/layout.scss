@@ -40,6 +40,10 @@
   justify-content: space-between;
 }
 
+.items-center {
+  align-items: center;
+}
+
 .right {
   text-align: right;
 }
@@ -170,7 +174,7 @@
 
 .bold {
   font-weight: bolder;
-  margin-bottom: none;
+  margin-bottom: 0;
 }
 
 .light {
