@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import { Col, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { getUserInfo } from "@/reducers/authenticationReducer";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
@@ -21,7 +22,6 @@ const propTypes = {
 const defaultProps = {
   isAuthenticated: false,
 };
-
 
 export const Header = (props) => {
   return (
@@ -39,7 +39,7 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              { !IN_PROD() && <NotificationDrawer /> }
+              {!IN_PROD() && <NotificationDrawer />}
             </div>
           </div>
         </Col>
@@ -56,7 +56,6 @@ const mapStateToProps = (state) => {
     isAuthenticated: isAuthenticated(state),
     userInfo: getUserInfo(state),
   };
-}
-
+};
 
 export default connect(mapStateToProps)(Header);

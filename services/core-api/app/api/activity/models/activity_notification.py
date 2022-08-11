@@ -102,8 +102,9 @@ class ActivityNotification(AuditMixin, Base):
 
         for user in users:
             validated_notification_document = validate_document(document)
+            formatted_user_name = user.replace('idir\\', '')
 
-            notification = cls(notification_recipient=user, notification_document=validated_notification_document)
+            notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document)
             notifications.append(notification)
 
         db.session.bulk_save_objects(notifications)
