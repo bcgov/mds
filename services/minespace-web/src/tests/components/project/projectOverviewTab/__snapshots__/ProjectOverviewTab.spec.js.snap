@@ -118,6 +118,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "key": undefined,
             "navigateForward": [Function],
             "payload": Object {
+              "documents": Array [],
               "irt_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
               "project_guid": "66d7e698-8820-456f-ac32-14917f3ebe88",
               "requirements": Array [
