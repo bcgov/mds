@@ -20,6 +20,7 @@ import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
+import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
@@ -34,7 +35,6 @@ const propTypes = {
   navigateForward: PropTypes.func.isRequired,
   majorMinesApplication: CustomPropTypes.majorMinesApplication.isRequired,
   majorMinesApplicationStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mmaNavigateTo: PropTypes.func.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -99,8 +99,15 @@ export class ProjectOverviewTab extends Component {
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         required: this.props.project.mrc_review_required,
         navigateForward: () =>
-          this.props.navigateForward("IRT", this.props.informationRequirementsTable.status_code),
+          this.props.navigateForward("IRT", this.props.informationRequirementsTable?.status_code),
       },
+    ];
+    const documentColumns = [
+      categoryColumn(
+        "project_summary_document_type_code",
+        this.props.projectSummaryDocumentTypesHash
+      ),
+      uploadDateColumn("upload_date"),
     ];
     if (!IN_PROD()) {
       projectStages.push({
@@ -111,7 +118,8 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.majorMinesApplication,
         statusHash: this.props.majorMinesApplicationStatusCodesHash,
         required: true,
-        navigateForward: () => this.props.navigateForward("MMA"),
+        navigateForward: () =>
+          this.props.navigateForward("MMA", this.props.majorMinesApplication?.status_code),
       });
     }
 
@@ -178,10 +186,8 @@ export class ProjectOverviewTab extends Component {
           <Typography.Title level={4}>Project Documents</Typography.Title>
           <DocumentTable
             documents={this.props.projectSummary.documents}
-            documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
             documentParent="project summary"
-            categoryDataIndex="project_summary_document_type_code"
-            uploadDateIndex="upload_date"
+            documentColumns={documentColumns}
           />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>

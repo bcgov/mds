@@ -83,7 +83,7 @@ export class MajorMineApplicationForm extends Component {
       <div>
         <Form layout="vertical">
           <Row>
-            <Col span={16} style={{ marginLeft: "15%" }}>
+            <Col span={24}>
               <Typography.Title level={4}>Basic Information</Typography.Title>
               <Typography.Paragraph>
                 Please ensure the following information is correct and up to date. If changes are
@@ -98,141 +98,140 @@ export class MajorMineApplicationForm extends Component {
                 </Link>
                 .
               </Typography.Paragraph>
-              <Row>
-                <Col span={12} style={{ marginRight: "40px" }}>
-                  <Typography.Title level={5}>Primary Contact</Typography.Title>
-                  <Field
-                    id="primary_contact"
-                    name="primary_contact"
-                    disabled
-                    component={renderConfig.FIELD}
-                  />
-                </Col>
-                <Col span={11}>
-                  <Typography.Title level={5}>Mine Name</Typography.Title>
-                  <Field id="mine_name" name="mine_name" disabled component={renderConfig.FIELD} />
-                </Col>
-              </Row>
-              <Typography.Title level={4}>Application Files</Typography.Title>
-              <Typography.Title level={5}>Upload primary application document</Typography.Title>
-              <Typography.Paragraph>
-                Please upload the main document for the submission. If your single document contains
-                all supporting information you may not need to include separate supporting
-                documentation.
-              </Typography.Paragraph>
-
-              <Field
-                id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
-                name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
-                label="Upload primary application document"
-                onFileLoad={(documentName, document_manager_guid) => {
-                  this.onFileLoad(
-                    documentName,
-                    document_manager_guid,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.PRIMARY,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY
-                  );
-                }}
-                onRemoveFile={(err, fileItem) => {
-                  this.onRemoveFile(
-                    err,
-                    fileItem,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY,
-                    this.props.primary_documents
-                  );
-                }}
-                projectGuid={this.props.project?.project_guid}
-                labelIdle={
-                  '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-                }
-                allowMultiple
-                acceptedFileTypesMap={this.acceptedFileTypesMap}
-                component={MajorMineApplicationFileUpload}
-                uploadType="primary_document"
-                validate={[required]}
-              />
-              <br />
-              <Typography.Title level={5}>Upload spatial documents</Typography.Title>
-              <Typography.Text>
-                Please upload spatial files to support your application. You must upload at least
-                one spatial file to support your application.
-              </Typography.Text>
-
-              <Field
-                id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-                name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-                label="Upload spatial components"
-                onFileLoad={(documentName, document_manager_guid) => {
-                  this.onFileLoad(
-                    documentName,
-                    document_manager_guid,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL
-                  );
-                }}
-                onRemoveFile={(err, fileItem) => {
-                  this.onRemoveFile(
-                    err,
-                    fileItem,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
-                    this.props.spatial_documents
-                  );
-                }}
-                projectGuid={this.props.project?.project_guid}
-                labelIdle={
-                  '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-                }
-                allowMultiple
-                acceptedFileTypesMap={this.acceptedFileTypesMap}
-                component={MajorMineApplicationFileUpload}
-                uploadType="spatial_document"
-              />
-              <br />
-              <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
-              <Typography.Text>
-                Upload additional files that support your primary document submission. You can
-                include many types of files such as:
-              </Typography.Text>
-              <ul>
-                <li>Application</li>
-                <li>Mapping</li>
-                <li>Procedures and Plans</li>
-                <li>Site Studies and Assessments</li>
-                <li>Plans and Transfers</li>
-                <li>Site Studies and Assessments</li>
-              </ul>
-
-              <Field
-                id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
-                name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
-                label="Upload supporting application documents"
-                onFileLoad={(documentName, document_manager_guid) => {
-                  this.onFileLoad(
-                    documentName,
-                    document_manager_guid,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SUPPORTING,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING
-                  );
-                }}
-                onRemoveFile={(err, fileItem) => {
-                  this.onRemoveFile(
-                    err,
-                    fileItem,
-                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING,
-                    this.props.supporting_documents
-                  );
-                }}
-                projectGuid={this.props.project?.project_guid}
-                labelIdle={
-                  '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-                }
-                acceptedFileTypesMap={this.acceptedFileTypesMap}
-                allowMultiple
-                component={MajorMineApplicationFileUpload}
-                uploadType="supporting_document"
-              />
             </Col>
           </Row>
+          <Row>
+            <Col span={12} style={{ marginRight: "40px" }}>
+              <Typography.Title level={5}>Primary Contact</Typography.Title>
+              <Field
+                id="primary_contact"
+                name="primary_contact"
+                disabled
+                component={renderConfig.FIELD}
+              />
+            </Col>
+            <Col span={11}>
+              <Typography.Title level={5}>Mine Name</Typography.Title>
+              <Field id="mine_name" name="mine_name" disabled component={renderConfig.FIELD} />
+            </Col>
+          </Row>
+          <Typography.Title level={4}>Application Files</Typography.Title>
+          <Typography.Title level={5}>Upload primary application document</Typography.Title>
+          <Typography.Paragraph>
+            Please upload the main document for the submission. If your single document contains all
+            supporting information you may not need to include separate supporting documentation.
+          </Typography.Paragraph>
+
+          <Field
+            id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
+            name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
+            label="Upload primary application document"
+            onFileLoad={(documentName, document_manager_guid) => {
+              this.onFileLoad(
+                documentName,
+                document_manager_guid,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.PRIMARY,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY
+              );
+            }}
+            onRemoveFile={(err, fileItem) => {
+              this.onRemoveFile(
+                err,
+                fileItem,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY,
+                this.props.primary_documents
+              );
+            }}
+            projectGuid={this.props.project?.project_guid}
+            labelIdle={
+              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
+            }
+            allowMultiple
+            acceptedFileTypesMap={this.acceptedFileTypesMap}
+            component={MajorMineApplicationFileUpload}
+            uploadType="primary_document"
+            validate={[required]}
+          />
+          <br />
+          <Typography.Title level={5}>Upload spatial documents</Typography.Title>
+          <Typography.Text>
+            Please upload spatial files to support your application. You must upload at least one
+            spatial file to support your application.
+          </Typography.Text>
+
+          <Field
+            id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
+            name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
+            label="Upload spatial components"
+            onFileLoad={(documentName, document_manager_guid) => {
+              this.onFileLoad(
+                documentName,
+                document_manager_guid,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL
+              );
+            }}
+            onRemoveFile={(err, fileItem) => {
+              this.onRemoveFile(
+                err,
+                fileItem,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
+                this.props.spatial_documents
+              );
+            }}
+            projectGuid={this.props.project?.project_guid}
+            labelIdle={
+              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
+            }
+            allowMultiple
+            acceptedFileTypesMap={this.acceptedFileTypesMap}
+            component={MajorMineApplicationFileUpload}
+            uploadType="spatial_document"
+          />
+          <br />
+          <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
+          <Typography.Text>
+            Upload additional files that support your primary document submission. You can include
+            many types of files such as:
+          </Typography.Text>
+          <ul>
+            <li>Application</li>
+            <li>Mapping</li>
+            <li>Procedures and Plans</li>
+            <li>Site Studies and Assessments</li>
+            <li>Plans and Transfers</li>
+            <li>Site Studies and Assessments</li>
+          </ul>
+
+          <Field
+            id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
+            name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
+            label="Upload supporting application documents"
+            onFileLoad={(documentName, document_manager_guid) => {
+              this.onFileLoad(
+                documentName,
+                document_manager_guid,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SUPPORTING,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING
+              );
+            }}
+            onRemoveFile={(err, fileItem) => {
+              this.onRemoveFile(
+                err,
+                fileItem,
+                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING,
+                this.props.supporting_documents
+              );
+            }}
+            projectGuid={this.props.project?.project_guid}
+            labelIdle={
+              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
+            }
+            acceptedFileTypesMap={this.acceptedFileTypesMap}
+            allowMultiple
+            component={MajorMineApplicationFileUpload}
+            uploadType="supporting_document"
+          />
         </Form>
       </div>
     );

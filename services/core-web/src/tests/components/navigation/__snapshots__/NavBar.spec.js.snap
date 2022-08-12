@@ -220,6 +220,7 @@ exports[`NavBar renders properly 1`] = `
           </Connect(AuthorizationWrapper)>
         </div>
       </MediaQuery>
+      <Connect(NotificationDrawer) />
     </div>
   </div>
   <MediaQuery

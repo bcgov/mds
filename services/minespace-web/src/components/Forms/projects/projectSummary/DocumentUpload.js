@@ -8,6 +8,7 @@ import { Typography, Row, Col } from "antd";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
+import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";
@@ -54,6 +55,13 @@ export class DocumentUpload extends Component {
       projectGuid: this.props.initialValues.project_guid,
       projectSummaryGuid: this.props.initialValues.project_summary_guid,
     };
+    const documentColumns = [
+      categoryColumn(
+        "project_summary_document_type_code",
+        this.props.projectSummaryDocumentTypesHash
+      ),
+      uploadDateColumn("upload_date"),
+    ];
     return (
       <>
         <Typography.Title level={3}>Document Upload</Typography.Title>
@@ -72,10 +80,8 @@ export class DocumentUpload extends Component {
           {this.props.isEditMode && (
             <DocumentTable
               documents={this.props.initialValues?.documents}
-              documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
               documentParent="project summary"
-              categoryDataIndex="project_summary_document_type_code"
-              uploadDateIndex="upload_date"
+              documentColumns={documentColumns}
             />
           )}
 

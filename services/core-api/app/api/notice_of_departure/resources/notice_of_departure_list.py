@@ -9,7 +9,7 @@ from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NO
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.notice_of_departure.utils.validators import contact_validator
 from app.api.activity.utils import trigger_notifcation
-
+import json
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
 
@@ -144,6 +144,12 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
 
         mine = permit._context_mine
 
-        trigger_notifcation(f'Notice of Departure Submitted for {mine.mine_name}', mine, 'NoticeOfDeparture', new_nod.nod_guid)
+        extra_notification_data = {
+            'permit': {
+                'permit_no': permit.permit_no
+            }
+        }
+
+        trigger_notifcation(f'Notice of Departure Submitted for {mine.mine_name}', mine, 'NoticeOfDeparture', new_nod.nod_guid, extra_notification_data)
 
         return new_nod

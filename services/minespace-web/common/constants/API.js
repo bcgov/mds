@@ -285,3 +285,6 @@ export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comme
 // OrgBook
 export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
 export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;
+
+// Activities
+export const ACTIVITIES = () => "/activities";

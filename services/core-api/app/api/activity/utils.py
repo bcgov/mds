@@ -2,7 +2,7 @@
 from .models.activity_notification import ActivityNotification
 
 
-def trigger_notifcation(message, mine, entity_name, entity_guid):
+def trigger_notifcation(message, mine, entity_name, entity_guid, extra_data=None):
     document = {
         'message': message,
         'metadata': {
@@ -12,7 +12,8 @@ def trigger_notifcation(message, mine, entity_name, entity_guid):
                 'mine_name': mine.mine_name
             },
             'entity': entity_name,
-            'entity_guid': str(entity_guid)
+            'entity_guid': str(entity_guid),
+            **(extra_data or {})
         }
     }
 

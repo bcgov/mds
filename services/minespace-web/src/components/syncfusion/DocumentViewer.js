@@ -91,7 +91,7 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
 export class DocumentViewer extends Component {
   constructor(props) {
     super(props);
-    this.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
+    this.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl?.replace(
       "AmazonS3Provider/",
       "PdfViewer"
     );
