@@ -2,6 +2,7 @@
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
+const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -66,7 +67,19 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         test: /\.s?css$/,
         include,
         exclude,
-        use: ["style-loader", "css-loader", postCSSLoader, "sass-loader"],
+        use: [
+          "style-loader",
+          "css-loader",
+          postCSSLoader,
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.less$/,
@@ -177,7 +190,14 @@ exports.extractCSS = ({ include, exclude, filename } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          "sass-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+              },
+            },
+          },
         ],
       },
       {

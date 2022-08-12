@@ -15,6 +15,7 @@ import Routes from "./routes/Routes";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
+import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
@@ -76,6 +77,7 @@ class App extends Component {
                   </Col>
                 </Row>
                 <ModalWrapper />
+                <DocumentViewer />
                 <BackTop />
               </Layout.Content>
             </Layout>

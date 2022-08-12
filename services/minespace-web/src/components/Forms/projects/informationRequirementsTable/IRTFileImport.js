@@ -20,6 +20,11 @@ import { MODERN_EXCEL } from "@/constants/fileTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
+import {
+  categoryColumn,
+  uploadDateTimeColumn,
+  importedByColumn,
+} from "@/components/common/DocumentColumns";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -62,6 +67,14 @@ export class IRTFileImport extends Component {
 
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
+    const documentColumns = [
+      categoryColumn(
+        "information_requirements_table_document_type_code",
+        this.props.informationRequirementsTableDocumentTypesHash
+      ),
+      uploadDateTimeColumn("upload_date"),
+      importedByColumn("create_user"),
+    ];
     return (
       <>
         <Row>
@@ -92,12 +105,8 @@ export class IRTFileImport extends Component {
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
               <DocumentTable
                 documents={this.props.project?.information_requirements_table?.documents}
-                documentCategoryOptionsHash={
-                  this.props.informationRequirementsTableDocumentTypesHash
-                }
                 documentParent="Information Requirements Table"
-                categoryDataIndex="information_requirements_table_document_type_code"
-                uploadDateIndex="upload_date"
+                documentColumns={documentColumns}
               />
               <br />
               {this.props.project?.information_requirements_table?.status_code === "REC" && (

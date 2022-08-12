@@ -8,6 +8,7 @@
 
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
+@import "./tools/syncfusion.scss";
 
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./overrides/filepond-overrides.scss";

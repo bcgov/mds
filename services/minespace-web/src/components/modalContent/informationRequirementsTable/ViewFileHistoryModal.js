@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import { Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
+import {
+  categoryColumn,
+  uploadDateTimeColumn,
+  importedByColumn,
+} from "@/components/common/DocumentColumns";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -11,14 +16,20 @@ const propTypes = {
 };
 
 const ViewFileHistoryModal = (props) => {
+  const documentColumns = [
+    categoryColumn(
+      "information_requirements_table_document_type_code",
+      props.documentCategoryOptionsHash
+    ),
+    uploadDateTimeColumn("upload_date"),
+    importedByColumn("create_user"),
+  ];
   return (
     <div>
       <DocumentTable
         documents={props.project?.information_requirements_table?.documents}
-        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
         documentParent="Information Requirements Table"
-        categoryDataIndex="information_requirements_table_document_type_code"
-        uploadDateIndex="upload_date"
+        documentColumns={documentColumns}
       />
       <div className="ant-modal-footer">
         <Button onClick={props.closeModal}>Close</Button>
