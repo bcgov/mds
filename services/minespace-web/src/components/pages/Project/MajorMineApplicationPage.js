@@ -218,12 +218,7 @@ const StepForms = (
             handleSaveData(
               e,
               {
-                ...props.formValues,
-                documents: [
-                  ...(props.formValues?.primary_documents || []),
-                  ...(props.formValues?.spatial_documents || []),
-                  ...(props.formValues?.supporting_documents || []),
-                ],
+                ...props.project.major_mine_application,
                 status_code: "REC",
               },
               "Successfully submitted a major mine application."
@@ -282,8 +277,9 @@ export class MajorMineApplicationPage extends Component {
         values,
         message
       )
-      .then(() => {
+      .then((response) => {
         this.handleFetchData();
+        return response?.data;
       });
   };
 
@@ -313,15 +309,14 @@ export class MajorMineApplicationPage extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        const response = await this.handleCreateMajorMineApplication(values, message);
-        return response.data;
+        return this.handleCreateMajorMineApplication(values, message);
       }
       await this.handleUpdateMajorMineApplication(values, message);
       if (values?.status_code === "REC") {
         return this.props.history.push({
           pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
-            this.props.match.params?.projectGuid,
-            this.props.match.params?.majorMineApplicationGuid
+            this.props.project.major_mine_application?.project_guid,
+            this.props.project.major_mine_application?.major_mine_application_guid
           )}`,
           state: { project: this.props.project },
         });
