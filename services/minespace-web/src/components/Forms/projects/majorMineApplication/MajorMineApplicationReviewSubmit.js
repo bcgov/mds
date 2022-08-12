@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { CALLOUT_SEVERITY } from "@common/constants/strings";
+import { withRouter } from "react-router-dom";
 import { Checkbox, Row, Col, Typography, Descriptions, Card, Input } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
@@ -9,10 +9,10 @@ import {
   removeDocumentFromMajorMineApplication,
   fetchProjectById,
 } from "@common/actionCreators/projectActionCreator";
-import Callout from "@/components/common/Callout";
 import DocumentTable from "@/components/common/DocumentTable";
 import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
+import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -20,31 +20,49 @@ const propTypes = {
   removeDocumentFromMajorMineApplication: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   setConfirmedSubmission: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      applicationSubmitted: PropTypes.bool,
+    }),
+  }),
+  tabbedView: PropTypes.bool,
+  applicationSubmitted: PropTypes.bool,
+};
+
+const defaultProps = {
+  tabbedView: false,
+  applicationSubmitted: false,
+  location: {
+    state: {
+      applicationSubmitted: false,
+    },
+  },
 };
 
 const inputStyle = { width: "100%" };
 
-export const MajorMineApplicationReviewSubmit = ({
-  project,
-  removeDocumentFromMajorMineApplication: removeDocument,
-  fetchProjectById: fetchProject,
-  confirmedSubmission,
-  setConfirmedSubmission,
-}) => {
+export const MajorMineApplicationReviewSubmit = (props) => {
   const handleDeleteDocument = async ({
     projectGuid,
     majorMineApplicationGuid,
     mineDocumentGuid,
   }) => {
-    await removeDocument(projectGuid, majorMineApplicationGuid, mineDocumentGuid);
-    return fetchProject(projectGuid);
+    await props.removeDocumentFromMajorMineApplication(
+      projectGuid,
+      majorMineApplicationGuid,
+      mineDocumentGuid
+    );
+    return props.fetchProjectById(projectGuid);
   };
 
   const {
     project_guid: projectGuid,
     contacts,
     major_mine_application: { major_mine_application_guid: majorMineApplicationGuid },
-  } = project;
+  } = props.project;
+  const { project, tabbedView } = props;
+  const applicationSubmitted =
+    props?.applicationSubmitted || props?.location?.state?.applicationSubmitted || false;
 
   const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
@@ -59,25 +77,34 @@ export const MajorMineApplicationReviewSubmit = ({
   );
   const documentColumns = [uploadDateColumn("upload_date")];
 
+  const columnStyleConfig = tabbedView ? { style: { maxWidth: "67%", margin: "0 auto" } } : {};
+
   return (
     <>
-      <Callout
-        message={
-          <div>
-            <h4 style={{ fontWeight: "bold" }}>Confirm your Submission</h4>
-            <p>
-              Please confirm the contents of your submission below. When you are happy with your
-              review click the submit button to begin the review process.
-            </p>
-          </div>
-        }
-        severity={CALLOUT_SEVERITY.warning}
-      />
-      <br />
-      <Typography.Title level={4}>Basic Information</Typography.Title>
+      {applicationSubmitted && tabbedView && (
+        <Row>
+          <Col span={24}>
+            <Typography.Title level={2}>Major Mines Application</Typography.Title>
+          </Col>
+          <Col span={24} {...columnStyleConfig}>
+            <MajorMineApplicationCallout
+              majorMineApplicationStatus={project.major_mine_application?.status_code}
+            />
+          </Col>
+        </Row>
+      )}
+      <Row>
+        <Col span={24} {...columnStyleConfig}>
+          <Typography.Title level={3}>Basic Information</Typography.Title>
+        </Col>
+      </Row>
       <Row>
         <Col xs={24} md={12}>
-          <Descriptions layout="vertical" colon={false}>
+          <Descriptions
+            layout="vertical"
+            colon={false}
+            style={tabbedView ? { maxWidth: "67%", float: "right" } : {}}
+          >
             <Descriptions.Item
               style={inputStyle}
               label="Primary Contact"
@@ -88,7 +115,11 @@ export const MajorMineApplicationReviewSubmit = ({
           </Descriptions>
         </Col>
         <Col xs={24} md={12}>
-          <Descriptions layout="vertical" colon={false}>
+          <Descriptions
+            layout="vertical"
+            colon={false}
+            style={tabbedView ? { maxWidth: "67%" } : {}}
+          >
             <Descriptions.Item
               style={inputStyle}
               label="Mine Name"
@@ -98,7 +129,9 @@ export const MajorMineApplicationReviewSubmit = ({
             </Descriptions.Item>
           </Descriptions>
         </Col>
-        <Col span={24}>
+        <Col span={24} {...columnStyleConfig}>
+          <br />
+          <Typography.Title level={3}>Application Files</Typography.Title>
           <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
             documents={primaryDocuments}
@@ -124,33 +157,39 @@ export const MajorMineApplicationReviewSubmit = ({
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
           />
         </Col>
-        <Col span={24}>
-          <Card>
-            <>
-              <p>
-                <b>Confirmation of Submission</b>
-              </p>
-              <p>
-                <span>
-                  <Checkbox checked={confirmedSubmission} onChange={setConfirmedSubmission} />
-                  &nbsp;&nbsp;
-                </span>
-                I understand that this application and supporting files are submitted on behalf of
-                the owner, agent or mine manager of this project.
-                <span style={{ color: "red" }}>*</span>
-              </p>
-            </>
-          </Card>
-          <br />
-        </Col>
+        {!applicationSubmitted && (
+          <Col span={24}>
+            <Card>
+              <>
+                <p>
+                  <b>Confirmation of Submission</b>
+                </p>
+                <p>
+                  <span>
+                    <Checkbox
+                      checked={props.confirmedSubmission}
+                      onChange={props.setConfirmedSubmission}
+                    />
+                    &nbsp;&nbsp;
+                  </span>
+                  I understand that this application and supporting files are submitted on behalf of
+                  the owner, agent or mine manager of this project.
+                  <span style={{ color: "red" }}>*</span>
+                </p>
+              </>
+            </Card>
+            <br />
+          </Col>
+        )}
       </Row>
     </>
   );
 };
 
 MajorMineApplicationReviewSubmit.propTypes = propTypes;
+MajorMineApplicationReviewSubmit.defaultProps = defaultProps;
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ removeDocumentFromMajorMineApplication, fetchProjectById }, dispatch);
 
-export default connect(null, mapDispatchToProps)(MajorMineApplicationReviewSubmit);
+export default withRouter(connect(null, mapDispatchToProps)(MajorMineApplicationReviewSubmit));
