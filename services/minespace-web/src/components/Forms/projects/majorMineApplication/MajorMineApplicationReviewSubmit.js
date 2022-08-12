@@ -13,6 +13,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
+import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -62,7 +63,11 @@ export const MajorMineApplicationReviewSubmit = (props) => {
   } = props.project;
   const { project, tabbedView } = props;
   const applicationSubmitted =
-    props?.applicationSubmitted || props?.location?.state?.applicationSubmitted || false;
+    props?.applicationSubmitted ||
+    props?.location?.state?.applicationSubmitted ||
+    MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
+      project.major_mine_application?.status_code
+    );
 
   const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
