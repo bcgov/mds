@@ -88,7 +88,7 @@ export class ProjectOverviewTab extends Component {
         status: this.props.projectSummary.status_code,
         payload: this.props.projectSummary,
         statusHash: this.props.projectSummaryStatusCodesHash,
-        required: null,
+        required: true,
       },
       {
         title: "IRT",
