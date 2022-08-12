@@ -60,10 +60,6 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
     />
     <Route
-      path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
       path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
       component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
     />
