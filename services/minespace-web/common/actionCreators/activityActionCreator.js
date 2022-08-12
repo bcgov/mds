@@ -8,7 +8,7 @@ import { storeActivities } from "../actions/activityActions";
 import { ACTIVITIES } from "../constants/API";
 
 // eslint-disable-next-line import/prefer-default-export
-export const fetchActivities = (user, page = 1, per_page = 25) => (dispatch) => {
+export const fetchActivities = (user, page = 1, per_page = 20) => (dispatch) => {
   dispatch(storeActivities({}));
   dispatch(request(GET_ACTIVITIES));
   dispatch(showLoading());
