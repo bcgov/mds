@@ -42,11 +42,6 @@ const propTypes = {
 const tabs = ["overview", "irt-entry", "toc", "major-mine-application", "documents"];
 
 export class ProjectPage extends Component {
-  constructor(props) {
-    super(props);
-    this.irtTabRef = React.createRef();
-  }
-
   state = {
     isLoaded: false,
     activeTab: tabs[0],
@@ -120,7 +115,7 @@ export class ProjectPage extends Component {
           state: { current: 2 },
         });
       }
-      const irtTab = this.irtTabRef.current;
+      const irtTab = document.querySelector('[id*="irt-entry"]');
       if (!irtTab) {
         return null;
       }
@@ -144,6 +139,13 @@ export class ProjectPage extends Component {
           pathname: router.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(this.props.project.project_guid),
           state: { current: 1 },
         });
+      }
+      if (!status) {
+        const mmaTab = document.querySelector('[id*="major-mine-application"]');
+        if (!mmaTab) {
+          return null;
+        }
+        return mmaTab.click();
       }
     }
     return null;
@@ -196,7 +198,7 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab navigateForward={this.navigateFromProjectStagesTable} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="IRT" key="irt-entry" ref={this.irtTabRef}>
+                <Tabs.TabPane tab="IRT" key="irt-entry">
                   <InformationRequirementsTableEntryTab
                     irt={this.props.project?.information_requirements_table}
                     mrcReviewRequired={mrcReviewRequired}
