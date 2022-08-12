@@ -21,6 +21,7 @@ import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationGetStarted";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
+import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
 
 const propTypes = {
@@ -53,6 +54,8 @@ const propTypes = {
 const defaultProps = {
   formErrors: {},
 };
+
+export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["REC", "UNR", "APV"];
 
 const StepForms = (
   props,
@@ -163,10 +166,13 @@ const StepForms = (
               payload,
               "Successfully saved a draft major mine application."
             );
+            const majorMineApplicationGuid =
+              props.project.major_mine_application?.major_mine_application_guid ||
+              response?.major_mine_application_guid;
             return props.history.push({
               pathname: `${routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                 props.project?.project_guid,
-                response?.major_mine_application_guid
+                majorMineApplicationGuid
               )}`,
               state: { current: 2 },
             });
@@ -337,6 +343,10 @@ export class MajorMineApplicationPage extends Component {
     const primaryContact = this.props.project?.contacts
       ?.filter((contact) => contact.is_primary === true)
       .map((primary) => primary.name)[0];
+    const applicationStatus = this.props.project.major_mine_application?.status_code;
+    const applicationSubmitted = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
+      applicationStatus
+    );
 
     const Forms = StepForms(
       this.props,
@@ -367,13 +377,15 @@ export class MajorMineApplicationPage extends Component {
           </Row>
           <br />
           <Row>
-            <Col span={16}>
+            <Col span={15}>
               <Typography.Title level={2}>Create New Major Mine Application</Typography.Title>
             </Col>
-            <Col span={8}>
-              <div style={{ display: "inline", float: "right" }}>
-                <p>{Forms[this.state.current].buttons}</p>
-              </div>
+            <Col span={9}>
+              {!applicationSubmitted && (
+                <div style={{ display: "inline", float: "right" }}>
+                  <p>{Forms[this.state.current].buttons}</p>
+                </div>
+              )}
             </Col>
           </Row>
           <Row>
@@ -386,16 +398,25 @@ export class MajorMineApplicationPage extends Component {
           <br />
           <Row>
             <Col span={24}>
+              {this.state.current !== 0 && (
+                <MajorMineApplicationCallout
+                  majorMineApplicationStatus={
+                    this.props.project?.major_mine_application?.status_code
+                  }
+                />
+              )}
               <div>{Forms[this.state.current].content}</div>
             </Col>
           </Row>
-          <Row>
-            <Col span={24}>
-              <div style={{ display: "inline", float: "right" }}>
-                <p>{Forms[this.state.current].buttons}</p>
-              </div>
-            </Col>
-          </Row>
+          {!applicationSubmitted && (
+            <Row>
+              <Col span={24}>
+                <div style={{ display: "inline", float: "right" }}>
+                  <p>{Forms[this.state.current].buttons}</p>
+                </div>
+              </Col>
+            </Row>
+          )}
         </>
       )
     );
