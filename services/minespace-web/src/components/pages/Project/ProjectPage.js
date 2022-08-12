@@ -19,6 +19,8 @@ import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
+import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
+import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -37,9 +39,14 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
-const tabs = ["overview", "irt-entry", "toc", "application", "documents"];
+const tabs = ["overview", "irt-entry", "toc", "major-mine-application", "documents"];
 
 export class ProjectPage extends Component {
+  constructor(props) {
+    super(props);
+    this.irtTabRef = React.createRef();
+  }
+
   state = {
     isLoaded: false,
     activeTab: tabs[0],
@@ -78,8 +85,9 @@ export class ProjectPage extends Component {
     this.setState({ activeTab });
     if (activeTab === "overview") {
       const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
-      this.props.history.push(url);
-    } else if (activeTab === "irt-entry") {
+      return this.props.history.push(url);
+    }
+    if (activeTab === "irt-entry") {
       const url =
         irtStatus === "APV"
           ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
@@ -88,19 +96,17 @@ export class ProjectPage extends Component {
             )
           : `/projects/${this.props.match.params?.projectGuid}/information-requirements-table/entry`;
       const urlState = irtStatus === "APV" ? { state: { current: 2 } } : {};
-      this.props.history.push({ pathname: url, ...urlState });
-    } else if (activeTab === "new") {
-      const url = router.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-        this.props.match.params?.projectGuid
-      );
-      this.props.history.push(url);
-    } else if (activeTab === "mma-entry") {
-      const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
-      this.props.history.push(url);
-    } else if (activeTab === "documents") {
-      const url = `/projects/${this.props.match.params?.projectGuid}/documents`;
-      this.props.history.push({ pathname: url });
+      return this.props.history.push({ pathname: url, ...urlState });
     }
+    if (activeTab === "major-mine-application") {
+      const url = `/projects/${this.props.match.params?.projectGuid}/major-mine-application/entry`;
+      return this.props.history.push(url);
+    }
+    if (activeTab === "documents") {
+      const url = `/projects/${this.props.match.params?.projectGuid}/documents`;
+      return this.props.history.push({ pathname: url });
+    }
+    return null;
   };
 
   navigateFromProjectStagesTable = (source, status) => {
@@ -114,37 +120,33 @@ export class ProjectPage extends Component {
           state: { current: 2 },
         });
       }
-      const irtTab = document.querySelector('[id*="irt-entry"]');
+      const irtTab = this.irtTabRef.current;
       if (!irtTab) {
         return null;
       }
       return irtTab.click();
     }
     if (source === "MMA") {
-      const mmaTab = document.querySelector('[id*="major-mine-application"]');
-      if (!mmaTab) {
-        return null;
+      if (MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(status)) {
+        return this.props.history.push({
+          pathname: router.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
+            this.props.project.project_guid,
+            this.props.project.major_mine_application?.major_mine_application_guid
+          ),
+          state: {
+            current: 2,
+            applicationSubmitted: MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(status),
+          },
+        });
       }
-      return mmaTab.click();
+      if (["DFT", "CHR"].includes(status)) {
+        return this.props.history.push({
+          pathname: router.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(this.props.project.project_guid),
+          state: { current: 1 },
+        });
+      }
     }
     return null;
-  };
-
-  navigateFromMMAButton = (status) => {
-    if (status === "APV") {
-      return this.props.history.push({
-        pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-          this.props.project.project_guid,
-          this.props.project.major_mine_application?.major_mine_application_guid
-        ),
-        state: { current: 2 },
-      });
-    }
-    const mmaTab = document.querySelector('[id*="application"]');
-    if (!mmaTab) {
-      return null;
-    }
-    return mmaTab.click();
   };
 
   render() {
@@ -154,6 +156,19 @@ export class ProjectPage extends Component {
     const irtStatus = this.props.project.information_requirements_table?.status_code;
     const mmaStatus = this.props.project.major_mine_application?.status_code;
     const mrcReviewRequired = this.props.project?.mrc_review_required;
+    let majorMineApplicationTabContent = (
+      <MajorMineApplicationEntryTab mma={this.props.project?.major_mine_application} />
+    );
+    // Major Mine Application tab content varies based on status code
+    if (MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(mmaStatus)) {
+      majorMineApplicationTabContent = (
+        <MajorMineApplicationReviewSubmit
+          project={this.props.project}
+          applicationSubmitted
+          tabbedView
+        />
+      );
+    }
 
     return (
       (this.state.isLoaded && (
@@ -175,13 +190,13 @@ export class ProjectPage extends Component {
             <Col span={24}>
               <Tabs
                 defaultActiveKey={tabs[0]}
-                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus, mmaStatus)}
+                onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab navigateForward={this.navigateFromProjectStagesTable} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="IRT" key="irt-entry">
+                <Tabs.TabPane tab="IRT" key="irt-entry" ref={this.irtTabRef}>
                   <InformationRequirementsTableEntryTab
                     irt={this.props.project?.information_requirements_table}
                     mrcReviewRequired={mrcReviewRequired}
@@ -189,9 +204,7 @@ export class ProjectPage extends Component {
                 </Tabs.TabPane>
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Application" key="major-mine-application">
-                    <MajorMineApplicationEntryTab
-                      mma={this.props.project?.major_mine_application}
-                    />
+                    {majorMineApplicationTabContent}
                   </Tabs.TabPane>
                 )}
                 {!IN_PROD() && (
