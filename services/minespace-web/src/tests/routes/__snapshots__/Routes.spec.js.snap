@@ -90,6 +90,30 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
+    path="/projects/:projectGuid/major-mine-application/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/projects/:projectGuid/major-mine-application/:mmaGuid/review"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
     path="/mines/:mineGuid/project-description/new/:tab"
   />
   <Route
@@ -151,42 +175,6 @@ exports[`PrivateRoutes  renders properly 1`] = `
       }
     }
     path="/projects/:projectGuid/information-requirements-table/:irtGuid/success"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authenticationGuard)",
-        "type": [Function],
-      }
-    }
-    path="/projects/:projectGuid/major-mine-application/new"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authenticationGuard)",
-        "type": [Function],
-      }
-    }
-    path="/projects/:projectGuid/major-mine-application/:majorMineApplicationGuid"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authenticationGuard)",
-        "type": [Function],
-      }
-    }
-    path="/projects/:projectGuid/major-mine-application/:mmaGuid/review"
   />
   <Route
     component={
