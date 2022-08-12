@@ -21,6 +21,7 @@ exports[`DocumentsPage renders properly 1`] = `
           Object {
             "dataIndex": "upload_date",
             "render": [Function],
+            "sorter": [Function],
             "title": "Upload Date",
           },
         ]
@@ -61,7 +62,6 @@ exports[`DocumentsPage renders properly 1`] = `
         ]
       }
       handleDeleteDocument={[Function]}
-      uploadDateIndex="upload_date"
     />
   </Col>
 </Row>

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
-import { formatDate, truncateFilename, dateSorter } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -88,9 +88,9 @@ export const DocumentTable = (props) => {
       },
       sorter: (a, b) => (a.document_name > b.document_name ? -1 : 1),
     };
-    uploadDateColumn.sorter = dateSorter(props.uploadDateIndex);
-    columns.push(uploadDateColumn);
-  } else if (props.documentColumns?.length > 0) {
+  }
+
+  if (props.documentColumns?.length > 0) {
     columns.push(...props.documentColumns);
   } else {
     columns.push(categoryColumn);

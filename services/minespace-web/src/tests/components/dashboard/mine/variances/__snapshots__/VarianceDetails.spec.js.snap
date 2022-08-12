@@ -29,9 +29,22 @@ exports[`VarianceDetails renders properly 1`] = `
     </DescriptionsItem>
   </Descriptions>
   <DocumentTable
-    categoryDataIndex="variance_document_category_code"
     deletePayload={Object {}}
-    documentColumns={Array []}
+    documentColumns={
+      Array [
+        Object {
+          "dataIndex": "variance_document_category_code",
+          "render": [Function],
+          "title": "Category",
+        },
+        Object {
+          "dataIndex": "created_at",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Upload Date",
+        },
+      ]
+    }
     documentParent="variance"
     documents={
       Array [
@@ -45,7 +58,6 @@ exports[`VarianceDetails renders properly 1`] = `
       ]
     }
     handleDeleteDocument={[Function]}
-    uploadDateIndex="created_at"
   />
   <Descriptions
     size="small"

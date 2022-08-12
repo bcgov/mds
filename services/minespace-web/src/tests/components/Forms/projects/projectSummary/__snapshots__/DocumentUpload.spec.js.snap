@@ -34,14 +34,25 @@ exports[`DocumentUpload renders properly 1`] = `
       </Col>
     </Row>
     <DocumentTable
-      categoryDataIndex="project_summary_document_type_code"
       deletePayload={Object {}}
-      documentCategoryOptionsHash={Object {}}
-      documentColumns={Array []}
+      documentColumns={
+        Array [
+          Object {
+            "dataIndex": "project_summary_document_type_code",
+            "render": [Function],
+            "title": "Category",
+          },
+          Object {
+            "dataIndex": "upload_date",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Upload Date",
+          },
+        ]
+      }
       documentParent="project summary"
       documents={Array []}
       handleDeleteDocument={[Function]}
-      uploadDateIndex="upload_date"
     />
     <Field
       acceptedFileTypesMap={

@@ -22,7 +22,6 @@ export const DocumentsPage = (props) => {
           documents={props.documents}
           documentParent={props.title}
           documentColumns={documentColumns}
-          uploadDateIndex="upload_date"
         />
       </Col>
     </Row>

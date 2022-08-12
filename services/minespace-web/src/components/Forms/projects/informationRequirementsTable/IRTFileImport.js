@@ -22,7 +22,7 @@ import customPropTypes from "@/customPropTypes";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 import {
   categoryColumn,
-  uploadDateColumn,
+  uploadDateTimeColumn,
   importedByColumn,
 } from "@/components/common/DocumentColumns";
 
@@ -68,9 +68,12 @@ export class IRTFileImport extends Component {
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     const documentColumns = [
-      categoryColumn("information_requirements_table_document_type_code"),
-      uploadDateColumn("upload_date"),
-      importedByColumn(),
+      categoryColumn(
+        "information_requirements_table_document_type_code",
+        this.props.informationRequirementsTableDocumentTypesHash
+      ),
+      uploadDateTimeColumn("upload_date"),
+      importedByColumn("create_user"),
     ];
     return (
       <>
@@ -102,13 +105,8 @@ export class IRTFileImport extends Component {
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
               <DocumentTable
                 documents={this.props.project?.information_requirements_table?.documents}
-                documentCategoryOptionsHash={
-                  this.props.informationRequirementsTableDocumentTypesHash
-                }
                 documentParent="Information Requirements Table"
                 documentColumns={documentColumns}
-                categoryDataIndex="information_requirements_table_document_type_code"
-                uploadDateIndex="upload_date"
               />
               <br />
               {this.props.project?.information_requirements_table?.status_code === "REC" && (
