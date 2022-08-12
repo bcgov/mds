@@ -99,7 +99,7 @@ export class ProjectOverviewTab extends Component {
         statusHash: this.props.informationRequirementsTableStatusCodesHash,
         required: this.props.project.mrc_review_required,
         navigateForward: () =>
-          this.props.navigateForward("IRT", this.props.informationRequirementsTable.status_code),
+          this.props.navigateForward("IRT", this.props.informationRequirementsTable?.status_code),
       },
     ];
     const documentColumns = [
@@ -118,7 +118,8 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.majorMinesApplication,
         statusHash: this.props.majorMinesApplicationStatusCodesHash,
         required: true,
-        navigateForward: () => this.props.navigateForward("MMA"),
+        navigateForward: () =>
+          this.props.navigateForward("MMA", this.props.majorMinesApplication?.status_code),
       });
     }
 
