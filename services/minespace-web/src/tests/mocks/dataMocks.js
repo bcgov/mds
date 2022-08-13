@@ -1147,6 +1147,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
       comment: "Comments in Proponent Information 2",
     },
   ],
+  documents: [],
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {

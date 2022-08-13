@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentsTab renders properly 1`] = `
+<Row
+  gutter={16}
+>
+  <Col
+    span={24}
+  >
+    <Title
+      level={2}
+    >
+      All Project Documents
+    </Title>
+  </Col>
+  <Col
+    span={24}
+  >
+    <Tabs
+      activeKey="project-description"
+      className="vertical-tabs"
+      defaultActiveKey="project-description"
+      onChange={[Function]}
+      tabPosition="left"
+    >
+      <TabPane
+        className="vertical-tabs--tabpane"
+        key="project-description"
+        tab="Project Description"
+      >
+        <Row>
+          <Col
+            span={24}
+          >
+            <div
+              id="project-description"
+            >
+              <withRouter(DocumentsPage)
+                title="Project Description"
+              />
+            </div>
+            <div
+              id="information-requirements-table"
+            >
+              <withRouter(DocumentsPage)
+                title="Information Requirements Table"
+              />
+            </div>
+            <div
+              id="major-mine-application"
+            >
+              <withRouter(DocumentsPage)
+                title="Major Mine Application"
+              />
+            </div>
+          </Col>
+        </Row>
+      </TabPane>
+      <TabPane
+        className="vertical-tabs--tabpane"
+        key="information-requirements-table"
+        tab="Information Requirements Table"
+      >
+        <Row>
+          <Col
+            span={24}
+          >
+            <div
+              id="project-description"
+            >
+              <withRouter(DocumentsPage)
+                title="Project Description"
+              />
+            </div>
+            <div
+              id="information-requirements-table"
+            >
+              <withRouter(DocumentsPage)
+                title="Information Requirements Table"
+              />
+            </div>
+            <div
+              id="major-mine-application"
+            >
+              <withRouter(DocumentsPage)
+                title="Major Mine Application"
+              />
+            </div>
+          </Col>
+        </Row>
+      </TabPane>
+      <TabPane
+        className="vertical-tabs--tabpane"
+        key="major-mine-application"
+        tab="Major Mine Application"
+      >
+        <Row>
+          <Col
+            span={24}
+          >
+            <div
+              id="project-description"
+            >
+              <withRouter(DocumentsPage)
+                title="Project Description"
+              />
+            </div>
+            <div
+              id="information-requirements-table"
+            >
+              <withRouter(DocumentsPage)
+                title="Information Requirements Table"
+              />
+            </div>
+            <div
+              id="major-mine-application"
+            >
+              <withRouter(DocumentsPage)
+                title="Major Mine Application"
+              />
+            </div>
+          </Col>
+        </Row>
+      </TabPane>
+    </Tabs>
+  </Col>
+</Row>
+`;

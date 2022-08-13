@@ -3,6 +3,7 @@ export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
+  filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
   environment: "development",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
