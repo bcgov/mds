@@ -76,45 +76,74 @@ export class ProjectOverviewTab extends Component {
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
     );
-    const projectStages = [
+
+    const requiredProjectStages = [
       {
-        title: "Project description",
-        key: project_summary_id,
-        status: status_code,
-        payload: this.props.project.project_summary,
-        statusHash: this.props.projectSummaryStatusCodesHash,
-        link: (
-          <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
-            <Button className="full-mobile margin-small" type="secondary">
-              View
-            </Button>
-          </Link>
-        ),
-      },
-      {
-        title: "Final IRT",
-        key: this.props.project.information_requirements_table?.irt_id || 0,
-        status: this.props.project.information_requirements_table?.status_code,
-        payload: this.props.project.information_requirements_table,
-        statusHash: this.props.informationRequirementsTableStatusCodesHash,
-        link: (
-          <Link
-            to={routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              project_guid,
-              this.props.project.information_requirements_table.irt_guid
-            )}
-          >
-            <Button
-              className="full-mobile margin-small"
-              type="secondary"
-              disabled={!hasInformationRequirementsTable}
-            >
-              View
-            </Button>
-          </Link>
-        ),
+        title: "REQUIRED STAGES",
+        key: "req-stages-id",
+        status: "STATUS",
+        isTitle: true,
       },
     ];
+
+    let optionalProjectStages = [
+      {
+        title: "OPTIONAL STAGES",
+        key: "opt-stages-id",
+        status: "STATUS",
+        isOptional: true,
+        isTitle: true,
+      },
+    ];
+
+    requiredProjectStages.push({
+      title: "Project description",
+      key: project_summary_id,
+      status: status_code,
+      payload: this.props.project.project_summary,
+      statusHash: this.props.projectSummaryStatusCodesHash,
+      link: (
+        <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
+          <Button className="full-mobile margin-small" type="secondary">
+            View
+          </Button>
+        </Link>
+      ),
+    });
+
+    const irt = {
+      title: "Final IRT",
+      key: this.props.project.information_requirements_table?.irt_id || 0,
+      status: this.props.project.information_requirements_table?.status_code,
+      payload: this.props.project.information_requirements_table,
+      statusHash: this.props.informationRequirementsTableStatusCodesHash,
+      link: (
+        <Link
+          to={routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+            project_guid,
+            this.props.project.information_requirements_table.irt_guid
+          )}
+        >
+          <Button
+            className="full-mobile margin-small"
+            type="secondary"
+            disabled={!hasInformationRequirementsTable}
+          >
+            View
+          </Button>
+        </Link>
+      ),
+    };
+
+    if (this.props.project.mrc_review_required) {
+      requiredProjectStages.push(irt);
+    } else {
+      optionalProjectStages.push({ ...irt, isOptional: true });
+    }
+
+    if (optionalProjectStages.length === 1) {
+      optionalProjectStages = [];
+    }
 
     return (
       <Row gutter={[0, 16]}>
@@ -162,7 +191,9 @@ export class ProjectOverviewTab extends Component {
             </Col>
           </Row>
           <Typography.Title level={4}>Project Stages</Typography.Title>
-          <ProjectStagesTable projectStages={projectStages} />
+          <ProjectStagesTable
+            projectStages={[...requiredProjectStages, ...optionalProjectStages]}
+          />
           <br />
           <Typography.Title level={4}>Project Documents</Typography.Title>
           <DocumentTable
