@@ -4,6 +4,7 @@ import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
+import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
@@ -15,6 +16,10 @@ const propTypes = {
 };
 
 export const VarianceDetails = (props) => {
+  const documentColumns = [
+    categoryColumn("variance_document_category_code", props.documentCategoryOptionsHash),
+    uploadDateColumn("created_at"),
+  ];
   const getActiveStatus = () => {
     if (props.variance.expiry_date) {
       if (Date.parse(props.variance.expiry_date) < new Date()) {
@@ -57,10 +62,8 @@ export const VarianceDetails = (props) => {
       </Descriptions>
       <DocumentTable
         documents={props.variance.documents}
-        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
         documentParent="variance"
-        categoryDataIndex="variance_document_category_code"
-        uploadDateIndex="created_at"
+        documentColumns={documentColumns}
       />
       <Descriptions size="small">
         <Descriptions.Item label="Created By" size="small">

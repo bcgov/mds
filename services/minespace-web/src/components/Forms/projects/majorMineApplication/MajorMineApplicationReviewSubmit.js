@@ -11,6 +11,7 @@ import {
 } from "@common/actionCreators/projectActionCreator";
 import Callout from "@/components/common/Callout";
 import DocumentTable from "@/components/common/DocumentTable";
+import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -56,6 +57,7 @@ export const MajorMineApplicationReviewSubmit = ({
   const supportDocuments = project.major_mine_application?.documents?.filter(
     (d) => d.major_mine_application_document_type_code === "SPR"
   );
+  const documentColumns = [uploadDateColumn("upload_date")];
 
   return (
     <>
@@ -100,30 +102,24 @@ export const MajorMineApplicationReviewSubmit = ({
           <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
             documents={primaryDocuments}
-            documentCategoryOptionsHash={{}}
+            documentColumns={documentColumns}
             documentParent="Major Mine Application"
-            categoryDataIndex="major_mine_application_document_type_code"
-            uploadDateIndex="upload_date"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
             documents={spatialDocuments}
-            documentCategoryOptionsHash={{}}
+            documentColumns={documentColumns}
             documentParent="Major Mine Application"
-            categoryDataIndex="major_mine_application_document_type_code"
-            uploadDateIndex="upload_date"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
             documents={supportDocuments}
-            documentCategoryOptionsHash={{}}
             documentParent="Major Mine Application"
-            categoryDataIndex="major_mine_application_document_type_code"
-            uploadDateIndex="upload_date"
+            documentColumns={documentColumns}
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
           />

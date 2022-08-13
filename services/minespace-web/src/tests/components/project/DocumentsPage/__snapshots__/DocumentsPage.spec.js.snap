@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentsPage renders properly 1`] = `
+<Row>
+  <Col
+    span={24}
+  >
+    <Title
+      level={3}
+    >
+      mockTitle
+    </Title>
+  </Col>
+  <Col
+    span={24}
+  >
+    <DocumentTable
+      deletePayload={Object {}}
+      documentColumns={
+        Array [
+          Object {
+            "dataIndex": "upload_date",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Upload Date",
+          },
+        ]
+      }
+      documentParent="mockTitle"
+      documents={
+        Array [
+          Object {
+            "create_user": "mining@bceid.com",
+            "document_manager_guid": "0ed74348-c1ed-41d5-a6ad-3e1f42cf0b41",
+            "document_name": "primary-document.pdf",
+            "major_mine_application_document_type_code": "PRM",
+            "major_mine_application_id": 1,
+            "mine_document_guid": "479af6fe-823d-4014-bed1-5133a007c71f",
+            "mine_guid": "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+            "upload_date": "2022-07-14T04:32:58.659745+00:00",
+          },
+          Object {
+            "create_user": "mining@bceid.com",
+            "document_manager_guid": "5a115b22-2d11-4c6d-b378-fe451389cec0",
+            "document_name": "spatial-document.pdf",
+            "major_mine_application_document_type_code": "SPT",
+            "major_mine_application_id": 1,
+            "mine_document_guid": "f9b93bd0-e3ac-4bee-918b-3bc82224f2a9",
+            "mine_guid": "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+            "upload_date": "2022-07-14T04:32:58.662545+00:00",
+          },
+          Object {
+            "create_user": "mining@bceid.com",
+            "document_manager_guid": "47465789-2dde-4185-9f3a-92a468ab732f",
+            "document_name": "supporting-document.pdf",
+            "major_mine_application_document_type_code": "SPR",
+            "major_mine_application_id": 1,
+            "mine_document_guid": "05463375-aa6d-4461-b7b7-bf4b2001b610",
+            "mine_guid": "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+            "upload_date": "2022-07-14T04:32:58.663901+00:00",
+          },
+        ]
+      }
+      handleDeleteDocument={[Function]}
+    />
+  </Col>
+</Row>
+`;
