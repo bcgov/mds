@@ -53,6 +53,10 @@ html {
   color: $violet;
 }
 
+.grey {
+  color: $medium-grey;
+}
+
 .red {
   color: $alert-red;
 }
@@ -60,6 +64,7 @@ html {
 .right {
   text-align: right;
 }
+
 .float-right {
   float: right;
 }
@@ -152,6 +157,7 @@ html {
 
 .flex {
   @include flex;
+
   &-mobile {
     @include mobile {
       @include flex;
@@ -215,9 +221,11 @@ html {
 
   &--nested {
     padding: 0 $default-padding-lg;
+
     @include large {
       padding: 0 $default-padding-sm;
     }
+
     @include mobile {
       padding: 0;
     }
@@ -283,15 +291,19 @@ html {
   &--left {
     padding-left: $default-padding-sm;
   }
+
   &--right {
     padding-right: $default-padding-sm;
   }
+
   &--top {
     padding-top: $default-padding-sm;
   }
+
   &--bottom {
     padding-bottom: $default-padding-sm;
   }
+
   padding: $default-padding-sm;
 }
 
@@ -299,20 +311,25 @@ html {
   &--top {
     padding-top: $default-padding-md;
   }
+
   &--bottom {
     padding-bottom: $default-padding-md;
   }
+
   &--right {
     padding-right: $default-padding-md;
   }
+
   &--left {
     padding-left: $default-padding-md;
   }
+
   padding: $default-padding-md;
 
   &--sides {
     padding-left: $default-padding-md;
     padding-right: $default-padding-md;
+
     @include tablet {
       padding: 0;
     }
@@ -323,15 +340,19 @@ html {
   &--top {
     padding-top: $default-padding-lg;
   }
+
   &--bottom {
     padding-bottom: $default-padding-lg;
   }
+
   &--right {
     padding-right: $default-padding-lg;
   }
+
   &--left {
     padding-left: $default-padding-lg;
   }
+
   padding: $default-padding-lg;
 
   &--sides {
@@ -348,15 +369,19 @@ html {
   &--top {
     padding-top: $default-padding-xxl;
   }
+
   &--bottom {
     padding-bottom: $default-padding-xxl;
   }
+
   &--right {
     padding-right: $default-padding-xxl;
   }
+
   &--left {
     padding-left: $default-padding-xxl;
   }
+
   padding: $default-padding-xxl;
 }
 
@@ -370,18 +395,22 @@ html {
 
 .margin-large {
   &--left {
-    margin-left: $default-margin-lg !important;
+    margin-left: $default-margin-lg  !important;
   }
+
   &--right {
-    margin-right: $default-margin-lg !important;
+    margin-right: $default-margin-lg  !important;
   }
+
   &--top {
-    margin-top: $default-margin-lg !important;
+    margin-top: $default-margin-lg  !important;
   }
+
   &--bottom {
-    margin-bottom: $default-margin-lg !important;
+    margin-bottom: $default-margin-lg  !important;
   }
-  margin: $default-margin-lg !important;
+
+  margin: $default-margin-lg  !important;
 }
 
 .margin-xlarge {
@@ -415,18 +444,22 @@ html {
 
 .icon-lg {
   font-size: 24px !important;
+
   &--lightgrey {
     @extend .icon-lg;
     color: $light-grey;
   }
+
   &--green {
     @extend .icon-lg;
     color: $ok-green;
   }
+
   &--warning {
     @extend .icon-lg;
     color: $warning-color;
   }
+
   &--danger {
     @extend .icon-lg;
     color: $error-color;
@@ -435,10 +468,12 @@ html {
 
 .icon-xxl {
   font-size: 48px !important;
+
   &--lightgrey {
     @extend .icon-xxl;
     color: $light-grey;
   }
+
   &--violet {
     @extend .icon-xxl;
     color: $violet;
@@ -447,10 +482,12 @@ html {
 
 .icon-xxxl {
   font-size: 80px !important;
+
   &--lightgrey {
     @extend .icon-xxxl;
     color: $light-grey;
   }
+
   &--violet {
     @extend .icon-xxxl;
     color: $violet;
@@ -466,6 +503,7 @@ html {
   &-sm {
     vertical-align: -0.125em;
   }
+
   &-middle {
     vertical-align: middle;
   }
@@ -476,14 +514,17 @@ html {
   &--right {
     &--layout {
       border-right: 1px solid $layout-grey;
+
       @include tablet {
         border-right: 0;
       }
     }
   }
+
   &--left {
     &--layout {
       border-left: 1px solid $layout-grey;
+
       @include tablet {
         border-left: 0;
       }
@@ -574,6 +615,7 @@ img.lessOpacity {
   &-100 {
     margin-top: 100px !important;
   }
+
   &-125 {
     margin-top: 125px !important;
   }
