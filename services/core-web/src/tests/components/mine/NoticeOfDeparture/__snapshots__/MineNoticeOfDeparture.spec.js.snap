@@ -77,6 +77,29 @@ exports[`MineNoticeOfDeparture renders properly 1`] = `
           },
         }
       }
+      nods={
+        Array [
+          Object {
+            "create_timestamp": "2020-04-20 11:58",
+            "nod_description": "Some description",
+            "nod_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "nod_no": "NOD-X-45564456-01",
+            "nod_status": "pending_review",
+            "nod_title": "Some title",
+            "nod_type": "potentially_substaintial",
+            "permit": Object {
+              "current_permittee": "Haynes, Park and Brown",
+              "permit_guid": "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              "permit_id": 1,
+              "permit_no": "M-7594809",
+              "permit_prefix": "M",
+              "permit_status_code": "C",
+            },
+            "submission_timestamp": "2020-04-20 11:58",
+            "update_timestamp": "2020-04-20 11:58",
+          },
+        ]
+      }
       openViewNodModal={[Function]}
       updateNoticeOfDeparture={[Function]}
     />

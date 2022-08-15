@@ -216,6 +216,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(MineNoticeOfDeparture)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineProject)",
         "type": [Function],
       }

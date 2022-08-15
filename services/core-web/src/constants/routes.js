@@ -161,6 +161,13 @@ export const MINE_NOTICES_OF_DEPARTURE = {
   component: MineNoticeOfDeparture,
 };
 
+export const NOTICE_OF_DEPARTURE = {
+  route: "/mine-dashboard/:id/permits-and-approvals/notices-of-departure",
+  dynamicRoute: (id, nodGuid) =>
+    `/mine-dashboard/${id}/permits-and-approvals/notices-of-departure?nod=${nodGuid}`,
+  component: MineNoticeOfDeparture,
+};
+
 // Projects
 export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
