@@ -17,6 +17,4 @@ class ActivityMarkAsReadResource(Resource, UserMixin):
             help='List of activity guids to mark as read')
         args = parser.parse_args()
         activity_guids = args.get('activity_guids')
-        for activity_guid in activity_guids:
-            activity = ActivityNotification.find_by_guid(activity_guid)
-            ActivityNotification.update(activity)
+        ActivityNotification.mark_as_read_many(activity_guids)

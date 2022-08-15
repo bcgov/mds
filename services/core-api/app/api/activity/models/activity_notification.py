@@ -119,6 +119,11 @@ class ActivityNotification(AuditMixin, Base):
         self.save()
 
     @classmethod
+    def mark_as_read_many(cls, activity_guids):
+        cls.query.filter(ActivityNotification.notification_guid.in_(activity_guids)).update({'notification_read': True}, synchronize_session=False)
+        db.session.commit()
+
+    @classmethod
     def find_all_by_recipient(cls, user, page, per_page):
         query = cls.query.filter_by(notification_recipient=user).order_by(cls.create_timestamp.desc())
 
