@@ -42,7 +42,7 @@ export const Referral = (props) => {
         />
       </ScrollContentWrapper>
       <div className="right center-mobile">
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={referralCode}>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={referralCode} ignoreDelay>
           <AddButton
             onClick={(event) =>
               props.openAddReviewModal(event, props.handleAddReview, referralCode, categoriesToShow)
