@@ -41,7 +41,11 @@ export const Consultation = (props) => {
           categoriesToShow={categoriesToShow}
         />
         <div className="right center-mobile">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={CONSULTATION_TAB_CODE}>
+          <NOWActionWrapper
+            permission={Permission.EDIT_PERMITS}
+            tab={CONSULTATION_TAB_CODE}
+            ignoreDelay
+          >
             <AddButton
               onClick={(event) =>
                 props.openAddReviewModal(
