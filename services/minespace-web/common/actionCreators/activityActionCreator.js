@@ -5,7 +5,7 @@ import { ENVIRONMENT } from "../constants/environment";
 import { GET_ACTIVITIES } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { storeActivities } from "../actions/activityActions";
-import { ACTIVITIES } from "../constants/API";
+import { ACTIVITIES, ACTIVITIES_MARK_AS_READ } from "../constants/API";
 
 // eslint-disable-next-line import/prefer-default-export
 export const fetchActivities = (user, page = 1, per_page = 20) => (dispatch) => {
@@ -25,6 +25,24 @@ export const fetchActivities = (user, page = 1, per_page = 20) => (dispatch) => 
     .then((response) => {
       dispatch(success(GET_ACTIVITIES));
       dispatch(storeActivities(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(GET_ACTIVITIES));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const markActivitiesAsRead = (activity_guids) => (dispatch) => {
+  dispatch(showLoading());
+  const headers = {
+    ...createRequestHeader(),
+  };
+  return CustomAxios()
+    .patch(`${ENVIRONMENT.apiUrl}${ACTIVITIES_MARK_AS_READ()}`, { activity_guids }, headers)
+    .then((response) => {
+      dispatch(success(GET_ACTIVITIES));
       return response;
     })
     .catch((err) => {

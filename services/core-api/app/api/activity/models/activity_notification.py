@@ -110,6 +110,10 @@ class ActivityNotification(AuditMixin, Base):
         db.session.bulk_save_objects(notifications)
         db.session.commit()
 
+    @classmethod
+    def find_by_guid(cls, notification_guid):
+        return cls.query.filter_by(notification_guid=notification_guid).first()
+
     def update(self, notification_read=True):
         self.notification_read = notification_read
         self.save()
