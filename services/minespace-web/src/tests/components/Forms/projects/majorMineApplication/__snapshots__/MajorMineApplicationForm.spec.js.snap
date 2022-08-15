@@ -10,12 +10,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
   >
     <Row>
       <Col
-        span={16}
-        style={
-          Object {
-            "marginLeft": "15%",
-          }
-        }
+        span={24}
       >
         <Title
           level={4}
@@ -31,236 +26,236 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           </Link>
           .
         </Paragraph>
-        <Row>
-          <Col
-            span={12}
-            style={
-              Object {
-                "marginRight": "40px",
-              }
-            }
-          >
-            <Title
-              level={5}
-            >
-              Primary Contact
-            </Title>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="primary_contact"
-              name="primary_contact"
-            />
-          </Col>
-          <Col
-            span={11}
-          >
-            <Title
-              level={5}
-            >
-              Mine Name
-            </Title>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="mine_name"
-              name="mine_name"
-            />
-          </Col>
-        </Row>
-        <Title
-          level={4}
-        >
-          Application Files
-        </Title>
+      </Col>
+    </Row>
+    <Row>
+      <Col
+        span={12}
+        style={
+          Object {
+            "marginRight": "40px",
+          }
+        }
+      >
         <Title
           level={5}
         >
-          Upload primary application document
+          Primary Contact
         </Title>
-        <Paragraph>
-          Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
-        </Paragraph>
         <Field
-          acceptedFileTypesMap={
-            Object {
-              ".aih": "application/octet-stream",
-              ".ain": "application/octet-stream",
-              ".atx": "application/octet-stream",
-              ".cpg": "application/octet-stream",
-              ".dbf": "application/dbf",
-              ".doc": "application/msword",
-              ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              ".fbn": "application/octet-stream",
-              ".fbx": "application/octet-stream",
-              ".geojson": "application/vnd.geo+json",
-              ".gml": "application/gml+xml",
-              ".ixs": "application/octet-stream",
-              ".kml": "application/vnd.google-earth.kml+xml",
-              ".kmz": "application/vnd.google-earth.kmz",
-              ".mxs": "application/octet-stream",
-              ".odm": "application/vnd.oasis.opendocument.text-master",
-              ".odt": "application/vnd.oasis.opendocument.text",
-              ".oth": "application/vnd.oasis.opendocument.text-web",
-              ".ott": "application/vnd.oasis.opendocument.text-template",
-              ".pdf": "application/pdf",
-              ".prj": "application/octet-stream",
-              ".rtf": "application/rtf",
-              ".sbn": "application/octet-stream",
-              ".sbx": "application/octet-stream",
-              ".shp": "application/octet-stream",
-              ".shpz": "application/octet-stream",
-              ".shx": "application/octet-stream",
-              ".wkt": "application/octet-stream",
-              ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            }
-          }
-          allowMultiple={true}
           component={[Function]}
-          id="primary_documents"
-          label="Upload primary application document"
-          labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-          name="primary_documents"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-          projectGuid="8132462392222"
-          uploadType="primary_document"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
+          disabled={true}
+          id="primary_contact"
+          name="primary_contact"
         />
-        <br />
+      </Col>
+      <Col
+        span={11}
+      >
         <Title
           level={5}
         >
-          Upload spatial documents
+          Mine Name
         </Title>
-        <Text>
-          Please upload spatial files to support your application. You must upload at least one spatial file to support your application.
-        </Text>
         <Field
-          acceptedFileTypesMap={
-            Object {
-              ".aih": "application/octet-stream",
-              ".ain": "application/octet-stream",
-              ".atx": "application/octet-stream",
-              ".cpg": "application/octet-stream",
-              ".dbf": "application/dbf",
-              ".doc": "application/msword",
-              ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              ".fbn": "application/octet-stream",
-              ".fbx": "application/octet-stream",
-              ".geojson": "application/vnd.geo+json",
-              ".gml": "application/gml+xml",
-              ".ixs": "application/octet-stream",
-              ".kml": "application/vnd.google-earth.kml+xml",
-              ".kmz": "application/vnd.google-earth.kmz",
-              ".mxs": "application/octet-stream",
-              ".odm": "application/vnd.oasis.opendocument.text-master",
-              ".odt": "application/vnd.oasis.opendocument.text",
-              ".oth": "application/vnd.oasis.opendocument.text-web",
-              ".ott": "application/vnd.oasis.opendocument.text-template",
-              ".pdf": "application/pdf",
-              ".prj": "application/octet-stream",
-              ".rtf": "application/rtf",
-              ".sbn": "application/octet-stream",
-              ".sbx": "application/octet-stream",
-              ".shp": "application/octet-stream",
-              ".shpz": "application/octet-stream",
-              ".shx": "application/octet-stream",
-              ".wkt": "application/octet-stream",
-              ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            }
-          }
-          allowMultiple={true}
           component={[Function]}
-          id="spatial_documents"
-          label="Upload spatial components"
-          labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-          name="spatial_documents"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-          projectGuid="8132462392222"
-          uploadType="spatial_document"
-        />
-        <br />
-        <Title
-          level={5}
-        >
-          Upload supporting application documents
-        </Title>
-        <Text>
-          Upload additional files that support your primary document submission. You can include many types of files such as:
-        </Text>
-        <ul>
-          <li>
-            Application
-          </li>
-          <li>
-            Mapping
-          </li>
-          <li>
-            Procedures and Plans
-          </li>
-          <li>
-            Site Studies and Assessments
-          </li>
-          <li>
-            Plans and Transfers
-          </li>
-          <li>
-            Site Studies and Assessments
-          </li>
-        </ul>
-        <Field
-          acceptedFileTypesMap={
-            Object {
-              ".aih": "application/octet-stream",
-              ".ain": "application/octet-stream",
-              ".atx": "application/octet-stream",
-              ".cpg": "application/octet-stream",
-              ".dbf": "application/dbf",
-              ".doc": "application/msword",
-              ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              ".fbn": "application/octet-stream",
-              ".fbx": "application/octet-stream",
-              ".geojson": "application/vnd.geo+json",
-              ".gml": "application/gml+xml",
-              ".ixs": "application/octet-stream",
-              ".kml": "application/vnd.google-earth.kml+xml",
-              ".kmz": "application/vnd.google-earth.kmz",
-              ".mxs": "application/octet-stream",
-              ".odm": "application/vnd.oasis.opendocument.text-master",
-              ".odt": "application/vnd.oasis.opendocument.text",
-              ".oth": "application/vnd.oasis.opendocument.text-web",
-              ".ott": "application/vnd.oasis.opendocument.text-template",
-              ".pdf": "application/pdf",
-              ".prj": "application/octet-stream",
-              ".rtf": "application/rtf",
-              ".sbn": "application/octet-stream",
-              ".sbx": "application/octet-stream",
-              ".shp": "application/octet-stream",
-              ".shpz": "application/octet-stream",
-              ".shx": "application/octet-stream",
-              ".wkt": "application/octet-stream",
-              ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            }
-          }
-          allowMultiple={true}
-          component={[Function]}
-          id="supporting_documents"
-          label="Upload supporting application documents"
-          labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-          name="supporting_documents"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-          projectGuid="8132462392222"
-          uploadType="supporting_document"
+          disabled={true}
+          id="mine_name"
+          name="mine_name"
         />
       </Col>
     </Row>
+    <Title
+      level={4}
+    >
+      Application Files
+    </Title>
+    <Title
+      level={5}
+    >
+      Upload primary application document
+    </Title>
+    <Paragraph>
+      Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
+    </Paragraph>
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".aih": "application/octet-stream",
+          ".ain": "application/octet-stream",
+          ".atx": "application/octet-stream",
+          ".cpg": "application/octet-stream",
+          ".dbf": "application/dbf",
+          ".doc": "application/msword",
+          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".fbn": "application/octet-stream",
+          ".fbx": "application/octet-stream",
+          ".geojson": "application/vnd.geo+json",
+          ".gml": "application/gml+xml",
+          ".ixs": "application/octet-stream",
+          ".kml": "application/vnd.google-earth.kml+xml",
+          ".kmz": "application/vnd.google-earth.kmz",
+          ".mxs": "application/octet-stream",
+          ".odm": "application/vnd.oasis.opendocument.text-master",
+          ".odt": "application/vnd.oasis.opendocument.text",
+          ".oth": "application/vnd.oasis.opendocument.text-web",
+          ".ott": "application/vnd.oasis.opendocument.text-template",
+          ".pdf": "application/pdf",
+          ".prj": "application/octet-stream",
+          ".rtf": "application/rtf",
+          ".sbn": "application/octet-stream",
+          ".sbx": "application/octet-stream",
+          ".shp": "application/octet-stream",
+          ".shpz": "application/octet-stream",
+          ".shx": "application/octet-stream",
+          ".wkt": "application/octet-stream",
+          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      }
+      allowMultiple={true}
+      component={[Function]}
+      id="primary_documents"
+      label="Upload primary application document"
+      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
+      name="primary_documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      projectGuid="8132462392222"
+      uploadType="primary_document"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
+    <br />
+    <Title
+      level={5}
+    >
+      Upload spatial documents
+    </Title>
+    <Text>
+      Please upload spatial files to support your application. You must upload at least one spatial file to support your application.
+    </Text>
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".aih": "application/octet-stream",
+          ".ain": "application/octet-stream",
+          ".atx": "application/octet-stream",
+          ".cpg": "application/octet-stream",
+          ".dbf": "application/dbf",
+          ".doc": "application/msword",
+          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".fbn": "application/octet-stream",
+          ".fbx": "application/octet-stream",
+          ".geojson": "application/vnd.geo+json",
+          ".gml": "application/gml+xml",
+          ".ixs": "application/octet-stream",
+          ".kml": "application/vnd.google-earth.kml+xml",
+          ".kmz": "application/vnd.google-earth.kmz",
+          ".mxs": "application/octet-stream",
+          ".odm": "application/vnd.oasis.opendocument.text-master",
+          ".odt": "application/vnd.oasis.opendocument.text",
+          ".oth": "application/vnd.oasis.opendocument.text-web",
+          ".ott": "application/vnd.oasis.opendocument.text-template",
+          ".pdf": "application/pdf",
+          ".prj": "application/octet-stream",
+          ".rtf": "application/rtf",
+          ".sbn": "application/octet-stream",
+          ".sbx": "application/octet-stream",
+          ".shp": "application/octet-stream",
+          ".shpz": "application/octet-stream",
+          ".shx": "application/octet-stream",
+          ".wkt": "application/octet-stream",
+          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      }
+      allowMultiple={true}
+      component={[Function]}
+      id="spatial_documents"
+      label="Upload spatial components"
+      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
+      name="spatial_documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      projectGuid="8132462392222"
+      uploadType="spatial_document"
+    />
+    <br />
+    <Title
+      level={5}
+    >
+      Upload supporting application documents
+    </Title>
+    <Text>
+      Upload additional files that support your primary document submission. You can include many types of files such as:
+    </Text>
+    <ul>
+      <li>
+        Application
+      </li>
+      <li>
+        Mapping
+      </li>
+      <li>
+        Procedures and Plans
+      </li>
+      <li>
+        Site Studies and Assessments
+      </li>
+      <li>
+        Plans and Transfers
+      </li>
+      <li>
+        Site Studies and Assessments
+      </li>
+    </ul>
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".aih": "application/octet-stream",
+          ".ain": "application/octet-stream",
+          ".atx": "application/octet-stream",
+          ".cpg": "application/octet-stream",
+          ".dbf": "application/dbf",
+          ".doc": "application/msword",
+          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".fbn": "application/octet-stream",
+          ".fbx": "application/octet-stream",
+          ".geojson": "application/vnd.geo+json",
+          ".gml": "application/gml+xml",
+          ".ixs": "application/octet-stream",
+          ".kml": "application/vnd.google-earth.kml+xml",
+          ".kmz": "application/vnd.google-earth.kmz",
+          ".mxs": "application/octet-stream",
+          ".odm": "application/vnd.oasis.opendocument.text-master",
+          ".odt": "application/vnd.oasis.opendocument.text",
+          ".oth": "application/vnd.oasis.opendocument.text-web",
+          ".ott": "application/vnd.oasis.opendocument.text-template",
+          ".pdf": "application/pdf",
+          ".prj": "application/octet-stream",
+          ".rtf": "application/rtf",
+          ".sbn": "application/octet-stream",
+          ".sbx": "application/octet-stream",
+          ".shp": "application/octet-stream",
+          ".shpz": "application/octet-stream",
+          ".shx": "application/octet-stream",
+          ".wkt": "application/octet-stream",
+          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      }
+      allowMultiple={true}
+      component={[Function]}
+      id="supporting_documents"
+      label="Upload supporting application documents"
+      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
+      name="supporting_documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      projectGuid="8132462392222"
+      uploadType="supporting_document"
+    />
   </Form>
 </div>
 `;
