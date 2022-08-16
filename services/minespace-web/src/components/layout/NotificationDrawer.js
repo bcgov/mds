@@ -3,43 +3,93 @@ import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { fetchActivities } from "@common/actionCreators/activityActionCreator";
+import {
+  fetchActivities,
+  markActivitiesAsRead,
+} from "@common/actionCreators/activityActionCreator";
 import PropTypes from "prop-types";
 import { formatDateTime } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { Link } from "react-router-dom";
+import { storeActivities } from "@common/actions/activityActions";
+import { MINE_DASHBOARD } from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
+  markActivitiesAsRead: PropTypes.func.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
   activities: PropTypes.objectOf(PropTypes.string).isRequired,
-};
-
-const outsideClickHandler = (ref, setOpen, open) => {
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (open) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setOpen(!open);
-        }
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, open]);
+  storeActivities: PropTypes.func.isRequired,
 };
 
 const NotificationDrawer = (props) => {
   const [open, setOpen] = useState(false);
 
+  const handleMarkAsRead = async () => {
+    const readActivities = props.activities.map((activity) => {
+      return {
+        ...activity,
+        notification_read: true,
+      };
+    });
+    await props.storeActivities({
+      records: readActivities,
+      totalActivities: readActivities.length,
+    });
+  };
+
+  const outsideClickHandler = (ref) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (open) {
+          if (ref.current && !ref.current.contains(event.target)) {
+            handleMarkAsRead();
+            setOpen(!open);
+          }
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, open]);
+  };
+
   const handleCollapse = () => {
+    const activitiesToMarkAsRead = props.activities.reduce((acc, activity) => {
+      if (activity.notification_read === false) {
+        acc.push(activity.notification_guid);
+      }
+      return acc;
+    }, []);
+
+    if (activitiesToMarkAsRead.length > 0) {
+      props.markActivitiesAsRead(activitiesToMarkAsRead);
+    }
+    if (open) {
+      handleMarkAsRead();
+    }
     setOpen(!open);
   };
 
+  const navigationHandler = (notification) => {
+    switch (notification.notification_document.metadata.entity) {
+      case "NoticeOfDeparture":
+        return MINE_DASHBOARD.dynamicRoute(
+          notification.notification_document.metadata.mine.mine_guid,
+          "nods",
+          {
+            nod: notification.notification_document.metadata.entity_guid,
+          }
+        );
+      default:
+        return null;
+    }
+  };
+
   const modalRef = useRef(null);
-  outsideClickHandler(modalRef, setOpen, open);
+  outsideClickHandler(modalRef);
 
   useEffect(() => {
     if (props.userInfo?.preferred_username) {
@@ -50,9 +100,9 @@ const NotificationDrawer = (props) => {
   return (
     <div ref={modalRef}>
       <Button
-        className="notification-button"
         onClick={handleCollapse}
         type="text"
+        className={`notification-button ${open ? "notification-button-open" : ""}`}
         icon={
           <Badge
             className="notification-badge"
@@ -70,13 +120,17 @@ const NotificationDrawer = (props) => {
         >
           <Tabs.TabPane
             className="notification-tab-pane"
-            tab={<Typography.Title level={5}>Mine Activity</Typography.Title>}
+            tab={
+              <Typography.Title level={5} className="notification-tab-header">
+                Mine Activity
+              </Typography.Title>
+            }
             key="1"
           >
             {(props.activities || [])?.map((activity) => (
-              <div>
-                <div className="notification-list-item">
-                  <div className={!activity.notification_read ? "notification-dot" : ""} />
+              <div className="notification-list-item">
+                <div className={!activity.notification_read ? "notification-dot" : ""} />
+                <Link to={navigationHandler(activity)} onClick={handleCollapse}>
                   <Typography.Text>{activity.notification_document?.message}</Typography.Text>
                   <Row className="items-center margin-small" gutter={6}>
                     <Col>
@@ -101,7 +155,7 @@ const NotificationDrawer = (props) => {
                       </Typography.Text>
                     </Col>
                   </Row>
-                </div>
+                </Link>
               </div>
             ))}
           </Tabs.TabPane>
@@ -120,6 +174,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchActivities,
+      markActivitiesAsRead,
+      storeActivities,
     },
     dispatch
   );
