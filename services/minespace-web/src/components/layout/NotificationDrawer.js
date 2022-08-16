@@ -11,8 +11,8 @@ import PropTypes from "prop-types";
 import { formatDateTime } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { Link } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
+import { useHistory } from "react-router-dom";
 import { MINE_DASHBOARD } from "@/constants/routes";
 
 const propTypes = {
@@ -25,9 +25,23 @@ const propTypes = {
 
 const NotificationDrawer = (props) => {
   const [open, setOpen] = useState(false);
+  const history = useHistory();
 
-  const handleMarkAsRead = async () => {
+  const handleMarkAsRead = async (guid = null) => {
+    if (guid) {
+      await props.markActivitiesAsRead([guid]);
+    }
+
     const readActivities = props.activities.map((activity) => {
+      if (guid) {
+        if (activity.notification_guid === guid) {
+          return {
+            ...activity,
+            notification_read: true,
+          };
+        }
+        return activity;
+      }
       return {
         ...activity,
         notification_read: true,
@@ -44,7 +58,6 @@ const NotificationDrawer = (props) => {
       const handleClickOutside = (event) => {
         if (open) {
           if (ref.current && !ref.current.contains(event.target)) {
-            handleMarkAsRead();
             setOpen(!open);
           }
         }
@@ -57,6 +70,10 @@ const NotificationDrawer = (props) => {
   };
 
   const handleCollapse = () => {
+    setOpen(!open);
+  };
+
+  const handleMarkAllAsRead = async () => {
     const activitiesToMarkAsRead = props.activities.reduce((acc, activity) => {
       if (activity.notification_read === false) {
         acc.push(activity.notification_guid);
@@ -67,10 +84,8 @@ const NotificationDrawer = (props) => {
     if (activitiesToMarkAsRead.length > 0) {
       props.markActivitiesAsRead(activitiesToMarkAsRead);
     }
-    if (open) {
-      handleMarkAsRead();
-    }
-    setOpen(!open);
+    await handleMarkAsRead();
+    handleCollapse();
   };
 
   const navigationHandler = (notification) => {
@@ -86,6 +101,13 @@ const NotificationDrawer = (props) => {
       default:
         return null;
     }
+  };
+
+  const activityClickHandler = async (notification) => {
+    await handleMarkAsRead(notification.notification_guid);
+    handleCollapse();
+    const route = await navigationHandler(notification);
+    history.push(route);
   };
 
   const modalRef = useRef(null);
@@ -130,7 +152,8 @@ const NotificationDrawer = (props) => {
             {(props.activities || [])?.map((activity) => (
               <div className="notification-list-item">
                 <div className={!activity.notification_read ? "notification-dot" : ""} />
-                <Link to={navigationHandler(activity)} onClick={handleCollapse}>
+                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                <div tabIndex="0" role="button" onClick={() => activityClickHandler(activity)}>
                   <Typography.Text>{activity.notification_document?.message}</Typography.Text>
                   <Row className="items-center margin-small" gutter={6}>
                     <Col>
@@ -155,11 +178,21 @@ const NotificationDrawer = (props) => {
                       </Typography.Text>
                     </Col>
                   </Row>
-                </Link>
+                </div>
               </div>
             ))}
           </Tabs.TabPane>
         </Tabs>
+        <div className="notification-button-all-container">
+          <Button
+            className="notification-button-all"
+            size="small"
+            type="text"
+            onClick={() => handleMarkAllAsRead()}
+          >
+            Mark all as read
+          </Button>
+        </div>
       </div>
     </div>
   );

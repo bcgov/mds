@@ -113,6 +113,7 @@
   max-height: calc(70vh - 100px);
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 50px;
 }
 
 .notification-container {
@@ -185,4 +186,20 @@
   align-items: center;
   justify-content: center;
   transform: translate(60%, -60%);
+}
+
+.notification-button-all, .notification-button-all:active {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  border: 1px solid #BBBBBB;
+  margin-bottom: 10px;
+}
+
+.notification-button-all:hover {
+  background-color: #f0f6fd;
 }
