@@ -22,9 +22,15 @@ export class ProjectStagesTable extends Component {
     {
       title: "",
       dataIndex: "project_stage",
-      render: (text) => (
+      render: (text, record) => (
         <div title="Project Stage">
-          <b>{text}</b>
+          {!(record.stage.isOptional || record.stage.isTitle) ? (
+            <b>{text}</b>
+          ) : (
+            <div className={record.stage.isOptional && !record.stage.isTitle ? "grey" : ""}>
+              {text}
+            </div>
+          )}
         </div>
       ),
     },
@@ -32,10 +38,21 @@ export class ProjectStagesTable extends Component {
       title: "",
       dataIndex: "stage_status",
       render: (text, record) => {
-        const label = record.key ? `[${record.stage_status_hash[text]}]` || "N/A" : "[Not Started]";
+        let label = "";
+        if (text === "STATUS") {
+          label = text;
+        } else {
+          label = record.key ? `[${record.stage_status_hash[text]}]` || "N/A" : "[Not Started]";
+        }
         return (
           <div title="Stage Status">
-            <b className="uppercase">{label}</b>
+            {!(record.stage.isOptional || record.stage.isTitle) ? (
+              <b className="uppercase">{label}</b>
+            ) : (
+              <div className={record.stage.isOptional && !record.stage.isTitle ? "grey" : ""}>
+                {label}
+              </div>
+            )}
           </div>
         );
       },
@@ -44,7 +61,7 @@ export class ProjectStagesTable extends Component {
       title: "",
       dataIndex: "stage",
       align: "right",
-      render: (text, record) => record.link,
+      render: (text, record) => record?.link,
     },
   ];
 

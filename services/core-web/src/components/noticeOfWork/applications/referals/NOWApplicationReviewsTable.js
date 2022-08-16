@@ -4,10 +4,10 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
@@ -106,7 +106,7 @@ const columns = (type) => {
       render: (text, record) => {
         const correctTab = record.type === "ADV" ? "PUB" : record.type;
         return (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={correctTab}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={correctTab} ignoreDelay>
             <div>
               <Button
                 ghost

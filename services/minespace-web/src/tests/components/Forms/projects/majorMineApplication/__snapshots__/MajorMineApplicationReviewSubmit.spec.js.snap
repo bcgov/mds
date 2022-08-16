@@ -2,31 +2,17 @@
 
 exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
 <Fragment>
-  <Callout
-    message={
-      <div>
-        <h4
-          style={
-            Object {
-              "fontWeight": "bold",
-            }
-          }
-        >
-          Confirm your Submission
-        </h4>
-        <p>
-          Please confirm the contents of your submission below. When you are happy with your review click the submit button to begin the review process.
-        </p>
-      </div>
-    }
-    severity="warning"
-  />
-  <br />
-  <Title
-    level={4}
-  >
-    Basic Information
-  </Title>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title
+        level={3}
+      >
+        Basic Information
+      </Title>
+    </Col>
+  </Row>
   <Row>
     <Col
       md={12}
@@ -35,6 +21,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       <Descriptions
         colon={false}
         layout="vertical"
+        style={Object {}}
       >
         <DescriptionsItem
           className="vertical-description"
@@ -60,6 +47,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       <Descriptions
         colon={false}
         layout="vertical"
+        style={Object {}}
       >
         <DescriptionsItem
           className="vertical-description"
@@ -81,6 +69,12 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
     <Col
       span={24}
     >
+      <br />
+      <Title
+        level={3}
+      >
+        Application Files
+      </Title>
       <Title
         level={4}
       >

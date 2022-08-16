@@ -6,6 +6,22 @@ import { NoticeOfDeparture } from "@/components/dashboard/mine/noticeOfDeparture
 const dispatchProps = {};
 const reducerProps = {};
 
+function mockFunction() {
+  const original = require.requireActual("react-router-dom");
+  return {
+    ...original,
+    useLocation: jest.fn().mockReturnValue({
+      pathname: "/mine/notice-of-departure",
+      search: "",
+      hash: "",
+      state: null,
+      key: "5nvxpbdafa",
+    }),
+  };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
+
 const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
@@ -18,6 +34,7 @@ const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   reducerProps.permits = MOCK.PERMITS.permits;
   reducerProps.nods = MOCK.NOTICES_OF_DEPARTURE.records;
+  reducerProps.isAuthenticated = true;
 };
 
 beforeEach(() => {
