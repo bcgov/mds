@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { compose } from "redux";
-import { bindActionCreators } from "redux";
+import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
@@ -8,10 +7,10 @@ import { hot } from "react-hot-loader";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@common/actionCreators/staticContentActionCreator";
-import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
-import Routes from "./routes/Routes";
+import * as PropTypes from "prop-types";
+import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
@@ -19,12 +18,24 @@ import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
+import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
 import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }} />);
+
+const propTypes = {
+  loadBulkStaticContent: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  staticContentLoadingIsComplete: PropTypes.bool,
+};
+
+const defaultProps = {
+  isAuthenticated: false,
+  staticContentLoadingIsComplete: false,
+};
 
 class App extends Component {
   state = { isIE: true, isMobile: true };
@@ -62,7 +73,13 @@ class App extends Component {
         <Fragment>
           <MatomoLinkTracing />
           <Layout>
-            <Header xs={xs} lg={lg} xl={xl} xxl={xxl} />
+            <Header
+              xs={xs}
+              lg={lg}
+              xl={xl}
+              xxl={xxl}
+              isAuthenticated={this.props.isAuthenticated}
+            />
             <Layout>
               <Layout.Content>
                 {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
@@ -101,6 +118,9 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
+
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
 export default compose(
   hot(module),
