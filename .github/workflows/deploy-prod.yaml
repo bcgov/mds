@@ -27,7 +27,6 @@ jobs:
       matrix:
         include:
           - config: nris
-          - config: nris-etl
           - config: fider
     steps:
       - name: Check out the repo
