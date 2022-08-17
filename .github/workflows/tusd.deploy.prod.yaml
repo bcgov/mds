@@ -1,0 +1,54 @@
+name: TUSD - Promote To PROD
+
+on:
+  workflow_dispatch:
+
+env:
+  ORIG_TAG: test
+  PROMOTE_TAG: prod
+
+jobs:
+  promote-image:
+    name: promote-image
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+
+      - name: Promote tusd from test to prod
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} tag \
+          ${{ secrets.NS_TOOLS }}/tusd:${{ env.ORIG_TAG }} \
+          ${{ secrets.NS_TOOLS }}/tusd:${{ env.PROMOTE_TAG }}
+
+  trigger-gitops:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: promote-image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Git Ops Push
+        run: ./gitops/commit.sh tusd test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh tusd prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+
+  run-if-failed:
+    runs-on: ubuntu-20.04
+    needs: [trigger-gitops]
+    if: always() && (needs.trigger-gitops.result == 'failure')
+    steps:
+      - name: Notification
+        run: ./gitops/watch-deployment.sh tusd prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
