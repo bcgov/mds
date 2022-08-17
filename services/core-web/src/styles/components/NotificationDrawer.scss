@@ -62,7 +62,7 @@
 }
 
 .notification-drawer-open {
-  padding: 24px 40px;
+  padding: 24px 16px;
   border: 1px solid #BBBBBB;
   height: 70vh;
   width: 564px;
@@ -72,6 +72,7 @@
   max-height: calc(70vh - 100px);
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 100px;
 }
 
 .notification-container {
@@ -128,7 +129,6 @@
   color: #606060;
   font-size: 14px;
   font-weight: 400;
-
 }
 
 .notification-tab-pane {
@@ -150,4 +150,29 @@
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 10px;
+}
+
+.notification-button-all-container {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: fit-content;
+  border-radius: 10px;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #FFFFFF;
+}
+
+.notification-button-all, .notification-button-all:active {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+.notification-button-all:hover {
+  background-color: #f0f6fd;
 }

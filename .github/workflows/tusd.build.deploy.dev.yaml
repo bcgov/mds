@@ -1,21 +1,22 @@
-name: FILESYSTEM-PROVIDER - Build & Deploy To DEV
+name: TUSD - Build & Deploy To DEV
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
     paths:
-      - services/filesystem-provider/**
-      - .github/workflows/filesystem-provider.build.deploy.dev.yaml
+      - services/tusd/**
+      - .github/workflows/tusd.build.deploy.dev.yaml
 
 env:
   INITIAL_TAG: latest
   TAG: dev
-  NAME: filesystem-provider
-  CONTEXT: services/filesystem-provider/
+  NAME: tusd
+  CONTEXT: services/tusd/
 
 jobs:
-  build-filesystem-provider:
+  build-tusd:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -35,12 +36,12 @@ jobs:
   trigger-gitops:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
-    needs: build-filesystem-provider
+    needs: [build-tusd]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Git Ops Push
-        run: ./gitops/commit.sh filesystem-provider dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh tusd dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
@@ -48,7 +49,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh filesystem-provider ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+        run: ./gitops/watch-deployment.sh tusd dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
@@ -56,4 +57,4 @@ jobs:
     if: always() && (needs.trigger-gitops.result == 'failure')
     steps:
       - name: Notification
-        run: ./gitops/watch-deployment.sh filesystem-provider dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
+        run: ./gitops/watch-deployment.sh tusd dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1

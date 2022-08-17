@@ -24,6 +24,7 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import { MINE_DASHBOARD } from "@/constants/routes";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -162,10 +163,15 @@ export const NoticeOfDeparture = (props) => {
     const nod = new URLSearchParams(location.search).get("nod");
     if (nod) {
       (async () => {
+        window.history.replaceState(
+          {},
+          document.title,
+          `${MINE_DASHBOARD.dynamicRoute(mine.mine_guid, "nods")}`
+        );
         await openViewNoticeOfDepartureModal({ nod_guid: nod });
       })();
     }
-  }, [location.search]);
+  }, [location]);
 
   return (
     <Row>
