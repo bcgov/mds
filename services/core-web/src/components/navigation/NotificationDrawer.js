@@ -142,6 +142,16 @@ const NotificationDrawer = (props) => {
             tab={<Typography className="notification-tab-header">Mine Activity</Typography>}
             key="1"
           >
+            <div className="notification-button-all-container">
+              <Button
+                className="notification-button-all"
+                size="small"
+                type="text"
+                onClick={() => handleMarkAllAsRead()}
+              >
+                Mark all as read
+              </Button>
+            </div>
             {(props.activities || [])?.map((activity) => (
               <div className="notification-list-item">
                 <div className={!activity.notification_read ? "notification-dot" : ""} />
@@ -176,16 +186,6 @@ const NotificationDrawer = (props) => {
             ))}
           </Tabs.TabPane>
         </Tabs>
-        <div className="notification-button-all-container">
-          <Button
-            className="notification-button-all"
-            size="small"
-            type="text"
-            onClick={() => handleMarkAllAsRead()}
-          >
-            Mark all as read
-          </Button>
-        </div>
       </div>
     </div>
   );
