@@ -44,29 +44,35 @@
   background-color: #5E46A1;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; top: 52px; transform: translateX(10000px);}
+  1% { transform: translateX(0);}
+  100% { opacity: 1; top: 62px; transform: translateX(0); }
+}
+
 .notification-drawer {
-  height: 0;
-  width: 0;
+  width: 564px;
   position: absolute;
-  overflow: hidden;
   right: 0;
-  top: 62px;
+  top: 52px;
+  overflow: hidden;
   background-color: #FFF;
-  transition: all 0.2s ease-in-out;
-  z-index: 1000;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  height: 70vh;
+  padding: 0 16px 24px 16px;
+  border: 1px solid #BBBBBB;
+  transform: translateX(10000px);
+}
+
+.notification-drawer-open {
+  animation: fadeIn 0.3s both ease-in-out;
 }
 
 .notification-drawer a {
   text-decoration: none;
 }
 
-.notification-drawer-open {
-  padding: 24px 16px;
-  border: 1px solid #BBBBBB;
-  height: 70vh;
-  width: 564px;
-}
 
 .notification-drawer .ant-tabs-content-holder {
   max-height: calc(70vh - 100px);
@@ -153,26 +159,29 @@
 }
 
 .notification-button-all-container {
-  position: absolute;
-  bottom: 0;
-  height: 50px;
-  width: fit-content;
-  border-radius: 10px;
-  right: 50%;
-  transform: translateX(50%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   background-color: #FFFFFF;
 }
 
 .notification-button-all, .notification-button-all:active {
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  transform: translateX(50%);
+  border: none;
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
+  transition: 0.3s ease-in-out;
+}
+
+.notification-button-all > span {
+  font-size: 14px;
 }
 
 .notification-button-all:hover {
-  background-color: #f0f6fd;
+  background-color: #FFFFFF;
+  border: none;
+}
+
+.notification-button-all:hover > span {
+  text-decoration: underline;
 }
