@@ -26,13 +26,8 @@ jobs:
     strategy:
       matrix:
         include:
-<<<<<<< HEAD
-          - config: redis
-          - config: metabase
-          - config: metabase-postgres
-=======
           - config: nris
->>>>>>> develop
+          - config: nris-etl
           - config: fider
     steps:
       - name: Check out the repo
