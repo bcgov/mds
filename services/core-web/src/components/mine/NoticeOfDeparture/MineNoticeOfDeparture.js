@@ -15,6 +15,7 @@ import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { useLocation } from "react-router-dom";
+import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 
 const propTypes = {
@@ -69,6 +70,11 @@ export const MineNoticeOfDeparture = (props) => {
     const nod = new URLSearchParams(location.search).get("nod");
     if (nod) {
       (async () => {
+        window.history.replaceState(
+          {},
+          document.title,
+          `${MINE_NOTICES_OF_DEPARTURE.dynamicRoute(mineGuid, "")}`
+        );
         await openNoticeOfDepartureModal(null, { nod_guid: nod });
       })();
     }

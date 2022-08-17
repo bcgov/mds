@@ -16,8 +16,6 @@ jobs:
         include:
           - name: metabase
           - name: metabase-postgres
-          - name: docman
-          - name: nris
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -52,7 +50,6 @@ jobs:
         include:
           - name: metabase
           - name: metabase-postgres
-          - name: nris
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
