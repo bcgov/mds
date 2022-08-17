@@ -40,7 +40,6 @@ class MajorMineApplicationResource(Resource, UserMixin):
 
         return mine_major_application
 
-
     @api.doc(
         description='Update a major mine application.',
         params={
@@ -62,10 +61,13 @@ class MajorMineApplicationResource(Resource, UserMixin):
         if project is None:
             raise NotFound('Project is not found')
 
+        new_status_code = data.get('status_code')
         major_mine_application.update(project,
-                                      data.get('status_code'),
-                                      data.get('documents',[]))
+                                      new_status_code,
+                                      data.get('documents', []))
 
         major_mine_application.save()
+        if new_status_code == "REC":
+            major_mine_application.send_mma_submit_email()
 
         return major_mine_application

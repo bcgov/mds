@@ -1091,6 +1091,12 @@ export const PROJECTS = {
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       proponent_project_id: "Test-ID",
       project_summary: {},
+      information_requirements_table: {
+        irt_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+      },
+      major_mine_application: {
+        major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+      },
       contacts: [],
     },
   ],
@@ -1101,7 +1107,12 @@ export const PROJECT = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   proponent_project_id: "Test-ID",
   project_summary: {},
-  information_requirements_table: {},
+  information_requirements_table: {
+    irt_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+  },
+  major_mine_application: {
+    major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+  },
   contacts: [],
 };
 
@@ -1119,6 +1130,7 @@ export const PROJECT_SUMMARIES = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE = {
+  irt_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
   project_guid: "66d7e698-8820-456f-ac32-14917f3ebe88",
   status_code: "REC",
   requirements: [
@@ -1135,6 +1147,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
       comment: "Comments in Proponent Information 2",
     },
   ],
+  documents: [],
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {

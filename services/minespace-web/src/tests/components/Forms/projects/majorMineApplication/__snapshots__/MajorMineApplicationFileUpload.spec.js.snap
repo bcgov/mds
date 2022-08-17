@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MajorMineApplicationFileUpload renders properly 1`] = `
+<Field
+  acceptedFileTypesMap={
+    Object {
+      "key": "value",
+    }
+  }
+  allowMultiple={true}
+  allowRevert={true}
+  component={[Function]}
+  id="primary_document"
+  label="Upload primary application document"
+  labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
+  maxFiles={null}
+  name="primary_document"
+  onFileLoad={[MockFunction]}
+  onRemoveFile={[MockFunction]}
+  uploadUrl="/projects/1234-asdc-0987/major-mine-application/documents"
+/>
+`;

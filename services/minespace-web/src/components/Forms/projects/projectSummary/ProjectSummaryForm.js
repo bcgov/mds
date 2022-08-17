@@ -30,9 +30,9 @@ import AuthorizationsInvolved from "@/components/Forms/projects/projectSummary/A
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       tab: PropTypes.string,
-    },
+    }),
   }).isRequired,
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,

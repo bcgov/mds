@@ -1,10 +1,12 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Row, Col, Typography, Button, Empty } from "antd";
+import { Row, Col, Typography, Button, Empty, Steps } from "antd";
 import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  mma: CustomPropTypes.majorMinesApplication.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectGuid: PropTypes.string,
@@ -16,13 +18,24 @@ const propTypes = {
 };
 
 export const MajorMineApplicationEntryTab = (props) => {
-  const projectGuid = props.match.params?.projectGuid;
+  const mmaExists = Boolean(props.mma?.major_mine_application_guid);
+  const projectGuid = props.mma?.project_guid || props.match.params?.projectGuid;
+  const mmaGuid = props.mma?.major_mine_application_guid;
 
   const renderContent = () => {
     const buttonContent = {
-      label: "Start",
-      link: () =>
-        props.history.push(`${routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(projectGuid)}`),
+      label: mmaExists ? "Resume" : "Start",
+      link: mmaExists
+        ? () =>
+            props.history.push({
+              pathname: `${routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
+                projectGuid,
+                mmaGuid
+              )}`,
+              state: { current: 2 },
+            })
+        : () =>
+            props.history.push(`${routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(projectGuid)}`),
     };
 
     const entryGraphic = (
@@ -32,6 +45,35 @@ export const MajorMineApplicationEntryTab = (props) => {
         description={false}
       />
     );
+
+    if (mmaExists) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          {entryGraphic}
+          <br />
+          <Typography.Paragraph>
+            <Typography.Title level={5}>Resume Major Mine Application</Typography.Title>
+            <div style={{ width: "60%", margin: "0 auto" }}>
+              <Steps size="small" current={2}>
+                <Steps.Step title="Get Started" />
+                <Steps.Step title="Create Submission" />
+                <Steps.Step title="Review & Submit" />
+              </Steps>
+            </div>
+            <br />
+            The next stage in your project is the submission of a Major Mine Application.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            Resume where you left off by clicking the button below.
+          </Typography.Paragraph>
+          <div>
+            <Button type="primary" onClick={buttonContent.link}>
+              {buttonContent.label}
+            </Button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div style={{ textAlign: "center" }}>

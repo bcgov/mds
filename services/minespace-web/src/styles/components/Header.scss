@@ -1,3 +1,11 @@
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+}
+
 .header-logo {
   float: left;
   margin-right: 32px;
@@ -9,17 +17,10 @@
 }
 
 .header-title {
-  color: $white;
   font-size: $heading-4-size;
   font-weight: bold;
-  & a {
-    color: $white !important;
-    text-decoration: none !important;
-  }
-}
-
-.header-menu {
-  float: right;
+  color: $white  !important;
+  text-decoration: none !important;
 }
 
 #dropdown-menu-mobile-trigger {
@@ -30,9 +31,10 @@
 }
 
 .login-btn {
-  color: $white !important;
-  border-color: $white !important;
+  color: $white  !important;
+  border-color: $white  !important;
   background-color: transparent !important;
+
   & a {
     text-decoration: none;
   }
@@ -41,12 +43,14 @@
 .header-link {
   color: $white;
   padding: 29px $padding-md 29px $padding-md;
+
   &:hover,
   &.active {
     color: $white;
-    background-color: $primary-5 !important;
+    background-color: $primary-5  !important;
     text-decoration: none;
   }
+
   text-decoration: none;
   font-weight: bold;
 }
@@ -74,7 +78,128 @@
   background-color: transparent !important;
   box-shadow: none !important;
   font-weight: bold !important;
+
   & a {
     text-decoration: none;
   }
+}
+
+.notification-icon {
+  color: $white;
+  font-size: 24px;
+}
+
+.notification-drawer {
+  height: 0;
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  top: 80px;
+  background-color: $white;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.notification-drawer-open {
+  padding: 24px 0;
+  border: 1px solid #BBBBBB;
+  height: 70vh;
+  width: 564px;
+}
+
+.notification-drawer .ant-tabs-content-holder {
+  max-height: calc(70vh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 50px;
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-drawer .ant-tabs .ant-tabs-tab {
+  padding-left: 24px;
+  padding-right: 20px;
+  padding-bottom: 0;
+  background-color: $white  !important;
+}
+
+.notification-drawer .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: unset !important;
+}
+
+
+.notification-separator {
+  height: 4px;
+  width: 4px;
+  background-color: #BBBBBB;
+  border-radius: 50%;
+}
+
+.notification-list-item {
+  padding: 12px 24px 12px 32px;
+  width: 100%;
+  position: relative;
+}
+
+.notification-list-item:hover {
+  background-color: $table-highlight  !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notification-drawer a {
+  text-decoration: none;
+}
+
+.notification-dot {
+  position: absolute;
+  left: 12px;
+  top: 24px;
+  transform: translateY(-50%);
+  background-color: $gov-blue;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.notification-info-text {
+  color: $font-input-color;
+  font-size: 14px;
+  font-weight: 400;
+
+}
+
+.notification-tab-pane {
+  background-color: $white;
+}
+
+.notification-badge .ant-badge-count {
+  box-shadow: unset !important;
+  height: 15px;
+  min-width: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(60%, -60%);
+}
+
+.notification-button-all, .notification-button-all:active {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  border: 1px solid #BBBBBB;
+  margin-bottom: 10px;
+}
+
+.notification-button-all:hover {
+  background-color: #f0f6fd;
 }

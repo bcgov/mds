@@ -78,5 +78,5 @@ export const project = shape({
   project_summary: projectSummary,
   information_requirements_table: informationRequirementsTable,
   major_mine_application: majorMinesApplication,
-  contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
+  contacts: PropTypes.arrayOf(projectContact),
 });

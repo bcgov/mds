@@ -31,9 +31,10 @@ const propTypes = {
   fetchPartyRelationships: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       id: PropTypes.string,
-    },
+      activeTab: PropTypes.string,
+    }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
@@ -51,36 +52,21 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
-    this.props.fetchPartyRelationships({
-      mine_guid: id,
-      relationships: "party",
-      include_permit_contacts: "true",
-    });
-    if (activeTab) {
-      this.setState({ activeTab });
-    } else {
-      this.handleTabChange(initialTab);
-    }
-    this.props
-      .fetchMineRecordById(id)
-      .then(({ data }) => {
-        this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
-      })
-      .then(() => {
-        this.setState({ isLoaded: true });
-      })
-      .catch(() => {
-        this.setState({ mineNotFound: true });
-      });
+
+    this.loadMine(id, activeTab);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activeTab } = nextProps.match.params;
+    const { activeTab, id } = nextProps.match.params;
     if (activeTab !== this.state.activeTab) {
       this.setState({ activeTab });
     }
     if (!nextProps.staticContentLoadingIsComplete) {
       this.loadStaticContent();
+    }
+
+    if (nextProps.match.params.id !== this.props.match.params.id) {
+      this.loadMine(id, activeTab);
     }
   }
 
@@ -98,6 +84,33 @@ export class MineDashboard extends Component {
       activeTab
     );
   };
+
+  loadMine(id, activeTab) {
+    this.setState({ isLoaded: false });
+
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      relationships: "party",
+      include_permit_contacts: "true",
+    });
+    if (activeTab) {
+      this.setState({ activeTab });
+    } else {
+      this.handleTabChange(initialTab);
+    }
+
+    this.props
+      .fetchMineRecordById(id)
+      .then(({ data }) => {
+        this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
+      })
+      .then(() => {
+        this.setState({ isLoaded: true });
+      })
+      .catch(() => {
+        this.setState({ mineNotFound: true });
+      });
+  }
 
   render() {
     const { id } = this.props.match.params;

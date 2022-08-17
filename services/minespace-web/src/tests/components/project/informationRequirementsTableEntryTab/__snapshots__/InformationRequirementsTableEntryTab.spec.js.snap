@@ -21,7 +21,6 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
         }
       }
     >
-      <br />
       <Empty
         description={false}
         image={<Simple />}
@@ -36,8 +35,32 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
         <Title
           level={5}
         >
-          Start new IRT submission
+          Resume IRT submission
         </Title>
+        <div
+          style={
+            Object {
+              "margin": "0 auto",
+              "width": "60%",
+            }
+          }
+        >
+          <Steps
+            current={2}
+            size="small"
+          >
+            <Step
+              title="Download Template"
+            />
+            <Step
+              title="Import File"
+            />
+            <Step
+              title="Review & Submit"
+            />
+          </Steps>
+        </div>
+        <br />
         Based on your project description, an Information Requirements Table is
          
         <b>
@@ -46,7 +69,7 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
         .
       </Paragraph>
       <Paragraph>
-        Start the final IRT submission process by clicking the button below.
+        Resume where you left off by clicking the button below.
       </Paragraph>
       <div>
         <Button
@@ -57,7 +80,7 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
           onClick={[Function]}
           type="primary"
         >
-          Start
+          Resume
         </Button>
       </div>
     </div>

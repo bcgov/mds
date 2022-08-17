@@ -94,6 +94,12 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       projectStages={
         Array [
           Object {
+            "isTitle": true,
+            "key": "req-stages-id",
+            "status": "STATUS",
+            "title": "REQUIRED STAGES",
+          },
+          Object {
             "key": undefined,
             "link": <ForwardRef
               to="/pre-applications/undefined/project-description/undefined"
@@ -127,6 +133,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "title": "Project description",
           },
           Object {
+            "isOptional": true,
+            "isTitle": true,
+            "key": "opt-stages-id",
+            "status": "STATUS",
+            "title": "OPTIONAL STAGES",
+          },
+          Object {
+            "isOptional": true,
             "key": 0,
             "link": <ForwardRef
               to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"

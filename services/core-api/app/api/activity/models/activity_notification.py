@@ -42,6 +42,14 @@ def validate_document(document):
                 'entity_guid': {
                     'type': 'string',
                     'regex': '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                },
+                'permit': {
+                    'type': 'dict',
+                    'schema': {
+                        'permit_no': {
+                            'type': 'string'
+                        }
+                    }
                 }
             }
         }
@@ -94,16 +102,26 @@ class ActivityNotification(AuditMixin, Base):
 
         for user in users:
             validated_notification_document = validate_document(document)
+            formatted_user_name = user.replace('idir\\', '')
 
-            notification = cls(notification_recipient=user, notification_document=validated_notification_document)
+            notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document)
             notifications.append(notification)
 
         db.session.bulk_save_objects(notifications)
         db.session.commit()
 
+    @classmethod
+    def find_by_guid(cls, notification_guid):
+        return cls.query.filter_by(notification_guid=notification_guid).first()
+
     def update(self, notification_read=True):
         self.notification_read = notification_read
         self.save()
+
+    @classmethod
+    def mark_as_read_many(cls, activity_guids):
+        cls.query.filter(ActivityNotification.notification_guid.in_(activity_guids)).update({'notification_read': True}, synchronize_session=False)
+        db.session.commit()
 
     @classmethod
     def find_all_by_recipient(cls, user, page, per_page):

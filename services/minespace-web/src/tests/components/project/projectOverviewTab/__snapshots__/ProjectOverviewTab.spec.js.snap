@@ -105,7 +105,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
               "status_code": "OPN",
               "submission_date": "2021-11-19",
             },
-            "required": null,
+            "required": true,
             "status": "OPN",
             "statusHash": Object {
               "CLD": "Closed",
@@ -118,6 +118,8 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "key": undefined,
             "navigateForward": [Function],
             "payload": Object {
+              "documents": Array [],
+              "irt_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
               "project_guid": "66d7e698-8820-456f-ac32-14917f3ebe88",
               "requirements": Array [
                 Object {
@@ -166,15 +168,25 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       Project Documents
     </Title>
     <DocumentTable
-      categoryDataIndex="project_summary_document_type_code"
-      documentCategoryOptionsHash={
-        Object {
-          "GEN": "General",
-        }
+      deletePayload={Object {}}
+      documentColumns={
+        Array [
+          Object {
+            "dataIndex": "project_summary_document_type_code",
+            "render": [Function],
+            "title": "Category",
+          },
+          Object {
+            "dataIndex": "upload_date",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Upload Date",
+          },
+        ]
       }
       documentParent="project summary"
       documents={Array []}
-      uploadDateIndex="upload_date"
+      handleDeleteDocument={[Function]}
     />
   </Col>
   <Col

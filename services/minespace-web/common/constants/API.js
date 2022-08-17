@@ -122,7 +122,7 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
-// Projects(Project & Project Summaries)
+// Project & Project Summaries
 export const PROJECTS = (mineGuid) => `/projects?${queryString.stringify({ mine_guid: mineGuid })}`;
 export const PROJECT = (projectGuid) => `/projects/${projectGuid}`;
 export const PROJECT_PROJECT_SUMMARIES = (projectGuid, params = {}) =>
@@ -162,6 +162,12 @@ export const MAJOR_MINE_APPLICATION = (projectGuid, majorMineApplicationGuid) =>
   `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}`;
 export const MAJOR_MINE_APPLICATION_DOCUMENTS = (projectGuid) =>
   `/projects/${projectGuid}/major-mine-application/documents`;
+export const MAJOR_MINE_APPLICATION_DOCUMENT = (
+  projectGuid,
+  majorMineApplicationGuid,
+  mineDocumentGuid
+) =>
+  `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}/documents/${mineDocumentGuid}`;
 
 // Users
 export const CORE_USER = "/users/core";
@@ -279,3 +285,7 @@ export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comme
 // OrgBook
 export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
 export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;
+
+// Activities
+export const ACTIVITIES = () => "/activities";
+export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";

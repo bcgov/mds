@@ -73,8 +73,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         def generate_list_element(element):
             return f'<li>{element}</li>'
 
-        # TODO: Update this link(add additional path traversal) when Steps(1-3) are hooked up for MMA on the frontend
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}'
+        # TODO: Update this link with Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}/review?step=3 and update frontend to support that
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/entry'
 
         subject = f'Major Mine Application Submitted for {self.project.project_title}'
         body = '<p>The following documents have been submitted with this Major Mine Application:</p>'
@@ -113,7 +113,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     mine_document_guid=mine_doc.mine_document_guid,
                     major_mine_application_id=major_mine_application.major_mine_application_id,
                     major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type'))
+                        'major_mine_application_document_type_code'))
                 major_mine_application_doc.mine_document = mine_doc
                 major_mine_application.documents.append(major_mine_application_doc)
 
@@ -133,8 +133,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             mine_document_guid = doc.get('mine_document_guid')
             if mine_document_guid:
                 major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
-                major_mine_application_doc.major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type')
+                major_mine_application_doc.major_mine_application_document_type_code = doc.get(
+                    'major_mine_application_document_type_code')
             else:
                 mine_doc = MineDocument(
                     mine_guid=project.mine_guid,
@@ -144,7 +144,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     mine_document_guid=mine_doc.mine_document_guid,
                     major_mine_application_id=self.major_mine_application_id,
                     major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type'))
+                        'major_mine_application_document_type_code'))
                 major_mine_application_doc.mine_document = mine_doc
                 self.documents.append(major_mine_application_doc)
 

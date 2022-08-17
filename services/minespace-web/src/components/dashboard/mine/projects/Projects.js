@@ -17,9 +17,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       id: PropTypes.string,
-    },
+    }),
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchProjectsByMine: PropTypes.func.isRequired,

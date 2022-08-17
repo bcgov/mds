@@ -13,6 +13,8 @@ import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelect
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
+
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
@@ -22,6 +24,7 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import { MINE_DASHBOARD } from "@/constants/routes";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -42,6 +45,7 @@ const defaultProps = {};
 export const NoticeOfDeparture = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
+  const location = useLocation();
 
   const handleFetchPermits = async () => {
     await props.fetchPermits(mine.mine_guid);
@@ -154,6 +158,20 @@ export const NoticeOfDeparture = (props) => {
       content: modalConfig.EDIT_NOTICE_OF_DEPARTURE,
     });
   };
+
+  useEffect(() => {
+    const nod = new URLSearchParams(location.search).get("nod");
+    if (nod) {
+      (async () => {
+        window.history.replaceState(
+          {},
+          document.title,
+          `${MINE_DASHBOARD.dynamicRoute(mine.mine_guid, "nods")}`
+        );
+        await openViewNoticeOfDepartureModal({ nod_guid: nod });
+      })();
+    }
+  }, [location]);
 
   return (
     <Row>

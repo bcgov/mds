@@ -8,16 +8,19 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   location: PropTypes.shape({
-    state: {
+    state: PropTypes.shape({
       project: CustomPropTypes.project,
-    },
+    }),
   }).isRequired,
 };
 
 export const MajorMineApplicationSuccessPage = (props) => {
   const renderContent = () => {
     const project = props.location.state?.project || {};
-    const { project_guid } = project;
+    const {
+      project_guid,
+      major_mine_application: { major_mine_application_guid },
+    } = project;
 
     return (
       <div style={{ textAlign: "center" }}>
@@ -50,19 +53,19 @@ export const MajorMineApplicationSuccessPage = (props) => {
                 <Button type="primary">Back to Project Overview</Button>
               </Link>
             </p>
-            {/* <p> // UPDATE THIS LINK when review page and API entries are complete
+            <p>
               <Link
                 to={{
-                  pathname: routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                  pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                     project_guid,
-                    irt_guid
+                    major_mine_application_guid
                   ),
                   state: { current: 2 },
                 }}
               >
                 <Button>View Application</Button>
               </Link>
-            </p> */}
+            </p>
           </div>
         </>
       </div>

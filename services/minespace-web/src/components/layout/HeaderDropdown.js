@@ -18,13 +18,14 @@ import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
  * MediaQueries are used to switch the menu to a hamburger menu when viewed on mobile.
  */
 const propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  isAuthenticated: PropTypes.bool,
   userInfo: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
   userInfo: {},
+  isAuthenticated: false,
 };
 
 export class HeaderDropdown extends Component {
@@ -67,7 +68,7 @@ export class HeaderDropdown extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <div>
-          <Button className="login-btn" style={{ "margin-right": "10px" }}>
+          <Button className="login-btn" style={{ marginRight: "10px" }}>
             <a
               href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
             >
@@ -128,7 +129,7 @@ export class HeaderDropdown extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  isAuthenticated: isAuthenticated(state),
+  isAuthenticated: isAuthenticated(state) || false,
 });
 
 HeaderDropdown.propTypes = propTypes;

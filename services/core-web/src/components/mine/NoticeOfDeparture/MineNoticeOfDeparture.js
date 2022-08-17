@@ -14,6 +14,8 @@ import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelect
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import { useLocation } from "react-router-dom";
+import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 
 const propTypes = {
@@ -30,6 +32,7 @@ export const MineNoticeOfDeparture = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mines, mineGuid, nods } = props;
   const mine = mines[mineGuid];
+  const location = useLocation();
 
   const handleFetchPermits = () => {
     props.fetchPermits(mineGuid).then(() => setIsLoaded(true));
@@ -44,7 +47,9 @@ export const MineNoticeOfDeparture = (props) => {
   }, []);
 
   const openNoticeOfDepartureModal = async (event, selectedNoticeOfDeparture) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
       selectedNoticeOfDeparture.nod_guid
     );
@@ -60,6 +65,20 @@ export const MineNoticeOfDeparture = (props) => {
       content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,
     });
   };
+
+  useEffect(() => {
+    const nod = new URLSearchParams(location.search).get("nod");
+    if (nod) {
+      (async () => {
+        window.history.replaceState(
+          {},
+          document.title,
+          `${MINE_NOTICES_OF_DEPARTURE.dynamicRoute(mineGuid, "")}`
+        );
+        await openNoticeOfDepartureModal(null, { nod_guid: nod });
+      })();
+    }
+  }, [location]);
 
   const renderNoticeOfDepartureTables = (selectedMine) => (
     <div>

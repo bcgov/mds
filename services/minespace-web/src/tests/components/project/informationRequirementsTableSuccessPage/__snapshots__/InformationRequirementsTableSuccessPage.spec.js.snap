@@ -92,7 +92,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
             <Link
               to={
                 Object {
-                  "pathname": "/projects/8132462392222/information-requirements-table/undefined/review/introduction-and-project-overview",
+                  "pathname": "/projects/8132462392222/information-requirements-table/c16afb82-144c-4138-9a36-ba5c24c43d8a/review/introduction-and-project-overview",
                   "state": Object {
                     "current": 2,
                   },

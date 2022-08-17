@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
+<Fragment>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title
+        level={3}
+      >
+        Basic Information
+      </Title>
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <Descriptions
+        colon={false}
+        layout="vertical"
+        style={Object {}}
+      >
+        <DescriptionsItem
+          className="vertical-description"
+          label="Primary Contact"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
+        >
+          <Input
+            disabled={true}
+            type="text"
+            value="N/A"
+          />
+        </DescriptionsItem>
+      </Descriptions>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <Descriptions
+        colon={false}
+        layout="vertical"
+        style={Object {}}
+      >
+        <DescriptionsItem
+          className="vertical-description"
+          label="Mine Name"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
+        >
+          <Input
+            disabled={true}
+            type="text"
+            value="N/A"
+          />
+        </DescriptionsItem>
+      </Descriptions>
+    </Col>
+    <Col
+      span={24}
+    >
+      <br />
+      <Title
+        level={3}
+      >
+        Application Files
+      </Title>
+      <Title
+        level={4}
+      >
+        Primary Document
+      </Title>
+      <DocumentTable
+        deletePayload={
+          Object {
+            "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+            "projectGuid": "8132462392222",
+          }
+        }
+        documentColumns={
+          Array [
+            Object {
+              "dataIndex": "upload_date",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Upload Date",
+            },
+          ]
+        }
+        documentParent="Major Mine Application"
+        documents={Array []}
+        handleDeleteDocument={[Function]}
+      />
+      <Title
+        level={4}
+      >
+        Spatial Components
+      </Title>
+      <DocumentTable
+        deletePayload={
+          Object {
+            "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+            "projectGuid": "8132462392222",
+          }
+        }
+        documentColumns={
+          Array [
+            Object {
+              "dataIndex": "upload_date",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Upload Date",
+            },
+          ]
+        }
+        documentParent="Major Mine Application"
+        documents={Array []}
+        handleDeleteDocument={[Function]}
+      />
+      <Title
+        level={4}
+      >
+        Supporting Documents
+      </Title>
+      <DocumentTable
+        deletePayload={
+          Object {
+            "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+            "projectGuid": "8132462392222",
+          }
+        }
+        documentColumns={
+          Array [
+            Object {
+              "dataIndex": "upload_date",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Upload Date",
+            },
+          ]
+        }
+        documentParent="Major Mine Application"
+        documents={Array []}
+        handleDeleteDocument={[Function]}
+      />
+    </Col>
+    <Col
+      span={24}
+    >
+      <Card>
+        <p>
+          <b>
+            Confirmation of Submission
+          </b>
+        </p>
+        <p>
+          <span>
+            <Checkbox
+              checked={false}
+              indeterminate={false}
+              onChange={[MockFunction]}
+            />
+              
+          </span>
+          I understand that this application and supporting files are submitted on behalf of the owner, agent or mine manager of this project.
+          <span
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            *
+          </span>
+        </p>
+      </Card>
+      <br />
+    </Col>
+  </Row>
+</Fragment>
+`;
