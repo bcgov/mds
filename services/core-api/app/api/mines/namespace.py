@@ -34,6 +34,7 @@ from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
 from app.api.mines.tailings.resources.tailings_list import MineTailingsStorageFacilityListResource
+from app.api.mines.tailings.party_appt.resources.party_appt_list import MineTailingsStorageFacilityPartyAppointmentResource
 from app.api.mines.variances.resources.variance import MineVarianceResource
 from app.api.mines.variances.resources.variance_list import MineVarianceListResource
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
@@ -66,6 +67,8 @@ api.add_resource(MineRegionResource, '/region')
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
 api.add_resource(MineTailingsStorageFacilityResource,
                  '/<string:mine_guid>/tailings/<string:mine_tailings_storage_facility_guid>')
+api.add_resource(MineTailingsStorageFacilityPartyAppointmentResource,
+                 '/<string:mine_guid>/tailings/<string:mine_tailings_storage_facility_guid>/party_appt')
 api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')

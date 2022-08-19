@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
@@ -7,7 +7,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
-
+from werkzeug.exceptions import BadRequest
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_party_appt'
@@ -189,6 +189,30 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         else:
             built_query = built_query.filter_by(mine_party_appt_type_code=mine_party_appt_type_code)
         return built_query.all()
+
+    @classmethod
+    def end_current_appointment(cls,
+                                mine_guid,
+                                mine_party_appt_type_code,
+                                new_appointment_start_date,
+                                related_guid=None,
+                                permit=None):
+        if mine_party_appt_type_code == 'EOR':
+            current_mpa = cls.find_current_appointments(
+                mine_guid=mine_guid,
+                mine_party_appt_type_code=mine_party_appt_type_code,
+                mine_tailings_storage_facility_guid=related_guid)
+        elif mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+            current_mpa = cls.find_current_appointments(
+                mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
+        else:
+            current_mpa = cls.find_current_appointments(
+                mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
+        if len(current_mpa) > 1:
+            raise BadRequest('There is currently not exactly one active appointment.')
+        if len(current_mpa):
+            current_mpa[0].end_date = new_appointment_start_date - timedelta(days=1)
+            current_mpa[0].save()
 
     @classmethod
     def find_by(cls,

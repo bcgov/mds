@@ -118,21 +118,13 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise NotFound('TSF not found')
 
         if end_current:
-            if mine_party_appt_type_code == 'EOR':
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_guid=mine_guid,
-                    mine_party_appt_type_code=mine_party_appt_type_code,
-                    mine_tailings_storage_facility_guid=related_guid)
-            elif mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
-            else:
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
-            if len(current_mpa) != 1:
-                raise BadRequest('There is currently not exactly one active appointment.')
-            current_mpa[0].end_date = start_date - timedelta(days=1)
-            current_mpa[0].save()
+            MinePartyAppointment.end_current_appointment(
+                mine_guid=mine_guid,
+                mine_party_appt_type_code=mine_party_appt_type_code,
+                permit=permit,
+                related_guid=related_guid,
+                new_appointment_start_date=start_date
+            )
 
         new_mpa = MinePartyAppointment.create(
             mine=mine,
