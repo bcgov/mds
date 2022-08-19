@@ -13,6 +13,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import NullScreen from "@/components/common/NullScreen";
+import ProjectDocumentsTab from "./ProjectDocumentsTab";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -30,13 +31,30 @@ const propTypes = {
 export class Project extends Component {
   state = {
     isLoaded: false,
+    fixedTop: false,
     isValid: true,
     activeTab: "overview",
   };
 
   componentDidMount() {
     this.handleFetchData(this.props.match.params);
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (this.state.activeTab === "documents") {
+      if (window.pageYOffset > 170 && !this.state.fixedTop) {
+        this.setState({ fixedTop: true });
+      } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
+        this.setState({ fixedTop: false });
+      }
+    }
+  };
 
   handleFetchData = (params) => {
     const { projectGuid } = params;
@@ -63,10 +81,13 @@ export class Project extends Component {
       case "intro-project-overview":
         url = routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(project_guid, irt_guid);
         break;
+      case "documents":
+        url = routes.PROJECT_ALL_DOCUMENTS.dynamicRoute(project_guid);
+        break;
       default:
         url = routes.PROJECTS.dynamicRoute(project_guid);
     }
-    this.props.history.replace(url);
+    return this.props.history.replace(url);
   };
 
   render() {
@@ -74,7 +95,6 @@ export class Project extends Component {
       return <NullScreen type="generic" />;
     }
 
-    // TODO: Improve response model to make this check more robust
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
     );
@@ -132,6 +152,13 @@ export class Project extends Component {
             <LoadingWrapper condition={this.state.isLoaded}>
               <div className="padding-lg">
                 <InformationRequirementsTableTab match={this.props.match} />
+              </div>
+            </LoadingWrapper>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="All Documents" key="documents">
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <div className="padding-lg">
+                <ProjectDocumentsTab />
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
