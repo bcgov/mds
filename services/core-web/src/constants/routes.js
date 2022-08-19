@@ -45,6 +45,7 @@ import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLICont
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
+import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -188,6 +189,13 @@ export const PROJECTS = {
   route: "/pre-applications/:projectGuid/:tab",
   dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
   component: Project,
+};
+
+export const PROJECT_ALL_DOCUMENTS = {
+  route: "/pre-applications/:projectGuid/documents",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/documents/${link}`,
+  component: ProjectDocumentsTab,
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE = {
