@@ -172,6 +172,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       Project Documents
     </Title>
     <DocumentTable
+      additionalColumnProps={Array []}
       categoryDataIndex="project_summary_document_type_code"
       documentCategoryOptionsHash={
         Object {
@@ -180,6 +181,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
       documentParent="project summary"
       documents={Array []}
+      excludedColumnKeys={Array []}
       isViewOnly={true}
       removeDocument={[Function]}
       uploadDateIndex="upload_date"

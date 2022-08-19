@@ -152,7 +152,9 @@ exports[`ViewBondModal renders properly 1`] = `
         Documents
       </p>
       <DocumentTable
+        additionalColumnProps={Array []}
         documents={Array []}
+        excludedColumnKeys={Array []}
         isViewOnly={true}
         removeDocument={[Function]}
       />
