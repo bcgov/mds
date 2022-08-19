@@ -17,15 +17,15 @@ import {
   updateProjectSummary,
   removeDocumentFromProjectSummary,
 } from "@common/actionCreators/projectActionCreator";
-import * as FORM from "@/constants/forms";
 import { Link } from "react-router-dom";
+import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectSummarySideMenu from "@/components/mine/Projects/ProjectSummarySideMenu";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
-import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -97,7 +97,7 @@ export class ProjectSummary extends Component {
     this.props
       .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
-        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
       });
   };
 
