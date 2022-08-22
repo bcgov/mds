@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDocumentsTabSideMenu renders properly 1`] = `
+<div>
+  <Anchor
+    affix={false}
+    offsetTop={160}
+    onChange={[Function]}
+    onClick={[Function]}
+    showInkInFixed={false}
+  >
+    <AnchorLink
+      className="now-menu-link"
+      href="#project-description"
+      key="Project Description"
+      title="Project Description"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#irt"
+      key="IRT"
+      title="IRT"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#major-mine-application"
+      key="Major Mine Application"
+      title="Major Mine Application"
+    />
+  </Anchor>
+</div>
+`;
