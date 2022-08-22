@@ -13,7 +13,12 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
   excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
-  additionalColumnProps: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  additionalColumnProps: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      colProps: PropTypes.objectOf(PropTypes.string),
+    })
+  ),
 };
 
 const defaultProps = {
