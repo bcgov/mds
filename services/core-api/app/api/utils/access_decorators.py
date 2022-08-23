@@ -36,6 +36,8 @@ def is_minespace_user():
 def can_edit_now_dates():
     return jwt.validate_roles([EDIT_NOW_DATES])
 
+def can_edit_mines():
+    return jwt.validate_roles([MINE_EDIT])
 
 def requires_role_edit_emli_contacts(func):
     return _inner_wrapper(func, EDIT_EMLI_CONTACTS)
