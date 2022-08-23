@@ -7,6 +7,7 @@ import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -155,13 +156,15 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="All Documents" key="documents">
-            <LoadingWrapper condition={this.state.isLoaded}>
-              <div className="padding-lg">
-                <ProjectDocumentsTab />
-              </div>
-            </LoadingWrapper>
-          </Tabs.TabPane>
+          {!IN_PROD() && (
+            <Tabs.TabPane tab="All Documents" key="documents">
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <div className="padding-lg">
+                  <ProjectDocumentsTab />
+                </div>
+              </LoadingWrapper>
+            </Tabs.TabPane>
+          )}
         </Tabs>
       </div>
     );
