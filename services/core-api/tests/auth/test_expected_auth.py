@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS, EDIT_MAJOR_MINE_APPLICATIONS
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -50,6 +50,7 @@ from app.api.projects.project_summary.resources.project_summary_list import Proj
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
+from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
 
 
 @pytest.mark.parametrize(
@@ -145,7 +146,9 @@ from app.api.projects.information_requirements_table.resources.requirements impo
      (InformationRequirementsTableResource, 'delete',
       [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
      (RequirementsResource, 'put', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
-     (RequirementsResource, 'delete', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS])])
+     (RequirementsResource, 'delete', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
+     (MajorMineApplicationResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT])
+     (MajorMineApplicationResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
