@@ -5,7 +5,12 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
 import { getProject } from "@common/selectors/projectSelectors";
-import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import {
+  fetchProjectById,
+  removeDocumentFromProjectSummary,
+  removeDocumentFromInformationRequirementsTable,
+  removeDocumentFromMajorMineApplication,
+} from "@common/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ProjectDocumentsTabSideMenu from "./ProjectDocumentsTabSideMenu";
@@ -18,6 +23,9 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  removeDocumentFromProjectSummary: PropTypes.func.isRequired,
+  removeDocumentFromInformationRequirementsTable: PropTypes.func.isRequired,
+  removeDocumentFromMajorMineApplication: PropTypes.func.isRequired,
 };
 
 export class ProjectDocumentsTab extends Component {
@@ -48,6 +56,40 @@ export class ProjectDocumentsTab extends Component {
     return this.props.fetchProjectById(projectGuid);
   };
 
+  handleDeleteDocument = (event, key, documentParent) => {
+    event.preventDefault();
+    const {
+      project_guid: projectGuid,
+      information_requirements_table,
+      project_summary,
+      major_mine_application,
+    } = this.props.project;
+    switch (documentParent) {
+      case "project summary":
+        return this.props
+          .removeDocumentFromProjectSummary(projectGuid, project_summary?.project_summary_guid, key)
+          .then(() => this.props.fetchProjectById(projectGuid));
+      case "irt":
+        return this.props
+          .removeDocumentFromInformationRequirementsTable(
+            projectGuid,
+            information_requirements_table?.irt_guid,
+            key
+          )
+          .then(() => this.props.fetchProjectById(projectGuid));
+      case "major mine application":
+        return this.props
+          .removeDocumentFromMajorMineApplication(
+            projectGuid,
+            major_mine_application?.major_mine_application_guid,
+            key
+          )
+          .then(() => this.props.fetchProjectById(projectGuid));
+      default:
+        return () => {};
+    }
+  };
+
   renderDocumentSection = (
     sectionTitle,
     sectionHref,
@@ -61,12 +103,26 @@ export class ProjectDocumentsTab extends Component {
     ) : (
       <Typography.Title level={4}>{sectionTitle}</Typography.Title>
     );
+    const formattedSectionHref = [
+      "primary-documents",
+      "spatial-components",
+      "supporting-documents",
+    ].includes(sectionHref)
+      ? "major-mine-application"
+      : sectionHref;
+    let documentParent = null;
+    const documentParents = {
+      "project-description": "project summary",
+      irt: "irt",
+      "major-mine-application": "major mine application",
+    };
+    documentParent = documentParents?.[formattedSectionHref];
 
     return (
       <div id={sectionHref}>
         {titleElement}
         <DocumentTable
-          documents={sectionDocuments.reduce(
+          documents={sectionDocuments?.reduce(
             (docs, doc) => [
               {
                 key: doc.mine_document_guid,
@@ -80,6 +136,8 @@ export class ProjectDocumentsTab extends Component {
             ],
             []
           )}
+          documentParent={documentParent}
+          removeDocument={this.handleDeleteDocument}
           excludedColumnKeys={["dated", "category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
         />
@@ -122,7 +180,7 @@ export class ProjectDocumentsTab extends Component {
           {this.renderDocumentSection(
             "Primary Documents",
             "primary-documents",
-            this.props.project.major_mine_application?.documents.filter(
+            this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "PRM"
             ),
             true
@@ -131,7 +189,7 @@ export class ProjectDocumentsTab extends Component {
           {this.renderDocumentSection(
             "Spatial Components",
             "spatial-components",
-            this.props.project.major_mine_application?.documents.filter(
+            this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "SPT"
             ),
             true
@@ -140,7 +198,7 @@ export class ProjectDocumentsTab extends Component {
           {this.renderDocumentSection(
             "Supporting Documents",
             "supporting-documents",
-            this.props.project.major_mine_application?.documents.filter(
+            this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "SPR"
             ),
             true
@@ -159,6 +217,9 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchProjectById,
+      removeDocumentFromProjectSummary,
+      removeDocumentFromInformationRequirementsTable,
+      removeDocumentFromMajorMineApplication,
     },
     dispatch
   );

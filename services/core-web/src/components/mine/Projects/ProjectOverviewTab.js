@@ -72,7 +72,6 @@ export class ProjectOverviewTab extends Component {
       documents,
     } = this.props.project.project_summary;
 
-    // TODO: Improve response model to make this check more robust
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
     );
