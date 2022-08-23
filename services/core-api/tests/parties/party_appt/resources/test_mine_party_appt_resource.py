@@ -14,6 +14,7 @@ def setup_info(db_session):
         mine_guid=str(mine.mine_guid),
         eor_party_guid=str(eor.party.party_guid),
         mine_manager_appt_guid=str(mine_manager.mine_party_appt_guid),
+        mine_manager_guid=str(mine_manager.party.party_guid),
         tsf_guid=str(mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid))
 
 
@@ -144,3 +145,40 @@ def test_delete_mine_party_appt_invalid_guid(test_client, db_session, auth_heade
     del_resp = test_client.delete(
         f'/parties/mines/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 404
+
+def test_post_mine_party_appt_EOR_as_ms_user_success(test_client, db_session, auth_headers, setup_info):
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'EOR',
+        'related_guid': setup_info['tsf_guid'],
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 200, str(post_resp.response)
+    assert post_data['mine_guid'] == setup_info['mine_guid']
+
+def test_post_mine_party_appt_EOR_as_ms_user_other_aptt_type_fail(test_client, db_session, auth_headers, setup_info):
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'BLA',
+        'related_guid': setup_info['tsf_guid'],
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    assert post_resp.status_code == 403
+
+def test_post_mine_party_appt_EOR_as_ms_user_not_associated_with_mine_fail(test_client, db_session, auth_headers, setup_info):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': str(party_guid),
+        'mine_party_appt_type_code': 'EOR',
+        'related_guid': setup_info['tsf_guid'],
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    assert post_resp.status_code == 403

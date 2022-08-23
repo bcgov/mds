@@ -4,10 +4,10 @@ import uuid
 from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, Forbidden
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, can_edit_mines
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -82,7 +82,7 @@ class MinePartyApptResource(Resource, UserMixin):
         return result
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @requires_role_mine_edit
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             raise BadRequest('unexpected mine party appointment guid')
@@ -116,6 +116,17 @@ class MinePartyApptResource(Resource, UserMixin):
             tsf = MineTailingsStorageFacility.find_by_tsf_guid(related_guid)
             if tsf is None:
                 raise NotFound('TSF not found')
+
+        if not can_edit_mines():
+            # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine 
+            if mine_party_appt_type_code != 'EOR':
+                raise Forbidden("Minespace user can only appoint EORs")
+
+            if not tsf or mine.mine_guid != tsf.mine_guid:
+                raise Forbidden("TSF is not associated with the given mine")
+
+            if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
+                raise Forbidden("Party is not associated with the given mine")
 
         if end_current:
             if mine_party_appt_type_code == 'EOR':

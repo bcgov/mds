@@ -64,7 +64,7 @@ from app.api.projects.information_requirements_table.resources.requirements impo
      (MineListResource, "post", [MINE_EDIT]),
      (MineListSearch, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineMapResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (MinePartyApptResource, "get", [VIEW_ALL]), (MinePartyApptResource, "post", [MINE_EDIT]),
+     (MinePartyApptResource, "get", [VIEW_ALL]), (MinePartyApptResource, "post", [MINE_EDIT, MINESPACE_PROPONENT]),
      (MinePartyApptResource, "put", [MINE_EDIT]), (MinePartyApptResource, "delete", [MINE_EDIT]),
      (MinePartyApptTypeResource, "get", [VIEW_ALL]), (MineRegionResource, "get", [VIEW_ALL]),
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
