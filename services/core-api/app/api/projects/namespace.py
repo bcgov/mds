@@ -15,6 +15,7 @@ from app.api.projects.information_requirements_table.resources.information_requi
 from app.api.projects.information_requirements_table.resources.information_requirements_table_download import InformationRequirementsTableDownloadResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_document_upload import InformationRequirementsTableDocumentUploadResource
+from app.api.projects.information_requirements_table.resources.information_requirements_table_uploaded_document import InformationRequirementsTableUploadedDocumentResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_document_types import InformationRequirementsTableDocumentTypeResource
 from app.api.projects.information_requirements_table.resources.requirements_list import RequirementsListResource
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
@@ -51,6 +52,7 @@ api.add_resource(InformationRequirementsTableDownloadResource,
                  '/information-requirements-table/template-download')
 api.add_resource(InformationRequirementsTableDocumentUploadResource,
                  '/<string:project_guid>/information-requirements-table/documents')
+api.add_resource(InformationRequirementsTableUploadedDocumentResource, '/<string:project_guid>/information-requirements-table/<string:irt_guid>/documents/<string:mine_document_guid>')
 api.add_resource(InformationRequirementsTableResource,
                  '/<string:project_guid>/information-requirements-table/<string:irt_guid>')
 api.add_resource(InformationRequirementsTableListResource,
