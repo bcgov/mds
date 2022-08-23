@@ -11,10 +11,10 @@ import {
 import { PlusCircleFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
-import TailingsTable from "./TailingsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import * as routes from "@/constants/routes";
 import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
+import TailingsTable from "./TailingsTable";
 
 const { Paragraph, Title, Text } = Typography;
 
