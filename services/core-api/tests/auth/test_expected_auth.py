@@ -147,7 +147,7 @@ from app.api.projects.major_mine_application.resources.major_mine_application im
       [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
      (RequirementsResource, 'put', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
      (RequirementsResource, 'delete', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
-     (MajorMineApplicationResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT])
+     (MajorMineApplicationResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (MajorMineApplicationResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
