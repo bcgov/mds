@@ -137,10 +137,10 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
 export const PROJECT_SUMMARY_DOCUMENT = (
   projectGuid,
   projectSummaryGuid,
-  documentManagerGuid,
+  mineDocumentGuid,
   params = {}
 ) =>
-  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${documentManagerGuid}?${queryString.stringify(
+  `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${mineDocumentGuid}?${queryString.stringify(
     params
   )}`;
 
@@ -150,6 +150,8 @@ export const REQUIREMENTS = `/projects/requirements`;
 export const INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD = `/projects/information-requirements-table/template-download`;
 export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS = (projectGuid) =>
   `/projects/${projectGuid}/information-requirements-table/documents`;
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT = (projectGuid, irtGuid, mineDocumentGuid) =>
+  `/projects/${projectGuid}/information-requirements-table/${irtGuid}/documents/${mineDocumentGuid}`;
 export const INFORMATION_REQUIREMENTS_TABLES = (projectGuid) =>
   `/projects/${projectGuid}/information-requirements-table`;
 export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid, irtGuid) =>

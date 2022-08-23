@@ -327,6 +327,34 @@ export const fetchRequirements = () => (dispatch) => {
     .finally(() => dispatch(hideLoading));
 };
 
+export const removeDocumentFromInformationRequirementsTable = (
+  projectGuid,
+  irtGuid,
+  mineDocumentGuid
+) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+  return CustomAxios()
+    .delete(
+      ENVIRONMENT.apiUrl +
+        API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted information requirements table document.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const createMajorMineApplication = (
   { projectGuid },
   payload,
