@@ -1,16 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Button } from "antd";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineRecordById,
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
+import { PlusCircleFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import TailingsTable from "./TailingsTable";
 import { modalConfig } from "@/components/modalContent/config";
+import * as routes from "@/constants/routes";
+import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -49,8 +53,8 @@ export const Tailings = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Row>
-          <Col span={24}>
+        <Row justify={!IN_PROD() ? "space-between" : "start"}>
+          <Col>
             <Title level={4}>Tailing Storage Facilities</Title>
             <Paragraph>
               This table shows&nbsp;
@@ -61,6 +65,16 @@ export const Tailings = (props) => {
             </Paragraph>
             <br />
           </Col>
+          {!IN_PROD() && (
+            <Col>
+              <Link to={routes.ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(props.mine.mine_guid)}>
+                <Button type="primary">
+                  <PlusCircleFilled />
+                  Create New Facility
+                </Button>
+              </Link>
+            </Col>
+          )}
         </Row>
         <Row gutter={[16, 32]}>
           <Col span={24}>

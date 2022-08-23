@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { BasicInformation } from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 
 const dispatchProps = {};
 const props = {};
@@ -14,9 +14,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("BasicInformation", () => {
+describe("EngineerOfRecord", () => {
   it("renders properly", () => {
-    const component = shallow(<BasicInformation {...dispatchProps} {...props} />);
+    const component = shallow(<EngineerOfRecord {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

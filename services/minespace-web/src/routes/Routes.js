@@ -67,6 +67,14 @@ const Routes = () => (
       path={routes.EDIT_PROJECT.route}
       component={AuthenticationGuard()(routes.EDIT_PROJECT.component)}
     />
+    <Route
+      path={routes.ADD_TAILINGS_STORAGE_FACILITY.route}
+      component={AuthenticationGuard()(routes.ADD_TAILINGS_STORAGE_FACILITY.component)}
+    />
+    <Route
+      path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
+      component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
+    />
     {/* 404 - PAGE NOT FOUND */}
     <Route
       render={() => (
