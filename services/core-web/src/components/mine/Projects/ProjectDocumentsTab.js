@@ -182,7 +182,7 @@ export class ProjectDocumentsTab extends Component {
             "primary-documents",
             this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "PRM"
-            ),
+            ) || [],
             true
           )}
           <br />
@@ -191,7 +191,7 @@ export class ProjectDocumentsTab extends Component {
             "spatial-components",
             this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "SPT"
-            ),
+            ) || [],
             true
           )}
           <br />
@@ -200,7 +200,7 @@ export class ProjectDocumentsTab extends Component {
             "supporting-documents",
             this.props.project.major_mine_application?.documents?.filter(
               (doc) => doc.major_mine_application_document_type_code === "SPR"
-            ),
+            ) || [],
             true
           )}
         </div>
