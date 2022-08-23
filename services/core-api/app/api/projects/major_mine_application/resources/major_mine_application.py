@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from werkzeug.exceptions import NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, is_minespace_user
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -46,7 +46,7 @@ class MajorMineApplicationResource(Resource, UserMixin):
             'project_guid': 'The GUID of the project the Project Description belongs to.',
             'major_mine_application': 'The GUID of the major mine application to update.'
         })
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS])
     @api.marshal_with(MAJOR_MINE_APPLICATION_MODEL, code=200)
     def put(self, project_guid, major_mine_application_guid):
         major_mine_application = MajorMineApplication.find_by_major_mine_application_guid(major_mine_application_guid)
