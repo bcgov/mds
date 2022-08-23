@@ -19,6 +19,8 @@ const propTypes = {
       colProps: PropTypes.objectOf(PropTypes.string),
     })
   ),
+  // eslint-disable-next-line react/no-unused-prop-types
+  documentParent: PropTypes.string,
 };
 
 const defaultProps = {
@@ -27,6 +29,7 @@ const defaultProps = {
   removeDocument: () => {},
   excludedColumnKeys: [],
   additionalColumnProps: [],
+  documentParent: null,
 };
 
 export const DocumentTable = (props) => {
@@ -80,7 +83,7 @@ export const DocumentTable = (props) => {
           <Popconfirm
             placement="topLeft"
             title={`Are you sure you want to delete ${record.name}?`}
-            onConfirm={(event) => props.removeDocument(event, record.key)}
+            onConfirm={(event) => props.removeDocument(event, record.key, props?.documentParent)}
             okText="Delete"
             cancelText="Cancel"
           >
