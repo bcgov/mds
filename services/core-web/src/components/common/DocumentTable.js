@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table, Popconfirm, Button } from "antd";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
-import DocumentLink from "@/components/common/DocumentLink";
 import { some } from "lodash";
+import DocumentLink from "@/components/common/DocumentLink";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -12,12 +12,24 @@ const propTypes = {
   isViewOnly: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
+  excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
+  additionalColumnProps: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      colProps: PropTypes.objectOf(PropTypes.string),
+    })
+  ),
+  // eslint-disable-next-line react/no-unused-prop-types
+  documentParent: PropTypes.string,
 };
 
 const defaultProps = {
   documents: [],
   isViewOnly: false,
   removeDocument: () => {},
+  excludedColumnKeys: [],
+  additionalColumnProps: [],
+  documentParent: null,
 };
 
 export const DocumentTable = (props) => {
@@ -71,7 +83,7 @@ export const DocumentTable = (props) => {
           <Popconfirm
             placement="topLeft"
             title={`Are you sure you want to delete ${record.name}?`}
-            onConfirm={(event) => props.removeDocument(event, record.key)}
+            onConfirm={(event) => props.removeDocument(event, record.key, props?.documentParent)}
             okText="Delete"
             cancelText="Cancel"
           >
@@ -86,6 +98,20 @@ export const DocumentTable = (props) => {
 
   if (!some(props.documents, "dated")) {
     columns = columns.filter((column) => column.key !== "dated");
+  }
+
+  if (props?.excludedColumnKeys?.length > 0) {
+    columns = columns.filter((column) => !props.excludedColumnKeys.includes(column.key));
+  }
+
+  if (props?.additionalColumnProps?.length > 0) {
+    // eslint-disable-next-line no-unused-expressions
+    props?.additionalColumnProps.forEach((addColumn) => {
+      const columnIndex = columns.findIndex((column) => addColumn?.key === column.key);
+      if (columnIndex >= 0) {
+        columns[columnIndex] = { ...columns[columnIndex], ...addColumn?.colProps };
+      }
+    });
   }
 
   return (

@@ -4,11 +4,8 @@ from app.extensions import api
 
 from app.api.utils.access_decorators import (requires_any_of, MINE_ADMIN, EDIT_PROJECT_SUMMARIES)
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.custom_reqparser import CustomReqparser
 
-from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.variances.models.variance import Variance
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 
 

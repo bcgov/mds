@@ -98,6 +98,20 @@ exports[`Project renders properly 1`] = `
         </div>
       </LoadingWrapper>
     </TabPane>
+    <TabPane
+      key="documents"
+      tab="All Documents"
+    >
+      <LoadingWrapper
+        condition={false}
+      >
+        <div
+          className="padding-lg"
+        >
+          <withRouter(Connect(ProjectDocumentsTab)) />
+        </div>
+      </LoadingWrapper>
+    </TabPane>
   </Tabs>
 </div>
 `;

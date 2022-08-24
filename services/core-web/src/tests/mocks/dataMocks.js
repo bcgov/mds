@@ -6436,7 +6436,12 @@ export const PROJECTS = {
       project_summary: {
         documents: [],
       },
-      information_requirements_table: {},
+      information_requirements_table: {
+        documents: [],
+      },
+      major_mine_application: {
+        documents: [],
+      },
     },
   ],
 };
@@ -6450,7 +6455,12 @@ export const PROJECT = {
   project_summary: {
     documents: [],
   },
-  information_requirements_table: {},
+  information_requirements_table: {
+    documents: [],
+  },
+  major_mine_application: {
+    documents: [],
+  },
 };
 
 export const PROJECT_SUMMARIES = {

@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDocumentsTab renders properly 1`] = `
+<Fragment>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title
+        level={3}
+      >
+        All Project Documents
+      </Title>
+    </Col>
+  </Row>
+  <br />
+  <div
+    className="side-menu"
+  >
+    <withRouter(ProjectDocumentsTabSideMenu) />
+  </div>
+  <div
+    className="side-menu--content"
+  >
+    <div
+      id="project-description"
+    >
+      <Title
+        level={4}
+      >
+        Project Description
+      </Title>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent="project summary"
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="irt"
+    >
+      <Title
+        level={4}
+      >
+        IRT
+      </Title>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent="irt"
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <Title
+      id="major-mine-application"
+      level={4}
+    >
+      Application Files
+    </Title>
+    <div
+      id="primary-documents"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Primary Documents
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent="major mine application"
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="spatial-components"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Spatial Components
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent="major mine application"
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="supporting-documents"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Supporting Documents
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent="major mine application"
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+  </div>
+</Fragment>
+`;

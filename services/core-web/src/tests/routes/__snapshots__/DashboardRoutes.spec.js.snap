@@ -263,6 +263,11 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/pre-applications/:projectGuid/:tab"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    path="/pre-applications/:projectGuid/documents"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),

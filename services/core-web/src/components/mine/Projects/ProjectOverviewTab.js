@@ -72,7 +72,6 @@ export class ProjectOverviewTab extends Component {
       documents,
     } = this.props.project.project_summary;
 
-    // TODO: Improve response model to make this check more robust
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
     );
@@ -98,7 +97,7 @@ export class ProjectOverviewTab extends Component {
 
     requiredProjectStages.push({
       title: "Project description",
-      key: project_summary_id,
+      key: `ps-${project_summary_id}`,
       status: status_code,
       payload: this.props.project.project_summary,
       statusHash: this.props.projectSummaryStatusCodesHash,
@@ -113,7 +112,7 @@ export class ProjectOverviewTab extends Component {
 
     const irt = {
       title: "Final IRT",
-      key: this.props.project.information_requirements_table?.irt_id || 0,
+      key: `irt-${this.props.project.information_requirements_table?.irt_id || 0}`,
       status: this.props.project.information_requirements_table?.status_code,
       payload: this.props.project.information_requirements_table,
       statusHash: this.props.informationRequirementsTableStatusCodesHash,

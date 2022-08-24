@@ -314,7 +314,10 @@ exports[`BondForm renders properly 1`] = `
       xs={24}
     >
       <DocumentTable
+        additionalColumnProps={Array []}
+        documentParent={null}
         documents={Array []}
+        excludedColumnKeys={Array []}
         isViewOnly={false}
         removeDocument={[Function]}
       />

@@ -313,7 +313,10 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       Documents
     </Title>
     <DocumentTable
+      additionalColumnProps={Array []}
+      documentParent={null}
       documents={Array []}
+      excludedColumnKeys={Array []}
       isViewOnly={false}
       removeDocument={null}
     />

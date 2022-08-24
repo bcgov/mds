@@ -7,6 +7,14 @@ import {
   updateProjectSummary,
   deleteProjectSummary,
   removeDocumentFromProjectSummary,
+  createInformationRequirementsTable,
+  updateInformationRequirementsTableByFile,
+  updateInformationRequirementsTable,
+  removeDocumentFromInformationRequirementsTable,
+  fetchRequirements,
+  createMajorMineApplication,
+  updateMajorMineApplication,
+  removeDocumentFromMajorMineApplication,
 } from "@common/actionCreators/projectActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -209,6 +217,270 @@ describe("`deleteProjectSummary` action creator", () => {
     return deleteProjectSummary(
       mineGuid,
       projectSummaryGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createInformationRequirementsTable` action creator", () => {
+  const projectGuid = "12345-6789";
+  const documentGuid = "09908034-1234";
+  const file = new Blob();
+  const url = ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLES(projectGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url).reply(200, mockResponse);
+    return createInformationRequirementsTable(
+      projectGuid,
+      file,
+      documentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createInformationRequirementsTable(
+      projectGuid,
+      null,
+      documentGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateInformationRequirementsTableByFile` action creator", () => {
+  const projectGuid = "12345-6789";
+  const informationRequirementsTableGuid = "12345-6789";
+  const documentGuid = "98745-2351";
+  const file = new Blob();
+  const url =
+    ENVIRONMENT.apiUrl +
+    API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url).reply(200, mockResponse);
+    return updateInformationRequirementsTableByFile(
+      projectGuid,
+      informationRequirementsTableGuid,
+      file,
+      documentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateInformationRequirementsTableByFile(
+      projectGuid,
+      informationRequirementsTableGuid,
+      null,
+      null
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateInformationRequirementsTable` action creator", () => {
+  const projectGuid = "12345-6789";
+  const informationRequirementsTableGuid = "12345-6789";
+  const mockPayload = {
+    status_code: "REC",
+    documents: [],
+  };
+  const url =
+    ENVIRONMENT.apiUrl +
+    API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return updateInformationRequirementsTable(
+      { projectGuid, informationRequirementsTableGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateInformationRequirementsTable(
+      { projectGuid },
+      {}
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchRequirements` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.REQUIREMENTS;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchRequirements()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchRequirements()(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeDocumentFromInformationRequirementsTable` action creator", () => {
+  const mineGuid = "1234567";
+  const irtGuid = "23448594";
+  const mineDocumentGuid = "123o5981437";
+  const url =
+    ENVIRONMENT.apiUrl +
+    API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(mineGuid, irtGuid, mineDocumentGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removeDocumentFromInformationRequirementsTable(
+      mineGuid,
+      irtGuid,
+      mineDocumentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return removeDocumentFromInformationRequirementsTable(
+      mineGuid,
+      irtGuid,
+      mineDocumentGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createMajorMineApplication` action creator", () => {
+  const projectGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATIONS(projectGuid);
+  const mockPayload = { status_code: "REC", documents: [] };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return createMajorMineApplication(
+      { projectGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createMajorMineApplication(
+      { projectGuid },
+      null
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateMajorMineApplication` action creator", () => {
+  const projectGuid = "12345-6789";
+  const majorMineApplicationGuid = "12345-6789";
+  const mockPayload = {
+    status_code: "APV",
+    documents: [],
+  };
+  const url =
+    ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATION(projectGuid, majorMineApplicationGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return updateMajorMineApplication(
+      { projectGuid, majorMineApplicationGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateMajorMineApplication(
+      { projectGuid, majorMineApplicationGuid },
+      null
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeDocumentFromMajorMineApplication` action creator", () => {
+  const mineGuid = "1234567";
+  const majorMineApplicationGuid = "23448594";
+  const mineDocumentGuid = "123o5981437";
+  const url =
+    ENVIRONMENT.apiUrl +
+    API.MAJOR_MINE_APPLICATION_DOCUMENT(mineGuid, majorMineApplicationGuid, mineDocumentGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removeDocumentFromMajorMineApplication(
+      mineGuid,
+      majorMineApplicationGuid,
+      mineDocumentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+    return removeDocumentFromMajorMineApplication(
+      mineGuid,
+      majorMineApplicationGuid,
+      mineDocumentGuid
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

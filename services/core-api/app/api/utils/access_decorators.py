@@ -25,8 +25,9 @@ EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
 EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
 EDIT_REQUIREMENTS = "core_edit_requirements"
 EDIT_INFORMATION_REQUIREMENTS_TABLE = "core_edit_information_requirements_table"
+EDIT_MAJOR_MINE_APPLICATIONS = "core_edit_major_mine_applications"
 EDIT_INCIDENTS = "core_edit_incidents"
-EDIT_TSF= "core_edit_tsf"
+EDIT_TSF = "core_edit_tsf"
 
 
 def is_minespace_user():
@@ -106,8 +107,10 @@ def requires_role_mds_administrative_users(func):
 def requires_role_edit_now_dates(func):
     return _inner_wrapper(func, EDIT_NOW_DATES)
 
+
 def requires_role_edit_tsf(func):
     return _inner_wrapper(func, EDIT_TSF)
+
 
 def requires_role_edit_requirements(func):
     return _inner_wrapper(func, EDIT_REQUIREMENTS)
