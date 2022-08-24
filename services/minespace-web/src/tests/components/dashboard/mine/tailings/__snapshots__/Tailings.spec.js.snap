@@ -5,10 +5,10 @@ exports[`Tailings renders properly 1`] = `
   <Col
     span={24}
   >
-    <Row>
-      <Col
-        span={24}
-      >
+    <Row
+      justify="space-between"
+    >
+      <Col>
         <Title
           level={4}
         >
@@ -25,6 +25,22 @@ exports[`Tailings renders properly 1`] = `
            for your mine.
         </Paragraph>
         <br />
+      </Col>
+      <Col>
+        <Link
+          to="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings-storage-facility/new/basic-information"
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="primary"
+          >
+            <ForwardRef(PlusCircleFilled) />
+            Create New Facility
+          </Button>
+        </Link>
       </Col>
     </Row>
     <Row

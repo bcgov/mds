@@ -10,6 +10,7 @@ import InformationRequirementsTablePage from "@/components/pages/Project/Informa
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
 import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
 import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
+import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
 
 export const HOME = {
   route: "/",
@@ -103,4 +104,18 @@ export const MINE_DASHBOARD = {
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
     `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
+};
+
+export const ADD_TAILINGS_STORAGE_FACILITY = {
+  route: "/mines/:mineGuid/tailings-storage-facility/new/:tab",
+  dynamicRoute: (mineGuid, tab = "basic-information") =>
+    `/mines/${mineGuid}/tailings-storage-facility/new/${tab}`,
+  component: TailingsSummaryPage,
+};
+
+export const EDIT_TAILINGS_STORAGE_FACILITY = {
+  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab",
+  dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
+  component: TailingsSummaryPage,
 };
