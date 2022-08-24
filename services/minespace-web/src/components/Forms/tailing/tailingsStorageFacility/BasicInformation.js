@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row, Typography } from "antd";
 import { Field } from "redux-form";
-import { maxLength, requiredList } from "@common/utils/Validate";
+import { maxLength, requiredList, lat, lon } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {};
@@ -44,7 +44,7 @@ export const BasicInformation = () => (
           name="latitude"
           label="Latitude"
           component={renderConfig.FIELD}
-          validate={[maxLength(300)]}
+          validate={[lat]}
         />
       </Col>
       <Col span={12}>
@@ -53,7 +53,7 @@ export const BasicInformation = () => (
           name="longitude"
           label="Longitude"
           component={renderConfig.FIELD}
-          validate={[maxLength(300)]}
+          validate={[lon]}
         />
       </Col>
     </Row>
