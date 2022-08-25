@@ -20,54 +20,45 @@ jobs:
   build-frontend:
     runs-on: ubuntu-20.04
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
-      # - name: Set up Docker Buildx
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }} 
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      - name: Build n Tag
+        run: |
+          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
+          docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+      
+      # -
+      #   name: Checkout
+      #   uses: actions/checkout@v3
+      # -
+      #   name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v2
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v3
+      # -
+      #   name: Login to Openshift
+      #   uses: docker/login-action@v2
       #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-buildx- 
-      # - name: Login
-      #   run: |
-      #     docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
-      # - name: Build n Tag
-      #   run: |
-      #     docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
-      #     docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
-      #     docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
-      # - name: Push
-      #   run: |
-      #     docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
-      # - name: Move cache
-      #   run: |
-      #     rm -rf /tmp/.buildx-cache
-      #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Openshift
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ secrets.CLUSTER_REGISTRY }}
-          username: ${{ secrets.CLUSTER_REGISTRY_USER }}
-          password: ${{ secrets.BUILD_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: ${{ env.CONTEXT }}
-          push: true
-          tags: frontend:latest, frontend:dev
-          cache-from: type=gha
-          cache-to: type=gha, mode=max
+      #     registry: ${{ secrets.CLUSTER_REGISTRY }}
+      #     username: ${{ secrets.CLUSTER_REGISTRY_USER }}
+      #     password: ${{ secrets.BUILD_TOKEN }}
+      # -
+      #   name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: ${{ env.CONTEXT }}
+      #     push: true
+      #     tags: frontend:latest, frontend:dev
+      #     cache-from: type=gha
+      #     cache-to: type=gha, mode=max
 
   trigger-gitops:
     runs-on: ubuntu-20.04
