@@ -21,7 +21,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import NotificationDrawer from "@/components/navigation/NotificationDrawer";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 /**
  * @class NavBar - fixed and responsive navigation
@@ -478,7 +477,7 @@ export class NavBar extends Component {
               </Button>
             </MediaQuery>
             <MediaQuery minWidth={fullNavMinWidth}>{this.renderFullNav()}</MediaQuery>
-            {!IN_PROD() && <NotificationDrawer />}
+            <NotificationDrawer />
           </div>
         </div>
         <MediaQuery maxWidth={fullNavMinWidth - 1}>{this.renderHamburgerNav()}</MediaQuery>
