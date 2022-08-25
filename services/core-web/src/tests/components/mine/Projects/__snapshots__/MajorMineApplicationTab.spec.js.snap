@@ -1,0 +1,355 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDocumentsTab renders properly 1`] = `
+<Fragment>
+  <div
+    className="side-menu"
+  >
+    <withRouter(ProjectDocumentsTabSideMenu)
+      sideMenuOptions={
+        Array [
+          Object {
+            "href": "basic-information",
+            "title": "Basic Information",
+          },
+          Object {
+            "href": "primary-documents",
+            "title": "Primary Documents",
+          },
+          Object {
+            "href": "spatial-components",
+            "title": "Spatial Components",
+          },
+          Object {
+            "href": "supporting-documents",
+            "title": "Supporting Documents",
+          },
+          Object {
+            "href": "ministry-decision-documents",
+            "title": "Minisrty Decision Documents",
+          },
+        ]
+      }
+    />
+  </div>
+  <div
+    className="side-menu--content"
+  >
+    <Row>
+      <Col
+        lg={18}
+      >
+        <Connect(ReduxForm)
+          displayValues={
+            Object {
+              "majorMineAppStatusCodesHash": Object {
+                "APV": "Approved",
+                "CHR": "Change Requested",
+                "DFT": "Draft",
+                "REC": "Pending Review",
+                "UNR": "In review - with reviewers",
+              },
+              "statusCode": undefined,
+              "updateDate": undefined,
+              "updateUser": undefined,
+            }
+          }
+          handleSubmit={[Function]}
+          initialValues={
+            Object {
+              "status_code": undefined,
+            }
+          }
+        />
+      </Col>
+    </Row>
+    <Row
+      id="basic-information"
+    >
+      <Col
+        lg={
+          Object {
+            "span": 14,
+          }
+        }
+        xl={
+          Object {
+            "span": 16,
+          }
+        }
+      >
+        <Title
+          level={3}
+        >
+          Basic Information
+        </Title>
+      </Col>
+    </Row>
+    <Row>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Descriptions
+          colon={false}
+          layout="vertical"
+          style={
+            Object {
+              "maxWidth": "95%",
+            }
+          }
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Primary Contact"
+          >
+            <Input
+              disabled={true}
+              type="text"
+              value="N/A"
+            />
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Descriptions
+          colon={false}
+          layout="vertical"
+          style={
+            Object {
+              "maxWidth": "95%",
+            }
+          }
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Ministry Contact"
+          >
+            <Input
+              disabled={true}
+              type="text"
+              value="N/A"
+            />
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+    </Row>
+    <Row>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Descriptions
+          colon={false}
+          layout="vertical"
+          style={
+            Object {
+              "maxWidth": "95%",
+            }
+          }
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Submitted"
+          >
+            <Input
+              disabled={true}
+              type="text"
+            />
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Descriptions
+          colon={false}
+          layout="vertical"
+          style={
+            Object {
+              "maxWidth": "95%",
+            }
+          }
+        >
+          <DescriptionsItem
+            className="vertical-description"
+            label="Status"
+          >
+            <Input
+              disabled={true}
+              type="text"
+              value="N/A"
+            />
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+    </Row>
+    <br />
+    <Title
+      id="major-mine-application"
+      level={4}
+    >
+      Application Files
+    </Title>
+    <div
+      id="primary-documents"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Primary Documents
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+            "remove",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="spatial-components"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Spatial Components
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+            "remove",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="supporting-documents"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Supporting Documents
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+            "remove",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="ministry-decision-documents"
+    >
+      <Text
+        strong={true}
+        style={
+          Object {
+            "fontSize": "20px",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Minisrty Decision Documents
+      </Text>
+      <DocumentTable
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={
+          Array [
+            "dated",
+            "category",
+            "remove",
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+  </div>
+</Fragment>
+`;

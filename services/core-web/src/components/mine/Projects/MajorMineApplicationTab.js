@@ -24,8 +24,6 @@ const propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectGuid: PropTypes.string,
-      majorMineApplicationGuid: PropTypes.string,
-      mmaGuid: PropTypes.string,
     }),
   }).isRequired,
   majorMineAppStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -43,8 +41,8 @@ const menuOptions = [
     title: "Primary Documents",
   },
   {
-    href: "spatial-documents",
-    title: "Spatial Documents",
+    href: "spatial-components",
+    title: "Spatial Components",
   },
   {
     href: "supporting-documents",
@@ -82,12 +80,13 @@ export class MajorMineApplicationTab extends Component {
 
   handleUpdateMMA = (event, values) => {
     event.preventDefault();
-    const { projectGuid, mmaGuid } = this.props.match.params;
+    const { projectGuid } = this.props.match.params;
     return this.props
       .updateMajorMineApplication(
         {
           projectGuid,
-          majorMineApplicationGuid: mmaGuid,
+          majorMineApplicationGuid: this.props.project.major_mine_application
+            .major_mine_application_guid,
         },
         values
       )
@@ -169,21 +168,21 @@ export class MajorMineApplicationTab extends Component {
             </Col>
           </Row>
 
-          <Row>
+          <Row id="basic-information">
             <Col lg={{ span: 14 }} xl={{ span: 16 }}>
               <Typography.Title level={3}>Basic Information</Typography.Title>
             </Col>
           </Row>
           <Row>
             <Col xs={24} md={12}>
-              <Descriptions layout="vertical" colon={false}>
+              <Descriptions layout="vertical" colon={false} style={{ maxWidth: "95%" }}>
                 <Descriptions.Item label="Primary Contact" className="vertical-description">
                   <Input value={primaryContact?.name || Strings.EMPTY_FIELD} disabled />
                 </Descriptions.Item>
               </Descriptions>
             </Col>
             <Col xs={24} md={12}>
-              <Descriptions layout="vertical" colon={false}>
+              <Descriptions layout="vertical" colon={false} style={{ maxWidth: "95%" }}>
                 <Descriptions.Item label="Ministry Contact" className="vertical-description">
                   <Input
                     value={this.props.project?.project_lead_name || Strings.EMPTY_FIELD}
@@ -195,7 +194,7 @@ export class MajorMineApplicationTab extends Component {
           </Row>
           <Row>
             <Col xs={24} md={12}>
-              <Descriptions layout="vertical" colon={false}>
+              <Descriptions layout="vertical" colon={false} style={{ maxWidth: "95%" }}>
                 <Descriptions.Item label="Submitted" className="vertical-description">
                   <Input
                     value={formatDate(this.props.project.major_mine_application?.create_timestamp)}
@@ -205,7 +204,7 @@ export class MajorMineApplicationTab extends Component {
               </Descriptions>
             </Col>
             <Col xs={24} md={12}>
-              <Descriptions layout="vertical" colon={false}>
+              <Descriptions layout="vertical" colon={false} style={{ maxWidth: "95%" }}>
                 <Descriptions.Item label="Status" className="vertical-description">
                   <Input
                     value={
