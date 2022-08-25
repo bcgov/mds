@@ -66,8 +66,8 @@ jobs:
           context: ${{ env.CONTEXT }}
           push: true
           tags: frontend:latest, frontend:dev
-          cache-from: type=registry,ref=frontend:latest
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha, mode=max
 
   trigger-gitops:
     runs-on: ubuntu-20.04
