@@ -109,7 +109,7 @@ exports[`Project renders properly 1`] = `
         <div
           className="padding-lg"
         >
-          <Connect(MajorMineApplicationTab) />
+          <withRouter(Connect(MajorMineApplicationTab)) />
         </div>
       </LoadingWrapper>
     </TabPane>
