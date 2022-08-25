@@ -9,8 +9,8 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
-  fetchPartyRelationships,
   addPartyRelationship,
+  fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
@@ -92,18 +92,20 @@ export const TailingsSummaryPage = (props) => {
   const handleSaveData = (e, values) => {
     e.preventDefault();
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
-    props.addPartyRelationship({
-      mine_guid: match.params.mineGuid,
-      party_guid: values.formValues.engineer_of_record.party_guid,
-      mine_party_appt_type_code: "EOR",
-      related_guid: match.params.tailingsStorageFacilityGuid,
-      end_current: true,
-      start_date: values.formValues.engineer_of_record.start_date,
-      end_date: values.formValues.engineer_of_record.end_date,
-    });
+    const errors = Object.keys(flattenObject(formErrors));
+    if (errors.length === 0) {
+      props.addPartyRelationship({
+        mine_guid: match.params.mineGuid,
+        party_guid: values.formValues.engineer_of_record.party_guid,
+        mine_party_appt_type_code: "EOR",
+        related_guid: match.params.tailingsStorageFacilityGuid,
+        end_current: true,
+        start_date: values.formValues.engineer_of_record.start_date,
+        end_date: values.formValues.engineer_of_record.end_date,
+      });
+    }
     // TODO: implement saving/updating tailings storage facility
-    // const errors = Object.keys(flattenObject(formErrors));
-    // if (errors.length === 1000) {
+    // if (errors.length === 0) {
     //   if (match.params.tailingsStorageFacilityGuid) {
     //     props.updateTailingsStorageFacility(
     //       match.params.mineGuid,

@@ -2,44 +2,11 @@
 
 exports[`EngineerOfRecord renders properly 1`] = `
 <div>
-  <Row
-    justify="space-between"
+  <Title
+    level={3}
   >
-    <Title
-      level={3}
-    >
-      Engineer of Record
-    </Title>
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
-      okText="Yes"
-      okType="primary"
-      onConfirm={[Function]}
-      placement="top"
-      title="Are you sure you want to continue assigning a new EOR?"
-      transitionName="zoom-big"
-      trigger="click"
-    >
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        style={
-          Object {
-            "display": "inline",
-            "float": "right",
-          }
-        }
-        type="primary"
-      >
-        <ForwardRef(PlusOutlined) />
-        Assign a new EOR
-      </Button>
-    </ForwardRef>
-  </Row>
+    Engineer of Record
+  </Title>
   <Alert
     description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
     showIcon={true}
@@ -54,7 +21,6 @@ exports[`EngineerOfRecord renders properly 1`] = `
   <Field
     component={[Function]}
     data={Array []}
-    disabled={true}
     id="engineer_of_record.party_guid"
     label="Engineer of Record"
     name="engineer_of_record.party_guid"
@@ -81,7 +47,6 @@ exports[`EngineerOfRecord renders properly 1`] = `
     >
       <Field
         component={[Function]}
-        disabled={true}
         id="engineer_of_record.start_date"
         label="Start Date"
         name="engineer_of_record.start_date"
@@ -97,7 +62,6 @@ exports[`EngineerOfRecord renders properly 1`] = `
     >
       <Field
         component={[Function]}
-        disabled={true}
         id="engineer_of_record.end_date"
         label="End Date"
         name="engineer_of_record.end_date"
