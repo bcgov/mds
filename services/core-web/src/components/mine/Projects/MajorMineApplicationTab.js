@@ -20,7 +20,6 @@ import ProjectDocumentsTabSideMenu from "./ProjectDocumentsTabSideMenu";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
-  // majorMineApplication: CustomPropTypes.majorMineApplication,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectGuid: PropTypes.string,
