@@ -44,7 +44,39 @@ exports[`ProjectSummary renders properly 1`] = `
   <div
     className="side-menu top-100"
   >
-    <withRouter(ProjectSummarySideMenu) />
+    <withRouter(ScrollSideMenu)
+      featureUrlRoute={[Function]}
+      featureUrlRouteArguments={
+        Array [
+          "testMineGuid",
+          "testProjectSummaryGuid",
+        ]
+      }
+      menuOptions={
+        Array [
+          Object {
+            "href": "project-details",
+            "title": "Project details",
+          },
+          Object {
+            "href": "authorizations-involved",
+            "title": "Authorizations Involved",
+          },
+          Object {
+            "href": "project-dates",
+            "title": "Project dates",
+          },
+          Object {
+            "href": "project-contacts",
+            "title": "Project contacts",
+          },
+          Object {
+            "href": "documents",
+            "title": "Documents",
+          },
+        ]
+      }
+    />
   </div>
   <Tabs
     activeKey="project-descriptions"

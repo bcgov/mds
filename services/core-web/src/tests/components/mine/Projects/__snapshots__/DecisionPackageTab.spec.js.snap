@@ -14,7 +14,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
       featureUrlRoute={[Function]}
       featureUrlRouteArguments={
         Array [
-          undefined,
+          "1234-4567-xwqy",
         ]
       }
       menuOptions={

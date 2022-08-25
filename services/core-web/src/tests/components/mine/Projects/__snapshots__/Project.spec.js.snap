@@ -99,6 +99,22 @@ exports[`Project renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      key="decision-package"
+      tab="Decision Package"
+    >
+      <LoadingWrapper
+        condition={false}
+      >
+        <div
+          className="padding-lg"
+        >
+          <withRouter(Connect(ReduxForm))
+            initialValues={Object {}}
+          />
+        </div>
+      </LoadingWrapper>
+    </TabPane>
+    <TabPane
       key="documents"
       tab="All Documents"
     >
