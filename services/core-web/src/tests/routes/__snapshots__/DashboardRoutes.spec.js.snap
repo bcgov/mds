@@ -263,6 +263,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/pre-applications/:projectGuid/:tab"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MajorMineApplicationTab)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
+  />
+  <Route
     component={[Function]}
     exact={true}
     path="/pre-applications/:projectGuid/documents"
