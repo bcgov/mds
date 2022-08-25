@@ -2,7 +2,6 @@ import React from "react";
 import { Col, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
@@ -36,7 +35,7 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              {!IN_PROD() && props.isAuthenticated && <NotificationDrawer />}
+              {props.isAuthenticated && <NotificationDrawer />}
             </div>
           </div>
         </Col>
