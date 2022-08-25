@@ -46,6 +46,7 @@ import PermitConditionManagement from "@/components/mine/Permit/PermitConditionM
 import Project from "@/components/mine/Projects/Project";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
+import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -189,6 +190,13 @@ export const PROJECTS = {
   route: "/pre-applications/:projectGuid/:tab",
   dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
   component: Project,
+};
+
+export const MAJOR_MINE_APPLICATION = {
+  route: "/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab",
+  dynamicRoute: (projectGuid, mmaGuid, tab = "final-app") =>
+    `/pre-applications/${projectGuid}/major-mine-application/${mmaGuid}/${tab}`,
+  component: MajorMineApplicationTab,
 };
 
 export const PROJECT_ALL_DOCUMENTS = {
