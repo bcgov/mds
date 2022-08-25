@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+  onValuesChange={true}
+>
+  <Col
+    span={24}
+  >
+    <Alert
+      description={
+        <ForwardRef>
+          <ForwardRef
+            md={18}
+            xs={24}
+          >
+            <p>
+              Final IRT was submitted by 
+              test
+               on
+               
+              Jun 13 2022
+              , waiting for ministry review.
+            </p>
+            <b>
+              Please note that updating this status will notify the project proponent.
+            </b>
+          </ForwardRef>
+          <ForwardRef
+            md={6}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <ForwardRef
+                component={[Function]}
+                data={
+                  Object {
+                    "APV": "Approved",
+                    "CHR": "Change Requested",
+                    "DFT": "Draft",
+                    "REC": "Pending Review",
+                    "UNR": "In review - with reviewers",
+                  }
+                }
+                id="status_code"
+                label=""
+                name="status_code"
+                placeholder="Action"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </ForwardRef>
+        </ForwardRef>
+      }
+      message="Pending Review"
+      showIcon={true}
+      type="warning"
+    />
+  </Col>
+</Form>
+`;

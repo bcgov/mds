@@ -6944,6 +6944,14 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
   SPR: "Supporting",
 };
 
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
+  DFT: "Draft",
+  REC: "Pending Review",
+  UNR: "In review - with reviewers",
+  APV: "Approved",
+  CHR: "Change Requested",
+};
+
 export const EMLI_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",

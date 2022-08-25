@@ -99,6 +99,21 @@ exports[`Project renders properly 1`] = `
       </LoadingWrapper>
     </TabPane>
     <TabPane
+      disabled={true}
+      key="final-app"
+      tab="Final Application"
+    >
+      <LoadingWrapper
+        condition={false}
+      >
+        <div
+          className="padding-lg"
+        >
+          <withRouter(Connect(MajorMineApplicationTab)) />
+        </div>
+      </LoadingWrapper>
+    </TabPane>
+    <TabPane
       key="documents"
       tab="All Documents"
     >

@@ -22,9 +22,10 @@ const propTypes = {
     },
   }).isRequired,
   tabSection: PropTypes.string,
+  sideMenuOptions: PropTypes.objectOf(PropTypes.string),
 };
 
-const defaultProps = { tabSection: "" };
+const defaultProps = { tabSection: "", sideMenuOptions: [] };
 
 export class ProjectDocumentsTabSideMenu extends Component {
   state = {};
@@ -32,24 +33,26 @@ export class ProjectDocumentsTabSideMenu extends Component {
   // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
-  sideMenuOptions = [
-    {
-      href: "project-description",
-      title: "Project Description",
-    },
-    {
-      href: "irt",
-      title: "IRT",
-    },
-    // {
-    //   href: "toc",
-    //   title: "TOC",
-    // },
-    {
-      href: "major-mine-application",
-      title: "Major Mine Application",
-    },
-  ];
+  sideMenuOptions = this.props.sideMenuOptions
+    ? this.props.sideMenuOptions
+    : [
+        {
+          href: "project-description",
+          title: "Project Description",
+        },
+        {
+          href: "irt",
+          title: "IRT",
+        },
+        // {
+        //   href: "toc",
+        //   title: "TOC",
+        // },
+        {
+          href: "major-mine-application",
+          title: "Major Mine Application",
+        },
+      ];
 
   componentDidMount() {
     // If the user loads the page with a hash in the URL, start them off at the corresponding All Project Documents section.
