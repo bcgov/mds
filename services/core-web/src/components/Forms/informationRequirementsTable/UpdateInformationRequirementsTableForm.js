@@ -27,7 +27,6 @@ const propTypes = {
 
 const stausDisplayMessage = (status) => {
   let text = "";
-  console.log(status);
   if (status === "APV") {
     text = ". Review is complete.";
   } else if (status === "CHR") {
