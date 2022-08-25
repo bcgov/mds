@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Field, change } from "redux-form";
+import { Alert, Col, Row, Typography } from "antd";
+import { change, Field } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { requiredList, required, validateSelectOptions } from "@common/utils/Validate";
-import { PlusOutlined } from "@ant-design/icons";
+import { required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import * as PropTypes from "prop-types";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { uniqBy } from "lodash";
@@ -19,7 +18,6 @@ const propTypes = {
 export const EngineerOfRecord = (props) => {
   const { parties } = props;
   const [partyOptions, setPartyOptions] = useState([]);
-  const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
     if (parties) {
@@ -44,20 +42,7 @@ export const EngineerOfRecord = (props) => {
 
   return (
     <div>
-      <Row justify="space-between">
-        <Typography.Title level={3}>Engineer of Record</Typography.Title>
-        <Popconfirm
-          okText="Yes"
-          cancelText="No"
-          title="Are you sure you want to continue assigning a new EOR?"
-          onConfirm={() => setIsEditable(!isEditable)}
-        >
-          <Button style={{ display: "inline", float: "right" }} type="primary">
-            <PlusOutlined />
-            Assign a new EOR
-          </Button>
-        </Popconfirm>
-      </Row>
+      <Typography.Title level={3}>Engineer of Record</Typography.Title>
       <Alert
         description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
         showIcon
@@ -71,7 +56,6 @@ export const EngineerOfRecord = (props) => {
         name="engineer_of_record.party_guid"
         label="Engineer of Record"
         placeholder="Select an Engineer of Record"
-        disabled={!isEditable}
         component={renderConfig.SELECT}
         onChange={handleSelectChange}
         data={partyOptions}
@@ -86,7 +70,6 @@ export const EngineerOfRecord = (props) => {
             id="engineer_of_record.start_date"
             name="engineer_of_record.start_date"
             label="Start Date"
-            disabled={!isEditable}
             component={renderConfig.DATE}
             validate={[required]}
           />
@@ -96,7 +79,6 @@ export const EngineerOfRecord = (props) => {
             id="engineer_of_record.end_date"
             name="engineer_of_record.end_date"
             label="End Date"
-            disabled={!isEditable}
             component={renderConfig.DATE}
           />
         </Col>
