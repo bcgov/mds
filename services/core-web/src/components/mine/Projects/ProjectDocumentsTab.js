@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
+import * as routes from "@/constants/routes";
 import { getProject } from "@common/selectors/projectSelectors";
 import {
   fetchProjectById,
@@ -13,7 +14,7 @@ import {
 } from "@common/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ProjectDocumentsTabSideMenu from "./ProjectDocumentsTabSideMenu";
+import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -155,7 +156,15 @@ export class ProjectDocumentsTab extends Component {
         </Row>
         <br />
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <ProjectDocumentsTabSideMenu />
+          <ScrollSideMenu
+            menuOptions={[
+              { href: "project-description", title: "Project Description" },
+              { href: "irt", title: "IRT" },
+              { href: "major-mine-application", title: "Major Mine Application" },
+            ]}
+            featureUrlRoute={routes.PROJECT_ALL_DOCUMENTS.hashRoute}
+            featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
+          />
         </div>
         <div
           className={

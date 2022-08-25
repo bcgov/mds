@@ -23,9 +23,9 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import ProjectSummarySideMenu from "@/components/mine/Projects/ProjectSummarySideMenu";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
+import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -153,7 +153,20 @@ export class ProjectSummary extends Component {
           </Link>
         </div>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
-          <ProjectSummarySideMenu />
+          <ScrollSideMenu
+            menuOptions={[
+              { href: "project-details", title: "Project details" },
+              { href: "authorizations-involved", title: "Authorizations Involved" },
+              { href: "project-dates", title: "Project dates" },
+              { href: "project-contacts", title: "Project contacts" },
+              { href: "documents", title: "Documents" },
+            ]}
+            featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
+            featureUrlRouteArguments={[
+              this.props.match?.params?.mineGuid,
+              this.props.match?.params?.projectSummaryGuid,
+            ]}
+          />
         </div>
         <Tabs
           size="large"
