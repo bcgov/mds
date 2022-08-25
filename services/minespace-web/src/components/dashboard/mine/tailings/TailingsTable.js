@@ -1,22 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Table, Button } from "antd";
+import { Button, Table } from "antd";
 import PropTypes from "prop-types";
 import {
-  getTSFOperatingStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
+  getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { Link } from "react-router-dom";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 
 const propTypes = {
-  tailings: PropTypes.arrayOf(PropTypes.any),
+  tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   openEditTailingsModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   handleEditTailings: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -83,14 +91,27 @@ export const TailingsTable = (props) => {
         return (
           <div title="" align="right">
             <AuthorizationWrapper>
-              <Button
-                type="link"
-                onClick={(event) =>
-                  props.openEditTailingsModal(event, props.handleEditTailings, record)
-                }
-              >
-                <img src={EDIT_PENCIL} alt="Edit" />
-              </Button>
+              {!IN_PROD() ? (
+                <Link
+                  to={EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+                    record.mine_tailings_storage_facility_guid,
+                    record.mine_guid
+                  )}
+                >
+                  <Button type="link">
+                    <img src={EDIT_PENCIL} alt="Edit" />
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  type="link"
+                  onClick={(event) =>
+                    props.openEditTailingsModal(event, props.handleEditTailings, record)
+                  }
+                >
+                  <img src={EDIT_PENCIL} alt="Edit" />
+                </Button>
+              )}
             </AuthorizationWrapper>
           </div>
         );

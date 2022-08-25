@@ -189,6 +189,30 @@ exports[`PrivateRoutes  renders properly 1`] = `
     path="/projects/:projectGuid/:tab"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mines/:mineGuid/tailings-storage-facility/new/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab"
+  />
+  <Route
     render={[Function]}
   />
 </Switch>

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicInformation renders properly 1`] = `
+<Fragment>
+  <Title
+    level={3}
+  >
+    Basic Information
+  </Title>
+  <Field
+    component={[Function]}
+    id="facility_type"
+    label="Facility Type"
+    name="facility_type"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="tailings_storage_facility_type"
+    label="Tailings Storage Facility Type"
+    name="proponent_project_id"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="mines_act_permit_number"
+    label="Mines Act Permit Number"
+    name="mines_act_permit_number"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="mine_tailings_storage_facility_name"
+    label="Tailing Storage Facility Name"
+    name="mine_tailings_storage_facility_name"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={12}
+    >
+      <Field
+        component={[Function]}
+        id="latitude"
+        label="Latitude"
+        name="latitude"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      span={12}
+    >
+      <Field
+        component={[Function]}
+        id="longitude"
+        label="Longitude"
+        name="longitude"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <Field
+    component={[Function]}
+    id="consequence_classification_status_code"
+    label="Consequence Classification"
+    name="consequence_classification_status_code"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="tsf_operating_status_code"
+    label="Operating Status"
+    name="tsf_operating_status_code"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="independent_tailings_review_board_member"
+    label="Independent Tailings Review Board Member"
+    name="independent_tailings_review_board_member"
+    validate={
+      Array [
+        [Function],
+      ]
+    }
+  />
+</Fragment>
+`;

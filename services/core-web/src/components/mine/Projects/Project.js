@@ -13,6 +13,7 @@ import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
+import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import NullScreen from "@/components/common/NullScreen";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDocumentsTab from "./ProjectDocumentsTab";
@@ -49,7 +50,7 @@ export class Project extends Component {
   }
 
   handleScroll = () => {
-    if (["documents", "decision-package"].includes(this.state.activeTab)) {
+    if (["documents", "decision-package", "final-app"].includes(this.state.activeTab)) {
       if (window.pageYOffset > 170 && !this.state.fixedTop) {
         this.setState({ fixedTop: true });
       } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
@@ -86,6 +87,9 @@ export class Project extends Component {
       case "documents":
         url = routes.PROJECT_ALL_DOCUMENTS.dynamicRoute(project_guid);
         break;
+      case "final-app":
+        url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid);
+        break;
       case "decision-package":
         url = routes.PROJECT_DECISION_PACKAGE.dynamicRoute(project_guid);
         break;
@@ -102,6 +106,10 @@ export class Project extends Component {
 
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
+    );
+
+    const hasFinalAplication = Boolean(
+      this.props.project.major_mine_application?.major_mine_application_guid
     );
 
     return (
@@ -161,22 +169,29 @@ export class Project extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
           {!IN_PROD() && (
-            <Tabs.TabPane tab="Decision Package" key="decision-package">
-              <LoadingWrapper condition={this.state.isLoaded}>
-                <div className="padding-lg">
-                  <DecisionPackageTab initialValues={{}} />
-                </div>
-              </LoadingWrapper>
-            </Tabs.TabPane>
-          )}
-          {!IN_PROD() && (
-            <Tabs.TabPane tab="All Documents" key="documents">
-              <LoadingWrapper condition={this.state.isLoaded}>
-                <div className="padding-lg">
-                  <ProjectDocumentsTab />
-                </div>
-              </LoadingWrapper>
-            </Tabs.TabPane>
+            <>
+              <Tabs.TabPane tab="Final Application" key="final-app" disabled={!hasFinalAplication}>
+                <LoadingWrapper condition={this.state.isLoaded}>
+                  <div className="padding-lg">
+                    <MajorMineApplicationTab />
+                  </div>
+                </LoadingWrapper>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Decision Package" key="decision-package">
+                <LoadingWrapper condition={this.state.isLoaded}>
+                  <div className="padding-lg">
+                    <DecisionPackageTab initialValues={{}} />
+                  </div>
+                </LoadingWrapper>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="All Documents" key="documents">
+                <LoadingWrapper condition={this.state.isLoaded}>
+                  <div className="padding-lg">
+                    <ProjectDocumentsTab />
+                  </div>
+                </LoadingWrapper>
+              </Tabs.TabPane>
+            </>
           )}
         </Tabs>
       </div>

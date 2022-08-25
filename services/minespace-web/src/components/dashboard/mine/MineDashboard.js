@@ -172,7 +172,7 @@ export class MineDashboard extends Component {
                   <Tabs.TabPane tab="Bonds" key="bonds">
                     <Bonds mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
-                  <Tabs.TabPane tab="Tailings" key="tailings">
+                  <Tabs.TabPane tab="Tailings & Dams" key="tailings">
                     <Tailings mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
                 </Tabs>

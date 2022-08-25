@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EngineerOfRecord renders properly 1`] = `
+<div>
+  <Title
+    level={3}
+  >
+    Engineer of Record
+  </Title>
+  <Alert
+    description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
+    showIcon={true}
+    type="info"
+  />
+  <Title
+    className="margin-large--top"
+    level={4}
+  >
+    Contact Information
+  </Title>
+  <Field
+    component={[Function]}
+    data={Array []}
+    id="engineer_of_record.party_guid"
+    label="Engineer of Record"
+    name="engineer_of_record.party_guid"
+    onChange={[Function]}
+    placeholder="Select an Engineer of Record"
+    validate={
+      Array [
+        [Function],
+        [Function],
+      ]
+    }
+  />
+  <Title
+    className="margin-large--top"
+    level={4}
+  >
+    EOR Term
+  </Title>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={12}
+    >
+      <Field
+        component={[Function]}
+        id="engineer_of_record.start_date"
+        label="Start Date"
+        name="engineer_of_record.start_date"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      span={12}
+    >
+      <Field
+        component={[Function]}
+        id="engineer_of_record.end_date"
+        label="End Date"
+        name="engineer_of_record.end_date"
+      />
+    </Col>
+  </Row>
+</div>
+`;
