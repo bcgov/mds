@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Descriptions, Input } from "antd";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
@@ -275,4 +276,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MajorMineApplicationTab.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MajorMineApplicationTab);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MajorMineApplicationTab));

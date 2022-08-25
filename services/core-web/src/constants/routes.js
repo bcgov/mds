@@ -199,6 +199,13 @@ export const MAJOR_MINE_APPLICATION = {
   component: MajorMineApplicationTab,
 };
 
+export const PROJECT_FINAL_APPLICATION = {
+  route: "/pre-applications/:projectGuid/final-app",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/final-app`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/final-app/${link}`,
+  component: MajorMineApplicationTab,
+};
+
 export const PROJECT_ALL_DOCUMENTS = {
   route: "/pre-applications/:projectGuid/documents",
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,

@@ -74,7 +74,6 @@ export class Project extends Component {
     const {
       project_guid,
       information_requirements_table: { irt_guid },
-      major_mine_application: { major_mine_application_guid },
     } = this.props.project;
     let url = routes.PROJECTS.dynamicRoute(project_guid);
     switch (activeTab) {
@@ -88,7 +87,7 @@ export class Project extends Component {
         url = routes.PROJECT_ALL_DOCUMENTS.dynamicRoute(project_guid);
         break;
       case "final-app":
-        url = routes.MAJOR_MINE_APPLICATION.dynamicRoute(project_guid, major_mine_application_guid);
+        url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid);
         break;
       default:
         url = routes.PROJECTS.dynamicRoute(project_guid);
