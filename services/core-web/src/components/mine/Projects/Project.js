@@ -15,6 +15,7 @@ import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import NullScreen from "@/components/common/NullScreen";
+import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDocumentsTab from "./ProjectDocumentsTab";
 
 const propTypes = {
@@ -49,7 +50,7 @@ export class Project extends Component {
   }
 
   handleScroll = () => {
-    if (["documents", "final-app"].includes(this.state.activeTab)) {
+    if (["documents", "decision-package", "final-app"].includes(this.state.activeTab)) {
       if (window.pageYOffset > 170 && !this.state.fixedTop) {
         this.setState({ fixedTop: true });
       } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
@@ -88,6 +89,9 @@ export class Project extends Component {
         break;
       case "final-app":
         url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid);
+        break;
+      case "decision-package":
+        url = routes.PROJECT_DECISION_PACKAGE.dynamicRoute(project_guid);
         break;
       default:
         url = routes.PROJECTS.dynamicRoute(project_guid);
@@ -173,7 +177,13 @@ export class Project extends Component {
                   </div>
                 </LoadingWrapper>
               </Tabs.TabPane>
-
+              <Tabs.TabPane tab="Decision Package" key="decision-package">
+                <LoadingWrapper condition={this.state.isLoaded}>
+                  <div className="padding-lg">
+                    <DecisionPackageTab initialValues={{}} />
+                  </div>
+                </LoadingWrapper>
+              </Tabs.TabPane>
               <Tabs.TabPane tab="All Documents" key="documents">
                 <LoadingWrapper condition={this.state.isLoaded}>
                   <div className="padding-lg">

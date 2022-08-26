@@ -7,7 +7,6 @@ import { bindActionCreators, compose } from "redux";
 import { isNil } from "lodash";
 import {
   arrayPush,
-  change,
   formValueSelector,
   getFormSyncErrors,
   getFormValues,
@@ -33,9 +32,7 @@ const propTypes = {
       tab: PropTypes.string,
     }),
   }).isRequired,
-  mines: CustomPropTypes.mine.isRequired,
   submitting: PropTypes.bool.isRequired,
-  change: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
   handleTabChange: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.string),
@@ -202,7 +199,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      change,
       arrayPush,
     },
     dispatch

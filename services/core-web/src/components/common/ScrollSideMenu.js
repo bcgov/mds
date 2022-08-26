@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
-import * as routes from "@/constants/routes";
 
 /**
- * @constant ProjectSummarySideMenu renders react children with an active indicator if the id is in the url.
+ * @constant ScrollSideMenu renders react children with an active indicator if the id is in the url.
  */
 
 const propTypes = {
+  menuOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  featureUrlRoute: PropTypes.func.isRequired,
+  featureUrlRouteArguments: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.number]))
+    .isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
     replace: PropTypes.func,
@@ -26,40 +29,17 @@ const propTypes = {
 
 const defaultProps = { tabSection: "" };
 
-export class ProjectSummarySideMenu extends Component {
+export class ScrollSideMenu extends Component {
   state = {};
 
   // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
-  sideMenuOptions = [
-    {
-      href: "project-details",
-      title: "Project details",
-    },
-    {
-      href: "authorizations-involved",
-      title: "Authorizations involved",
-    },
-    {
-      href: "project-dates",
-      title: "Project dates",
-    },
-    {
-      href: "project-contacts",
-      title: "Project contacts",
-    },
-    {
-      href: "documents",
-      title: "Documents",
-    },
-  ];
-
   componentDidMount() {
-    // If the user loads the page with a hash in the URL, start them off at the corresponding Project Summary section.
+    // If the user loads the page with a hash in the URL, start them off at the corresponding feature section.
     // Note: Because Keycloak authorization adds params to the URL when it redirects, props.location.hash
     // will be contaminated with extra params that we don't need. All we want is the hash that corresponds
-    // to the Project Summary section, so we must parse it out. If the hash is "#state", we must ignore it (see example).
+    // to the feature section, so we must parse it out. If the hash is "#state", we must ignore it (see example).
     // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
     let link =
       this.props.location &&
@@ -96,8 +76,7 @@ export class ProjectSummarySideMenu extends Component {
   };
 
   updateUrlRoute = (route) => {
-    const { mineGuid, projectSummaryGuid } = this.props.match.params;
-    this.urlRoute = routes.PRE_APPLICATIONS.hashRoute(mineGuid, projectSummaryGuid, route);
+    this.urlRoute = this.props.featureUrlRoute(...this.props.featureUrlRouteArguments, route);
 
     if (route === this.props.history.location.hash) {
       return;
@@ -118,7 +97,7 @@ export class ProjectSummarySideMenu extends Component {
             this.anchor = anchor;
           }}
         >
-          {this.sideMenuOptions.map(({ href, title }) => (
+          {this.props.menuOptions.map(({ href, title }) => (
             <Anchor.Link key={title} href={`#${href}`} title={title} className="now-menu-link" />
           ))}
         </Anchor>
@@ -127,7 +106,7 @@ export class ProjectSummarySideMenu extends Component {
   }
 }
 
-ProjectSummarySideMenu.propTypes = propTypes;
-ProjectSummarySideMenu.defaultProps = defaultProps;
+ScrollSideMenu.propTypes = propTypes;
+ScrollSideMenu.defaultProps = defaultProps;
 
-export default withRouter(ProjectSummarySideMenu);
+export default withRouter(ScrollSideMenu);

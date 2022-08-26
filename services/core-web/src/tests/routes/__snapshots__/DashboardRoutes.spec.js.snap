@@ -278,6 +278,11 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/pre-applications/:projectGuid/documents"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    path="/pre-applications/:projectGuid/decision-package"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),

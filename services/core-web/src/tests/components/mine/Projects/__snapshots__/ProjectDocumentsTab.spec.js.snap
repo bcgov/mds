@@ -17,7 +17,30 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
   <div
     className="side-menu"
   >
-    <withRouter(ProjectDocumentsTabSideMenu) />
+    <withRouter(ScrollSideMenu)
+      featureUrlRoute={[Function]}
+      featureUrlRouteArguments={
+        Array [
+          "1234-4567-xwqy",
+        ]
+      }
+      menuOptions={
+        Array [
+          Object {
+            "href": "project-description",
+            "title": "Project Description",
+          },
+          Object {
+            "href": "irt",
+            "title": "IRT",
+          },
+          Object {
+            "href": "major-mine-application",
+            "title": "Major Mine Application",
+          },
+        ]
+      }
+    />
   </div>
   <div
     className="side-menu--content"

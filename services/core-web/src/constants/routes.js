@@ -47,6 +47,7 @@ import Project from "@/components/mine/Projects/Project";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
+import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -211,6 +212,13 @@ export const PROJECT_ALL_DOCUMENTS = {
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
   hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/documents/${link}`,
   component: ProjectDocumentsTab,
+};
+
+export const PROJECT_DECISION_PACKAGE = {
+  route: "/pre-applications/:projectGuid/decision-package",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/decision-package`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/decision-package/${link}`,
+  component: DecisionPackageTab,
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE = {

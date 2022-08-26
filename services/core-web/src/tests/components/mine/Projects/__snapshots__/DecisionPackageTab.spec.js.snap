@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DecisionPackageTab renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <div
+    className="side-menu"
+  >
+    <withRouter(ScrollSideMenu)
+      featureUrlRoute={[Function]}
+      featureUrlRouteArguments={
+        Array [
+          "1234-4567-xwqy",
+        ]
+      }
+      menuOptions={
+        Array [
+          Object {
+            "href": "decision-package-documents",
+            "title": "Decision Package",
+          },
+          Object {
+            "href": "additional-goverment-documents",
+            "title": "Government Documents",
+          },
+          Object {
+            "href": "internal-ministry-documents",
+            "title": "Internal Documents",
+          },
+        ]
+      }
+    />
+  </div>
+  <div
+    className="side-menu--content"
+  >
+    <Row>
+      <Col
+        span={24}
+      >
+        <Alert
+          description="This decision package is in progress. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed."
+          message={
+            <React.Fragment>
+              <ForwardRef>
+                <ForwardRef
+                  md={18}
+                  xs={24}
+                >
+                  In Progress
+                </ForwardRef>
+                <ForwardRef
+                  md={6}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <ForwardRef
+                      component={[Function]}
+                      data={Array []}
+                      id="status_code"
+                      name="status_code"
+                      placeholder="Select new status"
+                    />
+                  </FormItem>
+                </ForwardRef>
+              </ForwardRef>
+            </React.Fragment>
+          }
+          showIcon={true}
+          type="warning"
+        />
+        <br />
+      </Col>
+      <Col
+        span={24}
+      >
+        <Title
+          level={3}
+        >
+          <ForwardRef(FolderViewOutlined)
+            className="violet"
+          />
+           Decision Package (Proponent Visible)
+        </Title>
+        <hr />
+      </Col>
+    </Row>
+    <div
+      id="decision-package-documents"
+    >
+      <p>
+        <Text
+          strong={true}
+          style={
+            Object {
+              "fontSize": "1.5rem",
+            }
+          }
+        >
+          <Row>
+            <Col
+              md={12}
+              xs={24}
+            >
+              Decision Package Documents
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                style={
+                  Object {
+                    "float": "right",
+                  }
+                }
+                type="primary"
+              >
+                + Add Documents
+              </Button>
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                style={
+                  Object {
+                    "float": "right",
+                  }
+                }
+                type="secondary"
+              >
+                <img
+                  alt="Edit"
+                  name="edit"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />
+                  Edit Package
+              </Button>
+            </Col>
+          </Row>
+        </Text>
+      </p>
+      <br />
+      <p>
+        <Text>
+          <b>
+            These files are visible to the proponent.
+          </b>
+           Upload Ministry Decision documentation.
+        </Text>
+      </p>
+      <DocumentTable
+        additionalColumnProps={Array []}
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={Array []}
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <div
+      id="additional-goverment-documents"
+    >
+      <p>
+        <Text
+          strong={true}
+          style={
+            Object {
+              "fontSize": "1.5rem",
+            }
+          }
+        >
+          Additional Government Documents
+        </Text>
+      </p>
+      <br />
+      <p>
+        <Text>
+          <b>
+            These files are visible to the proponent.
+          </b>
+           Upload Supplemental Ministry documentation.
+        </Text>
+      </p>
+      <DocumentTable
+        additionalColumnProps={Array []}
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={Array []}
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+    <br />
+    <Row>
+      <Col
+        span={24}
+      >
+        <Title
+          level={3}
+        >
+          <ForwardRef(LockOutlined)
+            className="violet"
+          />
+           Confidential Internal Documents (Ministry Visible Only)
+        </Title>
+        <hr />
+      </Col>
+    </Row>
+    <div
+      id="internal-ministry-documents"
+    >
+      <p>
+        <Text
+          strong={true}
+          style={
+            Object {
+              "fontSize": "1.5rem",
+            }
+          }
+        >
+          <Row>
+            <Col
+              md={12}
+              xs={24}
+            >
+              Internal Ministry Documentation
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                style={
+                  Object {
+                    "float": "right",
+                  }
+                }
+                type="primary"
+              >
+                + Add Documents
+              </Button>
+            </Col>
+          </Row>
+        </Text>
+      </p>
+      <br />
+      <p>
+        <Text>
+          <b>
+            These files are for internal staff only and will not be shown to proponents.
+          </b>
+           
+          Upload internal documents that are created durring the review process.
+        </Text>
+      </p>
+      <DocumentTable
+        additionalColumnProps={Array []}
+        documentParent={null}
+        documents={Array []}
+        excludedColumnKeys={Array []}
+        isViewOnly={false}
+        removeDocument={[Function]}
+      />
+    </div>
+  </div>
+</Form>
+`;

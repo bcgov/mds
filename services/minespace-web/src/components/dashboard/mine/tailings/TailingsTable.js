@@ -15,11 +15,16 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 
 const propTypes = {
-  tailings: PropTypes.arrayOf(PropTypes.any),
+  tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   openEditTailingsModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   handleEditTailings: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
