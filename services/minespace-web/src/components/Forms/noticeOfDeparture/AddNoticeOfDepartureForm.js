@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { change, Field, reduxForm, FieldArray } from "redux-form";
-import { Button, Col, Popconfirm, Row, Typography } from "antd";
+import { Button, Col, Popconfirm, Row, Typography, Alert } from "antd";
 import { Form } from "@ant-design/compatible";
 import {
   maxLength,
@@ -249,6 +249,14 @@ const AddNoticeOfDepartureForm = (props) => {
           ) below. Remember your completed form must be signed by the Mine Manager and any
           supporting information included or uploaded.
         </Typography.Text>
+        {hasChecklist && (
+          <Alert
+            className="margin-y-large"
+            message="Note: Uploading a new self-assessment form will replace the existing version.  Additional files can be uploaded in the 'Upload Application Documents' section at the end of this form"
+            type="warning"
+            showIcon
+          />
+        )}
         <Form.Item className="margin-y-large">
           <Field
             onFileLoad={(documentName, document_manager_guid) => {

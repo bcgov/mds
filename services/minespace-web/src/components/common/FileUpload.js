@@ -35,6 +35,8 @@ const propTypes = {
   labelIdle: PropTypes.string,
   onprocessfiles: PropTypes.func,
   importIsSuccessful: PropTypes.func,
+  beforeAddFile: PropTypes.func,
+  beforeDropFile: PropTypes.func,
 };
 
 const defaultProps = {
@@ -52,6 +54,8 @@ const defaultProps = {
   onprocessfiles: () => {},
   importIsSuccessful: () => {},
   labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
+  beforeAddFile: () => {},
+  beforeDropFile: () => {},
 };
 
 class FileUpload extends React.Component {
@@ -126,6 +130,8 @@ class FileUpload extends React.Component {
     return (
       <div>
         <FilePond
+          beforeAddFile={this.props.beforeAddFile}
+          beforeDropFile={this.props.beforeDropFile}
           server={this.server}
           name="file"
           maxFiles={this.props.maxFiles}
