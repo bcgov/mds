@@ -13,10 +13,11 @@ import {
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { getProject } from "@common/selectors/projectSelectors";
+import * as routes from "@/constants/routes";
 import UpdateMajorMineAppStatusForm from "@/components/Forms/majorMineApplication/UpdateMajorMineAppStatusForm";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ProjectDocumentsTabSideMenu from "./ProjectDocumentsTabSideMenu";
+import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -49,7 +50,7 @@ const menuOptions = [
   },
   {
     href: "ministry-decision-documents",
-    title: "Minisrty Decision Documents",
+    title: "Ministry Decision Documents",
   },
 ];
 
@@ -132,7 +133,7 @@ export class MajorMineApplicationTab extends Component {
   };
 
   render() {
-    const { contacts, major_mine_application } = this.props.project;
+    const { contacts, major_mine_application, project_guid } = this.props.project;
 
     const statusCode = major_mine_application?.status_code;
     const updateUser = major_mine_application?.update_user;
@@ -143,7 +144,11 @@ export class MajorMineApplicationTab extends Component {
     return (
       <>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <ProjectDocumentsTabSideMenu sideMenuOptions={menuOptions} />
+          <ScrollSideMenu
+            menuOptions={menuOptions}
+            featureUrlRoute={routes.PROJECT_FINAL_APPLICATION.hashRoute}
+            featureUrlRouteArguments={[project_guid]}
+          />
         </div>
         <div
           className={

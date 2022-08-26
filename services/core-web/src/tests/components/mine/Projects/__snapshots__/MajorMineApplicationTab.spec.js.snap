@@ -5,8 +5,14 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
   <div
     className="side-menu"
   >
-    <withRouter(ProjectDocumentsTabSideMenu)
-      sideMenuOptions={
+    <withRouter(ScrollSideMenu)
+      featureUrlRoute={[Function]}
+      featureUrlRouteArguments={
+        Array [
+          "35633148-57f8-4967-be35-7f89abfbd02e",
+        ]
+      }
+      menuOptions={
         Array [
           Object {
             "href": "basic-information",
@@ -26,7 +32,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           },
           Object {
             "href": "ministry-decision-documents",
-            "title": "Minisrty Decision Documents",
+            "title": "Ministry Decision Documents",
           },
         ]
       }
