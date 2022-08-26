@@ -15,10 +15,12 @@ const propTypes = {
   labelIdle: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   acceptedFileTypesMap: PropTypes.object.isRequired,
+  beforeUpload: PropTypes.func,
 };
 
 const defaultProps = {
   labelIdle: undefined,
+  beforeUpload: () => {},
 };
 
 export const NoticeOfDepartureFileUpload = (props) => {
@@ -49,6 +51,8 @@ export const NoticeOfDepartureFileUpload = (props) => {
       allowRevert
       onprocessfiles={() => setUploading(false)}
       allowMultiple={allowMultiple}
+      beforeAddFile={props.beforeUpload}
+      beforeDropFile={props.beforeUpload}
     />
   );
 };

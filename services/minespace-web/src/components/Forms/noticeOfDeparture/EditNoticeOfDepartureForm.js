@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { change, Field, FieldArray, reduxForm } from "redux-form";
-import { Button, Col, Popconfirm, Row, Typography } from "antd";
+import { Button, Col, Popconfirm, Row, Typography, Alert } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
@@ -115,6 +115,16 @@ const EditNoticeOfDepartureForm = (props) => {
     ).finally(() => setSubmitting(false));
   };
 
+  const handleBeforeUpload = () => {
+    if (checklist) {
+      // eslint-disable-next-line no-alert
+      return window.confirm(
+        "Uploading a new checklist will replace the previously uploaded file.  Are you sure you'd like to continue?"
+      );
+    }
+    return true;
+  };
+
   return (
     <div>
       <NoticeOfDepartureCallout nodStatus={nod_status} />
@@ -190,6 +200,14 @@ const EditNoticeOfDepartureForm = (props) => {
           ) below. Remember your completed form must be signed by the Mine Manager and any
           supporting information included or uploaded.
         </Typography.Text>
+        {hasChecklist && (
+          <Alert
+            className="margin-y-large"
+            message="Note: Uploading a new self-assessment form will replace the existing version.  Additional files can be uploaded in the 'Upload Application Documents' section at the end of this form"
+            type="warning"
+            showIcon
+          />
+        )}
         <Form.Item className="margin-y-large">
           <Field
             name="nod_self_assessment_form"
@@ -205,6 +223,7 @@ const EditNoticeOfDepartureForm = (props) => {
             mineGuid={mineGuid}
             allowMultiple
             setUploading={setUploading}
+            beforeUpload={handleBeforeUpload}
             component={NoticeOfDepartureFileUpload}
             labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
             maxFiles={1}
