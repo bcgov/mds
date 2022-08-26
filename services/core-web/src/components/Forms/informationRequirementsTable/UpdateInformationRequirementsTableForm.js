@@ -8,9 +8,9 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Alert } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
+import { getDropdownInformationRequirementsTableStatusCodes } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { getDropdownInformationRequirementsTableStatusCodes } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   dropdownInformationRequirementsTableStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -23,6 +23,18 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   pristine: PropTypes.bool.isRequired,
+};
+
+const stausDisplayMessage = (status) => {
+  let text = "";
+  if (status === "APV") {
+    text = ". Review is complete.";
+  } else if (status === "CHR") {
+    text = ". Changes have been requested.";
+  } else {
+    text = ", waiting for ministry review.";
+  }
+  return text;
 };
 
 export const UpdateInformationRequirementsTableForm = (props) => (
@@ -39,7 +51,8 @@ export const UpdateInformationRequirementsTableForm = (props) => (
             <Col xs={24} md={18}>
               <p>
                 Final IRT was submitted by {props.displayValues.updateUser} on{" "}
-                {props.displayValues.updateDate}, waiting for ministry review.
+                {props.displayValues.updateDate}
+                {stausDisplayMessage(props.displayValues.statusCode)}
               </p>
               <b>Please note that updating this status will notify the project proponent.</b>
             </Col>
