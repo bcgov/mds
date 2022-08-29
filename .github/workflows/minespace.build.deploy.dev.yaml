@@ -1,6 +1,7 @@
 name: MINESPACE - Build & Deploy To DEV
 
 on:
+  pull_request:
   workflow_dispatch:
   push:
     branches:
@@ -24,6 +25,9 @@ jobs:
       - name: Login
         run: |
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
       - name: Build n Tag
         run: |
           docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
