@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SteppedForm renders properly 1`] = `
+<Row>
+  <Col
+    className="stepped-form-menu-container"
+    span={6}
+  >
+    <Menu
+      className="stepped-form"
+      items={
+        Array [
+          "basic-information",
+        ]
+      }
+      mode="inline"
+      selectedKeys="basic-information"
+    >
+      <MenuItem
+        className="stepped-menu-item"
+        disabled={false}
+        key="basic-information"
+        onClick={[Function]}
+      >
+        Basic Information
+      </MenuItem>
+    </Menu>
+  </Col>
+  <Col
+    span={18}
+  >
+    <div
+      className="stepped-form-form-container"
+    >
+      <div />
+      <Row
+        justify="end"
+      />
+    </div>
+  </Col>
+</Row>
+`;

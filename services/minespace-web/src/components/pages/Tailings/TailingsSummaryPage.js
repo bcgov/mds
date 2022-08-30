@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { flattenObject, formatUrlToUpperCaseString } from "@common/utils/helpers";
+import { flattenObject } from "@common/utils/helpers";
 import { Link } from "react-router-dom";
-import { formValueSelector, getFormSyncErrors, reset, submit, touch } from "redux-form";
-import { Col, Divider, Row, Tabs, Typography } from "antd";
+import {
+  formValueSelector,
+  getFormSyncErrors,
+  reset,
+  submit,
+  touch,
+  getFormValues,
+} from "redux-form";
+import { Col, Divider, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -21,6 +28,7 @@ import {
 } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import TailingsSummaryForm from "@/components/Forms/tailing/tailingsStorageFacility/TailingsSummaryForm";
+import SteppedForm from "@/components/Forms/tailing/tailingsStorageFacility/SteppedForm";
 import {
   createTailingsStorageFacility,
   updateTailingsStorageFacility,
@@ -46,10 +54,12 @@ const propTypes = {
   // updateTailingsStorageFacility: PropTypes.func.isRequired,
   // createTailingsStorageFacility: PropTypes.func.isRequired,
   addPartyRelationship: PropTypes.func.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   formErrors: {},
+  formValues: {},
 };
 
 const tabs = [
@@ -62,13 +72,12 @@ const tabs = [
 ];
 
 export const TailingsSummaryPage = (props) => {
-  const { mines, match, history, formErrors } = props;
+  const { mines, match, history, formErrors, formValues } = props;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
   const [initialValues, setInitialValues] = useState({});
 
   const handleFetchData = async () => {
-    const { mineGuid, tab, tailingsStorageFacilityGuid } = match?.params;
+    const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     await props.fetchPartyRelationships({
       mine_guid: match.params.mineGuid,
       relationships: "party",
@@ -80,7 +89,6 @@ export const TailingsSummaryPage = (props) => {
       );
       setInitialValues(tsf || {});
     }
-    setActiveTab(tab);
     setIsLoaded(true);
   };
 
@@ -88,20 +96,19 @@ export const TailingsSummaryPage = (props) => {
     handleFetchData();
   }, []);
 
-  // eslint-disable-next-line consistent-return
-  const handleSaveData = (e, values) => {
+  const handleSaveData = (e) => {
     e.preventDefault();
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       props.addPartyRelationship({
         mine_guid: match.params.mineGuid,
-        party_guid: values.formValues.engineer_of_record.party_guid,
+        party_guid: formValues.engineer_of_record.party_guid,
         mine_party_appt_type_code: "EOR",
         related_guid: match.params.tailingsStorageFacilityGuid,
         end_current: true,
-        start_date: values.formValues.engineer_of_record.start_date,
-        end_date: values.formValues.engineer_of_record.end_date,
+        start_date: formValues.engineer_of_record.start_date,
+        end_date: formValues.engineer_of_record.end_date,
       });
     }
     // TODO: implement saving/updating tailings storage facility
@@ -124,7 +131,6 @@ export const TailingsSummaryPage = (props) => {
   const handleTabChange = (newActiveTab) => {
     const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     let url;
-    setActiveTab(newActiveTab);
     if (tailingsStorageFacilityGuid) {
       url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tailingsStorageFacilityGuid,
@@ -138,18 +144,15 @@ export const TailingsSummaryPage = (props) => {
   };
 
   const errors = Object.keys(flattenObject(formErrors));
-  // TODO: remove large error length check
-  const disabledTabs = errors.length > 10000;
   const { mineGuid } = match.params;
   const mineName = mines[mineGuid]?.mine_name || "";
-  const title = `Create facility`;
 
   return (
     (isLoaded && (
       <div>
         <Row>
           <Col span={24}>
-            <Typography.Title>{title}</Typography.Title>
+            <Typography.Title>Create facility</Typography.Title>
           </Col>
         </Row>
         <Row>
@@ -161,31 +164,23 @@ export const TailingsSummaryPage = (props) => {
           </Col>
         </Row>
         <Divider />
-        <Tabs
-          tabPosition="left"
-          activeKey={activeTab}
-          defaultActiveKey={tabs[0]}
-          onChange={(tab) => handleTabChange(tab)}
-          className="vertical-tabs"
-        >
-          {tabs.map((tab) => {
-            return (
-              <Tabs.TabPane
-                tab={formatUrlToUpperCaseString(tab)}
-                disabled={disabledTabs}
-                key={tab}
-                className="vertical-tabs--tabpane"
-              >
-                <TailingsSummaryForm
-                  mineGuid={mineGuid}
-                  handleSaveData={handleSaveData}
-                  handleTabChange={handleTabChange}
-                  initialValues={initialValues}
-                />
-              </Tabs.TabPane>
-            );
-          })}
-        </Tabs>
+        <SteppedForm
+          tabs={tabs}
+          initialValues={initialValues}
+          handleSaveData={handleSaveData}
+          handleTabChange={handleTabChange}
+          handleSaveDraft={handleSaveData}
+          errors={errors}
+          match={match}
+          form={
+            <TailingsSummaryForm
+              mineGuid={mineGuid}
+              handleSaveData={handleSaveData}
+              handleTabChange={handleTabChange}
+              initialValues={initialValues}
+            />
+          }
+        />
       </div>
     )) || <Loading />
   );
@@ -198,6 +193,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   formErrors: getFormSyncErrors(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
   contacts: selector(state, "contacts"),
+  formValues: getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
