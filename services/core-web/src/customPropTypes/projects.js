@@ -25,6 +25,13 @@ export const projectSummary = PropTypes.shape({
   documents: PropTypes.arrayOf(mineDocument),
 });
 
+export const majorMineApplication = PropTypes.shape({
+  major_mine_application_guid: PropTypes.string,
+  major_mine_application_id: PropTypes.number,
+  status_code: PropTypes.string,
+  documents: PropTypes.arrayOf(mineDocument),
+});
+
 export const projectContact = PropTypes.shape({
   project_guid: PropTypes.string,
   project_contact_guid: PropTypes.string,
@@ -44,6 +51,7 @@ export const project = PropTypes.shape({
   project_title: PropTypes.string,
   project_summary: projectSummary,
   information_requirements_table: informationRequirementsTable,
+  major_mine_application: majorMineApplication,
   contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
 });
 
@@ -69,4 +77,12 @@ export const requirements = PropTypes.shape({
   requirement_id: PropTypes.number,
   step: PropTypes.string,
   sub_requirements: PropTypes.arrayOf(subRequirements),
+});
+
+export const projectPageData = PropTypes.shape({
+  records: PropTypes.arrayOf(project),
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
 });

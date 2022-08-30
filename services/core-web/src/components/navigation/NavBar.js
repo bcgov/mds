@@ -316,6 +316,18 @@ export class NavBar extends Component {
           </Row>
           <Row>
             <Col span={24}>
+              <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.MAJOR_PROJECTS_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Major Projects
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Link to={router.CUSTOM_HOME_PAGE.route}>
                 <Button
                   id={
@@ -411,6 +423,11 @@ export class NavBar extends Component {
       <Menu.Item key="browse-notices-of-work" className="navbar-dropdown-menu-item">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
           <button type="button">Notices of Work</button>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="browse-major-projects" className="navbar-dropdown-menu-item">
+        <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
+          <button type="button">Major Projects</button>
         </Link>
       </Menu.Item>
     </Menu>
