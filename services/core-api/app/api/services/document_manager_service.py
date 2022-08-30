@@ -1,4 +1,7 @@
-import requests, base64, io, json
+import requests
+import base64
+import io
+import json
 from tusclient import client
 
 from flask import Response, current_app
@@ -10,7 +13,7 @@ from app.api.now_applications.models.now_application_document_identity_xref impo
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
     'bonds', 'reclamation_invoices', 'explosives_permits', 'project_summaries',
-    'notices_of_depature', 'information_requirements_table', 'major_mine_application'
+    'notices_of_depature', 'information_requirements_table', 'major_mine_application', 'project_permit_package'
 ]
 
 
