@@ -67,6 +67,9 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
 from app.api.projects.major_mine_application.models.major_mine_application_status_code import MajorMineApplicationStatusCode
 from app.api.projects.major_mine_application.models.major_mine_application_document_type import MajorMineApplicationDocumentType
+from app.api.projects.project_permit_package.models.project_permit_package_status_code import ProjectPermitPackageStatusCode
+from app.api.projects.project_permit_package.models.project_permit_package_document_type import ProjectPermitPackageDocumentType
+
 
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
@@ -84,7 +87,7 @@ MODELS_GET_ACTIVE = [
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectPermitPackageStatusCode, ProjectPermitPackageDocumentType
 ]
 
 
@@ -98,8 +101,7 @@ def generate_static_content_dict():
 
 class StaticContentResource(Resource):
     @api.doc(
-        description=
-        'Returns static content in bulk instead of calling endpoints individually, keys are custom for current store in CORE/Minespace'
+        description='Returns static content in bulk instead of calling endpoints individually, keys are custom for current store in CORE/Minespace'
     )
     @requires_role_view_all
     def get(self):
