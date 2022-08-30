@@ -195,6 +195,40 @@ MAJOR_MINE_APPLICATION_MODEL = api.model(
         'create_timestamp': fields.DateTime
     })
 
+PROJECT_PERMIT_PACKAGE_DOCUMENT_MODEL = api.inherit(
+    'ProjectPermitPackageDocument', MINE_DOCUMENT_MODEL, {
+        'project_permit_package_id': fields.Integer,
+        'project_permit_package_document_type_code': fields.String
+    })
+
+PROJECT_PERMIT_PACKAGE_STATUS_CODE_MODEL = api.model(
+    'ProjectPermitPackageStatusCode', {
+        'project_permit_package_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    })
+
+PROJECT_PERMIT_PACKAGE_DOCUMENT_TYPE_MODEL = api.model(
+    'ProjectPermitPackageDocumentType', {
+        'project_permit_package_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer
+    })
+
+PROJECT_PERMIT_PACKAGE_MODEL = api.model(
+    'ProjectPermitPackage', {
+        'project_permit_package_id': fields.Integer,
+        'project_permit_package_guid': fields.String,
+        'project_guid': fields.String,
+        'status_code': fields.String,
+        'documents': fields.List(fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_MODEL)),
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
+    })
+
 PROJECT_MODEL = api.model(
     'Project', {
         'project_guid': fields.String,
@@ -209,6 +243,7 @@ PROJECT_MODEL = api.model(
         'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL),
         'information_requirements_table': fields.Nested(IRT_MODEL),
         'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL),
+        'project_permit_package': fields.Nested(PROJECT_PERMIT_PACKAGE_MODEL),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,

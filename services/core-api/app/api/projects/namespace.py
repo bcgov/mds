@@ -23,6 +23,10 @@ from app.api.projects.major_mine_application.resources.major_mine_application_li
 from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
 from app.api.projects.major_mine_application.resources.major_mine_application_document_upload import MajorMineApplicationDocumentUploadResource
 from app.api.projects.major_mine_application.resources.major_mine_application_uploaded_document import MajorMineApplicationUploadedDocumentResource
+from app.api.projects.project_permit_package.resources.project_permit_package import ProjectPermitPackageResource, ProjectPermitPackageListResource
+from app.api.projects.project_permit_package.resources.project_permit_package_document_upload import ProjectPermitPackageDocumentUploadResource
+from app.api.projects.project_permit_package.resources.project_permit_package_uploaded_document import ProjectPermitPackageUploadedDocumentResource
+
 
 api = Namespace('projects', description='Projects actions/options')
 
@@ -71,3 +75,9 @@ api.add_resource(
 api.add_resource(MajorMineApplicationDocumentUploadResource,
                  '/<string:project_guid>/major-mine-application/documents')
 api.add_resource(MajorMineApplicationUploadedDocumentResource, '/<string:project_guid>/major-mine-application/<string:major_mine_application_guid>/documents/<string:mine_document_guid>')
+
+# Project Permit Package
+api.add_resource(ProjectPermitPackageListResource, '<string:project_guid>/project-permit-package')
+api.add_resource(ProjectPermitPackageResource, '<string:project_guid>/project-permit-package/<string:project_permit_package_guid>')
+api.add_resource(ProjectPermitPackageDocumentUploadResource, '/<string:project_guid>/project-permit-package/documents')
+api.add_resource(ProjectPermitPackageUploadedDocumentResource, '/<string:project_guid>/project-permit-package/documents/<string:mine_document_guid>')
