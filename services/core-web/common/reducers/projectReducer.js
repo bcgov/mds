@@ -8,9 +8,10 @@ const initialState = {
   projectSummaries: [],
   projectSummary: {},
   projectSummaryPageData: {},
-  informationRequirementsTable: [],
+  informationRequirementsTable: {},
   requirements: [],
   majorMinesApplication: {},
+  projectPermitPackage: {},
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -77,6 +78,16 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         majorMinesApplication: {},
       };
+    case actionTypes.STORE_PROJECT_PERMIT_PACKAGE:
+      return {
+        ...state,
+        projectPermitPackage: action.payload,
+      };
+    case actionTypes.CLEAR_PROJECT_PERMIT_PACKAGE:
+      return {
+        ...state,
+        projectPermitPackage: {},
+      };
 
     default:
       return state;
@@ -97,5 +108,6 @@ export const getRequirements = (state) => state[PROJECTS].requirements;
 export const getInformationRequirementsTable = (state) =>
   state[PROJECTS].informationRequirementsTable;
 export const getMajorMinesApplication = (state) => state[PROJECTS].majorMinesApplication;
+export const getProjectPermitPackage = (state) => state[PROJECTS].projectPermitPackage;
 
 export default projectReducerObject;

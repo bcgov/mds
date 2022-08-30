@@ -171,6 +171,20 @@ export const MAJOR_MINE_APPLICATION_DOCUMENT = (
 ) =>
   `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}/documents/${mineDocumentGuid}`;
 
+// Project Permit Package
+export const PROJECT_PERMIT_PACKAGES = (projectGuid) =>
+  `/projects/${projectGuid}/project-permit-package`;
+export const PROJECT_PERMIT_PACKAGE = (projectGuid, projectPermitPackageGuid) =>
+  `/projects/${projectGuid}/project-permit-package/${projectPermitPackageGuid}`;
+export const PROJECT_PERMIT_PACKAGE_DOCUMENTS = (projectGuid) =>
+  `/projects/${projectGuid}/project-permit-package/documents`;
+export const PROJECT_PERMIT_PACKAGE_DOCUMENT = (
+  projectGuid,
+  projectPermitPackageGuid,
+  mineDocumentGuid
+) =>
+  `/projects/${projectGuid}/project-permit-package/${projectPermitPackageGuid}/documents/${mineDocumentGuid}`;
+
 // Users
 export const CORE_USER = "/users/core";
 
