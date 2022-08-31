@@ -21,6 +21,8 @@ jobs:
         with:
             dir: services/core-web
             ignores: 'eslint,babel-*'
+        continue-on-error: true
+
   audit-minespace: # Audit for unused frontend packages
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +32,7 @@ jobs:
         with:
             dir: services/minespace-web
             ignores: 'eslint,babel-*'
+        continue-on-error: true
 
 
 # Check frontend packages that need to be upgraded 
