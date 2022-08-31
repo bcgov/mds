@@ -250,8 +250,8 @@ PROJECT_MODEL = api.model(
         'create_timestamp': fields.DateTime
     })
 
-PROJECT_TABLE_MODEL = api.model(
-    'ProjectViewAllTable',{
+PROJECT_MINE_LIST_MODEL = api.model(
+    'ProjectMineList',{
         'stage': fields.String,
         'id': fields.Integer,
         'guid': fields.String,
@@ -266,18 +266,15 @@ PROJECT_TABLE_MODEL = api.model(
     })
 
 
-MAJOR_PROJECT_MODEL = api.inherit(
-    'ProjectViewAllTable', PROJECT_TABLE_MODEL, {
-        'mine': fields.Nested(MINES_MODEL),
-    }
-)
-
-PROJECT_LIST_MODEL = api.model(
-    'ProjectList', {
-        'records': fields.List(fields.Nested(PROJECT_TABLE_MODEL)),
+PAGINATED_LIST = api.model(
+    'List', {
         'current_page': fields.Integer,
         'total_pages': fields.Integer,
         'items_per_page': fields.Integer,
         'total': fields.Integer,
     }
 )
+
+PAGINATED_PROJECT_LIST = api.inherit('ProjectList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(PROJECT_MINE_LIST_MODEL))
+})

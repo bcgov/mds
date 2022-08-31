@@ -1,5 +1,6 @@
 import { PropTypes } from "prop-types";
 import { mineDocument } from "./documents";
+import { mine } from "./mines";
 
 export const irt_requirements_xref = PropTypes.shape({
   irt_requirements_xref_guid: PropTypes.string,
@@ -53,6 +54,20 @@ export const project = PropTypes.shape({
   information_requirements_table: informationRequirementsTable,
   major_mine_application: majorMineApplication,
   contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
+});
+
+export const projectDashboard = PropTypes.shape({
+  stage: PropTypes.string,
+  id: PropTypes.number,
+  guid: PropTypes.string,
+  project_title: PropTypes.string,
+  project_id: PropTypes.string,
+  project_guid: PropTypes.string,
+  mrc_review_required: PropTypes.boolean,
+  status_code: PropTypes.string,
+  contacts: PropTypes.arrayOf(PropTypes.shape(projectContact)),
+  update_timestamp: PropTypes.string,
+  mine: PropTypes.shape(mine),
 });
 
 export const subRequirements = PropTypes.shape({

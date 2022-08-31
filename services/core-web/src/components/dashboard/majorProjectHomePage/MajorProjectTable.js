@@ -16,19 +16,20 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
   filters: PropTypes.objectOf(PropTypes.any),
-  isLoaded: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
 };
 
 const defaultProps = {
   filters: {},
+  isLoaded: false,
   sortField: undefined,
   sortDir: undefined,
 };
 
 const transformRowData = (projects, mineCommodityHash) =>
-  projects.map((project) => ({
+  projects?.map((project) => ({
     key: project.project_guid,
     project_title: project.project_title,
     project_id: project.project_id,
@@ -48,7 +49,9 @@ const transformRowData = (projects, mineCommodityHash) =>
                   result.push(
                     type.mine_type_detail
                       .filter((detail) => detail.mine_commodity_code)
-                      .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+                      .map((detail) =>
+                        mineCommodityHash ? mineCommodityHash[detail.mine_commodity_code] : ""
+                      )
                   );
                 }
                 return result;
@@ -75,19 +78,19 @@ const linkStage = (record) => {
         <Button type="primary">Open</Button>
       </Link>
     );
-  } if (record.project_stage === "IRT") {
+  }
+  if (record.project_stage === "IRT") {
     return (
       <Link to={router.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(record.key, record.guid)}>
         <Button type="primary">Open</Button>
       </Link>
     );
-  } 
-    return (
-      <Link to={router.MAJOR_MINE_APPLICATION.dynamicRoute(record.key, record.guid)}>
-        <Button type="primary">Open</Button>
-      </Link>
-    );
-  
+  }
+  return (
+    <Link to={router.MAJOR_MINE_APPLICATION.dynamicRoute(record.key, record.guid)}>
+      <Button type="primary">Open</Button>
+    </Link>
+  );
 };
 
 export const MajorProjectTable = (props) => {
@@ -162,8 +165,7 @@ export const MajorProjectTable = (props) => {
       title: "Updated Date",
       dataIndex: "update_timestamp",
       render: (text) => <div title="Updated Date">{text}</div>,
-      // sorter: dateSorter("update_timestamp"),
-      // sortOrder: "descend",
+      sorter: false,
     },
     {
       title: "",
@@ -188,7 +190,7 @@ export const MajorProjectTable = (props) => {
     <CoreTable
       condition={props.isLoaded}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-      dataSource={transformRowData(props.projects, props.mineCommodityOptionsHash)}
+      dataSource={transformRowData(props.projects?.records, props.mineCommodityOptionsHash)}
       tableProps={{
         align: "left",
         pagination: false,

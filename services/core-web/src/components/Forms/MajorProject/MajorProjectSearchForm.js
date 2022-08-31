@@ -64,7 +64,7 @@ export class MajorProjectsSearchForm extends Component {
                   data={[
                     { value: "ProjectSummary", label: "Project Summary" },
                     { value: "InformationRequirementsTable", label: "IRT" },
-                    { value: "MajorMineApplication", label: "Major Mine Application" },
+                    { value: "MajorMineApplication", label: "Final Application" },
                   ]}
                 />
               </Col>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { destroy } from "redux-form";
 import * as Strings from "@common/constants/strings";
@@ -25,16 +26,15 @@ import MajorProjectTable from "./MajorProjectTable";
 const propTypes = {
   history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   fetchProjects: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
+  projects: PropTypes.arrayOf(CustomPropTypes.projectDashboard).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   majorMinesApplicationStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryStatusCodes: PropTypes.string.isRequired,
-  informationRequirementsTableStatusCodes: PropTypes.string.isRequired,
-  majorMinesApplicationStatusCodes: PropTypes.string.isRequired,
+  projectSummaryStatusCodes: PropTypes.arrayOf(PropTypes.any).isRequired,
+  informationRequirementsTableStatusCodes: PropTypes.arrayOf(PropTypes.any).isRequired,
+  majorMinesApplicationStatusCodes: PropTypes.arrayOf(PropTypes.any).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  // handlePageChange: PropTypes.func.isRequired,
   pageData: CustomPropTypes.projectPageData.isRequired,
 };
 
@@ -133,6 +133,11 @@ export class MajorProjectHomePage extends Component {
   };
 
   render() {
+    const allStatus = [].concat(
+      this.props.projectSummaryStatusCodes,
+      this.props.informationRequirementsTableStatusCodes,
+      this.props.majorMinesApplicationStatusCodes
+    );
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -148,11 +153,7 @@ export class MajorProjectHomePage extends Component {
               initialValues={this.state.params}
               handleSearch={this.handleSearch}
               handleReset={this.clearParams}
-              statusCodes={[
-                ...this.props.projectSummaryStatusCodes,
-                ...this.props.informationRequirementsTableStatusCodes,
-                ...this.props.majorMinesApplicationStatusCodes,
-              ]}
+              statusCodes={uniqBy(allStatus, "value").sort((a, b) => (a.value < b.value ? -1 : 1))}
             />
             <MajorProjectTable
               isLoaded={this.state.projectsLoaded}
@@ -173,7 +174,7 @@ export class MajorProjectHomePage extends Component {
               <ResponsivePagination
                 onPageChange={this.onPageChange}
                 currentPage={Number(this.state.params.page)}
-                pageTotal={this.props.pageData.total}
+                pageTotal={this.props.pageData?.total}
                 itemsPerPage={Number(this.state.params.per_page)}
               />
             </div>

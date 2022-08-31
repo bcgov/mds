@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MajorProjectTable renders properly 1`] = `
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "project_title",
+        "key": "project_title",
+        "render": [Function],
+        "sortField": "project_title",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Project Title",
+      },
+      Object {
+        "dataIndex": "project_id",
+        "key": "project_id",
+        "render": [Function],
+        "sortField": "project_id",
+        "sortOrder": "ascend",
+        "sorter": true,
+        "title": "Project ID",
+      },
+      Object {
+        "dataIndex": "mrc_review_required",
+        "key": "mrc_review_required",
+        "render": [Function],
+        "sortField": "mrc_review_required",
+        "sortOrder": false,
+        "sorter": false,
+        "title": "MRC",
+      },
+      Object {
+        "dataIndex": "project_stage",
+        "key": "project_stage",
+        "render": [Function],
+        "sortField": "project_stage",
+        "sortOrder": false,
+        "sorter": false,
+        "title": "Stage",
+      },
+      Object {
+        "dataIndex": "status_code",
+        "key": "status_code",
+        "render": [Function],
+        "sortField": "status_code",
+        "sortOrder": false,
+        "sorter": false,
+        "title": "Review Status",
+      },
+      Object {
+        "dataIndex": "contact",
+        "key": "contact",
+        "render": [Function],
+        "sortField": "contact",
+        "sortOrder": false,
+        "sorter": false,
+        "title": "Primary Contact",
+      },
+      Object {
+        "dataIndex": "commodity",
+        "key": "commodity",
+        "render": [Function],
+        "sortField": "commodity",
+        "sortOrder": false,
+        "sorter": false,
+        "title": "Commodity",
+      },
+      Object {
+        "dataIndex": "update_timestamp",
+        "render": [Function],
+        "sortOrder": false,
+        "sorter": false,
+        "title": "Updated Date",
+      },
+      Object {
+        "dataIndex": "project",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "",
+      },
+    ]
+  }
+  condition={false}
+  dataSource={
+    Array [
+      Object {
+        "commodity": Array [
+          "",
+        ],
+        "contact": "Devin Lucas",
+        "guid": "3a8087ac-1046-43cb-b152-613db59fff32",
+        "key": "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
+        "mrc_review_required": "No",
+        "project_id": "1",
+        "project_stage": "Project Summary",
+        "project_title": "Test Project Title",
+        "status_code": "SUB",
+        "update_timestamp": "Aug 01 2022",
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "onChange": [Function],
+      "pagination": false,
+    }
+  }
+/>
+`;

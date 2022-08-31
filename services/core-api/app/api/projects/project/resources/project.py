@@ -11,7 +11,7 @@ from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
-from app.api.projects.response_models import PROJECT_MODEL, PROJECT_LIST_MODEL
+from app.api.projects.response_models import PROJECT_MODEL, PAGINATED_PROJECT_LIST
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
@@ -101,7 +101,7 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
         })
-    @api.marshal_with(PROJECT_LIST_MODEL, code=200)
+    @api.marshal_with(PAGINATED_PROJECT_LIST, code=200, envelope='records')
     def get(self):
         args = {
             "page_number":request.args.get('page_number', PAGE_DEFAULT, type=int),

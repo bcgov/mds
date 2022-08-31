@@ -7,7 +7,7 @@ import MajorProjectSearchForm from "@/components/Forms/MajorProject/MajorProject
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  statusCodes: PropTypes.string.isRequired,
+  statusCodes: PropTypes.arrayOf(PropTypes.any).isRequired,
   handleReset: PropTypes.func.isRequired,
 };
 

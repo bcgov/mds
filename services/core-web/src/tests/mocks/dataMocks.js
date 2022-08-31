@@ -6449,6 +6449,52 @@ export const PROJECTS = {
   ],
 };
 
+export const MAJOR_PROJECTS_DASHBOARD = {
+  records: [
+    {
+      stage: "Project Summary",
+      id: 1,
+      guid: "3a8087ac-1046-43cb-b152-613db59fff32",
+      project_title: "Test Project Title",
+      project_id: "1",
+      project_guid: "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
+      mrc_review_required: false,
+      status_code: "SUB",
+      contacts: [
+        {
+          name: "Devin Lucas",
+          job_title: null,
+          company_name: null,
+          email: "fyang@example.org",
+          phone_number: "337-588-3109",
+          phone_extension: null,
+          is_primary: true,
+        },
+      ],
+      update_timestamp: "2022-08-01T00:00:00+00:00",
+      mine: {
+        mine_type: [
+          {
+            mine_type_detail: [
+              {
+                mine_commodity_code: "CG",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};
+
+export const MAJOR_PROJECTS_PAGE_DATA = {
+  records: [MAJOR_PROJECTS_DASHBOARD],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
+};
+
 export const PROJECT = {
   project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
   project_title: "Test Project Title",
@@ -6872,6 +6918,33 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
+  {
+    value: "SUB",
+    label: "Submitted",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNR",
+    label: "In Review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "APV",
+    label: "Review Complete",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "CHR",
+    label: "Change Requested",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN = [
   {
     value: "SUB",
     label: "Submitted",
