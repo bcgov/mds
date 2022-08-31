@@ -67,8 +67,8 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
 from app.api.projects.major_mine_application.models.major_mine_application_status_code import MajorMineApplicationStatusCode
 from app.api.projects.major_mine_application.models.major_mine_application_document_type import MajorMineApplicationDocumentType
-from app.api.projects.project_permit_package.models.project_permit_package_status_code import ProjectPermitPackageStatusCode
-from app.api.projects.project_permit_package.models.project_permit_package_document_type import ProjectPermitPackageDocumentType
+from app.api.projects.project_decision_package.models.project_decision_package_status_code import ProjectDecisionPackageStatusCode
+from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
 
 
 MODELS_GET_ACTIVE = [
@@ -87,7 +87,7 @@ MODELS_GET_ACTIVE = [
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectPermitPackageStatusCode, ProjectPermitPackageDocumentType
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType
 ]
 
 

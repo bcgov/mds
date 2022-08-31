@@ -28,7 +28,7 @@ EDIT_INFORMATION_REQUIREMENTS_TABLE = "core_edit_information_requirements_table"
 EDIT_MAJOR_MINE_APPLICATIONS = "core_edit_major_mine_applications"
 EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
-EDIT_PROJECT_PERMIT_PACKAGES = "core_edit_project_permit_packages"
+EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 
 
 def is_minespace_user():

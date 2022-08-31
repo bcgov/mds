@@ -27,8 +27,8 @@ class Project(AuditMixin, Base):
         "InformationRequirementsTable", uselist=False, back_populates="project")
     major_mine_application = db.relationship(
         "MajorMineApplication", uselist=False, back_populates="project")
-    project_permit_package = db.relationship(
-        "ProjectPermitPackage", uselist=False, back_populates="project")
+    project_decision_package = db.relationship(
+        "ProjectDecisionPackage", uselist=False, back_populates="project")
     project_lead = db.relationship(
         'Party', lazy='select', primaryjoin='Party.party_guid == Project.project_lead_party_guid')
     contacts = db.relationship(
