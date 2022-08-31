@@ -10,7 +10,11 @@ import { Form } from "@ant-design/compatible";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getProject } from "@common/selectors/projectSelectors";
-import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import {
+  fetchProjectById,
+  createProjectDecisionPackage,
+} from "@common/actionCreators/projectActionCreator";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
@@ -18,6 +22,7 @@ import customPropTypes from "@/customPropTypes";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import DocumentTable from "@/components/common/DocumentTable";
 import { renderConfig } from "@/components/common/config";
+import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -26,7 +31,10 @@ const propTypes = {
     }),
   }).isRequired,
   project: customPropTypes.project.isRequired,
+  createProjectDecisionPackage: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export class DecisionPackageTab extends Component {
@@ -89,7 +97,67 @@ export class DecisionPackageTab extends Component {
     );
   };
 
+  handleOpenModal = (modalType) => {
+    let title;
+    let contentTitle;
+    let content;
+    let instructions;
+    const submitHandler = this.handleUploadDocument;
+    if (modalType === "decision-package") {
+      title = "Upload Documents";
+      instructions =
+        "Please upload all relevant decision documentation below. You can add this set of files directly to your decision package by selecting the option below.";
+      content = modalConfig.UPLOAD_PROJECT_PERMIT_PACKAGE_DOCUMENT_MODAL;
+      contentTitle = "Upload Documents";
+    } else if (modalType === "internal") {
+      title = "Upload Internal Documents";
+      instructions =
+        "Upload internal documents that are created durring the review process. These files are for internal staff only and will not be shown to proponents.";
+      content = modalConfig.UPLOAD_PROJECT_PERMIT_PACKAGE_DOCUMENT_MODAL;
+      contentTitle = "Upload Internal Ministry Document";
+    }
+
+    return this.props.openModal({
+      props: {
+        title,
+        contentTitle,
+        instructions,
+        projectGuid: this.props.project?.project_guid,
+        modalType,
+        closeModal: this.props.closeModal,
+        handleSubmit: submitHandler,
+        afterClose: () => {},
+      },
+      content,
+    });
+  };
+
+  handleUploadDocument = (event, values) => {
+    event.preventDefault();
+    if (!this.props.project?.project_decision_package?.project_decision_package_guid) {
+      const payload = {
+        status_code: "INP",
+        documents: values,
+      };
+      return this.props
+        .createProjectDecisionPackage(
+          {
+            projectGuid: this.props.project?.project_guid,
+          },
+          payload
+        )
+        .then(() => this.handleFetchData())
+        .then(() => this.props.closeModal());
+    }
+    return () => {};
+  };
+
   render() {
+    const allDocuments = this.props.project.project_decision_package?.documents || [];
+    const hasDecisionPackageDocuments =
+      allDocuments?.filter((doc) => doc.project_decision_package_document_type_code === "DCP")
+        ?.length > 0;
+
     return (
       <Form layout="vertical">
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
@@ -99,7 +167,7 @@ export class DecisionPackageTab extends Component {
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
             ]}
-            featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
+            featureUrlRoute={routes.PROJECT_PERMIT_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
         </div>
@@ -151,10 +219,18 @@ export class DecisionPackageTab extends Component {
                 Decision Package Documents
               </Col>
               <Col xs={24} md={12}>
-                <Button type="primary" style={{ float: "right" }}>
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={() => this.handleOpenModal("decision-package")}
+                >
                   + Add Documents
                 </Button>
-                <Button type="secondary" style={{ float: "right" }}>
+                <Button
+                  type="secondary"
+                  style={{ float: "right" }}
+                  disabled={!hasDecisionPackageDocuments}
+                >
                   <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
                   &nbsp; Edit Package
                 </Button>
@@ -165,7 +241,9 @@ export class DecisionPackageTab extends Component {
               <b>These files are visible to the proponent.</b> Upload Ministry Decision
               documentation.
             </Typography.Text>,
-            this.props.project?.decision_package?.documents || []
+            allDocuments?.filter(
+              (doc) => doc.project_decision_package_document_type_code === "DCP"
+            ) || []
           )}
           <br />
           {this.renderDocumentSection(
@@ -175,7 +253,9 @@ export class DecisionPackageTab extends Component {
               <b>These files are visible to the proponent.</b> Upload Supplemental Ministry
               documentation.
             </Typography.Text>,
-            this.props.project?.decision_package?.documents || []
+            allDocuments?.filter(
+              (doc) => doc.project_decision_package_document_type_code === "ADG"
+            ) || []
           )}
           <br />
           <Row>
@@ -193,7 +273,11 @@ export class DecisionPackageTab extends Component {
                 Internal Ministry Documentation
               </Col>
               <Col xs={24} md={12}>
-                <Button type="primary" style={{ float: "right" }}>
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={() => this.handleOpenModal("internal")}
+                >
                   + Add Documents
                 </Button>
               </Col>
@@ -203,7 +287,9 @@ export class DecisionPackageTab extends Component {
               <b>These files are for internal staff only and will not be shown to proponents.</b>{" "}
               Upload internal documents that are created durring the review process.
             </Typography.Text>,
-            this.props.project?.decision_package?.documents || []
+            allDocuments?.filter(
+              (doc) => doc.project_decision_package_document_type_code === "INM"
+            ) || []
           )}
         </div>
       </Form>
@@ -219,6 +305,9 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchProjectById,
+      createProjectDecisionPackage,
+      openModal,
+      closeModal,
     },
     dispatch
   );
