@@ -9,7 +9,7 @@ const propTypes = {
 
 const calloutContent = (majorMineApplicationStatus) => {
   switch (majorMineApplicationStatus) {
-    case "REC":
+    case "SUB":
       return {
         message:
           "Your Major Mine Application is pending review. No edits can be made at this time.",

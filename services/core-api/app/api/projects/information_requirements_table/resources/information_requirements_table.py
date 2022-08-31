@@ -54,7 +54,7 @@ class InformationRequirementsTableResource(Resource, UserMixin):
             irt_updated = irt.update(data)
             if irt.status_code != 'APV' and data['status_code'] == 'APV':
                 irt.send_irt_approval_email()
-            elif irt.status_code != 'REC' and data['status_code'] == 'REC':
+            elif irt.status_code != 'SUB' and data['status_code'] == 'SUB':
                 irt.send_irt_submit_email()
             return irt_updated
         except BadRequest as err:
@@ -74,7 +74,7 @@ class InformationRequirementsTableResource(Resource, UserMixin):
         if irt is None:
             raise NotFound('Information Requirements Table not found')
 
-        if irt.status_code == 'REC':
+        if irt.status_code == 'SUB':
             irt.delete()
 
             return None, 204

@@ -148,7 +148,7 @@ const StepForms = (
     title: "Review & Submit",
     content: (
       <>
-        {props.project?.information_requirements_table?.status_code === "PRG" ? (
+        {props.project?.information_requirements_table?.status_code === "DFT" ? (
           <>
             <Typography.Title level={4}>Review IRT before submission</Typography.Title>
             <Typography.Paragraph>
@@ -171,7 +171,7 @@ const StepForms = (
     ),
     buttons: [
       <>
-        {props.project.information_requirements_table?.status_code === "PRG" ? (
+        {props.project.information_requirements_table?.status_code === "DFT" ? (
           <>
             <Button
               id="step-back"
@@ -203,7 +203,7 @@ const StepForms = (
                   onConfirm={() =>
                     handleIRTUpdate(
                       {
-                        status_code: "REC",
+                        status_code: "SUB",
                       },
                       "Successfully submitted final IRT."
                     )
@@ -292,7 +292,7 @@ export class InformationRequirementsTablePage extends Component {
         }));
       })
       .then(() => {
-        if (this.props.project.information_requirements_table?.status_code === "PRG") {
+        if (this.props.project.information_requirements_table?.status_code === "DFT") {
           this.setState((prevState) => ({
             isEditMode: !prevState.isEditMode,
           }));
@@ -497,7 +497,7 @@ export class InformationRequirementsTablePage extends Component {
 
   render() {
     const title =
-      this.props.project.information_requirements_table?.status_code !== "PRG"
+      this.props.project.information_requirements_table?.status_code !== "DFT"
         ? this.props.project?.project_title
         : `Major Mine Submission - ${this.props.project?.project_title}`;
 
@@ -562,7 +562,7 @@ export class InformationRequirementsTablePage extends Component {
               {this.state.current !== 0 && (
                 <InformationRequirementsTableCallout
                   informationRequirementsTableStatus={
-                    this.props.project?.information_requirements_table?.status_code || "PRG"
+                    this.props.project?.information_requirements_table?.status_code || "DFT"
                   }
                 />
               )}

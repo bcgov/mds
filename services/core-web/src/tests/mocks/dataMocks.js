@@ -6842,7 +6842,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
   irt_id: 1,
   irt_guid: "9a5a10ce-ead2-4346-8a85-b3320c5b454b",
   project_guid: "fba9b698-6d40-4df1-9914-84008c3c586f",
-  status_code: "REC",
+  status_code: "SUB",
   requirements: [
     {
       irt_requirements_xref_guid: "38c5de09-3aef-4269-b606-e0f6b37f0775",
@@ -6864,8 +6864,8 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
-  PRG: "In Progress",
-  REC: "Pending Review",
+  DFT: "Draft",
+  SUB: "Submitted",
   UNR: "In Review",
   APV: "Review Complete",
   CHR: "Change Requested",
@@ -6873,8 +6873,8 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   {
-    value: "REC",
-    label: "Pending Review",
+    value: "SUB",
+    label: "Submitted",
     subType: null,
     isActive: true,
   },
@@ -6902,7 +6902,7 @@ export const MAJOR_MINES_APPLICATION = {
   major_mine_application_id: 1,
   major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
   project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
-  status_code: "REC",
+  status_code: "SUB",
   documents: [
     {
       major_mine_application_id: 1,
@@ -6949,7 +6949,7 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
 
 export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
   DFT: "Draft",
-  REC: "Pending Review",
+  SUB: "Submitted",
   UNR: "In review - with reviewers",
   APV: "Approved",
   CHR: "Change Requested",

@@ -43,9 +43,9 @@ exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
                   Array [
                     Object {
                       "isActive": true,
-                      "label": "Pending Review",
+                      "label": "Submitted",
                       "subType": null,
-                      "value": "REC",
+                      "value": "SUB",
                     },
                     Object {
                       "isActive": true,
@@ -81,7 +81,7 @@ exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
           </ForwardRef>
         </ForwardRef>
       }
-      message="Pending Review"
+      message="Submitted"
       showIcon={true}
       type="warning"
     />

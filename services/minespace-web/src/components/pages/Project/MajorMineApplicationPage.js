@@ -55,7 +55,7 @@ const defaultProps = {
   formErrors: {},
 };
 
-export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["REC", "UNR", "APV"];
+export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["SUB", "UNR", "APV"];
 
 const StepForms = (
   props,
@@ -219,7 +219,7 @@ const StepForms = (
               e,
               {
                 ...props.project.major_mine_application,
-                status_code: "REC",
+                status_code: "SUB",
               },
               "Successfully submitted a major mine application."
             );
@@ -312,7 +312,7 @@ export class MajorMineApplicationPage extends Component {
         return this.handleCreateMajorMineApplication(values, message);
       }
       await this.handleUpdateMajorMineApplication(values, message);
-      if (values?.status_code === "REC") {
+      if (values?.status_code === "SUB") {
         return this.props.history.push({
           pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
             this.props.project.major_mine_application?.project_guid,

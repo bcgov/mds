@@ -45,7 +45,7 @@ exports[`ProjectStagesTable renders properly 1`] = `
             "proponent_project_id": "25789-x",
             "status_code": "OPN",
           },
-          "status": "REC",
+          "status": "SUB",
           "statusHash": Object {
             "ASG": "Assigned",
             "COM": "Complete",
@@ -59,7 +59,7 @@ exports[`ProjectStagesTable renders properly 1`] = `
           },
           "title": "Project description",
         },
-        "stage_status": "REC",
+        "stage_status": "SUB",
         "stage_status_hash": Object {
           "ASG": "Assigned",
           "COM": "Complete",
