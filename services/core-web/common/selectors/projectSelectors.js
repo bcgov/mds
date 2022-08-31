@@ -12,7 +12,7 @@ export const {
   getRequirements,
   getInformationRequirementsTable,
   getMajorMinesApplication,
-  getProjectPermitPackage,
+  getProjectDecisionPackage,
 } = projectReducer;
 
 export const getFormattedProjectSummary = createSelector([getProjectSummary], (summary) => {

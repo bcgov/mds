@@ -215,9 +215,10 @@ export const PROJECT_ALL_DOCUMENTS = {
 };
 
 export const PROJECT_DECISION_PACKAGE = {
-  route: "/pre-applications/:projectGuid/decision-package",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/decision-package`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/decision-package/${link}`,
+  route: "/pre-applications/:projectGuid/project-decision-package",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/project-decision-package`,
+  hashRoute: (projectGuid, link) =>
+    `/pre-applications/${projectGuid}/project-decision-package/${link}`,
   component: DecisionPackageTab,
 };
 

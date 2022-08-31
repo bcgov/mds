@@ -171,19 +171,19 @@ export const MAJOR_MINE_APPLICATION_DOCUMENT = (
 ) =>
   `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}/documents/${mineDocumentGuid}`;
 
-// Project Permit Package
-export const PROJECT_PERMIT_PACKAGES = (projectGuid) =>
-  `/projects/${projectGuid}/project-permit-package`;
-export const PROJECT_PERMIT_PACKAGE = (projectGuid, projectPermitPackageGuid) =>
-  `/projects/${projectGuid}/project-permit-package/${projectPermitPackageGuid}`;
-export const PROJECT_PERMIT_PACKAGE_DOCUMENTS = (projectGuid) =>
-  `/projects/${projectGuid}/project-permit-package/documents`;
-export const PROJECT_PERMIT_PACKAGE_DOCUMENT = (
+// Project Decision Package
+export const PROJECT_DECISION_PACKAGES = (projectGuid) =>
+  `/projects/${projectGuid}/project-decision-package`;
+export const PROJECT_DECISION_PACKAGE = (projectGuid, projectDecisionPackageGuid) =>
+  `/projects/${projectGuid}/project-decision-package/${projectDecisionPackageGuid}`;
+export const PROJECT_DECISION_PACKAGE_DOCUMENTS = (projectGuid) =>
+  `/projects/${projectGuid}/project-decision-package/documents`;
+export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
   projectGuid,
-  projectPermitPackageGuid,
+  projectDecisionPackageGuid,
   mineDocumentGuid
 ) =>
-  `/projects/${projectGuid}/project-permit-package/${projectPermitPackageGuid}/documents/${mineDocumentGuid}`;
+  `/projects/${projectGuid}/project-decision-package/${projectDecisionPackageGuid}/documents/${mineDocumentGuid}`;
 
 // Users
 export const CORE_USER = "/users/core";

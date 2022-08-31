@@ -57,12 +57,12 @@ export const clearRequirements = () => ({
   type: actionTypes.CLEAR_REQUIREMENTS,
 });
 
-export const storeProjectPermitPackage = (payload) => ({
-  type: actionTypes.STORE_PROJECT_PERMIT_PACKAGE,
+export const storeProjectDecisionPackage = (payload) => ({
+  type: actionTypes.STORE_PROJECT_DECISION_PACKAGE,
   payload,
 });
 
-export const clearProjectPermitPackage = (payload) => ({
-  type: actionTypes.CLEAR_PROJECT_PERMIT_PACKAGE,
+export const clearProjectDecisionPackage = (payload) => ({
+  type: actionTypes.CLEAR_PROJECT_DECISION_PACKAGE,
   payload,
 });
