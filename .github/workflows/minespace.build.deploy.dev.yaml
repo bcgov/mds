@@ -1,7 +1,6 @@
 name: MINESPACE - Build & Deploy To DEV
 
 on:
-  pull_request:
   workflow_dispatch:
   push:
     branches:
