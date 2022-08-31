@@ -19,9 +19,10 @@ jobs:
       - name: depcheck
         uses: tj-actions/depcheck@v8
         with:
+            dir: 
             ignores: 'eslint,babel-*'
 
-  
+
 # Check frontend packages that need to be upgraded 
 
 # Check for security vulnerabilities in frontend packages 
