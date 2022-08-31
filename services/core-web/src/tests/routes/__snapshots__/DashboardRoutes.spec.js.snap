@@ -280,7 +280,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="/pre-applications/:projectGuid/decision-package"
+    path="/pre-applications/:projectGuid/project-decision-package"
   />
   <Route
     component={

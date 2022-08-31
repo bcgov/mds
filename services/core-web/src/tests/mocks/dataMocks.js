@@ -6442,6 +6442,9 @@ export const PROJECTS = {
       major_mine_application: {
         documents: [],
       },
+      project_decision_package: {
+        documents: [],
+      },
     },
   ],
 };
@@ -7153,4 +7156,47 @@ export const ACTIVITIES = {
     ],
     total: 3,
   },
+};
+
+export const PROJECT_DECISION_PACKAGE = {
+  project_decision_package_id: 1,
+  project_decision_package_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+  project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
+  status_code: "INP",
+  documents: [
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "DCP",
+      mine_document_guid: "479af6fe-823d-4014-bed1-5133a007c71f",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "0ed74348-c1ed-41d5-a6ad-3e1f42cf0b41",
+      document_name: "decision-document.pdf",
+      upload_date: "2022-07-14T04:32:58.659745+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "ADG",
+      mine_document_guid: "f9b93bd0-e3ac-4bee-918b-3bc82224f2a9",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "5a115b22-2d11-4c6d-b378-fe451389cec0",
+      document_name: "additional-government-document.pdf",
+      upload_date: "2022-07-14T04:32:58.662545+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "INM",
+      mine_document_guid: "05463375-aa6d-4461-b7b7-bf4b2001b610",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "47465789-2dde-4185-9f3a-92a468ab732f",
+      document_name: "internal-ministry-document.pdf",
+      upload_date: "2022-07-14T04:32:58.663901+00:00",
+      create_user: "mining@bceid.com",
+    },
+  ],
+  update_user: "mining@bceid.com",
+  update_timestamp: "2022-08-31T04:32:58.666528+00:00",
+  create_user: "mining@bceid.com",
+  create_timestamp: "2022-08-31T04:32:58.666414+00:00",
 };

@@ -119,6 +119,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",
@@ -130,6 +131,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
               </Button>
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
@@ -251,6 +253,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",

@@ -330,7 +330,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           }
         }
       >
-        Minisrty Decision Documents
+        Ministry Decision Documents
       </Text>
       <DocumentTable
         additionalColumnProps={
