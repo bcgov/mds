@@ -12,14 +12,23 @@ on:
       - ready_for_review
 
 jobs:
-  audit-frontend: # Audit for unused frontend packages
+  audit-core-web: # Audit for unused frontend packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: depcheck
         uses: tj-actions/depcheck@v8
         with:
-            dir: 
+            dir: services/core-web
+            ignores: 'eslint,babel-*'
+  audit-minespace: # Audit for unused frontend packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: depcheck
+        uses: tj-actions/depcheck@v8
+        with:
+            dir: services/minespace-web
             ignores: 'eslint,babel-*'
 
 
