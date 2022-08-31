@@ -100,20 +100,18 @@ export class DecisionPackageTab extends Component {
   handleOpenModal = (modalType) => {
     let title;
     let contentTitle;
-    let content;
     let instructions;
+    const content = modalConfig.UPLOAD_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL;
     const submitHandler = this.handleUploadDocument;
     if (modalType === "decision-package") {
       title = "Upload Documents";
       instructions =
         "Please upload all relevant decision documentation below. You can add this set of files directly to your decision package by selecting the option below.";
-      content = modalConfig.UPLOAD_PROJECT_PERMIT_PACKAGE_DOCUMENT_MODAL;
       contentTitle = "Upload Documents";
     } else if (modalType === "internal") {
       title = "Upload Internal Documents";
       instructions =
         "Upload internal documents that are created durring the review process. These files are for internal staff only and will not be shown to proponents.";
-      content = modalConfig.UPLOAD_PROJECT_PERMIT_PACKAGE_DOCUMENT_MODAL;
       contentTitle = "Upload Internal Ministry Document";
     }
 
@@ -167,7 +165,7 @@ export class DecisionPackageTab extends Component {
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
             ]}
-            featureUrlRoute={routes.PROJECT_PERMIT_PACKAGE.hashRoute}
+            featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
         </div>
