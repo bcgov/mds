@@ -32,8 +32,8 @@ COPY --from=builder /app ./
 
 WORKDIR /app/runner 
 
-# Install node runner deps.
-RUN npm ci
+# Install node runner deps. and ignore devDependencies with --production flag
+RUN npm ci --production 
 
 EXPOSE 3000
 CMD [ "node", "server.js" ]
