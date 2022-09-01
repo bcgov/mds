@@ -440,7 +440,7 @@ export const removeDocumentFromMajorMineApplication = (
 export const createProjectDecisionPackage = (
   { projectGuid },
   payload,
-  message = "Successfully created a new project decision package"
+  message = "Successfully created a new project decision package."
 ) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
   dispatch(showLoading());
@@ -465,7 +465,7 @@ export const createProjectDecisionPackage = (
 export const updateProjectDecisionPackage = (
   { projectGuid, projectDecisionPackageGuid },
   payload,
-  message = "Successfully updated project decision package"
+  message = "Successfully updated decision package."
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
   dispatch(showLoading());
@@ -506,7 +506,7 @@ export const removeDocumentFromProjectDecisionPackage = (
     )
     .then((response) => {
       notification.success({
-        message: "Successfully deleted project permit package document.",
+        message: "Successfully deleted decision package document.",
         duration: 10,
       });
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
@@ -514,31 +514,6 @@ export const removeDocumentFromProjectDecisionPackage = (
     })
     .catch((err) => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading()));
-};
-
-export const updateDecisionPackage = (
-  { projectGuid, decisionPackageGuid },
-  payload,
-  message = "Successfully updated major mine application decision package"
-) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_DECISION_PACKAGE));
-  dispatch(showLoading());
-  return CustomAxios()
-    .put(
-      ENVIRONMENT.apiUrl + API.DECISION_PACKAGE(projectGuid, decisionPackageGuid),
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({ message, duration: 10 });
-      dispatch(success(reducerTypes.UPDATE_DECISION_PACKAGE));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.UPDATE_DECISION_PACKAGE));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
