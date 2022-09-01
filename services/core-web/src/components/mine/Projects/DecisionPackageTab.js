@@ -3,10 +3,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { reduxForm } from "redux-form";
+import { getFormValues } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Button } from "antd";
-import { Form } from "@ant-design/compatible";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getProject } from "@common/selectors/projectSelectors";
@@ -14,16 +13,18 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchProjectById,
   createProjectDecisionPackage,
-  updateDecisionPackage,
+  updateProjectDecisionPackage,
+  removeDocumentFromProjectDecisionPackage,
 } from "@common/actionCreators/projectActionCreator";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
-import * as FORM from "@/constants/forms";
 import customPropTypes from "@/customPropTypes";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import DocumentTable from "@/components/common/DocumentTable";
 import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplication/UpdateDecisionPackageStatusForm";
 import { modalConfig } from "@/components/modalContent/config";
+import { getProjectDecisionPackageStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -35,8 +36,11 @@ const propTypes = {
   fetchProjectById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  updateDecisionPackage: PropTypes.func.isRequired,
-  decisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  updateProjectDecisionPackage: PropTypes.func.isRequired,
+  createProjectDecisionPackage: PropTypes.func.isRequired,
+  removeDocumentFromProjectDecisionPackage: PropTypes.func.isRequired,
+  projectDecisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export class DecisionPackageTab extends Component {
@@ -67,18 +71,44 @@ export class DecisionPackageTab extends Component {
     return this.props.fetchProjectById(projectGuid);
   };
 
-  handleUpdateDecisionPackage = (event, values) => {
+  handleUpdateProjectDecisionPackage = (event, values) => {
     event.preventDefault();
     const { projectGuid } = this.props.match?.params;
+    const projectDecisionPackageGuid = this.props.project.project_decision_package
+      ?.project_decision_package_guid;
+
+    if (!projectDecisionPackageGuid) {
+      return this.props
+        .createProjectDecisionPackage(
+          {
+            projectGuid: this.props.project?.project_guid,
+          },
+          values
+        )
+        .then(() => this.handleFetchData());
+    }
     return this.props
-      .updateDecisionPackage(
+      .updateProjectDecisionPackage(
         {
           projectGuid,
-          decisionPackageGuid: this.props.project.decision_package.decision_package_guid,
+          projectDecisionPackageGuid,
         },
         values
       )
-      .then(() => this.props.fetchProjectById(projectGuid));
+      .then(() => this.handleFetchData());
+  };
+
+  handleDeleteDocument = (event, documentKey) => {
+    event.preventDefault();
+    const { project_guid: projectGuid, project_decision_package } = this.props.project;
+
+    return this.props
+      .removeDocumentFromProjectDecisionPackage(
+        projectGuid,
+        project_decision_package?.project_decision_package_guid,
+        documentKey
+      )
+      .then(() => this.handleFetchData());
   };
 
   renderDocumentSection = (sectionTitle, sectionHref, sectionText, sectionDocuments) => {
@@ -108,6 +138,9 @@ export class DecisionPackageTab extends Component {
             ],
             []
           )}
+          excludedColumnKeys={["category"]}
+          additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          removeDocument={this.handleDeleteDocument}
         />
       </div>
     );
@@ -146,29 +179,39 @@ export class DecisionPackageTab extends Component {
     });
   };
 
-  handleUploadDocument = (event, values) => {
-    event.preventDefault();
-    if (!this.props.project?.project_decision_package?.project_decision_package_guid) {
-      const payload = {
-        status_code: "INP",
-        documents: values,
-      };
-      return this.props
-        .createProjectDecisionPackage(
-          {
-            projectGuid: this.props.project?.project_guid,
-          },
-          payload
-        )
-        .then(() => this.handleFetchData())
-        .then(() => this.props.closeModal());
-    }
-    return () => {};
+  handleUploadDocument = (event, values, flags) => {
+    const payload = {
+      documents: values.map((doc) => {
+        // Determine document type
+        const { isDecisionPackageEligible, addFilesToDecisionPackage } = flags;
+        let project_decision_package_document_type_code;
+        if (isDecisionPackageEligible && addFilesToDecisionPackage) {
+          project_decision_package_document_type_code = "DCP";
+        } else if (isDecisionPackageEligible && !addFilesToDecisionPackage) {
+          project_decision_package_document_type_code = "ADG";
+        } else {
+          project_decision_package_document_type_code = "INM";
+        }
+        return {
+          ...doc,
+          project_decision_package_document_type_code,
+        };
+      }),
+      status_code: this.props.formValues?.status_code,
+    };
+    this.handleUpdateProjectDecisionPackage(event, payload);
+    return this.props.closeModal();
   };
 
   render() {
+    const projectDecisionPackage = this.props.project.project_decision_package;
+    const allDocuments = projectDecisionPackage?.documents;
+    const hasStartedPackage =
+      Boolean(projectDecisionPackage?.project_decision_package_guid) &&
+      projectDecisionPackage?.status_code !== "NTS";
+
     return (
-      <Form layout="vertical">
+      <>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <ScrollSideMenu
             menuOptions={[
@@ -188,18 +231,20 @@ export class DecisionPackageTab extends Component {
           <Row>
             <UpdateDecisionPackageStatusForm
               initialValues={{
-                status_code: this.props.project?.decision_package?.status_code,
+                status_code: projectDecisionPackage?.status_code || "NTS",
               }}
               displayValues={{
-                status_code: this.props.project?.decision_package?.status_code,
-                decisionPackageStatusCodesHash: this.props.decisionPackageStatusCodesHash,
-                updateUser,
-                updateDate,
+                status_code: projectDecisionPackage?.status_code || "NTS",
+                projectDecisionPackageStatusCodesHash: this.props
+                  ?.projectDecisionPackageStatusCodesHash,
+                updateUser: projectDecisionPackage?.update_user,
+                updateDate: projectDecisionPackage?.update_timestamp,
               }}
-              handleSubmit={this.handleUpdateDecisionPackage}
+              handleSubmit={this.handleUpdateProjectDecisionPackage}
             />
             <Col span={24}>
               <Typography.Title level={3}>
+                <br />
                 <FolderViewOutlined className="violet" />
                 &nbsp;Decision Package (Proponent Visible)
               </Typography.Title>
@@ -215,6 +260,7 @@ export class DecisionPackageTab extends Component {
                 <Button
                   type="primary"
                   style={{ float: "right" }}
+                  disabled={!hasStartedPackage}
                   onClick={() => this.handleOpenModal("decision-package")}
                 >
                   + Add Documents
@@ -222,7 +268,7 @@ export class DecisionPackageTab extends Component {
                 <Button
                   type="secondary"
                   style={{ float: "right" }}
-                  disabled={!hasDecisionPackageDocuments}
+                  disabled={!hasStartedPackage || allDocuments?.length === 0}
                 >
                   <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
                   &nbsp; Edit Package
@@ -269,6 +315,7 @@ export class DecisionPackageTab extends Component {
                 <Button
                   type="primary"
                   style={{ float: "right" }}
+                  disabled={!hasStartedPackage}
                   onClick={() => this.handleOpenModal("internal")}
                 >
                   + Add Documents
@@ -285,21 +332,24 @@ export class DecisionPackageTab extends Component {
             ) || []
           )}
         </div>
-      </Form>
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   project: getProject(state),
+  projectDecisionPackageStatusCodesHash: getProjectDecisionPackageStatusCodesHash(state),
+  formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      updateDecisionPackage,
+      updateProjectDecisionPackage,
       fetchProjectById,
       createProjectDecisionPackage,
+      removeDocumentFromProjectDecisionPackage,
       openModal,
       closeModal,
     },
@@ -310,9 +360,5 @@ DecisionPackageTab.propTypes = propTypes;
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.UPDATE_PROJECT_DECISION_PACKAGE,
-    enableReinitialize: true,
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(DecisionPackageTab);
