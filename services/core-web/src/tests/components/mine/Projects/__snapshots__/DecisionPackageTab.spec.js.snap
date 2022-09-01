@@ -39,44 +39,22 @@ exports[`DecisionPackageTab renders properly 1`] = `
     className="side-menu--content"
   >
     <Row>
-      <Col
-        span={24}
-      >
-        <Alert
-          description="This decision package is in progress. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed."
-          message={
-            <React.Fragment>
-              <ForwardRef>
-                <ForwardRef
-                  md={18}
-                  xs={24}
-                >
-                  In Progress
-                </ForwardRef>
-                <ForwardRef
-                  md={6}
-                  xs={24}
-                >
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <ForwardRef
-                      component={[Function]}
-                      data={Array []}
-                      id="status_code"
-                      name="status_code"
-                      placeholder="Select new status"
-                    />
-                  </FormItem>
-                </ForwardRef>
-              </ForwardRef>
-            </React.Fragment>
+      <Connect(ReduxForm)
+        displayValues={
+          Object {
+            "decisionPackageStatusCodesHash": undefined,
+            "status_code": undefined,
+            "updateDate": undefined,
+            "updateUser": undefined,
           }
-          showIcon={true}
-          type="warning"
-        />
-        <br />
-      </Col>
+        }
+        handleSubmit={[Function]}
+        initialValues={
+          Object {
+            "status_code": undefined,
+          }
+        }
+      />
       <Col
         span={24}
       >

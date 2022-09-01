@@ -143,6 +143,7 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${mineDocumentGuid}?${queryString.stringify(
     params
   )}`;
+export const DECISION_PACKAGE = () => `/`;
 
 // Information Requirements Table (IRT)
 export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;

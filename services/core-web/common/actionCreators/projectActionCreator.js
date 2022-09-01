@@ -518,3 +518,28 @@ export const removeDocumentFromProjectDecisionPackage = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const updateDecisionPackage = (
+  { projectGuid, decisionPackageGuid },
+  payload,
+  message = "Successfully updated major mine application decision package"
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_DECISION_PACKAGE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.DECISION_PACKAGE(projectGuid, decisionPackageGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.UPDATE_DECISION_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_DECISION_PACKAGE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

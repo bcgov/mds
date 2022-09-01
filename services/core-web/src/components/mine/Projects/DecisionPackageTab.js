@@ -3,9 +3,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
-import { Row, Col, Typography, Button, Alert } from "antd";
+import { Row, Col, Typography, Button } from "antd";
 import { Form } from "@ant-design/compatible";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -14,6 +14,7 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchProjectById,
   createProjectDecisionPackage,
+  updateDecisionPackage,
 } from "@common/actionCreators/projectActionCreator";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
@@ -21,7 +22,7 @@ import * as FORM from "@/constants/forms";
 import customPropTypes from "@/customPropTypes";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import DocumentTable from "@/components/common/DocumentTable";
-import { renderConfig } from "@/components/common/config";
+import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplication/UpdateDecisionPackageStatusForm";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
@@ -31,10 +32,11 @@ const propTypes = {
     }),
   }).isRequired,
   project: customPropTypes.project.isRequired,
-  createProjectDecisionPackage: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  updateDecisionPackage: PropTypes.func.isRequired,
+  decisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class DecisionPackageTab extends Component {
@@ -63,6 +65,20 @@ export class DecisionPackageTab extends Component {
   handleFetchData = () => {
     const { projectGuid } = this.props.match?.params;
     return this.props.fetchProjectById(projectGuid);
+  };
+
+  handleUpdateDecisionPackage = (event, values) => {
+    event.preventDefault();
+    const { projectGuid } = this.props.match?.params;
+    return this.props
+      .updateDecisionPackage(
+        {
+          projectGuid,
+          decisionPackageGuid: this.props.project.decision_package.decision_package_guid,
+        },
+        values
+      )
+      .then(() => this.props.fetchProjectById(projectGuid));
   };
 
   renderDocumentSection = (sectionTitle, sectionHref, sectionText, sectionDocuments) => {
@@ -151,11 +167,6 @@ export class DecisionPackageTab extends Component {
   };
 
   render() {
-    const allDocuments = this.props.project.project_decision_package?.documents || [];
-    const hasDecisionPackageDocuments =
-      allDocuments?.filter((doc) => doc.project_decision_package_document_type_code === "DCP")
-        ?.length > 0;
-
     return (
       <Form layout="vertical">
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
@@ -175,34 +186,18 @@ export class DecisionPackageTab extends Component {
           }
         >
           <Row>
-            <Col span={24}>
-              <Alert
-                message={
-                  <>
-                    <Row>
-                      <Col xs={24} md={18}>
-                        In Progress
-                      </Col>
-                      <Col xs={24} md={6}>
-                        <Form.Item>
-                          <Field
-                            id="status_code"
-                            name="status_code"
-                            component={renderConfig.SELECT}
-                            placeholder="Select new status"
-                            data={[]}
-                          />
-                        </Form.Item>
-                      </Col>
-                    </Row>
-                  </>
-                }
-                description="This decision package is in progress. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed."
-                type="warning"
-                showIcon
-              />
-              <br />
-            </Col>
+            <UpdateDecisionPackageStatusForm
+              initialValues={{
+                status_code: this.props.project?.decision_package?.status_code,
+              }}
+              displayValues={{
+                status_code: this.props.project?.decision_package?.status_code,
+                decisionPackageStatusCodesHash: this.props.decisionPackageStatusCodesHash,
+                updateUser,
+                updateDate,
+              }}
+              handleSubmit={this.handleUpdateDecisionPackage}
+            />
             <Col span={24}>
               <Typography.Title level={3}>
                 <FolderViewOutlined className="violet" />
@@ -302,6 +297,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      updateDecisionPackage,
       fetchProjectById,
       createProjectDecisionPackage,
       openModal,
