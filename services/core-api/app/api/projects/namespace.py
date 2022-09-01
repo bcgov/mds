@@ -80,4 +80,4 @@ api.add_resource(MajorMineApplicationUploadedDocumentResource, '/<string:project
 api.add_resource(ProjectDecisionPackageListResource, '/<string:project_guid>/project-decision-package')
 api.add_resource(ProjectDecisionPackageResource, '/<string:project_guid>/project-decision-package/<string:project_decision_package_guid>')
 api.add_resource(ProjectDecisionPackageDocumentUploadResource, '/<string:project_guid>/project-decision-package/documents')
-api.add_resource(ProjectDecisionPackageUploadedDocumentResource, '/<string:project_guid>/project-decision-package/documents/<string:mine_document_guid>')
+api.add_resource(ProjectDecisionPackageUploadedDocumentResource, '/<string:project_guid>/project-decision-package/<string:project_decision_package_guid>/documents/<string:mine_document_guid>')
