@@ -28,20 +28,11 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
   const isDecisionPackageEligible = props.modalType === "decision-package";
 
   const onFileLoad = (fileName, document_manager_guid) => {
-    let project_decision_package_document_type_code;
-    if (isDecisionPackageEligible && addFilesToDecisionPackage) {
-      project_decision_package_document_type_code = "DCP";
-    } else if (isDecisionPackageEligible && !addFilesToDecisionPackage) {
-      project_decision_package_document_type_code = "ADG";
-    } else {
-      project_decision_package_document_type_code = "INM";
-    }
     setUploadedFiles([
       ...uploadedFiles,
       {
         document_name: fileName,
         document_manager_guid,
-        project_decision_package_document_type_code,
       },
     ]);
   };
@@ -111,7 +102,12 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
         <Button
           className="full-mobile"
           type="primary"
-          onClick={(event) => props.handleSubmit(event, props?.formValues?.uploadedFiles)}
+          onClick={(event) =>
+            props.handleSubmit(event, props?.formValues?.uploadedFiles, {
+              addFilesToDecisionPackage,
+              isDecisionPackageEligible,
+            })
+          }
           loading={props.submitting}
         >
           Update
