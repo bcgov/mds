@@ -7,18 +7,18 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Alert } from "antd";
 import { required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
-// import { getDropdownDecisionPackageStatusCodes } from "@common/selectors/staticContentSelectors";
+import { resetForm, formatDate } from "@common/utils/helpers";
+import { getDropdownProjectDecisionPackageStatusCodes } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  // dropdownDecisionPackageStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
+  dropdownProjectDecisionPackageStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
   displayValues: PropTypes.shape({
     status_code: PropTypes.string,
     updateUser: PropTypes.string,
     updateDate: PropTypes.string,
-    decisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string),
+    projectDecisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string),
   }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -27,13 +27,15 @@ const propTypes = {
 
 const alertText = (status, updateUser, updateDate) => {
   let text = "";
-  if (status === "NST") {
+  if (status === "NTS") {
     text = `This decision package has not been started. Change this decision package’s status to
     “In Progress” to add and remove relevant documents to this decision package.
     Proponents will not see decision package files until it is completed.`;
   } else if (status === "INP") {
-    text = `This decision package is in progress as of${updateDate} by ${updateUser}. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed.`;
-  } else if (status === "COM") {
+    text = `This decision package is in progress as of ${formatDate(
+      updateDate
+    )} by ${updateUser}. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed.`;
+  } else if (status === "CMP") {
     text = `This decision package was marked as completed on ${updateDate} by ${updateUser}. You can no longer edit this decision package’s contents (unless you change it’s status to ‘In Progress’ again). Proponents are now able to view Pronent visible sections.`;
   }
   return text;
@@ -43,7 +45,9 @@ export const UpdateDecisionPackageStatusForm = (props) => (
   <Form layout="vertical" onSubmit={(e) => props.handleSubmit(e, props.formValues)} onValuesChange>
     <Col span={24}>
       <Alert
-        message="N/A"
+        message={
+          props.displayValues.projectDecisionPackageStatusCodesHash[props.displayValues.status_code]
+        }
         description={
           <Row>
             <Col xs={24} md={18}>
@@ -64,7 +68,7 @@ export const UpdateDecisionPackageStatusForm = (props) => (
                   placeholder="Action"
                   component={renderConfig.SELECT}
                   validate={[required]}
-                  // data={props.dropdownDecisionPackageStatusCodes}
+                  data={props.dropdownProjectDecisionPackageStatusCodes}
                 />
               </Form.Item>
               {!props.pristine && (
@@ -77,7 +81,7 @@ export const UpdateDecisionPackageStatusForm = (props) => (
             </Col>
           </Row>
         }
-        type={["NST", "INP"].includes(props.displayValues.status_code) ? "warning" : "success"}
+        type={["NTS", "INP"].includes(props.displayValues.status_code) ? "warning" : "success"}
         showIcon
       />
     </Col>
@@ -89,7 +93,7 @@ UpdateDecisionPackageStatusForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
-    // dropdownDecisionPackageStatusCodes: getDropdownDecisionPackageStatusCodes(state),
+    dropdownProjectDecisionPackageStatusCodes: getDropdownProjectDecisionPackageStatusCodes(state),
   })),
   reduxForm({
     form: FORM.UPDATE_PROJECT_DECISION_PACKAGE,
