@@ -27,7 +27,7 @@ export const TailingsSummaryForm = (props) => {
   const renderTabContent = () => {
     switch (match.params.tab) {
       case "basic-information":
-        return <BasicInformation initialValues={initialValues} />;
+        return <BasicInformation />;
       case "engineer-of-record":
         return <EngineerOfRecord initialValues={initialValues} />;
       case "qualified-person":

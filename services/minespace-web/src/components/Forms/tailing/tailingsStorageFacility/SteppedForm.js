@@ -4,12 +4,13 @@ import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { indexOf } from "lodash";
+import { Form } from "@ant-design/compatible";
 
 const { Item } = Menu;
 
 const propTypes = {
   tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
-  form: PropTypes.objectOf(PropTypes.any).isRequired,
+  children: PropTypes.arrayOf(PropTypes.node).isRequired,
   handleTabChange: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -22,7 +23,7 @@ const defaultProps = {
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { tabs, form, handleTabChange, match, handleSaveDraft } = props;
+  const { tabs, children, handleTabChange, match, handleSaveDraft } = props;
   const [tabIndex, setTabIndex] = useState(0);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const SteppedForm = (props) => {
           {tabs.map((tab) => {
             return (
               <Item
-                disabled={props.errors.length > 0 && tab !== tabs[tabIndex]}
+                disabled={props.errors.length > 1000 && tab !== tabs[tabIndex]}
                 className="stepped-menu-item"
                 key={tab}
                 onClick={() => {
@@ -64,12 +65,16 @@ const SteppedForm = (props) => {
         </Menu>
       </Col>
       <Col span={18}>
-        {form && (
+        {children && (
           <div className="stepped-form-form-container">
-            {form}
+            <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst ? "end" : "space-between"}>
               {!isFirst && (
-                <Button type="secondary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
+                <Button
+                  disabled={props.errors.length > 0}
+                  type="secondary"
+                  onClick={() => handleTabClick(tabs[tabIndex - 1])}
+                >
                   <LeftOutlined /> Back
                 </Button>
               )}
@@ -88,7 +93,7 @@ const SteppedForm = (props) => {
                   )}
                   <Button
                     type="secondary"
-                    disabled={false}
+                    disabled={props.errors.length > 0}
                     onClick={() => handleTabClick(tabs[tabIndex + 1], false)}
                   >
                     Next <RightOutlined />

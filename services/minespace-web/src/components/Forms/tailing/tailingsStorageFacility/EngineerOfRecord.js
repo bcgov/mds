@@ -1,38 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Alert, Col, Row, Typography } from "antd";
 import { change, Field } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { required, requiredList, validateSelectOptions } from "@common/utils/Validate";
 import * as PropTypes from "prop-types";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { uniqBy } from "lodash";
+import { getEngineersOfRecordOptions } from "@common/selectors/partiesSelectors";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
-  parties: PropTypes.arrayOf(PropTypes.object).isRequired,
+  eors: PropTypes.arrayOf(PropTypes.object).isRequired,
   change: PropTypes.func.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
-  const { parties } = props;
-  const [partyOptions, setPartyOptions] = useState([]);
-
-  useEffect(() => {
-    if (parties) {
-      const eors = parties.reduce((acc, party) => {
-        if (party.mine_party_appt_type_code === "EOR") {
-          acc.push({
-            label: party.party.name,
-            value: party.party.party_guid,
-          });
-        }
-        return acc;
-      }, []);
-      setPartyOptions(uniqBy(eors, "value"));
-    }
-  }, [parties]);
+  const { eors } = props;
 
   const handleSelectChange = (value) => {
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.party_guid", value);
@@ -58,8 +41,8 @@ export const EngineerOfRecord = (props) => {
         placeholder="Select an Engineer of Record"
         component={renderConfig.SELECT}
         onChange={handleSelectChange}
-        data={partyOptions}
-        validate={[requiredList, validateSelectOptions(partyOptions)]}
+        data={eors}
+        validate={[requiredList, validateSelectOptions(eors)]}
       />
       <Typography.Title level={4} className="margin-large--top">
         EOR Term
@@ -97,7 +80,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 const mapStateToProps = (state) => ({
-  parties: getPartyRelationships(state),
+  eors: getEngineersOfRecordOptions(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EngineerOfRecord);

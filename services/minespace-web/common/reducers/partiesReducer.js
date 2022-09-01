@@ -1,3 +1,4 @@
+import { uniqBy } from "lodash";
 import * as actionTypes from "../constants/actionTypes";
 import { PARTIES } from "../constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
@@ -19,6 +20,7 @@ const initialState = {
   lastCreatedParty: {},
   inspectors: [],
   projectLeads: [],
+  engineersOfRecordOptions: [],
 };
 
 export const partiesReducer = (state = initialState, action) => {
@@ -39,9 +41,19 @@ export const partiesReducer = (state = initialState, action) => {
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
+      const eors = action.payload.reduce((acc, curr) => {
+        if (curr.mine_party_appt_type_code === "EOR") {
+          acc.push({
+            value: curr.party_guid,
+            label: curr.party.name,
+          });
+        }
+        return acc;
+      }, []);
       return {
         ...state,
         partyRelationships: action.payload,
+        engineersOfRecordOptions: uniqBy(eors, "value"),
       };
     case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:
       return {
@@ -89,5 +101,6 @@ export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
 export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state) => state[PARTIES].inspectors;
 export const getProjectLeads = (state) => state[PARTIES].projectLeads;
+export const getEngineersOfRecordOptions = (state) => state[PARTIES].engineersOfRecordOptions;
 
 export default partiesReducerObject;

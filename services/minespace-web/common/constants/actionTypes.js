@@ -176,3 +176,6 @@ export const STORE_MINE_EPIC_INFO = "STORE_MINE_EPIC_INFO";
 
 // Activities
 export const STORE_ACTIVITIES = "STORE_ACTIVITIES";
+
+// Tailings Storage Facilities
+export const STORE_TAILINGS_STORAGE_FACILITY = "STORE_TAILINGS_STORAGE_FACILITY";

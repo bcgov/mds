@@ -5,11 +5,12 @@ from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_tsf
+from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, MINE_EDIT, \
+    MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, StorageLocation, TailingsStorageFacilityType, FacilityType
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report import MineReport
@@ -45,9 +46,9 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         trim=True,
         help='Operating Status of the storage facility')
     parser.add_argument(
-        'itrb_exemption_status_code', 
-        type=str, 
-        trim=True, 
+        'itrb_exemption_status_code',
+        type=str,
+        trim=True,
         help='Risk Severity Classification')
     parser.add_argument(
         'eor_party_guid',
@@ -61,6 +62,34 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         help='Any additional notes to be added to the tailing.',
         trim=True,
         location='json')
+    parser.add_argument(
+        'storage_location',
+        type=StorageLocation,
+        help='Storage location of the tailings (above or below ground)',
+        location='json',
+        choices=list(StorageLocation),
+        store_missing=False)
+    parser.add_argument(
+        'facility_type',
+        type=FacilityType,
+        help='Type of facility.',
+        location='json',
+        choices=list(FacilityType),
+        store_missing=False)
+    parser.add_argument(
+        'tailings_storage_facility_type',
+        type=TailingsStorageFacilityType,
+        help='Type of tailings storage facility.',
+        location='json',
+        choices=list(TailingsStorageFacilityType),
+        store_missing=False)
+    parser.add_argument(
+        'mines_act_permit_no',
+        type=str,
+        help='Mines Act Permit Number',
+        location='json',
+        store_missing=False)
+
 
     @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(
@@ -74,7 +103,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
 
     @api.doc(description='Creates a new tailing storage facility for the given mine')
     @api.marshal_with(MINE_TSF_MODEL, code=201)
-    @requires_role_edit_tsf
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -93,7 +122,13 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             consequence_classification_status_code=data['consequence_classification_status_code'],
             itrb_exemption_status_code=data['itrb_exemption_status_code'],
             tsf_operating_status_code=data['tsf_operating_status_code'],
-            notes=data['notes'])
+            notes=data['notes'],
+            storage_location=data['storage_location'],
+            facility_type=data['facility_type'],
+            tailings_storage_facility_type=data['tailings_storage_facility_type'],
+            mines_act_permit_no=data['mines_act_permit_no'],
+        )
+
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
         if is_mine_first_tsf:

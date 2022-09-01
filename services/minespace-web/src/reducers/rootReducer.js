@@ -19,6 +19,7 @@ import {
   projectReducer,
   minespaceReducer,
   noticeOfDepartureReducer,
+  tailingsReducer,
 } from "@common/reducers";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
@@ -53,6 +54,7 @@ export const reducerObject = {
   ...projectReducer,
   ...minespaceReducer,
   ...noticeOfDepartureReducer,
+  ...tailingsReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),

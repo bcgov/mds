@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 import { flattenObject } from "@common/utils/helpers";
-import { Link } from "react-router-dom";
-import {
-  formValueSelector,
-  getFormSyncErrors,
-  reset,
-  submit,
-  touch,
-  getFormValues,
-} from "redux-form";
+import { Link, withRouter } from "react-router-dom";
+import { getFormSyncErrors, getFormValues, reduxForm, reset, submit, touch } from "redux-form";
 import { Col, Divider, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -19,6 +12,9 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
+import { getTsf } from "@common/selectors/tailingsSelectors";
+import { storeTsf } from "@common/actions/tailingsActions";
+import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {
@@ -27,8 +23,12 @@ import {
   MINE_DASHBOARD,
 } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import TailingsSummaryForm from "@/components/Forms/tailing/tailingsStorageFacility/TailingsSummaryForm";
 import SteppedForm from "@/components/Forms/tailing/tailingsStorageFacility/SteppedForm";
+import * as Permission from "@/constants/permissions";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import Step from "@/components/Forms/tailing/tailingsStorageFacility/Step";
+import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 import {
   createTailingsStorageFacility,
   updateTailingsStorageFacility,
@@ -45,16 +45,16 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   submit: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  formValueSelector: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   getFormSyncErrors: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  // updateTailingsStorageFacility: PropTypes.func.isRequired,
-  // createTailingsStorageFacility: PropTypes.func.isRequired,
-  addPartyRelationship: PropTypes.func.isRequired,
+  updateTailingsStorageFacility: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
+  storeTsf: PropTypes.func.isRequired,
+  // addPartyRelationship: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
+  eors: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
 };
 
 const defaultProps = {
@@ -72,7 +72,7 @@ const tabs = [
 ];
 
 export const TailingsSummaryPage = (props) => {
-  const { mines, match, history, formErrors, formValues } = props;
+  const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [initialValues, setInitialValues] = useState({});
 
@@ -87,7 +87,8 @@ export const TailingsSummaryPage = (props) => {
       const tsf = mines[mineGuid].mine_tailings_storage_facilities.find(
         (t) => t.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
       );
-      setInitialValues(tsf || {});
+      props.storeTsf(tsf);
+      setInitialValues(tsf);
     }
     setIsLoaded(true);
   };
@@ -100,32 +101,28 @@ export const TailingsSummaryPage = (props) => {
     e.preventDefault();
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
-    if (errors.length === 0) {
-      props.addPartyRelationship({
-        mine_guid: match.params.mineGuid,
-        party_guid: formValues.engineer_of_record.party_guid,
-        mine_party_appt_type_code: "EOR",
-        related_guid: match.params.tailingsStorageFacilityGuid,
-        end_current: true,
-        start_date: formValues.engineer_of_record.start_date,
-        end_date: formValues.engineer_of_record.end_date,
-      });
-    }
-    // TODO: implement saving/updating tailings storage facility
     // if (errors.length === 0) {
-    //   if (match.params.tailingsStorageFacilityGuid) {
-    //     props.updateTailingsStorageFacility(
-    //       match.params.mineGuid,
-    //       match.params.tailingsStorageFacilityGuid,
-    //       ...values,
-    //     );
-    //   } else {
-    //     props.createTailingsStorageFacility(
-    //       match.params.mineGuid,
-    //       ...values,
-    //     );
-    //   }
+    //   props.addPartyRelationship({
+    //     mine_guid: match.params.mineGuid,
+    //     party_guid: formValues.engineer_of_record.party_guid,
+    //     mine_party_appt_type_code: "EOR",
+    //     related_guid: match.params.tailingsStorageFacilityGuid,
+    //     end_current: true,
+    //     start_date: formValues.engineer_of_record.start_date,
+    //     end_date: formValues.engineer_of_record.end_date,
+    //   });
     // }
+    if (errors.length === 0) {
+      if (match.params.tailingsStorageFacilityGuid) {
+        props.updateTailingsStorageFacility(
+          match.params.mineGuid,
+          match.params.tailingsStorageFacilityGuid,
+          formValues
+        );
+      } else {
+        props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+      }
+    }
   };
 
   const handleTabChange = (newActiveTab) => {
@@ -166,34 +163,45 @@ export const TailingsSummaryPage = (props) => {
         <Divider />
         <SteppedForm
           tabs={tabs}
-          initialValues={initialValues}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           handleSaveDraft={handleSaveData}
           errors={errors}
           match={match}
-          form={
-            <TailingsSummaryForm
-              mineGuid={mineGuid}
-              handleSaveData={handleSaveData}
-              handleTabChange={handleTabChange}
-              initialValues={initialValues}
-            />
-          }
-        />
+        >
+          <Step key="basic-information">
+            <BasicInformation />
+          </Step>
+          <Step key="engineer-of-record">
+            <EngineerOfRecord initialValues={initialValues} eors={eors} />
+          </Step>
+          <Step key="qualified-person">
+            <div />
+          </Step>
+          <Step key="registry-document">
+            <div />
+          </Step>
+          <Step key="reports">
+            <div />
+          </Step>
+          <Step key="summary">
+            <div />
+          </Step>
+        </SteppedForm>
       </div>
     )) || <Loading />
   );
 };
 
-const selector = formValueSelector(FORM.ADD_TAILINGS_STORAGE_FACILITY);
+// const selector = formValueSelector(FORM.ADD_TAILINGS_STORAGE_FACILITY);
 const mapStateToProps = (state) => ({
   anyTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.anyTouched || false,
   fieldsTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.fields || {},
   mines: getMines(state),
   formErrors: getFormSyncErrors(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
-  contacts: selector(state, "contacts"),
   formValues: getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
+  initialValues: getTsf(state),
+  eors: getEngineersOfRecordOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -206,6 +214,7 @@ const mapDispatchToProps = (dispatch) =>
       submit,
       reset,
       touch,
+      storeTsf,
     },
     dispatch
   );
@@ -213,4 +222,13 @@ const mapDispatchToProps = (dispatch) =>
 TailingsSummaryPage.propTypes = propTypes;
 TailingsSummaryPage.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(TailingsSummaryPage);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: FORM.ADD_TAILINGS_STORAGE_FACILITY,
+    touchOnBlur: true,
+    touchOnChange: false,
+    onSubmit: () => {},
+    enableReinitialize: true,
+  })
+)(withRouter(AuthorizationGuard(Permission.IN_TESTING)(TailingsSummaryPage)));

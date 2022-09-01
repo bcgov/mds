@@ -1,7 +1,9 @@
-from app.extensions import api
 from flask_restplus import fields, marshal
+
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.mines.tailings.models.tailings import StorageLocation, TailingsStorageFacilityType, FacilityType
 from app.api.parties.response_models import PARTY
+from app.extensions import api
 
 
 class DateTime(fields.Raw):
@@ -178,55 +180,55 @@ MINE_TYPE_MODEL = api.model(
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
-        fields.Integer,
+            fields.Integer,
         'permit_no':
-        fields.String,
+            fields.String,
         'permit_amendment_guid':
-        fields.String,
+            fields.String,
         'permit_amendment_status_code':
-        fields.String,
+            fields.String,
         'permit_amendment_type_code':
-        fields.String,
+            fields.String,
         'received_date':
-        fields.DateTime(dt_format='iso8601'),
+            fields.DateTime(dt_format='iso8601'),
         'issue_date':
-        fields.DateTime(dt_format='iso8601'),
+            fields.DateTime(dt_format='iso8601'),
         'authorization_end_date':
-        fields.DateTime(dt_format='iso8601'),
+            fields.DateTime(dt_format='iso8601'),
         'liability_adjustment':
-        fields.Fixed(description='Currency', decimals=2),
+            fields.Fixed(description='Currency', decimals=2),
         'security_received_date':
-        fields.DateTime(dt_format='iso8601'),
+            fields.DateTime(dt_format='iso8601'),
         'security_not_required':
-        fields.Boolean,
+            fields.Boolean,
         'security_not_required_reason':
-        fields.String,
+            fields.String,
         'description':
-        fields.String,
+            fields.String,
         'issuing_inspector_title':
-        fields.String,
+            fields.String,
         'regional_office':
-        fields.String,
+            fields.String,
         'now_application_guid':
-        fields.String,
+            fields.String,
         'now_application_documents':
-        fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
+            fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
         'imported_now_application_documents':
-        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+            fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'related_documents':
-        fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
+            fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by':
-        fields.String,
+            fields.String,
         'permit_conditions_last_updated_date':
-        fields.DateTime,
+            fields.DateTime,
         'has_permit_conditions':
-        fields.Boolean,
+            fields.Boolean,
         'conditions':
-        fields.List(PermitCondition),
+            fields.List(PermitCondition),
         'is_generated_in_core':
-        fields.Boolean,
+            fields.Boolean,
         'preamble_text':
-        fields.String
+            fields.String
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -314,6 +316,11 @@ MINE_TSF_MODEL = api.model(
         'itrb_exemption_status_code': fields.String,
         'tsf_operating_status_code': fields.String,
         'notes': fields.String,
+        'facility_type': fields.String(enum=FacilityType, attribute='facility_type.name'),
+        'tailings_storage_facility_type': fields.String(enum=TailingsStorageFacilityType,
+                                                        attribute='tailings_storage_facility_type.name'),
+        'storage_location': fields.String(enum=StorageLocation, attribute='storage_location.name'),
+        'mines_act_permit_no': fields.String,
         'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
 
@@ -511,7 +518,7 @@ MINE_STATUS_CODE_MODEL = api.model(
         'mine_operation_status': fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
         'mine_operation_status_reason': fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
         'mine_operation_status_sub_reason':
-        fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+            fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
         'description': fields.String,
     })
 
@@ -545,37 +552,37 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_id':
-        fields.Integer,
+            fields.Integer,
         'mine_report_guid':
-        fields.String,
+            fields.String,
         'mine_report_definition_guid':
-        fields.String,
+            fields.String,
         'mine_report_category':
-        fields.List(
-            fields.String(attribute='mine_report_category'),
-            attribute='mine_report_definition.categories'),
+            fields.List(
+                fields.String(attribute='mine_report_category'),
+                attribute='mine_report_definition.categories'),
         'report_name':
-        fields.String,
+            fields.String,
         'due_date':
-        fields.Date,
+            fields.Date,
         'received_date':
-        fields.Date,
+            fields.Date,
         'submission_year':
-        fields.Integer,
+            fields.Integer,
         'created_by_idir':
-        fields.String,
+            fields.String,
         'permit_guid':
-        fields.String,
+            fields.String,
         'permit_number':
-        fields.String,
+            fields.String,
         'mine_report_submissions':
-        fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+            fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
         'mine_guid':
-        fields.String,
+            fields.String,
         'mine_name':
-        fields.String,
+            fields.String,
         'permit_condition_category_code':
-        fields.String
+            fields.String
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {

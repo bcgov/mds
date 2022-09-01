@@ -286,3 +286,6 @@ export const GET_DETAILED_NOTICE_OF_DEPARTURE = "GET_DETAILED_NOTICE_OF_DEPARTUR
 // Activities
 export const ACTIVITIES = "ACTIVITIES";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
+
+// Tailings Storage Facilities
+export const TAILINGS = "TAILINGS";
