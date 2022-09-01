@@ -230,11 +230,11 @@ STATIC_CONTENT_MODEL = api.model(
         fields.List(
             fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_TYPE_MODEL),
             attribute='MajorMineApplicationDocumentType'),
-        'projectPermitPackageStatusCodes':
+        'projectDecisionPackageStatusCodes':
         fields.List(
             fields.Nested(PROJECT_DECISION_PACKAGE_STATUS_CODE_MODEL),
             attribute='ProjectDecisionPackageStatusCode'),
-        'projectPermitPackageDocumentTypes':
+        'projectDecisionPackageDocumentTypes':
         fields.List(
             fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_MODEL),
             attribute='ProjectDecisionPackageDocumentType'),

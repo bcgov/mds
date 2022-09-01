@@ -59,7 +59,7 @@ const initialState = {
   EMLIContactTypes: [],
   projectSummaryAuthorizationTypes: [],
   projectSummaryPermitTypes: [],
-  // decisionPackageStatusCodes: [],
+  projectDecisionPackageStatusCodes: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -169,8 +169,8 @@ export const getProjectSummaryAuthorizationTypes = (state) =>
   state[STATIC_CONTENT].projectSummaryAuthorizationTypes;
 export const getProjectSummaryPermitTypes = (state) =>
   state[STATIC_CONTENT].projectSummaryPermitTypes;
-// export const getDecisionPackageStatusCodes = (state) =>
-//   state[STATIC_CONTENT].decisionPackageStatusCodes;
+export const getProjectDecisionPackageStatusCodes = (state) =>
+  state[STATIC_CONTENT].projectDecisionPackageStatusCodes;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
