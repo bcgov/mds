@@ -55,6 +55,7 @@ from app.api.projects.major_mine_application.models.major_mine_application impor
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 from app.api.activity.models.activity_notification import ActivityNotification
+from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -1223,6 +1224,21 @@ class MajorMineApplicationFactory(BaseFactory):
     major_mine_application_guid = GUID
     major_mine_application_id = factory.Faker('pyint')
     status_code = 'REC'
+    deleted_ind = False
+
+
+class ProjectDecisionPackageFactory(BaseFactory):
+    class Meta:
+        model = ProjectDecisionPackage
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+
+    project_guid = factory.SelfAttribute('project.project_guid')
+    project_decision_package_guid = GUID
+    project_decision_package_id = factory.Faker('pyint')
+    status_code = 'NTS'
+    documents = []
     deleted_ind = False
 
 
