@@ -25,7 +25,7 @@ const propTypes = {
 export const UploadProjectDecisionPackageDocumentForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [addFilesToDecisionPackage, setAddFilesToDecisionPackage] = useState(false);
-  const isDecisionPackageEligible = props.modalType === "decision-package";
+  const isDecisionPackageEligible = props.modalType === "upload-document";
 
   const onFileLoad = (fileName, document_manager_guid) => {
     setUploadedFiles([
@@ -102,6 +102,7 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
         <Button
           className="full-mobile"
           type="primary"
+          disabled={props?.formValues?.uploadedFiles?.length === 0}
           onClick={(event) =>
             props.handleSubmit(event, props?.formValues?.uploadedFiles, {
               addFilesToDecisionPackage,

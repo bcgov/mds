@@ -1,5 +1,3 @@
-// TODO: Line 106 - Replace <Alert /> with a dynamic one that updates based on status code
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
