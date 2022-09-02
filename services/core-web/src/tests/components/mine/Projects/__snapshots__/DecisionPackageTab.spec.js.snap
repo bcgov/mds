@@ -1,12 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DecisionPackageTab renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[Function]}
->
+<Fragment>
   <div
     className="side-menu"
   >
@@ -42,8 +37,9 @@ exports[`DecisionPackageTab renders properly 1`] = `
       <Connect(ReduxForm)
         displayValues={
           Object {
-            "decisionPackageStatusCodesHash": undefined,
-            "status_code": undefined,
+            "documents": undefined,
+            "projectDecisionPackageStatusCodesHash": undefined,
+            "status_code": "NTS",
             "updateDate": undefined,
             "updateUser": undefined,
           }
@@ -51,7 +47,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
         handleSubmit={[Function]}
         initialValues={
           Object {
-            "status_code": undefined,
+            "status_code": "NTS",
           }
         }
       />
@@ -61,6 +57,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
         <Title
           level={3}
         >
+          <br />
           <ForwardRef(FolderViewOutlined)
             className="violet"
           />
@@ -94,6 +91,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
             >
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
@@ -113,6 +111,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",
@@ -145,10 +144,23 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
@@ -179,10 +191,23 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
@@ -228,6 +253,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
             >
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
@@ -256,14 +282,27 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
     </div>
   </div>
-</Form>
+</Fragment>
 `;
