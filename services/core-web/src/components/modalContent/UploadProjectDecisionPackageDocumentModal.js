@@ -6,7 +6,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   instructions: PropTypes.string.isRequired,
   projectGuid: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
