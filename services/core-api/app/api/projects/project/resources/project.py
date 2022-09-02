@@ -215,7 +215,7 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
             'status_code': 'MajorMineApplication',
             'update_timestamp': 'ProjectSummary',
             'update_timestamp': 'InformationRequirementsTable',
-            'update_timestamp': 'InformationRequirementsTable'
+            'update_timestamp': 'MajorMineApplication'
         }
 
         sort_model = sort_models.get(args['sort_field'])

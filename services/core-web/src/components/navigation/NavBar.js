@@ -14,6 +14,7 @@ import {
   getCurrentUserUnverifiedMines,
 } from "@common/reducers/mineReducer";
 import * as Strings from "@common/constants/strings";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
@@ -314,18 +315,22 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-          <Row>
-            <Col span={24}>
-              <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
-                <Button
-                  id={this.ifActiveButton(router.MAJOR_PROJECTS_DASHBOARD.route)}
-                  className="menu--hamburger__btn--link"
-                >
-                  Major Projects
-                </Button>
-              </Link>
-            </Col>
-          </Row>
+          {!IN_PROD() && (
+            <>
+              <Row>
+                <Col span={24}>
+                  <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
+                    <Button
+                      id={this.ifActiveButton(router.MAJOR_PROJECTS_DASHBOARD.route)}
+                      className="menu--hamburger__btn--link"
+                    >
+                      Major Projects
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </>
+          )}
           <Row>
             <Col span={24}>
               <Link to={router.CUSTOM_HOME_PAGE.route}>
@@ -425,11 +430,15 @@ export class NavBar extends Component {
           <button type="button">Notices of Work</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="browse-major-projects" className="navbar-dropdown-menu-item">
-        <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
-          <button type="button">Major Projects</button>
-        </Link>
-      </Menu.Item>
+      {!IN_PROD() && (
+        <>
+          <Menu.Item key="browse-major-projects" className="navbar-dropdown-menu-item">
+            <Link to={router.MAJOR_PROJECTS_DASHBOARD.route}>
+              <button type="button">Major Projects</button>
+            </Link>
+          </Menu.Item>
+        </>
+      )}
     </Menu>
   );
 

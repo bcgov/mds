@@ -88,7 +88,6 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         projectDecisionPackage: {},
       };
-
     default:
       return state;
   }
