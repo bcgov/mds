@@ -74,8 +74,8 @@ export class DecisionPackageTab extends Component {
   handleUpdateProjectDecisionPackage = (event, values) => {
     event.preventDefault();
     const { projectGuid } = this.props.match?.params;
-    const projectDecisionPackageGuid = this.props.project.project_decision_package
-      ?.project_decision_package_guid;
+    const projectDecisionPackage = this.props.project.project_decision_package;
+    const projectDecisionPackageGuid = projectDecisionPackage?.project_decision_package_guid;
 
     if (!projectDecisionPackageGuid) {
       return this.props
@@ -150,9 +150,10 @@ export class DecisionPackageTab extends Component {
     let title;
     let contentTitle;
     let instructions;
-    const content = modalConfig.UPLOAD_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL;
-    const submitHandler = this.handleUploadDocument;
-    if (modalType === "decision-package") {
+    let content = modalConfig.UPLOAD_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL;
+    let submitHandler = this.handleUploadDocument;
+    let optionalProps = {};
+    if (modalType === "upload-document") {
       title = "Upload Documents";
       instructions =
         "Please upload all relevant decision documentation below. You can add this set of files directly to your decision package by selecting the option below.";
@@ -162,6 +163,13 @@ export class DecisionPackageTab extends Component {
       instructions =
         "Upload internal documents that are created durring the review process. These files are for internal staff only and will not be shown to proponents.";
       contentTitle = "Upload Internal Ministry Document";
+    } else if (modalType === "edit-decision-package") {
+      content = modalConfig.UPDATE_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL;
+      submitHandler = this.handleUpdateProjectDecisionPackage;
+      optionalProps = {
+        documents: this.props.project.project_decision_package?.documents,
+        status_code: this.props.project.project_decision_package?.status_code,
+      };
     }
 
     return this.props.openModal({
@@ -174,6 +182,7 @@ export class DecisionPackageTab extends Component {
         closeModal: this.props.closeModal,
         handleSubmit: submitHandler,
         afterClose: () => {},
+        optionalProps,
       },
       content,
     });
@@ -239,6 +248,7 @@ export class DecisionPackageTab extends Component {
                   ?.projectDecisionPackageStatusCodesHash,
                 updateUser: projectDecisionPackage?.update_user,
                 updateDate: projectDecisionPackage?.update_timestamp,
+                documents: projectDecisionPackage?.documents,
               }}
               handleSubmit={this.handleUpdateProjectDecisionPackage}
             />
@@ -261,7 +271,7 @@ export class DecisionPackageTab extends Component {
                   type="primary"
                   style={{ float: "right" }}
                   disabled={!hasStartedPackage}
-                  onClick={() => this.handleOpenModal("decision-package")}
+                  onClick={() => this.handleOpenModal("upload-document")}
                 >
                   + Add Documents
                 </Button>
@@ -269,6 +279,7 @@ export class DecisionPackageTab extends Component {
                   type="secondary"
                   style={{ float: "right" }}
                   disabled={!hasStartedPackage || allDocuments?.length === 0}
+                  onClick={() => this.handleOpenModal("edit-decision-package")}
                 >
                   <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
                   &nbsp; Edit Package
