@@ -44,18 +44,6 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
-  <Row>
-    <Col>
-      <Divider />
-      <Checkbox
-        checked={false}
-        indeterminate={false}
-        onChange={[Function]}
-      >
-        These files are to be added to the decision package
-      </Checkbox>
-    </Col>
-  </Row>
   <div
     className="right center-mobile"
   >
@@ -85,6 +73,7 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
+      disabled={true}
       ghost={false}
       htmlType="button"
       loading={false}
