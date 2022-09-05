@@ -3,10 +3,10 @@ import { Button, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import CustomPropTypes from "@/customPropTypes";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 
@@ -18,7 +18,7 @@ const propTypes = {
 };
 
 const transformRowData = (projects) => {
-  return projects.map((project) => {
+  return projects?.map((project) => {
     const contact = project?.contacts?.find((c) => c.is_primary);
 
     return {

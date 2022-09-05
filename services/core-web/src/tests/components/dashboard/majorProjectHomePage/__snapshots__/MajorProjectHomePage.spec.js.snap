@@ -123,7 +123,18 @@ exports[`MajorProjectHomePage renders properly 1`] = `
             "update_timestamp": undefined,
           }
         }
-        filters={Object {}}
+        filters={
+          Object {
+            "application_stage": Array [],
+            "application_status": Array [],
+            "page": "1",
+            "per_page": "25",
+            "search": undefined,
+            "sort_dir": undefined,
+            "sort_field": undefined,
+            "update_timestamp": undefined,
+          }
+        }
         handleSearch={[Function]}
         isLoaded={false}
         projects={
@@ -163,18 +174,6 @@ exports[`MajorProjectHomePage renders properly 1`] = `
                 "update_timestamp": "2022-08-01T00:00:00+00:00",
               },
             ],
-          }
-        }
-        searchParams={
-          Object {
-            "application_stage": Array [],
-            "application_status": Array [],
-            "page": "1",
-            "per_page": "25",
-            "search": undefined,
-            "sort_dir": undefined,
-            "sort_field": undefined,
-            "update_timestamp": undefined,
           }
         }
         statusCodeHash={
