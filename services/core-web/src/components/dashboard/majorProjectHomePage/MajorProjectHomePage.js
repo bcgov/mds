@@ -52,20 +52,22 @@ const defaultParams = {
 export class MajorProjectHomePage extends Component {
   state = {
     projectsLoaded: false,
-    params: defaultParams,
+    listParams: defaultParams,
   };
 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     this.setState(
       (prevState) => ({
-        params: {
-          ...prevState.params,
+        listParams: {
+          ...prevState.listParams,
           ...params,
         },
       }),
       () =>
-        this.props.history.replace(router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.params))
+        this.props.history.replace(
+          router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.listParams)
+        )
     );
   }
 
@@ -87,49 +89,41 @@ export class MajorProjectHomePage extends Component {
   clearParams = () => {
     this.setState(
       (prevState) => ({
-        params: {
+        listParams: {
           ...defaultParams,
-          per_page: prevState.params.per_page || defaultParams.per_page,
-          sort_field: prevState.params.sort_field,
-          sort_dir: prevState.params.sort_dir,
+          per_page: prevState.listParams.per_page || defaultParams.per_page,
+          sort_field: prevState.listParams.sort_field,
+          sort_dir: prevState.listParams.sort_dir,
         },
       }),
       () => {
-        this.props.history.replace(router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.params));
+        this.props.history.replace(
+          router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.listParams)
+        );
       }
     );
   };
 
   onPageChange = (page, per_page) => {
     this.setState(
-      (prevState) => ({ params: { ...prevState.params, page, per_page } }),
+      (prevState) => ({ listParams: { ...prevState.listParams, page, per_page } }),
       () =>
-        this.props.history.replace(router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.params))
+        this.props.history.replace(
+          router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.listParams)
+        )
     );
   };
 
   handleSearch = (params) => {
     this.setState(
       {
-        params,
+        listParams: params,
       },
       () =>
-        this.props.history.replace(router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.params))
+        this.props.history.replace(
+          router.MAJOR_PROJECTS_DASHBOARD.dynamicRoute(this.state.listParams)
+        )
     );
-  };
-
-  handleFilterChange = () => {
-    this.setState({ projectsLoaded: false });
-    const params = {
-      ...this.state.params,
-      page: 1,
-    };
-    return this.props.fetchProjects(params).then(() => {
-      this.setState({
-        projectsLoaded: true,
-        params,
-      });
-    });
   };
 
   render() {
@@ -150,7 +144,7 @@ export class MajorProjectHomePage extends Component {
         <div className="landing-page__content">
           <div className="page__content">
             <MajorProjectSearch
-              initialValues={this.state.params}
+              initialValues={this.state.listParams}
               handleSearch={this.handleSearch}
               handleReset={this.clearParams}
               statusCodes={uniqBy(allStatus, "value").sort((a, b) => (a.value < b.value ? -1 : 1))}
@@ -159,9 +153,9 @@ export class MajorProjectHomePage extends Component {
               isLoaded={this.state.projectsLoaded}
               handleSearch={this.handleSearch}
               projects={this.props.projects}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-              searchParams={this.state.params}
+              sortField={this.state.listParams.sort_field}
+              sortDir={this.state.listParams.sort_dir}
+              filters={this.state.listParams}
               defaultParams={defaultParams}
               statusCodeHash={{
                 ...this.props.projectSummaryStatusCodesHash,
@@ -173,9 +167,9 @@ export class MajorProjectHomePage extends Component {
             <div className="center">
               <ResponsivePagination
                 onPageChange={this.onPageChange}
-                currentPage={Number(this.state.params.page)}
+                currentPage={Number(this.state.listParams.page)}
                 pageTotal={this.props.pageData?.total}
-                itemsPerPage={Number(this.state.params.per_page)}
+                itemsPerPage={Number(this.state.listParams.per_page)}
               />
             </div>
           </div>

@@ -101,10 +101,10 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
         })
-    @api.marshal_with(PAGINATED_PROJECT_LIST, code=200, envelope='records')
+    @api.marshal_with(PAGINATED_PROJECT_LIST, code=200)
     def get(self):
         args = {
-            "page_number":request.args.get('page_number', PAGE_DEFAULT, type=int),
+            "page_number":request.args.get('page', PAGE_DEFAULT, type=int),
             "sort_field": request.args.get('sort_field', 'proponent_project_id', type=str),
             "sort_dir": request.args.get('sort_dir', 'asc', type=str),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
@@ -209,6 +209,8 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
         sort_models = {
             'project_title': 'Project',
             'project_id': 'Project',
+            'mrc_review_required': 'Project',
+            'name': 'ProjectContact',
             'mine_commodity_code': 'MineTypeDetail',
             'status_code':'ProjectSummary',
             'status_code':'InformationRequirementsTable',

@@ -120,7 +120,7 @@ export const MajorProjectTable = (props) => {
       title: "MRC",
       dataIndex: "mrc_review_required",
       sortField: "mrc_review_required",
-      sorter: false,
+      sorter: true,
       render: (text) => <div title="MRC">{text}</div>,
     },
     {
@@ -190,7 +190,7 @@ export const MajorProjectTable = (props) => {
     <CoreTable
       condition={props.isLoaded}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-      dataSource={transformRowData(props.projects?.records, props.mineCommodityOptionsHash)}
+      dataSource={transformRowData(props.projects, props.mineCommodityOptionsHash)}
       tableProps={{
         align: "left",
         pagination: false,
