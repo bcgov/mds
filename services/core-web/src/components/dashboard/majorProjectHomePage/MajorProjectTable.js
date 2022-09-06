@@ -34,6 +34,7 @@ const transformRowData = (projects, mineCommodityHash) =>
     project_title: project.project_title,
     project_id: project.project_id,
     mrc_review_required: project.mrc_review_required ? "Yes" : "No",
+    mine_name: project.mine.mine_name,
     project_stage: project.stage,
     status_code: project.status_code,
     guid: project.guid,
@@ -114,6 +115,14 @@ export const MajorProjectTable = (props) => {
       sortField: "project_id",
       sorter: true,
       render: (text) => <div title="Project ID">{text}</div>,
+    },
+    {
+      key: "mine_name",
+      title: "Mine Name",
+      dataIndex: "mine_name",
+      sortField: "mine_name",
+      sorter: true,
+      render: (text) => <div title="Mine Name">{text}</div>,
     },
     {
       key: "mrc_review_required",

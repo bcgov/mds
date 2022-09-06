@@ -1,6 +1,6 @@
 from datetime import date, datetime
 import pytz
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
@@ -18,6 +18,7 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine import Mine
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -181,7 +182,7 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
                     'update_timestamp': update_timestamp,
                     'mine': project.mine
                 }
-
+            current_app.logger.debug(f'record: {record}')
             if record:
                 most_recent_projects.append(record)
 
@@ -211,7 +212,8 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
             'project_id': 'Project',
             'mrc_review_required': 'Project',
             'name': 'ProjectContact',
-            'mine_commodity_code': 'MineTypeDetail',
+            'mine_name': 'Mine',
+            'mine_commodity_code': 'MineCommodityCode',
             'status_code':'ProjectSummary',
             'status_code':'InformationRequirementsTable',
             'status_code': 'MajorMineApplication',
