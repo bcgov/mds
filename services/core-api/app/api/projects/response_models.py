@@ -195,6 +195,40 @@ MAJOR_MINE_APPLICATION_MODEL = api.model(
         'create_timestamp': fields.DateTime
     })
 
+PROJECT_DECISION_PACKAGE_DOCUMENT_MODEL = api.inherit(
+    'ProjectDecisionPackageDocument', MINE_DOCUMENT_MODEL, {
+        'project_decision_package_id': fields.Integer,
+        'project_decision_package_document_type_code': fields.String
+    })
+
+PROJECT_DECISION_PACKAGE_STATUS_CODE_MODEL = api.model(
+    'ProjectDecisionPackageStatusCode', {
+        'project_decision_package_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    })
+
+PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_MODEL = api.model(
+    'ProjectDecisionPackageDocumentType', {
+        'project_decision_package_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer
+    })
+
+PROJECT_DECISION_PACKAGE_MODEL = api.model(
+    'ProjectDecisionPackage', {
+        'project_decision_package_id': fields.Integer,
+        'project_decision_package_guid': fields.String,
+        'project_guid': fields.String,
+        'status_code': fields.String,
+        'documents': fields.List(fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_MODEL)),
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
+    })
+
 PROJECT_MODEL = api.model(
     'Project', {
         'project_guid': fields.String,
@@ -209,6 +243,7 @@ PROJECT_MODEL = api.model(
         'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL),
         'information_requirements_table': fields.Nested(IRT_MODEL),
         'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL),
+        'project_decision_package': fields.Nested(PROJECT_DECISION_PACKAGE_MODEL),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,

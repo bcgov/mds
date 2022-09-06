@@ -123,7 +123,7 @@ exports[`Project renders properly 1`] = `
         <div
           className="padding-lg"
         >
-          <withRouter(Connect(ReduxForm))
+          <withRouter(Connect(DecisionPackageTab))
             initialValues={Object {}}
           />
         </div>

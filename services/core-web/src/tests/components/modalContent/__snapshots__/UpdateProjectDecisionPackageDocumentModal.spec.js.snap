@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
+<Fragment>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <Title
+        level={4}
+      >
+        Select Files for Decision Package
+      </Title>
+      <Text>
+        Select documents that will be displayed to proponents as a part of this application’s decision package. You can choose proponent upload documents as well as ministry uploaded documents.
+      </Text>
+      <br />
+      <br />
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      span={24}
+    >
+      <CoreTable
+        columns={
+          Array [
+            Object {
+              "dataIndex": "project_decision_package_document_type_code",
+              "render": [Function],
+              "title": <Checkbox
+                checked={false}
+                indeterminate={false}
+                onChange={[Function]}
+              />,
+            },
+            Object {
+              "dataIndex": "document_name",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Name",
+            },
+            Object {
+              "dataIndex": "upload_date",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Uploaded",
+            },
+          ]
+        }
+        condition={true}
+        dataSource={Array []}
+        tableProps={
+          Object {
+            "pagination": false,
+          }
+        }
+      />
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <br />
+      <Text
+        strong={true}
+      >
+        0 files selected for decision package.
+      </Text>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <br />
+      <div
+        className="right center-mobile"
+      >
+        <ForwardRef
+          cancelText="No"
+          disabled={false}
+          icon={<ForwardRef(ExclamationCircleFilled) />}
+          okText="Yes"
+          okType="primary"
+          onConfirm={[MockFunction]}
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          transitionName="zoom-big"
+          trigger="click"
+        >
+          <Button
+            block={false}
+            className="full-mobile"
+            disabled={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="secondary"
+          >
+            Cancel
+          </Button>
+        </ForwardRef>
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="primary"
+        >
+          Update
+        </Button>
+      </div>
+    </Col>
+  </Row>
+</Fragment>
+`;

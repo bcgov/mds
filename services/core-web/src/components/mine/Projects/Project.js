@@ -104,13 +104,9 @@ export class Project extends Component {
       return <NullScreen type="generic" />;
     }
 
-    const hasInformationRequirementsTable = Boolean(
-      this.props.project.information_requirements_table?.irt_guid
-    );
-
-    const hasFinalAplication = Boolean(
-      this.props.project.major_mine_application?.major_mine_application_guid
-    );
+    const { information_requirements_table, major_mine_application } = this.props.project;
+    const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
+    const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
     return (
       <div className="page">

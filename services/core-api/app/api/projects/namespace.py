@@ -23,6 +23,10 @@ from app.api.projects.major_mine_application.resources.major_mine_application_li
 from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
 from app.api.projects.major_mine_application.resources.major_mine_application_document_upload import MajorMineApplicationDocumentUploadResource
 from app.api.projects.major_mine_application.resources.major_mine_application_uploaded_document import MajorMineApplicationUploadedDocumentResource
+from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
+from app.api.projects.project_decision_package.resources.project_decision_package_document_upload import ProjectDecisionPackageDocumentUploadResource
+from app.api.projects.project_decision_package.resources.project_decision_package_uploaded_document import ProjectDecisionPackageUploadedDocumentResource
+
 
 api = Namespace('projects', description='Projects actions/options')
 
@@ -71,3 +75,9 @@ api.add_resource(
 api.add_resource(MajorMineApplicationDocumentUploadResource,
                  '/<string:project_guid>/major-mine-application/documents')
 api.add_resource(MajorMineApplicationUploadedDocumentResource, '/<string:project_guid>/major-mine-application/<string:major_mine_application_guid>/documents/<string:mine_document_guid>')
+
+# Project Decision Package
+api.add_resource(ProjectDecisionPackageListResource, '/<string:project_guid>/project-decision-package')
+api.add_resource(ProjectDecisionPackageResource, '/<string:project_guid>/project-decision-package/<string:project_decision_package_guid>')
+api.add_resource(ProjectDecisionPackageDocumentUploadResource, '/<string:project_guid>/project-decision-package/documents')
+api.add_resource(ProjectDecisionPackageUploadedDocumentResource, '/<string:project_guid>/project-decision-package/<string:project_decision_package_guid>/documents/<string:mine_document_guid>')

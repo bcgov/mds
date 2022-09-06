@@ -252,7 +252,7 @@ export class MajorMineApplicationTab extends Component {
           )}
           <br />
           {this.renderDocumentSection(
-            "Minisrty Decision Documents",
+            "Ministry Decision Documents",
             "ministry-decision-documents",
             [],
             true

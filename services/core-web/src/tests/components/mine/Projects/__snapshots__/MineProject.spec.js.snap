@@ -96,6 +96,9 @@ exports[`MineProject renders properly 1`] = `
             },
             "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
             "mine_name": "Sample Mine",
+            "project_decision_package": Object {
+              "documents": Array [],
+            },
             "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
             "project_summary": Object {
               "documents": Array [],

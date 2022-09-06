@@ -436,3 +436,85 @@ export const removeDocumentFromMajorMineApplication = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const createProjectDecisionPackage = (
+  { projectGuid },
+  payload,
+  message = "Successfully created a new project decision package."
+) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGES(projectGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateProjectDecisionPackage = (
+  { projectGuid, projectDecisionPackageGuid },
+  payload,
+  message = "Successfully updated decision package."
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGE(projectGuid, projectDecisionPackageGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const removeDocumentFromProjectDecisionPackage = (
+  projectGuid,
+  projectDecisionPackageGuid,
+  mineDocumentGuid
+) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+  return CustomAxios()
+    .delete(
+      ENVIRONMENT.apiUrl +
+        API.PROJECT_DECISION_PACKAGE_DOCUMENT(
+          projectGuid,
+          projectDecisionPackageGuid,
+          mineDocumentGuid
+        ),
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted decision package document.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

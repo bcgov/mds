@@ -28,6 +28,7 @@ EDIT_INFORMATION_REQUIREMENTS_TABLE = "core_edit_information_requirements_table"
 EDIT_MAJOR_MINE_APPLICATIONS = "core_edit_major_mine_applications"
 EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
+EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 
 
 def is_minespace_user():
@@ -37,8 +38,10 @@ def is_minespace_user():
 def can_edit_now_dates():
     return jwt.validate_roles([EDIT_NOW_DATES])
 
+
 def can_edit_mines():
     return jwt.validate_roles([MINE_EDIT])
+
 
 def requires_role_edit_emli_contacts(func):
     return _inner_wrapper(func, EDIT_EMLI_CONTACTS)

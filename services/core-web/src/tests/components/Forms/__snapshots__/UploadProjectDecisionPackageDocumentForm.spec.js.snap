@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <Title
+        level={4}
+      >
+        Upload Document
+      </Title>
+      <Text>
+        Click here to upload a document.
+      </Text>
+      <br />
+      <br />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Upload Files"
+      >
+        <Field
+          component={[Function]}
+          id="uploadedFiles"
+          name="uploadedFiles"
+          onFileLoad={[Function]}
+          onRemoveFile={[Function]}
+          projectGuid="ed678588-1e92-4cfc-b2aa-29332931d1ca"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={true}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Update
+    </Button>
+  </div>
+</Form>
+`;

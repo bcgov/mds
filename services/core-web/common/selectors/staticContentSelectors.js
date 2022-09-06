@@ -59,6 +59,7 @@ export const {
   getInformationRequirementsTableDocumentTypes,
   getMajorMinesApplicationStatusCodes,
   getMajorMinesApplicationDocumentTypes,
+  getProjectDecisionPackageStatusCodes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -807,6 +808,17 @@ export const getDropdownMajorMinesApplicationStatusCodes = createSelectorWrapper
 
 export const getMajorMinesApplicationStatusCodesHash = createSelector(
   [getDropdownMajorMinesApplicationStatusCodes],
+  createLabelHash
+);
+
+export const getDropdownProjectDecisionPackageStatusCodes = createSelectorWrapper(
+  getProjectDecisionPackageStatusCodes,
+  createDropDownList,
+  ["description", "project_decision_package_status_code"]
+);
+
+export const getProjectDecisionPackageStatusCodesHash = createSelector(
+  [getDropdownProjectDecisionPackageStatusCodes],
   createLabelHash
 );
 

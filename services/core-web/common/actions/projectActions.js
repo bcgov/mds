@@ -56,3 +56,13 @@ export const storeRequirements = (payload) => ({
 export const clearRequirements = () => ({
   type: actionTypes.CLEAR_REQUIREMENTS,
 });
+
+export const storeProjectDecisionPackage = (payload) => ({
+  type: actionTypes.STORE_PROJECT_DECISION_PACKAGE,
+  payload,
+});
+
+export const clearProjectDecisionPackage = (payload) => ({
+  type: actionTypes.CLEAR_PROJECT_DECISION_PACKAGE,
+  payload,
+});

@@ -2,14 +2,12 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
-from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
-from app.config import Config
 
 
 class Project(AuditMixin, Base):
@@ -29,12 +27,13 @@ class Project(AuditMixin, Base):
         "InformationRequirementsTable", uselist=False, back_populates="project")
     major_mine_application = db.relationship(
         "MajorMineApplication", uselist=False, back_populates="project")
+    project_decision_package = db.relationship(
+        "ProjectDecisionPackage", uselist=False, back_populates="project")
     project_lead = db.relationship(
         'Party', lazy='select', primaryjoin='Party.party_guid == Project.project_lead_party_guid')
     contacts = db.relationship(
         'ProjectContact',
-        primaryjoin=
-        'and_(ProjectContact.project_guid == Project.project_guid, ProjectContact.deleted_ind == False)',
+        primaryjoin='and_(ProjectContact.project_guid == Project.project_guid, ProjectContact.deleted_ind == False)',
         lazy='selectin')
 
     def __repr__(self):

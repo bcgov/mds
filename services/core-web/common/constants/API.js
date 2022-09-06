@@ -143,6 +143,7 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${mineDocumentGuid}?${queryString.stringify(
     params
   )}`;
+export const DECISION_PACKAGE = () => `/`;
 
 // Information Requirements Table (IRT)
 export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;
@@ -170,6 +171,20 @@ export const MAJOR_MINE_APPLICATION_DOCUMENT = (
   mineDocumentGuid
 ) =>
   `/projects/${projectGuid}/major-mine-application/${majorMineApplicationGuid}/documents/${mineDocumentGuid}`;
+
+// Project Decision Package
+export const PROJECT_DECISION_PACKAGES = (projectGuid) =>
+  `/projects/${projectGuid}/project-decision-package`;
+export const PROJECT_DECISION_PACKAGE = (projectGuid, projectDecisionPackageGuid) =>
+  `/projects/${projectGuid}/project-decision-package/${projectDecisionPackageGuid}`;
+export const PROJECT_DECISION_PACKAGE_DOCUMENTS = (projectGuid) =>
+  `/projects/${projectGuid}/project-decision-package/documents`;
+export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
+  projectGuid,
+  projectDecisionPackageGuid,
+  mineDocumentGuid
+) =>
+  `/projects/${projectGuid}/project-decision-package/${projectDecisionPackageGuid}/documents/${mineDocumentGuid}`;
 
 // Users
 export const CORE_USER = "/users/core";

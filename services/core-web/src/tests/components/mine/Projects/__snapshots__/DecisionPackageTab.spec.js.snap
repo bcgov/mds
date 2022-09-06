@@ -1,12 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DecisionPackageTab renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[Function]}
->
+<Fragment>
   <div
     className="side-menu"
   >
@@ -39,50 +34,30 @@ exports[`DecisionPackageTab renders properly 1`] = `
     className="side-menu--content"
   >
     <Row>
-      <Col
-        span={24}
-      >
-        <Alert
-          description="This decision package is in progress. You can now add and remove relevant documents to this decision package. Proponents will not see decision package files until it is completed."
-          message={
-            <React.Fragment>
-              <ForwardRef>
-                <ForwardRef
-                  md={18}
-                  xs={24}
-                >
-                  In Progress
-                </ForwardRef>
-                <ForwardRef
-                  md={6}
-                  xs={24}
-                >
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <ForwardRef
-                      component={[Function]}
-                      data={Array []}
-                      id="status_code"
-                      name="status_code"
-                      placeholder="Select new status"
-                    />
-                  </FormItem>
-                </ForwardRef>
-              </ForwardRef>
-            </React.Fragment>
+      <Connect(ReduxForm)
+        displayValues={
+          Object {
+            "documents": undefined,
+            "projectDecisionPackageStatusCodesHash": undefined,
+            "status_code": "NTS",
+            "updateDate": undefined,
+            "updateUser": undefined,
           }
-          showIcon={true}
-          type="warning"
-        />
-        <br />
-      </Col>
+        }
+        handleSubmit={[Function]}
+        initialValues={
+          Object {
+            "status_code": "NTS",
+          }
+        }
+      />
       <Col
         span={24}
       >
         <Title
           level={3}
         >
+          <br />
           <ForwardRef(FolderViewOutlined)
             className="violet"
           />
@@ -116,9 +91,11 @@ exports[`DecisionPackageTab renders properly 1`] = `
             >
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",
@@ -130,9 +107,11 @@ exports[`DecisionPackageTab renders properly 1`] = `
               </Button>
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",
@@ -165,10 +144,23 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
@@ -199,10 +191,23 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
@@ -248,9 +253,11 @@ exports[`DecisionPackageTab renders properly 1`] = `
             >
               <Button
                 block={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 loading={false}
+                onClick={[Function]}
                 style={
                   Object {
                     "float": "right",
@@ -275,14 +282,27 @@ exports[`DecisionPackageTab renders properly 1`] = `
         </Text>
       </p>
       <DocumentTable
-        additionalColumnProps={Array []}
+        additionalColumnProps={
+          Array [
+            Object {
+              "colProps": Object {
+                "width": "80%",
+              },
+              "key": "name",
+            },
+          ]
+        }
         documentParent={null}
         documents={Array []}
-        excludedColumnKeys={Array []}
+        excludedColumnKeys={
+          Array [
+            "category",
+          ]
+        }
         isViewOnly={false}
         removeDocument={[Function]}
       />
     </div>
   </div>
-</Form>
+</Fragment>
 `;
