@@ -28,10 +28,6 @@ MINE_OPERATION_STATUS_REASON = {
         'value': 'REC',
         'label': 'Reclamation'
     },
-    'orphaned': {
-        'value': 'ORP',
-        'label': 'Orphaned'
-    },
     'unknown': {
         'value': 'UN',
         'label': 'Unknown'

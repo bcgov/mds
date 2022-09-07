@@ -61,7 +61,6 @@ INSERT INTO mine_operation_status_reason_code
 VALUES
     ('CM', 'Care & Maintenance', 10, 'system-mds', 'system-mds'),
     ('REC', 'Reclamation', 20, 'system-mds', 'system-mds'),
-    ('ORP', 'Orphaned', 30, 'system-mds', 'system-mds'),
     ('UN', 'Unknown', 40, 'system-mds', 'system-mds'),
     ('YR', 'Year-Round', 50, 'system-mds', 'system-mds'),
     ('SEA', 'Seasonal', 60, 'system-mds', 'system-mds')
