@@ -33,28 +33,33 @@ jobs:
   audit-minespace: # Audit for unused Minespace frontend packages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: depcheck
-        uses: tj-actions/depcheck@v8
-        with:
-            dir: services/minespace-web
-            ignores: 'eslint,babel-*'
-        continue-on-error: true
+      # - uses: actions/checkout@v2
+      # - name: depcheck
+      #   uses: tj-actions/depcheck@v8
+      #   with:
+      #       dir: services/minespace-web
+      #       ignores: 'eslint,babel-*'
+      #   continue-on-error: true
+
+      
+      - name: Store output
+        run: |
+          echo ::set-env name=DEPCHECK_OUTPUT::$(npx depcheck)
 
       - name: Log output
         uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
         env:
-          DEPCHECK_OUTPUT: "$(npx depcheck) \n"
+          OUTPUT: ${{ env.DEPCHECK_OUTPUT}}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Depcheck Results \`${{ steps.plan.outcome }}\`
+            const output = `#### Depcheck Results
             
             <details><summary>Dependencies</summary>
             
             \`\`\`\n
-            ${process.env.DEPCHECK_OUTPUT}
+            ${process.env.OUTPUT}
             \`\`\`
             
             </details>`;
