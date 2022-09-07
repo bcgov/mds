@@ -32,7 +32,12 @@ exports[`SteppedForm renders properly 1`] = `
     <div
       className="stepped-form-form-container"
     >
-      <div />
+      <Form
+        colon={true}
+        hideRequiredMark={false}
+        layout="vertical"
+        onSubmit={[Function]}
+      />
       <Row
         justify="end"
       />

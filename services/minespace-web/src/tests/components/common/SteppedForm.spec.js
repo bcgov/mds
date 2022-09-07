@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import SteppedForm from "@/components/Forms/tailing/tailingsStorageFacility/SteppedForm";
+import SteppedForm from "@/components/common/SteppedForm";
 
 const dispatchProps = {};
 const props = {
@@ -27,7 +27,12 @@ beforeEach(() => {
 
 describe("SteppedForm", () => {
   it("renders properly", () => {
-    const component = shallow(<SteppedForm {...dispatchProps} {...props} />);
+    const component = shallow(
+      <SteppedForm {...dispatchProps} {...props}>
+        <div />
+        <div />
+      </SteppedForm>
+    );
     expect(component).toMatchSnapshot();
   });
 });

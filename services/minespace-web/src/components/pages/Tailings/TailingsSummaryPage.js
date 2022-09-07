@@ -23,11 +23,11 @@ import {
   MINE_DASHBOARD,
 } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import SteppedForm from "@/components/Forms/tailing/tailingsStorageFacility/SteppedForm";
+import SteppedForm from "@/components/common/SteppedForm";
 import * as Permission from "@/constants/permissions";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
-import Step from "@/components/Forms/tailing/tailingsStorageFacility/Step";
+import Step from "@/components/common/Step";
 import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 import {
   createTailingsStorageFacility,
