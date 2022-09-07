@@ -1,6 +1,6 @@
 from datetime import date, datetime
 import pytz
-from flask import request, current_app
+from flask import request
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
@@ -182,7 +182,7 @@ class MajorProjectListDashboardResource(Resource, UserMixin):
                     'update_timestamp': update_timestamp,
                     'mine': project.mine
                 }
-            current_app.logger.debug(f'record: {record}')
+
             if record:
                 most_recent_projects.append(record)
 
