@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { flattenObject } from "@common/utils/helpers";
+import { flattenObject, resetForm } from "@common/utils/helpers";
 import { Link, withRouter } from "react-router-dom";
-import { getFormSyncErrors, getFormValues, reduxForm, reset, submit, touch } from "redux-form";
+import { getFormSyncErrors, getFormValues, reduxForm, submit, touch } from "redux-form";
 import { Col, Divider, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -40,18 +40,16 @@ const propTypes = {
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
       tailingsStorageFacilityGuid: PropTypes.string,
+      tab: PropTypes.string,
     }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   submit: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  getFormSyncErrors: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   updateTailingsStorageFacility: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
-  storeTsf: PropTypes.func.isRequired,
   // addPartyRelationship: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   eors: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -74,21 +72,17 @@ const tabs = [
 export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [initialValues, setInitialValues] = useState({});
+  const [tsfGuid, setTsfGuid] = useState(null);
 
   const handleFetchData = async () => {
-    const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
+    const { tailingsStorageFacilityGuid } = match?.params;
     await props.fetchPartyRelationships({
       mine_guid: match.params.mineGuid,
       relationships: "party",
       include_permit_contacts: "true",
     });
     if (tailingsStorageFacilityGuid) {
-      const tsf = mines[mineGuid].mine_tailings_storage_facilities.find(
-        (t) => t.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
-      );
-      props.storeTsf(tsf);
-      setInitialValues(tsf);
+      setTsfGuid(tailingsStorageFacilityGuid);
     }
     setIsLoaded(true);
   };
@@ -97,10 +91,11 @@ export const TailingsSummaryPage = (props) => {
     handleFetchData();
   }, []);
 
-  const handleSaveData = (e) => {
+  const handleSaveData = async (e) => {
     e.preventDefault();
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
+    // TODO: implement saving of EOR
     // if (errors.length === 0) {
     //   props.addPartyRelationship({
     //     mine_guid: match.params.mineGuid,
@@ -113,21 +108,26 @@ export const TailingsSummaryPage = (props) => {
     //   });
     // }
     if (errors.length === 0) {
-      if (match.params.tailingsStorageFacilityGuid) {
+      if (tsfGuid) {
         props.updateTailingsStorageFacility(
           match.params.mineGuid,
           match.params.tailingsStorageFacilityGuid,
           formValues
         );
       } else {
-        props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+        const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+        setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
       }
     }
   };
 
-  const handleTabChange = (newActiveTab) => {
+  const handleTabChange = async (newActiveTab) => {
     const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     let url;
+    if (match.params.tab === "basic-information" && !tsfGuid) {
+      const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+      setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
+    }
     if (tailingsStorageFacilityGuid) {
       url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tailingsStorageFacilityGuid,
@@ -173,7 +173,7 @@ export const TailingsSummaryPage = (props) => {
             <BasicInformation />
           </Step>
           <Step key="engineer-of-record">
-            <EngineerOfRecord initialValues={initialValues} eors={eors} />
+            <EngineerOfRecord eors={eors} />
           </Step>
           <Step key="qualified-person">
             <div />
@@ -212,7 +212,6 @@ const mapDispatchToProps = (dispatch) =>
       createTailingsStorageFacility,
       addPartyRelationship,
       submit,
-      reset,
       touch,
       storeTsf,
     },
@@ -228,7 +227,10 @@ export default compose(
     form: FORM.ADD_TAILINGS_STORAGE_FACILITY,
     touchOnBlur: true,
     touchOnChange: false,
-    onSubmit: () => {},
+    onSubmit: () => {
+      resetForm(FORM.ADD_TAILINGS_STORAGE_FACILITY);
+    },
     enableReinitialize: true,
+    destroyOnUnmount: true,
   })
 )(withRouter(AuthorizationGuard(Permission.IN_TESTING)(TailingsSummaryPage)));

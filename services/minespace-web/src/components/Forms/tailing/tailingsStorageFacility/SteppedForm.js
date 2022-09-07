@@ -51,7 +51,7 @@ const SteppedForm = (props) => {
           {tabs.map((tab) => {
             return (
               <Item
-                disabled={props.errors.length > 1000 && tab !== tabs[tabIndex]}
+                disabled={props.errors.length > 0 && indexOf(tabs, tab) > tabIndex}
                 className="stepped-menu-item"
                 key={tab}
                 onClick={() => {
@@ -70,11 +70,7 @@ const SteppedForm = (props) => {
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst ? "end" : "space-between"}>
               {!isFirst && (
-                <Button
-                  disabled={props.errors.length > 0}
-                  type="secondary"
-                  onClick={() => handleTabClick(tabs[tabIndex - 1])}
-                >
+                <Button type="secondary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
                   <LeftOutlined /> Back
                 </Button>
               )}

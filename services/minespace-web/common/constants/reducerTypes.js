@@ -19,6 +19,7 @@ export const UPDATE_MINE_RECORD = "UPDATE_MINE_RECORD";
 export const CREATE_TSF = "CREATE_TSF";
 export const EDIT_TSF_REPORT = "EDIT_TSF_REPORT";
 export const UPDATE_TSF = "UPDATE_TSF";
+export const GET_TSF = "GET_TSF";
 export const GET_MINE_DOCUMENTS = "GET_MINE_DOCUMENTS";
 export const MINES = "MINES";
 export const GET_MINE_TSF_REQUIRED_REPORTS = "GET_MINE_TSF_REQUIRED_REPORTS";
