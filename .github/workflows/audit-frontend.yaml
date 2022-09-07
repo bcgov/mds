@@ -33,18 +33,19 @@ jobs:
   audit-minespace: # Audit for unused Minespace frontend packages
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v2
-      # - name: depcheck
-      #   uses: tj-actions/depcheck@v8
-      #   with:
-      #       dir: services/minespace-web
-      #       ignores: 'eslint,babel-*'
-      #   continue-on-error: true
+      - uses: actions/checkout@v2
+      - name: depcheck
+        uses: tj-actions/depcheck@v8
+        with:
+            dir: services/minespace-web
+            ignores: 'eslint,babel-*'
+        continue-on-error: true
+        id: audit_out
 
       
       - name: Store output
         run: |
-          echo ::set-output name=DEPCHECK_OUTPUT::$(npx depcheck)
+          echo ${{ audit_out }}
 
       - name: Log output
         uses: actions/github-script@0.9.0
