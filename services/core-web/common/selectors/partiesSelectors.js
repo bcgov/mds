@@ -15,6 +15,7 @@ export const {
   getInspectors,
   getProjectLeads,
   getAllPartyRelationships,
+  getEngineersOfRecordOptions,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(
