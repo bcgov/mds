@@ -84,7 +84,7 @@ class ProjectListResource(Resource, UserMixin):
         return projects
 
 
-class MajorProjectListDashboardResource(Resource, UserMixin):
+class ProjectListDashboardResource(Resource, UserMixin):
     @api.doc(
         description='Return a list of filtered major projects.',
         params={
