@@ -3,6 +3,13 @@ name: Audit Frontend
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["CORE WEB - Build & Deploy To DEV", "MINESPACE - Build & Deploy To DEV"]
+    types: [requested]
+    branches:
+      - 'feature/**'
+      - 'MDS**'
+      - 'mds**'
   pull_request:
     types:
       - opened
@@ -12,7 +19,7 @@ on:
       - ready_for_review
 
 jobs:
-  audit-core-web: # Audit for unused frontend packages
+  audit-core-web: # Audit for unused Core-Web frontend packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +30,7 @@ jobs:
             ignores: 'eslint,babel-*'
         continue-on-error: true
 
-  audit-minespace: # Audit for unused frontend packages
+  audit-minespace: # Audit for unused Minespace frontend packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +41,27 @@ jobs:
             ignores: 'eslint,babel-*'
         continue-on-error: true
 
-
-# Check frontend packages that need to be upgraded 
-
-# Check for security vulnerabilities in frontend packages 
+      - name: Log output
+        uses: actions/github-script@0.9.0
+        if: github.event_name == 'pull_request'
+        env:
+          DEPCHECK_OUTPUT: "npm depcheck \n"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Depcheck Results \`${{ steps.plan.outcome }}\`
+            
+            <details><summary>Dependencies</summary>
+            
+            \`\`\`\n
+            ${process.env.DEPCHECK_OUTPUT}
+            \`\`\`
+            
+            </details>`;
+              
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
