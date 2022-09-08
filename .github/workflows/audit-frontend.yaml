@@ -56,13 +56,10 @@ jobs:
           #       });
           script: |
             const execSync = require('child_process').execSync;
-            try {
-              const output = execSync('depcheck ./services/minespace-web', { encoding: 'utf-8' });
-            } catch (e) {
-              // No need to handle error if we're just checking for packages
-            }
+            const output = execSync('depcheck ./services/minespace-web 2> /dev/null', { encoding: 'utf-8' });
             console.log('Output was:\n', output);
           result-encoding: string
+          continue-on-error: true
 
       - name: Log output
         uses: actions/github-script@v6
