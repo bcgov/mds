@@ -41,21 +41,15 @@ jobs:
       #       ignores: 'eslint,babel-*'
       #   continue-on-error: true
 
-
-      # - name: Run depcheck
-      #   id: depcheck_output
-      #   run: ./gitops/npx_depcheck.sh
       - name: Install depcheck
         run: | 
           npm install -g "depcheck@1.4.3"
 
-      - name: Store output
-        uses: actions/github-script@v6
+      - uses: actions/github-script@v6
         id: depcheck_out
-
         with:
           script: |
-            var exec = require('child_process').exec;
+            const exec = require('child_process').exec;
 
             exec('depcheck ./services/minespace-web',
                 function (error, stdout, stderr) {
@@ -66,11 +60,6 @@ jobs:
                     }
                 });
           result-encoding: string
-
-        # run: | 
-        #   echo "::set-output name=DEPCHECK_OUTPUT::$(depcheck ./services/minespace-web)\n"
-        # # bash ./gitops/npx_depcheck.sh ./services/minespace-web
-        # continue-on-error: true
 
       - name: Log output
         if: github.event_name == 'pull_request' 
