@@ -28,10 +28,10 @@ import {
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { ClockCircleOutlined, CheckCircleOutlined, StopOutlined } from "@ant-design/icons";
 import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
@@ -431,6 +431,7 @@ export class NOWProgressTable extends Component {
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();
       });
   };
