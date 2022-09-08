@@ -69,8 +69,6 @@ jobs:
             
             \`\`\`\n
             ${{ env.DEPCHECK_OUTPUT }}
-            ${ process.env.PLAN }
-            ${{ process.env.PLAN }}
             ${ env.DEPCHECK_OUTPUT }
             \`\`\`
             
