@@ -39,7 +39,8 @@ jobs:
         run: | 
           npm install -g "depcheck@1.4.3"
 
-      - uses: actions/github-script@v6
+      - name: Set var
+        uses: actions/github-script@v6
         id: depcheck_out
         with:
           script: |
@@ -56,7 +57,7 @@ jobs:
           result-encoding: string
 
       - name: Log output
-      - uses: actions/github-script@v6
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request' 
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
