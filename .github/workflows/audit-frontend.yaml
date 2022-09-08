@@ -68,7 +68,6 @@ jobs:
             <details><summary>Dependencies</summary>
             
             \`\`\`\n
-            ${{ depcheck_out.DEPCHECK_OUTPUT }}
             ${ depcheck_out.output.DEPCHECK_OUTPUT }
             ${{ depcheck_out.output }}
             \`\`\`
