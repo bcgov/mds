@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import SteppedForm from "@/components/common/SteppedForm";
+import Step from "@/components/common/Step";
 
 const dispatchProps = {};
 const props = {
@@ -28,9 +29,13 @@ beforeEach(() => {
 describe("SteppedForm", () => {
   it("renders properly", () => {
     const component = shallow(
-      <SteppedForm {...dispatchProps} {...props}>
-        <div />
-        <div />
+      <SteppedForm {...dispatchProps} {...props} activeTab="1">
+        <Step key="1">
+          <div />
+        </Step>
+        <Step key="2">
+          <div />
+        </Step>
       </SteppedForm>
     );
     expect(component).toMatchSnapshot();

@@ -10,19 +10,28 @@ exports[`SteppedForm renders properly 1`] = `
       className="stepped-form"
       items={
         Array [
-          "basic-information",
+          "1",
+          "2",
         ]
       }
       mode="inline"
-      selectedKeys="basic-information"
+      selectedKeys="1"
     >
       <MenuItem
         className="stepped-menu-item"
         disabled={false}
-        key="basic-information"
+        key="1"
         onClick={[Function]}
       >
-        Basic Information
+        1
+      </MenuItem>
+      <MenuItem
+        className="stepped-menu-item"
+        disabled={true}
+        key="2"
+        onClick={[Function]}
+      >
+        2
       </MenuItem>
     </Menu>
   </Col>
@@ -37,10 +46,47 @@ exports[`SteppedForm renders properly 1`] = `
         hideRequiredMark={false}
         layout="vertical"
         onSubmit={[Function]}
-      />
+      >
+        <Step
+          key="1"
+        >
+          <div />
+        </Step>
+      </Form>
       <Row
         justify="end"
-      />
+      >
+        <div>
+          <Button
+            block={false}
+            className="full-mobile draft-button"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[MockFunction]}
+            style={
+              Object {
+                "marginRight": 16,
+              }
+            }
+            type="text"
+          >
+            Save Draft
+          </Button>
+          <Button
+            block={false}
+            disabled={true}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="secondary"
+          >
+            Next 
+            <ForwardRef(RightOutlined) />
+          </Button>
+        </div>
+      </Row>
     </div>
   </Col>
 </Row>
