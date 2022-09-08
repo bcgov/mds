@@ -45,10 +45,14 @@ jobs:
       # - name: Run depcheck
       #   id: depcheck_output
       #   run: ./gitops/npx_depcheck.sh
+      - name: Debug
+        run: |
+          echo ::set-output name=DEBUG_OUTPUT::$(ls -lghf)
+
 
       - name: Store output
         run: |
-          echo ::set-output name=DEPCHECK_OUTPUT::$(npm install -g "depcheck@1.4.3" && depcheck services/minespace-web)
+          echo ::set-output name=DEPCHECK_OUTPUT::$(npm install -g "depcheck@1.4.3" && depcheck ./services/minespace-web)
 
       - name: Log output
         uses: actions/github-script@0.9.0
