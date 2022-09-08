@@ -58,27 +58,36 @@ jobs:
             const execSync = require('child_process').execSync;
             const output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
             console.log('Output was:\n', output);
-          result-encoding: string
 
-      - name: Log output
-        uses: actions/github-script@v6
-        if: github.event_name == 'pull_request' 
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Depcheck Results
-            
-            <details><summary>Dependencies</summary>
-            
-            \`\`\`\n
-            ${{ steps.depcheck_out.outputs.result }}
-            \`\`\`
-            
-            </details>`;
-              
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: output
             })
+
+
+          result-encoding: string
+
+      # - name: Log output
+      #   uses: actions/github-script@v6
+      #   if: github.event_name == 'pull_request' 
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const output = `#### Depcheck Results
+            
+      #       <details><summary>Dependencies</summary>
+            
+      #       \`\`\`\n
+      #       ${{ steps.depcheck_out.outputs.result }}
+      #       \`\`\`
+            
+      #       </details>`;
+              
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
