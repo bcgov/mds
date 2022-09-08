@@ -33,7 +33,7 @@ jobs:
   audit-minespace: # Audit for unused Minespace frontend packages
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       # - name: depcheck
       #   uses: tj-actions/depcheck@v8
       #   with:
@@ -45,10 +45,6 @@ jobs:
       # - name: Run depcheck
       #   id: depcheck_output
       #   run: ./gitops/npx_depcheck.sh
-      - name: Debug
-        run: |
-          echo ::set-output name=DEBUG_OUTPUT::$(ls -lghf)
-
 
       - name: Store output
         run: |
