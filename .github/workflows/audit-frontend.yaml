@@ -52,7 +52,7 @@ jobs:
       - name: Store output
         id: depcheck_out
         run: | 
-          echo ::set-output name=DEPCHECK_OUTPUT::$(bash ./gitops/npx_depcheck.sh ./services/minespace-web)
+          bash ./gitops/npx_depcheck.sh ./services/minespace-web
         continue-on-error: true
 
       - name: Log output
@@ -69,6 +69,9 @@ jobs:
             
             \`\`\`\n
             ${{ env.DEPCHECK_OUTPUT }}
+            ${ process.env.PLAN }
+            ${{ process.env.PLAN }}
+            ${ env.DEPCHECK_OUTPUT }
             \`\`\`
             
             </details>`;
