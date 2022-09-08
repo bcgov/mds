@@ -5,8 +5,8 @@ from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, MINE_EDIT, \
-    MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, \
+    MINESPACE_PROPONENT, EDIT_TSF
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine.models.mine import Mine
@@ -103,7 +103,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
 
     @api.doc(description='Creates a new tailing storage facility for the given mine')
     @api.marshal_with(MINE_TSF_MODEL, code=201)
-    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_TSF, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -123,10 +123,10 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             itrb_exemption_status_code=data['itrb_exemption_status_code'],
             tsf_operating_status_code=data['tsf_operating_status_code'],
             notes=data['notes'],
-            storage_location=data['storage_location'],
-            facility_type=data['facility_type'],
-            tailings_storage_facility_type=data['tailings_storage_facility_type'],
-            mines_act_permit_no=data['mines_act_permit_no'],
+            storage_location=data.get('storage_location'),
+            facility_type=data.get('facility_type'),
+            tailings_storage_facility_type=data.get('tailings_storage_facility_type'),
+            mines_act_permit_no=data.get('mines_act_permit_no'),
         )
 
         mine.mine_tailings_storage_facilities.append(mine_tsf)

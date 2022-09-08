@@ -77,7 +77,7 @@ from app.api.projects.project_decision_package.resources.project_decision_packag
      (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineStatusXrefListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
-     (MineTailingsStorageFacilityListResource, "post", [MINESPACE_PROPONENT, MINE_EDIT]),
+     (MineTailingsStorageFacilityListResource, "post", [MINESPACE_PROPONENT, EDIT_TSF]),
      (MineTailingsStorageFacilityResource, "put", [EDIT_TSF, MINESPACE_PROPONENT]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]), (MineTypeListResource, "post", [MINE_EDIT]),
      (MineTypeResource, "delete", [MINE_EDIT]),
