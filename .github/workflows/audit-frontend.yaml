@@ -19,18 +19,18 @@ on:
       - ready_for_review
 
 jobs:
-  audit-core-web: # Audit for unused Core-Web frontend packages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: depcheck
-        uses: tj-actions/depcheck@v8
-        with:
-            dir: services/core-web
-            ignores: 'eslint,babel-*'
-        continue-on-error: true
+  # audit-core-web: # Audit for unused Core-Web frontend packages
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: depcheck
+  #       uses: tj-actions/depcheck@v8
+  #       with:
+  #           dir: services/core-web
+  #           ignores: 'eslint,babel-*'
+  #       continue-on-error: true
 
-  audit-minespace: # Audit for unused Minespace frontend packages
+  audit-frontend: # Audit for unused Minespace frontend packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -46,15 +46,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const execSync = require('child_process').execSync;
-            const output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
-            console.log('Output was:\n', output);
+            const minespace_output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
+            const core-web_output = execSync('depcheck ./services/core-web || true', { encoding: 'utf-8' });
+            
+            console.log('Minespace:\n', minespace_output);
+            console.log('Core-Web:\n', core-web_output);
+
 
             const final_output = `#### Depcheck Results
             
             <details><summary>Minespace Dependencies</summary>
             
             \`\`\`\n
-            ${output}
+            ${minespace_output}
             \`\`\`
 
             </details>
@@ -63,7 +67,7 @@ jobs:
             <details><summary>Core-Web Dependencies</summary>
             
             \`\`\`\n
-            ${output}
+            ${core-web_output}
             \`\`\`
 
             </details>`;
