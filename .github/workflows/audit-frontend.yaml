@@ -43,17 +43,21 @@ jobs:
         uses: actions/github-script@v6
         id: depcheck_out
         with:
-          script: |
-            const exec = require('child_process').exec;
+          # script: |
+          #   const exec = require('child_process').exec;
 
-            exec('depcheck ./services/minespace-web',
-                function (error, stdout, stderr) {
-                    console.log('stdout: ' + stdout);
-                    console.log('stderr: ' + stderr);
-                    if (error !== null) {
-                        console.log('exec error: ' + error);
-                    }
-                });
+          #   exec('depcheck ./services/minespace-web',
+          #       function (error, stdout, stderr) {
+          #           console.log('stdout: ' + stdout);
+          #           console.log('stderr: ' + stderr);
+          #           if (error !== null) {
+          #               console.log('exec error: ' + error);
+          #           }
+          #       });
+          script: |
+            const execSync = require('child_process').execSync;
+            const output = execSync('depcheck ./services/minespace-web', { encoding: 'utf-8' });
+            console.log('Output was:\n', output);
           result-encoding: string
 
       - name: Log output
