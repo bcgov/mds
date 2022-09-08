@@ -49,7 +49,6 @@ jobs:
             const output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
             console.log('Output was:\n', output);
 
-
             const final_output = `#### Depcheck Results
             
             <details><summary>Dependencies</summary>
@@ -60,9 +59,7 @@ jobs:
 
             </details>`;
 
-            console.log('11Output was:\n', final_output);
-
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
