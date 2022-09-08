@@ -51,7 +51,16 @@ jobs:
 
             const final_output = `#### Depcheck Results
             
-            <details><summary>Dependencies</summary>
+            <details><summary>Minespace Dependencies</summary>
+            
+            \`\`\`\n
+            ${output}
+            \`\`\`
+
+            </details>
+            
+            
+            <details><summary>Core-Web Dependencies</summary>
             
             \`\`\`\n
             ${output}
