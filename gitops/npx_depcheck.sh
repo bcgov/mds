@@ -2,4 +2,4 @@
 
 set -eo pipefail
 
-depcheck $0
+depcheck $1
