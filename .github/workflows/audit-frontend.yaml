@@ -39,55 +39,28 @@ jobs:
         run: | 
           npm install -g "depcheck@1.4.3"
 
-      - name: Set var
+      - name: Log dependencies in comment
         uses: actions/github-script@v6
-        id: depcheck_out
+        if: github.event_name == 'pull_request' 
         with:
-          # script: |
-          #   const exec = require('child_process').exec;
-
-          #   exec('depcheck ./services/minespace-web',
-          #       function (error, stdout, stderr) {
-          #           console.log('stdout: ' + stdout);
-          #           console.log('stderr: ' + stderr);
-          #           if (error !== null) {
-          #               console.log('exec error: ' + error);
-          #           }
-          #       });
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const execSync = require('child_process').execSync;
             const output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
             console.log('Output was:\n', output);
 
+
+            const final_output = `#### Depcheck Results
+            
+            <details><summary>Dependencies</summary>
+            
+            \`\`\`\n
+            ${output}
+            \`\`\`
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: output
+              body: final_output
             })
-
-
-          result-encoding: string
-
-      # - name: Log output
-      #   uses: actions/github-script@v6
-      #   if: github.event_name == 'pull_request' 
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const output = `#### Depcheck Results
-            
-      #       <details><summary>Dependencies</summary>
-            
-      #       \`\`\`\n
-      #       ${{ steps.depcheck_out.outputs.result }}
-      #       \`\`\`
-            
-      #       </details>`;
-              
-      #       github.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
