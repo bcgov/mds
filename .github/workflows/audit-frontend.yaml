@@ -19,18 +19,7 @@ on:
       - ready_for_review
 
 jobs:
-  # audit-core-web: # Audit for unused Core-Web frontend packages
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: depcheck
-  #       uses: tj-actions/depcheck@v8
-  #       with:
-  #           dir: services/core-web
-  #           ignores: 'eslint,babel-*'
-  #       continue-on-error: true
-
-  audit-frontend: # Audit for unused Minespace frontend packages
+  audit-frontend: # Audit for unused, vulnerable, and missing frontend packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
