@@ -60,6 +60,8 @@ jobs:
 
             </details>`;
 
+            console.log('11Output was:\n', final_output);
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
