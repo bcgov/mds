@@ -52,15 +52,28 @@ jobs:
       - name: Store output
         uses: actions/github-script@v6
         id: depcheck_out
-        run: | 
-          echo "::set-output name=DEPCHECK_OUTPUT::$(depcheck ./services/minespace-web)\n"
-        # bash ./gitops/npx_depcheck.sh ./services/minespace-web
-        continue-on-error: true
+
+        with:
+          script: |
+            var exec = require('child_process').exec;
+
+            exec('depcheck ./services/minespace-web',
+                function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                });
+          result-encoding: string
+
+        # run: | 
+        #   echo "::set-output name=DEPCHECK_OUTPUT::$(depcheck ./services/minespace-web)\n"
+        # # bash ./gitops/npx_depcheck.sh ./services/minespace-web
+        # continue-on-error: true
 
       - name: Log output
-        if: github.event_name == 'pull_request'
-        # env:
-        #   OUTPUT: 
+        if: github.event_name == 'pull_request' 
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
