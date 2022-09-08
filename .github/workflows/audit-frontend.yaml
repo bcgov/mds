@@ -52,7 +52,8 @@ jobs:
       - name: Store output
         id: depcheck_out
         run: | 
-          bash ./gitops/npx_depcheck.sh ./services/minespace-web
+          echo "::set-output name=DEPCHECK_OUTPUT::$(depcheck ./services/minespace-web)\n"
+        # bash ./gitops/npx_depcheck.sh ./services/minespace-web
         continue-on-error: true
 
       - name: Log output
@@ -68,8 +69,7 @@ jobs:
             <details><summary>Dependencies</summary>
             
             \`\`\`\n
-            ${ depcheck_out.output.DEPCHECK_OUTPUT }
-            ${{ depcheck_out.output }}
+            ${ steps.depcheck_out.outputs }
             \`\`\`
             
             </details>`;
