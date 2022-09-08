@@ -51,9 +51,9 @@ jobs:
 
       - name: Store output
         id: depcheck_out
-        run: |
-          bash ./gitops/npx_depcheck.sh ./services/minespace-web  
-        # echo ::set-output name=DEPCHECK_OUTPUT::$(./gitops/npx_depcheck.sh ./services/minespace-web)
+        run: | 
+          echo ::set-output name=DEPCHECK_OUTPUT::$(bash ./gitops/npx_depcheck.sh ./services/minespace-web)
+        continue-on-error: true
 
       - name: Log output
         uses: actions/github-script@0.9.0
