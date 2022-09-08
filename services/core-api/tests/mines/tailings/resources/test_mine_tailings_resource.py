@@ -28,6 +28,10 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
+        'storage_location': StorageLocation.above_ground,
+        'facility_type': FacilityType.tailings_storage_facility,
+        'tailings_storage_facility_type': TailingsStorageFacilityType.pit,
+        'mines_act_permit_no': 'xxx',
     }
 
     post_resp = test_client.post(
