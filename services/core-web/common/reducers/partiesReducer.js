@@ -41,15 +41,12 @@ export const partiesReducer = (state = initialState, action) => {
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
-      const eors = action.payload.reduce((acc, curr) => {
-        if (curr.mine_party_appt_type_code === "EOR") {
-          acc.push({
-            value: curr.party_guid,
-            label: curr.party.name,
-          });
-        }
-        return acc;
-      }, []);
+      const eors = action.payload
+        .filter((p) => p.mine_party_appt_type_code === "EOR")
+        .map((p) => ({
+          value: p.party_guid,
+          label: p.party.name,
+        }));
       return {
         ...state,
         partyRelationships: action.payload,

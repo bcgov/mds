@@ -5,6 +5,6 @@ CREATE TYPE tailings_storage_facility_type AS ENUM ('conventional', 'dry_stackin
 ALTER TABLE
     mine_tailings_storage_facility
 ADD COLUMN storage_location storage_location,
-ADD COLUMN facility_type facility_type,
+ADD COLUMN facility_type facility_type NOT NULL DEFAULT 'tailings_storage_facility',
 ADD COLUMN tailings_storage_facility_type tailings_storage_facility_type,
 ADD COLUMN mines_act_permit_no character varying(100);

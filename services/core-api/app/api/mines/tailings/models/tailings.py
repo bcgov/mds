@@ -51,7 +51,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     tsf_operating_status_code = db.Column(db.String)
     notes = db.Column(db.String)
     storage_location = db.Column(db.Enum(StorageLocation), nullable=True)
-    facility_type = db.Column(db.Enum(FacilityType), nullable=True)
+    facility_type = db.Column(db.Enum(FacilityType), nullable=False)
     tailings_storage_facility_type = db.Column(db.Enum(TailingsStorageFacilityType), nullable=True)
     mines_act_permit_no = db.Column(db.String(50), nullable=True)
     engineer_of_records = db.relationship(

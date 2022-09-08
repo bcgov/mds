@@ -9,11 +9,10 @@ import { Form } from "@ant-design/compatible";
 const { Item } = Menu;
 
 const propTypes = {
-  tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   handleTabChange: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func,
-  match: PropTypes.objectOf(PropTypes.any).isRequired,
+  activeTab: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
@@ -23,18 +22,19 @@ const defaultProps = {
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { tabs, children, handleTabChange, match, handleSaveDraft } = props;
+  const { children, handleTabChange, activeTab, handleSaveDraft } = props;
   const [tabIndex, setTabIndex] = useState(0);
+  const tabs = children.map((child) => child.key);
 
   useEffect(() => {
-    setTabIndex(tabs.indexOf(match.params.tab));
+    setTabIndex(tabs.indexOf(activeTab));
   }, []);
 
   useEffect(() => {
-    if (tabIndex !== tabs.indexOf(match.params.tab)) {
-      setTabIndex(tabs.indexOf(match.params.tab));
+    if (tabIndex !== tabs.indexOf(activeTab)) {
+      setTabIndex(tabs.indexOf(activeTab));
     }
-  }, [match.params.tab]);
+  }, [activeTab]);
 
   const handleTabClick = (tab) => {
     setTabIndex(indexOf(tabs, tab));

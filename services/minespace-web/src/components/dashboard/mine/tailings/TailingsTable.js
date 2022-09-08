@@ -11,7 +11,6 @@ import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-// import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,

@@ -60,15 +60,6 @@ const defaultProps = {
   formValues: {},
 };
 
-const tabs = [
-  "basic-information",
-  "engineer-of-record",
-  "qualified-person",
-  "registry-document",
-  "reports",
-  "summary",
-];
-
 export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -162,12 +153,11 @@ export const TailingsSummaryPage = (props) => {
         </Row>
         <Divider />
         <SteppedForm
-          tabs={tabs}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           handleSaveDraft={handleSaveData}
           errors={errors}
-          match={match}
+          activeTab={match.params.tab}
         >
           <Step key="basic-information">
             <BasicInformation />
