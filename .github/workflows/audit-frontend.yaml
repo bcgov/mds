@@ -50,8 +50,9 @@ jobs:
           npm install -g "depcheck@1.4.3"
 
       - name: Store output
+        id: depcheck_out
         run: |
-          ./gitops/npx_depcheck.sh ./services/minespace-web  
+          bash ./gitops/npx_depcheck.sh ./services/minespace-web  
         # echo ::set-output name=DEPCHECK_OUTPUT::$(./gitops/npx_depcheck.sh ./services/minespace-web)
 
       - name: Log output
