@@ -1,0 +1,69 @@
+# GitHub action script to audit for unused frontend packages.
+name: Audit Frontend
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CORE WEB - Build & Deploy To DEV", "MINESPACE - Build & Deploy To DEV"]
+    types: [requested]
+    branches:
+      - 'feature/**'
+      - 'MDS**'
+      - 'mds**'
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - ready_for_review
+
+jobs:
+  audit-frontend: # Audit for unused, vulnerable, and missing frontend packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install depcheck
+        run: | 
+          npm install -g "depcheck@1.4.3"
+
+      - name: Log dependencies in comment
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request' 
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const execSync = require('child_process').execSync;
+            const minespace_output = execSync('depcheck ./services/minespace-web || true', { encoding: 'utf-8' });
+            const core_web_output = execSync('depcheck ./services/core-web || true', { encoding: 'utf-8' });
+            
+            console.log('Minespace:\n', minespace_output);
+            console.log('Core-Web:\n', core_web_output);
+
+
+            const final_output = `#### Depcheck Results
+            
+            <details><summary>Minespace Dependencies</summary>
+            
+            \`\`\`\n
+            ${minespace_output}
+            \`\`\`
+
+            </details>
+            
+            
+            <details><summary>Core-Web Dependencies</summary>
+            
+            \`\`\`\n
+            ${core_web_output}
+            \`\`\`
+
+            </details>`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: final_output
+            })
