@@ -427,7 +427,6 @@ export class NOWProgressTable extends Component {
     const payload = {
       ...values,
       date_override: true,
-
       start_date: moment(values.start_date),
       end_date: values?.end_date ?? moment(values.end_date),
     };
