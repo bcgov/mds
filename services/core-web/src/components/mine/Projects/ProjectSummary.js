@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { submit, getFormValues, reset, touch } from "redux-form";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
 import {
@@ -11,12 +11,18 @@ import {
   getProjectSummaryPermitTypesHash,
   getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
-import { getProjectSummary, getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import {
+  getProjectSummary,
+  getFormattedProjectSummary,
+  getProject,
+} from "@common/selectors/projectSelectors";
 import {
   fetchProjectSummaryById,
   updateProjectSummary,
   removeDocumentFromProjectSummary,
 } from "@common/actionCreators/projectActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { clearProjectSummary } from "@common/actions/projectActions";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
@@ -44,12 +50,15 @@ const propTypes = {
   fetchProjectSummaryById: PropTypes.func.isRequired,
   projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  clearProjectSummary: PropTypes.func.isRequired,
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
 };
 
 export class ProjectSummary extends Component {
   state = {
     isLoaded: false,
+    isEditMode: false,
     fixedTop: false,
     isValid: true,
     activeTab: "project-descriptions",
@@ -69,6 +78,7 @@ export class ProjectSummary extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    this.props.clearProjectSummary();
   }
 
   handleScroll = () => {
@@ -80,14 +90,46 @@ export class ProjectSummary extends Component {
   };
 
   handleFetchData = (params) => {
-    const { projectGuid, projectSummaryGuid } = params;
+    const { projectGuid, projectSummaryGuid, mineGuid, tab } = params;
     if (projectGuid && projectSummaryGuid) {
       return this.props
         .fetchProjectSummaryById(projectGuid, projectSummaryGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true }))
+        .then(() => this.setState({ isLoaded: true, isValid: true, isEditMode: true }))
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
-    return null;
+    return this.props.fetchMineRecordById(mineGuid).then(() => {
+      this.setState({ isLoaded: true, activeTab: tab });
+    });
+  };
+
+  handleSaveData = (e, message) => {
+    e.preventDefault();
+    this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      if (!this.state.isEditMode) {
+        return this.handleCreateProjectSummary(message);
+      }
+      return this.handleUpdate(message);
+    }
+  };
+
+  handleCreate = (message) => {
+    const mineGuid = this.props.match?.params?.mineGuid;
+    this.props
+      .createProjectSummary(
+        {
+          mineGuid: mineGuid,
+        },
+        this.handleTransformPayload(),
+        message
+      )
+      .then(({ data: { project_guid, project_summary_guid } }) => {
+        this.props.history.replace(
+          routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)
+        );
+      });
   };
 
   handleUpdate = (message) => {
@@ -98,6 +140,9 @@ export class ProjectSummary extends Component {
       .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
         return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+      })
+      .then(() => {
+        this.handleFetchData();
       });
   };
 
@@ -188,8 +233,16 @@ export class ProjectSummary extends Component {
                 <ProjectSummaryForm
                   {...this.props}
                   projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
-                  initialValues={this.props.formattedProjectSummary}
-                  handleSubmit={this.handleUpdate}
+                  isEditMode={this.state.isEditMode}
+                  initialValues={
+                    this.state.isEditMode
+                      ? {
+                          ...this.props.formattedProjectSummary,
+                          mrc_review_required: this.props.project.mrc_review_required,
+                        }
+                      : {}
+                  }
+                  handleSubmit={this.handleSaveData}
                   removeDocument={this.handleRemoveDocument}
                 />
               </div>
@@ -207,7 +260,8 @@ const mapStateToProps = (state) => {
   return {
     projectSummary: getProjectSummary(state),
     formattedProjectSummary: getFormattedProjectSummary(state),
-    formValues: getFormValues(FORM.PROJECT_SUMMARY)(state),
+    project: getProject(state),
+    formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
     projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
@@ -224,6 +278,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectSummaryById,
       updateProjectSummary,
       removeDocumentFromProjectSummary,
+      clearProjectSummary,
+      fetchMineRecordById,
     },
     dispatch
   );

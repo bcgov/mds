@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
+import { Button } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchProjectsByMine } from "@common/actionCreators/projectActionCreator";
@@ -8,6 +10,7 @@ import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticConten
 import { getProjects } from "@common/selectors/projectSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import MineProjectTable from "./MineProjectTable";
+import * as routes from "@/constants/routes";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -33,8 +36,11 @@ export class MineProject extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Major Projects</h2>
+          <h2>Major Projects List</h2>
           <br />
+          <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.props.mineGuid)}>
+            <Button type="primary">Create New Project</Button>
+          </Link>
         </div>
         <div>
           <MineProjectTable

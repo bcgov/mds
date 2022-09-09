@@ -178,6 +178,12 @@ export const MINE_PRE_APPLICATIONS = {
   component: MineProject,
 };
 
+export const ADD_PROJECT_SUMMARY = {
+  route: "/mines/:mineGuid/project-description/new",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/project-description/new`,
+  component: ProjectSummary,
+};
+
 export const PRE_APPLICATIONS = {
   route: "/pre-applications/:projectGuid/project-description/:projectSummaryGuid",
   dynamicRoute: (projectGuid, projectSummaryGuid) =>

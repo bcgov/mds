@@ -1,21 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { compose } from "redux";
-import { Field, reduxForm } from "redux-form";
+import CustomPropTypes from "@/customPropTypes";
+import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import {
+  arrayPush,
+  change,
+  Field,
+  reduxForm,
+  formValueSelector,
+  getFormValues,
+  getFormSyncErrors,
+} from "redux-form";
+import { Alert, Button, Row, Col, Typography, Tooltip, Popconfirm } from "antd";
+import { DeleteOutlined, PlusOutlined, DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Typography, Row, Col, Button, Alert } from "antd";
-import CustomPropTypes from "@/customPropTypes";
-import * as FORM from "@/constants/forms";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
+import { isNil } from "lodash";
+import {
+  maxLength,
+  phoneNumber,
+  required,
+  email,
+  dateNotBeforeOther,
+  dateNotAfterOther,
+  requiredRadioButton,
+} from "@common/utils/Validate";
+import {
+  getTransformedProjectSummaryAuthorizationTypes,
+  getDropdownProjectSummaryPermitTypes,
+} from "@common/selectors/staticContentSelectors";
+import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
-import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
+import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { ContactsFilled } from "@ant-design/icons";
+import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
+import { EDIT_PARTY } from "@/constants/modalContent";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
@@ -24,11 +53,21 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
+};
+
+const defaultProps = {
+  documents: [],
+  formValues: {},
+  formErrors: {},
+  expected_permit_application_date: undefined,
+  expected_draft_irt_submission_date: undefined,
+  expected_permit_receipt_date: undefined,
 };
 
 const unassignedProjectLeadEntry = {
@@ -40,6 +79,12 @@ export const ProjectSummaryForm = (props) => {
   const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
   const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
+
+  // useEffect(() => {
+  //   if (isNil(props.contacts) || props.contacts.length === 0) {
+  //     props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
+  //   }
+  // }, []);
 
   const renderProjectDetails = () => {
     const {
@@ -62,59 +107,79 @@ export const ProjectSummaryForm = (props) => {
         )}
         <br />
         <Typography.Title level={3}>Project details</Typography.Title>
-        <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
-          <Col lg={12} md={24}>
-            <Form.Item>
-              <Field
-                id="status_code"
-                name="status_code"
-                label="Project Stage"
-                component={renderConfig.SELECT}
-                data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
-                disabled={!isEditingStatus}
-              />
-            </Form.Item>
-          </Col>
-          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
-            <Col lg={24} md={24} className="padding-sm--bottom">
-              {!isEditingStatus ? (
-                <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
-                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
-                  &nbsp; Edit
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    type="secondary"
-                    loading={props.submitting}
-                    onClick={() => setIsEditingStatus(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="primary"
-                    loading={props.submitting}
-                    onClick={() => {
-                      props.handleSubmit("Successfully updated the project stage.");
-                      setIsEditingStatus(false);
-                    }}
-                  >
-                    Update
-                  </Button>
-                </>
-              )}
+        {isEditingStatus && props.initialValues?.status_code && (
+          <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
+            <Col lg={12} md={24}>
+              <Form.Item>
+                <Field
+                  id="status_code"
+                  name="status_code"
+                  label="Project Stage"
+                  component={renderConfig.SELECT}
+                  data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
+                  disabled={!isEditingStatus}
+                />
+              </Form.Item>
             </Col>
-          </AuthorizationWrapper>
-        </Row>
+            <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+              <Col lg={24} md={24} className="padding-sm--bottom">
+                {!isEditingStatus ? (
+                  <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
+                    <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
+                    &nbsp; Edit
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      type="secondary"
+                      loading={props.submitting}
+                      onClick={() => setIsEditingStatus(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="primary"
+                      loading={props.submitting}
+                      onClick={() => {
+                        props.handleSubmit("Successfully updated the project stage.");
+                        setIsEditingStatus(false);
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </>
+                )}
+              </Col>
+            </AuthorizationWrapper>
+          </Row>
+        )}
         <Row gutter={16}>
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
+                id="project_summary_title"
+                name="project_summary_title"
+                label="Project title"
+                component={renderConfig.FIELD}
+                validate={[maxLength(300), required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
                 id="proponent_project_id"
                 name="proponent_project_id"
-                label="Project Proponent ID"
+                label={
+                  <>
+                    Proponent project tracking ID (optional)
+                    <br />
+                    <span className="light--sm">
+                      If your company uses a tracking number to identify projects, please provide it
+                      here.
+                    </span>
+                  </>
+                }
                 component={renderConfig.FIELD}
-                disabled
+                validate={[maxLength(20)]}
               />
             </Form.Item>
             <Form.Item>
@@ -123,7 +188,8 @@ export const ProjectSummaryForm = (props) => {
                 name="project_summary_description"
                 label="Executive Summary"
                 component={renderConfig.AUTO_SIZE_FIELD}
-                disabled
+                minRows={10}
+                validate={[maxLength(4000), required]}
               />
             </Form.Item>
           </Col>
@@ -141,13 +207,35 @@ export const ProjectSummaryForm = (props) => {
     const parentHeadersAdded = [];
     return (
       <div id="authorizations-involved">
-        <Typography.Title level={3}>Authorizations involved</Typography.Title>
+        <Typography.Title level={3}>Authorizations Involved</Typography.Title>
         <p>
           These are the authorizations the proponent believes may be needed for this project.
           Additional authorizations may be required.
         </p>
         <br />
-        {authorizations.length > 0 &&
+        <Typography.Title level={3}>Mines Review Committee</Typography.Title>
+        <Field
+          id="mrc_review_required"
+          name="mrc_review_required"
+          fieldName="mrc_review_required"
+          formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+          label={
+            <>
+              <p>
+                <b>
+                  Does your project require a coordinated review by a Mine Review Committee, under
+                  Section 9 of the Mines Act?
+                </b>{" "}
+                This response will be reviewed by the Major Mines Office and confirmed by the Chief
+                Permitting Officer.
+              </p>
+            </>
+          }
+          component={renderConfig.RADIO}
+          validate={[requiredRadioButton]}
+        />
+        <br />
+        {authorizations?.length > 0 &&
           authorizations.map((a) => {
             const parentCode =
               projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
@@ -170,6 +258,29 @@ export const ProjectSummaryForm = (props) => {
                       ?.description
                   }
                 </h4>
+                {/* {a.children &&
+                  a.children.map((child) => {
+                    return (
+                      <FormSection name={child.code} key={`${authorization}.${child.code}`}>
+                        <Checkbox
+                          key={child.code}
+                          value={child.code}
+                          onChange={(e) => handleChange(e, child.code)}
+                          checked={checked.includes(child.code)}
+                        >
+                          {checked.includes(child.code) ? (
+                            <>
+                              {child.description} <DownOutlined />
+                            </>
+                          ) : (
+                            child.description
+                          )}
+                        </Checkbox>
+                        {checked.includes(child.code) && renderNestedFields(child.code)}
+                      </FormSection>
+                    );
+                  })} */}
+
                 <p className="bold padding-sm--bottom">Types of permits</p>
                 {a.project_summary_permit_type.map((pt) => {
                   return (
@@ -179,8 +290,18 @@ export const ProjectSummaryForm = (props) => {
                     >
                       {projectSummaryPermitTypesHash[pt]}
                     </p>
+                    // <Field
+                    //   id="project_summary_permit_type"
+                    //   name="project_summary_permit_type"
+                    //   fieldName={`${pt}.project_summary_permit_type`}
+                    //   options={props.dropdownProjectSummaryPermitTypes}
+                    //   formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+                    //   component={renderConfig.GROUP_CHECK_BOX}
+                    //   label="What type of permit is involved in your application?"
+                    // />
                   );
                 })}
+
                 <br />
                 <p className="bold padding-sm--bottom">Existing permit numbers involved</p>
                 {a.existing_permits_authorizations?.length
@@ -192,6 +313,21 @@ export const ProjectSummaryForm = (props) => {
                         >
                           {epa}
                         </p>
+                        // <Field
+                        //   id={`${EDIT_PARTY}.existing_permits_authorizations`}
+                        //   name="existing_permits_authorizations"
+                        //   label={
+                        //     <>
+                        //       If your application involved a change to an existing permit, please
+                        //       list the numbers of the permits involved.
+                        //       <br />
+                        //       <span className="light--sm">
+                        //         Please separate each permit number with a comma
+                        //       </span>
+                        //     </>
+                        //   }
+                        //   component={renderConfig.FIELD}
+                        // />
                       );
                     })
                   : "N/A"}
@@ -204,9 +340,12 @@ export const ProjectSummaryForm = (props) => {
   };
 
   const renderContacts = () => {
-    const {
-      projectSummary: { contacts },
-    } = props;
+    const contacts = [...props.projectSummary.contacts];
+    if (isNil(contacts) || contacts?.length === 0) {
+      contacts.push({ is_primary: true });
+    }
+    props.change("contacts", contacts);
+    // const contacts = props.contacts;
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
@@ -256,40 +395,154 @@ export const ProjectSummaryForm = (props) => {
           </AuthorizationWrapper>
         </Row>
         <h3>Proponent contacts</h3>
-        {contacts.length === 0 ? (
-          <p>There are no contacts on the project description</p>
-        ) : (
-          <>
-            <p className="bold">Primary project contact</p>
-            <p>{contacts[0]?.name}</p>
-            {contacts[0]?.job_title && <p>{contacts[0]?.job_title}</p>}
-            {contacts[0]?.company_name && <p>{contacts[0]?.company_name}</p>}
-            <a href={`mailto: ${contacts[0]?.email}`}>{contacts[0]?.email}</a>
-            <div className="inline-flex">
-              <p>{contacts[0]?.phone_number}</p>
-              {contacts[0]?.phone_extension && <p> ({contacts[0]?.phone_extension})</p>}
-            </div>
-            <br />
-            {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
-            {contacts.length >= 1 &&
-              contacts
-                .filter((c) => !c.is_primary)
-                .map((contact) => {
-                  return (
-                    <>
-                      <p>{contact.name}</p>
-                      {contact.job_title && <p>{contact.job_title}</p>}
-                      {contact.company_name && <p>{contact.company_name}</p>}
-                      <a href={`mailto: ${contact.email}`}>{contact.email}</a>
-                      <div className="inline-flex">
-                        <p>{contact.phone_number}</p>
-                        {contact.phone_extension && <p> ({contact.phone_extension})</p>}
-                      </div>
-                    </>
-                  );
-                })}
-          </>
-        )}
+        <>
+          <p className="bold">Primary project contact</p>
+          <Row gutter={16}>
+            <Col lg={12} md={24}>
+              <Field
+                name={contacts[0]?.name}
+                id={contacts[0]?.name}
+                label="Name"
+                component={renderConfig.FIELD}
+                validate={[required]}
+              />
+              <Field
+                name={contacts[0]?.job_title}
+                id={contacts[0]?.job_title}
+                label="Job Title (optional)"
+                component={renderConfig.FIELD}
+              />
+              <Field
+                name={contacts[0]?.company_name}
+                id={contacts[0]?.company_name}
+                label="Company name (optional)"
+                component={renderConfig.FIELD}
+              />
+              <Field
+                name={contacts[0]?.email}
+                id={contacts[0]?.email}
+                label="Email"
+                component={renderConfig.FIELD}
+                validate={[required, email]}
+              />
+              <Row gutter={16}>
+                <Col span={20}>
+                  <Field
+                    name={contacts[0]?.phone_number}
+                    id={contacts[0]?.phone_number}
+                    label="Phone Number"
+                    component={renderConfig.FIELD}
+                    validate={[phoneNumber, maxLength(12), required]}
+                  />
+                </Col>
+                <Col span={4}>
+                  <Field
+                    name={contacts[0]?.phone_extension}
+                    id={contacts[0]?.phone_extension}
+                    label="Ext. (optional)"
+                    component={renderConfig.FIELD}
+                    validate={[maxLength(6)]}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <br />
+          {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
+          {contacts.length >= 1 &&
+            contacts
+              // .filter((c) => !c.is_primary)
+              .map((contact, i) => {
+                return (
+                  <>
+                    {!contact.is_primary && (
+                      <>
+                        <Row gutter={16}>
+                          <Col span={10}>
+                            <Typography.Title level={5}>
+                              Additional project contact #{i}
+                            </Typography.Title>
+                          </Col>
+                          <Col span={12}>
+                            <Popconfirm
+                              placement="topLeft"
+                              title="Are you sure you want to remove this contact?"
+                              onConfirm={() => contact.remove(i)}
+                              okText="Remove"
+                              cancelText="Cancel"
+                            >
+                              <Button type="primary" size="small" ghost>
+                                <DeleteOutlined className="padding-sm--left icon-sm" />
+                              </Button>
+                            </Popconfirm>
+                          </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                          <Col lg={12} md={24}>
+                            <Field
+                              name={contact.name}
+                              id={contact.name}
+                              label="Name"
+                              component={renderConfig.FIELD}
+                              validate={[required]}
+                            />
+                            <Field
+                              name={contact.job_title}
+                              id={contact.job_title}
+                              label="Job Title (optional)"
+                              component={renderConfig.FIELD}
+                            />
+                            <Field
+                              name={contact.company_name}
+                              id={contact.company_name}
+                              label="Company name (optional)"
+                              component={renderConfig.FIELD}
+                            />
+                            <Field
+                              name={contact.email}
+                              id={contact.email}
+                              label="Email"
+                              component={renderConfig.FIELD}
+                              validate={[required, email]}
+                            />
+                            <Row gutter={16}>
+                              <Col span={20}>
+                                <Field
+                                  name={contact.phone_number}
+                                  id={contact.phone_number}
+                                  label="Phone Number"
+                                  component={renderConfig.FIELD}
+                                  validate={[maxLength(12), required]}
+                                />
+                              </Col>
+                              <Col span={4}>
+                                <Field
+                                  name={contact.phone_extension}
+                                  id={contact.phone_extension}
+                                  label="Ext. (optional)"
+                                  component={renderConfig.FIELD}
+                                  validate={[maxLength(6)]}
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                  </>
+                );
+              })}
+          <LinkButton
+            onClick={() => {
+              contacts.push({ is_primary: false });
+              props.change("contacts", contacts);
+            }}
+            title="Add additional project contacts"
+          >
+            <PlusOutlined /> Add additional project contacts
+          </LinkButton>
+        </>
       </div>
     );
   };
@@ -309,36 +562,40 @@ export const ProjectSummaryForm = (props) => {
               <Field
                 id="expected_draft_irt_submission_date"
                 name="expected_draft_irt_submission_date"
-                label="Anticipated draft IRT submission date"
+                label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
+                placeholder="Please select date"
                 component={renderConfig.DATE}
-                disabled
+                validate={[dateNotAfterOther(props.expected_permit_application_date)]}
               />
             </Form.Item>
             <Form.Item>
               <Field
                 id="expected_permit_application_date"
                 name="expected_permit_application_date"
-                label="Anticipated permit application submission date"
+                label="When do you anticipate submitting a permit application? (optional)"
+                placeholder="Please select date"
                 component={renderConfig.DATE}
-                disabled
+                validate={[dateNotBeforeOther(props.expected_draft_irt_submission_date)]}
               />
             </Form.Item>
             <Form.Item>
               <Field
                 id="expected_permit_receipt_date"
                 name="expected_permit_receipt_date"
-                label="Desired permit issuance date"
+                label="When do you hope to receive your permit/amendment(s)? (optional)"
+                placeholder="Please select date"
                 component={renderConfig.DATE}
-                disabled
+                validate={[dateNotBeforeOther(props.expected_permit_application_date)]}
               />
             </Form.Item>
             <Form.Item>
               <Field
                 id="expected_project_start_date"
                 name="expected_project_start_date"
-                label="Anticipated work start date"
+                label="When do you anticipate starting work on this project? (optional)"
+                placeholder="Please select date"
                 component={renderConfig.DATE}
-                disabled
+                validate={[dateNotBeforeOther(props.expected_permit_receipt_date)]}
               />
             </Form.Item>
           </Col>
@@ -356,25 +613,11 @@ export const ProjectSummaryForm = (props) => {
       props.userRoles.includes(USER_ROLES.role_edit_project_summaries);
     return (
       <div id="documents">
-        <Typography.Title level={4}>Documents</Typography.Title>
-        <DocumentTable
-          documents={documents.reduce(
-            (docs, doc) => [
-              {
-                key: doc.mine_document_guid,
-                mine_document_guid: doc.mine_document_guid,
-                document_manager_guid: doc.document_manager_guid,
-                name: doc.document_name,
-                category:
-                  props.projectSummaryDocumentTypesHash[doc.project_summary_document_type_code],
-                uploaded: doc.upload_date,
-              },
-              ...docs,
-            ],
-            []
-          )}
-          removeDocument={canRemoveDocuments ? props.removeDocument : null}
-          isViewOnly={false}
+        <ProjectSummaryDocumentUpload
+          initialValues={props.initialValues}
+          {...documents}
+          {...canRemoveDocuments}
+          {...props}
         />
       </div>
     );
@@ -396,16 +639,44 @@ export const ProjectSummaryForm = (props) => {
 };
 
 ProjectSummaryForm.propTypes = propTypes;
+ProjectSummaryForm.defaultProps = defaultProps;
+
+const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
   userRoles: getUserAccessData(state),
+  contacts: selector(state, "contacts") || [],
+  expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
+  expected_permit_application_date: selector(state, "expected_permit_application_date"),
+  expected_permit_receipt_date: selector(state, "expected_permit_receipt_date"),
+  documents: selector(state, "documents"),
+  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
+  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  anyTouched: selector(state, "anyTouched"),
+  transformedProjectSummaryAuthorizationTypes: getTransformedProjectSummaryAuthorizationTypes(
+    state
+  ),
+  dropdownProjectSummaryPermitTypes: getDropdownProjectSummaryPermitTypes(state),
+  formattedProjectSummary: getFormattedProjectSummary(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      arrayPush,
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: FORM.PROJECT_SUMMARY,
+    form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     enableReinitialize: true,
+    touchOnBlur: true,
+    touchOnChange: false,
+    onSubmit: () => {},
   })
-)(ProjectSummaryForm);
+)(withRouter(ProjectSummaryForm));
