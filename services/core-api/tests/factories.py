@@ -193,8 +193,8 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     itrb_exemption_status_code = 'YES'
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
     storage_location = StorageLocation['above_ground']
-    facility_type = FacilityType['tailings_storage_facility'],
-    tailings_storage_facility_type = TailingsStorageFacilityType['pit'],
+    facility_type = FacilityType['tailings_storage_facility']
+    tailings_storage_facility_type = TailingsStorageFacilityType['pit']
     mines_act_permit_no = '123456'
 
 
