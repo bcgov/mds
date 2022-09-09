@@ -317,8 +317,7 @@ MINE_TSF_MODEL = api.model(
         'tsf_operating_status_code': fields.String,
         'notes': fields.String,
         'facility_type': fields.String(enum=FacilityType, attribute='facility_type.name'),
-        'tailings_storage_facility_type': fields.String(enum=TailingsStorageFacilityType,
-                                                        attribute='tailings_storage_facility_type.name'),
+        'tailings_storage_facility_type': fields.String(enum=TailingsStorageFacilityType, attribute='tailings_storage_facility_type.name'),
         'storage_location': fields.String(enum=StorageLocation, attribute='storage_location.name'),
         'mines_act_permit_no': fields.String,
         'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
