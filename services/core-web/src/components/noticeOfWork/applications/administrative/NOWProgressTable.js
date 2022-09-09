@@ -386,7 +386,12 @@ export class NOWProgressTable extends Component {
   ];
 
   handleUpdateProgressDates = (values) => {
-    const payload = { ...values, date_override: true };
+    const payload = {
+      ...values,
+      date_override: true,
+      start_date: moment(values.start_date),
+      end_date: values?.end_date ?? moment(values.end_date),
+    };
     this.props
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
@@ -420,8 +425,11 @@ export class NOWProgressTable extends Component {
 
   handleUpdateDelayDates = (values) => {
     const payload = {
-      date_override: true,
       ...values,
+      date_override: true,
+
+      start_date: moment(values.start_date),
+      end_date: values?.end_date ?? moment(values.end_date),
     };
     this.props
       .updateApplicationDelay(
