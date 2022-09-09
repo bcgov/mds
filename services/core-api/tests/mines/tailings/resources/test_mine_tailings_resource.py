@@ -2,7 +2,6 @@ import json
 import uuid
 
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.tailings.models.tailings import StorageLocation, TailingsStorageFacilityType, FacilityType
 from tests.factories import MineFactory, MineTailingsStorageFacilityFactory
 
 
@@ -26,9 +25,9 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
-        'storage_location': StorageLocation['above_ground'],
-        'facility_type': FacilityType['tailings_storage_facility'],
-        'tailings_storage_facility_type': TailingsStorageFacilityType['pit'],
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
     }
 
@@ -48,9 +47,9 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
-        'storage_location': StorageLocation['above_ground'],
-        'facility_type': FacilityType['tailings_storage_facility'],
-        'tailings_storage_facility_type': TailingsStorageFacilityType['pit'],
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
@@ -71,9 +70,9 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_requ
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
-        'storage_location': StorageLocation['above_ground'],
-        'facility_type': FacilityType['tailings_storage_facility'],
-        'tailings_storage_facility_type': TailingsStorageFacilityType['pit'],
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
@@ -97,9 +96,9 @@ def test_put_tailings_storage_facility_not_found(test_client, db_session, auth_h
         'itrb_exemption_status_code': tsf_updated.itrb_exemption_status_code,
         'tsf_operating_status_code': tsf_updated.tsf_operating_status_code,
         'notes': tsf_updated.notes,
-        'storage_location': StorageLocation['above_ground'],
-        'facility_type': FacilityType['tailings_storage_facility'],
-        'tailings_storage_facility_type': TailingsStorageFacilityType['pit'],
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
     }
 
@@ -124,9 +123,9 @@ def test_put_tailings_storage_facility_success(test_client, db_session, auth_hea
             tsf_updated.consequence_classification_status_code,
         'tsf_operating_status_code': tsf_updated.tsf_operating_status_code,
         'itrb_exemption_status_code': tsf_updated.itrb_exemption_status_code,
-        'storage_location': StorageLocation['above_ground'],
-        'facility_type': FacilityType['tailings_storage_facility'],
-        'tailings_storage_facility_type': TailingsStorageFacilityType['pit'],
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
     }
 
