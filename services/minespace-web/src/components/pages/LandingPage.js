@@ -124,8 +124,8 @@ export const LandingPage = (props) => (
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Typography.Title level={4}>How do I get access?</Typography.Title>
         <Typography.Paragraph>
-          You must have a <Typography.Text strong>Business or Personal BCeID</Typography.Text> and
-          then contact us to request access to MineSpace.
+          You must have a <Typography.Text strong>Business or Basic BCeID</Typography.Text> and then
+          contact us to request access to MineSpace.
         </Typography.Paragraph>
         <Typography.Paragraph strong>If you have a BCeID:</Typography.Paragraph>
         <Typography.Paragraph>
@@ -146,8 +146,8 @@ export const LandingPage = (props) => (
 
         <Typography.Title level={4}>Don&apos;t have a BCeID?</Typography.Title>
         <Typography.Paragraph>
-          In order to access MineSpace, you need to register for a Business or Personal BCeID. It
-          can take several weeks to process the request, so give yourself plenty of lead time.
+          In order to access MineSpace, you need to register for a Business or Basic BCeID. It can
+          take several weeks to process the request, so give yourself plenty of lead time.
         </Typography.Paragraph>
         <Typography.Paragraph>
           Once you have your BCeID, you can add employees and delegates. You can request that anyone
