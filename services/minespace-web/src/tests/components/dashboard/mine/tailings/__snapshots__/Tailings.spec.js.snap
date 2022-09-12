@@ -27,20 +27,17 @@ exports[`Tailings renders properly 1`] = `
         <br />
       </Col>
       <Col>
-        <Link
-          to="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings-storage-facility/new/basic-information"
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="primary"
         >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            type="primary"
-          >
-            <ForwardRef(PlusCircleFilled) />
-            Create New Facility
-          </Button>
-        </Link>
+          <ForwardRef(PlusCircleFilled) />
+          Create New Facility
+        </Button>
       </Col>
     </Row>
     <Row
@@ -55,6 +52,7 @@ exports[`Tailings renders properly 1`] = `
         span={24}
       >
         <Connect(TailingsTable)
+          editTailings={[Function]}
           handleEditTailings={[Function]}
           openEditTailingsModal={[Function]}
           tailings={

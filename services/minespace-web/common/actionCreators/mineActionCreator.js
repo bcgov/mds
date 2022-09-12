@@ -3,6 +3,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineActions from "../actions/mineActions";
+import * as tsfActions from "../actions/tailingsActions";
 import * as String from "../constants/strings";
 import * as API from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
@@ -102,6 +103,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
     .catch((err) => {
@@ -122,6 +124,7 @@ export const updateTailingsStorageFacility = (mineGuid, TSFGuid, payload) => (di
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
     .catch((err) => {

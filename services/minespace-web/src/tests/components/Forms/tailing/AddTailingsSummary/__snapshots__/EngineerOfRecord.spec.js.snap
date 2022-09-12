@@ -20,7 +20,6 @@ exports[`EngineerOfRecord renders properly 1`] = `
   </Title>
   <Field
     component={[Function]}
-    data={Array []}
     id="engineer_of_record.party_guid"
     label="Engineer of Record"
     name="engineer_of_record.party_guid"

@@ -22,6 +22,7 @@ import externalAuthorizationReducerObject from "./reducers/externalAuthorization
 import projectReducerObject from "./reducers/projectReducer";
 import noticeOfDepartureReducerObject from "./reducers/noticeOfDepartureReducer";
 import activityReducerObject from "./reducers/activityReducer";
+import tailingsReducerObject from "./reducers/tailingsReducer";
 
 export const complianceReducer = complianceReducerObject;
 export const authenticationReducer = authenticationReducerObject;
@@ -46,3 +47,4 @@ export const externalAuthorizationReducer = externalAuthorizationReducerObject;
 export const projectReducer = projectReducerObject;
 export const noticeOfDepartureReducer = noticeOfDepartureReducerObject;
 export const activityReducer = activityReducerObject;
+export const tailingsReducer = tailingsReducerObject;

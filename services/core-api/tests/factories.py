@@ -16,7 +16,8 @@ from app.api.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, StorageLocation, FacilityType, \
+    TailingsStorageFacilityType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
 from app.api.parties.party.models.address import Address
@@ -191,6 +192,10 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     tsf_operating_status_code = 'OPT'
     itrb_exemption_status_code = 'YES'
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+    storage_location = StorageLocation['above_ground']
+    facility_type = FacilityType['tailings_storage_facility']
+    tailings_storage_facility_type = TailingsStorageFacilityType['pit']
+    mines_act_permit_no = '123456'
 
 
 class MineCommentFactory(BaseFactory):

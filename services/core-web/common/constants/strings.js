@@ -182,3 +182,36 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   SPATIAL: "SPT",
   SUPPORTING: "SPR",
 };
+
+export const FACILITY_TYPES = [
+  { value: "tailings_storage_facility", label: "Tailing Storage Facility" },
+];
+
+export const TSF_TYPES = [
+  { value: "conventional", label: "Conventional (impounded by dams)" },
+  { value: "dry_stacking", label: "Filtered/Dry stack" },
+  { value: "pit", label: "In-Pit" },
+  { value: "lake", label: "In-Lake" },
+  { value: "other", label: "Other" },
+];
+
+export const STORAGE_LOCATION = [
+  { value: "above_ground", label: "Above Ground" },
+  { value: "below_ground", label: "Underground" },
+];
+
+export const TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD = [
+  { value: "YES", label: "Yes" },
+  { value: "NO", label: "No" },
+];
+
+export const TSF_OPERATING_STATUS_CODE = [{ value: "OPT", label: "Operating" }];
+
+export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
+  { value: "LOW", label: "Low" },
+  { value: "HIG", label: "High" },
+  { value: "SIG", label: "Significant" },
+  { value: "VHIG", label: "Very High" },
+  { value: "EXT", label: "Extreme" },
+  { value: "NOD", label: "N/A (No Dam)" },
+];

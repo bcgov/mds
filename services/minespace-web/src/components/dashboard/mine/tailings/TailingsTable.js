@@ -7,12 +7,10 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { Link } from "react-router-dom";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -26,9 +24,11 @@ const propTypes = {
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  editTailings: PropTypes.func.isRequired,
 };
 
 export const TailingsTable = (props) => {
+  const { editTailings } = props;
   const columns = [
     {
       title: "Name",
@@ -92,16 +92,9 @@ export const TailingsTable = (props) => {
           <div title="" align="right">
             <AuthorizationWrapper>
               {!IN_PROD() ? (
-                <Link
-                  to={EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-                    record.mine_tailings_storage_facility_guid,
-                    record.mine_guid
-                  )}
-                >
-                  <Button type="link">
-                    <img src={EDIT_PENCIL} alt="Edit" />
-                  </Button>
-                </Link>
+                <Button type="link" onClick={(event) => editTailings(event, record)}>
+                  <img src={EDIT_PENCIL} alt="Edit" />
+                </Button>
               ) : (
                 <Button
                   type="link"
