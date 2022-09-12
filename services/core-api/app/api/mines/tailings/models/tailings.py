@@ -28,11 +28,11 @@ class FacilityType(Enum):
 
 
 class TailingsStorageFacilityType(Enum):
-    conventional = 'conventional'
-    dry_stacking = 'dry_stacking'
-    pit = 'pit'
-    lake = 'lake'
-    other = 'other'
+    conventional = "conventional"
+    dry_stacking = "dry_stacking"
+    pit = "pit"
+    lake = "lake"
+    other = "other"
 
     def __str__(self):
         return self.value
