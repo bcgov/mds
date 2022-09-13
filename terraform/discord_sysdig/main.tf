@@ -109,51 +109,6 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-
-
-data "aws_lambda_invocation" "example" {
-  function_name = aws_lambda_function.discord_notify.function_name
-
-  input = <<JSON
-  {
-  "alert": {
-    "id": 5712,
-    "name": "TEST ALERT: Terraform Startup invocation",
-    "description": "Alert description",
-    "scope": "host_mac = \"08:00:27:70:1a:03\"",
-    "severity": 4,
-    "severityLabel": "Low",
-    "editUrl": "",
-    "subject": "TEST ALERT: Terraform Startup invocation",
-    "body": "TEST ALERT: Terraform Startup invocation"
-  },
-  "event": {
-    "id": 1680,
-    "url": "https://google.ca",
-    "username": "cw4886130@gmail.com"
-  },
-  "condition": "avg(sysdig_container_cpu_used_percent) > 85",
-  "source": "Sysdig Cloud",
-  "state": "ACTIVE",
-  "timestamp": 1663014917135000,
-  "timespan": 600000000,
-  "entities": [
-    {
-      "entity": "host_mac = '08:00:27:70:1a:03' and container_name = 'container1_0'",
-      "metricValues": [
-        {
-          "metric": "sysdig_container_cpu_used_percent",
-          "aggregation": "avg",
-          "groupAggregation": "avg",
-          "value": 91.73006147775284
-        }
-      ]
-    }
-  ]
-}
-  JSON
-}
-
 resource "aws_apigatewayv2_api" "lambda" {
   name = "serverless_lambda_gw"
   protocol_type = "HTTP"
