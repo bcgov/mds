@@ -15,7 +15,10 @@ def lambda_handler(event, context):
       sys.exit()
     
     body = json.loads(event.get("body"))
-
+    
+    print(type(body))
+    print(body)
+    
     alert = body.get("alert", "")
     event_details =  body.get("event", "")
     condition = body.get("condition", "")
@@ -74,3 +77,17 @@ def lambda_handler(event, context):
             "response": resp.data,
         }
     )
+
+    response = {
+      "statusCode": resp.status,
+      "headers": {
+        "Content-Type": "text/plain",
+        "x-amzn-ErrorType": resp.status
+      },
+      "isBase64Encoded": "false",
+      "body": resp.data
+    }
+    
+    return response
+
+    
