@@ -16,9 +16,6 @@ def lambda_handler(event, context):
     
     body = json.loads(event.get("body"))
     
-    print(type(body))
-    print(body)
-    
     alert = body.get("alert", "")
     event_details =  body.get("event", "")
     condition = body.get("condition", "")
