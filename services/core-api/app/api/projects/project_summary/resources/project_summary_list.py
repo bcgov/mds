@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
@@ -125,10 +125,13 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         if mine is None:
             raise NotFound('Mine not found')
 
+        current_app.logger.debug(f'mine: {mine_guid}')
         new_project = Project.create(mine, data.get('project_summary_title'),
                                      data.get('proponent_project_id'),
                                      data.get('mrc_review_required', False),
                                      data.get('contacts', []))
+
+        current_app.logger.debug(f'new project: {new_project}')
 
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None

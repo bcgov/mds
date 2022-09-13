@@ -79,8 +79,9 @@ export class ProjectSummaryDocumentUpload extends Component {
                   mine_document_guid: doc.mine_document_guid,
                   document_manager_guid: doc.document_manager_guid,
                   name: doc.document_name,
-                  category:
-                    props.projectSummaryDocumentTypesHash[doc.project_summary_document_type_code],
+                  category: this.props.projectSummaryDocumentTypesHash[
+                    doc.project_summary_document_type_code
+                  ],
                   uploaded: doc.upload_date,
                 },
                 ...docs,

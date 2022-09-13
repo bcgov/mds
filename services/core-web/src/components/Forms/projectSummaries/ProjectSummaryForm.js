@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -12,9 +11,10 @@ import {
   formValueSelector,
   getFormValues,
   getFormSyncErrors,
+  FormSection,
 } from "redux-form";
-import { Alert, Button, Row, Col, Typography, Tooltip, Popconfirm } from "antd";
-import { DeleteOutlined, PlusOutlined, DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Alert, Button, Row, Col, Checkbox, Typography, Popconfirm } from "antd";
+import { DeleteOutlined, PlusOutlined, DownOutlined, ContactsFilled } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { isNil } from "lodash";
@@ -35,6 +35,8 @@ import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import { resetForm, normalizePhone } from "@common/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -42,7 +44,6 @@ import { renderConfig } from "@/components/common/config";
 import DocumentTable from "@/components/common/DocumentTable";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { ContactsFilled } from "@ant-design/icons";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
 import { EDIT_PARTY } from "@/constants/modalContent";
 
@@ -79,6 +80,9 @@ export const ProjectSummaryForm = (props) => {
   const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
   const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
+  const [checked, setChecked] = useState(
+    props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
+  );
 
   // useEffect(() => {
   //   if (isNil(props.contacts) || props.contacts.length === 0) {
@@ -198,6 +202,58 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
+  const setInitialValues = (authorizationType, formValues) => {
+    console.log("authorizationType", authorizationType);
+    const currentAuthorizationType = formValues?.authorizations?.find(
+      (val) => val?.project_summary_authorization_type === authorizationType
+    );
+    return currentAuthorizationType?.project_summary_permit_type ?? [];
+  };
+
+  const renderNestedFields = (code) => {
+    console.log("code-renderNestedFields: ", code.project_summary_permit_type);
+    return (
+      <div className="nested-container">
+        {code !== "OTHER" && (
+          <>
+            <Field
+              id="project_summary_permit_type"
+              name="project_summary_permit_type"
+              options={props.dropdownProjectSummaryPermitTypes}
+              formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+              formValues={props.formattedProjectSummary}
+              change={props.change}
+              component={renderConfig.GROUP_CHECK_BOX}
+              label="What type of permit is involved in your application?"
+            />
+          </>
+        )}
+        <Field
+          id={`${code}.existing_permits_authorizations`}
+          name="existing_permits_authorizations"
+          label={
+            <>
+              If your application involved a change to an existing permit, please list the numbers
+              of the permits involved.
+              <br />
+              <span className="light--sm">Please separate each permit number with a comma</span>
+            </>
+          }
+          component={renderConfig.FIELD}
+        />
+      </div>
+    );
+  };
+
+  const handleChange = (e, code) => {
+    if (e.target.checked) {
+      setChecked((arr) => [code, ...arr]);
+    } else {
+      setChecked(checked.filter((item) => item !== code));
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
+    }
+  };
+
   const renderAuthorizationsInvolved = () => {
     const {
       initialValues: { authorizations },
@@ -235,122 +291,52 @@ export const ProjectSummaryForm = (props) => {
           validate={[requiredRadioButton]}
         />
         <br />
-        {authorizations?.length > 0 &&
-          authorizations.map((a) => {
-            const parentCode =
-              projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]?.parent
-                ?.code;
-            // We need to make sure we only add parent authorization type labels once
-            const parentHeaderAdded = parentHeadersAdded.includes(parentCode);
-            return (
-              <React.Fragment key={a.project_summary_authorization_type}>
-                {!parentHeaderAdded && parentHeadersAdded.push(parentCode) ? (
-                  <h2>
-                    {
-                      projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]
-                        ?.parent?.description
-                    }
-                  </h2>
-                ) : null}
-                <h4 className="padding-sm--bottom">
-                  {
-                    projectSummaryAuthorizationTypesHash[a.project_summary_authorization_type]
-                      ?.description
-                  }
-                </h4>
-                {/* {a.children &&
-                  a.children.map((child) => {
-                    return (
-                      <FormSection name={child.code} key={`${authorization}.${child.code}`}>
-                        <Checkbox
-                          key={child.code}
-                          value={child.code}
-                          onChange={(e) => handleChange(e, child.code)}
-                          checked={checked.includes(child.code)}
-                        >
-                          {checked.includes(child.code) ? (
-                            <>
-                              {child.description} <DownOutlined />
-                            </>
-                          ) : (
-                            child.description
-                          )}
-                        </Checkbox>
-                        {checked.includes(child.code) && renderNestedFields(child.code)}
-                      </FormSection>
-                    );
-                  })} */}
-
-                <p className="bold padding-sm--bottom">Types of permits</p>
-                {a.project_summary_permit_type.map((pt) => {
+        {props.transformedProjectSummaryAuthorizationTypes?.map((a) => {
+          console.log("a.description", a.description);
+          return (
+            <React.Fragment key={a.code}>
+              <h2>{a.description}</h2>
+              <h4 className="padding-sm--bottom">
+                {a.children?.map((child) => {
+                  console.log("child.description", child.description);
                   return (
-                    <p
-                      key={`${a.project_summary_authorization_type}-${pt}`}
-                      className="padding-md--left"
-                    >
-                      {projectSummaryPermitTypesHash[pt]}
-                    </p>
-                    // <Field
-                    //   id="project_summary_permit_type"
-                    //   name="project_summary_permit_type"
-                    //   fieldName={`${pt}.project_summary_permit_type`}
-                    //   options={props.dropdownProjectSummaryPermitTypes}
-                    //   formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-                    //   component={renderConfig.GROUP_CHECK_BOX}
-                    //   label="What type of permit is involved in your application?"
-                    // />
+                    <FormSection name={child.code} key={`${a}.${child.code}`}>
+                      <Checkbox
+                        key={child.code}
+                        value={child.code}
+                        onChange={(e) => handleChange(e, child.code)}
+                        checked={checked.includes(child.code)}
+                      >
+                        {checked.includes(child.code) ? (
+                          <>
+                            {child.description} <DownOutlined />
+                          </>
+                        ) : (
+                          child.description
+                        )}
+                      </Checkbox>
+                      {checked.includes(child.code) && renderNestedFields(child.code)}
+                    </FormSection>
                   );
                 })}
-
-                <br />
-                <p className="bold padding-sm--bottom">Existing permit numbers involved</p>
-                {a.existing_permits_authorizations?.length
-                  ? a.existing_permits_authorizations.map((epa) => {
-                      return (
-                        <p
-                          key={`${a.project_summary_authorization_type}-${epa}`}
-                          className="padding-md--left"
-                        >
-                          {epa}
-                        </p>
-                        // <Field
-                        //   id={`${EDIT_PARTY}.existing_permits_authorizations`}
-                        //   name="existing_permits_authorizations"
-                        //   label={
-                        //     <>
-                        //       If your application involved a change to an existing permit, please
-                        //       list the numbers of the permits involved.
-                        //       <br />
-                        //       <span className="light--sm">
-                        //         Please separate each permit number with a comma
-                        //       </span>
-                        //     </>
-                        //   }
-                        //   component={renderConfig.FIELD}
-                        // />
-                      );
-                    })
-                  : "N/A"}
-                <br />
-              </React.Fragment>
-            );
-          })}
+              </h4>
+              <br />
+            </React.Fragment>
+          );
+        })}
       </div>
     );
   };
 
   const renderContacts = () => {
-    const contacts = [...props.projectSummary.contacts];
-    if (isNil(contacts) || contacts?.length === 0) {
-      contacts.push({ is_primary: true });
-    }
+    const contacts = [...props.initialValues.contacts];
     props.change("contacts", contacts);
     // const contacts = props.contacts;
     return (
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
         <h3>EMLI contacts</h3>
-        <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
+        {/* <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
@@ -393,34 +379,38 @@ export const ProjectSummaryForm = (props) => {
               )}
             </Col>
           </AuthorizationWrapper>
-        </Row>
+        </Row> */}
         <h3>Proponent contacts</h3>
         <>
           <p className="bold">Primary project contact</p>
           <Row gutter={16}>
             <Col lg={12} md={24}>
+              <Form.Item>
+                <Field
+                  name={"contacts[0].name"}
+                  id={"contacts[0].name"}
+                  label="Name"
+                  component={renderConfig.FIELD}
+                  validate={[required]}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Field
+                  name={`${contacts[0]}.job_title`}
+                  id={`${contacts[0]}.job_title`}
+                  label="Job Title (optional)"
+                  component={renderConfig.FIELD}
+                />
+              </Form.Item>
               <Field
-                name={contacts[0]?.name}
-                id={contacts[0]?.name}
-                label="Name"
-                component={renderConfig.FIELD}
-                validate={[required]}
-              />
-              <Field
-                name={contacts[0]?.job_title}
-                id={contacts[0]?.job_title}
-                label="Job Title (optional)"
-                component={renderConfig.FIELD}
-              />
-              <Field
-                name={contacts[0]?.company_name}
-                id={contacts[0]?.company_name}
+                name={`${contacts[0]}.company_name`}
+                id={`${contacts[0]}.company_name`}
                 label="Company name (optional)"
                 component={renderConfig.FIELD}
               />
               <Field
-                name={contacts[0]?.email}
-                id={contacts[0]?.email}
+                name={"contacts[0].email"}
+                id={"contacts[0].email"}
                 label="Email"
                 component={renderConfig.FIELD}
                 validate={[required, email]}
@@ -428,17 +418,18 @@ export const ProjectSummaryForm = (props) => {
               <Row gutter={16}>
                 <Col span={20}>
                   <Field
-                    name={contacts[0]?.phone_number}
-                    id={contacts[0]?.phone_number}
+                    name={"contacts[0].phone_number"}
+                    id={"contacts[0].phone_number"}
                     label="Phone Number"
                     component={renderConfig.FIELD}
                     validate={[phoneNumber, maxLength(12), required]}
+                    normalize={normalizePhone}
                   />
                 </Col>
                 <Col span={4}>
                   <Field
-                    name={contacts[0]?.phone_extension}
-                    id={contacts[0]?.phone_extension}
+                    name={`${contacts[0]}.phone_extension`}
+                    id={`${contacts[0]}.phone_extension`}
                     label="Ext. (optional)"
                     component={renderConfig.FIELD}
                     validate={[maxLength(6)]}
@@ -627,13 +618,24 @@ export const ProjectSummaryForm = (props) => {
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {renderProjectDetails()}
       <br />
-      {renderAuthorizationsInvolved()}
+      {/* {renderAuthorizationsInvolved()} */}
       <br />
-      {renderProjectDates()}
+      {/* {renderProjectDates()} */}
       <br />
       {renderContacts()}
       <br />
       {renderDocuments()}
+      <div className="right center-mobile">
+        <Button
+          id="project-summary-submit"
+          className="full-mobile"
+          type="primary"
+          htmlType="submit"
+          loading={props.submitting}
+        >
+          Create
+        </Button>
+      </div>
     </Form>
   );
 };
@@ -646,7 +648,8 @@ const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
   userRoles: getUserAccessData(state),
-  contacts: selector(state, "contacts") || [],
+  contacts: selector(state, "contacts"),
+  code: selector(state, "code"),
   expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
   expected_permit_application_date: selector(state, "expected_permit_application_date"),
   expected_permit_receipt_date: selector(state, "expected_permit_receipt_date"),
@@ -675,8 +678,6 @@ export default compose(
   reduxForm({
     form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     enableReinitialize: true,
-    touchOnBlur: true,
-    touchOnChange: false,
-    onSubmit: () => {},
+    touchOnBlur: false,
   })
 )(withRouter(ProjectSummaryForm));

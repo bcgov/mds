@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { submit, getFormValues, reset, touch } from "redux-form";
+import { flattenObject } from "@common/utils/helpers";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
 import {
@@ -17,6 +18,7 @@ import {
   getProject,
 } from "@common/selectors/projectSelectors";
 import {
+  createProjectSummary,
   fetchProjectSummaryById,
   updateProjectSummary,
   removeDocumentFromProjectSummary,
@@ -102,28 +104,69 @@ export class ProjectSummary extends Component {
     });
   };
 
-  handleSaveData = (e, message) => {
-    e.preventDefault();
+  handleSaveData = (values) => {
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        return this.handleCreateProjectSummary(message);
+        return this.handleCreate(values);
       }
-      return this.handleUpdate(message);
+      return this.handleUpdate(values);
     }
   };
 
-  handleCreate = (message) => {
+  handleTransformPayload = (values) => {
+    let payloadValues = {};
+    const updatedAuthorizations = [];
+    // eslint-disable-next-line array-callback-return
+    if (values) {
+      Object.keys(values)?.map((key) => {
+        // Pull out form properties from request object that match known authorization types
+        if (values[key] && this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
+          const project_summary_guid = values?.project_summary_guid;
+          const authorization = values?.authorizations?.find(
+            (auth) => auth?.project_summary_authorization_type === key
+          );
+          updatedAuthorizations.push({
+            ...values[key],
+            // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
+            // ... otherwise treat it as a new one which won't have those two properties yet.
+            ...(project_summary_guid && { project_summary_guid }),
+            ...(authorization && {
+              project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
+            }),
+            project_summary_authorization_type: key,
+            project_summary_permit_type:
+              key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
+            existing_permits_authorizations:
+              values[key]?.existing_permits_authorizations?.split(",") || [],
+          });
+          // eslint-disable-next-line no-param-reassign
+          delete values[key];
+        }
+      });
+    }
+
+    payloadValues = {
+      ...values,
+      authorizations: updatedAuthorizations,
+    };
+    // eslint-disable-next-line no-param-reassign
+    delete payloadValues.authorizationOptions;
+    return payloadValues;
+  };
+
+  handleCreate = (values) => {
     const mineGuid = this.props.match?.params?.mineGuid;
     this.props
       .createProjectSummary(
         {
-          mineGuid: mineGuid,
-        },
-        this.handleTransformPayload(),
-        message
+          mineGuid,
+          ...values,
+          status_code: "SUB",
+        }
+        // this.handleTransformPayload()
       )
       .then(({ data: { project_guid, project_summary_guid } }) => {
         this.props.history.replace(
@@ -240,9 +283,21 @@ export class ProjectSummary extends Component {
                           ...this.props.formattedProjectSummary,
                           mrc_review_required: this.props.project.mrc_review_required,
                         }
-                      : {}
+                      : {
+                          contacts: [
+                            {
+                              is_primary: true,
+                              name: null,
+                              job_title: null,
+                              company_name: null,
+                              email: null,
+                              phone_number: null,
+                              phone_extension: null,
+                            },
+                          ],
+                        }
                   }
-                  handleSubmit={this.handleSaveData}
+                  onSubmit={this.handleSaveData}
                   removeDocument={this.handleRemoveDocument}
                 />
               </div>
@@ -275,11 +330,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      createProjectSummary,
       fetchProjectSummaryById,
       updateProjectSummary,
       removeDocumentFromProjectSummary,
       clearProjectSummary,
       fetchMineRecordById,
+      submit,
+      touch,
+      reset,
     },
     dispatch
   );
