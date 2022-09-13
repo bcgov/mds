@@ -75,9 +75,6 @@ resource "aws_lambda_function" "discord_notify" {
 resource "aws_cloudwatch_log_group" "discord_notify" {
   name = "/aws/lambda/${aws_lambda_function.discord_notify.function_name}-${random_pet.lambda_bucket_name.id}"
 
-  # Do not currently have permissions (as of Sept 9th, 2022) to set retention policy.
-  # Appears to default to 2 years. 
-
   # Do not have permissions to remove cloudwatch log groups, so this will require 
   # manual intervention for the time being. Use `terraform state rm` on this resource so
   # it will not block you from recreating this project if needed. 
@@ -114,45 +111,109 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 
 
 
-# data "aws_lambda_invocation" "example" {
-#   function_name = aws_lambda_function.lambda_function_test.function_name
+data "aws_lambda_invocation" "example" {
+  function_name = aws_lambda_function.discord_notify.function_name
 
-#   input = <<JSON
-#   {
-#   "alert": {
-#     "id": 5712,
-#     "name": "TEST ALERT: Testing Notification Channel Rocketchat-alert-channel-MDS",
-#     "description": "Alert description",
-#     "scope": "host_mac = \"08:00:27:70:1a:03\"",
-#     "severity": 4,
-#     "severityLabel": "Low",
-#     "editUrl": "https://app.sysdigcloud.com/#/alerts/5712",
-#     "subject": "TEST ALERT: Testing Notification Channel Rocketchat-alert-channel-MDS",
-#     "body": "TEST ALERT: Testing Notification Channel Rocketchat-alert-channel-MDS\n\n\nEvent Generated:\n\nSeverity:         Low\nMetric:\n    sysdig_container_cpu_used_percent = 91.7301 %\nSegment:\n    container_name = 'container1_0' and host_mac = '08:00:27:70:1a:03'\nScope:\n    host_hostname = 'Host-0 (08:00:27:70:1a:03)'\n\nTime:             09/12/2022 08:35 PM UTC\nState:            Triggered\nNotification URL: https://app.sysdigcloud.com/#/events/notifications/l:2419200/1680/details\n\n------\n\nTriggered by Alert:\n\nName:         TEST ALERT: Testing Notification Channel Rocketchat-alert-channel-MDS\nDescription:  Alert description\nTeam:         Catchall\nScope:\n    host_hostname = 'Host-0 (08:00:27:70:1a:03)'\nSegment by:   host_mac, container_name\nWhen:         avg(sysdig_container_cpu_used_percent) > 85\nFor at least: 10 m\nAlert URL:    https://app.sysdigcloud.com/#/alerts/rules?alertId=5712\n\n\n"
-#   },
-#   "event": {
-#     "id": 1680,
-#     "url": "https://app.sysdigcloud.com/#/events/notifications/l:604800/1680/details",
-#     "username": "cw4886130@gmail.com"
-#   },
-#   "condition": "avg(sysdig_container_cpu_used_percent) > 85",
-#   "source": "Sysdig Cloud",
-#   "state": "ACTIVE",
-#   "timestamp": 1663014917135000,
-#   "timespan": 600000000,
-#   "entities": [
-#     {
-#       "entity": "host_mac = '08:00:27:70:1a:03' and container_name = 'container1_0'",
-#       "metricValues": [
-#         {
-#           "metric": "sysdig_container_cpu_used_percent",
-#           "aggregation": "avg",
-#           "groupAggregation": "avg",
-#           "value": 91.73006147775284
-#         }
-#       ]
-#     }
-#   ]
-# }
-#   JSON
-# }
+  input = <<JSON
+  {
+  "alert": {
+    "id": 5712,
+    "name": "TEST ALERT: Terraform Startup invocation",
+    "description": "Alert description",
+    "scope": "host_mac = \"08:00:27:70:1a:03\"",
+    "severity": 4,
+    "severityLabel": "Low",
+    "editUrl": "",
+    "subject": "TEST ALERT: Terraform Startup invocation",
+    "body": "TEST ALERT: Terraform Startup invocation"
+  },
+  "event": {
+    "id": 1680,
+    "url": "https://google.ca",
+    "username": "cw4886130@gmail.com"
+  },
+  "condition": "avg(sysdig_container_cpu_used_percent) > 85",
+  "source": "Sysdig Cloud",
+  "state": "ACTIVE",
+  "timestamp": 1663014917135000,
+  "timespan": 600000000,
+  "entities": [
+    {
+      "entity": "host_mac = '08:00:27:70:1a:03' and container_name = 'container1_0'",
+      "metricValues": [
+        {
+          "metric": "sysdig_container_cpu_used_percent",
+          "aggregation": "avg",
+          "groupAggregation": "avg",
+          "value": 91.73006147775284
+        }
+      ]
+    }
+  ]
+}
+  JSON
+}
+
+resource "aws_apigatewayv2_api" "lambda" {
+  name = "serverless_lambda_gw"
+  protocol_type = "HTTP"
+}
+
+resource "aws_apigatewayv2_stage" "lambda" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  name = "serverless_lambda_stage"
+  auto_deploy = true
+
+    access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gw.arn
+
+    format = jsonencode({
+      requestId               = "$context.requestId"
+      sourceIp                = "$context.identity.sourceIp"
+      requestTime             = "$context.requestTime"
+      protocol                = "$context.protocol"
+      httpMethod              = "$context.httpMethod"
+      resourcePath            = "$context.resourcePath"
+      routeKey                = "$context.routeKey"
+      status                  = "$context.status"
+      responseLength          = "$context.responseLength"
+      integrationErrorMessage = "$context.integrationErrorMessage"
+      }
+    )
+  }
+}
+
+resource "aws_apigatewayv2_integration" "notify" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  integration_uri = aws_lambda_function.discord_notify.invoke_arn
+  integration_type = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "notify" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  route_key = "POST /notify"
+  target    = "integrations/${aws_apigatewayv2_integration.notify.id}"
+}
+
+resource "aws_cloudwatch_log_group" "api_gw" {
+  name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}-${random_pet.lambda_bucket_name.id}"
+
+  lifecycle {
+    ignore_changes = [
+      retention_in_days
+    ]
+  }
+}
+
+resource "aws_lambda_permission" "api_gw" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.discord_notify.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
