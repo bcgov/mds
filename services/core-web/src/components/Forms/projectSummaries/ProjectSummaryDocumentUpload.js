@@ -51,8 +51,8 @@ export class ProjectSummaryDocumentUpload extends Component {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     const fileUploadParams = {
       mineGuid: this.props.isEditMode ? this.props.mineGuid : this.props.match?.params?.mineGuid,
-      projectGuid: this.props.initialValues.project_guid,
-      projectSummaryGuid: this.props.initialValues.project_summary_guid,
+      projectGuid: this.props.initialValues?.project_guid,
+      projectSummaryGuid: this.props.initialValues?.project_summary_guid,
     };
 
     return (
@@ -89,8 +89,8 @@ export class ProjectSummaryDocumentUpload extends Component {
               []
             )}
             removeDocument={
-              this.props.initialValues.canRemoveDocuments
-                ? this.props.initialValues.removeDocument
+              this.props.initialValues?.canRemoveDocuments
+                ? this.props.initialValues?.removeDocument
                 : null
             }
             isViewOnly={false}

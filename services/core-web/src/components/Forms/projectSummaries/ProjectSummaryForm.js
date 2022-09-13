@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import {
   arrayPush,
   change,
+  FieldArray,
   Field,
   reduxForm,
   formValueSelector,
@@ -84,11 +85,11 @@ export const ProjectSummaryForm = (props) => {
     props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
   );
 
-  // useEffect(() => {
-  //   if (isNil(props.contacts) || props.contacts.length === 0) {
-  //     props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isNil(props.initialValues.contacts) || props.initialValues.contacts.length === 0) {
+      props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
+    }
+  }, []);
 
   const renderProjectDetails = () => {
     const {
@@ -328,9 +329,103 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
+  const contactFields = ({ fields }) => {
+    return (
+      <>
+        {fields.map((field, index) => {
+          return (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index}>
+              {index === 0 ? (
+                <p className="bold">Primary project contact</p>
+              ) : (
+                <>
+                  <Row gutter={16}>
+                    <Col span={10}>
+                      <p className="bold">Additional project contact #{index}</p>
+                    </Col>
+                    <Col span={12}>
+                      <Popconfirm
+                        placement="topLeft"
+                        title="Are you sure you want to remove this contact?"
+                        onConfirm={() => fields.remove(index)}
+                        okText="Remove"
+                        cancelText="Cancel"
+                      >
+                        <Button type="primary" size="small" ghost>
+                          <DeleteOutlined className="padding-sm--left icon-sm" />
+                        </Button>
+                      </Popconfirm>
+                    </Col>
+                  </Row>
+                </>
+              )}
+              <Field
+                name={`${field}.name`}
+                id={`${field}.name`}
+                label="Name"
+                component={renderConfig.FIELD}
+                validate={[required]}
+              />
+              <Field
+                name={`${field}.job_title`}
+                id={`${field}.job_title`}
+                label="Job Title (optional)"
+                component={renderConfig.FIELD}
+              />
+              <Field
+                name={`${field}.company_name`}
+                id={`${field}.company_name`}
+                label="Company name (optional)"
+                component={renderConfig.FIELD}
+              />
+              <Field
+                name={`${field}.email`}
+                id={`${field}.email`}
+                label="Email"
+                component={renderConfig.FIELD}
+                validate={[required, email]}
+              />
+              <Row gutter={16}>
+                <Col span={20}>
+                  <Field
+                    name={`${field}.phone_number`}
+                    id={`${field}.phone_number`}
+                    label="Phone Number"
+                    component={renderConfig.FIELD}
+                    validate={[phoneNumber, maxLength(12), required]}
+                    normalize={normalizePhone}
+                  />
+                </Col>
+                <Col span={4}>
+                  <Field
+                    name={`${field}.phone_extension`}
+                    id={`${field}.phone_extension`}
+                    label="Ext. (optional)"
+                    component={renderConfig.FIELD}
+                    validate={[maxLength(6)]}
+                  />
+                </Col>
+              </Row>
+              {index === 0 && <p className="bold">Additional project contacts</p>}
+            </div>
+          );
+        })}
+        <LinkButton
+          onClick={() => {
+            fields.push({ is_primary: false });
+          }}
+          title="Add additional project contacts"
+        >
+          <PlusOutlined /> Add additional project contacts
+        </LinkButton>
+      </>
+    );
+  };
+
   const renderContacts = () => {
-    const contacts = [...props.initialValues.contacts];
-    props.change("contacts", contacts);
+    // const contacts = [...props.initialValues.contacts];
+    // props.change("contacts", contacts);
     // const contacts = props.contacts;
     return (
       <div id="project-contacts">
@@ -382,157 +477,7 @@ export const ProjectSummaryForm = (props) => {
         </Row> */}
         <h3>Proponent contacts</h3>
         <>
-          <p className="bold">Primary project contact</p>
-          <Row gutter={16}>
-            <Col lg={12} md={24}>
-              <Form.Item>
-                <Field
-                  name={"contacts[0].name"}
-                  id={"contacts[0].name"}
-                  label="Name"
-                  component={renderConfig.FIELD}
-                  validate={[required]}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Field
-                  name={`${contacts[0]}.job_title`}
-                  id={`${contacts[0]}.job_title`}
-                  label="Job Title (optional)"
-                  component={renderConfig.FIELD}
-                />
-              </Form.Item>
-              <Field
-                name={`${contacts[0]}.company_name`}
-                id={`${contacts[0]}.company_name`}
-                label="Company name (optional)"
-                component={renderConfig.FIELD}
-              />
-              <Field
-                name={"contacts[0].email"}
-                id={"contacts[0].email"}
-                label="Email"
-                component={renderConfig.FIELD}
-                validate={[required, email]}
-              />
-              <Row gutter={16}>
-                <Col span={20}>
-                  <Field
-                    name={"contacts[0].phone_number"}
-                    id={"contacts[0].phone_number"}
-                    label="Phone Number"
-                    component={renderConfig.FIELD}
-                    validate={[phoneNumber, maxLength(12), required]}
-                    normalize={normalizePhone}
-                  />
-                </Col>
-                <Col span={4}>
-                  <Field
-                    name={`${contacts[0]}.phone_extension`}
-                    id={`${contacts[0]}.phone_extension`}
-                    label="Ext. (optional)"
-                    component={renderConfig.FIELD}
-                    validate={[maxLength(6)]}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <br />
-          {contacts.length > 1 && <p className="bold">Additional project contacts</p>}
-          {contacts.length >= 1 &&
-            contacts
-              // .filter((c) => !c.is_primary)
-              .map((contact, i) => {
-                return (
-                  <>
-                    {!contact.is_primary && (
-                      <>
-                        <Row gutter={16}>
-                          <Col span={10}>
-                            <Typography.Title level={5}>
-                              Additional project contact #{i}
-                            </Typography.Title>
-                          </Col>
-                          <Col span={12}>
-                            <Popconfirm
-                              placement="topLeft"
-                              title="Are you sure you want to remove this contact?"
-                              onConfirm={() => contact.remove(i)}
-                              okText="Remove"
-                              cancelText="Cancel"
-                            >
-                              <Button type="primary" size="small" ghost>
-                                <DeleteOutlined className="padding-sm--left icon-sm" />
-                              </Button>
-                            </Popconfirm>
-                          </Col>
-                        </Row>
-
-                        <Row gutter={16}>
-                          <Col lg={12} md={24}>
-                            <Field
-                              name={contact.name}
-                              id={contact.name}
-                              label="Name"
-                              component={renderConfig.FIELD}
-                              validate={[required]}
-                            />
-                            <Field
-                              name={contact.job_title}
-                              id={contact.job_title}
-                              label="Job Title (optional)"
-                              component={renderConfig.FIELD}
-                            />
-                            <Field
-                              name={contact.company_name}
-                              id={contact.company_name}
-                              label="Company name (optional)"
-                              component={renderConfig.FIELD}
-                            />
-                            <Field
-                              name={contact.email}
-                              id={contact.email}
-                              label="Email"
-                              component={renderConfig.FIELD}
-                              validate={[required, email]}
-                            />
-                            <Row gutter={16}>
-                              <Col span={20}>
-                                <Field
-                                  name={contact.phone_number}
-                                  id={contact.phone_number}
-                                  label="Phone Number"
-                                  component={renderConfig.FIELD}
-                                  validate={[maxLength(12), required]}
-                                />
-                              </Col>
-                              <Col span={4}>
-                                <Field
-                                  name={contact.phone_extension}
-                                  id={contact.phone_extension}
-                                  label="Ext. (optional)"
-                                  component={renderConfig.FIELD}
-                                  validate={[maxLength(6)]}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    )}
-                  </>
-                );
-              })}
-          <LinkButton
-            onClick={() => {
-              contacts.push({ is_primary: false });
-              props.change("contacts", contacts);
-            }}
-            title="Add additional project contacts"
-          >
-            <PlusOutlined /> Add additional project contacts
-          </LinkButton>
+          <FieldArray name="contacts" component={contactFields} />
         </>
       </div>
     );
@@ -648,7 +593,7 @@ const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
   userRoles: getUserAccessData(state),
-  contacts: selector(state, "contacts"),
+  contacts: selector(state, "contacts") || [],
   code: selector(state, "code"),
   expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
   expected_permit_application_date: selector(state, "expected_permit_application_date"),
