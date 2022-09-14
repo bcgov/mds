@@ -66,6 +66,7 @@ export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [tsfGuid, setTsfGuid] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleFetchData = async () => {
     const { tailingsStorageFacilityGuid } = match?.params;
@@ -87,6 +88,7 @@ export const TailingsSummaryPage = (props) => {
 
   const handleSaveData = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
     // TODO: implement saving of EOR
@@ -109,6 +111,7 @@ export const TailingsSummaryPage = (props) => {
         setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
       }
     }
+    setIsSaving(false);
   };
 
   const handleTabChange = async (newActiveTab) => {
@@ -152,6 +155,7 @@ export const TailingsSummaryPage = (props) => {
         </Row>
         <Divider />
         <SteppedForm
+          fetching={isSaving}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           handleSaveDraft={handleSaveData}
