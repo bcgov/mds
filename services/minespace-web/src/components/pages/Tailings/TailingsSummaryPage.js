@@ -15,7 +15,6 @@ import {
 import { getTsf } from "@common/selectors/tailingsSelectors";
 import { storeTsf } from "@common/actions/tailingsActions";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {
@@ -30,6 +29,7 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import Step from "@/components/common/Step";
 import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   createTailingsStorageFacility,
   updateTailingsStorageFacility,
@@ -86,8 +86,8 @@ export const TailingsSummaryPage = (props) => {
   }, []);
 
   const handleSaveData = async (e) => {
-    setIsSaving(true);
     e.preventDefault();
+    setIsSaving(true);
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
     // TODO: implement saving of EOR
@@ -102,22 +102,15 @@ export const TailingsSummaryPage = (props) => {
     //     end_date: formValues.engineer_of_record.end_date,
     //   });
     // }
-    try {
-      if (errors.length === 0) {
-        if (tsfGuid) {
-          props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
-        } else {
-          const newTsf = await props.createTailingsStorageFacility(
-            match.params.mineGuid,
-            formValues
-          );
-          setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
-        }
+    if (errors.length === 0) {
+      if (tsfGuid) {
+        props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+      } else {
+        const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+        setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
       }
-      setIsSaving(false);
-    } catch (error) {
-      setIsSaving(false);
     }
+    setIsSaving(false);
   };
 
   const handleTabChange = async (newActiveTab) => {
@@ -161,12 +154,12 @@ export const TailingsSummaryPage = (props) => {
         </Row>
         <Divider />
         <SteppedForm
+          fetching={isSaving}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           handleSaveDraft={handleSaveData}
           errors={errors}
           activeTab={match.params.tab}
-          saving={isSaving}
         >
           <Step key="basic-information">
             <BasicInformation />
@@ -192,6 +185,7 @@ export const TailingsSummaryPage = (props) => {
   );
 };
 
+// const selector = formValueSelector(FORM.ADD_TAILINGS_STORAGE_FACILITY);
 const mapStateToProps = (state) => ({
   anyTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.anyTouched || false,
   fieldsTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.fields || {},

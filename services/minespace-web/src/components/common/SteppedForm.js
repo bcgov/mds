@@ -15,16 +15,18 @@ const propTypes = {
   handleSaveData: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  fetching: PropTypes.bool,
 };
 
 const defaultProps = {
   handleSaveDraft: undefined,
+  fetching: false,
   handleSaveData: undefined,
 };
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData } = props;
+  const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData, fetching } = props;
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
 
@@ -84,6 +86,7 @@ const SteppedForm = (props) => {
                 <div>
                   {handleSaveDraft && (
                     <Button
+                      disabled={fetching}
                       type="text"
                       className="full-mobile draft-button"
                       onClick={handleSaveDraft}
