@@ -89,6 +89,7 @@ export const TailingsSummaryPage = (props) => {
   const handleSaveData = async (e) => {
     setIsSaving(true);
     e.preventDefault();
+    setIsSaving(true);
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
     // TODO: implement saving of EOR
@@ -163,6 +164,7 @@ export const TailingsSummaryPage = (props) => {
         </Row>
         <Divider />
         <SteppedForm
+          fetching={isSaving}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           handleSaveDraft={handleSaveData}
