@@ -49,9 +49,10 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
+
 @celery.task(
     bind=True,
-    max_retries=None,
+    max_retries=100,
     acks_late=True,
     task_reject_on_worker_lost=True,
     autoretry_for=(Exception, ))
