@@ -12,17 +12,21 @@ const propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   handleTabChange: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func,
+  handleSaveData: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  fetching: PropTypes.bool,
 };
 
 const defaultProps = {
   handleSaveDraft: undefined,
+  fetching: false,
+  handleSaveData: undefined,
 };
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { children, handleTabChange, activeTab, handleSaveDraft } = props;
+  const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData, fetching } = props;
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
 
@@ -37,8 +41,11 @@ const SteppedForm = (props) => {
   }, [activeTab]);
 
   const handleTabClick = (tab) => {
-    setTabIndex(indexOf(tabs, tab));
-    handleTabChange(tab);
+    if (tabIndex !== tabs.indexOf(tab)) {
+      handleTabChange(tab);
+      setTabIndex(indexOf(tabs, tab));
+      handleTabChange(tab);
+    }
   };
 
   const isFirst = tabIndex === 0;
@@ -70,7 +77,7 @@ const SteppedForm = (props) => {
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst ? "end" : "space-between"}>
               {!isFirst && (
-                <Button type="secondary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
+                <Button type="primary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
                   <LeftOutlined /> Back
                 </Button>
               )}
@@ -79,6 +86,7 @@ const SteppedForm = (props) => {
                 <div>
                   {handleSaveDraft && (
                     <Button
+                      disabled={fetching}
                       type="text"
                       className="full-mobile draft-button"
                       onClick={handleSaveDraft}
