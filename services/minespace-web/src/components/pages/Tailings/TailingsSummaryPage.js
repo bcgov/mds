@@ -29,6 +29,7 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import Step from "@/components/common/Step";
 import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   createTailingsStorageFacility,
   updateTailingsStorageFacility,
@@ -53,6 +54,7 @@ const propTypes = {
   // addPartyRelationship: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   eors: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
+  fetchPermits: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -67,6 +69,7 @@ export const TailingsSummaryPage = (props) => {
 
   const handleFetchData = async () => {
     const { tailingsStorageFacilityGuid } = match?.params;
+    await props.fetchPermits(match.params.mineGuid);
     await props.fetchPartyRelationships({
       mine_guid: match.params.mineGuid,
       relationships: "party",
@@ -100,11 +103,7 @@ export const TailingsSummaryPage = (props) => {
     // }
     if (errors.length === 0) {
       if (tsfGuid) {
-        props.updateTailingsStorageFacility(
-          match.params.mineGuid,
-          match.params.tailingsStorageFacilityGuid,
-          formValues
-        );
+        props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
       } else {
         const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
         setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
@@ -183,7 +182,6 @@ export const TailingsSummaryPage = (props) => {
   );
 };
 
-// const selector = formValueSelector(FORM.ADD_TAILINGS_STORAGE_FACILITY);
 const mapStateToProps = (state) => ({
   anyTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.anyTouched || false,
   fieldsTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.fields || {},
@@ -204,6 +202,7 @@ const mapDispatchToProps = (dispatch) =>
       submit,
       touch,
       storeTsf,
+      fetchPermits,
     },
     dispatch
   );

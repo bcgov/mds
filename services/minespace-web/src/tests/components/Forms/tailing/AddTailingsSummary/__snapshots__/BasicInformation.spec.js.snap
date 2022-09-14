@@ -29,6 +29,7 @@ exports[`BasicInformation renders properly 1`] = `
   />
   <Field
     component={[Function]}
+    data={Array []}
     id="mines_act_permit_no"
     label="Mines Act Permit Number"
     name="mines_act_permit_no"

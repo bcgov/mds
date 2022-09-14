@@ -2,7 +2,7 @@ from decimal import Decimal
 from datetime import datetime, timezone
 from flask import current_app
 from flask_restplus import Resource, reqparse
-from werkzeug.exceptions import InternalServerError, NotFound
+from werkzeug.exceptions import InternalServerError, NotFound, BadRequest
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, \
@@ -113,6 +113,14 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
 
         mine_tsf_list = mine.mine_tailings_storage_facilities
         is_mine_first_tsf = len(mine_tsf_list) == 0
+
+        # Check if the mine already has a TSF with the same name
+        for mine_tsf in mine_tsf_list:
+            if mine_tsf.mine_tailings_storage_facility_name == data.get(
+                    'mine_tailings_storage_facility_name'):
+                raise BadRequest(
+                    'Mine already has a TSF with the same name: {}'.format(
+                        data.get('mine_tailings_storage_facility_name')))
 
         mine_tsf = MineTailingsStorageFacility.create(
             mine,
