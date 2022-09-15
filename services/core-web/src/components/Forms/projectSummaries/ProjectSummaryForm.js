@@ -189,7 +189,7 @@ const setInitialValues = (authorizationType, formValues) => {
 
 const renderNestedFields = (code, props) => {
   return (
-    <div className="nested-container">
+    <div>
       {code !== "OTHER" && (
         <>
           <Field
@@ -201,7 +201,11 @@ const renderNestedFields = (code, props) => {
             formValues={props.formattedProjectSummary}
             change={props.change}
             component={renderConfig.GROUP_CHECK_BOX}
-            label="What type of permit is involved in your application?"
+            label={
+              <>
+                <p>What type of permit is involved in your application?</p>
+              </>
+            }
             setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
           />
         </>
@@ -211,9 +215,10 @@ const renderNestedFields = (code, props) => {
         name="existing_permits_authorizations"
         label={
           <>
-            If your application involved a change to an existing permit, please list the numbers of
-            the permits involved.
-            <br />
+            <p>
+              If your application involved a change to an existing permit, please list the numbers
+              of the permits involved.
+            </p>
             <span className="light--sm">Please separate each permit number with a comma</span>
           </>
         }
@@ -341,7 +346,8 @@ export const ProjectSummaryForm = (props) => {
                 <b>
                   Does your project require a coordinated review by a Mine Review Committee, under
                   Section 9 of the Mines Act?
-                </b>{" "}
+                </b>
+                <br />
                 This response will be reviewed by the Major Mines Office and confirmed by the Chief
                 Permitting Officer.
               </p>
@@ -477,7 +483,7 @@ export const ProjectSummaryForm = (props) => {
       <div id="document-details">
         <ProjectSummaryDocumentUpload
           initialValues={props.initialValues}
-          {...canRemoveDocuments}
+          canRemoveDocuments={canRemoveDocuments}
           {...props}
         />
       </div>

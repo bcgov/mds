@@ -15,8 +15,10 @@ import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
   change: PropTypes.func.isRequired,
+  removeDocument: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   isEditMode: PropTypes.bool.isRequired,
+  canRemoveDocuments: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
   match: PropTypes.shape({
@@ -88,11 +90,7 @@ export class ProjectSummaryDocumentUpload extends Component {
               ],
               []
             )}
-            removeDocument={
-              this.props.initialValues?.canRemoveDocuments
-                ? this.props.initialValues?.removeDocument
-                : null
-            }
+            removeDocument={this.props.canRemoveDocuments ? this.props.removeDocument : null}
             isViewOnly={false}
           />
 
