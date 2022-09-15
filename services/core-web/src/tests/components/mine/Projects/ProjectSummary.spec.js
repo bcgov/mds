@@ -7,6 +7,7 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
+  props.project = MOCK.PROJECT;
   props.projectSummary = MOCK.PROJECT_SUMMARY;
   props.formattedProjectSummary = MOCK.PROJECT_SUMMARY;
   props.initialValues = MOCK.PROJECT_SUMMARY;
@@ -21,6 +22,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchProjectSummaryById = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {

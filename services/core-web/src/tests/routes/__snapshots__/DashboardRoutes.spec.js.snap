@@ -247,6 +247,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    path="/mines/:mineGuid/project-description/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ProjectSummary)",
+        "type": [Function],
+      }
+    }
+    exact={true}
     path="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
   />
   <Route
