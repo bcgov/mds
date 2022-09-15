@@ -2,19 +2,31 @@
 import urllib3
 import json
 import sys
+import logging
 
 from datetime import datetime, timedelta
 
 http = urllib3.PoolManager()
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
     url = "https://discordapp.com/api/webhooks/1019009944864952330/yJLd0xhoyzGzrqSh6Al2bIezLY58XHia8Drcol8_J1N1E-qenCkGWsHXBSs3-LdjejDs"
-    
+
     if event is None:
-      sys.exit()
+     raise Exception("There must be an event to process the request")
     
-    body = json.loads(event.get("body"))
+    print(event)
+    
+    logger.info('## EVENT\r' + str(event))
+    logger.info('## CONTEXT\r' + str(context))
+    
+    # Try exception for different formatting
+    try:
+      body = json.loads(event.get("body"))
+    except Exception:
+      body = event.get("body")
     
     alert = body.get("alert", "")
     event_details =  body.get("event", "")
@@ -23,7 +35,13 @@ def lambda_handler(event, context):
     
     entities = body.get("entities", "")
     
+    if entities:
+      entities = entities[0].get("metricValues", "")
+    
     #TODO: Format timestamp 
+    
+    
+    condition_scope_str = str(str(condition) + "\n for " + str(alert.get("scope", "")))
     
     msg = {
 
@@ -34,38 +52,35 @@ def lambda_handler(event, context):
             "name": "Sysdig Monitor",
             "url": "https://app.sysdigcloud.com/api/oauth/openid/bcdevops",
           },
-          "title": alert.get("name", ""),
+          "title": alert.get("name", "")[:255], # limit of 256 characters
           "url": event_details.get("url", ""),
-          "description": alert.get("description", ""),
           "color": 15258703,
           "fields": [
             {
               "name": "Severity",
-              "value": alert.get("severityLabel", ""),
+              "value": str(alert.get("severityLabel", ""))[:1023], # limit of 1024 characters
               "inline": "true"
             },
             {
               "name": "Condition and Scope",
-              "value": str(condition) + "\n for " + str(alert.get("scope", "")),
+              "value": condition_scope_str[:1023], # limit of 1024 characters
               "inline": "true"
             },
             {
-              "name": "Entities / More info",
-              "value": str(entities)
-            },
-            {
-              "name": "Timestamp",
-              "value": str(timestamp)
+              "name": "Metric Values",
+              "value": str(entities)[:1023]
             }
          ]
         }]
     }
     
-    encoded_msg = json.dumps(msg).encode("utf-8")
+    encoded_msg = json.dumps(msg).encode("utf-8")[:5999]
     
     resp = http.request("POST", url, body=encoded_msg,
                         headers={
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Accept': '*/*',
+                            'Accept-Encoding': 'gzip'
                         })
                         
     print(
@@ -74,6 +89,7 @@ def lambda_handler(event, context):
             "response": resp.data,
         }
     )
+
 
     response = {
       "statusCode": resp.status,
