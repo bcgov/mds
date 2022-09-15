@@ -10,8 +10,8 @@ import {
   getDropdownProjectSummaryPermitTypes,
 } from "@common/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
-import { renderConfig } from "@/components/common/config";
 import { requiredRadioButton } from "@common/utils/Validate";
+import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import Callout from "@/components/common/Callout";
 import CustomPropTypes from "@/customPropTypes";
@@ -47,41 +47,39 @@ export const AuthorizationsInvolved = (props) => {
     return currentAuthorizationType?.project_summary_permit_type ?? [];
   };
 
-  const renderNestedFields = (code) => {
-    console.log("code-renderNestedFields: ", code);
-    return (
-      <div className="nested-container">
-        {code !== "OTHER" && (
+  const renderNestedFields = (code) => (
+    <div className="nested-container">
+      {code !== "OTHER" && (
+        <>
+          <Field
+            id="project_summary_permit_type"
+            name="project_summary_permit_type"
+            fieldName={`${code}.project_summary_permit_type`}
+            options={props.dropdownProjectSummaryPermitTypes}
+            formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+            formValues={props.formattedProjectSummary}
+            change={props.change}
+            component={renderConfig.GROUP_CHECK_BOX}
+            label="What type of permit is involved in your application?"
+            setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
+          />
+        </>
+      )}
+      <Field
+        id={`${code}.existing_permits_authorizations`}
+        name="existing_permits_authorizations"
+        label={
           <>
-            <Field
-              id="project_summary_permit_type"
-              name="project_summary_permit_type"
-              options={props.dropdownProjectSummaryPermitTypes}
-              formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-              formValues={props.formattedProjectSummary}
-              change={props.change}
-              component={renderConfig.GROUP_CHECK_BOX}
-              label="What type of permit is involved in your application?"
-              setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
-            />
+            If your application involved a change to an existing permit, please list the numbers of
+            the permits involved.
+            <br />
+            <span className="light--sm">Please separate each permit number with a comma</span>
           </>
-        )}
-        <Field
-          id={`${code}.existing_permits_authorizations`}
-          name="existing_permits_authorizations"
-          label={
-            <>
-              If your application involved a change to an existing permit, please list the numbers
-              of the permits involved.
-              <br />
-              <span className="light--sm">Please separate each permit number with a comma</span>
-            </>
-          }
-          component={renderConfig.FIELD}
-        />
-      </div>
-    );
-  };
+        }
+        component={renderConfig.FIELD}
+      />
+    </div>
+  );
 
   return (
     <>
@@ -194,4 +192,3 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationsInvolved);
-checked;

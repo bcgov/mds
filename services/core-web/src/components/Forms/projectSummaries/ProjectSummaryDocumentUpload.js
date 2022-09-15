@@ -39,12 +39,12 @@ export class ProjectSummaryDocumentUpload extends Component {
 
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ document_name: fileName, document_manager_guid });
-    return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.state.uploadedFiles);
+    return this.props.change("documents", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
     remove(this.props.documents, { document_manager_guid: fileItem.serverId });
-    return this.props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", this.props.documents);
+    return this.props.change("documents", this.props.documents);
   };
 
   render() {

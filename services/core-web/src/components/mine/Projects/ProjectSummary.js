@@ -10,6 +10,7 @@ import {
   getProjectSummaryDocumentTypesHash,
   getTransformedChildProjectSummaryAuthorizationTypesHash,
   getProjectSummaryPermitTypesHash,
+  getProjectSummaryAuthorizationTypesArray,
   getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
 import {
@@ -25,12 +26,13 @@ import {
 } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
-import { Link } from "react-router-dom";
+import { Link, Prompt } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import Loading from "@/components/common/Loading";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
@@ -45,6 +47,7 @@ const propTypes = {
     },
   }).isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  project: CustomPropTypes.project.isRequired,
   history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -54,7 +57,20 @@ const propTypes = {
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   clearProjectSummary: PropTypes.func.isRequired,
+  createProjectSummary: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  touch: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  anyTouched: PropTypes.bool,
+  formErrors: PropTypes.objectOf(PropTypes.string),
+  projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+};
+
+const defaultProps = {
+  formErrors: {},
+  anyTouched: false,
 };
 
 export class ProjectSummary extends Component {
@@ -110,43 +126,42 @@ export class ProjectSummary extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        return this.handleCreate(values);
+        return this.handleCreate({ status_code: "SUB", ...values });
       }
       return this.handleUpdate(values);
     }
+    return null;
   };
 
   handleTransformPayload = (values) => {
     let payloadValues = {};
     const updatedAuthorizations = [];
     // eslint-disable-next-line array-callback-return
-    if (values) {
-      Object.keys(values)?.map((key) => {
-        // Pull out form properties from request object that match known authorization types
-        if (values[key] && this.props.projectSummaryAuthorizationTypesArray.includes(key)) {
-          const project_summary_guid = values?.project_summary_guid;
-          const authorization = values?.authorizations?.find(
-            (auth) => auth?.project_summary_authorization_type === key
-          );
-          updatedAuthorizations.push({
-            ...values[key],
-            // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
-            // ... otherwise treat it as a new one which won't have those two properties yet.
-            ...(project_summary_guid && { project_summary_guid }),
-            ...(authorization && {
-              project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
-            }),
-            project_summary_authorization_type: key,
-            project_summary_permit_type:
-              key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
-            existing_permits_authorizations:
-              values[key]?.existing_permits_authorizations?.split(",") || [],
-          });
-          // eslint-disable-next-line no-param-reassign
-          delete values[key];
-        }
-      });
-    }
+    Object.keys(values).map((key) => {
+      // Pull out form properties from request object that match known authorization types
+      if (values[key] && this.props.projectSummaryAuthorizationTypesArray?.includes(key)) {
+        const project_summary_guid = values?.project_summary_guid;
+        const authorization = values?.authorizations?.find(
+          (auth) => auth?.project_summary_authorization_type === key
+        );
+        updatedAuthorizations.push({
+          ...values[key],
+          // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
+          // ... otherwise treat it as a new one which won't have those two properties yet.
+          ...(project_summary_guid && { project_summary_guid }),
+          ...(authorization && {
+            project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
+          }),
+          project_summary_authorization_type: key,
+          project_summary_permit_type:
+            key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
+          existing_permits_authorizations:
+            values[key]?.existing_permits_authorizations?.split(",") || [],
+        });
+        // eslint-disable-next-line no-param-reassign
+        delete values[key];
+      }
+    });
 
     payloadValues = {
       ...values,
@@ -163,10 +178,9 @@ export class ProjectSummary extends Component {
       .createProjectSummary(
         {
           mineGuid,
-          ...values,
-          status_code: "SUB",
-        }
-        // this.handleTransformPayload()
+        },
+        this.handleTransformPayload(values),
+        "Successfully submitted a project description to the Province of British Columbia."
       )
       .then(({ data: { project_guid, project_summary_guid } }) => {
         this.props.history.replace(
@@ -210,106 +224,127 @@ export class ProjectSummary extends Component {
       return <NullScreen type="generic" />;
     }
     return (
-      <div className="page">
-        <div
-          className={
-            this.state.fixedTop
-              ? "padding-lg view--header fixed-scroll"
-              : " padding-lg view--header"
-          }
-        >
-          <h1>
-            {this.props.formattedProjectSummary.project_summary_title}
-            <span className="padding-sm--left">
-              <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={routes.MINE_GENERAL.dynamicRoute(
-                    this.props.formattedProjectSummary.mine_guid
-                  )}
-                  disabled={!this.props.formattedProjectSummary.mine_guid}
-                >
-                  <EnvironmentOutlined className="padding-sm--right" />
-                  {this.props.formattedProjectSummary.mine_name}
-                </Link>
-              </Tag>
-            </span>
-          </h1>
-          <Link to={routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)}>
-            <ArrowLeftOutlined className="padding-sm--right" />
-            Back to: {this.props.formattedProjectSummary.mine_name} Project overview
-          </Link>
-        </div>
-        <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
-          <ScrollSideMenu
-            menuOptions={[
-              { href: "project-details", title: "Project details" },
-              { href: "authorizations-involved", title: "Authorizations Involved" },
-              { href: "project-dates", title: "Project dates" },
-              { href: "project-contacts", title: "Project contacts" },
-              { href: "documents", title: "Documents" },
-            ]}
-            featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
-            featureUrlRouteArguments={[
-              this.props.match?.params?.mineGuid,
-              this.props.match?.params?.projectSummaryGuid,
-            ]}
+      (this.state.isLoaded && (
+        <>
+          <Prompt
+            when={this.props.anyTouched}
+            message={(location, action) => {
+              if (action === "REPLACE") {
+                this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
+              }
+              return this.props.location.pathname !== location.pathname &&
+                !location.pathname.includes("project-description") &&
+                this.props.anyTouched
+                ? "You have unsaved changes. Are you sure you want to leave without saving?"
+                : true;
+            }}
           />
-        </div>
-        <Tabs
-          size="large"
-          activeKey={this.state.activeTab}
-          animated={{ inkBar: true, tabPane: false }}
-          className="now-tabs"
-          style={{ margin: "0" }}
-          centered
-        >
-          <Tabs.TabPane tab="Project Descriptions" key="project-descriptions">
-            <LoadingWrapper condition={this.state.isLoaded}>
-              <div
-                className={
-                  this.state.fixedTop
-                    ? "side-menu--content with-fixed-top top-125"
-                    : "side-menu--content"
-                }
+          <div className="page">
+            <div
+              className={
+                this.state.fixedTop
+                  ? "padding-lg view--header fixed-scroll"
+                  : " padding-lg view--header"
+              }
+            >
+              <h1>
+                {this.props.formattedProjectSummary.project_summary_title}
+                <span className="padding-sm--left">
+                  <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={routes.MINE_GENERAL.dynamicRoute(
+                        this.props.formattedProjectSummary.mine_guid
+                      )}
+                      disabled={!this.props.formattedProjectSummary.mine_guid}
+                    >
+                      <EnvironmentOutlined className="padding-sm--right" />
+                      {this.props.formattedProjectSummary.mine_name}
+                    </Link>
+                  </Tag>
+                </span>
+              </h1>
+              <Link
+                to={routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)}
               >
-                <ProjectSummaryForm
-                  {...this.props}
-                  projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
-                  isEditMode={this.state.isEditMode}
-                  initialValues={
-                    this.state.isEditMode
-                      ? {
-                          ...this.props.formattedProjectSummary,
-                          mrc_review_required: this.props.project.mrc_review_required,
-                        }
-                      : {
-                          contacts: [
-                            {
-                              is_primary: true,
-                              name: null,
-                              job_title: null,
-                              company_name: null,
-                              email: null,
-                              phone_number: null,
-                              phone_extension: null,
-                            },
-                          ],
-                        }
-                  }
-                  onSubmit={this.handleSaveData}
-                  removeDocument={this.handleRemoveDocument}
-                />
-              </div>
-            </LoadingWrapper>
-          </Tabs.TabPane>
-        </Tabs>
-      </div>
+                <ArrowLeftOutlined className="padding-sm--right" />
+                Back to: {this.props.formattedProjectSummary.mine_name} Project overview
+              </Link>
+            </div>
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
+              <ScrollSideMenu
+                menuOptions={[
+                  { href: "project-details", title: "Project details" },
+                  { href: "authorizations-involved", title: "Authorizations Involved" },
+                  { href: "project-dates", title: "Project dates" },
+                  { href: "project-contacts", title: "Project contacts" },
+                  { href: "document-details", title: "Documents" },
+                ]}
+                featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
+                featureUrlRouteArguments={[
+                  this.props.match?.params?.mineGuid,
+                  this.props.match?.params?.projectSummaryGuid,
+                ]}
+              />
+            </div>
+            <Tabs
+              size="large"
+              activeKey={this.state.activeTab}
+              animated={{ inkBar: true, tabPane: false }}
+              className="now-tabs"
+              style={{ margin: "0" }}
+              centered
+            >
+              <Tabs.TabPane tab="Project Descriptions" key="project-descriptions">
+                <LoadingWrapper condition={this.state.isLoaded}>
+                  <div
+                    className={
+                      this.state.fixedTop
+                        ? "side-menu--content with-fixed-top top-125"
+                        : "side-menu--content"
+                    }
+                  >
+                    <ProjectSummaryForm
+                      {...this.props}
+                      projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
+                      isEditMode={this.state.isEditMode}
+                      initialValues={
+                        this.state.isEditMode
+                          ? {
+                              ...this.props.formattedProjectSummary,
+                              mrc_review_required: this.props.project.mrc_review_required,
+                            }
+                          : {
+                              contacts: [
+                                {
+                                  is_primary: true,
+                                  name: null,
+                                  job_title: null,
+                                  company_name: null,
+                                  email: null,
+                                  phone_number: null,
+                                  phone_extension: null,
+                                },
+                              ],
+                              documents: [],
+                            }
+                      }
+                      onSubmit={this.handleSaveData}
+                      removeDocument={this.handleRemoveDocument}
+                    />
+                  </div>
+                </LoadingWrapper>
+              </Tabs.TabPane>
+            </Tabs>
+          </div>
+        </>
+      )) || <Loading />
     );
   }
 }
 
 ProjectSummary.propTypes = propTypes;
+ProjectSummary.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
@@ -317,8 +352,11 @@ const mapStateToProps = (state) => {
     formattedProjectSummary: getFormattedProjectSummary(state),
     project: getProject(state),
     formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+    anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
+    fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
+    projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
     projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
       state
     ),

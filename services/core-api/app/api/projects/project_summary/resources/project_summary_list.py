@@ -86,6 +86,12 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
+        'project_summary_lead_party_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
         'expected_draft_irt_submission_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
@@ -129,7 +135,8 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         new_project = Project.create(mine, data.get('project_summary_title'),
                                      data.get('proponent_project_id'),
                                      data.get('mrc_review_required', False),
-                                     data.get('contacts', []))
+                                     data.get('contacts', []),
+                                     data.get('project_summary_lead_party_guid'))
 
         current_app.logger.debug(f'new project: {new_project}')
 

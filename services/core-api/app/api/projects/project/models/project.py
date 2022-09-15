@@ -75,6 +75,7 @@ class Project(AuditMixin, Base):
                proponent_project_id,
                mrc_review_required,
                contacts=[],
+               project_lead = None,
                add_to_session=True):
         project = cls(
             project_title=project_title,
@@ -85,6 +86,11 @@ class Project(AuditMixin, Base):
         mine.projects.append(project)
         if add_to_session:
             project.save(commit=True)
+
+        if project_lead:
+            lead = Party.find_by_party_guid(project_lead)
+            if lead:
+                project.project_lead= lead
 
         # Create contacts.
         for contact in contacts:

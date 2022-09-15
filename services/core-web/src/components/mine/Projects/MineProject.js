@@ -8,6 +8,8 @@ import { fetchProjectsByMine } from "@common/actionCreators/projectActionCreator
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { getProjectSummaryStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import { getProjects } from "@common/selectors/projectSelectors";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import MineProjectTable from "./MineProjectTable";
 import * as routes from "@/constants/routes";
@@ -35,13 +37,19 @@ export class MineProject extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
-        <div>
-          <h2>Major Projects List</h2>
-          <br />
-          <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.props.mineGuid)}>
-            <Button type="primary">Create New Project</Button>
-          </Link>
+        <div className="inline-flex between">
+          <div>
+            <h2>Major Projects</h2>
+          </div>
+          <div>
+            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+              <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.props.mineGuid)}>
+                <Button type="primary">Create New Project</Button>
+              </Link>
+            </AuthorizationWrapper>
+          </div>
         </div>
+        <br />
         <div>
           <MineProjectTable
             isLoaded={this.state.isLoaded}
