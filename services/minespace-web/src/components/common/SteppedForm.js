@@ -40,7 +40,6 @@ const SteppedForm = (props) => {
 
   const handleTabClick = (tab) => {
     if (tabIndex !== tabs.indexOf(tab)) {
-      handleTabChange(tab);
       setTabIndex(indexOf(tabs, tab));
       handleTabChange(tab);
     }
