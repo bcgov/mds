@@ -130,7 +130,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             <b>
               Does your project require a coordinated review by a Mine Review Committee, under Section 9 of the Mines Act?
             </b>
-             
+            <br />
             This response will be reviewed by the Major Mines Office and confirmed by the Chief Permitting Officer.
           </p>
         </React.Fragment>
@@ -289,6 +289,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     id="document-details"
   >
     <ProjectSummaryDocumentUpload
+      canRemoveDocuments={false}
       formErrors={Object {}}
       formValues={
         Object {
