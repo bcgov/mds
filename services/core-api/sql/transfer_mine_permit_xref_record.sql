@@ -141,7 +141,7 @@ $$ LANGUAGE PLPGSQL;
 
 -- Call the function.
 -- NOTE: Manually check/add the records to transfer here before running this script.
-SELECT transfer_mine_permit_xref('MX-4-471', '1620643', '1630768');
+-- SELECT transfer_mine_permit_xref('MX-2-16', '0200115', '0200198');
 
 -- Drop the function.
 DROP FUNCTION transfer_mine_permit_xref(varchar, varchar, varchar);
