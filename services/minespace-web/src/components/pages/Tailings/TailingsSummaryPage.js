@@ -103,13 +103,21 @@ export const TailingsSummaryPage = (props) => {
     //     end_date: formValues.engineer_of_record.end_date,
     //   });
     // }
-    if (errors.length === 0) {
-      if (tsfGuid) {
-        props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
-      } else {
-        const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
-        setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
+    try {
+      if (errors.length === 0) {
+        if (tsfGuid) {
+          props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+        } else {
+          const newTsf = await props.createTailingsStorageFacility(
+            match.params.mineGuid,
+            formValues
+          );
+          setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
+        }
       }
+      setIsSaving(false);
+    } catch (error) {
+      setIsSaving(false);
     }
     setIsSaving(false);
   };
