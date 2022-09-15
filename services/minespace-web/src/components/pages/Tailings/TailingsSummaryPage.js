@@ -15,6 +15,7 @@ import {
 import { getTsf } from "@common/selectors/tailingsSelectors";
 import { storeTsf } from "@common/actions/tailingsActions";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {
@@ -29,7 +30,6 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import Step from "@/components/common/Step";
 import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   createTailingsStorageFacility,
   updateTailingsStorageFacility,
@@ -66,6 +66,7 @@ export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [tsfGuid, setTsfGuid] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleFetchData = async () => {
     const { tailingsStorageFacilityGuid } = match?.params;
@@ -86,6 +87,7 @@ export const TailingsSummaryPage = (props) => {
   }, []);
 
   const handleSaveData = async (e) => {
+    setIsSaving(true);
     e.preventDefault();
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
@@ -109,6 +111,7 @@ export const TailingsSummaryPage = (props) => {
         setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
       }
     }
+    setIsSaving(false);
   };
 
   const handleTabChange = async (newActiveTab) => {
@@ -157,6 +160,7 @@ export const TailingsSummaryPage = (props) => {
           handleSaveDraft={handleSaveData}
           errors={errors}
           activeTab={match.params.tab}
+          saving={isSaving}
         >
           <Step key="basic-information">
             <BasicInformation />

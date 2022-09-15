@@ -60,6 +60,7 @@ exports[`SteppedForm renders properly 1`] = `
           <Button
             block={false}
             className="full-mobile draft-button"
+            disabled={false}
             ghost={false}
             htmlType="button"
             loading={false}
