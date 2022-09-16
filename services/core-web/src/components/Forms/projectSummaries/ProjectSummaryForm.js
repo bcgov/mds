@@ -38,7 +38,10 @@ import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import { normalizePhone, flattenObject } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
 
@@ -46,7 +49,7 @@ const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  handleSaveData: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -229,6 +232,8 @@ const renderNestedFields = (code, props) => {
 };
 
 export const ProjectSummaryForm = (props) => {
+  const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
+  const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
   const [checked, setChecked] = useState(
     props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
@@ -256,7 +261,7 @@ export const ProjectSummaryForm = (props) => {
         <br />
         <Typography.Title level={3}>Project details</Typography.Title>
         {props.initialValues?.status_code && (
-          <Row gutter={16}>
+          <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
             <Col lg={12} md={24}>
               <Form.Item>
                 <Field
@@ -265,10 +270,40 @@ export const ProjectSummaryForm = (props) => {
                   label="Project Stage"
                   component={renderConfig.SELECT}
                   data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
-                  disabled={!props.isEditMode}
+                  disabled={!isEditingStatus}
                 />
               </Form.Item>
             </Col>
+            <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+              <Col lg={24} md={24} className="padding-sm--bottom">
+                {!isEditingStatus ? (
+                  <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
+                    <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
+                    &nbsp; Edit
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      type="secondary"
+                      loading={props.submitting}
+                      onClick={() => setIsEditingStatus(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="primary"
+                      loading={props.submitting}
+                      onClick={(e) => {
+                        props.handleSaveData(e, "Successfully updated the project stage.");
+                        setIsEditingStatus(false);
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </>
+                )}
+              </Col>
+            </AuthorizationWrapper>
           </Row>
         )}
         <Row gutter={16}>
@@ -397,7 +432,7 @@ export const ProjectSummaryForm = (props) => {
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
         <h3>EMLI contacts</h3>
-        <Row gutter={16}>
+        <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
@@ -406,9 +441,40 @@ export const ProjectSummaryForm = (props) => {
                 label={<p className="bold">Project Lead</p>}
                 component={renderConfig.SELECT}
                 data={projectLeadData}
+                disabled={!isEditingProjectLead}
               />
             </Form.Item>
           </Col>
+          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
+            <Col lg={24} md={24} className="padding-sm--bottom">
+              {!isEditingProjectLead ? (
+                <Button type="secondary" onClick={() => setIsEditingProjectLead(true)}>
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
+                  &nbsp; Edit
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="secondary"
+                    loading={props.submitting}
+                    onClick={() => setIsEditingProjectLead(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={props.submitting}
+                    onClick={(e) => {
+                      props.handleSaveData(e, "Successfully updated the project lead.");
+                      setIsEditingProjectLead(false);
+                    }}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </Col>
+          </AuthorizationWrapper>
         </Row>
         <h3>Proponent contacts</h3>
         <>
@@ -493,7 +559,15 @@ export const ProjectSummaryForm = (props) => {
   const errors = Object.keys(flattenObject(props.formErrors));
   const disabledButton = errors.length > 0;
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form
+      layout="vertical"
+      onSubmit={(e) => {
+        props.handleSaveData(
+          e,
+          "Successfully submitted a project description to the Province of British Columbia."
+        );
+      }}
+    >
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -504,16 +578,18 @@ export const ProjectSummaryForm = (props) => {
       <br />
       {renderDocuments()}
       <div className="right center-mobile">
-        <Button
-          id="project-summary-submit"
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          loading={props.submitting}
-          disabled={props.submitting || disabledButton}
-        >
-          Create
-        </Button>
+        {!props.isEditMode && (
+          <Button
+            id="project-summary-submit"
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+            disabled={props.submitting || disabledButton}
+          >
+            Create
+          </Button>
+        )}
       </div>
     </Form>
   );

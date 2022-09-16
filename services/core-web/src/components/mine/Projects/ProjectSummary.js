@@ -120,15 +120,16 @@ export class ProjectSummary extends Component {
     });
   };
 
-  handleSaveData = (values) => {
+  handleSaveData = (e, message) => {
+    e.preventDefault();
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       if (!this.state.isEditMode) {
-        return this.handleCreate({ status_code: "SUB", ...values });
+        return this.handleCreate(message);
       }
-      return this.handleUpdate(values);
+      return this.handleUpdate(message);
     }
     return null;
   };
@@ -172,15 +173,15 @@ export class ProjectSummary extends Component {
     return payloadValues;
   };
 
-  handleCreate = (values) => {
+  handleCreate = (message) => {
     const mineGuid = this.props.match?.params?.mineGuid;
     this.props
       .createProjectSummary(
         {
           mineGuid,
         },
-        this.handleTransformPayload(values),
-        "Successfully submitted a project description to the Province of British Columbia."
+        this.handleTransformPayload({ status_code: "SUB", ...this.props.formValues }),
+        message
       )
       .then(({ data: { project_guid, project_summary_guid } }) => {
         this.props.history.replace(
@@ -190,16 +191,13 @@ export class ProjectSummary extends Component {
   };
 
   handleUpdate = (message) => {
-    const mineGuid = this.props.match?.params?.mineGuid;
+    const mineGuid = this.props.project.mine_guid;
     const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
     const projectGuid = this.props.formValues.project_guid;
     this.props
       .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
         return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
-      })
-      .then(() => {
-        this.handleFetchData();
       });
   };
 
@@ -329,7 +327,7 @@ export class ProjectSummary extends Component {
                               documents: [],
                             }
                       }
-                      onSubmit={this.handleSaveData}
+                      handleSaveData={this.handleSaveData}
                       removeDocument={this.handleRemoveDocument}
                     />
                   </div>
