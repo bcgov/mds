@@ -211,12 +211,6 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'mrc_review_required': 'Project',
             'name': 'ProjectContact',
             'mine_name': 'Mine',
-            'status_code':'ProjectSummary',
-            'status_code':'InformationRequirementsTable',
-            'status_code': 'MajorMineApplication',
-            'update_timestamp': 'ProjectSummary',
-            'update_timestamp': 'InformationRequirementsTable',
-            'update_timestamp': 'MajorMineApplication'
         }
 
         sort_model = sort_models.get(args['sort_field'])
