@@ -93,6 +93,7 @@ class NOWApplicationDelayResource(Resource, UserMixin):
     def put(self, now_application_guid, now_application_delay_guid):
         data = request.json
 
+        # function to revert the now status to what it was before the delay was started.
         def change_now_status(now_app_guid):
             now_app = NOWApplicationIdentity.find_by_guid(now_app_guid)
             if not now_app:
@@ -119,10 +120,13 @@ class NOWApplicationDelayResource(Resource, UserMixin):
                 if end_date < start_date:
                     raise BadRequest("The end date must be after the start date.")
                 if now_delay.end_date is None:
+                    # if the now_delay.end_date is none than that means we are closing the delay for the first time and the
+                    # NoW status needs to revert.
                     change_now_status(now_application_guid)
                 now_delay.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
         else:
             now_delay.end_date = datetime.now(tz=timezone.utc)
+            # Here we are closing it since we passed the edit check above.
             change_now_status(now_application_guid)
         now_delay.save()
 
