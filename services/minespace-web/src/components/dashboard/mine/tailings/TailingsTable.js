@@ -34,6 +34,8 @@ export const TailingsTable = (props) => {
       title: "Name",
       dataIndex: "mine_tailings_storage_facility_name",
       render: (text) => <div title="Name">{text}</div>,
+      sorter: (a, b) =>
+        a.mine_tailings_storage_facility_name > b.mine_tailings_storage_facility_name ? -1 : 1,
     },
     {
       title: "Operating Status",
@@ -43,6 +45,7 @@ export const TailingsTable = (props) => {
           {props.TSFOperatingStatusCodeHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
+      sorter: (a, b) => (a.tsf_operating_status_code > b.tsf_operating_status_code ? -1 : 1),
     },
     {
       title: "Consequence Classification",
@@ -52,6 +55,10 @@ export const TailingsTable = (props) => {
           {props.consequenceClassificationStatusCodeHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
+      sorter: (a, b) =>
+        a.consequence_classification_status_code > b.consequence_classification_status_code
+          ? -1
+          : 1,
     },
     {
       title: "Has Independent Tailings Review Board",
@@ -61,6 +68,7 @@ export const TailingsTable = (props) => {
           {props.itrmExemptionStatusCodeHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
+      sorter: (a, b) => (a.itrb_exemption_status_code > b.itrb_exemption_status_code ? -1 : 1),
     },
     {
       title: "Engineer of Record",
@@ -68,21 +76,25 @@ export const TailingsTable = (props) => {
       render: (text) => (
         <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>
       ),
+      sorter: (a, b) => (a.engineer_of_record > b.engineer_of_record ? -1 : 1),
     },
     {
       title: "Latitude",
       dataIndex: "latitude",
       render: (text) => <div title="Latitude">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: (a, b) => (a.latitude > b.latitude ? -1 : 1),
     },
     {
       title: "Longitude",
       dataIndex: "longitude",
       render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: (a, b) => (a.longitude > b.longitude ? -1 : 1),
     },
     {
       title: "Notes",
       dataIndex: "notes",
       render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
     {
       title: "",

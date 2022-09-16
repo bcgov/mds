@@ -15,25 +15,16 @@ const propTypes = {
   handleSaveData: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  saving: PropTypes.bool,
 };
 
 const defaultProps = {
   handleSaveDraft: undefined,
   handleSaveData: undefined,
-  saving: false,
 };
 
 const SteppedForm = (props) => {
-  const {
-    children,
-    handleTabChange,
-    activeTab,
-    handleSaveDraft,
-    // eslint-disable-next-line no-unused-vars
-    handleSaveData,
-    saving: isSaving,
-  } = props;
+  // eslint-disable-next-line no-unused-vars
+  const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData } = props;
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
 
@@ -49,7 +40,6 @@ const SteppedForm = (props) => {
 
   const handleTabClick = (tab) => {
     if (tabIndex !== tabs.indexOf(tab)) {
-      handleTabChange(tab);
       setTabIndex(indexOf(tabs, tab));
       handleTabChange(tab);
     }
@@ -84,11 +74,7 @@ const SteppedForm = (props) => {
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst ? "end" : "space-between"}>
               {!isFirst && (
-                <Button
-                  disabled={isSaving}
-                  type="primary"
-                  onClick={() => handleTabClick(tabs[tabIndex - 1])}
-                >
+                <Button type="primary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
                   <LeftOutlined /> Back
                 </Button>
               )}
@@ -97,7 +83,6 @@ const SteppedForm = (props) => {
                 <div>
                   {handleSaveDraft && (
                     <Button
-                      disabled={isSaving}
                       type="text"
                       className="full-mobile draft-button"
                       onClick={handleSaveDraft}
@@ -108,7 +93,7 @@ const SteppedForm = (props) => {
                   )}
                   <Button
                     type="secondary"
-                    disabled={props.errors.length > 0 || isSaving}
+                    disabled={props.errors.length > 0}
                     onClick={() => handleTabClick(tabs[tabIndex + 1], false)}
                   >
                     Next <RightOutlined />
