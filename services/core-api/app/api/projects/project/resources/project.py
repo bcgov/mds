@@ -106,7 +106,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
     def get(self):
         args = {
             "page_number":request.args.get('page', PAGE_DEFAULT, type=int),
-            "sort_field": request.args.get('sort_field', 'proponent_project_id', type=str),
+            "sort_field": request.args.get('sort_field', 'project_id', type=str),
             "sort_dir": request.args.get('sort_dir', 'asc', type=str),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "search_terms":request.args.get('search', type=str),
@@ -124,7 +124,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
         most_recent_projects=list()
         for project in projects:
             all_stages = list()
-            if project.project_summary.project_summary_id:
+            if project.project_summary and project.project_summary.project_summary_id:
                 all_stages.append({'key': 'Project Summary', 'update_timestamp': project.project_summary.update_timestamp})
             if project.information_requirements_table and project.information_requirements_table.irt_id:
                 all_stages.append({'key': 'IRT', 'update_timestamp': project.information_requirements_table.update_timestamp})
@@ -133,55 +133,53 @@ class ProjectListDashboardResource(Resource, UserMixin):
 
             all_stages.sort(key = lambda x:x['update_timestamp'], reverse=True)
 
-            id = guid = status_code = stage = None
-            stage = all_stages[0]['key']
-            update_timestamp = all_stages[0]['update_timestamp']
+            id = guid = status_code = stage = record = None
+            if all_stages:
+                stage = all_stages[0]['key']
+                update_timestamp = all_stages[0]['update_timestamp']
 
-            if stage == 'Project Summary':
-                id= project.project_summary.project_summary_id
-                guid= project.project_summary.project_summary_guid
-                status_code = project.project_summary.status_code
-            elif stage == 'IRT':
-                id = project.information_requirements_table.irt_id
-                guid = project.information_requirements_table.irt_guid
-                status_code = project.information_requirements_table.status_code
-            else:
-                id = project.major_mine_application.major_mine_application_id
-                guid = project.major_mine_application.major_mine_application_guid
-                status_code = project.major_mine_application.status_code
+                if stage == 'Project Summary':
+                    id= project.project_summary.project_summary_id
+                    guid= project.project_summary.project_summary_guid
+                    status_code = project.project_summary.status_code
+                elif stage == 'IRT':
+                    id = project.information_requirements_table.irt_id
+                    guid = project.information_requirements_table.irt_guid
+                    status_code = project.information_requirements_table.status_code
+                else:
+                    id = project.major_mine_application.major_mine_application_id
+                    guid = project.major_mine_application.major_mine_application_guid
+                    status_code = project.major_mine_application.status_code
 
-            status_code_filter_pass = update_timestamp_filter_pass = False
+                status_code_filter_pass = update_timestamp_filter_pass = False
 
-            if args['status_code'] and status_code in args['status_code'] or args['status_code'] is None:
-                status_code_filter_pass = True
+                if args['status_code'] and status_code in args['status_code'] or args['status_code'] is None:
+                    status_code_filter_pass = True
 
-            update_timestamp_args = args['update_timestamp']
+                update_timestamp_args = args['update_timestamp']
 
-            if args['update_timestamp']:
-                update_timestamp_args = datetime.strptime(args['update_timestamp'], "%Y-%m-%d")
-                update_timestamp_filter = update_timestamp_args.replace(tzinfo = pytz.UTC)
-                update_timestamp = update_timestamp_filter.replace(tzinfo = pytz.UTC)
-
-                if update_timestamp_filter >= update_timestamp :
+                if args['update_timestamp']:
+                    update_timestamp_args = datetime.strptime(args['update_timestamp'], "%Y-%m-%d").date()
+                    if update_timestamp.replace(tzinfo=None).date() >= update_timestamp_args:
+                        update_timestamp_filter_pass = True
+                else:
                     update_timestamp_filter_pass = True
-            else:
-                update_timestamp_filter_pass = True
 
-            record=None
-            if status_code_filter_pass and update_timestamp_filter_pass:
-                record ={
-                    'stage': stage,
-                    'id':id,
-                    'guid': guid,
-                    'project_title': project.project_title,
-                    'project_id': project.project_id,
-                    'project_guid': project.project_guid,
-                    'mrc_review_required': project.mrc_review_required,
-                    'status_code': status_code,
-                    'contacts': project.contacts,
-                    'update_timestamp': update_timestamp,
-                    'mine': project.mine
-                }
+
+                if status_code_filter_pass and update_timestamp_filter_pass:
+                    record ={
+                        'stage': stage,
+                        'id':id,
+                        'guid': guid,
+                        'project_title': project.project_title,
+                        'project_id': project.project_id,
+                        'project_guid': project.project_guid,
+                        'mrc_review_required': project.mrc_review_required,
+                        'status_code': status_code,
+                        'contacts': project.contacts,
+                        'update_timestamp': update_timestamp,
+                        'mine': project.mine
+                    }
 
             if record:
                 most_recent_projects.append(record)
@@ -213,7 +211,6 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'mrc_review_required': 'Project',
             'name': 'ProjectContact',
             'mine_name': 'Mine',
-            'mine_commodity_code': 'MineCommodityCode',
             'status_code':'ProjectSummary',
             'status_code':'InformationRequirementsTable',
             'status_code': 'MajorMineApplication',
@@ -290,6 +287,6 @@ class ProjectListDashboardResource(Resource, UserMixin):
         # Apply sorting
         if sort_model and args['sort_field'] and args['sort_dir']:
             sort_criteria = [{'model': sort_model, 'field': args['sort_field'], 'direction': args['sort_dir']}]
-            projects_query = apply_sort(query, sort_criteria)
+            projects_query = apply_sort(projects_query, sort_criteria)
 
         return  apply_pagination(projects_query, args["page_number"], args["page_size"])

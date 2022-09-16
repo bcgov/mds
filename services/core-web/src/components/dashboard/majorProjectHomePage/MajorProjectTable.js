@@ -38,7 +38,7 @@ const transformRowData = (projects, mineCommodityHash) =>
     project_stage: project.stage,
     status_code: project.status_code,
     guid: project.guid,
-    contact: project.contacts
+    name: project.contacts
       .filter((contact) => contact.is_primary)
       .map((contact) => contact.name)[0],
     commodity:
@@ -151,11 +151,11 @@ export const MajorProjectTable = (props) => {
       ),
     },
     {
-      key: "contact",
+      key: "name",
       title: "Primary Contact",
-      dataIndex: "contact",
-      sortField: "contact",
-      sorter: false,
+      dataIndex: "name",
+      sortField: "name",
+      sorter: true,
       render: (text) => <div title="Primary Contact">{text}</div>,
     },
     {
