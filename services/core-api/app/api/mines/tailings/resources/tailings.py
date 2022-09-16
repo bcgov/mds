@@ -3,16 +3,16 @@ from datetime import datetime, timezone
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
-from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_edit
+from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, TailingsStorageFacilityType, \
+    FacilityType, StorageLocation
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.response_models import MINE_TSF_MODEL
 
-from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.access_decorators import requires_any_of, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
 
 class MineTailingsStorageFacilityResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -59,6 +59,33 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         help='Any additional notes to be added to the tailing.',
         trim=True,
         location='json')
+    parser.add_argument(
+        'storage_location',
+        type=StorageLocation,
+        help='Storage location of the tailings (above or below ground)',
+        location='json',
+        choices=list(StorageLocation),
+        store_missing=False)
+    parser.add_argument(
+        'facility_type',
+        type=FacilityType,
+        help='Type of facility.',
+        location='json',
+        choices=list(FacilityType),
+        store_missing=False)
+    parser.add_argument(
+        'tailings_storage_facility_type',
+        type=TailingsStorageFacilityType,
+        help='Type of tailings storage facility.',
+        location='json',
+        choices=list(TailingsStorageFacilityType),
+        store_missing=False)
+    parser.add_argument(
+        'mines_act_permit_no',
+        type=str,
+        help='Mines Act Permit Number',
+        location='json',
+        store_missing=False)
 
     @api.doc(description='Updates an existing tailing storage facility for the given mine')
     @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF])
