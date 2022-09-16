@@ -15,6 +15,7 @@ import {
 import { getTsf } from "@common/selectors/tailingsSelectors";
 import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {
@@ -29,7 +30,6 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import Step from "@/components/common/Step";
 import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
@@ -126,7 +126,7 @@ export const TailingsSummaryPage = (props) => {
           EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
             newTsf.data.mine_tailings_storage_facility_guid,
             match.params.mineGuid,
-            newActiveTab || "engineer-of-record"
+            newActiveTab || "basic-information"
           )
         );
         setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
