@@ -64,8 +64,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(Permit.create_timestamp)',
         lazy='select',
         secondary='mine_permit_xref',
-        secondaryjoin=
-        'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)'
     )
 
     # across all permit_identities
@@ -75,15 +74,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineType',
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
-        primaryjoin=
-        'and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
+        primaryjoin='and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
         lazy='selectin')
 
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
-        primaryjoin=
-        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
+        primaryjoin='and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
@@ -92,8 +89,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineIncident',
         backref='mine',
         lazy='select',
-        primaryjoin=
-        'and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
+        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
 
     mine_reports = db.relationship('MineReport', lazy='select')
 
@@ -101,8 +97,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'ExplosivesPermit',
         backref='mine',
         lazy='select',
-        primaryjoin=
-        'and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
+        primaryjoin='and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
 
     projects = db.relationship(
         'Project',
@@ -114,15 +109,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
-        primaryjoin=
-        'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
+        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
     )
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin=
-        'and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
+        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
