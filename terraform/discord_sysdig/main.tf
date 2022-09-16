@@ -31,11 +31,9 @@ provider "aws" {
 
 // Configure the Sysdig provider
 provider "sysdig" {
-  sysdig_monitor_api_token = "bf6d235d-02ed-4638-960b-86d594a8f007"
+  sysdig_monitor_api_token = var.sysdig_monitor_api_token
   sysdig_monitor_insecure_tls = true
-  extra_headers = {
-    "Authorization": "Bearer bf6d235d-02ed-4638-960b-86d594a8f007"
-  }
+
 }
 
 resource "sysdig_monitor_notification_channel_webhook" "discord_webhook" {
