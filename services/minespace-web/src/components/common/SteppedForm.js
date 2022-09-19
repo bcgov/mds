@@ -45,6 +45,12 @@ const SteppedForm = (props) => {
     }
   };
 
+  const handleNextClick = (evt, tab) => {
+    evt.preventDefault();
+    handleSaveData(null, tab);
+    handleTabClick(tab);
+  };
+
   const isFirst = tabIndex === 0;
   const isLast = tabs.length - 1 === tabIndex;
 
@@ -94,7 +100,7 @@ const SteppedForm = (props) => {
                   <Button
                     type="secondary"
                     disabled={props.errors.length > 0}
-                    onClick={() => handleTabClick(tabs[tabIndex + 1], false)}
+                    onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
                     Next <RightOutlined />
                   </Button>

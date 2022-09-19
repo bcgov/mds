@@ -79,6 +79,11 @@ class PartyListResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
+    parser.add_argument(
+        'job_title',
+        type=str,
+        store_missing=False,
+        help='The job title of the party. Ex "Chief of Inspections"')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -158,6 +163,7 @@ class PartyListResource(Resource, UserMixin):
             phone_no_ter=data.get('phone_no_ter'),
             phone_ter_ext=data.get('phone_ter_ext'),
             email_sec=data.get('email_sec'),
+            job_title=data.get('job_title'),
             add_to_session=True)
 
         if not party:

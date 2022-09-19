@@ -29,7 +29,7 @@ import * as Permission from "@/constants/permissions";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import Step from "@/components/common/Step";
-import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
@@ -37,7 +37,8 @@ import {
 } from "../../../../common/actionCreators/mineActionCreator";
 
 const propTypes = {
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  mines: PropTypes.object.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
@@ -47,12 +48,13 @@ const propTypes = {
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   submit: PropTypes.func.isRequired,
-  formErrors: PropTypes.objectOf(PropTypes.string),
+  // eslint-disable-next-line react/forbid-prop-types
+  formErrors: PropTypes.object,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   updateTailingsStorageFacility: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
-  // addPartyRelationship: PropTypes.func.isRequired,
+  addPartyRelationship: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   eors: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -102,20 +104,10 @@ export const TailingsSummaryPage = (props) => {
     if (e) {
       e.preventDefault();
     }
+
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
-    // TODO: implement saving of EOR
-    // if (errors.length === 0) {
-    //   props.addPartyRelationship({
-    //     mine_guid: match.params.mineGuid,
-    //     party_guid: formValues.engineer_of_record.party_guid,
-    //     mine_party_appt_type_code: "EOR",
-    //     related_guid: match.params.tailingsStorageFacilityGuid,
-    //     end_current: true,
-    //     start_date: formValues.engineer_of_record.start_date,
-    //     end_date: formValues.engineer_of_record.end_date,
-    //   });
-    // }
+
     if (errors.length === 0) {
       if (tsfGuid) {
         props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
@@ -131,16 +123,57 @@ export const TailingsSummaryPage = (props) => {
         );
         setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
       }
+
+      if (errors?.length) {
+        return;
+      }
+
+      switch (match.params.tab) {
+        case "basic-information":
+          if (tsfGuid) {
+            props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+          } else {
+            const newTsf = await props.createTailingsStorageFacility(
+              match.params.mineGuid,
+              formValues
+            );
+            await props.clearTsf();
+            history.push(
+              EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+                newTsf.data.mine_tailings_storage_facility_guid,
+                match.params.mineGuid,
+                newActiveTab || "engineer-of-record"
+              )
+            );
+            setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
+          }
+          break;
+        case "engineer-of-record":
+          props.addPartyRelationship({
+            mine_guid: match.params.mineGuid,
+            party_guid: formValues.engineer_of_record.party_guid,
+            mine_party_appt_type_code: "EOR",
+            related_guid: match.params.tailingsStorageFacilityGuid,
+            start_date: formValues.engineer_of_record.start_date,
+            end_date: formValues.engineer_of_record.end_date,
+            end_current: true,
+          });
+          break;
+        default:
+          break;
+      }
     }
   };
 
   const handleTabChange = async (newActiveTab) => {
     const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     let url;
-    if (match.params.tab === "basic-information" && !tsfGuid) {
-      // const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
-      handleSaveData(null, newActiveTab);
-    }
+
+    // handleSaveData(null, newActiveTab, tab);
+    // if (match.params.tab === "basic-information" && !tsfGuid) {
+    //   // const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
+    //   handleSaveData(null, newActiveTab);
+    // }
     if (tailingsStorageFacilityGuid) {
       url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tailingsStorageFacilityGuid,
