@@ -3,12 +3,14 @@ import {
   storeIncidents,
   storeMineIncidents,
   storeMineIncidentNotes,
+  storeMineIncident,
 } from "@common/actions/incidentActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   incidents: [],
   incidentPageData: {},
+  mineIncident: {},
   mineIncidents: [],
   mineIncidentNotes: [],
 };
@@ -42,6 +44,13 @@ describe("incidentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineIncidentNotes = Mocks.MINE_INCIDENT_NOTES.records;
     const result = incidentReducer(undefined, storeMineIncidentNotes(Mocks.MINE_INCIDENT_NOTES));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_MINE_INCIDENT", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.mineIncident = Mocks.INCIDENT;
+    const result = incidentReducer(undefined, storeMineIncident(Mocks.INCIDENT));
     expect(result).toEqual(expectedValue);
   });
 });

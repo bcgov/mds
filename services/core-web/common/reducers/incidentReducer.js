@@ -4,6 +4,7 @@ import { INCIDENTS } from "../constants/reducerTypes";
 const initialState = {
   incidents: [],
   incidentPageData: {},
+  mineIncident: {},
   mineIncidents: [],
   mineIncidentNotes: [],
 };
@@ -26,6 +27,16 @@ export const incidentReducer = (state = initialState, action) => {
         ...state,
         mineIncidentNotes: action.payload.records,
       };
+    case actionTypes.STORE_MINE_INCIDENT:
+      return {
+        ...state,
+        mineIncident: action.payload,
+      };
+    case actionTypes.CLEAR_MINE_INCIDENT:
+      return {
+        ...state,
+        mineIncident: {},
+      };
     default:
       return state;
   }
@@ -39,5 +50,6 @@ export const getIncidents = (state) => state[INCIDENTS].incidents;
 export const getIncidentPageData = (state) => state[INCIDENTS].incidentPageData;
 export const getMineIncidents = (state) => state[INCIDENTS].mineIncidents;
 export const getMineIncidentNotes = (state) => state[INCIDENTS].mineIncidentNotes;
+export const getMineIncident = (state) => state[INCIDENTS].mineIncident;
 
 export default incidentReducerObject;
