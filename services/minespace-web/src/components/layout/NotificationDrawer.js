@@ -19,7 +19,7 @@ const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
   markActivitiesAsRead: PropTypes.func.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
-  activities: PropTypes.objectOf(PropTypes.string).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   storeActivities: PropTypes.func.isRequired,
 };
 

@@ -10,7 +10,6 @@ import {
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -102,22 +101,22 @@ export const TailingsTable = (props) => {
       render: (text, record) => {
         return (
           <div title="" align="right">
-            <AuthorizationWrapper>
-              {!IN_PROD() ? (
-                <Button type="link" onClick={(event) => editTailings(event, record)}>
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              ) : (
-                <Button
-                  type="link"
-                  onClick={(event) =>
-                    props.openEditTailingsModal(event, props.handleEditTailings, record)
-                  }
-                >
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              )}
-            </AuthorizationWrapper>
+            {/* <AuthorizationWrapper> */}
+            {!IN_PROD() ? (
+              <Button type="link" onClick={(event) => editTailings(event, record)}>
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            ) : (
+              <Button
+                type="link"
+                onClick={(event) =>
+                  props.openEditTailingsModal(event, props.handleEditTailings, record)
+                }
+              >
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            )}
+            {/* </AuthorizationWrapper> */}
           </div>
         );
       },
