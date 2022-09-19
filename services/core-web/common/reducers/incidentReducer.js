@@ -4,8 +4,8 @@ import { INCIDENTS } from "../constants/reducerTypes";
 const initialState = {
   incidents: [],
   incidentPageData: {},
-  mineIncident: {},
   mineIncidents: [],
+  mineIncident: {},
   mineIncidentNotes: [],
 };
 
