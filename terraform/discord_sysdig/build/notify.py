@@ -40,6 +40,28 @@ def lambda_handler(event, context):
     
     #TODO: Format timestamp 
     
+
+    # Colour in decimal to associate with severity (0-7). Discord requires this to be decimal
+    # Refer to https://docs.sysdig.com/en/docs/sysdig-monitor/events/severity-and-status/
+    # for guide to event severity
+    
+    alert_severity_number = alert.get("severity", "default")
+
+    colours = {
+      "0": 16711680, # emergency
+      "1": 16711680, # alert
+      "2": 16744192, # critical
+      "3": 16744192, # error
+      "4": 16776960, # warning
+      "5": 16776960, # notice
+      "6": 26316, # informational
+      "7": 26316, # debug
+
+      "default": 16776960
+    }
+
+    alert_colour = colours.get(str(alert_severity_number))
+
     
     condition_scope_str = str(str(condition) + "\n for " + str(alert.get("scope", "")))
     
@@ -52,13 +74,13 @@ def lambda_handler(event, context):
             "name": "Sysdig Monitor",
             "url": "https://app.sysdigcloud.com/api/oauth/openid/bcdevops",
           },
-          "title": alert.get("name", "")[:255], # limit of 256 characters
-          "url": event_details.get("url", ""),
-          "color": 15258703,
+          "title": alert.get("name", " ")[:255], # limit of 256 characters
+          "url": event_details.get("url", " "),
+          "color": alert_colour,
           "fields": [
             {
               "name": "Severity",
-              "value": str(alert.get("severityLabel", ""))[:1023], # limit of 1024 characters
+              "value": str(alert.get("severityLabel", " "))[:1023], # limit of 1024 characters
               "inline": "true"
             },
             {
