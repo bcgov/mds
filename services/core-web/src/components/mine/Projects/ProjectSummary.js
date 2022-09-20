@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { submit, getFormValues, getFormSyncErrors, reset, touch } from "redux-form";
 import { flattenObject } from "@common/utils/helpers";
 import { Tabs, Tag } from "antd";
@@ -77,6 +78,7 @@ const defaultProps = {
 export class ProjectSummary extends Component {
   state = {
     isLoaded: false,
+    isNewProject: false,
     isEditMode: false,
     fixedTop: false,
     isValid: true,
@@ -123,6 +125,7 @@ export class ProjectSummary extends Component {
         activeTab: tab,
         mineName: mine.mine_name,
         isNewProject: true,
+        isEditMode: true,
       });
     });
   };
@@ -208,7 +211,7 @@ export class ProjectSummary extends Component {
     this.props
       .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
-        return this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
       });
   };
 
@@ -342,6 +345,7 @@ export class ProjectSummary extends Component {
                       {...this.props}
                       projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                       isNewProject={this.state.isNewProject}
+                      isEditMode={this.state.isEditMode}
                       initialValues={
                         !this.state.isNewProject
                           ? {
@@ -399,6 +403,7 @@ const mapStateToProps = (state) => {
     ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
+    onSubmit: () => {},
   };
 };
 
@@ -418,4 +423,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummary);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectSummary));

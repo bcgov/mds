@@ -102,17 +102,19 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
                     <p className="bold">Additional project contact #{index}</p>
                   </Col>
                   <Col span={12}>
-                    <Popconfirm
-                      placement="topLeft"
-                      title="Are you sure you want to remove this contact?"
-                      onConfirm={() => fields.remove(index)}
-                      okText="Remove"
-                      cancelText="Cancel"
-                    >
-                      <Button type="primary" size="small" ghost>
-                        <DeleteOutlined className="padding-sm--left icon-sm" />
-                      </Button>
-                    </Popconfirm>
+                    {!isNewProject && (
+                      <Popconfirm
+                        placement="topLeft"
+                        title="Are you sure you want to remove this contact?"
+                        onConfirm={() => fields.remove(index)}
+                        okText="Remove"
+                        cancelText="Cancel"
+                      >
+                        <Button type="primary" size="small" ghost>
+                          <DeleteOutlined className="padding-sm--left icon-sm" />
+                        </Button>
+                      </Popconfirm>
+                    )}
                   </Col>
                 </Row>
               </>
@@ -125,21 +127,21 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
                   label="Name"
                   component={renderConfig.FIELD}
                   validate={[required]}
-                  disable={!isNewProject || !isEditMode}
+                  disabled={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.job_title`}
                   id={`${field}.job_title`}
                   label="Job Title (optional)"
                   component={renderConfig.FIELD}
-                  disable={!isNewProject || !isEditMode}
+                  disabled={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.company_name`}
                   id={`${field}.company_name`}
                   label="Company name (optional)"
                   component={renderConfig.FIELD}
-                  disable={!isNewProject || !isEditMode}
+                  disabled={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.email`}
@@ -147,7 +149,7 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
                   label="Email"
                   component={renderConfig.FIELD}
                   validate={[required, email]}
-                  disable={!isNewProject || !isEditMode}
+                  disabled={!isNewProject || !isEditMode}
                 />
                 <Row gutter={16}>
                   <Col span={20}>
@@ -158,7 +160,7 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
                       component={renderConfig.FIELD}
                       validate={[phoneNumber, maxLength(12), required]}
                       normalize={normalizePhone}
-                      disable={!isNewProject || !isEditMode}
+                      disabled={!isNewProject || !isEditMode}
                     />
                   </Col>
                   <Col span={4}>
@@ -168,7 +170,7 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
                       label="Ext. (optional)"
                       component={renderConfig.FIELD}
                       validate={[maxLength(6)]}
-                      disable={!isNewProject || !isEditMode}
+                      disabled={!isNewProject || !isEditMode}
                     />
                   </Col>
                 </Row>
@@ -183,7 +185,7 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
           fields.push({ is_primary: false });
         }}
         title="Add additional project contacts"
-        disable={!isNewProject || !isEditMode}
+        disabled={!isNewProject || !isEditMode}
       >
         <PlusOutlined /> Add additional project contacts
       </LinkButton>
@@ -252,7 +254,7 @@ export const ProjectSummaryForm = (props) => {
     } = props;
     return (
       <div id="project-details">
-        {!project_lead_party_guid && (
+        {!props.isNewProject && !project_lead_party_guid && (
           <Alert
             message="This project does not have a Project Lead"
             description={
@@ -266,7 +268,44 @@ export const ProjectSummaryForm = (props) => {
           />
         )}
         <br />
-        <Typography.Title level={3}>Project details</Typography.Title>
+        <div className="inline-flex between">
+          <div>
+            <Typography.Title level={3}>Project details</Typography.Title>
+          </div>
+          <div className="right center-mobile">
+            {props.isNewProject && (
+              <>
+                <Popconfirm
+                  placement="topLeft"
+                  title="Are you sure you want to leave this page? All unsaved changes will be lost."
+                  onConfirm={() => {
+                    const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
+                      props.match?.params?.mineGuid
+                    );
+                    props.history.push(url);
+                    props.unSavedChanges();
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className="full-mobile" type="secondary">
+                    Cancel
+                  </Button>
+                </Popconfirm>
+                <Button
+                  id="project-summary-submit"
+                  className="full-mobile"
+                  type="primary"
+                  htmlType="submit"
+                  loading={props.submitting}
+                  disabled={props.submitting}
+                >
+                  Save Changes
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
         {props.initialValues?.status_code && (
           <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
             <Col lg={12} md={24}>
@@ -322,7 +361,7 @@ export const ProjectSummaryForm = (props) => {
                 label="Project title"
                 component={renderConfig.FIELD}
                 validate={[maxLength(300), required]}
-                disable={!props.isNewProject || !props.isEditMode}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -341,7 +380,7 @@ export const ProjectSummaryForm = (props) => {
                 }
                 component={renderConfig.FIELD}
                 validate={[maxLength(20)]}
-                disable={!props.isNewProject || !props.isEditMode}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -360,7 +399,7 @@ export const ProjectSummaryForm = (props) => {
                 component={renderConfig.AUTO_SIZE_FIELD}
                 minRows={10}
                 validate={[maxLength(4000), required]}
-                disable={!props.isNewProject || !props.isEditMode}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
           </Col>
@@ -412,6 +451,7 @@ export const ProjectSummaryForm = (props) => {
           }
           component={renderConfig.RADIO}
           validate={[requiredRadioButton]}
+          disabled={!props.isNewProject || !props.isEditMode}
         />
         <br />
         {props.transformedProjectSummaryAuthorizationTypes?.map((a) => {
@@ -427,7 +467,7 @@ export const ProjectSummaryForm = (props) => {
                         value={child.code}
                         onChange={(e) => handleChange(e, child.code)}
                         checked={checked.includes(child.code)}
-                        disable={!props.isNewProject || !props.isEditMode}
+                        disabled={!props.isNewProject || !props.isEditMode}
                       >
                         {checked.includes(child.code) ? (
                           <>
@@ -464,7 +504,7 @@ export const ProjectSummaryForm = (props) => {
                 label={<p className="bold">Project Lead</p>}
                 component={renderConfig.SELECT}
                 data={projectLeadData}
-                disable={!props.isNewProject || !props.isEditMode}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
           </Col>
@@ -506,6 +546,7 @@ export const ProjectSummaryForm = (props) => {
                 placeholder="Please select date"
                 component={renderConfig.DATE}
                 validate={[dateNotAfterOther(props.expected_permit_application_date)]}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -516,6 +557,7 @@ export const ProjectSummaryForm = (props) => {
                 placeholder="Please select date"
                 component={renderConfig.DATE}
                 validate={[dateNotBeforeOther(props.expected_draft_irt_submission_date)]}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -526,6 +568,7 @@ export const ProjectSummaryForm = (props) => {
                 placeholder="Please select date"
                 component={renderConfig.DATE}
                 validate={[dateNotBeforeOther(props.expected_permit_application_date)]}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -536,6 +579,7 @@ export const ProjectSummaryForm = (props) => {
                 placeholder="Please select date"
                 component={renderConfig.DATE}
                 validate={[dateNotBeforeOther(props.expected_permit_receipt_date)]}
+                disabled={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
           </Col>
@@ -571,39 +615,6 @@ export const ProjectSummaryForm = (props) => {
         );
       }}
     >
-      <div className="right center-mobile">
-        {props.isNewProject && (
-          <>
-            <Popconfirm
-              placement="topLeft"
-              title="Are you sure you want to leave this page? All unsaved changes will be lost."
-              onConfirm={() => {
-                const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-                  props.match?.params?.mineGuid
-                );
-                props.history.push(url);
-                props.unSavedChanges();
-              }}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="full-mobile" type="secondary">
-                Cancel
-              </Button>
-            </Popconfirm>
-            <Button
-              id="project-summary-submit"
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              loading={props.submitting}
-              disabled={props.submitting}
-            >
-              Save Changes
-            </Button>
-          </>
-        )}
-      </div>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
