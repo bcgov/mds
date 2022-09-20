@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -38,6 +38,7 @@ import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import { normalizePhone, flattenObject } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import * as routes from "@/constants/routes";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import * as Permission from "@/constants/permissions";
@@ -53,7 +54,7 @@ const propTypes = {
   removeDocument: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  isEditMode: PropTypes.bool.isRequired,
+  isNewProject: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -85,7 +86,7 @@ const unassignedProjectLeadEntry = {
   value: null,
 };
 
-const contactFields = ({ fields }) => {
+const contactFields = ({ fields, isNewProject, isEditMode }) => {
   return (
     <>
       {fields.map((field, index) => {
@@ -117,25 +118,28 @@ const contactFields = ({ fields }) => {
               </>
             )}
             <Row gutter={16}>
-              <Col lg={12} md={24}>
+              <Col span={18}>
                 <Field
                   name={`${field}.name`}
                   id={`${field}.name`}
                   label="Name"
                   component={renderConfig.FIELD}
                   validate={[required]}
+                  disable={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.job_title`}
                   id={`${field}.job_title`}
                   label="Job Title (optional)"
                   component={renderConfig.FIELD}
+                  disable={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.company_name`}
                   id={`${field}.company_name`}
                   label="Company name (optional)"
                   component={renderConfig.FIELD}
+                  disable={!isNewProject || !isEditMode}
                 />
                 <Field
                   name={`${field}.email`}
@@ -143,6 +147,7 @@ const contactFields = ({ fields }) => {
                   label="Email"
                   component={renderConfig.FIELD}
                   validate={[required, email]}
+                  disable={!isNewProject || !isEditMode}
                 />
                 <Row gutter={16}>
                   <Col span={20}>
@@ -153,6 +158,7 @@ const contactFields = ({ fields }) => {
                       component={renderConfig.FIELD}
                       validate={[phoneNumber, maxLength(12), required]}
                       normalize={normalizePhone}
+                      disable={!isNewProject || !isEditMode}
                     />
                   </Col>
                   <Col span={4}>
@@ -162,12 +168,13 @@ const contactFields = ({ fields }) => {
                       label="Ext. (optional)"
                       component={renderConfig.FIELD}
                       validate={[maxLength(6)]}
+                      disable={!isNewProject || !isEditMode}
                     />
                   </Col>
                 </Row>
               </Col>
             </Row>
-            {index === 0 && <p className="bold">Additional project contacts</p>}
+            {index === 0 && <p className="bold">Additional project contacts (optional)</p>}
           </div>
         );
       })}
@@ -176,6 +183,7 @@ const contactFields = ({ fields }) => {
           fields.push({ is_primary: false });
         }}
         title="Add additional project contacts"
+        disable={!isNewProject || !isEditMode}
       >
         <PlusOutlined /> Add additional project contacts
       </LinkButton>
@@ -232,7 +240,6 @@ const renderNestedFields = (code, props) => {
 };
 
 export const ProjectSummaryForm = (props) => {
-  const [isEditingProjectLead, setIsEditingProjectLead] = useState(false);
   const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
   const [checked, setChecked] = useState(
@@ -241,11 +248,11 @@ export const ProjectSummaryForm = (props) => {
 
   const renderProjectDetails = () => {
     const {
-      projectSummary: { project_summary_lead_party_guid },
+      projectSummary: { project_lead_party_guid },
     } = props;
     return (
       <div id="project-details">
-        {!project_summary_lead_party_guid && (
+        {!project_lead_party_guid && (
           <Alert
             message="This project does not have a Project Lead"
             description={
@@ -315,6 +322,7 @@ export const ProjectSummaryForm = (props) => {
                 label="Project title"
                 component={renderConfig.FIELD}
                 validate={[maxLength(300), required]}
+                disable={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
@@ -333,16 +341,26 @@ export const ProjectSummaryForm = (props) => {
                 }
                 component={renderConfig.FIELD}
                 validate={[maxLength(20)]}
+                disable={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
             <Form.Item>
               <Field
                 id="project_summary_description"
                 name="project_summary_description"
-                label="Executive Summary"
+                label={
+                  <>
+                    Project Overview
+                    <br />
+                    <span className="light--sm">
+                      Provide a 2-3 paragraph high-level description of your proposed project.
+                    </span>
+                  </>
+                }
                 component={renderConfig.AUTO_SIZE_FIELD}
                 minRows={10}
                 validate={[maxLength(4000), required]}
+                disable={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
           </Col>
@@ -363,11 +381,15 @@ export const ProjectSummaryForm = (props) => {
   const renderAuthorizationsInvolved = () => {
     return (
       <div id="authorizations-involved">
-        <Typography.Title level={3}>Authorizations Involved</Typography.Title>
-        <p>
-          These are the authorizations the proponent believes may be needed for this project.
-          Additional authorizations may be required.
-        </p>
+        <Typography.Title level={3}>
+          Authorizations potentially involved in the project
+        </Typography.Title>
+        <Alert
+          message=""
+          description="Please select the permits and authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be complete list for the final application."
+          type="warning"
+          showIcon
+        />
         <br />
         <Typography.Title level={3}>Mines Review Committee</Typography.Title>
         <Field
@@ -405,6 +427,7 @@ export const ProjectSummaryForm = (props) => {
                         value={child.code}
                         onChange={(e) => handleChange(e, child.code)}
                         checked={checked.includes(child.code)}
+                        disable={!props.isNewProject || !props.isEditMode}
                       >
                         {checked.includes(child.code) ? (
                           <>
@@ -432,7 +455,7 @@ export const ProjectSummaryForm = (props) => {
       <div id="project-contacts">
         <Typography.Title level={4}>Project contacts</Typography.Title>
         <h3>EMLI contacts</h3>
-        <Row gutter={16} className={isEditingProjectLead ? "grey-background" : ""} align="bottom">
+        <Row gutter={16}>
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
@@ -441,44 +464,22 @@ export const ProjectSummaryForm = (props) => {
                 label={<p className="bold">Project Lead</p>}
                 component={renderConfig.SELECT}
                 data={projectLeadData}
-                disabled={!isEditingProjectLead}
+                disable={!props.isNewProject || !props.isEditMode}
               />
             </Form.Item>
           </Col>
-          <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
-            <Col lg={24} md={24} className="padding-sm--bottom">
-              {!isEditingProjectLead ? (
-                <Button type="secondary" onClick={() => setIsEditingProjectLead(true)}>
-                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
-                  &nbsp; Edit
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    type="secondary"
-                    loading={props.submitting}
-                    onClick={() => setIsEditingProjectLead(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="primary"
-                    loading={props.submitting}
-                    onClick={(e) => {
-                      props.handleSaveData(e, "Successfully updated the project lead.");
-                      setIsEditingProjectLead(false);
-                    }}
-                  >
-                    Update
-                  </Button>
-                </>
-              )}
-            </Col>
-          </AuthorizationWrapper>
         </Row>
         <h3>Proponent contacts</h3>
         <>
-          <FieldArray name="contacts" component={contactFields} />
+          <FieldArray
+            name="contacts"
+            component={contactFields}
+            rerenderOnEveryChange
+            {...{
+              isNewProject: props.isNewProject,
+              isEditMode: props.isEditMode,
+            }}
+          />
         </>
       </div>
     );
@@ -487,11 +488,13 @@ export const ProjectSummaryForm = (props) => {
   const renderProjectDates = () => {
     return (
       <div id="project-dates">
-        <Typography.Title level={3}>Project dates requested by proponent</Typography.Title>
-        <p>
-          These are the key dates the proponent hopes to target. A final schedule will be negotiated
-          during the pre-application review.
-        </p>
+        <Typography.Title level={3}>Project dates</Typography.Title>
+        <Alert
+          message=""
+          description="These dates are for guidance and planning purposes only and do not reflect actual delivery dates. The Major Mines Office will work with you on a more definitive schedule."
+          type="warning"
+          showIcon
+        />
         <br />
         <Row gutter={16}>
           <Col lg={12} md={24}>
@@ -568,6 +571,39 @@ export const ProjectSummaryForm = (props) => {
         );
       }}
     >
+      <div className="right center-mobile">
+        {props.isNewProject && (
+          <>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to leave this page? All unsaved changes will be lost."
+              onConfirm={() => {
+                const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
+                  props.match?.params?.mineGuid
+                );
+                props.history.push(url);
+                props.unSavedChanges();
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button className="full-mobile" type="secondary">
+                Cancel
+              </Button>
+            </Popconfirm>
+            <Button
+              id="project-summary-submit"
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              loading={props.submitting}
+              disabled={props.submitting}
+            >
+              Save Changes
+            </Button>
+          </>
+        )}
+      </div>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -578,17 +614,36 @@ export const ProjectSummaryForm = (props) => {
       <br />
       {renderDocuments()}
       <div className="right center-mobile">
-        {!props.isEditMode && (
-          <Button
-            id="project-summary-submit"
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-            disabled={props.submitting || disabledButton}
-          >
-            Create
-          </Button>
+        {props.isNewProject && (
+          <>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to leave this page? All Unsaved changes will be lost."
+              onConfirm={() => {
+                const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
+                  props.match?.params?.mineGuid
+                );
+                props.history.push(url);
+                props.unSavedChanges();
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button className="full-mobile" type="secondary">
+                Cancel
+              </Button>
+            </Popconfirm>
+            <Button
+              id="project-summary-submit"
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              loading={props.submitting}
+              disabled={props.submitting}
+            >
+              Save Changes
+            </Button>
+          </>
         )}
       </div>
     </Form>
@@ -635,6 +690,5 @@ export default compose(
     enableReinitialize: true,
     touchOnBlur: true,
     touchOnChange: false,
-    onSubmit: () => {},
   })
 )(withRouter(ProjectSummaryForm));

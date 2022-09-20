@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { submit, getFormValues, reset, touch } from "redux-form";
+import { submit, getFormValues, getFormSyncErrors, reset, touch } from "redux-form";
 import { flattenObject } from "@common/utils/helpers";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
@@ -13,6 +13,7 @@ import {
   getProjectSummaryAuthorizationTypesArray,
   getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
@@ -112,11 +113,17 @@ export class ProjectSummary extends Component {
     if (projectGuid && projectSummaryGuid) {
       return this.props
         .fetchProjectSummaryById(projectGuid, projectSummaryGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true, isEditMode: true }))
+        .then(() => this.setState({ isLoaded: true, isValid: true }))
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return this.props.fetchMineRecordById(mineGuid).then(() => {
-      this.setState({ isLoaded: true, activeTab: tab });
+      const mine = this.props.mines[mineGuid];
+      this.setState({
+        isLoaded: true,
+        activeTab: tab,
+        mineName: mine.mine_name,
+        isNewProject: true,
+      });
     });
   };
 
@@ -126,7 +133,7 @@ export class ProjectSummary extends Component {
     this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
-      if (!this.state.isEditMode) {
+      if (this.state.isNewProject) {
         return this.handleCreate(message);
       }
       return this.handleUpdate(message);
@@ -187,6 +194,10 @@ export class ProjectSummary extends Component {
         this.props.history.replace(
           routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)
         );
+        this.setState({ isNewProject: false });
+      })
+      .then(() => {
+        this.handleFetchData(this.props.match.params);
       });
   };
 
@@ -217,6 +228,24 @@ export class ProjectSummary extends Component {
       .finally(() => this.setState({ isLoaded: true }));
   };
 
+  unSavedChanges = () => {
+    return (
+      <Prompt
+        when={this.props.anyTouched}
+        message={(location, action) => {
+          if (action === "REPLACE") {
+            this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
+          }
+          return this.props.location.pathname !== location.pathname &&
+            !location.pathname.includes("project-description") &&
+            this.props.anyTouched
+            ? "You have unsaved changes. Are you sure you want to leave without saving?"
+            : true;
+        }}
+      />
+    );
+  };
+
   render() {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
@@ -224,19 +253,7 @@ export class ProjectSummary extends Component {
     return (
       (this.state.isLoaded && (
         <>
-          <Prompt
-            when={this.props.anyTouched}
-            message={(location, action) => {
-              if (action === "REPLACE") {
-                this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
-              }
-              return this.props.location.pathname !== location.pathname &&
-                !location.pathname.includes("project-description") &&
-                this.props.anyTouched
-                ? "You have unsaved changes. Are you sure you want to leave without saving?"
-                : true;
-            }}
-          />
+          {this.unSavedChanges()}
           <div className="page">
             <div
               className={
@@ -246,27 +263,46 @@ export class ProjectSummary extends Component {
               }
             >
               <h1>
-                {this.props.formattedProjectSummary.project_summary_title}
+                {this.props.formattedProjectSummary.project_summary_title
+                  ? this.props.formattedProjectSummary.project_summary_title
+                  : "New Project Description"}
                 <span className="padding-sm--left">
-                  <Tag title={`Mine: ${this.props.formattedProjectSummary.mine_name}`}>
+                  <Tag
+                    title={`Mine: ${
+                      this.props.formattedProjectSummary.mine_name
+                        ? this.props.formattedProjectSummary.mine_name
+                        : this.props.match?.params?.mineGuid
+                    }`}
+                  >
                     <Link
                       style={{ textDecoration: "none" }}
                       to={routes.MINE_GENERAL.dynamicRoute(
                         this.props.formattedProjectSummary.mine_guid
+                          ? this.props.formattedProjectSummary.mine_guid
+                          : this.props.match?.params?.mineGuid
                       )}
-                      disabled={!this.props.formattedProjectSummary.mine_guid}
                     >
                       <EnvironmentOutlined className="padding-sm--right" />
-                      {this.props.formattedProjectSummary.mine_name}
+                      {this.props.formattedProjectSummary.mine_name
+                        ? this.props.formattedProjectSummary.mine_name
+                        : this.state.mineName}
                     </Link>
                   </Tag>
                 </span>
               </h1>
               <Link
-                to={routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)}
+                to={
+                  this.props.formattedProjectSummary.project_guid
+                    ? routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)
+                    : routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.match?.params?.mineGuid)
+                }
               >
                 <ArrowLeftOutlined className="padding-sm--right" />
-                Back to: {this.props.formattedProjectSummary.mine_name} Project overview
+                Back to:{" "}
+                {this.props.formattedProjectSummary.mine_name
+                  ? this.props.formattedProjectSummary.mine_name
+                  : this.state.mineName}{" "}
+                Project overview
               </Link>
             </div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
@@ -305,9 +341,9 @@ export class ProjectSummary extends Component {
                     <ProjectSummaryForm
                       {...this.props}
                       projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
-                      isEditMode={this.state.isEditMode}
+                      isNewProject={this.state.isNewProject}
                       initialValues={
-                        this.state.isEditMode
+                        !this.state.isNewProject
                           ? {
                               ...this.props.formattedProjectSummary,
                               mrc_review_required: this.props.project.mrc_review_required,
@@ -329,6 +365,7 @@ export class ProjectSummary extends Component {
                       }
                       handleSaveData={this.handleSaveData}
                       removeDocument={this.handleRemoveDocument}
+                      unSavedChanges={this.unSavedChanges}
                     />
                   </div>
                 </LoadingWrapper>
@@ -349,7 +386,9 @@ const mapStateToProps = (state) => {
     projectSummary: getProjectSummary(state),
     formattedProjectSummary: getFormattedProjectSummary(state),
     project: getProject(state),
+    mines: getMines(state),
     formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+    formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
     anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
     fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
