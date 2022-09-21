@@ -17,19 +17,41 @@ import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import * as FORM from "@/constants/forms";
-import Loading from "@/components/common/Loading";
+import * as Permission from "@/constants/permissions";
+
 import {
   ADD_TAILINGS_STORAGE_FACILITY,
   EDIT_TAILINGS_STORAGE_FACILITY,
   MINE_DASHBOARD,
 } from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
-import SteppedForm from "@/components/common/SteppedForm";
-import * as Permission from "@/constants/permissions";
+import { Col, Divider, Row, Typography } from "antd";
+import { Link, withRouter } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  addDocumentToRelationship,
+  addPartyRelationship,
+  fetchPartyRelationships,
+} from "@common/actionCreators/partiesActionCreator";
+import { bindActionCreators, compose } from "redux";
+import { clearTsf, storeTsf } from "@common/actions/tailingsActions";
+import { flattenObject, resetForm } from "@common/utils/helpers";
+import { getFormSyncErrors, getFormValues, reduxForm, submit, touch } from "redux-form";
+
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import CustomPropTypes from "@/customPropTypes";
+import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import Loading from "@/components/common/Loading";
+import PropTypes from "prop-types";
 import Step from "@/components/common/Step";
 import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import SteppedForm from "@/components/common/SteppedForm";
+import { connect } from "react-redux";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
+import { getMines } from "@common/selectors/mineSelectors";
+import { getTsf } from "@common/selectors/tailingsSelectors";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
@@ -52,6 +74,7 @@ const propTypes = {
   formErrors: PropTypes.object,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
+  addDocumentToRelationship: PropTypes.func.isRequired,
   updateTailingsStorageFacility: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   addPartyRelationship: PropTypes.func.isRequired,
@@ -73,6 +96,7 @@ const defaultProps = {
 export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [tsfGuid, setTsfGuid] = useState(null);
 
   const handleFetchData = async () => {
@@ -100,6 +124,20 @@ export const TailingsSummaryPage = (props) => {
     handleFetchData();
   }, []);
 
+  const handleAddDocuments = async (minePartyApptGuid) => {
+    await Promise.all(
+      uploadedFiles.forEach((document) =>
+        props.addDocumentToRelationship(
+          { mineGuid: match.params.mineGuid, minePartyApptGuid },
+          {
+            document_name: document.document_name,
+            document_manager_guid: document.document_manager_guid,
+          }
+        )
+      )
+    );
+  };
+
   const handleSaveData = async (e, newActiveTab) => {
     if (e) {
       e.preventDefault();
@@ -117,6 +155,10 @@ export const TailingsSummaryPage = (props) => {
         if (tsfGuid) {
           props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
         } else {
+          if (uploadedFiles.length > 0) {
+            // TODO: confirm origin of mine_party_appt_guid
+            await handleAddDocuments(formValues.mine_party_appt_guid);
+          }
           const newTsf = await props.createTailingsStorageFacility(
             match.params.mineGuid,
             formValues
@@ -161,6 +203,9 @@ export const TailingsSummaryPage = (props) => {
     //   // const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
     //   handleSaveData(null, newActiveTab);
     // }
+    if (match.params.tab === "basic-information" && !tsfGuid) {
+      handleSaveData(null, newActiveTab);
+    }
     if (tailingsStorageFacilityGuid) {
       url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tailingsStorageFacilityGuid,
@@ -205,7 +250,12 @@ export const TailingsSummaryPage = (props) => {
             <BasicInformation />
           </Step>
           <Step key="engineer-of-record">
-            <EngineerOfRecord eors={eors} />
+            <EngineerOfRecord
+              eors={eors}
+              mineGuid={mineGuid}
+              uploadedFiles={uploadedFiles}
+              setUploadedFiles={setUploadedFiles}
+            />
           </Step>
           <Step key="qualified-person">
             <div />
@@ -243,6 +293,7 @@ const mapDispatchToProps = (dispatch) =>
       createTailingsStorageFacility,
       fetchMineRecordById,
       addPartyRelationship,
+      addDocumentToRelationship,
       submit,
       touch,
       storeTsf,
