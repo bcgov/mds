@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { destroy } from "redux-form";
+import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
@@ -15,9 +16,10 @@ import {
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
 import * as FORM from "@/constants/forms";
+import * as routes from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const propTypes = {
@@ -30,6 +32,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {};
@@ -93,7 +96,14 @@ export class Incidents extends Component {
             <Button
               style={{ display: "inline", float: "right" }}
               type="primary"
-              onClick={(event) => this.openCreateIncidentModal(event)}
+              onClick={(event) =>
+                IN_PROD()
+                  ? this.openCreateIncidentModal(event)
+                  : this.props.history.push({
+                      pathname: routes.ADD_MINE_INCIDENT.dynamicRoute(this.props.mine?.mine_guid),
+                      state: { mine: this.props.mine },
+                    })
+              }
             >
               <PlusCircleFilled />
               Record a mine incident
@@ -147,4 +157,4 @@ const mapDispatchToProps = (dispatch) =>
 Incidents.propTypes = propTypes;
 Incidents.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Incidents);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Incidents));
