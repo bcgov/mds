@@ -30,7 +30,7 @@ def test_get_information_requirements_table_by_irt_guid(test_client, db_session,
 #             "project_guid":
 #             project.project_guid,
 #             "status_code":
-#             "REC",
+#             "SUB",
 #             "requirements": [{
 #                 "requirement_guid": requirements[0].requirement_guid,
 #                 "required": True,

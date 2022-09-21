@@ -144,6 +144,8 @@ export const PROJECT_SUMMARY_DOCUMENT = (
     params
   )}`;
 export const DECISION_PACKAGE = () => `/`;
+export const MAJOR_PROJECT_DASHBOARD = (params = {}) =>
+  `/projects/dashboard?${queryString.stringify(params)}`;
 
 // Information Requirements Table (IRT)
 export const REQUIREMENT = (requirementGuid) => `/projects/requirements/${requirementGuid}`;

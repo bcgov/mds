@@ -8,6 +8,7 @@ import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHome
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import IncidentsHomePage from "@/components/dashboard/incidentsHomePage/IncidentsHomePage";
 import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
+import MajorProjectHomePage from "@/components/dashboard/majorProjectHomePage/MajorProjectHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -381,6 +382,13 @@ export const NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/notice-of-work/app/${guid}/verification`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/app/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
+};
+
+export const MAJOR_PROJECTS_DASHBOARD = {
+  route: "/dashboard/reporting/major-project",
+  dynamicRoute: (params = null) =>
+    `/dashboard/reporting/major-project/?${queryString.stringify({ ...params }, { sort: false })}`,
+  component: MajorProjectHomePage,
 };
 
 export const ADMIN_AMENDMENT_APPLICATION = {

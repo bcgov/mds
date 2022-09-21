@@ -44,7 +44,7 @@ exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
                     "APV": "Approved",
                     "CHR": "Change Requested",
                     "DFT": "Draft",
-                    "REC": "Pending Review",
+                    "SUB": "Submitted",
                     "UNR": "In review - with reviewers",
                   }
                 }
@@ -62,7 +62,7 @@ exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
           </ForwardRef>
         </ForwardRef>
       }
-      message="Pending Review"
+      message="Submitted"
       showIcon={true}
       type="warning"
     />

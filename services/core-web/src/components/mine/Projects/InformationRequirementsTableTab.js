@@ -166,7 +166,7 @@ export class InformationRequirementsTableTab extends Component {
 
     this.mergedRequirements = this.deepMergeById(
       this.props.requirements,
-      this.props.informationRequirementsTable?.requirements.filter(
+      this.props.informationRequirementsTable?.requirements?.filter(
         ({ deleted_ind }) => deleted_ind === false
       )
     );

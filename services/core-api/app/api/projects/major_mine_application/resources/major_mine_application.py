@@ -67,7 +67,7 @@ class MajorMineApplicationResource(Resource, UserMixin):
                                       data.get('documents', []))
 
         major_mine_application.save()
-        if new_status_code == "REC":
+        if new_status_code == "SUB":
             major_mine_application.send_mma_submit_email()
 
         return major_mine_application

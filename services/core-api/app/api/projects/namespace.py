@@ -1,6 +1,6 @@
 from flask_restplus import Namespace
 
-from app.api.projects.project.resources.project import ProjectResource, ProjectListResource
+from app.api.projects.project.resources.project import ProjectResource, ProjectListResource, ProjectListDashboardResource
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
 from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
@@ -33,6 +33,7 @@ api = Namespace('projects', description='Projects actions/options')
 # Project
 api.add_resource(ProjectListResource, '')
 api.add_resource(ProjectResource, '/<string:project_guid>')
+api.add_resource(ProjectListDashboardResource, '/dashboard')
 
 # Project Description(Summary)
 api.add_resource(ProjectSummaryResource,

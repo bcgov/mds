@@ -1215,7 +1215,7 @@ class InformationRequirementsTableFactory(BaseFactory):
 
     project_guid = factory.SelfAttribute('project.project_guid')
     irt_guid = GUID
-    status_code = 'REC'
+    status_code = 'SUB'
 
 
 class MajorMineApplicationFactory(BaseFactory):
@@ -1228,7 +1228,7 @@ class MajorMineApplicationFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     major_mine_application_guid = GUID
     major_mine_application_id = factory.Faker('pyint')
-    status_code = 'REC'
+    status_code = 'SUB'
     deleted_ind = False
 
 

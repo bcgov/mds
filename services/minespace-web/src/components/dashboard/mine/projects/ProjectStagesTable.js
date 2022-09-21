@@ -100,7 +100,7 @@ export class ProjectStagesTable extends Component {
           let buttonLabel;
           if (!record.stage_status) {
             buttonLabel = "Start";
-          } else if (["REC", "UNR", "APV"].includes(record.stage_status)) {
+          } else if (["SUB", "UNR", "APV"].includes(record.stage_status)) {
             buttonLabel = "View";
           } else {
             buttonLabel = "Resume";

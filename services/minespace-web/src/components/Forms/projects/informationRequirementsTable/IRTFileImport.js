@@ -109,7 +109,7 @@ export class IRTFileImport extends Component {
                 documentColumns={documentColumns}
               />
               <br />
-              {this.props.project?.information_requirements_table?.status_code === "REC" && (
+              {this.props.project?.information_requirements_table?.status_code === "SUB" && (
                 <Alert
                   message="Re-uploading a new file will replace all the data imported from the current final IRT."
                   description=""

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Major Project Search Component renders properly 1`] = `
+<div>
+  <Row>
+    <Col
+      md={
+        Object {
+          "offset": 6,
+          "span": 12,
+        }
+      }
+      xs={
+        Object {
+          "offset": 2,
+          "span": 20,
+        }
+      }
+    >
+      <span
+        className="advanced-search__container"
+      >
+        <ReduxForm
+          destroyOnUnmount={true}
+          enableReinitialize={true}
+          forceUnregisterOnUnmount={false}
+          form="MAJOR_MINE_APPLICATION_ADVANCED_SEARCH"
+          getFormState={[Function]}
+          initialValues={Object {}}
+          isAdvanceSearch={false}
+          keepDirtyOnReinitialize={false}
+          persistentSubmitErrors={false}
+          pure={true}
+          shouldAsyncValidate={[Function]}
+          shouldError={[Function]}
+          shouldValidate={[Function]}
+          shouldWarn={[Function]}
+          statusCodes={
+            Array [
+              Object {
+                "isActive": true,
+                "label": "Submitted",
+                "subType": null,
+                "value": "SUB",
+              },
+              Object {
+                "isActive": true,
+                "label": "In Review",
+                "subType": null,
+                "value": "UNR",
+              },
+              Object {
+                "isActive": true,
+                "label": "Review Complete",
+                "subType": null,
+                "value": "APV",
+              },
+              Object {
+                "isActive": true,
+                "label": "Change Requested",
+                "subType": null,
+                "value": "CHR",
+              },
+            ]
+          }
+          submitAsSideEffect={false}
+          toggleAdvancedSearch={[Function]}
+          touchOnBlur={false}
+          touchOnChange={false}
+          updateUnregisteredFields={false}
+        />
+      </span>
+    </Col>
+  </Row>
+</div>
+`;
