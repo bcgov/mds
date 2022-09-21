@@ -108,47 +108,33 @@ export const TailingsSummaryPage = (props) => {
     props.submit(FORM.ADD_TAILINGS_STORAGE_FACILITY);
     const errors = Object.keys(flattenObject(formErrors));
 
-    if (errors.length === 0) {
-      if (tsfGuid) {
-        props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
-      } else {
-        const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
-        await props.clearTsf();
-        history.push(
-          EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-            newTsf.data.mine_tailings_storage_facility_guid,
+    if (errors?.length) {
+      return;
+    }
+
+    switch (match.params.tab) {
+      case "basic-information":
+        if (tsfGuid) {
+          props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+        } else {
+          const newTsf = await props.createTailingsStorageFacility(
             match.params.mineGuid,
-            newActiveTab || "basic-information"
-          )
-        );
-        setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
-      }
-
-      if (errors?.length) {
-        return;
-      }
-
-      switch (match.params.tab) {
-        case "basic-information":
-          if (tsfGuid) {
-            props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
-          } else {
-            const newTsf = await props.createTailingsStorageFacility(
+            formValues
+          );
+          await props.clearTsf();
+          history.push(
+            EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+              newTsf.data.mine_tailings_storage_facility_guid,
               match.params.mineGuid,
-              formValues
-            );
-            await props.clearTsf();
-            history.push(
-              EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-                newTsf.data.mine_tailings_storage_facility_guid,
-                match.params.mineGuid,
-                newActiveTab || "engineer-of-record"
-              )
-            );
-            setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
-          }
-          break;
-        case "engineer-of-record":
+              newActiveTab || "engineer-of-record"
+            )
+          );
+          setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
+        }
+        break;
+      case "engineer-of-record":
+        if (!formValues.engineer_of_record.mine_party_appt_guid) {
+          // Only add party relationship if changed
           props.addPartyRelationship({
             mine_guid: match.params.mineGuid,
             party_guid: formValues.engineer_of_record.party_guid,
@@ -158,10 +144,11 @@ export const TailingsSummaryPage = (props) => {
             end_date: formValues.engineer_of_record.end_date,
             end_current: !!formValues.engineer_of_record.mine_party_appt_guid,
           });
-          break;
-        default:
-          break;
-      }
+        }
+
+        break;
+      default:
+        break;
     }
   };
 
