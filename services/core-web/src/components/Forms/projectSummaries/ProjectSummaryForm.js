@@ -274,11 +274,11 @@ export const ProjectSummaryForm = (props) => {
           />
         )}
         <br />
-        <div className="inline-flex between">
-          <div>
-            <Typography.Title level={3}>Project details</Typography.Title>
-          </div>
+
+        <div>
+          <Typography.Title level={3}>Project details</Typography.Title>
         </div>
+
         {props.initialValues?.status_code && (
           <Row gutter={16} className={props.isEditMode ? "grey-background" : ""} align="bottom">
             <Col lg={12} md={24}>
@@ -642,7 +642,6 @@ const mapStateToProps = (state) => ({
   projectLeads: getDropdownProjectLeads(state),
   userRoles: getUserAccessData(state),
   contacts: selector(state, "contacts") || [],
-  code: selector(state, "code"),
   expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
   expected_permit_application_date: selector(state, "expected_permit_application_date"),
   expected_permit_receipt_date: selector(state, "expected_permit_receipt_date"),

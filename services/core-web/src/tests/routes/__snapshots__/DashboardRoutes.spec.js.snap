@@ -242,7 +242,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(ProjectSummary)",
+        "displayName": "Connect(withRouter(ProjectSummary))",
         "type": [Function],
       }
     }
@@ -255,7 +255,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(ProjectSummary)",
+        "displayName": "Connect(withRouter(ProjectSummary))",
         "type": [Function],
       }
     }
