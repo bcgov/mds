@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-import { createParty, updateParty } from "@common/actionCreators/partiesActionCreator";
+import React, { useEffect, useState } from "react";
+import {
+  createParty,
+  updateParty,
+  fetchParties,
+} from "@common/actionCreators/partiesActionCreator";
+import { getParties } from "@common/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, initialize, isDirty, reset, getFormValues } from "redux-form";
 import { connect } from "react-redux";
-import { Col, Row, Typography, Popconfirm, Button } from "antd";
+import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
+import { debounce } from "lodash";
+
 import {
   required,
   email,
@@ -21,12 +28,14 @@ import { party as PartyPropType } from "@/customPropTypes/parties";
 const propTypes = {
   createParty: PropTypes.func.isRequired,
   updateParty: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleSelectChange: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   isDirty: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PartyPropType).isRequired,
+  organizations: PropTypes.arrayOf(PartyPropType).isRequired,
   contacts: PropTypes.arrayOf(PartyPropType),
 
   // eslint-disable-next-line react/no-unused-prop-types
@@ -78,6 +87,28 @@ export const AddContactFormDetails = (props) => {
     return "Select Contact";
   };
 
+  const searchOrganizations = (search) => {
+    props.fetchParties({
+      type: "ORG",
+      party_name: search,
+      per_page: 10,
+    });
+  };
+
+  useEffect(() => {
+    searchOrganizations("");
+  }, []);
+
+  const selectOrganization = (org) => {
+    console.log("selected", org);
+  };
+
+  const transformOrganizations = (orgs) =>
+    Object.values(orgs).map((org) => ({
+      label: org.name,
+      value: org.party_guid,
+    }));
+
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit(onSubmit)}>
       <Row gutter={16}>
@@ -99,6 +130,9 @@ export const AddContactFormDetails = (props) => {
               validate={[validateSelectOptions(props.contacts)]}
             />
           </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Divider plain style={{ marginTop: 0 }} />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -140,7 +174,16 @@ export const AddContactFormDetails = (props) => {
         </Col>
         <Col span={12}>
           <Form.Item label="Company name (optional)">
-            <Field name="company_name" id="company_name" component={renderConfig.FIELD} />
+            <Field
+              id="company_name"
+              name="company_name"
+              component={renderConfig.AUTOCOMPLETE}
+              placeholder="Search organizations"
+              data={transformOrganizations(props.organizations)}
+              handleChange={searchOrganizations}
+              handleSelect={selectOrganization}
+              // iconColor={antIconGrey}
+            />
           </Form.Item>
         </Col>
 
@@ -178,26 +221,21 @@ export const AddContactFormDetails = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <Row>
-        <div className="ant-modal-footer">
-          <Popconfirm
-            placement="top"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={props.onCancel}
-          >
-            <Button disabled={submitting}>Cancel</Button>
-          </Popconfirm>
-          <Button
-            disabled={submitting}
-            type="primary"
-            className="full-mobile margin-small"
-            htmlType="submit"
-          >
-            {getSubmitText()}
+      <Row justify="space-between">
+        <Popconfirm
+          placement="top"
+          title="Are you sure you want to cancel?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={props.onCancel}
+        >
+          <Button disabled={submitting} className="full-mobile">
+            Cancel
           </Button>
-        </div>
+        </Popconfirm>
+        <Button disabled={submitting} type="primary" className="full-mobile" htmlType="submit">
+          {getSubmitText()}
+        </Button>
       </Row>
     </Form>
   );
@@ -211,6 +249,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       createParty,
       updateParty,
+      fetchParties: (...args) => debounce(() => dispatch(fetchParties(...args)), 1000),
       initialize: (data) => initialize(FORM.ADD_CONTACT, data),
       reset,
     },
@@ -220,12 +259,13 @@ const mapDispatchToProps = (dispatch) =>
 const mapStateToProps = (state) => ({
   isDirty: isDirty(FORM.ADD_CONTACT)(state),
   formValues: getFormValues(FORM.ADD_CONTACT)(state),
+  organizations: getParties(state),
 });
 
 export default compose(
   reduxForm({
     form: FORM.ADD_CONTACT,
-    destroyOnUnmount: false,
+    destroyOnUnmount: true,
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
     touchOnBlur: true,

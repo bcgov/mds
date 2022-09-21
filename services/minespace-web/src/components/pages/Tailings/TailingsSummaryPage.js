@@ -156,7 +156,7 @@ export const TailingsSummaryPage = (props) => {
             related_guid: match.params.tailingsStorageFacilityGuid,
             start_date: formValues.engineer_of_record.start_date,
             end_date: formValues.engineer_of_record.end_date,
-            end_current: true,
+            end_current: !!formValues.engineer_of_record.mine_party_appt_guid,
           });
           break;
         default:

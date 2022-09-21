@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Col, Row, Typography, Button } from "antd";
+import { Alert, Col, Row, Typography, Button, Popconfirm, Empty } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { change, Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
@@ -31,7 +31,11 @@ export const EngineerOfRecord = (props) => {
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.party", value);
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.start_date", null);
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.end_date", null);
-    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.end_date", null);
+    props.change(
+      FORM.ADD_TAILINGS_STORAGE_FACILITY,
+      "engineer_of_record.mine_party_appt_guid",
+      null
+    );
     props.closeModal();
   };
 
@@ -40,7 +44,8 @@ export const EngineerOfRecord = (props) => {
     props.openModal({
       props: {
         onSubmit: handleCreateEOR,
-        title: "Create a Contact",
+        onCancel: props.closeModal,
+        title: "Select Contact",
       },
       content: modalConfig.ADD_CONTACT,
     });
@@ -49,14 +54,19 @@ export const EngineerOfRecord = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Button
-          style={{ display: "inline", float: "right" }}
-          type="primary"
-          onClick={(event) => openCreateEORModal(event)}
+        <Popconfirm
+          style={{ maxWidth: "150px" }}
+          placement="top"
+          title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={openCreateEORModal}
         >
-          <PlusCircleFilled />
-          Assign a new Engineer of Record
-        </Button>
+          <Button style={{ display: "inline", float: "right" }} type="primary">
+            <PlusCircleFilled />
+            Assign a new Engineer of Record
+          </Button>
+        </Popconfirm>
 
         <Typography.Title level={3}>Engineer of Record</Typography.Title>
 
@@ -80,7 +90,17 @@ export const EngineerOfRecord = (props) => {
         {props.formValues?.engineer_of_record?.party_guid ? (
           <ContactDetails contact={props.formValues.engineer_of_record.party} />
         ) : (
-          "No Data"
+          <Row justify="center">
+            <Col span={24}>
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                imageStyle={{ transform: "scale(1.5)" }}
+                description={false}
+              />
+            </Col>
+
+            <Typography.Paragraph>No Data</Typography.Paragraph>
+          </Row>
         )}
 
         <Typography.Title level={4} className="margin-large--top">
@@ -92,6 +112,7 @@ export const EngineerOfRecord = (props) => {
               id="engineer_of_record.start_date"
               name="engineer_of_record.start_date"
               label="Start Date"
+              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
               component={renderConfig.DATE}
               validate={[required]}
             />
@@ -101,6 +122,7 @@ export const EngineerOfRecord = (props) => {
               id="engineer_of_record.end_date"
               name="engineer_of_record.end_date"
               label="End Date"
+              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
               validate={[required]}
               component={renderConfig.DATE}
             />
