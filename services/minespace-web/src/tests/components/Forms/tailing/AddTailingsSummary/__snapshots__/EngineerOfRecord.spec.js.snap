@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EngineerOfRecord renders properly 1`] = `
-<div>
+<ForwardRef(InternalForm)
+  layout="vertical"
+>
   <Title
     level={3}
   >
@@ -32,6 +34,38 @@ exports[`EngineerOfRecord renders properly 1`] = `
       ]
     }
   />
+  <div
+    className="margin-large--top margin-large--bottom"
+  >
+    <Title
+      level={4}
+    >
+      Upload Acceptance Letter
+    </Title>
+    <Text>
+      Letter must be officially signed. A notification will be sent to the Mine Manager upon upload.
+    </Text>
+  </div>
+  <FormItem>
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".pdf": "application/pdf",
+        }
+      }
+      addFileStart={[Function]}
+      allowRevert={true}
+      component={[Function]}
+      id="engineer_of_record.acceptance_letter"
+      labelIdle="<strong class=\\"filepond--label-action\\">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>"
+      name="engineer_of_record.acceptance_letter"
+      onAbort={[Function]}
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      onprocessfiles={[Function]}
+      uploadUrl="/mines/undefined/party-appts/undefined/documents"
+    />
+  </FormItem>
   <Title
     className="margin-large--top"
     level={4}
@@ -67,5 +101,5 @@ exports[`EngineerOfRecord renders properly 1`] = `
       />
     </Col>
   </Row>
-</div>
+</ForwardRef(InternalForm)>
 `;
