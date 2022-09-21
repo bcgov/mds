@@ -75,6 +75,10 @@ const Routes = () => (
       path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
       component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
     />
+    <Route
+      path={routes.ADD_MINE_INCIDENT.route}
+      component={AuthenticationGuard()(routes.ADD_MINE_INCIDENT.component)}
+    />
     {/* 404 - PAGE NOT FOUND */}
     <Route
       render={() => (

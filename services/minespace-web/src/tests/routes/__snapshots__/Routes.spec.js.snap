@@ -213,6 +213,18 @@ exports[`PrivateRoutes  renders properly 1`] = `
     path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mines/:mineGuid/incidents/new"
+  />
+  <Route
     render={[Function]}
   />
 </Switch>
