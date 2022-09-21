@@ -1,21 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators, compose } from "redux";
-import { flattenObject, resetForm } from "@common/utils/helpers";
-import { Link, withRouter } from "react-router-dom";
-import { getFormSyncErrors, getFormValues, reduxForm, submit, touch } from "redux-form";
-import { Col, Divider, Row, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
-import { getMines } from "@common/selectors/mineSelectors";
-import {
-  addPartyRelationship,
-  fetchPartyRelationships,
-} from "@common/actionCreators/partiesActionCreator";
-import { getTsf } from "@common/selectors/tailingsSelectors";
-import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
-import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 
@@ -41,11 +23,10 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import CustomPropTypes from "@/customPropTypes";
-import { EngineerOfRecord } from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 import Loading from "@/components/common/Loading";
 import PropTypes from "prop-types";
 import Step from "@/components/common/Step";
-import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
 import SteppedForm from "@/components/common/SteppedForm";
 import { connect } from "react-redux";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
@@ -125,17 +106,20 @@ export const TailingsSummaryPage = (props) => {
   }, []);
 
   const handleAddDocuments = async (minePartyApptGuid) => {
-    await Promise.all(
-      uploadedFiles.forEach((document) =>
-        props.addDocumentToRelationship(
-          { mineGuid: match.params.mineGuid, minePartyApptGuid },
-          {
-            document_name: document.document_name,
-            document_manager_guid: document.document_manager_guid,
-          }
+    console.log(minePartyApptGuid);
+    if (uploadedFiles.length > 55550) {
+      await Promise.all(
+        uploadedFiles.forEach((document) =>
+          props.addDocumentToRelationship(
+            { mineGuid: match.params.mineGuid, minePartyApptGuid },
+            {
+              document_name: document.document_name,
+              document_manager_guid: document.document_manager_guid,
+            }
+          )
         )
-      )
-    );
+      );
+    }
   };
 
   const handleSaveData = async (e, newActiveTab) => {

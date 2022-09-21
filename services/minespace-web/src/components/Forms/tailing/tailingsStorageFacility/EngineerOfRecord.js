@@ -1,30 +1,36 @@
-import React from "react";
-import { Alert, Col, Row, Typography, Button, Popconfirm, Empty } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
-import { change, Field, getFormValues } from "redux-form";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { required } from "@common/utils/Validate";
-import * as PropTypes from "prop-types";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { modalConfig } from "@/components/modalContent/config";
+import * as PropTypes from "prop-types";
+
+import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
+import { Field, change, getFormValues } from "redux-form";
+import { closeModal, openModal } from "@common/actions/modalActions";
 
 import ContactDetails from "@/components/common/ContactDetails";
+import { PlusCircleFilled } from "@ant-design/icons";
+import React, { useState } from "react";
 import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { modalConfig } from "@/components/modalContent/config";
+import { renderConfig } from "@/components/common/config";
+import { required } from "@common/utils/Validate";
+import FileUpload from "@/components/common/FileUpload";
+import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
+import { PDF } from "@/constants/fileTypes";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(TSFType).isRequired,
-uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-setUploadedFiles: PropTypes.func.isRequired,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  setUploadedFiles: PropTypes.func.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
-    const { mineGuid, uploadedFiles, setUploadedFiles } = props;
+  const { mineGuid, uploadedFiles, setUploadedFiles } = props;
+  const [, setUploading] = useState(false);
   const handleCreateEOR = (value) => {
     props.change(
       FORM.ADD_TAILINGS_STORAGE_FACILITY,
@@ -127,29 +133,27 @@ export const EngineerOfRecord = (props) => {
             <Typography.Paragraph>No Data</Typography.Paragraph>
           </Row>
         )}
-          <div className="margin-large--top margin-large--bottom">
-              <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
-              <Typography.Text>
-                  Letter must be officially signed. A notification will be sent to the Mine Manager upon
-                  upload.
-              </Typography.Text>
-          </div>
-          <Form.Item>
-              <Field
-                  name="engineer_of_record.acceptance_letter"
-                  id="engineer_of_record.acceptance_letter"
-                  onFileLoad={onFileLoad}
-                  onRemoveFile={onRemoveFile}
-                  component={FileUpload}
-                  addFileStart={() => setUploading(true)}
-                  onAbort={() => setUploading(false)}
-                  uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
-                  acceptedFileTypesMap={{ ...PDF }}
-                  labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
-                  allowRevert
-                  onprocessfiles={() => setUploading(false)}
-              />
-          </Form.Item>
+        <div className="margin-large--top margin-large--bottom">
+          <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+          <Typography.Text>
+            Letter must be officially signed. A notification will be sent to the Mine Manager upon
+            upload.
+          </Typography.Text>
+        </div>
+        <Field
+          name="engineer_of_record.acceptance_letter"
+          id="engineer_of_record.acceptance_letter"
+          onFileLoad={onFileLoad}
+          onRemoveFile={onRemoveFile}
+          component={FileUpload}
+          addFileStart={() => setUploading(true)}
+          onAbort={() => setUploading(false)}
+          uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
+          acceptedFileTypesMap={{ ...PDF }}
+          labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+          allowRevert
+          onprocessfiles={() => setUploading(false)}
+        />
         <Typography.Title level={4} className="margin-large--top">
           EOR Term
         </Typography.Title>
