@@ -1,4 +1,5 @@
 import RenderCheckbox from "./RenderCheckbox";
+import RenderGroupCheckbox from "./RenderGroupCheckbox";
 import RenderAutocomplete from "./RenderAutoComplete";
 import RenderAutoSizeField from "./RenderAutoSizeField";
 import RenderCascader from "./RenderCascader";
@@ -19,6 +20,7 @@ import RenderLabel from "./RenderLabel";
 // eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
+  GROUP_CHECK_BOX: RenderGroupCheckbox,
   AUTOCOMPLETE: RenderAutocomplete,
   AUTO_SIZE_FIELD: RenderAutoSizeField,
   CASCADER: RenderCascader,

@@ -75,12 +75,14 @@ class Project(AuditMixin, Base):
                proponent_project_id,
                mrc_review_required,
                contacts=[],
+               project_lead_party_guid = None,
                add_to_session=True):
         project = cls(
             project_title=project_title,
             proponent_project_id=proponent_project_id,
             mine_guid=mine.mine_guid,
-            mrc_review_required=mrc_review_required)
+            mrc_review_required=mrc_review_required,
+            project_lead_party_guid = project_lead_party_guid)
 
         mine.projects.append(project)
         if add_to_session:

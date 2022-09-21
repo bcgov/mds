@@ -65,7 +65,7 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
     data['status_code'] = 'SUB'
-    data['project_summary_lead_party_guid'] = party.party_guid
+    data['project_lead_party_guid'] = party.party_guid
 
     put_resp = test_client.put(
         f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
