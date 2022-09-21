@@ -19,9 +19,12 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(TSFType).isRequired,
+uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+setUploadedFiles: PropTypes.func.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
+    const { mineGuid, uploadedFiles, setUploadedFiles } = props;
   const handleCreateEOR = (value) => {
     props.change(
       FORM.ADD_TAILINGS_STORAGE_FACILITY,
@@ -49,6 +52,28 @@ export const EngineerOfRecord = (props) => {
       },
       content: modalConfig.ADD_CONTACT,
     });
+  };
+
+  const onFileLoad = (documentName, document_manager_guid) => {
+    setUploadedFiles([
+      ...uploadedFiles,
+      {
+        document_name: documentName,
+        document_manager_guid,
+      },
+    ]);
+    props.change(
+      FORM.ADD_TAILINGS_STORAGE_FACILITY,
+      "engineer_of_record.eor_document_guid",
+      document_manager_guid
+    );
+  };
+
+  const onRemoveFile = (_, fileItem) => {
+    setUploadedFiles(
+      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+    );
+    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.eor_document_guid", null);
   };
 
   return (
@@ -102,7 +127,29 @@ export const EngineerOfRecord = (props) => {
             <Typography.Paragraph>No Data</Typography.Paragraph>
           </Row>
         )}
-
+          <div className="margin-large--top margin-large--bottom">
+              <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+              <Typography.Text>
+                  Letter must be officially signed. A notification will be sent to the Mine Manager upon
+                  upload.
+              </Typography.Text>
+          </div>
+          <Form.Item>
+              <Field
+                  name="engineer_of_record.acceptance_letter"
+                  id="engineer_of_record.acceptance_letter"
+                  onFileLoad={onFileLoad}
+                  onRemoveFile={onRemoveFile}
+                  component={FileUpload}
+                  addFileStart={() => setUploading(true)}
+                  onAbort={() => setUploading(false)}
+                  uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
+                  acceptedFileTypesMap={{ ...PDF }}
+                  labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+                  allowRevert
+                  onprocessfiles={() => setUploading(false)}
+              />
+          </Form.Item>
         <Typography.Title level={4} className="margin-large--top">
           EOR Term
         </Typography.Title>
