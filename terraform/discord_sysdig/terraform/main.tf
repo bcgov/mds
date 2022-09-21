@@ -24,15 +24,20 @@ terraform {
 
 provider "aws" {
   region = var.region
-  # assume_role {
-  #   role_arn = "arn:aws:iam::${var.target_aws_account_id}:role/BCGOV_${var.target_env}_Automation_Admin_Role"
-  # }
+  assume_role {
+    role_arn = "arn:aws:iam::${var.target_aws_account_id}:role/BCGOV_${var.target_env}_Automation_Admin_Role"
+  }
 }
 
 ## S3 stuff
 
 resource "random_pet" "lambda_bucket_name" {
   prefix = "discord-notification-store"
+  length = 4
+}
+
+resource "random_pet" "cloud_watch_group_name" {
+  prefix = "cloud_watch_group"
   length = 4
 }
 
@@ -83,7 +88,7 @@ resource "aws_lambda_function" "discord_notify" {
 
 
 resource "aws_cloudwatch_log_group" "discord_notify" {
-  name = "/aws/lambda/${aws_lambda_function.discord_notify.function_name}-${random_pet.lambda_bucket_name.id}"
+  name = "/aws/lambda/${aws_lambda_function.discord_notify.function_name}-${random_pet.cloud_watch_group_name.id}"
 
   # Do not have permissions to remove cloudwatch log groups, so this will require 
   # manual intervention for the time being. Use `terraform state rm` on this resource so
@@ -165,7 +170,7 @@ resource "aws_apigatewayv2_route" "notify" {
 }
 
 resource "aws_cloudwatch_log_group" "api_gw" {
-  name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}-${random_pet.lambda_bucket_name.id}"
+  name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}-${random_pet.cloud_watch_group_name.id}"
 
   lifecycle {
     ignore_changes = [

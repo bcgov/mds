@@ -31,16 +31,11 @@ def lambda_handler(event, context):
     alert = body.get("alert", "")
     event_details =  body.get("event", "")
     condition = body.get("condition", "")
-    timestamp = body.get("timestamp", "")
-    
     entities = body.get("entities", "")
     
     if entities:
       entities = entities[0].get("metricValues", "")
     
-    #TODO: Format timestamp 
-    
-
     # Colour in decimal to associate with severity (0-7). Discord requires this to be decimal
     # Refer to https://docs.sysdig.com/en/docs/sysdig-monitor/events/severity-and-status/
     # for guide to event severity

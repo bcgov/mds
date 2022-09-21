@@ -1,0 +1,333 @@
+{
+  "version": 4,
+  "terraform_version": "1.2.9",
+  "serial": 157,
+  "lineage": "8058293d-20f0-d461-bbcb-203d1473ab04",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "data",
+      "type": "archive_file",
+      "name": "lambda_notification",
+      "provider": "provider[\"registry.terraform.io/hashicorp/archive\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "excludes": null,
+            "id": "edda896323cfa1260596bcaae0486da7c08d58aa",
+            "output_base64sha256": "ZZ7KKX36fBjh8A/Pm5WNCh2KVoAgYo+Azr2Pm85ftZs=",
+            "output_file_mode": null,
+            "output_md5": "56398165f980ffed15a58c343858be18",
+            "output_path": "/home/cwilson/mds/terraform/discord_sysdig/terraform/build/notify.zip",
+            "output_sha": "edda896323cfa1260596bcaae0486da7c08d58aa",
+            "output_size": 1467,
+            "source": [],
+            "source_content": null,
+            "source_content_filename": null,
+            "source_dir": null,
+            "source_file": "/home/cwilson/mds/terraform/discord_sysdig/terraform/build/notify.py",
+            "type": "zip"
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_apigatewayv2_api",
+      "name": "lambda",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "api_endpoint": "https://oyzlwflkv8.execute-api.ca-central-1.amazonaws.com",
+            "api_key_selection_expression": "$request.header.x-api-key",
+            "arn": "arn:aws:apigateway:ca-central-1::/apis/oyzlwflkv8",
+            "body": null,
+            "cors_configuration": [],
+            "credentials_arn": null,
+            "description": "",
+            "disable_execute_api_endpoint": false,
+            "execution_arn": "arn:aws:execute-api:ca-central-1:269488840777:oyzlwflkv8",
+            "fail_on_warnings": null,
+            "id": "oyzlwflkv8",
+            "name": "serverless_lambda_gw",
+            "protocol_type": "HTTP",
+            "route_key": null,
+            "route_selection_expression": "$request.method $request.path",
+            "tags": {},
+            "tags_all": {},
+            "target": null,
+            "version": ""
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "discord_notify",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:logs:ca-central-1:269488840777:log-group:/aws/lambda/DiscordNotify-discord-notification-store-factually-deeply-mutual-mudfish",
+            "id": "/aws/lambda/DiscordNotify-discord-notification-store-factually-deeply-mutual-mudfish",
+            "kms_key_id": "",
+            "name": "/aws/lambda/DiscordNotify-discord-notification-store-factually-deeply-mutual-mudfish",
+            "name_prefix": null,
+            "retention_in_days": 731,
+            "tags": {},
+            "tags_all": {}
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.lambda_exec",
+            "aws_lambda_function.discord_notify",
+            "aws_s3_bucket.lambda_bucket",
+            "aws_s3_object.lambda_notification",
+            "data.archive_file.lambda_notification",
+            "random_pet.lambda_bucket_name"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "lambda_exec",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::269488840777:role/serverless_lambda",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Sid\":\"\"}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2022-09-13T17:23:10Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "serverless_lambda",
+            "inline_policy": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::269488840777:policy/service-role/AWSLambdaTracerAccessExecutionRole-373da513-84de-4d07-8f45-06896f4ca248",
+              "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            ],
+            "max_session_duration": 3600,
+            "name": "serverless_lambda",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": null,
+            "tags": {},
+            "tags_all": {},
+            "unique_id": "AROAT5PWJMBE35FYWJUFP"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lambda_function",
+      "name": "discord_notify",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "architectures": [],
+            "arn": "arn:aws:lambda:ca-central-1:269488840777:function:DiscordNotify",
+            "code_signing_config_arn": "",
+            "dead_letter_config": [],
+            "description": "",
+            "environment": [],
+            "ephemeral_storage": [
+              {
+                "size": 512
+              }
+            ],
+            "file_system_config": [],
+            "filename": null,
+            "function_name": "DiscordNotify",
+            "handler": "notify.lambda_handler",
+            "id": "DiscordNotify",
+            "image_config": [],
+            "image_uri": "",
+            "invoke_arn": "arn:aws:apigateway:ca-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ca-central-1:269488840777:function:DiscordNotify/invocations",
+            "kms_key_arn": "",
+            "last_modified": "2022-09-16T18:47:22.000+0000",
+            "layers": [],
+            "memory_size": 128,
+            "package_type": "Zip",
+            "publish": false,
+            "qualified_arn": "arn:aws:lambda:ca-central-1:269488840777:function:DiscordNotify:$LATEST",
+            "qualified_invoke_arn": "arn:aws:apigateway:ca-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ca-central-1:269488840777:function:DiscordNotify:$LATEST/invocations",
+            "reserved_concurrent_executions": -1,
+            "role": "arn:aws:iam::269488840777:role/serverless_lambda",
+            "runtime": "python3.9",
+            "s3_bucket": "discord-notification-store-factually-deeply-mutual-mudfish",
+            "s3_key": "notify.zip",
+            "s3_object_version": null,
+            "signing_job_arn": "",
+            "signing_profile_version_arn": "",
+            "source_code_hash": "dOjj0t+mJUW9XbOOHh1BNlgASz3zT3Zrpik+5SFkPSc=",
+            "source_code_size": 1368,
+            "tags": {},
+            "tags_all": {},
+            "timeout": 3,
+            "timeouts": null,
+            "tracing_config": [
+              {
+                "mode": "PassThrough"
+              }
+            ],
+            "version": "$LATEST",
+            "vpc_config": []
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9fQ==",
+          "dependencies": [
+            "aws_iam_role.lambda_exec",
+            "aws_s3_bucket.lambda_bucket",
+            "aws_s3_object.lambda_notification",
+            "data.archive_file.lambda_notification",
+            "random_pet.lambda_bucket_name"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "lambda_bucket",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::discord-notification-store-factually-deeply-mutual-mudfish",
+            "bucket": "discord-notification-store-factually-deeply-mutual-mudfish",
+            "bucket_domain_name": "discord-notification-store-factually-deeply-mutual-mudfish.s3.amazonaws.com",
+            "bucket_prefix": null,
+            "bucket_regional_domain_name": "discord-notification-store-factually-deeply-mutual-mudfish.s3.ca-central-1.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": false,
+            "grant": [
+              {
+                "id": "6ae5504f9d75ff943102d068f603401f3bac878a6261ac9acde29df6497f741e",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z1QDHH18159H29",
+            "id": "discord-notification-store-factually-deeply-mutual-mudfish",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "",
+            "region": "ca-central-1",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [],
+            "tags": {},
+            "tags_all": {},
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "random_pet.lambda_bucket_name"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_object",
+      "name": "lambda_notification",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acl": "private",
+            "bucket": "discord-notification-store-factually-deeply-mutual-mudfish",
+            "bucket_key_enabled": false,
+            "cache_control": "",
+            "content": null,
+            "content_base64": null,
+            "content_disposition": "",
+            "content_encoding": "",
+            "content_language": "",
+            "content_type": "binary/octet-stream",
+            "etag": "43fa92c8f215e478a7d2f1797f425549",
+            "force_destroy": false,
+            "id": "notify.zip",
+            "key": "notify.zip",
+            "kms_key_id": null,
+            "metadata": {},
+            "object_lock_legal_hold_status": "",
+            "object_lock_mode": "",
+            "object_lock_retain_until_date": "",
+            "server_side_encryption": "",
+            "source": "/home/cwilson/mds/terraform/discord_sysdig/build/notify.zip",
+            "source_hash": null,
+            "storage_class": "STANDARD",
+            "tags": {},
+            "tags_all": {},
+            "version_id": "",
+            "website_redirect": ""
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_s3_bucket.lambda_bucket",
+            "data.archive_file.lambda_notification",
+            "random_pet.lambda_bucket_name"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "random_pet",
+      "name": "lambda_bucket_name",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "discord-notification-store-factually-deeply-mutual-mudfish",
+            "keepers": null,
+            "length": 4,
+            "prefix": "discord-notification-store",
+            "separator": "-"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ]
+}
