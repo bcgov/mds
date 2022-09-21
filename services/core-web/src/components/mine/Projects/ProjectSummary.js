@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link, Prompt } from "react-router-dom";
 import { submit, getFormValues, getFormSyncErrors, reset, touch } from "redux-form";
 import { flattenObject } from "@common/utils/helpers";
 import { Tabs, Tag } from "antd";
@@ -23,12 +23,12 @@ import {
 import {
   createProjectSummary,
   fetchProjectSummaryById,
+  fetchProjectById,
   updateProjectSummary,
   removeDocumentFromProjectSummary,
 } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
-import { Link, Prompt } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -50,11 +50,13 @@ const propTypes = {
   }).isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   project: CustomPropTypes.project.isRequired,
-  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectSummaryById: PropTypes.func.isRequired,
+  fetchProjectById: PropTypes.func.isRequired,
   projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -114,8 +116,8 @@ export class ProjectSummary extends Component {
     const { projectGuid, projectSummaryGuid, mineGuid, tab } = params;
     if (projectGuid && projectSummaryGuid) {
       return this.props
-        .fetchProjectSummaryById(projectGuid, projectSummaryGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true }))
+        .fetchProjectById(projectGuid)
+        .then(() => this.setState({ isLoaded: true, isValid: true, isNewProject: false }))
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return this.props.fetchMineRecordById(mineGuid).then(() => {
@@ -194,14 +196,11 @@ export class ProjectSummary extends Component {
         message
       )
       .then(({ data: { project_guid, project_summary_guid } }) => {
-        this.props.history.replace(
+        this.props.history.push(
           routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)
         );
-        this.setState({ isNewProject: false });
       })
-      .then(() => {
-        this.handleFetchData(this.props.match.params);
-      });
+      .then(() => this.handleFetchData(this.props.match.params));
   };
 
   handleUpdate = (message) => {
@@ -231,24 +230,6 @@ export class ProjectSummary extends Component {
       .finally(() => this.setState({ isLoaded: true }));
   };
 
-  unSavedChanges = () => {
-    return (
-      <Prompt
-        when={this.props.anyTouched}
-        message={(location, action) => {
-          if (action === "REPLACE") {
-            this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
-          }
-          return this.props.location.pathname !== location.pathname &&
-            !location.pathname.includes("project-description") &&
-            this.props.anyTouched
-            ? "You have unsaved changes. Are you sure you want to leave without saving?"
-            : true;
-        }}
-      />
-    );
-  };
-
   render() {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
@@ -256,7 +237,19 @@ export class ProjectSummary extends Component {
     return (
       (this.state.isLoaded && (
         <>
-          {this.unSavedChanges()}
+          <Prompt
+            when={this.props.anyTouched}
+            message={(location, action) => {
+              if (action === "REPLACE") {
+                this.props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
+              }
+              return this.props.location.pathname !== location.pathname &&
+                !location.pathname.includes("project-description") &&
+                this.props.anyTouched
+                ? "You have unsaved changes. Are you sure you want to leave without saving?"
+                : true;
+            }}
+          />
           <div className="page">
             <div
               className={
@@ -369,7 +362,6 @@ export class ProjectSummary extends Component {
                       }
                       handleSaveData={this.handleSaveData}
                       removeDocument={this.handleRemoveDocument}
-                      unSavedChanges={this.unSavedChanges}
                     />
                   </div>
                 </LoadingWrapper>
@@ -412,6 +404,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       createProjectSummary,
       fetchProjectSummaryById,
+      fetchProjectById,
       updateProjectSummary,
       removeDocumentFromProjectSummary,
       clearProjectSummary,

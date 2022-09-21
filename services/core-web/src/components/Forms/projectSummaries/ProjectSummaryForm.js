@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -35,26 +35,28 @@ import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
-import { normalizePhone, flattenObject } from "@common/utils/helpers";
+import { normalizePhone } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import * as routes from "@/constants/routes";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
-import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
+  project: CustomPropTypes.project.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectLeads: CustomPropTypes.groupOptions.isRequired,
   handleSaveData: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   change: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isNewProject: PropTypes.bool.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -71,6 +73,11 @@ const propTypes = {
   expected_permit_application_date: PropTypes.string,
   expected_draft_irt_submission_date: PropTypes.string,
   expected_permit_receipt_date: PropTypes.string,
+  match: PropTypes.shape({
+    params: {
+      mineGui: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -242,7 +249,6 @@ const renderNestedFields = (code, props) => {
 };
 
 export const ProjectSummaryForm = (props) => {
-  const [isEditingStatus, setIsEditingStatus] = useState(false);
   const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
   const [checked, setChecked] = useState(
     props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
@@ -250,11 +256,11 @@ export const ProjectSummaryForm = (props) => {
 
   const renderProjectDetails = () => {
     const {
-      projectSummary: { project_lead_party_guid },
+      project: { project_lead },
     } = props;
     return (
       <div id="project-details">
-        {!props.isNewProject && !project_lead_party_guid && (
+        {!props.isNewProject && !project_lead && (
           <Alert
             message="This project does not have a Project Lead"
             description={
@@ -272,42 +278,9 @@ export const ProjectSummaryForm = (props) => {
           <div>
             <Typography.Title level={3}>Project details</Typography.Title>
           </div>
-          <div className="right center-mobile">
-            {props.isNewProject && (
-              <>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to leave this page? All unsaved changes will be lost."
-                  onConfirm={() => {
-                    const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-                      props.match?.params?.mineGuid
-                    );
-                    props.history.push(url);
-                    props.unSavedChanges();
-                  }}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button className="full-mobile" type="secondary">
-                    Cancel
-                  </Button>
-                </Popconfirm>
-                <Button
-                  id="project-summary-submit"
-                  className="full-mobile"
-                  type="primary"
-                  htmlType="submit"
-                  loading={props.submitting}
-                  disabled={props.submitting}
-                >
-                  Save Changes
-                </Button>
-              </>
-            )}
-          </div>
         </div>
         {props.initialValues?.status_code && (
-          <Row gutter={16} className={isEditingStatus ? "grey-background" : ""} align="bottom">
+          <Row gutter={16} className={props.isEditMode ? "grey-background" : ""} align="bottom">
             <Col lg={12} md={24}>
               <Form.Item>
                 <Field
@@ -316,40 +289,10 @@ export const ProjectSummaryForm = (props) => {
                   label="Project Stage"
                   component={renderConfig.SELECT}
                   data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
-                  disabled={!isEditingStatus}
+                  disabled={!props.isEditMode}
                 />
               </Form.Item>
             </Col>
-            <AuthorizationWrapper permission={Permission.EDIT_PROJECT_SUMMARIES}>
-              <Col lg={24} md={24} className="padding-sm--bottom">
-                {!isEditingStatus ? (
-                  <Button type="secondary" onClick={() => setIsEditingStatus(true)}>
-                    <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit" />
-                    &nbsp; Edit
-                  </Button>
-                ) : (
-                  <>
-                    <Button
-                      type="secondary"
-                      loading={props.submitting}
-                      onClick={() => setIsEditingStatus(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="primary"
-                      loading={props.submitting}
-                      onClick={(e) => {
-                        props.handleSaveData(e, "Successfully updated the project stage.");
-                        setIsEditingStatus(false);
-                      }}
-                    >
-                      Update
-                    </Button>
-                  </>
-                )}
-              </Col>
-            </AuthorizationWrapper>
           </Row>
         )}
         <Row gutter={16}>
@@ -499,8 +442,8 @@ export const ProjectSummaryForm = (props) => {
           <Col lg={12} md={24}>
             <Form.Item>
               <Field
-                id="project_summary_lead_party_guid"
-                name="project_summary_lead_party_guid"
+                id="project_lead_party_guid"
+                name="project_lead_party_guid"
                 label={<p className="bold">Project Lead</p>}
                 component={renderConfig.SELECT}
                 data={projectLeadData}
@@ -603,8 +546,6 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
-  const errors = Object.keys(flattenObject(props.formErrors));
-  const disabledButton = errors.length > 0;
   return (
     <Form
       layout="vertical"
@@ -615,6 +556,38 @@ export const ProjectSummaryForm = (props) => {
         );
       }}
     >
+      <div className="right center-mobile">
+        {props.isNewProject && (
+          <>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to leave this page? All unsaved changes will be lost."
+              onConfirm={() => {
+                const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
+                  props.match?.params?.mineGuid
+                );
+                props.history.push(url);
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button className="full-mobile" type="secondary">
+                Cancel
+              </Button>
+            </Popconfirm>
+            <Button
+              id="project-summary-submit"
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              loading={props.submitting}
+              disabled={props.submitting}
+            >
+              Save Changes
+            </Button>
+          </>
+        )}
+      </div>
       {renderProjectDetails()}
       <br />
       {renderAuthorizationsInvolved()}
@@ -635,7 +608,6 @@ export const ProjectSummaryForm = (props) => {
                   props.match?.params?.mineGuid
                 );
                 props.history.push(url);
-                props.unSavedChanges();
               }}
               okText="Yes"
               cancelText="No"

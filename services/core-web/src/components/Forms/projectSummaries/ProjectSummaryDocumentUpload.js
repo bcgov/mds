@@ -17,7 +17,6 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  isEditMode: PropTypes.bool.isRequired,
   canRemoveDocuments: PropTypes.bool.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
@@ -52,7 +51,7 @@ export class ProjectSummaryDocumentUpload extends Component {
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     const fileUploadParams = {
-      mineGuid: this.props.isEditMode ? this.props.mineGuid : this.props.match?.params?.mineGuid,
+      mineGuid: this.props.match?.params?.mineGuid,
       projectGuid: this.props.initialValues?.project_guid,
       projectSummaryGuid: this.props.initialValues?.project_summary_guid,
     };
