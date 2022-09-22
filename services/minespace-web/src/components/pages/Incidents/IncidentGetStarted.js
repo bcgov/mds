@@ -1,10 +1,10 @@
 import React from "react";
 import { Col, Row, Typography, Alert } from "antd";
 
-export const IncidentsGetStarted = () => {
+export const IncidentGetStarted = () => {
   return (
     <Row>
-      <Col style={{ marginLeft: "15%" }}>
+      <Col span={16} offset={4}>
         <Typography.Title level={3}>Dangerous Occurence Reporting</Typography.Title>
         <Typography.Paragraph>
           You are required to report all dangerous Occurrence, pursuant to section 1.7.3 of the Code
@@ -52,4 +52,4 @@ export const IncidentsGetStarted = () => {
   );
 };
 
-export default IncidentsGetStarted;
+export default IncidentGetStarted;
