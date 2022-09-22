@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { IncidentsPage } from "@/components/pages/Incidents/IncidentsPage";
+import { IncidentPage } from "@/components/pages/Incidents/IncidentPage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -23,9 +23,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("IncidentsPage", () => {
+describe("IncidentPage", () => {
   it("renders properly", () => {
-    const component = shallow(<IncidentsPage {...props} {...dispatchProps} />);
+    const component = shallow(<IncidentPage {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });
