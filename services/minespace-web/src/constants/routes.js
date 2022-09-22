@@ -11,7 +11,7 @@ import InformationRequirementsTableSuccessPage from "@/components/pages/Project/
 import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
 import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
 import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
-import IncidentsPage from "@/components/pages/Incidents/IncidentsPage";
+import IncidentsPage from "@/components/pages/Incidents/IncidentPage";
 
 export const HOME = {
   route: "/",
