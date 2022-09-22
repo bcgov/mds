@@ -132,6 +132,10 @@ export class ProjectSummary extends Component {
     });
   };
 
+  toggleEditMode = () => {
+    this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
+  };
+
   handleSaveData = (e, message) => {
     e.preventDefault();
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
@@ -211,6 +215,9 @@ export class ProjectSummary extends Component {
       .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.setState((prevState) => ({
+          isEditMode: prevState.isEditMode,
+        }));
       });
   };
 
@@ -339,6 +346,7 @@ export class ProjectSummary extends Component {
                       projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                       isNewProject={this.state.isNewProject}
                       isEditMode={this.state.isEditMode}
+                      toggleEditMode={this.toggleEditMode}
                       initialValues={
                         !this.state.isNewProject
                           ? {
@@ -360,7 +368,9 @@ export class ProjectSummary extends Component {
                               documents: [],
                             }
                       }
+                      reset={this.props.reset}
                       handleSaveData={this.handleSaveData}
+                      handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
                     />
                   </div>

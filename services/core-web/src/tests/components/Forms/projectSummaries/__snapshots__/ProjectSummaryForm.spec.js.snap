@@ -9,7 +9,20 @@ exports[`ProjectSummaryForm renders properly 1`] = `
 >
   <div
     className="right center-mobile"
-  />
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      id="project-summary-submit"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Edit Project Description
+    </Button>
+  </div>
   <div
     id="project-details"
   >
@@ -336,6 +349,9 @@ exports[`ProjectSummaryForm renders properly 1`] = `
           "projectSummaryAuthorizationTypes": Array [],
         }
       }
+      isEditMode={false}
+      isNewProject={false}
+      mineGuid="40fb0ca4-4dfb-4660-a184-6d031a21f3e9"
       project={
         Object {
           "contacts": Array [],

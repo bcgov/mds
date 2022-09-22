@@ -25,6 +25,13 @@ const propTypes = {
       mineGuid: PropTypes.string,
     }),
   }).isRequired,
+  isNewProject: PropTypes.bool,
+  isEditMode: PropTypes.bool,
+};
+
+const defaultProps = {
+  isEditMode: false,
+  isNewProject: false,
 };
 
 export class ProjectSummaryDocumentUpload extends Component {
@@ -51,7 +58,7 @@ export class ProjectSummaryDocumentUpload extends Component {
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     const fileUploadParams = {
-      mineGuid: this.props.match?.params?.mineGuid,
+      mineGuid: this.props.mineGuid,
       projectGuid: this.props.initialValues?.project_guid,
       projectSummaryGuid: this.props.initialValues?.project_summary_guid,
     };
@@ -90,18 +97,19 @@ export class ProjectSummaryDocumentUpload extends Component {
               []
             )}
             removeDocument={this.props.canRemoveDocuments ? this.props.removeDocument : null}
-            isViewOnly={false}
+            isViewOnly={!(this.props.isEditMode || this.props.isNewProject)}
           />
-
-          <Field
-            id="documents"
-            name="documents"
-            onFileLoad={this.onFileLoad}
-            onRemoveFile={this.onRemoveFile}
-            params={fileUploadParams}
-            acceptedFileTypesMap={this.acceptedFileTypesMap}
-            component={ProjectSummaryFileUpload}
-          />
+          {(this.props.isEditMode || this.props.isNewProject) && (
+            <Field
+              id="documents"
+              name="documents"
+              onFileLoad={this.onFileLoad}
+              onRemoveFile={this.onRemoveFile}
+              params={fileUploadParams}
+              acceptedFileTypesMap={this.acceptedFileTypesMap}
+              component={ProjectSummaryFileUpload}
+            />
+          )}
         </Form.Item>
       </>
     );
@@ -109,6 +117,8 @@ export class ProjectSummaryDocumentUpload extends Component {
 }
 
 ProjectSummaryDocumentUpload.propTypes = propTypes;
+ProjectSummaryDocumentUpload.defaultProps = defaultProps;
+
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
   documents: selector(state, "documents"),
