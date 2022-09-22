@@ -68,12 +68,6 @@ BEGIN
 	UPDATE explosives_permit SET mine_guid = _destination_mine_guid
 	WHERE mine_guid = _source_mine_guid AND permit_guid = _permit_guid;
 
-	-- Transfer the records associated with mine reports.
-	RAISE NOTICE 'Transferring records associated with mine reports';
-
-	UPDATE mine_report SET mine_guid = _destination_mine_guid
-	WHERE mine_guid = _source_mine_guid AND permit_id = _permit_id;
-
 	-- Transfer the records associated with Notices of Work.
 	RAISE NOTICE 'Transferring records associated with Notices of Work';
 
@@ -132,6 +126,12 @@ BEGIN
 	RAISE NOTICE 'Transferring records associated with permit amendments';
 
 	UPDATE permit_amendment SET mine_guid = _destination_mine_guid
+	WHERE mine_guid = _source_mine_guid AND permit_id = _permit_id;
+
+	-- Transfer the records associated with mine reports.
+	RAISE NOTICE 'Transferring records associated with mine reports';
+
+	UPDATE mine_report SET mine_guid = _destination_mine_guid
 	WHERE mine_guid = _source_mine_guid AND permit_id = _permit_id;
 
 	RAISE NOTICE 'Successfully transferred all records';
