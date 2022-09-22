@@ -55,7 +55,7 @@ const RenderDate = (props) => (
       value={props.input.value ? moment(props.input.value, props.format) : null}
       defaultOpenValue={moment(props.defaultOpenValue, props.format)}
       format={props.format}
-      className={props.fullWidth && "full"}
+      className={props.fullWidth && "full-width"}
     />
   </Form.Item>
 );
