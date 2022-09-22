@@ -212,7 +212,11 @@ export class ProjectSummary extends Component {
     const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
     const projectGuid = this.props.formValues.project_guid;
     this.props
-      .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
+      .updateProjectSummary(
+        { projectGuid, projectSummaryGuid },
+        this.handleTransformPayload({ ...this.props.formValues }),
+        message
+      )
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
         this.setState((prevState) => ({

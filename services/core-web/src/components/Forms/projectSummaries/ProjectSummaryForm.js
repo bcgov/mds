@@ -232,6 +232,7 @@ const renderNestedFields = (code, props) => {
               </>
             }
             setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
+            disabled={!props.isNewProject && !props.isEditMode}
           />
         </>
       )}
@@ -261,11 +262,11 @@ export const ProjectSummaryForm = (props) => {
 
   const renderProjectDetails = () => {
     const {
-      project: { project_lead },
+      project: { project_lead_party_guid },
     } = props;
     return (
       <div id="project-details">
-        {!props.isNewProject && !project_lead && (
+        {!props.isNewProject && !project_lead_party_guid && (
           <Alert
             message="This project does not have a Project Lead"
             description={
