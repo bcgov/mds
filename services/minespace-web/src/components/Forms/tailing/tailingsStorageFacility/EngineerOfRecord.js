@@ -1,22 +1,26 @@
 import * as FORM from "@/constants/forms";
 import * as PropTypes from "prop-types";
 
-import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
+import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "antd";
 import { Field, change, getFormValues } from "redux-form";
+import React, { useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 
 import ContactDetails from "@/components/common/ContactDetails";
+import FileUpload from "@/components/common/FileUpload";
+import LinkButton from "@/components/common/LinkButton";
+import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
+import { PDF } from "@/constants/fileTypes";
 import { PlusCircleFilled } from "@ant-design/icons";
-import React, { useState } from "react";
 import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { renderConfig } from "@/components/common/config";
 import { required } from "@common/utils/Validate";
-import FileUpload from "@/components/common/FileUpload";
-import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
-import { PDF } from "@/constants/fileTypes";
+import { truncateFilename } from "@common/utils/helpers";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -26,11 +30,29 @@ const propTypes = {
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   setUploadedFiles: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
+const columns = [
+  {
+    title: "File Name",
+    dataIndex: "document_name",
+    render: (text, record) => {
+      return (
+        <div title="File Name" key={record.mine_document_guid}>
+          <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(record)}>
+            {truncateFilename(text)}
+          </LinkButton>
+        </div>
+      );
+    },
+  },
+];
+
 export const EngineerOfRecord = (props) => {
-  const { mineGuid, uploadedFiles, setUploadedFiles } = props;
+  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships } = props;
   const [, setUploading] = useState(false);
+  const [currentEor, setCurrentEor] = useState(null);
   const handleCreateEOR = (value) => {
     props.change(
       FORM.ADD_TAILINGS_STORAGE_FACILITY,
@@ -47,6 +69,17 @@ export const EngineerOfRecord = (props) => {
     );
     props.closeModal();
   };
+
+  useEffect(() => {
+    if (partyRelationships.length > 0) {
+      const activeEor = partyRelationships.find(
+        (eor) => eor.party_guid === props.formValues?.engineer_of_record?.party_guid
+      );
+      if (activeEor) {
+        setCurrentEor(activeEor);
+      }
+    }
+  }, [partyRelationships]);
 
   const openCreateEORModal = (event) => {
     event.preventDefault();
@@ -133,6 +166,20 @@ export const EngineerOfRecord = (props) => {
             <Typography.Paragraph>No Data</Typography.Paragraph>
           </Row>
         )}
+        {currentEor && currentEor.documents.length > 0 && (
+          <div>
+            <Typography.Title level={4} className="margin-large--top">
+              Uploaded Documents
+            </Typography.Title>
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={currentEor.documents}
+              locale={{ emptyText: "This EoR does not currently have any documents" }}
+            />
+          </div>
+        )}
         <div className="margin-large--top margin-large--bottom">
           <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
           <Typography.Text>
@@ -196,6 +243,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
+  partyRelationships: getPartyRelationships(state),
 });
 
 EngineerOfRecord.propTypes = propTypes;

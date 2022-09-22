@@ -16,6 +16,11 @@ import {
 } from "@common/actionCreators/partiesActionCreator";
 import { bindActionCreators, compose } from "redux";
 import { clearTsf, storeTsf } from "@common/actions/tailingsActions";
+import {
+  createTailingsStorageFacility,
+  fetchMineRecordById,
+  updateTailingsStorageFacility,
+} from "@common/actionCreators/mineActionCreator";
 import { flattenObject, resetForm } from "@common/utils/helpers";
 import { getFormSyncErrors, getFormValues, reduxForm, submit, touch } from "redux-form";
 
@@ -33,11 +38,6 @@ import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
-import {
-  createTailingsStorageFacility,
-  fetchMineRecordById,
-  updateTailingsStorageFacility,
-} from "../../../../common/actionCreators/mineActionCreator";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -106,20 +106,18 @@ export const TailingsSummaryPage = (props) => {
   }, []);
 
   const handleAddDocuments = async (minePartyApptGuid) => {
-    console.log(minePartyApptGuid);
-    if (uploadedFiles.length > 55550) {
-      await Promise.all(
-        uploadedFiles.forEach((document) =>
-          props.addDocumentToRelationship(
-            { mineGuid: match.params.mineGuid, minePartyApptGuid },
-            {
-              document_name: document.document_name,
-              document_manager_guid: document.document_manager_guid,
-            }
-          )
+    await Promise.all(
+      uploadedFiles.forEach((document) =>
+        props.addDocumentToRelationship(
+          { mineGuid: match.params.mineGuid, minePartyApptGuid },
+          {
+            document_name: document.document_name,
+            document_manager_guid: document.document_manager_guid,
+          }
         )
-      );
-    }
+      )
+    );
+    setUploadedFiles([]);
   };
 
   const handleSaveData = async (e, newActiveTab) => {
@@ -139,10 +137,6 @@ export const TailingsSummaryPage = (props) => {
         if (tsfGuid) {
           props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
         } else {
-          if (uploadedFiles.length > 0) {
-            // TODO: confirm origin of mine_party_appt_guid
-            await handleAddDocuments(formValues.mine_party_appt_guid);
-          }
           const newTsf = await props.createTailingsStorageFacility(
             match.params.mineGuid,
             formValues
@@ -161,7 +155,7 @@ export const TailingsSummaryPage = (props) => {
       case "engineer-of-record":
         if (!formValues.engineer_of_record.mine_party_appt_guid) {
           // Only add party relationship if changed
-          props.addPartyRelationship({
+          const relationship = await props.addPartyRelationship({
             mine_guid: match.params.mineGuid,
             party_guid: formValues.engineer_of_record.party_guid,
             mine_party_appt_type_code: "EOR",
@@ -170,6 +164,9 @@ export const TailingsSummaryPage = (props) => {
             end_date: formValues.engineer_of_record.end_date,
             end_current: !!formValues.engineer_of_record.mine_party_appt_guid,
           });
+          if (uploadedFiles.length > 0) {
+            await handleAddDocuments(relationship.data.mine_party_appt_guid);
+          }
         }
 
         break;
@@ -182,12 +179,10 @@ export const TailingsSummaryPage = (props) => {
     const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     let url;
 
-    // handleSaveData(null, newActiveTab, tab);
-    // if (match.params.tab === "basic-information" && !tsfGuid) {
-    //   // const newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
-    //   handleSaveData(null, newActiveTab);
-    // }
-    if (match.params.tab === "basic-information" && !tsfGuid) {
+    if (
+      (match.params.tab === "basic-information" && !tsfGuid) ||
+      match.params.tab === "engineer-of-record"
+    ) {
       handleSaveData(null, newActiveTab);
     }
     if (tailingsStorageFacilityGuid) {
