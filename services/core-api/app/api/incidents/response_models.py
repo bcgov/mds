@@ -89,7 +89,13 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
+        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL)),
+        'immediate_measures_taken': fields.String,
+        'injuries_description': fields.String,
+        'johsc_worker_rep_name': fields.String,
+        'johsc_worker_rep_contacted': fields.Boolean,
+        'johsc_management_rep_name': fields.String,
+        'johsc_management_rep_contacted': fields.Boolean
     })
 
 MINE_INCIDENT_NOTE_MODEL = api.model(

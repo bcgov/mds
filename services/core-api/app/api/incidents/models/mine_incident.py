@@ -1,4 +1,5 @@
-import uuid, datetime
+import uuid
+import datetime
 from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -54,6 +55,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     mms_insp_cd = db.Column(db.String)
 
+    immediate_measures_taken = db.Column(db.String)
+    injuries_description = db.Column(db.String)
+    johsc_worker_rep_name = db.Column(db.String(255))
+    johsc_worker_rep_contacted = db.Column(db.Boolean)
+    johsc_management_rep_name = db.Column(db.String(255))
+    johsc_management_rep_contacted = db.Column(db.Boolean)
+
     reported_to_inspector_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
     responsible_inspector_party_guid = db.Column(
@@ -100,8 +108,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     recommendations = db.relationship(
         'MineIncidentRecommendation',
-        primaryjoin=
-        "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
+        primaryjoin="and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
@@ -110,8 +117,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='joined',
         secondary='mine_incident_document_xref',
-        secondaryjoin=
-        'and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
     )
 
     categories = db.relationship(
@@ -120,8 +126,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         'MineIncidentNote',
         backref='mine_incident',
         lazy='select',
-        primaryjoin=
-        'and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
+        primaryjoin='and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
     )
 
     mine_table = db.relationship('Mine', lazy='joined')
