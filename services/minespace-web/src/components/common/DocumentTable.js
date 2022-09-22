@@ -21,6 +21,7 @@ const propTypes = {
   deletePayload: PropTypes.objectOf(PropTypes.string),
   // eslint-disable-next-line react/no-unused-prop-types
   documentColumns: PropTypes.arrayOf(PropTypes.string),
+  deletePermission: PropTypes.string,
 };
 
 const defaultProps = {
@@ -28,7 +29,15 @@ const defaultProps = {
   handleDeleteDocument: () => {},
   deletePayload: {},
   documentColumns: [],
+  deletePermission: null,
 };
+
+const deleteEnabledDocumentParents = [
+  "Major Mine Application",
+  "Information Requirements Table",
+  "Project Description",
+  "Mine Incident",
+];
 
 export const DocumentTable = (props) => {
   const columns = [
@@ -59,29 +68,26 @@ export const DocumentTable = (props) => {
     render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
   };
 
-  // TODO: If this continues to grow, refactor and pass special columns in from parent
-  if (
-    props.documentParent === "Major Mine Application" ||
-    props.documentParent === "Information Requirements Table" ||
-    props.documentParent === "Project Description"
-  ) {
+  const canDeleteDocuments =
+    props?.deletePayload &&
+    props?.handleDeleteDocument &&
+    props?.deletePermission &&
+    deleteEnabledDocumentParents.includes(props.documentParent);
+  if (canDeleteDocuments) {
     columns[0] = {
       title: "File Name",
       dataIndex: "document_name",
       render: (text, record) => {
         const { mine_document_guid } = record;
-        const { projectGuid, majorMineApplicationGuid } = props?.deletePayload || {};
+        const _deletePayload = { ...props.deletePayload, mineDocumentGuid: mine_document_guid };
         return (
           <div key={record?.mine_document_guid}>
             <DocumentLink
               documentManagerGuid={record.document_manager_guid}
               documentName={record.document_name}
               handleDelete={props.handleDeleteDocument}
-              deletePayload={{
-                projectGuid,
-                majorMineApplicationGuid,
-                mineDocumentGuid: mine_document_guid,
-              }}
+              deletePayload={_deletePayload}
+              deletePermission={props?.deletePermission}
             />
           </div>
         );

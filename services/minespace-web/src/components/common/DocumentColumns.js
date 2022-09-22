@@ -37,4 +37,10 @@ export const importedByColumn = (importedByIndex) => {
   };
 };
 
-export default uploadDateColumn;
+export const uploadedByColumn = (title, uploadedByIndex) => {
+  return {
+    title: title,
+    dataIndex: uploadedByIndex,
+    render: (text) => (text ? <div title={title}>{text}</div> : null),
+  };
+};

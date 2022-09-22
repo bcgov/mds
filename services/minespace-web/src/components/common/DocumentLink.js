@@ -3,20 +3,24 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Dropdown, Menu } from "antd";
-import { DownOutlined, DownloadOutlined, FileOutlined } from "@ant-design/icons";
+import { DownOutlined, DownloadOutlined, FileOutlined, DeleteOutlined } from "@ant-design/icons";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
   documentName: PropTypes.string.isRequired,
   openDocument: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClickAlternative: PropTypes.func,
   linkTitleOverride: PropTypes.string,
   truncateDocumentName: PropTypes.bool,
   handleDelete: PropTypes.func,
   deletePayload: PropTypes.objectOf(PropTypes.string),
+  deletePermission: PropTypes.oneOf([PropTypes.string, PropTypes.bool]),
 };
 
 const defaultProps = {
@@ -57,6 +61,10 @@ export const DocumentLink = (props) => {
 
   const linkOnClick = openInDocumentViewerOnClick || downloadOnClick;
 
+  const canDeleteFile =
+    (typeof props?.deletePermission === "boolean" && props.deletePermission) ||
+    props.userRoles.includes(USER_ROLES[props?.deletePermission]);
+
   const onClickMenu = (event) => {
     switch (event.key) {
       case "download":
@@ -82,6 +90,11 @@ export const DocumentLink = (props) => {
           <Menu.Item key="download" icon={<DownloadOutlined />}>
             Download
           </Menu.Item>
+          {canDeleteFile && (
+            <Menu.Item key="delete" icon={<DeleteOutlined />}>
+              Delete
+            </Menu.Item>
+          )}
         </Menu>
       }
     >
@@ -98,6 +111,10 @@ export const DocumentLink = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  userRoles: getUserAccessData(state),
+});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -109,4 +126,4 @@ const mapDispatchToProps = (dispatch) =>
 DocumentLink.propTypes = propTypes;
 DocumentLink.defaultProps = defaultProps;
 
-export default connect(null, mapDispatchToProps)(DocumentLink);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentLink);
