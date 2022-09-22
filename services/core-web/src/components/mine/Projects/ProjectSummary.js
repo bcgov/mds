@@ -216,7 +216,7 @@ export class ProjectSummary extends Component {
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
         this.setState((prevState) => ({
-          isEditMode: prevState.isEditMode,
+          isEditMode: !prevState.isEditMode,
         }));
       });
   };
