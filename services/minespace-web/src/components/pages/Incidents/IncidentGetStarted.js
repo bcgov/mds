@@ -1,5 +1,7 @@
 import React from "react";
 import { Col, Row, Typography, Alert } from "antd";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 
 export const IncidentGetStarted = () => {
   return (
@@ -52,4 +54,5 @@ export const IncidentGetStarted = () => {
   );
 };
 
-export default IncidentGetStarted;
+// ENV FLAG FOR MINE INCIDENTS //
+export default AuthorizationGuard(Permission.IN_TESTING)(IncidentGetStarted);
