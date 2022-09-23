@@ -16,6 +16,7 @@ exports[`DocumentsPage renders properly 1`] = `
   >
     <DocumentTable
       deletePayload={Object {}}
+      deletePermission={null}
       documentColumns={
         Array [
           Object {

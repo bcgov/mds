@@ -169,6 +169,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
     </Title>
     <DocumentTable
       deletePayload={Object {}}
+      deletePermission={null}
       documentColumns={
         Array [
           Object {

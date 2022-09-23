@@ -35,6 +35,7 @@ exports[`DocumentUpload renders properly 1`] = `
     </Row>
     <DocumentTable
       deletePayload={Object {}}
+      deletePermission={null}
       documentColumns={
         Array [
           Object {
