@@ -71,8 +71,8 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('injuries_description', type=str, location='json')
     parser.add_argument('johsc_worker_rep_name', type=str, location='json')
     parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
-    parser.add_argument('johsc_worker_management_name', type=str, location='json')
-    parser.add_argument('johsc_worker_management_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_management_rep_name', type=str, location='json')
+    parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -134,8 +134,8 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.injuries_description = data.get('injuries_description')
         incident.johsc_worker_rep_name = data.get('johsc_worker_rep_name')
         incident.johsc_worker_rep_contacted = data.get('johsc_worker_rep_contacted')
-        incident.johsc_worker_management_name = data.get('johsc_worker_management_name')
-        incident.johsc_worker_management_contacted = data.get('johsc_worker_management_contacted')
+        incident.johsc_management_rep_name = data.get('johsc_management_rep_name')
+        incident.johsc_management_rep_contacted = data.get('johsc_management_rep_contacted')
 
         incident.status_code = data.get('status_code')
 

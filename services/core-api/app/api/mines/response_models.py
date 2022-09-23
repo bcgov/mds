@@ -434,6 +434,7 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
         'mine_guid': fields.String,
+        'mine_name': fields.String,
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
         'reported_timestamp': DateTime,
