@@ -229,12 +229,18 @@ export class IncidentPage extends Component {
     return dateString && time && `${dateString} ${time.format("HH:mm")}`;
   };
 
-  formatPayload = (values) => ({
-    ...values,
-    updated_documents: values?.initial_notification_documents,
-    incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
-    mine_determination_type_code: values?.mine_determination_type_code ? "DO" : "NDO",
-  });
+  formatPayload = (values) => {
+    let mineDeterminationTypeCode = null;
+    if (typeof values?.mine_determination_type_code === "boolean") {
+      mineDeterminationTypeCode = values.mine_determination_type_code ? "DO" : "NDO";
+    }
+    return {
+      ...values,
+      updated_documents: values?.initial_notification_documents,
+      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
+      mine_determination_type_code: mineDeterminationTypeCode,
+    };
+  };
 
   formatInitialValues = (incident) => ({
     ...incident,
@@ -244,8 +250,6 @@ export class IncidentPage extends Component {
     mine_determination_type_code: incident?.mine_determination_type_code
       ? incident.mine_determination_type_code === "DO"
       : null,
-    determination_type_code: incident?.determination_type_code ?? "PEN",
-    status_code: incident?.status_code ?? "PRE",
   });
 
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
