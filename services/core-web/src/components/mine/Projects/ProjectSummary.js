@@ -132,6 +132,10 @@ export class ProjectSummary extends Component {
     });
   };
 
+  toggleEditMode = () => {
+    this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
+  };
+
   handleSaveData = (e, message) => {
     e.preventDefault();
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
@@ -208,9 +212,16 @@ export class ProjectSummary extends Component {
     const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
     const projectGuid = this.props.formValues.project_guid;
     this.props
-      .updateProjectSummary({ projectGuid, projectSummaryGuid }, this.props.formValues, message)
+      .updateProjectSummary(
+        { projectGuid, projectSummaryGuid },
+        this.handleTransformPayload({ ...this.props.formValues }),
+        message
+      )
       .then(() => {
         this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.setState((prevState) => ({
+          isEditMode: !prevState.isEditMode,
+        }));
       });
   };
 
@@ -339,6 +350,7 @@ export class ProjectSummary extends Component {
                       projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
                       isNewProject={this.state.isNewProject}
                       isEditMode={this.state.isEditMode}
+                      toggleEditMode={this.toggleEditMode}
                       initialValues={
                         !this.state.isNewProject
                           ? {
@@ -360,7 +372,9 @@ export class ProjectSummary extends Component {
                               documents: [],
                             }
                       }
+                      reset={this.props.reset}
                       handleSaveData={this.handleSaveData}
+                      handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
                     />
                   </div>
