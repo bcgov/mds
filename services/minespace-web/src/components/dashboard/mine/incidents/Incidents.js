@@ -97,6 +97,7 @@ export class Incidents extends Component {
               style={{ display: "inline", float: "right" }}
               type="primary"
               onClick={(event) =>
+                // ENV FLAG FOR MINE INCIDENTS //
                 IN_PROD()
                   ? this.openCreateIncidentModal(event)
                   : this.props.history.push({
