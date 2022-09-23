@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
 import { debounce } from "lodash";
+import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
 
 import {
   required,
@@ -23,7 +24,7 @@ import { normalizePhone } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { party as PartyPropType } from "@/customPropTypes/parties";
+import { party as PartyPropType, partyRelationshipType } from "@/customPropTypes/parties";
 
 const propTypes = {
   createParty: PropTypes.func.isRequired,
@@ -37,6 +38,7 @@ const propTypes = {
   formValues: PropTypes.objectOf(PartyPropType).isRequired,
   organizations: PropTypes.arrayOf(PartyPropType).isRequired,
   contacts: PropTypes.arrayOf(PartyPropType),
+  partyRelationshipTypesList: PropTypes.arrayOf(partyRelationshipType).isRequired,
 
   // eslint-disable-next-line react/no-unused-prop-types
   initialValues: PropTypes.objectOf(PartyPropType).isRequired,
@@ -98,10 +100,6 @@ export const AddContactFormDetails = (props) => {
   useEffect(() => {
     searchOrganizations("");
   }, []);
-
-  const selectOrganization = (org) => {
-    console.log("selected", org);
-  };
 
   const transformOrganizations = (orgs) =>
     Object.values(orgs).map((org) => ({
@@ -169,20 +167,25 @@ export const AddContactFormDetails = (props) => {
         </Col>
         <Col span={12}>
           <Form.Item label="Job Title (optional)">
-            <Field name="job_title" id="job_title" component={renderConfig.FIELD} />
+            <Field
+              id="job_title_code"
+              name="job_title_code"
+              placeholder="Select a job title"
+              component={renderConfig.SELECT}
+              data={props.partyRelationshipTypesList}
+              validate={[validateSelectOptions(props.partyRelationshipTypesList)]}
+            />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item label="Company name (optional)">
             <Field
-              id="company_name"
-              name="company_name"
+              id="organization_guid"
+              name="organization_guid"
               component={renderConfig.AUTOCOMPLETE}
               placeholder="Search organizations"
               data={transformOrganizations(props.organizations)}
               handleChange={searchOrganizations}
-              handleSelect={selectOrganization}
-              // iconColor={antIconGrey}
             />
           </Form.Item>
         </Col>
@@ -259,6 +262,7 @@ const mapDispatchToProps = (dispatch) =>
 const mapStateToProps = (state) => ({
   isDirty: isDirty(FORM.ADD_CONTACT)(state),
   formValues: getFormValues(FORM.ADD_CONTACT)(state),
+  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
   organizations: getParties(state),
 });
 

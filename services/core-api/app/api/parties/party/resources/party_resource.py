@@ -104,6 +104,11 @@ class PartyResource(Resource, UserMixin):
         store_missing=False,
         help='The job title of the party. Ex "Chief of Inspections"')
     parser.add_argument(
+        'job_title_code',
+        type=str,
+        store_missing=False,
+        help='The "job title role" of the party. Eg. EOR')
+    parser.add_argument(
         'postnominal_letters',
         type=str,
         store_missing=False,
@@ -143,6 +148,20 @@ class PartyResource(Resource, UserMixin):
         'signature',
         type=str,
         store_missing=False,
+    )
+
+    parser.add_argument(
+        'organization_guid',
+        type=str,
+        store_missing=False,
+        help='GUID of Party (organization) this party should be associated with'
+    )
+
+    parser.add_argument(
+        'organization_guid',
+        type=str,
+        store_missing=False,
+        help='GUID of Party (organization) this party should be associated with'
     )
 
     PARTY_LIST_RESULT_LIMIT = 25

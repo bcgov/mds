@@ -84,6 +84,16 @@ class PartyListResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         help='The job title of the party. Ex "Chief of Inspections"')
+    parser.add_argument(
+        'job_title_code',
+        type=str,
+        store_missing=False,
+        help='The "job title role" of the party. Eg. EOR')
+    parser.add_argument(
+        'organization_guid',
+        type=str,
+        store_missing=False,
+        help='GUID of Party (organization) this party should be associated with')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -101,7 +111,7 @@ class PartyListResource(Resource, UserMixin):
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field': 'enum[party_name] Default: party_name',
             'sort_dir': 'enum[asc, desc] Default: asc',
-            'business_role': 'A business role or roles to filter on'
+            'business_role': 'A business role or roles to filter on',
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
@@ -164,6 +174,8 @@ class PartyListResource(Resource, UserMixin):
             phone_ter_ext=data.get('phone_ter_ext'),
             email_sec=data.get('email_sec'),
             job_title=data.get('job_title'),
+            job_title_code=data.get('job_title_code'),
+            organization_guid=data.get('organization_guid'),
             add_to_session=True)
 
         if not party:

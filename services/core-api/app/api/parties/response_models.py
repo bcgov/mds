@@ -96,6 +96,13 @@ PARTY_BUSINESS_ROLE_APPT = api.model(
         'end_date': fields.DateTime,
     })
 
+ORGANIZATION = api.model(
+    'Party', {
+        'party_guid': fields.String,
+        'party_name': fields.String,
+    }
+)
+
 # NOTE: Including the signature could impact performance if it is not required for every party request (and just inspector requests).
 PARTY = api.model(
     'Party', {
@@ -115,12 +122,15 @@ PARTY = api.model(
         'address': fields.List(fields.Nested(ADDRESS)),
         'mine_party_appt': fields.Nested(MINE_PARTY_APPT),
         'job_title': fields.String,
+        'job_title_code': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
         'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
         'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
         'signature': fields.String,
         'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),
+        'organization_guid': fields.String,
+        'organization': fields.Nested(ORGANIZATION, skip_none=True)
     })
 
 PAGINATED_LIST = api.model(

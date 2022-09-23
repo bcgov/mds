@@ -5,7 +5,7 @@ from sqlalchemy import func, case, and_
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, backref
 
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -31,10 +31,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     address = db.relationship('Address', lazy='joined')
     job_title = db.Column(db.String)
+    job_title_code = db.Column(db.String, db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     postnominal_letters = db.Column(db.String)
     idir_username = db.Column(db.String)
     signature = db.Column(db.String)
     merged_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    organization_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
     mine_party_appt = db.relationship(
         'MinePartyAppointment',
@@ -59,6 +61,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     party_orgbook_entity = db.relationship(
         'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
+
+    organization = db.relationship(
+        'Party',
+        lazy='select',
+        uselist=False,
+        remote_side=[party_guid],
+        foreign_keys=[organization_guid])
 
     @hybrid_property
     def name(self):
@@ -117,7 +126,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'address': self.address[0].json() if len(self.address) > 0 else [{}],
             'job_title': self.job_title,
             'postnominal_letters': self.postnominal_letters,
-            'idir_username': self.idir_username
+            'idir_username': self.idir_username,
+            'organization_guid': str(self.organization_guid),
+            'job_title_code': str(self.job_title_code)
         }
 
         if self.party_type_code == 'PER':
@@ -130,7 +141,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                 'mine_party_appt': [item.json() for item in self.mine_party_appt],
             })
 
+        if self.organization is not None:
+            context.update({
+                'organization': self.organization.json()
+            })
+
         return context
+        
 
     @name.expression
     def name(cls):
@@ -180,6 +197,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                phone_ter_ext=None,
                email_sec=None,
                job_title=None,
+               job_title_code=None,
+               organization_guid=None,
                add_to_session=True):
         Party.validate_phone_no(phone_no)
         party = cls(
@@ -194,7 +213,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             phone_no_ter=phone_no_ter,
             phone_ter_ext=phone_ter_ext,
             email_sec=email_sec,
-            job_title=job_title)
+            job_title=job_title,
+            job_title_code=job_title_code,
+            organization_guid=organization_guid)
         if add_to_session:
             party.save(commit=False)
         return party
@@ -232,6 +253,25 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         if len(party_name) > MAX_NAME_LENGTH:
             raise AssertionError(f'Party name must not exceed {MAX_NAME_LENGTH} characters.')
         return party_name
+
+
+    @validates('organization_guid')
+    def validate_organization_guid(self, key, organization_guid):
+        if not organization_guid:
+            return organization_guid
+
+        if self.party_type_code == 'ORG':
+            raise AssertionError('Cannot associate organization with another organization')
+
+        organization = Party.query.filter_by(party_guid=organization_guid).first()
+
+        if not organization:
+            raise AssertionError('Organization not found')
+        
+        if organization.party_type_code == 'PER':
+            raise AssertionError('Cannot associate Person as Organization')
+
+        return organization_guid
 
     @validates('email')
     def validate_email(self, key, email):
