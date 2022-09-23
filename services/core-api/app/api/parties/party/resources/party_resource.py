@@ -157,13 +157,6 @@ class PartyResource(Resource, UserMixin):
         help='GUID of Party (organization) this party should be associated with'
     )
 
-    parser.add_argument(
-        'organization_guid',
-        type=str,
-        store_missing=False,
-        help='GUID of Party (organization) this party should be associated with'
-    )
-
     PARTY_LIST_RESULT_LIMIT = 25
 
     @api.doc(

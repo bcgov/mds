@@ -143,7 +143,7 @@
     "format:check-all": "prettier --config ../../.prettierrc.json src/*.js && prettier src/**/*.js && prettier --config .prettierrc.json src/**/**/*.js",
     "format:write": "prettier --config ../../.prettierrc.json src/*.js --write",
     "format:write-all": "prettier --config ../../.prettierrc.json src/*.js --write && prettier --config ../../.prettierrc.json src/**/*.js --write && prettier --config ../../.prettierrc.json src/**/**/*.js --write",
-    "test": "jest --env=jsdom --runInBand src/tests/components/Forms/contacts/AddContactForm.spec.js",
+    "test": "jest --env=jsdom --runInBand",
     "test:coverage": "npm test src -- --testResultsProcessor=jest-junit --coverage",
     "test:updateAll": "npm test -- -u",
     "test:watch": "npm test -- --watch"
