@@ -7,7 +7,7 @@ const propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-const AddContactModal = (props) => {
+export const AddContactModal = (props) => {
   const { onSubmit, onCancel } = props;
 
   return <AddContactForm onSubmit={onSubmit} onCancel={onCancel} />;

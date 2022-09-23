@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddContactFormDetails renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <Paragraph>
+        Create a new contact for your organization. New contacts will be accessible accross all of your organizations mines during submission.
+      </Paragraph>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Select Contact"
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          id="party_guid"
+          name="party_guid"
+          onChange={[MockFunction]}
+          placeholder="Select a contact"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={24}
+    >
+      <Divider
+        plain={true}
+        style={
+          Object {
+            "marginTop": 0,
+          }
+        }
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <Title
+        level={5}
+      >
+        Contact Details
+      </Title>
+      <Paragraph>
+        Please enter all contact information for this contact.
+      </Paragraph>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="First Name"
+      >
+        <Field
+          component={[Function]}
+          id="first_name"
+          name="first_name"
+          placeholder="First Name"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Last Name"
+      >
+        <Field
+          component={[Function]}
+          id="party_name"
+          name="party_name"
+          placeholder="Last Name"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Job Title (optional)"
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          id="job_title_code"
+          name="job_title_code"
+          placeholder="Select a job title"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Company name (optional)"
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          handleChange={[Function]}
+          id="organization_guid"
+          name="organization_guid"
+          placeholder="Search organizations"
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={12}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Email"
+      >
+        <Field
+          component={[Function]}
+          id="email"
+          name="email"
+          placeholder="example@example.com"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={8}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Phone Number"
+      >
+        <Field
+          component={[Function]}
+          id="phone_no"
+          name="phone_no"
+          normalize={[Function]}
+          placeholder="XXX-XXX-XXXX"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      span={4}
+    >
+      <FormItem
+        hasFeedback={false}
+        label="Ext. (optional)"
+      >
+        <Field
+          component={[Function]}
+          id="phone_ext"
+          name="phone_ext"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    justify="space-between"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="top"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Create Contact
+    </Button>
+  </Row>
+</Form>
+`;
