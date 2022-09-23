@@ -415,9 +415,10 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.ADD_EDIT_INCIDENT,
     enableReinitialize: true,
   })
-)(withRouter(AuthorizationGuard(Permission.IN_TESTING)(IncidentForm)));
+)(AuthorizationGuard(Permission.IN_TESTING)(IncidentForm));

@@ -584,6 +584,25 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   },
 ];
 
+export const INCIDENT_CATEGORY_CODE_OPTIONS = [
+  {
+    value: "H&S",
+    label: "Health and Safety",
+  },
+  {
+    value: "GTC",
+    label: "Geotechnical",
+  },
+  {
+    value: "ENV",
+    label: "Environmental",
+  },
+  {
+    value: "SPI",
+    label: "Spill",
+  },
+];
+
 export const CONDITIONAL_COMMODITY_OPTIONS = {
   BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
   COL: [
@@ -1044,6 +1063,7 @@ export const INCIDENT = {
   mine_incident_id_year: 2019,
   mine_incident_no: null,
   mine_incident_report_no: "2019-48",
+  mine_name: "Ponderosa",
   mms_inspector_initials: null,
   number_of_fatalities: 0,
   number_of_injuries: 0,
