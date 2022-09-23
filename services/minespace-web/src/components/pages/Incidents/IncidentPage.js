@@ -10,8 +10,9 @@ import {
   reset,
   touch,
   isDirty,
+  destroy,
 } from "redux-form";
-import { Button, Row, Col, Steps, Typography } from "antd";
+import { Button, Row, Col, Steps, Typography, Popconfirm } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -23,21 +24,25 @@ import {
   removeDocumentFromMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 import LinkButton from "@/components/common/LinkButton";
-import DocumentTable from "@/components/common/DocumentTable";
+import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
 import { IncidentGetStarted } from "@/components/pages/Incidents/IncidentGetStarted";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import * as routes from "@/constants/routes";
 
 const propTypes = {
-  // incident: customPropTypes.incident.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  incident: customPropTypes.incident.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   fetchMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
@@ -50,9 +55,10 @@ const propTypes = {
       mine: customPropTypes.mine,
     }),
   }).isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   formIsDirty: PropTypes.bool.isRequired,
 };
 
@@ -65,22 +71,46 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
         {props.formIsDirty && (
           <LinkButton
             style={{ marginRight: "15px" }}
-            onClick={(e) => handlers?.handleSaveData(e, props.formValues)}
+            onClick={(e) => handlers?.save(e, props.formValues)}
             title="Save Draft"
           >
             Save Draft
           </LinkButton>
         )}
-        <Link to={routes.MINE_DASHBOARD.dynamicRoute(props.match.params?.mineGuid, "incidents")}>
+        {props.formIsDirty ? (
+          <Popconfirm
+            placement="topRight"
+            title="You have unsaved work, are you sure you want to navigate away from this page?"
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              id="step-1-cancel"
+              type="secondary"
+              style={{ marginRight: "15px" }}
+              onClick={() =>
+                props.history.push(
+                  routes.MINE_DASHBOARD.dynamicRoute(props.match.params?.mineGuid, "incidents")
+                )
+              }
+            >
+              Cancel
+            </Button>
+          </Popconfirm>
+        ) : (
           <Button
-            id="step-2-cancel"
+            id="step-1-cancel"
             type="secondary"
             style={{ marginRight: "15px" }}
-            onClick={() => {}}
+            onClick={() =>
+              props.history.push(
+                routes.MINE_DASHBOARD.dynamicRoute(props.match.params?.mineGuid, "incidents")
+              )
+            }
           >
             Cancel
           </Button>
-        </Link>
+        )}
         <Button id="step-1-next" type="primary" onClick={() => navigation?.next()}>
           Create Record
         </Button>
@@ -100,7 +130,7 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
         {props.formIsDirty && (
           <LinkButton
             style={{ marginRight: "15px" }}
-            onClick={(e) => handlers?.handleSaveData(e, props.formValues)}
+            onClick={(e) => handlers?.save(e, props.formValues)}
             title="Save Draft"
           >
             Save Draft
@@ -146,6 +176,7 @@ export class IncidentPage extends Component {
 
   componentWillUnmount() {
     this.props.clearMineIncident();
+    this.props.destroy(FORM.ADD_EDIT_INCIDENT);
   }
 
   handleFetchData = () => {
@@ -157,22 +188,33 @@ export class IncidentPage extends Component {
   };
 
   handleCreateMineIncident = (values) => {
+    this.setState({ isLoaded: false });
     return this.props
       .createMineIncident(this.props.match.params?.mineGuid, values)
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
-        this.props.history.replace(
-          routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid)
-        )
+        this.props.history.replace({
+          pathname: routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid),
+          state: { current: 1 },
+        })
       );
   };
 
+  handleUpdateMineIncident = (values) => {
+    const { mineGuid, mineIncidentGuid } = this.props.match.params;
+    this.setState({ isLoaded: false });
+    return this.props
+      .updateMineIncident(mineGuid, mineIncidentGuid, values)
+      .then(() => this.handleFetchData())
+      .then(() => this.setState({ isLoaded: true }));
+  };
+
   handleSaveData = (e, formValues) => {
-    e?.preventDefault();
+    e.preventDefault();
     const incidentExists = Boolean(formValues?.mine_incident_guid);
     if (!incidentExists) {
       return this.handleCreateMineIncident(this.formatPayload(formValues));
     }
-    return;
+    return this.handleUpdateMineIncident(this.formatPayload(formValues));
   };
 
   handleDeleteDocument = ({ mineGuid, mineIncidentGuid, mineDocumentGuid }) =>
@@ -180,8 +222,12 @@ export class IncidentPage extends Component {
       .removeDocumentFromMineIncident(mineGuid, mineIncidentGuid, mineDocumentGuid)
       .then(() => this.handleFetchData());
 
-  formatTimestamp = (dateString, momentInstance) =>
-    dateString && momentInstance && `${dateString} ${momentInstance.format("HH:mm")}`;
+  formatTimestamp = (dateString, time) => {
+    if (!moment.isMoment(time)) {
+      return dateString && time && `${dateString} ${time}`;
+    }
+    return dateString && time && `${dateString} ${time.format("HH:mm")}`;
+  };
 
   formatPayload = (values) => ({
     ...values,
@@ -195,7 +241,11 @@ export class IncidentPage extends Component {
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
     incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
-    mine_determination_type_code: incident?.mine_determination_type_code === "DO",
+    mine_determination_type_code: incident?.mine_determination_type_code
+      ? incident.mine_determination_type_code === "DO"
+      : null,
+    determination_type_code: incident?.determination_type_code ?? "PEN",
+    status_code: incident?.status_code ?? "PRE",
   });
 
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
@@ -203,9 +253,10 @@ export class IncidentPage extends Component {
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
   render() {
-    const mineName = this.props.location.state?.mine?.mine_name || "";
+    const mineName =
+      this.props.formValues?.mine_name ?? this.props.location.state?.mine?.mine_name ?? "";
     const title = `Record a Mine Incident - ${mineName}`;
-    const incidentSubmitted = false;
+    const subTitle = this.state.isEditMode ? "Edit Mine Incident" : "Record New Mine Incident";
 
     const Forms = StepForms(
       this.props,
@@ -216,7 +267,7 @@ export class IncidentPage extends Component {
     );
 
     return (
-      this.state.isLoaded && (
+      (this.state.isLoaded && (
         <>
           <Row>
             <Col span={24}>
@@ -239,14 +290,12 @@ export class IncidentPage extends Component {
           <br />
           <Row>
             <Col span={15}>
-              <Typography.Title level={2}>Record New Mine Incident</Typography.Title>
+              <Typography.Title level={2}>{subTitle}</Typography.Title>
             </Col>
             <Col span={9}>
-              {!incidentSubmitted && (
-                <div style={{ display: "inline", float: "right" }}>
-                  <p>{Forms[this.state.current].buttons}</p>
-                </div>
-              )}
+              <div style={{ display: "inline", float: "right" }}>
+                <p>{Forms[this.state.current].buttons}</p>
+              </div>
             </Col>
           </Row>
           <Row>
@@ -262,17 +311,15 @@ export class IncidentPage extends Component {
               <div>{Forms[this.state.current].content}</div>
             </Col>
           </Row>
-          {!incidentSubmitted && (
-            <Row>
-              <Col span={24}>
-                <div style={{ display: "inline", float: "right" }}>
-                  <p>{Forms[this.state.current].buttons}</p>
-                </div>
-              </Col>
-            </Row>
-          )}
+          <Row>
+            <Col span={24}>
+              <div style={{ display: "inline", float: "right" }}>
+                <p>{Forms[this.state.current].buttons}</p>
+              </div>
+            </Col>
+          </Row>
         </>
-      )
+      )) || <Loading />
     );
   }
 }
@@ -298,8 +345,14 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       touch,
       change,
+      destroy,
     },
     dispatch
   );
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IncidentPage));
+// ENV FLAG FOR MINE INCIDENTS //
+export default withRouter(
+  AuthorizationGuard(Permission.IN_TESTING)(
+    connect(mapStateToProps, mapDispatchToProps)(IncidentPage)
+  )
+);

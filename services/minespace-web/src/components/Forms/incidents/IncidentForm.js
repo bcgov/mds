@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, change, getFormValues } from "redux-form";
-import { remove } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Typography, Divider } from "antd";
@@ -20,9 +19,8 @@ import {
 } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import { getDropdownIncidentCategoryCodeOptions } from "@common/selectors/staticContentSelectors";
-import * as routes from "@/constants/routes";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import DocumentTable from "@/components/common/DocumentTable";
@@ -32,9 +30,11 @@ import customPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "./IncidentFileUpload";
 
 const propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   incident: customPropTypes.incident.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any),
-  handlers: PropTypes.shape({ deleteDocument: PropTypes.func }),
+  // eslint-disable-next-line react/no-unused-prop-types
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: customPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
@@ -341,7 +341,7 @@ const renderUploadInitialNotificationDocuments = (props, handlers, parentHandler
             documents={props.formValues?.documents}
             documentColumns={documentColumns}
             documentParent="Mine Incident"
-            handleDeleteDocument={props.handlers.handleDeleteDocument}
+            handleDeleteDocument={props.handlers.deleteDocument}
             deletePayload={{ mineGuid, mineIncidentGuid }}
             deletePermission
           />
