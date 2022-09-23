@@ -4,11 +4,13 @@ import {
   createMineIncident,
   updateMineIncident,
   fetchMineIncidents,
+  fetchMineIncident,
   fetchIncidents,
   deleteMineIncident,
   fetchMineIncidentNotes,
   createMineIncidentNote,
   deleteMineIncidentNote,
+  removeDocumentFromMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -76,6 +78,37 @@ describe("`fetchMineIncidents` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchMineIncidents(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMineIncident` action creator", () => {
+  const mineGuid = "12345-6789";
+  const mineIncidentGuid = "54321-9876";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineIncident(
+      mineGuid,
+      mineIncidentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchMineIncident(
+      mineGuid,
+      mineIncidentGuid
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -253,6 +286,44 @@ describe("`deleteMineIncidentNote` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`removeDocumentFromMineIncident` action creator", () => {
+  const mineGuid = "12345-6789";
+  const mineIncidentGuid = "9876-54321";
+  const mineDocumentGuid = "1011-12135";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT_DOCUMENT(
+    mineGuid,
+    mineIncidentGuid,
+    mineDocumentGuid
+  )}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return removeDocumentFromMineIncident(
+      mineGuid,
+      mineIncidentGuid,
+      mineDocumentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+    return removeDocumentFromMineIncident(
+      mineGuid,
+      mineIncidentGuid,
+      mineDocumentGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
