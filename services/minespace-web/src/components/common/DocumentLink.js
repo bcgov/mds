@@ -29,6 +29,7 @@ const defaultProps = {
   truncateDocumentName: true,
   handleDelete: () => {},
   deletePayload: {},
+  deletePermission: false,
 };
 
 export const DocumentLink = (props) => {

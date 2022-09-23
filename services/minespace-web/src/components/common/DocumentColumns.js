@@ -39,7 +39,7 @@ export const importedByColumn = (importedByIndex) => {
 
 export const uploadedByColumn = (title, uploadedByIndex) => {
   return {
-    title: title,
+    title,
     dataIndex: uploadedByIndex,
     render: (text) => (text ? <div title={title}>{text}</div> : null),
   };

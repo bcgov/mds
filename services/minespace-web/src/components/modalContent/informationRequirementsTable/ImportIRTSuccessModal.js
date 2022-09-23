@@ -4,7 +4,7 @@ import { Button } from "antd";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
-  navigationLink: PropTypes.string.isRequired,
+  navigateForward: PropTypes.string.isRequired,
 };
 
 export const ImportIRTSuccessModal = (props) => (

@@ -10,8 +10,8 @@ import {
   getDropdownProjectSummaryPermitTypes,
 } from "@common/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
-import { renderConfig } from "@/components/common/config";
 import { requiredRadioButton } from "@common/utils/Validate";
+import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import Callout from "@/components/common/Callout";
 import CustomPropTypes from "@/customPropTypes";

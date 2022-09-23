@@ -79,14 +79,14 @@ export const DocumentTable = (props) => {
       dataIndex: "document_name",
       render: (text, record) => {
         const { mine_document_guid } = record;
-        const _deletePayload = { ...props.deletePayload, mineDocumentGuid: mine_document_guid };
+        const payload = { ...props.deletePayload, mineDocumentGuid: mine_document_guid };
         return (
           <div key={record?.mine_document_guid}>
             <DocumentLink
               documentManagerGuid={record.document_manager_guid}
               documentName={record.document_name}
               handleDelete={props.handleDeleteDocument}
-              deletePayload={_deletePayload}
+              deletePayload={payload}
               deletePermission={props?.deletePermission}
             />
           </div>
