@@ -79,6 +79,10 @@ const Routes = () => (
       path={routes.ADD_MINE_INCIDENT.route}
       component={AuthenticationGuard()(routes.ADD_MINE_INCIDENT.component)}
     />
+    <Route
+      path={routes.MINE_INCIDENT_SUCCESS.route}
+      component={AuthenticationGuard()(routes.MINE_INCIDENT_SUCCESS.component)}
+    />
     {/* 404 - PAGE NOT FOUND */}
     <Route
       render={() => (
