@@ -5,6 +5,24 @@ from tests.factories import PartyFactory
 from app.api.utils.custom_reqparser import DEFAULT_MISSING_REQUIRED
 
 
+def successful_person_data():
+    return {
+        "party_name": "Last",
+        "email": "this@test.com",
+        "phone_no": "123-456-7890",
+        "party_type_code": "PER",
+        "first_name": "First",
+        "suite_no": "1234",
+        "address_line_1": "1234 Foo Street",
+        "address_line_2": "1234 Bar Blvd",
+        "city": "Baz Town",
+        "sub_division_code": "BC",
+        "post_code": "X0X0X0",
+        "address_type_code": "CAN",
+        "job_title_code": "MMG",
+    }
+
+
 # GET
 def test_get_person_not_found(test_client, db_session, auth_headers):
     get_resp = test_client.get(f'/parties/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
@@ -66,20 +84,15 @@ def test_post_person_no_required_phone_no(test_client, db_session, auth_headers)
 
 
 def test_post_person_success(test_client, db_session, auth_headers):
+    organization = PartyFactory(company=True)
+
     test_person_data = {
-        "party_name": "Last",
-        "email": "this@test.com",
-        "phone_no": "123-456-7890",
-        "party_type_code": "PER",
-        "first_name": "First",
-        "suite_no": "1234",
-        "address_line_1": "1234 Foo Street",
-        "address_line_2": "1234 Bar Blvd",
-        "city": "Baz Town",
-        "sub_division_code": "BC",
-        "post_code": "X0X0X0",
-        "address_type_code": "CAN"
+        **successful_person_data(),
+        **{
+            "organization_guid": str(organization.party_guid)
+        }
     }
+
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -89,6 +102,8 @@ def test_post_person_success(test_client, db_session, auth_headers):
     assert post_data['phone_no'] == test_person_data['phone_no']
     assert post_data['party_type_code'] == test_person_data['party_type_code']
     assert post_data['first_name'] == test_person_data['first_name']
+    assert post_data['job_title_code'] == test_person_data['job_title_code']
+    assert post_data['organization_guid'] == test_person_data['organization_guid']
 
     address = post_data['address'][0]
     assert address['suite_no'] == test_person_data['suite_no']
@@ -98,6 +113,11 @@ def test_post_person_success(test_client, db_session, auth_headers):
     assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
+    
+    org_data = post_data['organization']
+
+    assert org_data['party_guid'] == str(organization.party_guid)
+    assert org_data['party_name'] == organization.party_name
 
 
 def test_post_company_success(test_client, db_session, auth_headers):
@@ -145,6 +165,7 @@ def test_put_person_not_found(test_client, db_session, auth_headers):
 
 def test_put_person_success(test_client, db_session, auth_headers):
     party_guid = PartyFactory(person=True).party_guid
+    organization = PartyFactory(company=True)
 
     test_person_data = {
         "party_name": "Changedlast",
@@ -159,7 +180,9 @@ def test_put_person_success(test_client, db_session, auth_headers):
         "sub_division_code": "BC",
         "post_code": "X0X0X0",
         "address_type_code": "CAN",
-        "signature": "base64EncodedLineTemplate"
+        "signature": "base64EncodedLineTemplate",
+        "job_title_code": "MMG",
+        "organization_guid": str(organization.party_guid)
     }
     put_resp = test_client.put(
         f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
@@ -171,6 +194,8 @@ def test_put_person_success(test_client, db_session, auth_headers):
     assert put_data['party_type_code'] == test_person_data['party_type_code']
     assert put_data['first_name'] == test_person_data['first_name']
     assert put_data['signature'] == test_person_data['signature']
+    assert put_data['job_title_code'] == test_person_data['job_title_code']
+    assert put_data['organization_guid'] == str(test_person_data['organization_guid'])
 
     address = put_data['address'][0]
     assert address['suite_no'] == test_person_data['suite_no']
@@ -180,6 +205,11 @@ def test_put_person_success(test_client, db_session, auth_headers):
     assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
+
+    org_data = put_data['organization']
+
+    assert org_data['party_guid'] == str(organization.party_guid)
+    assert org_data['party_name'] == organization.party_name
 
 
 # DELETE
@@ -259,3 +289,71 @@ def test_set_party_to_inspector_not_by_admin_fail(test_client, db_session, auth_
     assert put_resp.status_code == 200
     assert not put_data['signature']
     assert not put_data['business_role_appts']
+
+def test_post_person_org_party_person_fail(test_client, db_session, auth_headers):
+    organization = str(PartyFactory(person=True).party_guid)
+
+    test_person_data = {
+        **successful_person_data(),
+        **{
+            "organization_guid": organization
+        }
+    }
+
+    post_resp = test_client.post(
+        '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
+
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 400
+    assert 'Cannot associate Person as Organization' in post_data['message']
+
+def test_post_missing_organization_party_person_success(test_client, db_session, auth_headers):
+    test_person_data = successful_person_data()
+
+    if 'organization_guid' in test_person_data:
+        del test_person_data['organization_guid']
+
+    post_resp = test_client.post(
+        '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
+
+    assert post_resp.status_code == 200
+
+
+def test_put_person_org_party_person_fail(test_client, db_session, auth_headers):
+    organization = str(PartyFactory(person=True).party_guid)
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        **successful_person_data(),
+        **{
+            "organization_guid": organization
+        }
+    }
+
+    put_resp = test_client.put(
+        f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 400
+    assert 'Cannot associate Person as Organization' in put_data['message']
+
+def test_post_party_organization_org_fail(test_client, db_session, auth_headers):
+    organization = str(PartyFactory(company=True).party_guid)
+
+    test_person_data = {
+        **successful_person_data(),
+        **{
+            "organization_guid": organization,
+            "party_type_code": "ORG"
+        }
+    }
+
+    post_resp = test_client.post(
+        '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
+
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 400
+    assert 'Cannot associate organization with another organization' in post_data['message']

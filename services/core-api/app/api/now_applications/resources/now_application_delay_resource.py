@@ -48,7 +48,7 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         if not now_app:
             raise NotFound('Notice of Work Application not found')
 
-        ##ensure no nothers are already open
+        # ensure no nothers are already open
         if len([d for d in now_app.application_delays if d.end_date == None]) > 0:
             raise BadRequest("Close existing 'open' delay before opening a new one")
 
@@ -93,17 +93,16 @@ class NOWApplicationDelayResource(Resource, UserMixin):
     def put(self, now_application_guid, now_application_delay_guid):
         data = request.json
 
-        ### This block is what was causing the issue when a now progress was being edited and cause the now_application status to revert.
-        ### I am leaving it in in case it is needed down the road but as it stands we could think of a scenario where you could Edit a progress and this was still valid.
+        # function to revert the now status to what it was before the delay was started.
+        def change_now_status(now_app_guid):
+            now_app = NOWApplicationIdentity.find_by_guid(now_app_guid)
+            if not now_app:
+                raise NotFound('Notice of Work Application not found')
 
-        # now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
-        # if not now_app:
-        #     raise NotFound('Notice of Work Application not found')
-
-        # # change NoW status back to previous state
-        # if now_app.now_application is not None:
-        #     now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
-        # now_app.save()
+            # change NoW status back to previous state
+            if now_app.now_application is not None:
+                now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
+            now_app.save()
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
@@ -120,9 +119,15 @@ class NOWApplicationDelayResource(Resource, UserMixin):
             if end_date is not None:
                 if end_date < start_date:
                     raise BadRequest("The end date must be after the start date.")
+                if now_delay.end_date is None:
+                    # if the now_delay.end_date is none than that means we are closing the delay for the first time and the
+                    # NoW status needs to revert.
+                    change_now_status(now_application_guid)
                 now_delay.end_date = dateutil.parser.isoparse(end_date).astimezone(UTC)
         else:
             now_delay.end_date = datetime.now(tz=timezone.utc)
+            # Here we are closing it since we passed the edit check above.
+            change_now_status(now_application_guid)
         now_delay.save()
 
         return now_delay

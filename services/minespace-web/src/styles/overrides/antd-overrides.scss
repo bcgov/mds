@@ -43,10 +43,12 @@
   display: grid;
   padding-left: 10px;
 }
+
 // Divider
 
-.ant-divider {
+.ant-divider:not(.ant-divider-plain) {
   background-color: $primary-color;
+
   &-horizontal {
     height: 3px;
   }
@@ -112,33 +114,34 @@ h5.ant-typography,
 }
 
 // Tabs
-.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
-.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
-.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
-.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom>div>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
   margin-right: 12px;
 }
-.vertical.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
-.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+
+.vertical.ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
   border-bottom: none !important;
 }
 
-.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
-.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+.ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
   border-bottom: 4px solid #124673 !important;
-  color: $white !important;
+  color: $white  !important;
   border: 2px solid transparent;
   font-weight: bold;
 }
 
-.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active,
-.ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
-  background-color: $primary-color !important;
-  color: $white !important;
+.ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active,
+.ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab-active {
+  background-color: $primary-color  !important;
+  color: $white  !important;
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: $white !important;
+  color: $white  !important;
   font-weight: bold;
 }
 
@@ -146,7 +149,7 @@ h5.ant-typography,
 .ant-tabs-tab-remove:focus,
 .ant-tabs-tab-btn:active,
 .ant-tabs-tab-remove:active {
-  color: $white !important;
+  color: $white  !important;
 }
 
 .ant-tabs {
@@ -158,7 +161,7 @@ h5.ant-typography,
 
 .ant-tabs-tab:not(.ant-tabs-tab-active) {
   &:hover {
-    color: $white !important;
+    color: $white  !important;
     background-color: #999 !important;
   }
 }
@@ -170,14 +173,15 @@ h5.ant-typography,
     height: 0px;
     top: 0px;
   }
+
   &.ant-tabs .ant-tabs-tab {
     color: #036;
     text-decoration: underline;
     background-color: white !important;
   }
 
-  &.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
-  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  &.ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
     border-bottom: none !important;
     border-right: 1px solid grey !important;
     height: 70vh;
@@ -194,10 +198,12 @@ h5.ant-typography,
       color: #036 !important;
     }
   }
+
   & .ant-tabs-tab:hover,
   .ant-tabs-tab-btn:hover {
     background-color: #003366 !important;
     color: white !important;
+
     &.ant-tabs-tab-active.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
       color: white !important;
     }
@@ -207,22 +213,25 @@ h5.ant-typography,
     height: 70vh;
 
     &--actions {
+
       .ant-btn,
       a {
         margin-right: 5px;
       }
+
       position: absolute;
       width: 100%;
       bottom: 0;
     }
   }
 
-  &.ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane,
-  .ant-tabs-left > div > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+  &.ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane,
+  .ant-tabs-left>div>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
     overflow: scroll;
     margin-bottom: 50px;
   }
 }
+
 // Tables
 
 .ant-table {
@@ -239,13 +248,13 @@ h5.ant-typography,
   box-shadow: none !important;
 }
 
-.ant-table-container table > thead > tr:first-child th:first-child,
-.ant-table-container table > thead > tr:last-child th:last-child {
+.ant-table-container table>thead>tr:first-child th:first-child,
+.ant-table-container table>thead>tr:last-child th:last-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
 
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
   border-top: 2px solid $primary-color;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
@@ -283,7 +292,7 @@ td a {
 }
 
 tr.ant-table-expanded-row {
-  & .ant-table-thead > tr > th {
+  & .ant-table-thead>tr>th {
     border-top: none;
   }
 
@@ -308,6 +317,7 @@ tr.ant-table-expanded-row {
 }
 
 .ant-descriptions.ant-descriptions-small {
+
   .ant-descriptions-item-content,
   .ant-descriptions-item-label {
     font-size: 14px !important;
@@ -333,19 +343,23 @@ th.ant-descriptions-item.vertical-description {
     border-radius: 0;
     background-clip: border-box;
   }
+
   &-header {
     border: none;
   }
+
   &-title {
     font-weight: bold;
     font-size: $heading-4-size;
   }
+
   // Because we only use a modal wrapper and provide the ok/cancel buttons inside the modal body
   // we need to apply this styling.
   &-body {
     padding-top: 16px;
     padding-bottom: 16px;
   }
+
   &-footer {
     border: none;
     padding: 0;
@@ -371,10 +385,7 @@ th.ant-descriptions-item.vertical-description {
   margin-bottom: 8px;
 }
 
-.ant-steps-item-finish
-  > .ant-steps-item-container
-  > .ant-steps-item-content
-  > .ant-steps-item-title {
+.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
   color: #036;
 }
 
@@ -390,6 +401,7 @@ th.ant-descriptions-item.vertical-description {
     border-bottom: none;
     background: $primary-color;
     color: $white;
+
     &-title {
       text-align: center;
     }
@@ -417,9 +429,10 @@ th.ant-descriptions-item.vertical-description {
 .ant-input-number-disabled,
 .ant-radio-disabled .ant-radio-inner,
 .ant-checkbox-disabled .ant-checkbox-inner {
-  border-color: $disabled-bg !important;
+  border-color: $disabled-bg  !important;
+
   &:hover {
-    border-color: $disabled-bg !important;
+    border-color: $disabled-bg  !important;
   }
 }
 
@@ -432,6 +445,7 @@ th.ant-descriptions-item.vertical-description {
 // Radio
 .ant-radio .ant-radio-inner {
   border: 2px solid $primary-color;
+
   &::after {
     top: 2px;
     left: 2px;
@@ -473,13 +487,15 @@ th.ant-descriptions-item.vertical-description {
 }
 
 // Picker time
-.ant-picker-time-panel-column
-  > li.ant-picker-time-panel-cell-selected
-  .ant-picker-time-panel-cell-inner {
+.ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
   background: $white;
 }
 
 // Picker Input
-.ant-picker-input > input {
+.ant-picker-input>input {
   color: $black;
+}
+
+.ant-popover-message-title {
+  max-width: 400px;
 }

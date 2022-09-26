@@ -4,12 +4,36 @@ exports[`MineProject renders properly 1`] = `
 <div
   className="tab__content"
 >
-  <div>
-    <h2>
-      Major Projects
-    </h2>
-    <br />
+  <div
+    className="inline-flex between"
+  >
+    <div>
+      <h2>
+        Major Projects
+      </h2>
+    </div>
+    <div>
+      <Connect(AuthorizationWrapper)
+        inTesting={true}
+        permission="role_edit_mines"
+      >
+        <Link
+          to="/mines/18145c75-49ad-0101-85f3-a43e45ae989a/project-description/new"
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="primary"
+          >
+            Create New Project
+          </Button>
+        </Link>
+      </Connect(AuthorizationWrapper)>
+    </div>
   </div>
+  <br />
   <div>
     <Connect(MineProjectTable)
       isLoaded={false}

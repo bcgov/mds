@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectSummaryForm";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
 
@@ -16,6 +17,7 @@ const setupProps = () => {
   props.projectSummaryDocumentTypesHash = {};
   props.projectSummaryPermitTypesHash = {};
   props.projectSummaryAuthorizationTypesHash = {};
+  props.project = MOCK.PROJECT;
   props.projectLeads = [
     { groupName: "Active", opt: [] },
     { groupName: "Inactive", opt: [] },

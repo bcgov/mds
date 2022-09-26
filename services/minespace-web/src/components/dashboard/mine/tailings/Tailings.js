@@ -9,11 +9,14 @@ import {
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { resetForm } from "@common/utils/helpers";
+import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
-import * as routes from "@/constants/routes";
 import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
+import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
+import * as FORM from "@/constants/forms";
 import TailingsTable from "./TailingsTable";
 
 const { Paragraph, Title, Text } = Typography;
@@ -24,9 +27,14 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   updateTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  storeTsf: PropTypes.func.isRequired,
+  clearTsf: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
 export const Tailings = (props) => {
+  const history = useHistory();
+  const { mine } = props;
   const handleEditTailings = (values) => {
     return props
       .updateTailingsStorageFacility(
@@ -36,6 +44,25 @@ export const Tailings = (props) => {
       )
       .then(() => props.closeModal())
       .then(() => props.fetchMineRecordById(values.mine_guid));
+  };
+
+  const navigateToEditTailings = async (event, mineTSF) => {
+    event.preventDefault();
+
+    await props.storeTsf(mineTSF);
+    const url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+      mineTSF.mine_tailings_storage_facility_guid,
+      mine.mine_guid
+    );
+    history.push(url);
+  };
+
+  const navigateToCreateTailings = async (event) => {
+    event.preventDefault();
+    resetForm(FORM.ADD_TAILINGS_STORAGE_FACILITY);
+    await props.clearTsf();
+    const url = ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(mine.mine_guid);
+    history.push(url);
   };
 
   const openEditTailingsModal = (event, onSubmit, record) => {
@@ -67,18 +94,17 @@ export const Tailings = (props) => {
           </Col>
           {!IN_PROD() && (
             <Col>
-              <Link to={routes.ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(props.mine.mine_guid)}>
-                <Button type="primary">
-                  <PlusCircleFilled />
-                  Create New Facility
-                </Button>
-              </Link>
+              <Button type="primary" onClick={navigateToCreateTailings}>
+                <PlusCircleFilled />
+                Create New Facility
+              </Button>
             </Col>
           )}
         </Row>
         <Row gutter={[16, 32]}>
           <Col span={24}>
             <TailingsTable
+              editTailings={navigateToEditTailings}
               tailings={props.mine.mine_tailings_storage_facilities}
               openEditTailingsModal={openEditTailingsModal}
               handleEditTailings={handleEditTailings}
@@ -99,6 +125,8 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       updateTailingsStorageFacility,
       fetchMineRecordById,
+      storeTsf,
+      clearTsf,
     },
     dispatch
   );

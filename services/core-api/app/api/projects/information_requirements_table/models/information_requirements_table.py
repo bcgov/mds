@@ -86,7 +86,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
     def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
         if import_file and document_guid:
-            self.status_code = 'PRG'
+            self.status_code = 'DFT'
             for requirement in self.requirements:
                 requirement_to_update = list(
                     filter(
@@ -152,7 +152,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             'project_guid':
             project.project_guid,
             'status_code':
-            'PRG',
+            'DFT',
             'requirements':
             requirements
         })

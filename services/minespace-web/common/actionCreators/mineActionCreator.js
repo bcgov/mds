@@ -3,6 +3,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineActions from "../actions/mineActions";
+import * as tsfActions from "../actions/tailingsActions";
 import * as String from "../constants/strings";
 import * as API from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
@@ -93,7 +94,7 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => 
 
 export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid), payload, createRequestHeader())
     .then((response) => {
@@ -102,18 +103,19 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_TSF));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const updateTailingsStorageFacility = (mineGuid, TSFGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_TSF));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .put(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, payload, createRequestHeader())
     .then((response) => {
@@ -122,13 +124,14 @@ export const updateTailingsStorageFacility = (mineGuid, TSFGuid, payload) => (di
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_TSF));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineRecords = (params) => (dispatch) => {

@@ -88,7 +88,18 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         projectDecisionPackage: {},
       };
-
+    case actionTypes.STORE_PROJECT_VIEW_ALL_TABLE:
+      return {
+        ...state,
+        projects: action.payload.records,
+        projectPageData: action.payload,
+      };
+    case actionTypes.CLEAR_PROJECT_VIEW_ALL_TABLE:
+      return {
+        ...state,
+        projects: {},
+        projectPageData: {},
+      };
     default:
       return state;
   }
@@ -109,5 +120,6 @@ export const getInformationRequirementsTable = (state) =>
   state[PROJECTS].informationRequirementsTable;
 export const getMajorMinesApplication = (state) => state[PROJECTS].majorMinesApplication;
 export const getProjectDecisionPackage = (state) => state[PROJECTS].projectDecisionPackage;
+export const getProjectViewAllTable = (state) => state[PROJECTS].viewAllProjectsPageData;
 
 export default projectReducerObject;

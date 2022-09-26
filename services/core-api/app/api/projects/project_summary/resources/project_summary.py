@@ -57,7 +57,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'project_summary_lead_party_guid',
+        'project_lead_party_guid',
         type=str,
         store_missing=False,
         required=False,
@@ -141,7 +141,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('expected_permit_application_date'),
                                data.get('expected_permit_receipt_date'),
                                data.get('expected_project_start_date'), data.get('status_code'),
-                               data.get('project_summary_lead_party_guid'),
+                               data.get('project_lead_party_guid'),
                                data.get('documents', []), data.get('authorizations',
                                                                    []), submission_date)
 
@@ -153,7 +153,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         # Update project.
         project.update(
             data.get('project_summary_title'), data.get('proponent_project_id'),
-            data.get('project_summary_lead_party_guid'), data.get('mrc_review_required', False),
+            data.get('project_lead_party_guid'), data.get('mrc_review_required', False),
             data.get('contacts', []))
         project.save()
 

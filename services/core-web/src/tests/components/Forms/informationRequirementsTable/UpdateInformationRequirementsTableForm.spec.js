@@ -7,12 +7,12 @@ const props = {};
 
 const setupProps = () => {
   props.handleSubmit = jest.fn();
-  props.formValues = { status_code: "REC" };
+  props.formValues = { status_code: "SUB" };
   props.initialValues = {
-    status_code: "REC",
+    status_code: "SUB",
   };
   props.displayValues = {
-    statusCode: "REC",
+    statusCode: "SUB",
     updateUser: "test",
     updateDate: "Jun 13 2022",
     informationRequirementsTableStatusCodesHash:

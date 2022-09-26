@@ -7,41 +7,49 @@ exports[`TailingsTable renders properly 1`] = `
       Object {
         "dataIndex": "mine_tailings_storage_facility_name",
         "render": [Function],
+        "sorter": [Function],
         "title": "Name",
       },
       Object {
         "dataIndex": "tsf_operating_status_code",
         "render": [Function],
+        "sorter": [Function],
         "title": "Operating Status",
       },
       Object {
         "dataIndex": "consequence_classification_status_code",
         "render": [Function],
+        "sorter": [Function],
         "title": "Consequence Classification",
       },
       Object {
         "dataIndex": "itrb_exemption_status_code",
         "render": [Function],
+        "sorter": [Function],
         "title": "Has Independent Tailings Review Board",
       },
       Object {
         "dataIndex": "engineer_of_record",
         "render": [Function],
+        "sorter": [Function],
         "title": "Engineer of Record",
       },
       Object {
         "dataIndex": "latitude",
         "render": [Function],
+        "sorter": [Function],
         "title": "Latitude",
       },
       Object {
         "dataIndex": "longitude",
         "render": [Function],
+        "sorter": [Function],
         "title": "Longitude",
       },
       Object {
         "dataIndex": "notes",
         "render": [Function],
+        "sorter": [Function],
         "title": "Notes",
       },
       Object {

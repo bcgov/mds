@@ -2,7 +2,7 @@ import uuid
 
 import utm
 from geoalchemy2 import Geometry
-from sqlalchemy import func, literal, select, desc, and_, column, table
+from sqlalchemy import func, literal, select, desc, and_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates, reconstructor
@@ -55,7 +55,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
-        order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
+        order_by='desc(MineTailingsStorageFacility.update_timestamp)',
         lazy='joined')
 
     # Almost always used, but faster to use selectin to load related data

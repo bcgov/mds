@@ -1,14 +1,41 @@
-from sqlalchemy.orm import validates
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.hybrid import hybrid_property
+from enum import Enum
 
-from app.api.utils.models_mixins import AuditMixin, Base
-from app.extensions import db
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
 
 from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
 from app.api.services.email_service import EmailService
+from app.api.utils.models_mixins import AuditMixin, Base
 from app.config import Config
+from app.extensions import db
+
+
+class StorageLocation(Enum):
+    above_ground = "above_ground"
+    below_ground = "below_ground"
+
+    def __str__(self):
+        return self.value
+
+
+class FacilityType(Enum):
+    tailings_storage_facility = "tailings_storage_facility"
+
+    def __str__(self):
+        return self.value
+
+
+class TailingsStorageFacilityType(Enum):
+    conventional = "conventional"
+    dry_stacking = "dry_stacking"
+    pit = "pit"
+    lake = "lake"
+    other = "other"
+
+    def __str__(self):
+        return self.value
 
 
 class MineTailingsStorageFacility(AuditMixin, Base):
@@ -23,6 +50,10 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     itrb_exemption_status_code = db.Column(db.String)
     tsf_operating_status_code = db.Column(db.String)
     notes = db.Column(db.String)
+    storage_location = db.Column(db.Enum(StorageLocation), nullable=True)
+    facility_type = db.Column(db.Enum(FacilityType), nullable=False)
+    tailings_storage_facility_type = db.Column(db.Enum(TailingsStorageFacilityType), nullable=True)
+    mines_act_permit_no = db.Column(db.String(50), nullable=True)
     engineer_of_records = db.relationship(
         'MinePartyAppointment',
         lazy='select',
@@ -57,6 +88,10 @@ class MineTailingsStorageFacility(AuditMixin, Base):
                itrb_exemption_status_code,
                tsf_operating_status_code,
                notes,
+               storage_location,
+               facility_type,
+               tailings_storage_facility_type,
+               mines_act_permit_no,
                add_to_session=True):
         new_tsf = cls(
             mine_tailings_storage_facility_name=mine_tailings_storage_facility_name,
@@ -65,7 +100,12 @@ class MineTailingsStorageFacility(AuditMixin, Base):
             consequence_classification_status_code=consequence_classification_status_code,
             itrb_exemption_status_code=itrb_exemption_status_code,
             tsf_operating_status_code=tsf_operating_status_code,
-            notes=notes)
+            notes=notes,
+            storage_location=storage_location,
+            facility_type=facility_type,
+            tailings_storage_facility_type=tailings_storage_facility_type,
+            mines_act_permit_no=mines_act_permit_no
+        )
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:
             new_tsf.save()
@@ -85,12 +125,12 @@ class MineTailingsStorageFacility(AuditMixin, Base):
             raise AssertionError('No tailings storage facility name provided.')
         if len(mine_tailings_storage_facility_name) > 60:
             raise AssertionError('Mine name must not exceed 60 characters.')
-        #no duplicate TSF names on the same mine
+        # no duplicate TSF names on the same mine
         if (MineTailingsStorageFacility.query.filter_by(mine_guid=self.mine_guid).filter(
                 MineTailingsStorageFacility.mine_tailings_storage_facility_guid !=
                 self.mine_tailings_storage_facility_guid).filter_by(
-                    mine_tailings_storage_facility_name=mine_tailings_storage_facility_name).first(
-                    ) is not None):
+            mine_tailings_storage_facility_name=mine_tailings_storage_facility_name).first(
+        ) is not None):
             raise AssertionError(
                 f'this mine already has a tailings storage facility named: "{mine_tailings_storage_facility_name}"'
             )

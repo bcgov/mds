@@ -10,7 +10,7 @@ const setupProps = () => {
     {
       title: "Project description",
       key: 1,
-      status: "REC",
+      status: "SUB",
       payload: MOCK.PROJECT_SUMMARY,
       statusHash: MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH,
       link: null,

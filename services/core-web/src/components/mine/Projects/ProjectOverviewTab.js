@@ -196,7 +196,7 @@ export class ProjectOverviewTab extends Component {
           <br />
           <Typography.Title level={4}>Project Documents</Typography.Title>
           <DocumentTable
-            documents={documents.reduce(
+            documents={documents?.reduce(
               (docs, doc) => [
                 {
                   key: doc.mine_document_guid,

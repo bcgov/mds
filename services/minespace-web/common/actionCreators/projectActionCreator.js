@@ -201,6 +201,20 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchProjects = (params) => (dispatch) => {
+  const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
+  dispatch(request(reducerTypes.GET_PROJECTS));
+  dispatch(showLoading());
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
+    .get(ENVIRONMENT.apiUrl + API.MAJOR_PROJECT_DASHBOARD(defaultParams), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PROJECTS));
+      dispatch(projectActions.storeProjectViewAllTable(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PROJECT_SUMMARY));
   dispatch(showLoading());

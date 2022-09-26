@@ -17,6 +17,9 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+    paths:
+      - ./services/core-web/**
+      - ./services/minespace-web/**
 
 jobs:
   audit-frontend: # Audit for unused, vulnerable, and missing frontend packages

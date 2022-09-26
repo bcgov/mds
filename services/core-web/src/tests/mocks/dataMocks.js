@@ -6449,6 +6449,52 @@ export const PROJECTS = {
   ],
 };
 
+export const MAJOR_PROJECTS_DASHBOARD = {
+  records: [
+    {
+      stage: "Project Summary",
+      id: 1,
+      guid: "3a8087ac-1046-43cb-b152-613db59fff32",
+      project_title: "Test Project Title",
+      project_id: "1",
+      project_guid: "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
+      mrc_review_required: false,
+      status_code: "SUB",
+      contacts: [
+        {
+          name: "Devin Lucas",
+          job_title: null,
+          company_name: null,
+          email: "fyang@example.org",
+          phone_number: "337-588-3109",
+          phone_extension: null,
+          is_primary: true,
+        },
+      ],
+      update_timestamp: "2022-08-01T00:00:00+00:00",
+      mine: {
+        mine_type: [
+          {
+            mine_type_detail: [
+              {
+                mine_commodity_code: "CG",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};
+
+export const MAJOR_PROJECTS_PAGE_DATA = {
+  records: [MAJOR_PROJECTS_DASHBOARD],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
+};
+
 export const PROJECT = {
   project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
   project_title: "Test Project Title",
@@ -6842,7 +6888,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
   irt_id: 1,
   irt_guid: "9a5a10ce-ead2-4346-8a85-b3320c5b454b",
   project_guid: "fba9b698-6d40-4df1-9914-84008c3c586f",
-  status_code: "REC",
+  status_code: "SUB",
   requirements: [
     {
       irt_requirements_xref_guid: "38c5de09-3aef-4269-b606-e0f6b37f0775",
@@ -6864,8 +6910,8 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
-  PRG: "In Progress",
-  REC: "Pending Review",
+  DFT: "Draft",
+  SUB: "Submitted",
   UNR: "In Review",
   APV: "Review Complete",
   CHR: "Change Requested",
@@ -6873,8 +6919,35 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   {
-    value: "REC",
-    label: "Pending Review",
+    value: "SUB",
+    label: "Submitted",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "UNR",
+    label: "In Review",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "APV",
+    label: "Review Complete",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "CHR",
+    label: "Change Requested",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN = [
+  {
+    value: "SUB",
+    label: "Submitted",
     subType: null,
     isActive: true,
   },
@@ -6902,7 +6975,7 @@ export const MAJOR_MINES_APPLICATION = {
   major_mine_application_id: 1,
   major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
   project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
-  status_code: "REC",
+  status_code: "SUB",
   documents: [
     {
       major_mine_application_id: 1,
@@ -6949,7 +7022,7 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
 
 export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
   DFT: "Draft",
-  REC: "Pending Review",
+  SUB: "Submitted",
   UNR: "In review - with reviewers",
   APV: "Approved",
   CHR: "Change Requested",
@@ -7084,6 +7157,49 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
   ],
 };
 
+export const PROJECT_DECISION_PACKAGE = {
+  project_decision_package_id: 1,
+  project_decision_package_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+  project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
+  status_code: "INP",
+  documents: [
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "DCP",
+      mine_document_guid: "479af6fe-823d-4014-bed1-5133a007c71f",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "0ed74348-c1ed-41d5-a6ad-3e1f42cf0b41",
+      document_name: "decision-document.pdf",
+      upload_date: "2022-07-14T04:32:58.659745+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "ADG",
+      mine_document_guid: "f9b93bd0-e3ac-4bee-918b-3bc82224f2a9",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "5a115b22-2d11-4c6d-b378-fe451389cec0",
+      document_name: "additional-government-document.pdf",
+      upload_date: "2022-07-14T04:32:58.662545+00:00",
+      create_user: "mining@bceid.com",
+    },
+    {
+      project_decision_package_id: 1,
+      project_decision_package_document_type_code: "INM",
+      mine_document_guid: "05463375-aa6d-4461-b7b7-bf4b2001b610",
+      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
+      document_manager_guid: "47465789-2dde-4185-9f3a-92a468ab732f",
+      document_name: "internal-ministry-document.pdf",
+      upload_date: "2022-07-14T04:32:58.663901+00:00",
+      create_user: "mining@bceid.com",
+    },
+  ],
+  update_user: "mining@bceid.com",
+  update_timestamp: "2022-08-31T04:32:58.666528+00:00",
+  create_user: "mining@bceid.com",
+  create_timestamp: "2022-08-31T04:32:58.666414+00:00",
+};
+
 export const ACTIVITIES = {
   data: {
     records: [
@@ -7156,47 +7272,4 @@ export const ACTIVITIES = {
     ],
     total: 3,
   },
-};
-
-export const PROJECT_DECISION_PACKAGE = {
-  project_decision_package_id: 1,
-  project_decision_package_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
-  project_guid: "a383ead7-0c1c-402f-9a6e-6736cb5ce0b5",
-  status_code: "INP",
-  documents: [
-    {
-      project_decision_package_id: 1,
-      project_decision_package_document_type_code: "DCP",
-      mine_document_guid: "479af6fe-823d-4014-bed1-5133a007c71f",
-      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
-      document_manager_guid: "0ed74348-c1ed-41d5-a6ad-3e1f42cf0b41",
-      document_name: "decision-document.pdf",
-      upload_date: "2022-07-14T04:32:58.659745+00:00",
-      create_user: "mining@bceid.com",
-    },
-    {
-      project_decision_package_id: 1,
-      project_decision_package_document_type_code: "ADG",
-      mine_document_guid: "f9b93bd0-e3ac-4bee-918b-3bc82224f2a9",
-      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
-      document_manager_guid: "5a115b22-2d11-4c6d-b378-fe451389cec0",
-      document_name: "additional-government-document.pdf",
-      upload_date: "2022-07-14T04:32:58.662545+00:00",
-      create_user: "mining@bceid.com",
-    },
-    {
-      project_decision_package_id: 1,
-      project_decision_package_document_type_code: "INM",
-      mine_document_guid: "05463375-aa6d-4461-b7b7-bf4b2001b610",
-      mine_guid: "c899ea6b-2e43-49d9-b2ce-6a5b2e8c2816",
-      document_manager_guid: "47465789-2dde-4185-9f3a-92a468ab732f",
-      document_name: "internal-ministry-document.pdf",
-      upload_date: "2022-07-14T04:32:58.663901+00:00",
-      create_user: "mining@bceid.com",
-    },
-  ],
-  update_user: "mining@bceid.com",
-  update_timestamp: "2022-08-31T04:32:58.666528+00:00",
-  create_user: "mining@bceid.com",
-  create_timestamp: "2022-08-31T04:32:58.666414+00:00",
 };

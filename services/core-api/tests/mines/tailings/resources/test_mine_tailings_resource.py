@@ -1,9 +1,7 @@
-import uuid
 import json
-from app.extensions import db
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+import uuid
+
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report import MineReport
 from tests.factories import MineFactory, MineTailingsStorageFacilityFactory
 
 
@@ -27,10 +25,14 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
     }
 
     post_resp = test_client.post(
-        f'/mines/{mine.mine_guid}/tailings', data=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{mine.mine_guid}/tailings', json=data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     assert len(mine.mine_tailings_storage_facilities) == org_mine_tsf_list_len + 1
 
@@ -45,11 +47,15 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
     post_resp = test_client.post(
-        f'/mines/{mine.mine_guid}/tailings', data=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{mine.mine_guid}/tailings', json=data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     assert len(mine.mine_tailings_storage_facilities) == 1
 
@@ -64,11 +70,15 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_requ
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
         'itrb_exemption_status_code': 'YES',
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
     post_resp = test_client.post(
-        f'/mines/{mine.mine_guid}/tailings', data=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{mine.mine_guid}/tailings', json=data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
     assert len(mine.mine_reports) == len(tsf_required_reports)
@@ -82,9 +92,14 @@ def test_put_tailings_storage_facility_not_found(test_client, db_session, auth_h
         'latitude': tsf_updated.latitude,
         'longitude': tsf_updated.longitude,
         'consequence_classification_status_code':
-        tsf_updated.consequence_classification_status_code,
-        'tsf_operating_status_code': tsf_updated.tsf_operating_status_code,
+            tsf_updated.consequence_classification_status_code,
         'itrb_exemption_status_code': tsf_updated.itrb_exemption_status_code,
+        'tsf_operating_status_code': tsf_updated.tsf_operating_status_code,
+        'notes': tsf_updated.notes,
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
     }
 
     put_resp = test_client.put(
@@ -105,9 +120,13 @@ def test_put_tailings_storage_facility_success(test_client, db_session, auth_hea
         'latitude': tsf_updated.latitude,
         'longitude': tsf_updated.longitude,
         'consequence_classification_status_code':
-        tsf_updated.consequence_classification_status_code,
+            tsf_updated.consequence_classification_status_code,
         'tsf_operating_status_code': tsf_updated.tsf_operating_status_code,
         'itrb_exemption_status_code': tsf_updated.itrb_exemption_status_code,
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
     }
 
     put_resp = test_client.put(

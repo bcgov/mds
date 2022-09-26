@@ -5,8 +5,24 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onSubmit={[Function]}
 >
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      id="project-summary-submit"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Edit Project Description
+    </Button>
+  </div>
   <div
     id="project-details"
   >
@@ -28,14 +44,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       type="warning"
     />
     <br />
-    <Title
-      level={3}
-    >
-      Project details
-    </Title>
+    <div>
+      <Title
+        level={3}
+      >
+        Project details
+      </Title>
+    </div>
     <Row
-      align="bottom"
-      className=""
       gutter={16}
     >
       <Col
@@ -47,51 +63,18 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
-            data={Array []}
             disabled={true}
-            id="status_code"
-            label="Project Stage"
-            name="status_code"
+            id="project_summary_title"
+            label="Project title"
+            name="project_summary_title"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
           />
         </FormItem>
-      </Col>
-      <Connect(AuthorizationWrapper)
-        permission="role_edit_project_summaries"
-      >
-        <Col
-          className="padding-sm--bottom"
-          lg={24}
-          md={24}
-        >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            onClick={[Function]}
-            type="secondary"
-          >
-            <img
-              alt="Edit"
-              name="edit"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
-              Edit
-          </Button>
-        </Col>
-      </Connect(AuthorizationWrapper)>
-    </Row>
-    <Row
-      gutter={16}
-    >
-      <Col
-        lg={12}
-        md={24}
-      >
         <FormItem
           hasFeedback={false}
         >
@@ -99,8 +82,23 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="proponent_project_id"
-            label="Project Proponent ID"
+            label={
+              <React.Fragment>
+                Proponent project tracking ID (optional)
+                <br />
+                <span
+                  className="light--sm"
+                >
+                  If your company uses a tracking number to identify projects, please provide it here.
+                </span>
+              </React.Fragment>
+            }
             name="proponent_project_id"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
@@ -110,8 +108,25 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="project_summary_description"
-            label="Executive Summary"
+            label={
+              <React.Fragment>
+                Project Overview
+                <br />
+                <span
+                  className="light--sm"
+                >
+                  Provide a 2-3 paragraph high-level description of your proposed project.
+                </span>
+              </React.Fragment>
+            }
+            minRows={10}
             name="project_summary_description"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
           />
         </FormItem>
       </Col>
@@ -124,11 +139,44 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     <Title
       level={3}
     >
-      Authorizations involved
+      Authorizations potentially involved in the project
     </Title>
-    <p>
-      These are the authorizations the proponent believes may be needed for this project. Additional authorizations may be required.
-    </p>
+    <Alert
+      description="Please select the permits and authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be complete list for the final application."
+      message=""
+      showIcon={true}
+      type="warning"
+    />
+    <br />
+    <Title
+      level={3}
+    >
+      Mines Review Committee
+    </Title>
+    <Field
+      component={[Function]}
+      disabled={true}
+      fieldName="mrc_review_required"
+      formName="ADD_EDIT_PROJECT_SUMMARY"
+      id="mrc_review_required"
+      label={
+        <React.Fragment>
+          <p>
+            <b>
+              Does your project require a coordinated review by a Mine Review Committee, under Section 9 of the Mines Act?
+            </b>
+            <br />
+            This response will be reviewed by the Major Mines Office and confirmed by the Chief Permitting Officer.
+          </p>
+        </React.Fragment>
+      }
+      name="mrc_review_required"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
     <br />
   </div>
   <br />
@@ -138,11 +186,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     <Title
       level={3}
     >
-      Project dates requested by proponent
+      Project dates
     </Title>
-    <p>
-      These are the key dates the proponent hopes to target. A final schedule will be negotiated during the pre-application review.
-    </p>
+    <Alert
+      description="These dates are for guidance and planning purposes only and do not reflect actual delivery dates. The Major Mines Office will work with you on a more definitive schedule."
+      message=""
+      showIcon={true}
+      type="warning"
+    />
     <br />
     <Row
       gutter={16}
@@ -158,8 +209,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="expected_draft_irt_submission_date"
-            label="Anticipated draft IRT submission date"
+            label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
             name="expected_draft_irt_submission_date"
+            placeholder="Please select date"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
@@ -169,8 +226,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="expected_permit_application_date"
-            label="Anticipated permit application submission date"
+            label="When do you anticipate submitting a permit application? (optional)"
             name="expected_permit_application_date"
+            placeholder="Please select date"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
@@ -180,8 +243,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="expected_permit_receipt_date"
-            label="Desired permit issuance date"
+            label="When do you hope to receive your permit/amendment(s)? (optional)"
             name="expected_permit_receipt_date"
+            placeholder="Please select date"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
@@ -191,8 +260,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="expected_project_start_date"
-            label="Anticipated work start date"
+            label="When do you anticipate starting work on this project? (optional)"
             name="expected_project_start_date"
+            placeholder="Please select date"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
       </Col>
@@ -211,8 +286,6 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       EMLI contacts
     </h3>
     <Row
-      align="bottom"
-      className=""
       gutter={16}
     >
       <Col
@@ -233,7 +306,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
               ]
             }
             disabled={true}
-            id="project_summary_lead_party_guid"
+            id="project_lead_party_guid"
             label={
               <p
                 className="bold"
@@ -241,85 +314,92 @@ exports[`ProjectSummaryForm renders properly 1`] = `
                 Project Lead
               </p>
             }
-            name="project_summary_lead_party_guid"
+            name="project_lead_party_guid"
           />
         </FormItem>
       </Col>
-      <Connect(AuthorizationWrapper)
-        permission="role_edit_project_summaries"
-      >
-        <Col
-          className="padding-sm--bottom"
-          lg={24}
-          md={24}
-        >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            onClick={[Function]}
-            type="secondary"
-          >
-            <img
-              alt="Edit"
-              name="edit"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
-              Edit
-          </Button>
-        </Col>
-      </Connect(AuthorizationWrapper)>
     </Row>
     <h3>
       Proponent contacts
     </h3>
-    <p
-      className="bold"
-    >
-      Primary project contact
-    </p>
-    <p />
-    <a
-      href="mailto: undefined"
+    <FieldArray
+      component={[Function]}
+      name="contacts"
+      rerenderOnEveryChange={true}
     />
-    <div
-      className="inline-flex"
-    >
-      <p />
-    </div>
-    <br />
-    <p />
-    <a
-      href="mailto: undefined"
-    />
-    <div
-      className="inline-flex"
-    >
-      <p />
-    </div>
   </div>
   <br />
   <div
-    id="documents"
+    id="document-details"
   >
-    <Title
-      level={4}
-    >
-      Documents
-    </Title>
-    <DocumentTable
-      additionalColumnProps={Array []}
-      documentParent={null}
-      documents={Array []}
-      excludedColumnKeys={Array []}
-      isViewOnly={false}
-      removeDocument={null}
+    <ProjectSummaryDocumentUpload
+      canRemoveDocuments={false}
+      formErrors={Object {}}
+      formValues={
+        Object {
+          "contacts": Array [
+            Object {},
+          ],
+        }
+      }
+      handleSubmit={[MockFunction]}
+      initialValues={
+        Object {
+          "authorizations": Array [],
+          "projectSummaryAuthorizationTypes": Array [],
+        }
+      }
+      isEditMode={false}
+      isNewProject={false}
+      mineGuid="40fb0ca4-4dfb-4660-a184-6d031a21f3e9"
+      project={
+        Object {
+          "contacts": Array [],
+          "information_requirements_table": Object {
+            "documents": Array [],
+          },
+          "major_mine_application": Object {
+            "documents": Array [],
+          },
+          "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          "mine_name": "Sample Mine",
+          "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+          "project_summary": Object {
+            "documents": Array [],
+          },
+          "project_title": "Test Project Title",
+        }
+      }
+      projectLeads={
+        Array [
+          Object {
+            "groupName": "Active",
+            "opt": Array [],
+          },
+          Object {
+            "groupName": "Inactive",
+            "opt": Array [],
+          },
+        ]
+      }
+      projectSummary={
+        Object {
+          "contacts": Array [
+            Object {},
+          ],
+          "documents": Array [],
+        }
+      }
+      projectSummaryAuthorizationTypesHash={Object {}}
+      projectSummaryDocumentTypesHash={Object {}}
+      projectSummaryPermitTypesHash={Object {}}
+      projectSummaryStatusCodes={Array []}
+      submitting={false}
+      userRoles={Array []}
     />
   </div>
+  <div
+    className="right center-mobile"
+  />
 </Form>
 `;

@@ -16,7 +16,8 @@ from app.api.incidents.models.mine_incident_note import MineIncidentNote
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, StorageLocation, FacilityType, \
+    TailingsStorageFacilityType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
 from app.api.parties.party.models.address import Address
@@ -191,6 +192,10 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     tsf_operating_status_code = 'OPT'
     itrb_exemption_status_code = 'YES'
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+    storage_location = StorageLocation['above_ground']
+    facility_type = FacilityType['tailings_storage_facility']
+    tailings_storage_facility_type = TailingsStorageFacilityType['pit']
+    mines_act_permit_no = '123456'
 
 
 class MineCommentFactory(BaseFactory):
@@ -505,6 +510,7 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('company'),
             email=factory.Faker('company_email'),
             party_type_code='ORG',
+            
         )
 
     first_name = None
@@ -518,6 +524,8 @@ class PartyFactory(BaseFactory):
     email = None
     email_sec = None
     party_type_code = None
+    organization_guid = None
+    job_title_code = None
 
     @factory.post_generation
     def address(obj, create, extracted, **kwargs):
@@ -1210,7 +1218,7 @@ class InformationRequirementsTableFactory(BaseFactory):
 
     project_guid = factory.SelfAttribute('project.project_guid')
     irt_guid = GUID
-    status_code = 'REC'
+    status_code = 'SUB'
 
 
 class MajorMineApplicationFactory(BaseFactory):
@@ -1223,7 +1231,7 @@ class MajorMineApplicationFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     major_mine_application_guid = GUID
     major_mine_application_id = factory.Faker('pyint')
-    status_code = 'REC'
+    status_code = 'SUB'
     deleted_ind = False
 
 
