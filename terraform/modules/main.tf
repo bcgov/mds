@@ -12,8 +12,11 @@ terraform {
       source  = "hashicorp/random"
       version = "= 3.1.0"
     }
+    sysdig = {
+      source  = "sysdiglabs/sysdig"
+      version = "0.5.37"
+    } 
   }
-
 }
 
 provider "aws" {
@@ -21,6 +24,10 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${var.target_aws_account_id}:role/BCGOV_${var.target_env}_Automation_Admin_Role"
   }
+}
+
+provider "sysdig" {
+  sysdig_monitor_api_token = var.sysdig_monitor_api_token
 }
 
 locals {
