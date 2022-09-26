@@ -510,6 +510,7 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('company'),
             email=factory.Faker('company_email'),
             party_type_code='ORG',
+            
         )
 
     first_name = None
@@ -523,6 +524,8 @@ class PartyFactory(BaseFactory):
     email = None
     email_sec = None
     party_type_code = None
+    organization_guid = None
+    job_title_code = None
 
     @factory.post_generation
     def address(obj, create, extracted, **kwargs):
