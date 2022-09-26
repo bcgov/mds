@@ -37,7 +37,7 @@ This is because sandbox contains business critical data. eg: If the ECR is delet
 - `cd` to the workspace of your choice, usualy `dev` so `terraform/dev`. This will make terragrunt target the workspace based on your `pwd`
 - `terragrunt plan` and then `terragrunt apply` if successful
 
-`Note:` a successful plan does not gauruntee a successful apply. Provider issues such as race conditions, or cyclical dependencies can occur, especially with security groups.
+`Note:` a successful plan does not guarantee a successful apply. Provider issues such as race conditions, or cyclical dependencies can occur, especially with security groups.
 
 - `terragrunt state list` to fetch the list of currently provisioned cloud resources
 - `terragrunt taint <state.name>` to mark a resource as faulty, it will be destroyed at next apply

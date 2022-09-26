@@ -1,34 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
-    }
-    archive = {
-      source  = "hashicorp/archive"
-      version = "~> 2.2.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.1.0"
-    }
-    sysdig = {
-      source = "sysdiglabs/sysdig"
-      version = "0.5.40"
-    }
-  }
-
-  required_version = ">= 1.2.0"
-}
-
-
-provider "aws" {
-  region = var.region
-  assume_role {
-    role_arn = "arn:aws:iam::${var.target_aws_account_id}:role/BCGOV_${var.target_env}_Automation_Admin_Role"
-  }
-}
-
 ## S3 stuff
 
 resource "random_pet" "lambda_bucket_name" {
@@ -67,9 +36,6 @@ resource "aws_s3_object" "lambda_notification" {
 }
 
 #### end S3
-
-
-
 
 resource "aws_lambda_function" "discord_notify" {
   function_name = "DiscordNotify"
