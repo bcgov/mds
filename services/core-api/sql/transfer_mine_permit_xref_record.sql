@@ -139,9 +139,17 @@ END;
 
 $$ LANGUAGE PLPGSQL;
 
--- Call the function.
 -- NOTE: Manually check/add the records to transfer here before running this script.
--- SELECT transfer_mine_permit_xref('MX-2-16', '0200115', '0200198');
+/** 
+	SPECIAL NOTE: Now Application Identities will not transfer with this script if they were imported by user "mms" 
+		or are brand new(no additional amendments) because there is no permit_id attached. We manually need to determine 
+		the now_application_guid associated with the permit through Core-Web UI and set the mine_guid to the 
+		destination mine after running the function.
+
+		See lines 103-104 for this update statement.
+**/
+-- Call the function.
+-- SELECT transfer_mine_permit_xref('MX-2-16', '0200115', '0200198'); - September 26, 2022
 
 -- Drop the function.
 DROP FUNCTION transfer_mine_permit_xref(varchar, varchar, varchar);
