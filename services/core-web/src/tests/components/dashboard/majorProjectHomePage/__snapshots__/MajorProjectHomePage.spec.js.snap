@@ -42,10 +42,23 @@ exports[`MajorProjectHomePage renders properly 1`] = `
           Array [
             Object {
               "isActive": true,
+              "label": "Review Complete",
+              "subType": null,
+              "value": "APV",
+            },
+            Object {
+              "isActive": true,
               "label": "Assigned",
               "subType": null,
               "value": "ASG",
             },
+            Object {
+              "isActive": true,
+              "label": "Change Requested",
+              "subType": null,
+              "value": "CHR",
+            },
+            [MockFunction],
             Object {
               "isActive": true,
               "label": "Complete",
@@ -93,19 +106,6 @@ exports[`MajorProjectHomePage renders properly 1`] = `
               "label": "Withdrawn",
               "subType": null,
               "value": "WDN",
-            },
-            [MockFunction],
-            Object {
-              "isActive": true,
-              "label": "Review Complete",
-              "subType": null,
-              "value": "APV",
-            },
-            Object {
-              "isActive": true,
-              "label": "Change Requested",
-              "subType": null,
-              "value": "CHR",
             },
           ]
         }
