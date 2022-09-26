@@ -87,7 +87,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             "projectGuid": "8132462392222",
           }
         }
-        deletePermission={null}
+        deletePermission={true}
         documentColumns={
           Array [
             Object {
@@ -114,7 +114,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             "projectGuid": "8132462392222",
           }
         }
-        deletePermission={null}
+        deletePermission={true}
         documentColumns={
           Array [
             Object {
@@ -141,7 +141,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             "projectGuid": "8132462392222",
           }
         }
-        deletePermission={null}
+        deletePermission={true}
         documentColumns={
           Array [
             Object {
