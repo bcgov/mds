@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddContactModal renders properly 1`] = `
+<Connect(AddContactForm)
+  onCancel={[MockFunction]}
+  onSubmit={[MockFunction]}
+/>
+`;

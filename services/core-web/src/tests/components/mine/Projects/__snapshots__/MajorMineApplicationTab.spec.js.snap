@@ -52,7 +52,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "APV": "Approved",
                 "CHR": "Change Requested",
                 "DFT": "Draft",
-                "REC": "Pending Review",
+                "SUB": "Submitted",
                 "UNR": "In review - with reviewers",
               },
               "statusCode": undefined,

@@ -7,7 +7,7 @@ def test_post_major_mine_application(test_client, db_session, auth_headers):
     project = ProjectFactory()
     data = {
         "project_guid": project.project_guid,
-        "status_code": "REC",
+        "status_code": "SUB",
         "documents": [],
         "update_user": "mining@bceid.com",
         "update_timestamp": "2022-07-14T04:32:58.666528+00:00",

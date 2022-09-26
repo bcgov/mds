@@ -9,7 +9,7 @@ const propTypes = {
 
 const calloutContent = (informationRequirementsTableStatus) => {
   switch (informationRequirementsTableStatus) {
-    case "REC":
+    case "SUB":
       return {
         message:
           "Your IRT is pending review. You can make changes to the final IRT by uploading a new one and resubmit it. No changes can be made once the submission is in review.",

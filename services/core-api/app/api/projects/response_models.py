@@ -1,7 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields, marshal
 
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINES_MODEL
 
 
 class Requirement(fields.Raw):
@@ -75,8 +75,6 @@ PROJECT_SUMMARY_MODEL = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'status_code': fields.String,
-        'project_summary_lead_party_guid': fields.String,
-        'project_summary_lead_name': fields.String,
         'proponent_project_id': fields.String,
         'expected_draft_irt_submission_date': fields.DateTime,
         'submission_date': fields.DateTime,
@@ -237,6 +235,7 @@ PROJECT_MODEL = api.model(
         'mine_name': fields.String,
         'mine_guid': fields.String,
         'project_lead_name': fields.String,
+        'project_lead_party_guid': fields.String,
         'proponent_project_id': fields.String,
         'mrc_review_required': fields.Boolean,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
@@ -249,3 +248,32 @@ PROJECT_MODEL = api.model(
         'create_user': fields.String,
         'create_timestamp': fields.DateTime
     })
+
+PROJECT_MINE_LIST_MODEL = api.model(
+    'ProjectMineList',{
+        'stage': fields.String,
+        'id': fields.Integer,
+        'guid': fields.String,
+        'project_title': fields.String,
+        'project_id': fields.String,
+        'project_guid': fields.String,
+        'mrc_review_required': fields.Boolean,
+        'status_code': fields.String,
+        'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
+        'update_timestamp': fields.DateTime,
+        'mine': fields.Nested(MINES_MODEL),
+    })
+
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    }
+)
+
+PAGINATED_PROJECT_LIST = api.inherit('ProjectList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(PROJECT_MINE_LIST_MODEL))
+})

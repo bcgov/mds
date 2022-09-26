@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { Button, Col, Menu, Row } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+
+import { Form } from "@ant-design/compatible";
 import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { indexOf } from "lodash";
-import { Form } from "@ant-design/compatible";
 
 const { Item } = Menu;
 
@@ -43,6 +44,11 @@ const SteppedForm = (props) => {
       setTabIndex(indexOf(tabs, tab));
       handleTabChange(tab);
     }
+  };
+
+  const handleNextClick = (evt, tab) => {
+    evt.preventDefault();
+    handleTabClick(tab);
   };
 
   const isFirst = tabIndex === 0;
@@ -94,7 +100,7 @@ const SteppedForm = (props) => {
                   <Button
                     type="secondary"
                     disabled={props.errors.length > 0}
-                    onClick={() => handleTabClick(tabs[tabIndex + 1], false)}
+                    onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
                     Next <RightOutlined />
                   </Button>

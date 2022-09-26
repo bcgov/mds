@@ -242,7 +242,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(ProjectSummary)",
+        "displayName": "Connect(withRouter(ProjectSummary))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mines/:mineGuid/project-description/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(withRouter(ProjectSummary))",
         "type": [Function],
       }
     }
@@ -585,6 +598,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/dashboard/notice-of-work/app/:id/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MajorProjectHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/reporting/major-project"
   />
   <Route
     component={

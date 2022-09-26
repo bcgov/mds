@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderAutoComplete renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  validateStatus=""
+>
+  <Select
+    allowClear={true}
+    bordered={true}
+    choiceTransitionName=""
+    defaultActiveFirstOption={false}
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    filterOption={[Function]}
+    notFoundContent="Not Found"
+    onSearch={[Function]}
+    onSelect={[MockFunction]}
+    options={
+      Array [
+        "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "18145c75-49ad-0101-85f3-a43e45ae989a",
+      ]
+    }
+    placeholder=""
+    showSearch={true}
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    transitionName="slide-up"
+    virtual={false}
+  />
+</FormItem>
+`;

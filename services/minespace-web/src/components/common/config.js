@@ -9,12 +9,14 @@ import RenderMultiSelect from "./RenderMultiSelect";
 import RenderRadioButtons from "./RenderRadioButtons";
 import RenderCheckbox from "./RenderCheckbox";
 import RenderGroupCheckbox from "./RenderGroupCheckbox";
+import RenderAutocomplete from "./RenderAutoComplete";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {
   SELECT: RenderSelect,
   AUTO_SIZE_FIELD: RenderAutoSizeField,
+  AUTOCOMPLETE: RenderAutocomplete,
   DATE: RenderDate,
   YEAR: RenderYear,
   TIME: RenderTime,

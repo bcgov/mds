@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddContactForm renders properly 1`] = `
+<ReduxForm
+  contacts={Array []}
+  destroyOnUnmount={true}
+  enableReinitialize={true}
+  forceUnregisterOnUnmount={true}
+  form="ADD_CONTACT"
+  getFormState={[Function]}
+  handleSelectChange={[Function]}
+  initialValues={null}
+  keepDirtyOnReinitialize={false}
+  onCancel={[MockFunction]}
+  onSubmit={[MockFunction]}
+  parties={Array []}
+  persistentSubmitErrors={false}
+  pure={true}
+  shouldAsyncValidate={[Function]}
+  shouldError={[Function]}
+  shouldValidate={[Function]}
+  shouldWarn={[Function]}
+  submitAsSideEffect={false}
+  touchOnBlur={true}
+  touchOnChange={false}
+  updateUnregisteredFields={false}
+/>
+`;

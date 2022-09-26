@@ -25,6 +25,11 @@ const MineDashboardRoutes = () => (
       path={routes.PRE_APPLICATIONS.route}
       component={routes.PRE_APPLICATIONS.component}
     />
+    <Route
+      exact
+      path={routes.ADD_PROJECT_SUMMARY.route}
+      component={routes.ADD_PROJECT_SUMMARY.component}
+    />
     <Route exact path={routes.PROJECTS.route} component={routes.PROJECTS.component} />
     <Route
       exact

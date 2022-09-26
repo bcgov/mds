@@ -516,6 +516,7 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('company'),
             email=factory.Faker('company_email'),
             party_type_code='ORG',
+            
         )
 
     first_name = None
@@ -529,6 +530,8 @@ class PartyFactory(BaseFactory):
     email = None
     email_sec = None
     party_type_code = None
+    organization_guid = None
+    job_title_code = None
 
     @factory.post_generation
     def address(obj, create, extracted, **kwargs):
@@ -1221,7 +1224,7 @@ class InformationRequirementsTableFactory(BaseFactory):
 
     project_guid = factory.SelfAttribute('project.project_guid')
     irt_guid = GUID
-    status_code = 'REC'
+    status_code = 'SUB'
 
 
 class MajorMineApplicationFactory(BaseFactory):
@@ -1234,7 +1237,7 @@ class MajorMineApplicationFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     major_mine_application_guid = GUID
     major_mine_application_id = factory.Faker('pyint')
-    status_code = 'REC'
+    status_code = 'SUB'
     deleted_ind = False
 
 

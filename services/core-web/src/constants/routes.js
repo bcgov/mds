@@ -8,6 +8,7 @@ import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHome
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import IncidentsHomePage from "@/components/dashboard/incidentsHomePage/IncidentsHomePage";
 import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
+import MajorProjectHomePage from "@/components/dashboard/majorProjectHomePage/MajorProjectHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -176,6 +177,12 @@ export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
   component: MineProject,
+};
+
+export const ADD_PROJECT_SUMMARY = {
+  route: "/mines/:mineGuid/project-description/new",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/project-description/new`,
+  component: ProjectSummary,
 };
 
 export const PRE_APPLICATIONS = {
@@ -381,6 +388,13 @@ export const NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/notice-of-work/app/${guid}/verification`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/app/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
+};
+
+export const MAJOR_PROJECTS_DASHBOARD = {
+  route: "/dashboard/reporting/major-project",
+  dynamicRoute: (params = null) =>
+    `/dashboard/reporting/major-project/?${queryString.stringify({ ...params }, { sort: false })}`,
+  component: MajorProjectHomePage,
 };
 
 export const ADMIN_AMENDMENT_APPLICATION = {

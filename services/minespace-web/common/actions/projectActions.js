@@ -66,3 +66,12 @@ export const clearProjectDecisionPackage = (payload) => ({
   type: actionTypes.CLEAR_PROJECT_DECISION_PACKAGE,
   payload,
 });
+
+export const storeProjectViewAllTable = (payload) => ({
+  type: actionTypes.STORE_PROJECT_VIEW_ALL_TABLE,
+  payload,
+});
+
+export const clearProjectViewAllTable = () => ({
+  type: actionTypes.CLEAR_PROJECT_VIEW_ALL_TABLE,
+});
