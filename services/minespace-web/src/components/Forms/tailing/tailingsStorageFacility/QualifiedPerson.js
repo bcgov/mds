@@ -43,6 +43,7 @@ export const QualifiedPerson = (props) => {
         onSubmit: handleCreateQP,
         onCancel: props.closeModal,
         title: "Select Contact",
+        mine_party_appt_type_code: "TQP",
       },
       content: modalConfig.ADD_CONTACT,
     });
