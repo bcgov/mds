@@ -63,10 +63,24 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
     )
 
+    qualified_persons = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin=
+        'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "TQP", MinePartyAppointment.deleted_ind == False)',
+        order_by=
+        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+    )
+
     @hybrid_property
     def engineer_of_record(self):
         if self.engineer_of_records:
             return self.engineer_of_records[0]
+
+    @hybrid_property
+    def qualified_person(self):
+        if self.qualified_persons:
+            return self.qualified_persons[0]
 
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid

@@ -17,8 +17,7 @@ from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
-
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 
 class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -112,15 +111,15 @@ class MinePartyApptResource(Resource, UserMixin):
             permit = Permit.find_by_permit_guid(related_guid)
             if permit is None:
                 raise NotFound('Permit not found')
-        elif mine_party_appt_type_code == 'EOR':
+        elif mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
             tsf = MineTailingsStorageFacility.find_by_tsf_guid(related_guid)
             if tsf is None:
                 raise NotFound('TSF not found')
 
         if not can_edit_mines():
             # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine 
-            if mine_party_appt_type_code != 'EOR':
-                raise Forbidden("Minespace user can only appoint EORs")
+            if mine_party_appt_type_code not in  TSF_ALLOWED_CONTACT_TYPES:
+                raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
 
             if not tsf or mine.mine_guid != tsf.mine_guid:
                 raise Forbidden("TSF is not associated with the given mine")
@@ -129,7 +128,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise Forbidden("Party is not associated with the given mine")
 
         if end_current:
-            if mine_party_appt_type_code == 'EOR':
+            if mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
                 current_mpa = MinePartyAppointment.find_current_appointments(
                     mine_guid=mine_guid,
                     mine_party_appt_type_code=mine_party_appt_type_code,
