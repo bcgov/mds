@@ -10,6 +10,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
   <Callout
     message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application."
     severity="info"
+    style={Object {}}
   />
   <br />
   <Title

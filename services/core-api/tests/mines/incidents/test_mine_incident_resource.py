@@ -19,7 +19,6 @@ class TestGetMineIncident:
         assert get_resp.status_code == 200
         assert get_data['mine_incident_guid'] == str(mine_incident.mine_incident_guid)
 
-
     def test_get_mine_incidents_wrong_mine_guid(self, test_client, db_session, auth_headers):
         """Should return a 404 when the mine_incident does not exist on the provided mine"""
 
@@ -61,7 +60,13 @@ class TestPutMineIncident:
             'followup_inspection_date': '2019-01-01',
             'status_code': incident.status_code,
             'dangerous_occurrence_subparagraph_ids': incident.dangerous_occurrence_subparagraph_ids,
-            'recommendations': incident.recommendations
+            'recommendations': incident.recommendations,
+            'immediate_measures_taken': incident.immediate_measures_taken,
+            'injuries_description': incident.injuries_description,
+            'johsc_worker_rep_name': incident.johsc_worker_rep_name,
+            'johsc_worker_rep_contacted': incident.johsc_worker_rep_contacted,
+            'johsc_management_rep_name': incident.johsc_management_rep_name,
+            'johsc_management_rep_contacted': incident.johsc_management_rep_contacted
         }
 
         put_resp = test_client.put(
@@ -89,5 +94,12 @@ class TestPutMineIncident:
         assert put_data['followup_inspection'] == data['followup_inspection']
         assert put_data['followup_inspection_date'] == data['followup_inspection_date']
         assert put_data['status_code'] == data['status_code']
+        assert put_data['immediate_measures_taken'] == data['immediate_measures_taken']
+        assert put_data['injuries_description'] == data['injuries_description']
+        assert put_data['johsc_worker_rep_name'] == data['johsc_worker_rep_name']
+        assert put_data['johsc_worker_rep_contacted'] == data['johsc_worker_rep_contacted']
+        assert put_data['johsc_management_rep_name'] == data['johsc_management_rep_name']
+        assert put_data['johsc_management_rep_contacted'] == data['johsc_management_rep_contacted']
+
         assert all(x in data['dangerous_occurrence_subparagraph_ids'] for x in put_data['dangerous_occurrence_subparagraph_ids'])
         assert all(x in data['recommendations'] for x in put_data['recommendations'])

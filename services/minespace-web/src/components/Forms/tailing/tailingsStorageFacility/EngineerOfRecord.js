@@ -1,4 +1,3 @@
-import * as FORM from "@/constants/forms";
 import * as PropTypes from "prop-types";
 
 import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "antd";
@@ -6,21 +5,22 @@ import { Field, change, getFormValues } from "redux-form";
 import React, { useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 
-import ContactDetails from "@/components/common/ContactDetails";
-import FileUpload from "@/components/common/FileUpload";
-import LinkButton from "@/components/common/LinkButton";
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
-import { PDF } from "@/constants/fileTypes";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { modalConfig } from "@/components/modalContent/config";
-import { renderConfig } from "@/components/common/config";
 import { required } from "@common/utils/Validate";
 import { truncateFilename } from "@common/utils/helpers";
+import { modalConfig } from "@/components/modalContent/config";
+import { renderConfig } from "@/components/common/config";
+import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
+import { PDF } from "@/constants/fileTypes";
+import LinkButton from "@/components/common/LinkButton";
+import FileUpload from "@/components/common/FileUpload";
+import ContactDetails from "@/components/common/ContactDetails";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   change: PropTypes.func.isRequired,

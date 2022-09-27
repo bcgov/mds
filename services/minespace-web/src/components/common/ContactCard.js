@@ -27,7 +27,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  party: {},
+  partyRelationship: {},
 };
 
 export const ContactCard = (props) => (

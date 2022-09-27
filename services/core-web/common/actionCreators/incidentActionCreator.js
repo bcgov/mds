@@ -43,6 +43,23 @@ export const fetchMineIncidents = (mine_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchMineIncident = (mine_guid, mine_incident_guid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mine_guid, mine_incident_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT));
+      dispatch(incidentActions.storeMineIncident(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
   dispatch(showLoading("modal"));
@@ -65,6 +82,31 @@ export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (disp
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const removeDocumentFromMineIncident = (mineGuid, mineIncidentGuid, mineDocumentGuid) => (
+  dispatch
+) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+  return CustomAxios()
+    .delete(
+      ENVIRONMENT.apiUrl + API.MINE_INCIDENT_DOCUMENT(mineGuid, mineIncidentGuid, mineDocumentGuid),
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted mine incident document.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchIncidents = (payload) => (dispatch) => {

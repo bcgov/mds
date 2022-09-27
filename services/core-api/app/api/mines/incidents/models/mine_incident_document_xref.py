@@ -24,6 +24,7 @@ class MineIncidentDocumentXref(Base):
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
+    update_user = association_proxy('mine_document', 'update_user')
 
     def __repr__(self):
         return '<MineIncidentDocumentXref %r>' % self.mine_incident_document_xref_guid

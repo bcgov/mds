@@ -25,6 +25,7 @@ exports[`ProjectDates renders properly 1`] = `
       </React.Fragment>
     }
     severity="info"
+    style={Object {}}
   />
   <Field
     component={[Function]}
