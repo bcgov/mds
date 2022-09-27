@@ -28,6 +28,7 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import CustomPropTypes from "@/customPropTypes";
 import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
 import Loading from "@/components/common/Loading";
 import Step from "@/components/common/Step";
 import SteppedForm from "@/components/common/SteppedForm";
@@ -153,22 +154,33 @@ export const TailingsSummaryPage = (props) => {
         }
         break;
       case "engineer-of-record":
-        if (!formValues.engineer_of_record.mine_party_appt_guid) {
+      case "qualified-person":
+        const { attr, apptType } = {
+          "engineer-of-record": {
+            attr: "engineer_of_record",
+            apptType: "EOR",
+          },
+          "qualified-person": {
+            attr: "qualified_person",
+            apptType: "TQP",
+          },
+        }[match.params.tab];
+
+        if (!formValues[attr].mine_party_appt_guid) {
           // Only add party relationship if changed
           const relationship = await props.addPartyRelationship({
             mine_guid: match.params.mineGuid,
-            party_guid: formValues.engineer_of_record.party_guid,
-            mine_party_appt_type_code: "EOR",
+            party_guid: formValues[attr].party_guid,
+            mine_party_appt_type_code: apptType,
             related_guid: match.params.tailingsStorageFacilityGuid,
-            start_date: formValues.engineer_of_record.start_date,
-            end_date: formValues.engineer_of_record.end_date,
-            end_current: !!formValues.engineer_of_record.mine_party_appt_guid,
+            start_date: formValues[attr].start_date,
+            end_date: formValues[attr].end_date,
+            end_current: !!formValues[attr].mine_party_appt_guid,
           });
           if (uploadedFiles.length > 0) {
             await handleAddDocuments(relationship.data.mine_party_appt_guid);
           }
         }
-
         break;
       default:
         break;
@@ -221,7 +233,6 @@ export const TailingsSummaryPage = (props) => {
         <SteppedForm
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
-          handleSaveDraft={handleSaveData}
           errors={errors}
           activeTab={match.params.tab}
         >
@@ -237,7 +248,7 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person">
-            <div />
+            <QualifiedPerson />
           </Step>
           <Step key="registry-document">
             <div />

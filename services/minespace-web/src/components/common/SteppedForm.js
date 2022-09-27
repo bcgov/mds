@@ -48,7 +48,8 @@ const SteppedForm = (props) => {
 
   const handleNextClick = (evt, tab) => {
     evt.preventDefault();
-    handleTabClick(tab);
+    handleSaveData(null, tab);
+    setTabIndex(indexOf(tabs, tab));
   };
 
   const isFirst = tabIndex === 0;
