@@ -48,9 +48,3 @@ variable "configs" {
 variable "storage_buckets" {
   description = "Contains a list of s3 buckets for this workspace"
 }
-
-## Sysdig ##
-
-variable "sysdig_monitor_api_token" {
-  description = "The Sysdig Monitor API token"
-}

@@ -33,6 +33,13 @@ resource "aws_s3_object" "lambda_notification" {
   source = data.archive_file.lambda_notification.output_path
 
   etag = filemd5(data.archive_file.lambda_notification.output_path)
+
+    lifecycle {
+    ignore_changes = [
+      source
+    ]
+  }
+
 }
 
 #### end S3

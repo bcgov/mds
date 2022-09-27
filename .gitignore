@@ -34,10 +34,7 @@ backend.tf
 .terragrunt-cache
 .terraform.lock.hcl
 
-terraform/discord_sysdig/terraform/backend.hcl
-terraform/discord_sysdig/terraform/.terraform.lock.hcl
-terraform/discord_sysdig/terraform/outfile
-terraform/discord_sysdig/terraform/terraform.tfstate*
+
 
 cypress.env.json
 
