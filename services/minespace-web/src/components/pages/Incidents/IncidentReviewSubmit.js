@@ -135,7 +135,7 @@ const renderIncidentDetails = (props) => (
     </Col>
     <Col md={12} xs={24}>
       <p>Was this person contacted? (optional)</p>
-      <Input value={props.incident.johsc_worker_rep_contacted} />
+      <Input value={props.incident.johsc_worker_rep_contacted ? "Yes" : "No"} />
     </Col>
     <Col md={12} xs={24}>
       <p>JOHSC/Management Rep Name (optional)</p>
@@ -143,7 +143,7 @@ const renderIncidentDetails = (props) => (
     </Col>
     <Col md={12} xs={24}>
       <p>Was this person contacted? (optional)</p>
-      <Input value={props.incident.johsc_management_rep_contacted} />
+      <Input value={props.incident.johsc_management_rep_contacted ? "Yes" : "No"} />
     </Col>
   </Row>
 );
@@ -159,7 +159,7 @@ const renderDangerousOccurenceDetermination = (props) => (
     </Col>
     <Col md={12} xs={24}>
       <p>Was this a dangerous occurrence? (optional)</p>
-      <Input value={props.incident.mine_determination_type_code} />
+      <Input value={props.incident.mine_determination_type_code ? "Yes" : "No"} />
     </Col>
     <Col md={12} xs={24}>
       <p>Mine representative who made determination (optional)</p>
