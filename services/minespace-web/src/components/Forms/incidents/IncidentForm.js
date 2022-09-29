@@ -328,7 +328,7 @@ const renderUploadInitialNotificationDocuments = (props, handlers, parentHandler
                 Strings.INCIDENT_DOCUMENT_TYPES.initial
               )
             }
-            onRemoveFile={parentHandlers.deleteDocument}
+            onRemoveFile={parentHandlers?.deleteDocument}
             mineGuid={props.match.params?.mineGuid}
             component={IncidentFileUpload}
           />

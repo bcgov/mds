@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import {
@@ -31,6 +32,7 @@ import LinkButton from "@/components/common/LinkButton";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
 import { IncidentGetStarted } from "@/components/pages/Incidents/IncidentGetStarted";
+import IncidentReviewSubmit from "@/components/pages/Incidents/IncidentReviewSubmit";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import * as routes from "@/constants/routes";
 
@@ -43,6 +45,8 @@ const propTypes = {
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  touch: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
@@ -58,11 +62,24 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formErrors: PropTypes.objectOf(PropTypes.string),
   // eslint-disable-next-line react/no-unused-prop-types
   formIsDirty: PropTypes.bool.isRequired,
 };
 
-const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
+const defaultProps = {
+  formErrors: {},
+};
+
+const StepForms = (
+  props,
+  state,
+  navigation,
+  handlers,
+  formatInitialValues,
+  setConfirmedSubmission,
+  disabledButton
+) => [
   {
     title: "Get Started",
     content: <IncidentGetStarted />,
@@ -71,7 +88,7 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
         {props.formIsDirty && (
           <LinkButton
             style={{ marginRight: "15px" }}
-            onClick={(e) => handlers?.save(e, props.formValues)}
+            onClick={(e) => handlers?.save(e, props.formValues, true)}
             title="Save Draft"
           >
             Save Draft
@@ -130,7 +147,16 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
         {props.formIsDirty && (
           <LinkButton
             style={{ marginRight: "15px" }}
-            onClick={(e) => handlers?.save(e, props.formValues)}
+            onClick={async (e) => {
+              const response = await handlers?.save(e, props.formValues, true);
+              const incidentGuid =
+                props.incident?.mine_incident_guid || response?.mine_incident_guid;
+              const mineGuid = props.incident?.mine_guid || response?.mine_guid;
+              return props.history.push({
+                pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
+                state: { current: 1 },
+              });
+            }}
             title="Save Draft"
           >
             Save Draft
@@ -144,7 +170,23 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
         >
           Back
         </Button>
-        <Button id="step-2-next" type="primary" disabled onClick={() => {}}>
+        <Button
+          id="step-2-next"
+          type="primary"
+          disabled={disabledButton}
+          onClick={async (e) => {
+            const response = await handlers?.save(e, props.formValues);
+            const incidentGuid = props.incident?.mine_incident_guid || response?.mine_incident_guid;
+            const mineGuid = props.incident?.mine_guid || response?.mine_guid;
+            if (incidentGuid && mineGuid) {
+              return props.history.push({
+                pathname: `${routes.REVIEW_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
+                state: { current: 2 },
+              });
+            }
+            return null;
+          }}
+        >
           Review & Submit
         </Button>
       </React.Fragment>,
@@ -152,8 +194,58 @@ const StepForms = (props, state, navigation, handlers, formatInitialValues) => [
   },
   {
     title: "Review & Submit",
-    content: <></>,
-    buttons: [],
+    content: (
+      <IncidentReviewSubmit
+        setConfirmedSubmission={setConfirmedSubmission}
+        confirmedSubmission={state.confirmedSubmission}
+        incident={props.incident}
+        formValues={props.formValues}
+      />
+    ),
+    buttons: [
+      <React.Fragment key="step-3-buttons">
+        <Button
+          id="step-back2"
+          type="tertiary"
+          className="full-mobile"
+          style={{ marginRight: "24px" }}
+          onClick={() => {
+            props.history.push({
+              pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(
+                props.incident?.mine_guid,
+                props.incident?.mine_incident_guid
+              )}`,
+              state: { current: 1 },
+            });
+          }}
+        >
+          Back
+        </Button>
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to submit your final incident? No changes can be made after submitting."
+          onConfirm={async (e) => {
+            await handlers?.save(e, {
+              ...props.incident,
+              status_code: "PRE",
+            });
+            const url = routes.MINE_INCIDENT_SUCCESS.dynamicRoute(
+              props.incident?.mine_guid,
+              props.incident?.mine_incident_guid
+            );
+            const urlState = { state: { incident: props.incident } };
+
+            return props.history.push({ pathname: url, ...urlState });
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
+            Submit Now
+          </Button>
+        </Popconfirm>
+      </React.Fragment>,
+    ],
   },
 ];
 
@@ -162,6 +254,7 @@ export class IncidentPage extends Component {
     current: 0,
     isEditMode: false,
     isLoaded: false,
+    confirmedSubmission: false,
   };
 
   componentDidMount() {
@@ -187,34 +280,41 @@ export class IncidentPage extends Component {
     return Promise.resolve();
   };
 
-  handleCreateMineIncident = (values) => {
+  handleCreateMineIncident = (values, isDraft) => {
     this.setState({ isLoaded: false });
+    const message = isDraft ? "Successfully created a draft incident." : null;
     return this.props
-      .createMineIncident(this.props.match.params?.mineGuid, values)
-      .then(({ data: { mine_guid, mine_incident_guid } }) =>
-        this.props.history.replace({
-          pathname: routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid),
-          state: { current: 1 },
-        })
-      );
+      .createMineIncident(this.props.match.params?.mineGuid, values, message)
+      .then((response) => {
+        return response?.data;
+      });
   };
 
-  handleUpdateMineIncident = (values) => {
+  handleUpdateMineIncident = (values, isDraft) => {
     const { mineGuid, mineIncidentGuid } = this.props.match.params;
     this.setState({ isLoaded: false });
-    return this.props
-      .updateMineIncident(mineGuid, mineIncidentGuid, values)
-      .then(() => this.handleFetchData())
-      .then(() => this.setState({ isLoaded: true }));
+    const message = isDraft
+      ? "Successfully updated draft incident."
+      : "Submitted successfully a new incident.";
+    return this.props.updateMineIncident(mineGuid, mineIncidentGuid, values, message).then(() => {
+      this.handleFetchData();
+      this.setState({ isLoaded: true });
+    });
   };
 
-  handleSaveData = (e, formValues) => {
+  handleSaveData = (e, formValues, isDraft) => {
     e.preventDefault();
-    const incidentExists = Boolean(formValues?.mine_incident_guid);
-    if (!incidentExists) {
-      return this.handleCreateMineIncident(this.formatPayload(formValues));
+    this.props.submit(FORM.ADD_EDIT_INCIDENT);
+    this.props.touch(FORM.ADD_EDIT_INCIDENT);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      const incidentExists = Boolean(formValues?.mine_incident_guid);
+      if (!incidentExists) {
+        return this.handleCreateMineIncident(this.formatPayload(formValues), isDraft);
+      }
+      return this.handleUpdateMineIncident(this.formatPayload(formValues), isDraft);
     }
-    return this.handleUpdateMineIncident(this.formatPayload(formValues));
+    return null;
   };
 
   handleDeleteDocument = ({ mineGuid, mineIncidentGuid, mineDocumentGuid }) =>
@@ -236,6 +336,7 @@ export class IncidentPage extends Component {
     }
     return {
       ...values,
+      categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: values?.initial_notification_documents,
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
       mine_determination_type_code: mineDeterminationTypeCode,
@@ -256,18 +357,25 @@ export class IncidentPage extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
+  setConfirmedSubmission = () =>
+    this.setState((prevState) => ({ confirmedSubmission: !prevState.confirmedSubmission }));
+
   render() {
     const mineName =
       this.props.formValues?.mine_name ?? this.props.location.state?.mine?.mine_name ?? "";
     const title = `Record a Mine Incident - ${mineName}`;
     const subTitle = this.state.isEditMode ? "Edit Mine Incident" : "Record New Mine Incident";
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const disabledButton = errors.length > 0;
 
     const Forms = StepForms(
       this.props,
       this.state,
       { next: this.next, prev: this.prev },
       { save: this.handleSaveData, deleteDocument: this.handleDeleteDocument },
-      this.formatInitialValues
+      this.formatInitialValues,
+      this.setConfirmedSubmission,
+      disabledButton
     );
 
     return (
@@ -329,6 +437,7 @@ export class IncidentPage extends Component {
 }
 
 IncidentPage.propTypes = propTypes;
+IncidentPage.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   incident: getMineIncident(state) || {},
