@@ -293,9 +293,16 @@ export class IncidentPage extends Component {
   handleUpdateMineIncident = (values, isDraft) => {
     const { mineGuid, mineIncidentGuid } = this.props.match.params;
     this.setState({ isLoaded: false });
-    const message = isDraft
-      ? "Successfully updated draft incident."
-      : "Submitted successfully a new incident.";
+
+    let message;
+    if (isDraft) {
+      message = "Successfully updated draft incident.";
+    } else if (this.props.location.state.current === 2) {
+      message = "Submitted successfully a new incident.";
+    } else {
+      message = null;
+    }
+
     return this.props.updateMineIncident(mineGuid, mineIncidentGuid, values, message).then(() => {
       this.handleFetchData();
       this.setState({ isLoaded: true });
