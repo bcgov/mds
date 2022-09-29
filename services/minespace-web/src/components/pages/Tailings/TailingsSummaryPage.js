@@ -1,4 +1,3 @@
-
 import { Col, Divider, Row, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -15,7 +14,7 @@ import {
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import { flattenObject, resetForm } from "@common/utils/helpers";
-import { getFormSyncErrors, getFormValues, reduxForm, submit, touch } from "redux-form";
+import { getFormSyncErrors, getFormValues, reduxForm, submit, touch, isDirty } from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -28,6 +27,7 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 import CustomPropTypes from "@/customPropTypes";
 import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
 import Loading from "@/components/common/Loading";
 import Step from "@/components/common/Step";
 import SteppedForm from "@/components/common/SteppedForm";
@@ -65,6 +65,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   storeTsf: PropTypes.func.isRequired,
   clearTsf: PropTypes.func.isRequired,
+  isDirty: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -80,7 +81,7 @@ export const TailingsSummaryPage = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [tsfGuid, setTsfGuid] = useState(null);
 
-  const handleFetchData = async () => {
+  const handleFetchData = async (forceReload = false) => {
     const { tailingsStorageFacilityGuid } = match?.params;
     await props.fetchPermits(match.params.mineGuid);
     await props.fetchPartyRelationships({
@@ -89,7 +90,7 @@ export const TailingsSummaryPage = (props) => {
       include_permit_contacts: "true",
     });
     if (tailingsStorageFacilityGuid) {
-      if (!props.initialValues.mine_tailings_storage_facility_guid) {
+      if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
         const mine = await props.fetchMineRecordById(match.params.mineGuid);
         const existingTsf = mine.data.mine_tailings_storage_facilities.find(
           (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
@@ -107,7 +108,7 @@ export const TailingsSummaryPage = (props) => {
 
   const handleAddDocuments = async (minePartyApptGuid) => {
     await Promise.all(
-      uploadedFiles.forEach((document) =>
+      uploadedFiles.map((document) =>
         props.addDocumentToRelationship(
           { mineGuid: match.params.mineGuid, minePartyApptGuid },
           {
@@ -135,7 +136,9 @@ export const TailingsSummaryPage = (props) => {
     switch (match.params.tab) {
       case "basic-information":
         if (tsfGuid) {
-          props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+          if (props.isDirty) {
+            await props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
+          }
         } else {
           const newTsf = await props.createTailingsStorageFacility(
             match.params.mineGuid,
@@ -153,22 +156,35 @@ export const TailingsSummaryPage = (props) => {
         }
         break;
       case "engineer-of-record":
-        if (!formValues.engineer_of_record.mine_party_appt_guid) {
+      case "qualified-person":
+        const { attr, apptType } = {
+          "engineer-of-record": {
+            attr: "engineer_of_record",
+            apptType: "EOR",
+          },
+          "qualified-person": {
+            attr: "qualified_person",
+            apptType: "TQP",
+          },
+        }[match.params.tab];
+
+        if (!formValues[attr].mine_party_appt_guid) {
           // Only add party relationship if changed
           const relationship = await props.addPartyRelationship({
             mine_guid: match.params.mineGuid,
-            party_guid: formValues.engineer_of_record.party_guid,
-            mine_party_appt_type_code: "EOR",
+            party_guid: formValues[attr].party_guid,
+            mine_party_appt_type_code: apptType,
             related_guid: match.params.tailingsStorageFacilityGuid,
-            start_date: formValues.engineer_of_record.start_date,
-            end_date: formValues.engineer_of_record.end_date,
-            end_current: !!formValues.engineer_of_record.mine_party_appt_guid,
+            start_date: formValues[attr].start_date,
+            end_date: formValues[attr].end_date,
+            end_current: !!formValues[attr].mine_party_appt_guid,
           });
           if (uploadedFiles.length > 0) {
             await handleAddDocuments(relationship.data.mine_party_appt_guid);
           }
-        }
 
+          await handleFetchData(true);
+        }
         break;
       default:
         break;
@@ -179,12 +195,6 @@ export const TailingsSummaryPage = (props) => {
     const { mineGuid, tailingsStorageFacilityGuid } = match?.params;
     let url;
 
-    if (
-      (match.params.tab === "basic-information" && !tsfGuid) ||
-      match.params.tab === "engineer-of-record"
-    ) {
-      handleSaveData(null, newActiveTab);
-    }
     if (tailingsStorageFacilityGuid) {
       url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tailingsStorageFacilityGuid,
@@ -197,16 +207,20 @@ export const TailingsSummaryPage = (props) => {
     history.push(url);
   };
 
-  const errors = Object.keys(flattenObject(formErrors));
   const { mineGuid } = match.params;
   const mineName = mines[mineGuid]?.mine_name || "";
+  const hasCreatedTSF = !!props.initialValues?.mine_tailings_storage_facility_guid;
 
   return (
     (isLoaded && (
       <div>
         <Row>
           <Col span={24}>
-            <Typography.Title>Create facility</Typography.Title>
+            <Typography.Title>
+              {hasCreatedTSF
+                ? props.initialValues.mine_tailings_storage_facility_name
+                : "Create facility"}
+            </Typography.Title>
           </Col>
         </Row>
         <Row>
@@ -221,14 +235,12 @@ export const TailingsSummaryPage = (props) => {
         <SteppedForm
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
-          handleSaveDraft={handleSaveData}
-          errors={errors}
           activeTab={match.params.tab}
         >
           <Step key="basic-information">
             <BasicInformation />
           </Step>
-          <Step key="engineer-of-record">
+          <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
               eors={eors}
               mineGuid={mineGuid}
@@ -236,16 +248,16 @@ export const TailingsSummaryPage = (props) => {
               setUploadedFiles={setUploadedFiles}
             />
           </Step>
-          <Step key="qualified-person">
+          <Step key="qualified-person" disabled={!hasCreatedTSF}>
+            <QualifiedPerson />
+          </Step>
+          <Step key="registry-document" disabled={!hasCreatedTSF}>
             <div />
           </Step>
-          <Step key="registry-document">
+          <Step key="reports" disabled={!hasCreatedTSF}>
             <div />
           </Step>
-          <Step key="reports">
-            <div />
-          </Step>
-          <Step key="summary">
+          <Step key="summary" disabled={!hasCreatedTSF}>
             <div />
           </Step>
         </SteppedForm>
@@ -256,6 +268,7 @@ export const TailingsSummaryPage = (props) => {
 
 const mapStateToProps = (state) => ({
   anyTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.anyTouched || false,
+  isDirty: isDirty(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
   fieldsTouched: state.form[FORM.ADD_TAILINGS_STORAGE_FACILITY]?.fields || {},
   mines: getMines(state),
   formErrors: getFormSyncErrors(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),

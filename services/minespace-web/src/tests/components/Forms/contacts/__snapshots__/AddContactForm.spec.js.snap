@@ -13,7 +13,6 @@ exports[`AddContactForm renders properly 1`] = `
   keepDirtyOnReinitialize={false}
   onCancel={[MockFunction]}
   onSubmit={[MockFunction]}
-  parties={Array []}
   persistentSubmitErrors={false}
   pure={true}
   shouldAsyncValidate={[Function]}

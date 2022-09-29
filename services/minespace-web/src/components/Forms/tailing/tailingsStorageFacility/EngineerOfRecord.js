@@ -73,8 +73,10 @@ export const EngineerOfRecord = (props) => {
   useEffect(() => {
     if (partyRelationships.length > 0) {
       const activeEor = partyRelationships.find(
-        (eor) => eor.party_guid === props.formValues?.engineer_of_record?.party_guid
+        (eor) =>
+          eor.mine_party_appt_guid === props.formValues?.engineer_of_record?.mine_party_appt_guid
       );
+
       if (activeEor) {
         setCurrentEor(activeEor);
       }
@@ -88,6 +90,7 @@ export const EngineerOfRecord = (props) => {
         onSubmit: handleCreateEOR,
         onCancel: props.closeModal,
         title: "Select Contact",
+        mine_party_appt_type_code: "EOR",
       },
       content: modalConfig.ADD_CONTACT,
     });
@@ -169,7 +172,7 @@ export const EngineerOfRecord = (props) => {
         {currentEor && currentEor.documents.length > 0 && (
           <div>
             <Typography.Title level={4} className="margin-large--top">
-              Uploaded Documents
+              Acceptance Letter
             </Typography.Title>
             <Table
               align="left"
@@ -180,27 +183,32 @@ export const EngineerOfRecord = (props) => {
             />
           </div>
         )}
-        <div className="margin-large--top margin-large--bottom">
-          <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
-          <Typography.Text>
-            Letter must be officially signed. A notification will be sent to the Mine Manager upon
-            upload.
-          </Typography.Text>
-        </div>
-        <Field
-          name="engineer_of_record.acceptance_letter"
-          id="engineer_of_record.acceptance_letter"
-          onFileLoad={onFileLoad}
-          onRemoveFile={onRemoveFile}
-          component={FileUpload}
-          addFileStart={() => setUploading(true)}
-          onAbort={() => setUploading(false)}
-          uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
-          acceptedFileTypesMap={{ ...PDF }}
-          labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
-          allowRevert
-          onprocessfiles={() => setUploading(false)}
-        />
+
+        {!props.formValues?.engineer_of_record?.mine_party_appt_guid && (
+          <>
+            <div className="margin-large--top margin-large--bottom">
+              <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+              <Typography.Text>
+                Letter must be officially signed. A notification will be sent to the Mine Manager
+                upon upload.
+              </Typography.Text>
+            </div>
+            <Field
+              name="engineer_of_record.acceptance_letter"
+              id="engineer_of_record.acceptance_letter"
+              onFileLoad={onFileLoad}
+              onRemoveFile={onRemoveFile}
+              component={FileUpload}
+              addFileStart={() => setUploading(true)}
+              onAbort={() => setUploading(false)}
+              uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
+              acceptedFileTypesMap={{ ...PDF }}
+              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+              allowRevert
+              onprocessfiles={() => setUploading(false)}
+            />
+          </>
+        )}
         <Typography.Title level={4} className="margin-large--top">
           EOR Term
         </Typography.Title>
