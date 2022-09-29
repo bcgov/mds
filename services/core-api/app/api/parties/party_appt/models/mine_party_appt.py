@@ -66,7 +66,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         def validate_tsf():
             if self.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
                 if not self.mine_tailings_storage_facility:
-                    raise AssertionError('The associated TSF is required for Engineer of Records or Qualified Persons.')
+                    raise AssertionError('The associated TSF is required for Engineer of Records or TSF Qualified Persons.')
             elif self.mine_tailings_storage_facility:
                 raise AssertionError('TSFs can only be associated with Engineer of Records.')
 

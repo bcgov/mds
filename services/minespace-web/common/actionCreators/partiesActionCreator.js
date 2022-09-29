@@ -18,7 +18,7 @@ export const createParty = (payload) => (dispatch) => {
     .then((response) => {
       dispatch(hideLoading("modal"));
       notification.success({
-        message: "Successfully created a new party",
+        message: "Successfully created a new contact",
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_PARTY));

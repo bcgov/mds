@@ -15,12 +15,13 @@ const propTypes = {
   handleSaveDraft: PropTypes.func,
   handleSaveData: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
   handleSaveDraft: undefined,
   handleSaveData: undefined,
+  errors: [],
 };
 
 const SteppedForm = (props) => {
@@ -60,9 +61,14 @@ const SteppedForm = (props) => {
       <Col span={6} className="stepped-form-menu-container">
         <Menu className="stepped-form" mode="inline" items={tabs} selectedKeys={tabs[tabIndex]}>
           {tabs.map((tab) => {
+            const child = children.find((childTab) => childTab.key === tab);
+
             return (
               <Item
-                disabled={props.errors.length > 0 && indexOf(tabs, tab) > tabIndex}
+                disabled={
+                  (props.errors?.length > 0 && indexOf(tabs, tab) > tabIndex) ||
+                  child?.props?.disabled
+                }
                 className="stepped-menu-item"
                 key={tab}
                 onClick={() => {
@@ -100,7 +106,7 @@ const SteppedForm = (props) => {
                   )}
                   <Button
                     type="secondary"
-                    disabled={props.errors.length > 0}
+                    disabled={props.errors?.length > 0}
                     onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
                     Next <RightOutlined />

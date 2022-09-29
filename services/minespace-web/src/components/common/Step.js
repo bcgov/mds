@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 const propTypes = {
   children: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
 };
 
 const Step = (props) => {
