@@ -46,3 +46,25 @@ This is because sandbox contains business critical data. eg: If the ECR is delet
 # Tidbits
 
 - [Terragrunt Example](https://github.com/gruntwork-io/terragrunt-infrastructure-modules-example)
+
+
+# discord_sysdig_webhook - Discord Webhook service for Sysdig
+
+discord_sysdig_webhook.tf contains the resources for the web service used to connect
+Sysdig to Discord. At the time of writing, Sysdig's webhook messages are not in the 
+format required for Discord's webhook API, thus, we created this service to format the 
+messages properly so that we can get infrastructure monitoring and alerting to our Discord server. 
+
+## Gotchas
+
+The key "prod/mds/discord-webhook-link" is the webhook link for the #alerts channel in the Discord server. This secret was added manually and is required for the service to work. If it is removed, be sure to create a new secret in AWS Secrets Manager that contains a working webhook link to the #alerts or your desired text channel. 
+
+This project is run with terragrunt using Terraform Cloud as the backend to store its state. This project is currently deployed in prod and we only need ONE copy of this. To rebuild/deploy/redeploy this project, navigate to the prod directory and run:
+
+`terragrunt apply`
+
+There are AWS Cloudwatch log groups attached to the lambda function and the API gateway resources for this project. If you need to check the logs on either service, login to AWS and check for their log groups or navigate to each resource and check their logs. 
+
+To see the names of the log groups, you should be able to get the information from running:
+
+`terragrunt show`
