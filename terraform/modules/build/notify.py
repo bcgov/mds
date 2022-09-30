@@ -4,6 +4,8 @@ import json
 import sys
 import logging
 
+from aws_lambda_powertools.utilities import parameters
+
 from datetime import datetime, timedelta
 
 http = urllib3.PoolManager()
@@ -12,12 +14,13 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
-    url = "https://discordapp.com/api/webhooks/1019009944864952330/yJLd0xhoyzGzrqSh6Al2bIezLY58XHia8Drcol8_J1N1E-qenCkGWsHXBSs3-LdjejDs"
-
+    
+    # Retrieve a single secret
+    value = json.loads(parameters.get_secret("prod/mds/discord-webhook-link")).get("discord-webhook-link")
+    
+    url = f"{value}"
     if event is None:
      raise Exception("There must be an event to process the request")
-    
-    print(event)
     
     logger.info('## EVENT\r' + str(event))
     logger.info('## CONTEXT\r' + str(context))
@@ -27,8 +30,24 @@ def lambda_handler(event, context):
       body = json.loads(event.get("body"))
     except Exception:
       body = event.get("body")
+      
+    
+    if body is None:
+      response = {
+        "statusCode": "404",
+        "headers": {
+          "Content-Type": "text/plain",
+          "x-amzn-ErrorType": "404"
+        },
+        "isBase64Encoded": "false",
+        "body": "sysdig message body is null"
+      }
+    
+      return response
+    
     
     alert = body.get("alert", "")
+    resolved = body.get("resolved", "")
     event_details =  body.get("event", "")
     condition = body.get("condition", "")
     entities = body.get("entities", "")
@@ -86,12 +105,16 @@ def lambda_handler(event, context):
             {
               "name": "Metric Values",
               "value": str(entities)[:1023]
+            },
+            {
+              "name": "Resolved",
+              "value": "true" if resolved == "true" else "false"
             }
          ]
         }]
     }
     
-    encoded_msg = json.dumps(msg).encode("utf-8")[:5999]
+    encoded_msg = json.dumps(msg).encode("utf-8")
     
     resp = http.request("POST", url, body=encoded_msg,
                         headers={

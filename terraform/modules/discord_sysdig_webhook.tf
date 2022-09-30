@@ -34,9 +34,10 @@ resource "aws_s3_object" "lambda_notification" {
 
   etag = filemd5(data.archive_file.lambda_notification.output_path)
 
-    lifecycle {
+  lifecycle {
     ignore_changes = [
-      source
+      source,
+      etag
     ]
   }
 
@@ -53,7 +54,15 @@ resource "aws_lambda_function" "discord_notify" {
   runtime = "python3.9"
   handler = "notify.lambda_handler"
 
+  layers        = ["arn:aws:lambda:ca-central-1:017000801446:layer:AWSLambdaPowertoolsPython:36"]
+
   source_code_hash = data.archive_file.lambda_notification.output_base64sha256
+
+  lifecycle {
+    ignore_changes = [
+      source_code_hash
+    ]
+  }
   
   role = aws_iam_role.lambda_exec.arn
 
@@ -79,14 +88,15 @@ resource "aws_iam_role" "lambda_exec" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Sid    = ""
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
-      }
+    Statement = [
+      {
+        Sid    = ""
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      },
     ]
   })
 }
@@ -95,6 +105,28 @@ resource "aws_iam_role" "lambda_exec" {
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+
+# # AWS IAM Role Policy for Lambda to access AWS Secrets Manager
+
+resource "aws_iam_role_policy" "lambda_secrets_manager_policy" {
+  name        = "lambda_secrets_manager_policy"
+  # description = "AWS IAM Role Policy for Lambda to access AWS Secrets Manager"
+  
+  role = aws_iam_role.lambda_exec.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "secretsmanager:*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 resource "aws_apigatewayv2_api" "lambda" {
