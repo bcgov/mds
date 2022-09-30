@@ -1,12 +1,9 @@
 #!/usr/bin/python3.9
-import urllib3
 import json
-import sys
 import logging
+import urllib3
 
 from aws_lambda_powertools.utilities import parameters
-
-from datetime import datetime, timedelta
 
 http = urllib3.PoolManager()
 
