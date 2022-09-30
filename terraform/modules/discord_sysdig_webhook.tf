@@ -1,5 +1,3 @@
-## S3 stuff
-
 resource "random_pet" "lambda_bucket_name" {
   prefix = "discord-notification-store"
   length = 4
@@ -42,8 +40,6 @@ resource "aws_s3_object" "lambda_notification" {
   }
 
 }
-
-#### end S3
 
 resource "aws_lambda_function" "discord_notify" {
   function_name = "DiscordNotify"
@@ -107,9 +103,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-
-# # AWS IAM Role Policy for Lambda to access AWS Secrets Manager
-
+# AWS IAM Role Policy for Lambda to access AWS Secrets Manager
 resource "aws_iam_role_policy" "lambda_secrets_manager_policy" {
   name        = "lambda_secrets_manager_policy"
   # description = "AWS IAM Role Policy for Lambda to access AWS Secrets Manager"
