@@ -120,10 +120,14 @@ resource "aws_iam_role_policy" "lambda_secrets_manager_policy" {
     Statement = [
       {
         Action = [
-          "secretsmanager:*",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetRandomPassword",
+          "secretsmanager:ListSecretVersionIds"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "arn:aws:secretsmanager:ca-central-1:${var.target_aws_account_id}:secret:prod/mds/discord-webhook-link-*"
       },
     ]
   })
