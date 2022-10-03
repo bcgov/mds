@@ -16,6 +16,7 @@ from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.party import Party
+from app.api.activity.utils import trigger_notifcation
 
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
 
@@ -199,6 +200,7 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.save()
             if is_minespace_user():
                 incident.send_incidents_email()
+            trigger_notifcation('', mine, 'MineIncident', incident.mine_incident_guid, extra_data=None)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
@@ -299,6 +301,10 @@ class MineIncidentResource(Resource, UserMixin):
             ]:
                 tmp_party = Party.query.filter_by(party_guid=value).first()
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
+                    setattr(incident, key, value)
+            if key in ['status_code']:
+                if value == '':
+                    set_stuff()
                     setattr(incident, key, value)
             else:
                 setattr(incident, key, value)

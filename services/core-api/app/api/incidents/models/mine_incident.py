@@ -1,4 +1,5 @@
-import uuid, datetime
+import uuid
+import datetime
 from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -100,8 +101,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     recommendations = db.relationship(
         'MineIncidentRecommendation',
-        primaryjoin=
-        "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
+        primaryjoin="and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
@@ -110,8 +110,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='joined',
         secondary='mine_incident_document_xref',
-        secondaryjoin=
-        'and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
     )
 
     categories = db.relationship(
@@ -120,8 +119,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         'MineIncidentNote',
         backref='mine_incident',
         lazy='select',
-        primaryjoin=
-        'and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
+        primaryjoin='and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
     )
 
     mine_table = db.relationship('Mine', lazy='joined')
@@ -238,3 +236,6 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/oversight/incidents-and-investigations'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
+
+    def send_awaiting_final_report(self):
+        return
