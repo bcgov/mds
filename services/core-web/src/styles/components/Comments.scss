@@ -39,3 +39,23 @@
   position: absolute;
   right: 6px;
 }
+
+.comment {
+    background: $pure-white;
+    line-height: 1.3;
+    margin: 0 auto auto;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    padding: 0px 10px 10px 0px;
+    position: relative;
+}
+
+.comment-author{
+  color: #5e46a1;
+  font-weight: 600;
+}
+
+.comment-time{
+  color: #000000de;
+  font-weight: 400;
+}
