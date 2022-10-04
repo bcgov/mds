@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SteppedForm renders properly 1`] = `
+<Row>
+  <Col
+    className="stepped-form-menu-container"
+    span={6}
+  >
+    <Menu
+      className="stepped-form"
+      items={
+        Array [
+          "1",
+          "2",
+        ]
+      }
+      mode="inline"
+      selectedKeys="1"
+    >
+      <MenuItem
+        className="stepped-menu-item"
+        key="1"
+        onClick={[Function]}
+      >
+        1
+      </MenuItem>
+      <MenuItem
+        className="stepped-menu-item"
+        key="2"
+        onClick={[Function]}
+      >
+        2
+      </MenuItem>
+    </Menu>
+  </Col>
+  <Col
+    span={18}
+  >
+    <div
+      className="stepped-form-form-container"
+    >
+      <Form
+        colon={true}
+        hideRequiredMark={false}
+        layout="vertical"
+        onSubmit={[Function]}
+      >
+        <Step
+          key="1"
+        >
+          <div />
+        </Step>
+      </Form>
+      <Row
+        justify="end"
+      >
+        <div>
+          <Button
+            block={false}
+            className="full-mobile draft-button"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[MockFunction]}
+            style={
+              Object {
+                "marginRight": 16,
+              }
+            }
+            type="text"
+          >
+            Save Draft
+          </Button>
+          <Button
+            block={false}
+            disabled={true}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="secondary"
+          >
+            Next 
+            <ForwardRef(RightOutlined) />
+          </Button>
+        </div>
+      </Row>
+    </div>
+  </Col>
+</Row>
+`;
