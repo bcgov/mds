@@ -206,7 +206,7 @@ const StepForms = (
       <React.Fragment key="step-3-buttons">
         {!props.incident.status_code && (
           <Button
-            id="step-back2"
+            id="step-back3"
             type="tertiary"
             className="full-mobile"
             style={{ marginRight: "24px" }}
