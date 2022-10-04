@@ -60,7 +60,7 @@ export const QualifiedPerson = (props) => {
   const validateQPStartDateOverlap = (val) => {
     if (props.formValues?.qualified_person?.mine_party_appt_guid) {
       // Skip validation for existing TQPs
-      return true;
+      return undefined;
     }
 
     const existingEors = props.partyRelationships?.filter(
@@ -140,7 +140,10 @@ export const QualifiedPerson = (props) => {
               id="qualified_person.start_date"
               name="qualified_person.start_date"
               label="Start Date"
-              disabled={!!props.formValues?.qualified_person?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+                !props.formValues?.qualified_person?.party_guid
+              }
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture, validateQPStartDateOverlap]}
             />
@@ -150,7 +153,10 @@ export const QualifiedPerson = (props) => {
               id="qualified_person.end_date"
               name="qualified_person.end_date"
               label="End Date (Optional)"
-              disabled={!!props.formValues?.qualified_person?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+                !props.formValues?.qualified_person?.party_guid
+              }
               validate={[dateInFuture]}
               component={renderConfig.DATE}
             />

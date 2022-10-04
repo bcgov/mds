@@ -96,6 +96,7 @@ exports[`EngineerOfRecord renders properly 1`] = `
       addFileStart={[Function]}
       allowRevert={true}
       component={[Function]}
+      disabled={true}
       id="engineer_of_record.eor_document_guid"
       labelIdle="<strong class=\\"filepond--label-action\\">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>"
       name="engineer_of_record.eor_document_guid"
@@ -124,7 +125,7 @@ exports[`EngineerOfRecord renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          disabled={false}
+          disabled={true}
           id="engineer_of_record.start_date"
           label="Start Date"
           name="engineer_of_record.start_date"
@@ -142,7 +143,7 @@ exports[`EngineerOfRecord renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          disabled={false}
+          disabled={true}
           id="engineer_of_record.end_date"
           label="End Date (Optional)"
           name="engineer_of_record.end_date"

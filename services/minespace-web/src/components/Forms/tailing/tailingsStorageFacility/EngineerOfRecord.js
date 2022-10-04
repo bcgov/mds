@@ -128,9 +128,10 @@ export const EngineerOfRecord = (props) => {
   };
 
   const validateEorStartDateOverlap = (val) => {
+    console.log(val, props.formValues?.engineer_of_record);
     if (props.formValues?.engineer_of_record?.mine_party_appt_guid) {
       // Skip validation for existing EoRs
-      return true;
+      return undefined;
     }
 
     const existingEors = partyRelationships?.filter(
@@ -257,6 +258,7 @@ export const EngineerOfRecord = (props) => {
               onRemoveFile={onRemoveFile}
               validate={[required]}
               component={FileUpload}
+              disabled={!props.formValues?.engineer_of_record?.party_guid}
               addFileStart={() => setUploading(true)}
               onAbort={() => setUploading(false)}
               uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
@@ -276,7 +278,10 @@ export const EngineerOfRecord = (props) => {
               id="engineer_of_record.start_date"
               name="engineer_of_record.start_date"
               label="Start Date"
-              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
+                !props.formValues?.engineer_of_record?.party_guid
+              }
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
             />
@@ -286,7 +291,10 @@ export const EngineerOfRecord = (props) => {
               id="engineer_of_record.end_date"
               name="engineer_of_record.end_date"
               label="End Date (Optional)"
-              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
+                !props.formValues?.engineer_of_record?.party_guid
+              }
               validate={[dateInFuture]}
               component={renderConfig.DATE}
             />
