@@ -128,7 +128,6 @@ export const EngineerOfRecord = (props) => {
   };
 
   const validateEorStartDateOverlap = (val) => {
-    console.log(val, props.formValues?.engineer_of_record);
     if (props.formValues?.engineer_of_record?.mine_party_appt_guid) {
       // Skip validation for existing EoRs
       return undefined;
