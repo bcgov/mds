@@ -96,14 +96,19 @@ exports[`EngineerOfRecord renders properly 1`] = `
       addFileStart={[Function]}
       allowRevert={true}
       component={[Function]}
-      id="engineer_of_record.acceptance_letter"
+      id="engineer_of_record.eor_document_guid"
       labelIdle="<strong class=\\"filepond--label-action\\">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>"
-      name="engineer_of_record.acceptance_letter"
+      name="engineer_of_record.eor_document_guid"
       onAbort={[Function]}
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
       onprocessfiles={[Function]}
       uploadUrl="/mines/undefined/party-appts/undefined/documents"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
     />
     <Title
       className="margin-large--top"
@@ -139,11 +144,7 @@ exports[`EngineerOfRecord renders properly 1`] = `
           id="engineer_of_record.end_date"
           label="End Date"
           name="engineer_of_record.end_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
+          validate={Array []}
         />
       </Col>
     </Row>

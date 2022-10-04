@@ -113,7 +113,6 @@ export const AddContactFormDetails = (props) => {
     // defaults a missing value to `null` instead of `undefined`
     // which allows the select component to clear the existing value instead of
     // defaulting to the initial value when "clear" is clicked
-
     props.change(FORM.ADD_CONTACT, field, val || null);
   };
 
@@ -135,7 +134,7 @@ export const AddContactFormDetails = (props) => {
               component={renderConfig.SELECT}
               onChange={props.handleSelectChange}
               data={props.contacts}
-              validate={[validateSelectOptions(props.contacts)]}
+              validate={[validateSelectOptions(props.contacts, true)]}
             />
           </Form.Item>
         </Col>

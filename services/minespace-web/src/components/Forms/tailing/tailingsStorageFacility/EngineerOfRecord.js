@@ -67,6 +67,7 @@ export const EngineerOfRecord = (props) => {
       "engineer_of_record.mine_party_appt_guid",
       null
     );
+    setCurrentEor(null);
     props.closeModal();
   };
 
@@ -194,10 +195,11 @@ export const EngineerOfRecord = (props) => {
               </Typography.Text>
             </div>
             <Field
-              name="engineer_of_record.acceptance_letter"
-              id="engineer_of_record.acceptance_letter"
+              name="engineer_of_record.eor_document_guid"
+              id="engineer_of_record.eor_document_guid"
               onFileLoad={onFileLoad}
               onRemoveFile={onRemoveFile}
+              validate={[required]}
               component={FileUpload}
               addFileStart={() => setUploading(true)}
               onAbort={() => setUploading(false)}
@@ -229,7 +231,7 @@ export const EngineerOfRecord = (props) => {
               name="engineer_of_record.end_date"
               label="End Date"
               disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
-              validate={[required]}
+              validate={[]}
               component={renderConfig.DATE}
             />
           </Col>
