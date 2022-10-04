@@ -15,7 +15,6 @@ DAM_MODEL = api.model('Dam', {
     'current_dam_height': fields.Fixed(decimals=2),
     'current_elevation': fields.Fixed(decimals=2),
     'max_pond_elevation': fields.Fixed(decimals=2),
-    'min_pond_elevation': fields.Fixed(decimals=2),
     'min_freeboard_required': fields.Fixed(decimals=2),
 })
 
@@ -36,6 +35,5 @@ CREATE_DAM_MODEL = api.model('Dam', {
     'current_dam_height': fields.String,
     'current_elevation': fields.String,
     'max_pond_elevation': fields.String,
-    'min_pond_elevation': fields.String,
     'min_freeboard_required': fields.String
 })
