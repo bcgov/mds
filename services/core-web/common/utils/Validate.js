@@ -146,6 +146,9 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
 
+export const dateInFuture = (value) =>
+  value && new Date(value) < new Date() ? "Date must be in the future" : undefined;
+
 export const dateNotBeforeOther = memoize((other) => (value) =>
   value && other && new Date(value) <= new Date(other)
     ? `Date cannot be on or before ${other}`
