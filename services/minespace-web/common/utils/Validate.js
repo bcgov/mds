@@ -168,9 +168,9 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 );
 
 // eslint-disable-next-line consistent-return
-export const validateSelectOptions = memoize((data) => (value) => {
-  if (value && data.length > 0) {
-    return data.find((opt) => opt.value === value) !== undefined
+export const validateSelectOptions = memoize((data, allowEmptyData = false) => (value) => {
+  if (value && (data?.length > 0 || allowEmptyData)) {
+    return data?.find((opt) => opt.value === value) !== undefined
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
   }
