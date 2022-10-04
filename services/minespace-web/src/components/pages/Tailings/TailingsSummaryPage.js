@@ -133,6 +133,8 @@ export const TailingsSummaryPage = (props) => {
       return;
     }
 
+    let newTsf = null;
+
     switch (match.params.tab) {
       case "basic-information":
         if (tsfGuid) {
@@ -140,18 +142,8 @@ export const TailingsSummaryPage = (props) => {
             await props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
           }
         } else {
-          const newTsf = await props.createTailingsStorageFacility(
-            match.params.mineGuid,
-            formValues
-          );
+          newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
           await props.clearTsf();
-          history.push(
-            EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-              newTsf.data.mine_tailings_storage_facility_guid,
-              match.params.mineGuid,
-              newActiveTab || "engineer-of-record"
-            )
-          );
           setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
         }
         break;
@@ -194,6 +186,14 @@ export const TailingsSummaryPage = (props) => {
       default:
         break;
     }
+
+    history.push(
+      EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+        newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
+        match.params.mineGuid,
+        newActiveTab || "engineer-of-record"
+      )
+    );
   };
 
   const handleTabChange = async (newActiveTab) => {
@@ -256,7 +256,7 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson />
+            <QualifiedPerson mineGuid={mineGuid} />
           </Step>
           <Step key="registry-document" disabled={!hasCreatedTSF}>
             <div />

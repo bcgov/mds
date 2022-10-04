@@ -89,12 +89,14 @@ exports[`QualifiedPerson renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          disabled={false}
+          disabled={true}
           id="qualified_person.start_date"
           label="Start Date"
           name="qualified_person.start_date"
           validate={
             Array [
+              [Function],
+              [Function],
               [Function],
             ]
           }
@@ -105,11 +107,15 @@ exports[`QualifiedPerson renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          disabled={false}
+          disabled={true}
           id="qualified_person.end_date"
-          label="End Date"
+          label="End Date (Optional)"
           name="qualified_person.end_date"
-          validate={Array []}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </Col>
     </Row>
