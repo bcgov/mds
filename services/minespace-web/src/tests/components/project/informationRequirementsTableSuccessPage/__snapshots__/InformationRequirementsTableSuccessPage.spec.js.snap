@@ -49,14 +49,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
             span={24}
           >
             <ForwardRef(CheckCircleOutlined)
-              style={
-                Object {
-                  "color": "green",
-                  "marginBottom": "3.5em",
-                  "marginTop": "7.0em",
-                  "transform": "scale(7.0)",
-                }
-              }
+              className="success-page"
             />
           </Col>
         </Row>
