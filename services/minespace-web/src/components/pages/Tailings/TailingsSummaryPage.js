@@ -256,7 +256,7 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson />
+            <QualifiedPerson mineGuid={mineGuid} />
           </Step>
           <Step key="registry-document" disabled={!hasCreatedTSF}>
             <div />

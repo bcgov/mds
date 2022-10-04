@@ -11,8 +11,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { required } from "@common/utils/Validate";
+import {
+  required,
+  dateNotInFuture,
+  dateInFuture,
+  validateDateRanges,
+} from "@common/utils/Validate";
 import { truncateFilename } from "@common/utils/helpers";
+import moment from "moment";
+import { isNumber } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
 import { renderConfig } from "@/components/common/config";
 import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
@@ -51,6 +58,7 @@ const columns = [
 
 export const EngineerOfRecord = (props) => {
   const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships } = props;
+
   const [, setUploading] = useState(false);
   const [currentEor, setCurrentEor] = useState(null);
   const handleCreateEOR = (value) => {
@@ -119,6 +127,35 @@ export const EngineerOfRecord = (props) => {
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.eor_document_guid", null);
   };
 
+  const validateEorStartDateOverlap = (val) => {
+    if (props.formValues?.engineer_of_record?.mine_party_appt_guid) {
+      // Skip validation for existing EoRs
+      return true;
+    }
+
+    const existingEors = partyRelationships?.filter(
+      (p) =>
+        p.mine_party_appt_type_code === "EOR" &&
+        p.mine_guid === mineGuid &&
+        p.related_guid === props.formValues.mine_tailings_storage_facility_guid
+    );
+
+    return (
+      validateDateRanges(
+        existingEors || [],
+        { ...props.formValues?.engineer_of_record, start_date: val },
+        "EOR",
+        true
+      )?.start_date || undefined
+    );
+  };
+
+  const daysToEORExpiry =
+    currentEor?.end_date &&
+    moment(currentEor.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
+
   return (
     <Row>
       <Col span={24}>
@@ -151,6 +188,25 @@ export const EngineerOfRecord = (props) => {
             type="info"
           />
         )}
+
+        {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
+          <Alert
+            message="Engineer of Record will Expire within 30 Days"
+            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+            showIcon
+            type="warning"
+          />
+        )}
+
+        {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
+          <Alert
+            message="No Engineer of Record"
+            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+            showIcon
+            type="error"
+          />
+        )}
+
         <Typography.Title level={4} className="margin-large--top">
           Contact Information
         </Typography.Title>
@@ -222,16 +278,16 @@ export const EngineerOfRecord = (props) => {
               label="Start Date"
               disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
               component={renderConfig.DATE}
-              validate={[required]}
+              validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
             />
           </Col>
           <Col span={12}>
             <Field
               id="engineer_of_record.end_date"
               name="engineer_of_record.end_date"
-              label="End Date"
+              label="End Date (Optional)"
               disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
-              validate={[]}
+              validate={[dateInFuture]}
               component={renderConfig.DATE}
             />
           </Col>
