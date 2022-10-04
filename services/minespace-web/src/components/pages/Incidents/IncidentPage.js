@@ -204,23 +204,25 @@ const StepForms = (
     ),
     buttons: [
       <React.Fragment key="step-3-buttons">
-        <Button
-          id="step-back2"
-          type="tertiary"
-          className="full-mobile"
-          style={{ marginRight: "24px" }}
-          onClick={() => {
-            props.history.push({
-              pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(
-                props.incident?.mine_guid,
-                props.incident?.mine_incident_guid
-              )}`,
-              state: { current: 1 },
-            });
-          }}
-        >
-          Back
-        </Button>
+        {!props.incident.status_code && (
+          <Button
+            id="step-back2"
+            type="tertiary"
+            className="full-mobile"
+            style={{ marginRight: "24px" }}
+            onClick={() => {
+              props.history.push({
+                pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(
+                  props.incident?.mine_guid,
+                  props.incident?.mine_incident_guid
+                )}`,
+                state: { current: 1 },
+              });
+            }}
+          >
+            Back
+          </Button>
+        )}
         <Popconfirm
           placement="topRight"
           title="Are you sure you want to submit your final incident? No changes can be made after submitting."
@@ -240,9 +242,11 @@ const StepForms = (
           okText="Yes"
           cancelText="No"
         >
-          <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
-            Submit Now
-          </Button>
+          {!props.incident?.status_code && (
+            <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
+              Submit Now
+            </Button>
+          )}
         </Popconfirm>
       </React.Fragment>,
     ],

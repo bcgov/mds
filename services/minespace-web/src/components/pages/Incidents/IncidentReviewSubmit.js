@@ -50,6 +50,7 @@ const renderInitialReport = (props) => (
                 .join(", ")
             : Strings.EMPTY_FIELD
         }
+        disabled
       />
     </Col>
   </Row>
@@ -65,19 +66,19 @@ const renderReporterDetails = (props) => (
     </Col>
     <Col xs={24} md={10}>
       <p>Reported by</p>
-      <Input value={props.incident.reported_by_name} />
+      <Input value={props.incident.reported_by_name} disabled />
     </Col>
     <Col xs={24} md={10}>
       <p>Phone number (optional)</p>
-      <Input value={props.incident.reported_by_phone_ext} />
+      <Input value={props.incident.reported_by_phone_ext} disabled />
     </Col>
     <Col xs={24} md={4}>
       <p>Ext.</p>
-      <Input value={props.incident.reported_by_phone_ext} />
+      <Input value={props.incident.reported_by_phone_ext} disabled />
     </Col>
     <Col md={10} xs={24}>
       <p>Email (optional)</p>
-      <Input value={props.incident.email} />
+      <Input value={props.incident.email} disabled />
     </Col>
   </Row>
 );
@@ -94,56 +95,56 @@ const renderIncidentDetails = (props) => (
     </Col>
     <Col md={12} xs={24}>
       <p>Incident date</p>
-      <Input value={formatDate(props.incident.reported_timestamp)} />
+      <Input value={formatDate(props.incident.reported_timestamp)} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Incident time</p>
-      <Input value={formatTime(props.incident.reported_timestamp)} />
+      <Input value={formatTime(props.incident.reported_timestamp)} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Proponent incident number (optional)</p>
-      <Input value={props.incident.proponent_incident_no} />
+      <Input value={props.incident.proponent_incident_no} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Number of injuries (optional)</p>
-      <Input value={props.incident.number_of_injuries} />
+      <Input value={props.incident.number_of_injuries} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Number of fatalities (optional)</p>
-      <Input value={props.incident.number_of_fatalities} />
+      <Input value={props.incident.number_of_fatalities} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Were emergency services called? (optional)</p>
-      <Input value={props.incident.emergency_services_called ? "Yes" : "No"} />
+      <Input value={props.incident.emergency_services_called ? "Yes" : "No"} disabled />
     </Col>
     <Col span={24}>
       <p>Description of incident</p>
-      <Input.TextArea rows={4} value={props.incident.incident_description} />
+      <Input.TextArea rows={4} value={props.incident.incident_description} disabled />
     </Col>
     <Col span={24}>
       <p>Immediate measures taken (optional)</p>
-      <Input.TextArea rows={4} value={props.incident.measures_taken} />
+      <Input.TextArea rows={4} value={props.incident.measures_taken} disabled />
     </Col>
     <Col span={24}>
       <p>If any injuries, please describe (optional)</p>
-      <Input.TextArea rows={4} value={props.incident.injuries_description} />
+      <Input.TextArea rows={4} value={props.incident.injuries_description} disabled />
     </Col>
     <Divider />
     <Col md={12} xs={24}>
       <p>JOHSC/Worker Rep Name (optional)</p>
-      <Input value={props.incident.johsc_worker_rep_name} />
+      <Input value={props.incident.johsc_worker_rep_name} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Was this person contacted? (optional)</p>
-      <Input value={props.incident.johsc_worker_rep_contacted ? "Yes" : "No"} />
+      <Input value={props.incident.johsc_worker_rep_contacted ? "Yes" : "No"} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>JOHSC/Management Rep Name (optional)</p>
-      <Input value={props.incident.johsc_management_rep_name} />
+      <Input value={props.incident.johsc_management_rep_name} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Was this person contacted? (optional)</p>
-      <Input value={props.incident.johsc_management_rep_contacted ? "Yes" : "No"} />
+      <Input value={props.incident.johsc_management_rep_contacted ? "Yes" : "No"} disabled />
     </Col>
   </Row>
 );
@@ -159,11 +160,11 @@ const renderDangerousOccurenceDetermination = (props) => (
     </Col>
     <Col md={12} xs={24}>
       <p>Was this a dangerous occurrence? (optional)</p>
-      <Input value={props.incident.mine_determination_type_code ? "Yes" : "No"} />
+      <Input value={props.incident.mine_determination_type_code ? "Yes" : "No"} disabled />
     </Col>
     <Col md={12} xs={24}>
       <p>Mine representative who made determination (optional)</p>
-      <Input value={props.incident.mine_determination_representative} />
+      <Input value={props.incident.mine_determination_representative} disabled />
     </Col>
   </Row>
 );
@@ -185,7 +186,8 @@ const renderUploadInitialNotificationDocuments = (props) => {
 };
 
 const confirmationSubmission = (props, applicationSubmitted) =>
-  !applicationSubmitted && (
+  !applicationSubmitted &&
+  !props.incident?.status_code && (
     <Col span={24}>
       <Card>
         <>
