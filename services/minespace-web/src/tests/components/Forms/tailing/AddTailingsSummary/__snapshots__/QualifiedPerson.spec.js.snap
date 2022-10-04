@@ -96,6 +96,8 @@ exports[`QualifiedPerson renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
+              [Function],
             ]
           }
         />
@@ -107,9 +109,13 @@ exports[`QualifiedPerson renders properly 1`] = `
           component={[Function]}
           disabled={false}
           id="qualified_person.end_date"
-          label="End Date"
+          label="End Date (Optional)"
           name="qualified_person.end_date"
-          validate={Array []}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </Col>
     </Row>

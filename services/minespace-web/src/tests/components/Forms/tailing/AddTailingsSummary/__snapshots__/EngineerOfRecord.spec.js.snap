@@ -131,6 +131,8 @@ exports[`EngineerOfRecord renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
+              [Function],
             ]
           }
         />
@@ -142,9 +144,13 @@ exports[`EngineerOfRecord renders properly 1`] = `
           component={[Function]}
           disabled={false}
           id="engineer_of_record.end_date"
-          label="End Date"
+          label="End Date (Optional)"
           name="engineer_of_record.end_date"
-          validate={Array []}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </Col>
     </Row>
