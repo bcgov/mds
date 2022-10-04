@@ -1,5 +1,4 @@
 import datetime
-import logging
 import requests
 import os
 from logging.config import dictConfig
@@ -30,6 +29,7 @@ from app.api.EMLI_contacts.namespace import api as EMLI_contacts_api
 from app.api.projects.namespace import api as projects_api
 from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 from app.api.activity.namespace import api as activity_api
+from app.api.dams.namespace import api as dams_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -106,6 +106,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(projects_api)
     root_api_namespace.add_namespace(notice_of_departure_api)
     root_api_namespace.add_namespace(activity_api)
+    root_api_namespace.add_namespace(dams_api)
 
     @root_api_namespace.route('/version/')
     class VersionCheck(Resource):
