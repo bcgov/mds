@@ -68,3 +68,21 @@ There are AWS Cloudwatch log groups attached to the lambda function and the API 
 To see the names of the log groups, you should be able to get the information from running:
 
 `terragrunt show`
+
+# Sysdig Alerts 
+
+This section covers the Sysdig Alerts that are sourced / deployed / provisioned with Terraform.
+
+## Gotchas
+
+As of September 15th, 2022, the notification channel  id for Discord notifications
+is 77077. If you need to create a new channel, use the following request 
+
+` curl -X GET https://app.sysdigcloud.com/api/notificationChannels -H 'Authorization: Bearer <sysdig_api_token>' `
+
+to get the notification channel id and use that id for each of the alerts here.
+
+- [Refer here for severity and status codes](https://docs.sysdig.com/en/docs/sysdig-monitor/events/severity-and-status/)
+
+
+The key ____ is the Sysdig Monitor API token This secret was added manually and is required to successfully deploy/redeploy the alerts. If it is changed, update the secret within AWS Secrets Manager (currently prod).
