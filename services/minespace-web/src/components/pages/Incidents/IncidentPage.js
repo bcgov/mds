@@ -302,7 +302,7 @@ export class IncidentPage extends Component {
     if (isDraft) {
       message = "Successfully updated draft incident.";
     } else if (this.props.location.state.current === 2) {
-      message = "Submitted successfully a new incident.";
+      message = "Successfully submitted a new incident.";
     } else {
       message = null;
     }
