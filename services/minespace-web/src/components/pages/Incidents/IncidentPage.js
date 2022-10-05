@@ -32,7 +32,6 @@ import LinkButton from "@/components/common/LinkButton";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
 import { IncidentGetStarted } from "@/components/pages/Incidents/IncidentGetStarted";
-import IncidentReviewSubmit from "@/components/pages/Incidents/IncidentReviewSubmit";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import * as routes from "@/constants/routes";
 
@@ -195,11 +194,12 @@ const StepForms = (
   {
     title: "Review & Submit",
     content: (
-      <IncidentReviewSubmit
+      <IncidentForm
         setConfirmedSubmission={setConfirmedSubmission}
         confirmedSubmission={state.confirmedSubmission}
-        incident={props.incident}
-        formValues={props.formValues}
+        initialValues={formatInitialValues(props?.incident)}
+        isReviewSubmitStage
+        applicationSubmitted={false}
       />
     ),
     buttons: [
@@ -356,7 +356,7 @@ export class IncidentPage extends Component {
 
   formatInitialValues = (incident) => ({
     ...incident,
-    categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
+    categories: incident?.categories,
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
     incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     mine_determination_type_code: incident?.mine_determination_type_code

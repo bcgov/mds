@@ -496,6 +496,10 @@ th.ant-descriptions-item.vertical-description {
   color: $black;
 }
 
+.ant-picker.ant-picker-disabled {
+  border-color: #bbbbbb;
+}
+
 .ant-popover-message-title {
   max-width: 400px;
 }
