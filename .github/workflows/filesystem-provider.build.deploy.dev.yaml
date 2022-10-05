@@ -50,7 +50,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh filesystem-provider ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+        run: ./gitops/watch-deployment.sh filesystem-provider dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04

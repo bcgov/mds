@@ -73,8 +73,10 @@ def lambda_handler(event, context):
 
     alert_colour = colours.get(str(alert_severity_number))
 
-    
-    condition_scope_str = str(str(condition) + "\n for " + str(alert.get("scope", "")))
+    condition_scope_str = str(condition)
+
+    if alert.get("scope"):
+      condition_scope_str = str(str(condition) + "\n for " + str(alert.get("scope", "")))
     
     msg = {
 
