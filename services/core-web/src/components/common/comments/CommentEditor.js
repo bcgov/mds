@@ -58,6 +58,9 @@ export class CommentEditor extends Component {
           <Form.Item>
             <Input.TextArea
               rows={4}
+              placeholder="Enter your comment here"
+              showCount
+              maxLength={100}
               onChange={this.handleChange}
               value={this.state.comment}
               name="comment"

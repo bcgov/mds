@@ -73,6 +73,21 @@ export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
 
+export const timeAgo = (dateTime, unit = "day") => {
+  const startDate = dateTime;
+  const endDate = new Date().toUTCString();
+
+  if (unit === "day") {
+    return moment(endDate).diff(moment(startDate), "days");
+  } else if (unit === "hours") {
+    return moment(endDate).diff(moment(startDate), "hours");
+  } else if (unit === "minutes") {
+    return moment(endDate).diff(moment(startDate), "minutes");
+  } else {
+    return moment(endDate).diff(moment(startDate), "seconds");
+  }
+};
+
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
