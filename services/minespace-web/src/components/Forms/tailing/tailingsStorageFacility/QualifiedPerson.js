@@ -4,11 +4,17 @@ import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { Field, change, getFormValues } from "redux-form";
 import React from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 
 import { PlusCircleFilled } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { required } from "@common/utils/Validate";
+import {
+  required,
+  dateNotInFuture,
+  dateInFuture,
+  validateDateRanges,
+} from "@common/utils/Validate";
 import ContactDetails from "@/components/common/ContactDetails";
 import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
 import { modalConfig } from "@/components/modalContent/config";
@@ -20,6 +26,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(TSFType).isRequired,
+  partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 export const QualifiedPerson = (props) => {
@@ -47,6 +55,29 @@ export const QualifiedPerson = (props) => {
       },
       content: modalConfig.ADD_CONTACT,
     });
+  };
+
+  const validateQPStartDateOverlap = (val) => {
+    if (props.formValues?.qualified_person?.mine_party_appt_guid) {
+      // Skip validation for existing TQPs
+      return undefined;
+    }
+
+    const existingEors = props.partyRelationships?.filter(
+      (p) =>
+        p.mine_party_appt_type_code === "TQP" &&
+        p.mine_guid === props.mineGuid &&
+        p.related_guid === props.formValues.mine_tailings_storage_facility_guid
+    );
+
+    return (
+      validateDateRanges(
+        existingEors || [],
+        { ...props.formValues?.qualified_person, start_date: val },
+        "TQP",
+        true
+      )?.start_date || undefined
+    );
   };
 
   return (
@@ -109,18 +140,24 @@ export const QualifiedPerson = (props) => {
               id="qualified_person.start_date"
               name="qualified_person.start_date"
               label="Start Date"
-              disabled={!!props.formValues?.qualified_person?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+                !props.formValues?.qualified_person?.party_guid
+              }
               component={renderConfig.DATE}
-              validate={[required]}
+              validate={[required, dateNotInFuture, validateQPStartDateOverlap]}
             />
           </Col>
           <Col span={12}>
             <Field
               id="qualified_person.end_date"
               name="qualified_person.end_date"
-              label="End Date"
-              disabled={!!props.formValues?.qualified_person?.mine_party_appt_guid}
-              validate={[]}
+              label="End Date (Optional)"
+              disabled={
+                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+                !props.formValues?.qualified_person?.party_guid
+              }
+              validate={[dateInFuture]}
               component={renderConfig.DATE}
             />
           </Col>
@@ -142,6 +179,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
+  partyRelationships: getPartyRelationships(state),
 });
 
 QualifiedPerson.propTypes = propTypes;

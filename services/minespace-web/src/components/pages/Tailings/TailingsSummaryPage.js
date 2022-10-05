@@ -133,6 +133,8 @@ export const TailingsSummaryPage = (props) => {
       return;
     }
 
+    let newTsf = null;
+
     switch (match.params.tab) {
       case "basic-information":
         if (tsfGuid) {
@@ -140,45 +142,40 @@ export const TailingsSummaryPage = (props) => {
             await props.updateTailingsStorageFacility(match.params.mineGuid, tsfGuid, formValues);
           }
         } else {
-          const newTsf = await props.createTailingsStorageFacility(
-            match.params.mineGuid,
-            formValues
-          );
+          newTsf = await props.createTailingsStorageFacility(match.params.mineGuid, formValues);
           await props.clearTsf();
-          history.push(
-            EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-              newTsf.data.mine_tailings_storage_facility_guid,
-              match.params.mineGuid,
-              newActiveTab || "engineer-of-record"
-            )
-          );
           setTsfGuid(newTsf.data.mine_tailings_storage_facility_guid);
         }
         break;
       case "engineer-of-record":
       case "qualified-person":
-        const { attr, apptType } = {
+        const { attr, apptType, successMessage } = {
           "engineer-of-record": {
             attr: "engineer_of_record",
             apptType: "EOR",
+            successMessage: "Successfully assigned Engineer of Record",
           },
           "qualified-person": {
             attr: "qualified_person",
             apptType: "TQP",
+            successMessage: "Successfully assigned Qualified Person",
           },
         }[match.params.tab];
 
         if (!formValues[attr].mine_party_appt_guid) {
           // Only add party relationship if changed
-          const relationship = await props.addPartyRelationship({
-            mine_guid: match.params.mineGuid,
-            party_guid: formValues[attr].party_guid,
-            mine_party_appt_type_code: apptType,
-            related_guid: match.params.tailingsStorageFacilityGuid,
-            start_date: formValues[attr].start_date,
-            end_date: formValues[attr].end_date,
-            end_current: !!formValues[attr].mine_party_appt_guid,
-          });
+          const relationship = await props.addPartyRelationship(
+            {
+              mine_guid: match.params.mineGuid,
+              party_guid: formValues[attr].party_guid,
+              mine_party_appt_type_code: apptType,
+              related_guid: match.params.tailingsStorageFacilityGuid,
+              start_date: formValues[attr].start_date,
+              end_date: formValues[attr].end_date,
+              end_current: !!formValues[attr].mine_party_appt_guid,
+            },
+            successMessage
+          );
           if (uploadedFiles.length > 0) {
             await handleAddDocuments(relationship.data.mine_party_appt_guid);
           }
@@ -189,6 +186,14 @@ export const TailingsSummaryPage = (props) => {
       default:
         break;
     }
+
+    history.push(
+      EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+        newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
+        match.params.mineGuid,
+        newActiveTab || "engineer-of-record"
+      )
+    );
   };
 
   const handleTabChange = async (newActiveTab) => {
@@ -207,6 +212,7 @@ export const TailingsSummaryPage = (props) => {
     history.push(url);
   };
 
+  const errors = Object.keys(flattenObject(formErrors));
   const { mineGuid } = match.params;
   const mineName = mines[mineGuid]?.mine_name || "";
   const hasCreatedTSF = !!props.initialValues?.mine_tailings_storage_facility_guid;
@@ -233,6 +239,7 @@ export const TailingsSummaryPage = (props) => {
         </Row>
         <Divider />
         <SteppedForm
+          errors={errors}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           activeTab={match.params.tab}
@@ -249,7 +256,7 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson />
+            <QualifiedPerson mineGuid={mineGuid} />
           </Step>
           <Step key="registry-document" disabled={!hasCreatedTSF}>
             <div />

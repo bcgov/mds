@@ -146,6 +146,9 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
 
+export const dateInFuture = (value) =>
+  value && new Date(value) < new Date() ? "Date must be in the future" : undefined;
+
 export const dateNotBeforeOther = memoize((other) => (value) =>
   value && other && new Date(value) <= new Date(other)
     ? `Date cannot be on or before ${other}`
@@ -168,9 +171,9 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 );
 
 // eslint-disable-next-line consistent-return
-export const validateSelectOptions = memoize((data) => (value) => {
-  if (value && data.length > 0) {
-    return data.find((opt) => opt.value === value) !== undefined
+export const validateSelectOptions = memoize((data, allowEmptyData = false) => (value) => {
+  if (value && (data?.length > 0 || allowEmptyData)) {
+    return data?.find((opt) => opt.value === value) !== undefined
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
   }
