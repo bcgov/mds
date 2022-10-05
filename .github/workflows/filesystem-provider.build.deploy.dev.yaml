@@ -1,6 +1,8 @@
 name: FILESYSTEM-PROVIDER - Build & Deploy To DEV
 
 on:
+  workflow_dispatch:
+  # Manual
   push:
     branches:
       - develop
