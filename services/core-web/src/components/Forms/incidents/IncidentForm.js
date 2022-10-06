@@ -42,6 +42,7 @@ import {
 import { renderConfig } from "@/components/common/config";
 import customPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "./IncidentFileUpload";
+import MinistryInternalComments from "@/components/mine/Incidents/MinistryInternalComments";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -724,6 +725,10 @@ const renderInternalDocumentsComments = (props, isEditMode, handlers, parentHand
                 documentColumns={documentColumns}
                 removeDocument={false}
               />
+            </Col>
+            <Col span={24}>
+              <br />
+              <MinistryInternalComments mineIncidentGuid={props.incident?.mine_incident_guid} />
             </Col>
           </Row>
         )}
