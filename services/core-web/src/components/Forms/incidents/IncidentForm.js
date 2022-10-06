@@ -534,7 +534,7 @@ const renderMinistryFollowUp = (props, isEditMode) => {
                     id="determination_inspector_party_guid"
                     name="determination_inspector_party_guid"
                     component={renderConfig.GROUPED_SELECT}
-                    data={props.inspectoroptions}
+                    data={props.inspectorOptions}
                     validate={[required]}
                     disabled={!isEditMode}
                   />
