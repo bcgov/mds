@@ -229,7 +229,7 @@ const StepForms = (
           onConfirm={async (e) => {
             await handlers?.save(e, {
               ...props.incident,
-              status_code: "PRE",
+              status_code: "IRS",
             });
             const url = routes.MINE_INCIDENT_SUCCESS.dynamicRoute(
               props.incident?.mine_guid,
