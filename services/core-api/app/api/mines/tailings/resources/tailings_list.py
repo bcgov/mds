@@ -90,7 +90,6 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         location='json',
         store_missing=False)
 
-
     @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(
         MINE_TSF_MODEL, envelope='mine_tailings_storage_facilities', as_list=True, code=200)
@@ -132,7 +131,8 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             tsf_operating_status_code=data['tsf_operating_status_code'],
             notes=data['notes'],
             storage_location=data.get('storage_location'),
-            facility_type=data.get('facility_type'),
+            facility_type=FacilityType.tailings_storage_facility
+            if data.get('facility_type') == None else data.get('facility_type'),
             tailings_storage_facility_type=data.get('tailings_storage_facility_type'),
             mines_act_permit_no=data.get('mines_act_permit_no'),
         )

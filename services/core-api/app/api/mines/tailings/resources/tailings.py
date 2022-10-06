@@ -14,6 +14,7 @@ from app.api.mines.response_models import MINE_TSF_MODEL
 
 from app.api.utils.access_decorators import requires_any_of, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
 
+
 class MineTailingsStorageFacilityResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
@@ -61,24 +62,21 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         location='json')
     parser.add_argument(
         'storage_location',
-        type=StorageLocation,
+        type=str,
         help='Storage location of the tailings (above or below ground)',
         location='json',
-        choices=list(StorageLocation),
         store_missing=False)
     parser.add_argument(
         'facility_type',
-        type=FacilityType,
+        type=str,
         help='Type of facility.',
         location='json',
-        choices=list(FacilityType),
         store_missing=False)
     parser.add_argument(
         'tailings_storage_facility_type',
-        type=TailingsStorageFacilityType,
+        type=str,
         help='Type of tailings storage facility.',
         location='json',
-        choices=list(TailingsStorageFacilityType),
         store_missing=False)
     parser.add_argument(
         'mines_act_permit_no',
@@ -89,7 +87,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
     @api.doc(description='Updates an existing tailing storage facility for the given mine')
     @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF])
-    @api.marshal_with(MINE_TSF_MODEL) 
+    @api.marshal_with(MINE_TSF_MODEL)
     def put(self, mine_guid, mine_tailings_storage_facility_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
 
@@ -121,11 +119,27 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         for key, value in data.items():
             if key in ('eor_party_guid'):
                 continue
+            if key in ('facility_type', 'storage_location', 'tailings_storage_facility_type'):
+                continue
             setattr(mine_tsf, key, value)
+
+        facility_type = data.get('facility_type')
+        if facility_type != None:
+            setattr(mine_tsf, 'facility_type', facility_type)
+        else:
+            setattr(mine_tsf, 'facility_type', FacilityType.tailings_storage_facility)
+
+        storage_location = data.get('storage_location')
+        if storage_location != None:
+            setattr(mine_tsf, 'storage_locatin', storage_location)
+
+        tailings_storage_facility_type = data.get('tailings_storage_facility_type')
+        if tailings_storage_facility_type != None:
+            setattr(mine_tsf, 'tailings_storage_facility_type', tailings_storage_facility_type)
 
         mine_tsf.save()
 
         if is_minespace_user():
             mine_tsf.send_email_tsf_update()
-            
+
         return mine_tsf
