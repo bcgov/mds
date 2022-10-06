@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
+exports[`IncidentSuccessPage renders properly 1`] = `
 <Fragment>
   <Row>
     <Col
       span={24}
     >
-      <Title />
+      <Title>
+        Record a Mine Incident - 
+      </Title>
     </Col>
   </Row>
   <Row>
@@ -14,12 +16,12 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
       span={24}
     >
       <Link
-        to="/projects/8132462392222/overview"
+        to="/mines/undefined/incidents?"
       >
         <ForwardRef(ArrowLeftOutlined)
           className="padding-sm--right"
         />
-        Back to Project Overview
+        Back to All Incidents
       </Link>
     </Col>
   </Row>
@@ -31,7 +33,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
       <Title
         level={4}
       >
-        Information Requirements Table
+        Record New Mine Incident
       </Title>
     </Col>
     <Col
@@ -58,17 +60,14 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
           <Title
             level={5}
           >
-            Thank you, your IRT has been submitted!
+            Thank you, your Mines Incident has been submitted!
           </Title>
           Your submission will soon be reviewed by the ministry.
-        </Paragraph>
-        <Paragraph>
-          You will be contacted when the status updates on your submission.
         </Paragraph>
         <div>
           <p>
             <Link
-              to="/projects/8132462392222/overview"
+              to="/mines/undefined/incidents?"
             >
               <Button
                 block={false}
@@ -77,7 +76,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
                 loading={false}
                 type="primary"
               >
-                Back to Project Overview
+                Back to All incidents
               </Button>
             </Link>
           </p>
@@ -85,7 +84,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
             <Link
               to={
                 Object {
-                  "pathname": "/projects/8132462392222/information-requirements-table/c16afb82-144c-4138-9a36-ba5c24c43d8a/review/introduction-and-project-overview",
+                  "pathname": "/mines/undefined/incidents/undefined/review",
                   "state": Object {
                     "current": 2,
                   },
@@ -98,7 +97,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
                 htmlType="button"
                 loading={false}
               >
-                View Application
+                View Mine Incident
               </Button>
             </Link>
           </p>

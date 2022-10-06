@@ -9,19 +9,15 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   location: PropTypes.shape({
     state: PropTypes.shape({
-      project: CustomPropTypes.project,
+      incident: CustomPropTypes.incident,
     }),
   }).isRequired,
 };
 
-export const MajorMineApplicationSuccessPage = (props) => {
+export const IncidentSuccessPage = (props) => {
   const renderContent = () => {
-    const project = props.location.state?.project || {};
-    const {
-      project_guid,
-      major_mine_application: { major_mine_application_guid },
-    } = project;
-
+    const incident = props.location.state?.incident || {};
+    const { mine_incident_guid, mine_guid, mine_determination_type_code } = incident;
     return (
       <div style={{ textAlign: "center" }}>
         <>
@@ -33,30 +29,30 @@ export const MajorMineApplicationSuccessPage = (props) => {
           <br />
           <Typography.Paragraph>
             <Typography.Title level={5}>
-              Thank you, your Major Mine Application has been submitted!
+              Thank you, your Mines Incident has been submitted!
             </Typography.Title>
             Your submission will soon be reviewed by the ministry.
           </Typography.Paragraph>
-          <Typography.Paragraph>
-            You will be contacted when the status updates on your submission.
-          </Typography.Paragraph>
+          {mine_determination_type_code && (
+            <Typography.Paragraph>
+              This record will now move to the awaiting final investigation stage and requires you
+              to visit this record again and upload your investigation documentation.
+            </Typography.Paragraph>
+          )}
           <div>
             <p>
-              <Link to={routes.EDIT_PROJECT.dynamicRoute(project_guid)}>
-                <Button type="primary">Back to Project Overview</Button>
+              <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine_guid, "incidents")}>
+                <Button type="primary">Back to All incidents</Button>
               </Link>
             </p>
             <p>
               <Link
                 to={{
-                  pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
-                    project_guid,
-                    major_mine_application_guid
-                  ),
+                  pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid),
                   state: { current: 2 },
                 }}
               >
-                <Button>View Application</Button>
+                <Button>View Mine Incident</Button>
               </Link>
             </p>
           </div>
@@ -69,21 +65,28 @@ export const MajorMineApplicationSuccessPage = (props) => {
     <>
       <Row>
         <Col span={24}>
-          <Typography.Title>{props.location.state?.project.project_title}</Typography.Title>
+          <Typography.Title>
+            Record a Mine Incident - {props.location.state?.incident?.mine_name || ""}
+          </Typography.Title>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Link to={routes.EDIT_PROJECT.dynamicRoute(props.location.state?.project.project_guid)}>
+          <Link
+            to={routes.MINE_DASHBOARD.dynamicRoute(
+              props.location.state?.incident?.mine_guid,
+              "incidents"
+            )}
+          >
             <ArrowLeftOutlined className="padding-sm--right" />
-            Back to Project Overview
+            Back to All Incidents
           </Link>
         </Col>
       </Row>
       <Divider />
       <Row>
         <Col span={24}>
-          <Typography.Title level={4}>Major Mine Application</Typography.Title>
+          <Typography.Title level={4}>Record New Mine Incident</Typography.Title>
         </Col>
         <Col span={24}>{renderContent()}</Col>
       </Row>
@@ -91,6 +94,6 @@ export const MajorMineApplicationSuccessPage = (props) => {
   );
 };
 
-MajorMineApplicationSuccessPage.propTypes = propTypes;
+IncidentSuccessPage.propTypes = propTypes;
 
-export default withRouter(MajorMineApplicationSuccessPage);
+export default withRouter(IncidentSuccessPage);

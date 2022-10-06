@@ -12,6 +12,7 @@ import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplic
 import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
 import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
+import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
 
 export const HOME = {
   route: "/",
@@ -110,6 +111,20 @@ export const EDIT_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
   dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
   component: IncidentPage,
+};
+
+export const REVIEW_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid/review",
+  dynamicRoute: (mineGuid, mineIncidentGuid) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review`,
+  component: IncidentPage,
+};
+
+export const MINE_INCIDENT_SUCCESS = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid/success",
+  dynamicRoute: (mineGuid, mineIncidentGuid) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/success`,
+  component: IncidentSuccessPage,
 };
 
 export const MINE_DASHBOARD = {
