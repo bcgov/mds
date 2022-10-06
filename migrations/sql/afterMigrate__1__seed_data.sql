@@ -436,7 +436,7 @@ INSERT INTO mine_incident_document_type_code (
 VALUES
     ('FIN', 'Final Document', TRUE, 'system-mds', 'system-mds'),
     ('INI', 'Initial Document', TRUE,  'system-mds', 'system-mds'),
-    ('INM', 'Internal Ministry Document', TRUE,  'system-mds', 'system-mds'),
+    ('INM', 'Internal Ministry Document', TRUE,  'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_report_submission_status_code
