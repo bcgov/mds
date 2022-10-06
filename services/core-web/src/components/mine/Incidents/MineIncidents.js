@@ -144,7 +144,7 @@ export class MineIncidents extends Component {
       props: {
         newIncident,
         initialValues: {
-          status_code: "PRE",
+          status_code: "IRS",
           ...this.parseIncidentIntoFormData(existingIncident, newIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
