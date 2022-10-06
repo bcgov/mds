@@ -236,7 +236,7 @@ export class MineIncident extends Component {
                   { href: "final-report", title: "Final Report" },
                   { href: "ministry-follow-up", title: "Ministry Follow Up" },
                   { href: "internal-documents", title: "Internal Documents" },
-                  { href: "comments", title: "Comments" },
+                  { href: "internal-ministry-comments", title: "Comments" },
                 ]}
                 featureUrlRoute={routes.MINE_INCIDENT.hashRoute}
                 featureUrlRouteArguments={[
