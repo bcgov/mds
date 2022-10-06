@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import moment from "moment";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineIncidents,
@@ -24,6 +26,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import * as FORM from "@/constants/forms";
+import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
@@ -55,6 +58,7 @@ const propTypes = {
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
   deleteMineIncident: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {
@@ -183,7 +187,16 @@ export class MineIncidents extends Component {
           <AuthorizationWrapper permission={Permission.EDIT_DO}>
             <AddButton
               onClick={(event) =>
-                this.openMineIncidentModal(event, this.handleAddMineIncident, true)
+                // ENV FLAG FOR MINE INCIDENTS //
+                IN_PROD()
+                  ? this.openMineIncidentModal(event, this.handleAddMineIncident, true)
+                  : this.props.history.push({
+                      pathname: ROUTES.CREATE_MINE_INCIDENT.dynamicRoute(this.props.mineGuid),
+                      state: {
+                        mineName: this.props.mines[this.props.mineGuid]?.mine_name,
+                        isEditMode: true,
+                      },
+                    })
               }
             >
               Record a Mine Incident
@@ -235,4 +248,4 @@ const mapDispatchToProps = (dispatch) =>
 MineIncidents.propTypes = propTypes;
 MineIncidents.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineIncidents);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MineIncidents));
