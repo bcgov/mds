@@ -292,3 +292,7 @@ export const GET_ACTIVITIES = "GET_ACTIVITIES";
 
 // Tailings Storage Facilities
 export const TAILINGS = "TAILINGS";
+
+// Dams
+export const DAMS = "DAMS";
+export const CREATE_DAM = "CREATE_DAM";

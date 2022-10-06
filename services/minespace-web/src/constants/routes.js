@@ -1,15 +1,14 @@
-import queryString from "query-string";
-import LandingPage from "@/components/pages/LandingPage";
-import MinesPage from "@/components/pages/MinesPage";
-import UsersPage from "@/components/pages/UsersPage";
-import MineDashboard from "@/components/dashboard/mine/MineDashboard";
-import ReturnPage from "@/components/pages/ReturnPage";
-import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
-import ProjectPage from "@/components/pages/Project/ProjectPage";
+import DamsPage from "@/components/pages/Tailings/DamsPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
+import LandingPage from "@/components/pages/LandingPage";
 import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
 import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
+import MineDashboard from "@/components/dashboard/mine/MineDashboard";
+import MinesPage from "@/components/pages/MinesPage";
+import ProjectPage from "@/components/pages/Project/ProjectPage";
+import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
+import ReturnPage from "@/components/pages/ReturnPage";
 import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
 import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
@@ -146,4 +145,18 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
   component: TailingsSummaryPage,
+};
+
+export const ADD_DAM = {
+  route: "/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
+  dynamicRoute: (tailingsStorageFacilityGuid) =>
+    `/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  component: DamsPage,
+};
+
+export const EDIT_DAM = {
+  route: "/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
+  dynamicRoute: (tailingsStorageFacilityGuid, damGuid) =>
+    `/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  component: DamsPage,
 };

@@ -213,7 +213,7 @@ class DamFactory(BaseFactory):
     latitude = factory.Faker('latitude')
     longitude = factory.Faker('longitude')
     operating_status = OperatingStatus['operation']
-    consequence_classification = ConsequenceClassification['low']
+    consequence_classification = ConsequenceClassification['LOW']
     permitted_dam_crest_elevation = 100.11
     current_dam_height = 100.11
     current_elevation = 100.11

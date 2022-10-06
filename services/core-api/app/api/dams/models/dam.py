@@ -7,12 +7,12 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
 class ConsequenceClassification(Enum):
-    low = "low",
-    significant = 'significant',
-    high = 'high',
-    very_high = 'very_high',
-    extreme = 'extreme',
-    not_rated = 'not_rated'
+    LOW = "LOW",
+    HIG = 'HIG',
+    SIG = 'SIG',
+    VHIG = 'VHIG',
+    EXT = 'EXT',
+    NOD = 'NOD'
 
     def __str__(self):
         return self.value
@@ -99,3 +99,12 @@ class Dam(SoftDeleteMixin, AuditMixin, Base):
             query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid)
         result = query.all()
         return dict([('total', len(result)), ('records', result)])
+
+    @classmethod
+    def find_one(cls, dam_guid):
+        return cls.query.filter_by(dam_guid=dam_guid, deleted_ind=False).first()
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self.save()

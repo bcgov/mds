@@ -4,6 +4,7 @@ from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassif
 from app.extensions import api
 
 DAM_MODEL = api.model('Dam', {
+    'dam_guid': fields.String(required=True, description='The unique identifier of the dam'),
     'mine_tailings_storage_facility_guid': fields.String,
     'dam_type': fields.String(enum=DamType, attribute='dam_type.name'),
     'dam_name': fields.String,
@@ -25,6 +26,21 @@ DAM_MODEL_LIST = api.model('DamList', {
 
 CREATE_DAM_MODEL = api.model('Dam', {
     'mine_tailings_storage_facility_guid': fields.String,
+    'dam_type': fields.String,
+    'dam_name': fields.String,
+    'latitude': fields.String,
+    'longitude': fields.String,
+    'operating_status': fields.String,
+    'consequence_classification': fields.String,
+    'permitted_dam_crest_elevation': fields.String,
+    'current_dam_height': fields.String,
+    'current_elevation': fields.String,
+    'max_pond_elevation': fields.String,
+    'min_freeboard_required': fields.String
+})
+
+UPDATE_DAM_MODEL = api.model('Dam', {
+    'dam_guid': fields.String,
     'dam_type': fields.String,
     'dam_name': fields.String,
     'latitude': fields.String,

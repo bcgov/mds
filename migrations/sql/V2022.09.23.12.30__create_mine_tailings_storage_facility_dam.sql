@@ -3,19 +3,19 @@ CREATE TYPE operating_status AS ENUM
     (
     'construction',
     'operation',
-    'care and maintenance',
-    'closure - transition',
-    'closure - active care',
-    'closure - passive care'
+    'care_and_maintenance',
+    'closure_transition',
+    'closure_active_care',
+    'closure_passive_care'
     );
 CREATE TYPE consequence_classification AS ENUM
     (
-    'low',
-    'significant',
-    'high',
-    'very high',
-    'extreme',
-    'not rated'
+    'LOW',
+    'HIG',
+    'SIG',
+    'VHIG',
+    'EXT',
+    'NOD'
     );
 
 CREATE TABLE IF NOT EXISTS dam (
