@@ -6,9 +6,12 @@ exports[`Comment renders properly 1`] = `
     hasFeedback={false}
   >
     <TextArea
+      maxLength={100}
       name="comment"
       onChange={[Function]}
+      placeholder="Enter your comment here"
       rows={4}
+      showCount={true}
       value=""
     />
   </FormItem>

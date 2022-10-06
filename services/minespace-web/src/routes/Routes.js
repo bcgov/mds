@@ -32,6 +32,16 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)}
     />
     <Route
+      exact
+      path={routes.MINE_INCIDENT_SUCCESS.route}
+      component={AuthenticationGuard()(routes.MINE_INCIDENT_SUCCESS.component)}
+    />
+    <Route
+      exact
+      path={routes.REVIEW_MINE_INCIDENT.route}
+      component={AuthenticationGuard()(routes.REVIEW_MINE_INCIDENT.component)}
+    />
+    <Route
       path={routes.ADD_PROJECT_SUMMARY.route}
       component={AuthenticationGuard()(routes.ADD_PROJECT_SUMMARY.component)}
     />
@@ -78,6 +88,10 @@ const Routes = () => (
     <Route
       path={routes.ADD_MINE_INCIDENT.route}
       component={AuthenticationGuard()(routes.ADD_MINE_INCIDENT.component)}
+    />
+    <Route
+      path={routes.EDIT_MINE_INCIDENT.route}
+      component={AuthenticationGuard()(routes.EDIT_MINE_INCIDENT.component)}
     />
     {/* 404 - PAGE NOT FOUND */}
     <Route

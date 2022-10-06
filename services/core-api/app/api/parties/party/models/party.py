@@ -127,8 +127,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'job_title': self.job_title,
             'postnominal_letters': self.postnominal_letters,
             'idir_username': self.idir_username,
-            'organization_guid': str(self.organization_guid),
-            'job_title_code': str(self.job_title_code)
+            'organization_guid': str(self.organization_guid) if self.organization_guid else None,
+            'job_title_code': self.job_title_code
         }
 
         if self.party_type_code == 'PER':

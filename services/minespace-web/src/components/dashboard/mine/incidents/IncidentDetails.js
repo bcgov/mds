@@ -273,7 +273,7 @@ const FinalDocuments = (props) => (
       <Typography.Title level={4}>Final Documents</Typography.Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(
-          (doc) => doc.mine_incident_document_type_code === "FIN"
+          (doc) => doc.mine_incident_document_type_code === "CLD"
         )}
         showRemove={false}
       />

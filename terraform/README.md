@@ -37,7 +37,7 @@ This is because sandbox contains business critical data. eg: If the ECR is delet
 - `cd` to the workspace of your choice, usualy `dev` so `terraform/dev`. This will make terragrunt target the workspace based on your `pwd`
 - `terragrunt plan` and then `terragrunt apply` if successful
 
-`Note:` a successful plan does not gauruntee a successful apply. Provider issues such as race conditions, or cyclical dependencies can occur, especially with security groups.
+`Note:` a successful plan does not guarantee a successful apply. Provider issues such as race conditions, or cyclical dependencies can occur, especially with security groups.
 
 - `terragrunt state list` to fetch the list of currently provisioned cloud resources
 - `terragrunt taint <state.name>` to mark a resource as faulty, it will be destroyed at next apply
@@ -46,3 +46,43 @@ This is because sandbox contains business critical data. eg: If the ECR is delet
 # Tidbits
 
 - [Terragrunt Example](https://github.com/gruntwork-io/terragrunt-infrastructure-modules-example)
+
+
+# discord_sysdig_webhook - Discord Webhook service for Sysdig
+
+discord_sysdig_webhook.tf contains the resources for the web service used to connect
+Sysdig to Discord. At the time of writing, Sysdig's webhook messages are not in the 
+format required for Discord's webhook API, thus, we created this service to format the 
+messages properly so that we can get infrastructure monitoring and alerting to our Discord server. 
+
+## Gotchas
+
+The key "prod/mds/discord-webhook-link" is the webhook link for the #alerts channel in the Discord server. This secret was added manually and is required for the service to work. If it is removed, be sure to create a new secret in AWS Secrets Manager that contains a working webhook link to the #alerts or your desired text channel. 
+
+This project is run with terragrunt using Terraform Cloud as the backend to store its state. This project is currently deployed in prod and we only need ONE copy of this. To rebuild/deploy/redeploy this project, navigate to the prod directory and run:
+
+`terragrunt apply`
+
+There are AWS Cloudwatch log groups attached to the lambda function and the API gateway resources for this project. If you need to check the logs on either service, login to AWS and check for their log groups or navigate to each resource and check their logs. 
+
+To see the names of the log groups, you should be able to get the information from running:
+
+`terragrunt show`
+
+# Sysdig Alerts 
+
+This section covers the Sysdig Alerts that are sourced / deployed / provisioned with Terraform.
+
+## Gotchas
+
+As of September 15th, 2022, the notification channel  id for Discord notifications
+is 77077. If you need to create a new channel, use the following request 
+
+` curl -X GET https://app.sysdigcloud.com/api/notificationChannels -H 'Authorization: Bearer <sysdig_api_token>' `
+
+to get the notification channel id and use that id for each of the alerts here.
+
+- [Refer here for severity and status codes](https://docs.sysdig.com/en/docs/sysdig-monitor/events/severity-and-status/)
+
+
+The key ____ is the Sysdig Monitor API token This secret was added manually and is required to successfully deploy/redeploy the alerts. If it is changed, update the secret within AWS Secrets Manager (currently prod).

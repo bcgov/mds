@@ -74,7 +74,7 @@ export class Incidents extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          status_code: "PRE",
+          status_code: "IRS",
           determination_type_code: "PEN",
         },
         onSubmit: this.handleCreateIncident,
@@ -97,6 +97,7 @@ export class Incidents extends Component {
               style={{ display: "inline", float: "right" }}
               type="primary"
               onClick={(event) =>
+                // ENV FLAG FOR MINE INCIDENTS //
                 IN_PROD()
                   ? this.openCreateIncidentModal(event)
                   : this.props.history.push({

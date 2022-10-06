@@ -348,6 +348,12 @@ class MineIncidentFactory(BaseFactory):
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
+    immediate_measures_taken = None
+    injuries_description = None
+    johsc_worker_rep_name = None
+    johsc_worker_rep_contacted = None
+    johsc_management_rep_name = None
+    johsc_management_rep_contacted = None
     documents = []
     mine_incident_notes = []
     deleted_ind = False

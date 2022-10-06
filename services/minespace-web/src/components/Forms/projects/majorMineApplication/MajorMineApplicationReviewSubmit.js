@@ -144,6 +144,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
@@ -152,6 +153,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
@@ -160,6 +162,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentColumns={documentColumns}
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
         </Col>
         {!applicationSubmitted && (

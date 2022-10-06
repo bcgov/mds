@@ -6,7 +6,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
@@ -64,9 +64,9 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                     'Permits cannot be associated with non permit-linked contact types.')
 
         def validate_tsf():
-            if self.mine_party_appt_type_code == 'EOR':
+            if self.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
                 if not self.mine_tailings_storage_facility:
-                    raise AssertionError('The associated TSF is required for Engineer of Records.')
+                    raise AssertionError('The associated TSF is required for Engineer of Records or TSF Qualified Persons.')
             elif self.mine_tailings_storage_facility:
                 raise AssertionError('TSFs can only be associated with Engineer of Records.')
 
@@ -87,7 +87,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         from app.api.mines.permits.permit.models.permit import Permit
         from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 
-        if mine_party_appt_type_code == 'EOR':
+        if mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
             tsf = MineTailingsStorageFacility.find_by_tsf_guid(related_guid)
             self.mine_tailings_storage_facility = tsf
             self.permit = None
@@ -114,7 +114,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
 
         related_guid = None
-        if self.mine_party_appt_type_code == 'EOR':
+        if self.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
             related_guid = str(self.mine_tailings_storage_facility_guid)
         elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             related_guid = str(self.permit.permit_guid)
@@ -254,7 +254,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         else:
             permit = None
 
-        if mine_party_appt_type_code != 'EOR':
+        if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
             tsf = None
 
         mpa = cls(

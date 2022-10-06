@@ -18,7 +18,7 @@ export const createParty = (payload) => (dispatch) => {
     .then((response) => {
       dispatch(hideLoading("modal"));
       notification.success({
-        message: "Successfully created a new party",
+        message: "Successfully created a new contact",
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_PARTY));
@@ -85,14 +85,14 @@ export const fetchPartyById = (id) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addPartyRelationship = (payload) => (dispatch) => {
+export const addPartyRelationship = (payload, successMessage = null) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully updated contact information`,
+        message: successMessage || `Successfully updated contact information`,
         duration: 10,
       });
       dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));

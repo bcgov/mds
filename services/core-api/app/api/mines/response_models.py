@@ -320,7 +320,8 @@ MINE_TSF_MODEL = api.model(
         'tailings_storage_facility_type': fields.String,
         'storage_location': fields.String,
         'mines_act_permit_no': fields.String,
-        'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
+        'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY),
+        'qualified_person': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
 
 MINE_WORK_INFORMATION_MODEL = api.model(
@@ -411,6 +412,7 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
         'document_name': fields.String,
         'mine_incident_document_type_code': fields.String,
         'upload_date': fields.DateTime,
+        'update_user': fields.String
     })
 
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model('Mine Incident Recommendation', {
@@ -433,6 +435,7 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
         'mine_guid': fields.String,
+        'mine_name': fields.String,
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
         'reported_timestamp': DateTime,
@@ -461,7 +464,13 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
+        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL)),
+        'immediate_measures_taken': fields.String,
+        'injuries_description': fields.String,
+        'johsc_worker_rep_name': fields.String,
+        'johsc_worker_rep_contacted': fields.Boolean,
+        'johsc_management_rep_name': fields.String,
+        'johsc_management_rep_contacted': fields.Boolean
     })
 
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {

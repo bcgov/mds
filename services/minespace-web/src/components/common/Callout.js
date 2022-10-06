@@ -5,10 +5,12 @@ import { CALLOUT_SEVERITY } from "../../../common/constants/strings";
 const propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   severity: PropTypes.string,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   severity: CALLOUT_SEVERITY.info,
+  style: {},
 };
 
 const Callout = (props) => {

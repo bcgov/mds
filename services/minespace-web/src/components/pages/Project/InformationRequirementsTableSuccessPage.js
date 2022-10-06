@@ -27,14 +27,7 @@ export const InformationRequirementsTableSuccessPage = (props) => {
         <>
           <Row>
             <Col span={24}>
-              <CheckCircleOutlined
-                style={{
-                  color: "green",
-                  transform: "scale(7.0)",
-                  marginTop: "7.0em",
-                  marginBottom: "3.5em",
-                }}
-              />
+              <CheckCircleOutlined className="success-page" />
             </Col>
           </Row>
           <br />

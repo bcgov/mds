@@ -6,7 +6,7 @@ import {
 } from "@common/actionCreators/partiesActionCreator";
 import { getParties } from "@common/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, initialize, isDirty, reset, getFormValues } from "redux-form";
+import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
@@ -33,6 +33,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleSelectChange: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   isDirty: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PartyPropType).isRequired,
@@ -107,6 +108,14 @@ export const AddContactFormDetails = (props) => {
       value: org.party_guid,
     }));
 
+  const handleSelectChange = (e, val, oldVal, field) => {
+    // Sets the value of the given select field to `val`
+    // defaults a missing value to `null` instead of `undefined`
+    // which allows the select component to clear the existing value instead of
+    // defaulting to the initial value when "clear" is clicked
+    props.change(FORM.ADD_CONTACT, field, val || null);
+  };
+
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit(onSubmit)}>
       <Row gutter={16}>
@@ -125,7 +134,7 @@ export const AddContactFormDetails = (props) => {
               component={renderConfig.SELECT}
               onChange={props.handleSelectChange}
               data={props.contacts}
-              validate={[validateSelectOptions(props.contacts)]}
+              validate={[validateSelectOptions(props.contacts, true)]}
             />
           </Form.Item>
         </Col>
@@ -171,6 +180,7 @@ export const AddContactFormDetails = (props) => {
               id="job_title_code"
               name="job_title_code"
               placeholder="Select a job title"
+              onChange={handleSelectChange}
               component={renderConfig.SELECT}
               data={props.partyRelationshipTypesList}
               validate={[validateSelectOptions(props.partyRelationshipTypesList)]}
@@ -182,6 +192,7 @@ export const AddContactFormDetails = (props) => {
             <Field
               id="organization_guid"
               name="organization_guid"
+              onChange={handleSelectChange}
               component={renderConfig.AUTOCOMPLETE}
               placeholder="Search organizations"
               data={transformOrganizations(props.organizations)}
@@ -255,6 +266,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchParties: (...args) => debounce(() => dispatch(fetchParties(...args)), 1000),
       initialize: (data) => initialize(FORM.ADD_CONTACT, data),
       reset,
+      change,
     },
     dispatch
   );

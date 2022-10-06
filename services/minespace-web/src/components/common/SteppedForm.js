@@ -15,17 +15,19 @@ const propTypes = {
   handleSaveDraft: PropTypes.func,
   handleSaveData: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
   handleSaveDraft: undefined,
   handleSaveData: undefined,
+  errors: [],
 };
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData } = props;
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
 
@@ -46,9 +48,17 @@ const SteppedForm = (props) => {
     }
   };
 
-  const handleNextClick = (evt, tab) => {
+  const handleNextClick = async (evt, tab) => {
     evt.preventDefault();
-    handleTabClick(tab);
+
+    setIsSubmitting(true);
+
+    try {
+      await handleSaveData(null, tab);
+      setTabIndex(indexOf(tabs, tab));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isFirst = tabIndex === 0;
@@ -59,9 +69,11 @@ const SteppedForm = (props) => {
       <Col span={6} className="stepped-form-menu-container">
         <Menu className="stepped-form" mode="inline" items={tabs} selectedKeys={tabs[tabIndex]}>
           {tabs.map((tab) => {
+            const child = children.find((childTab) => childTab.key === tab);
+
             return (
               <Item
-                disabled={props.errors.length > 0 && indexOf(tabs, tab) > tabIndex}
+                disabled={child?.props?.disabled}
                 className="stepped-menu-item"
                 key={tab}
                 onClick={() => {
@@ -80,7 +92,11 @@ const SteppedForm = (props) => {
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst ? "end" : "space-between"}>
               {!isFirst && (
-                <Button type="primary" onClick={() => handleTabClick(tabs[tabIndex - 1])}>
+                <Button
+                  type="primary"
+                  onClick={() => handleTabClick(tabs[tabIndex - 1])}
+                  disabled={isSubmitting}
+                >
                   <LeftOutlined /> Back
                 </Button>
               )}
@@ -99,7 +115,7 @@ const SteppedForm = (props) => {
                   )}
                   <Button
                     type="secondary"
-                    disabled={props.errors.length > 0}
+                    disabled={isSubmitting || props.errors?.length > 0}
                     onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
                     Next <RightOutlined />

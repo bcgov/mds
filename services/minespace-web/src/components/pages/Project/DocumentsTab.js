@@ -4,10 +4,10 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Tabs, Typography } from "antd";
 import PropTypes from "prop-types";
-import customPropTypes from "@/customPropTypes";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import customPropTypes from "@/customPropTypes";
 import DocumentsPage from "./DocumentsPage";
 
 const propTypes = {

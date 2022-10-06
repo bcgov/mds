@@ -51,7 +51,7 @@ exports[`MineIncidents renders properly 1`] = `
        
       for more information on mining incidents and dangerous occurrences in British Columbia.
     </Paragraph>
-    <Connect(IncidentsTable)
+    <withRouter(Connect(IncidentsTable))
       data={
         Array [
           Object {

@@ -68,6 +68,12 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
     parser.add_argument('categories', type=list, location='json', store_missing=False)
+    parser.add_argument('immediate_measures_taken', type=str, location='json')
+    parser.add_argument('injuries_description', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_name', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_management_rep_name', type=str, location='json')
+    parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -124,8 +130,14 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.number_of_fatalities = data.get('number_of_fatalities')
         incident.number_of_injuries = data.get('number_of_injuries')
         incident.emergency_services_called = data.get('emergency_services_called')
-
         incident.proponent_incident_no = data.get('proponent_incident_no')
+        incident.immediate_measures_taken = data.get('immediate_measures_taken')
+        incident.injuries_description = data.get('injuries_description')
+        incident.johsc_worker_rep_name = data.get('johsc_worker_rep_name')
+        incident.johsc_worker_rep_contacted = data.get('johsc_worker_rep_contacted')
+        incident.johsc_management_rep_name = data.get('johsc_management_rep_name')
+        incident.johsc_management_rep_contacted = data.get('johsc_management_rep_contacted')
+
         incident.status_code = data.get('status_code')
 
         if is_minespace_user() is not True:
@@ -256,6 +268,12 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
     parser.add_argument('categories', type=list, location='json', store_missing=False)
+    parser.add_argument('immediate_measures_taken', type=str, location='json')
+    parser.add_argument('injuries_description', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_name', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_management_rep_name', type=str, location='json')
+    parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all

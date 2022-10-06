@@ -1,4 +1,3 @@
-import * as FORM from "@/constants/forms";
 import * as PropTypes from "prop-types";
 
 import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "antd";
@@ -6,21 +5,29 @@ import { Field, change, getFormValues } from "redux-form";
 import React, { useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 
-import ContactDetails from "@/components/common/ContactDetails";
-import FileUpload from "@/components/common/FileUpload";
-import LinkButton from "@/components/common/LinkButton";
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
-import { PDF } from "@/constants/fileTypes";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import {
+  required,
+  dateNotInFuture,
+  dateInFuture,
+  validateDateRanges,
+} from "@common/utils/Validate";
+import { truncateFilename } from "@common/utils/helpers";
+import moment from "moment";
+import { isNumber } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
 import { renderConfig } from "@/components/common/config";
-import { required } from "@common/utils/Validate";
-import { truncateFilename } from "@common/utils/helpers";
+import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
+import { PDF } from "@/constants/fileTypes";
+import LinkButton from "@/components/common/LinkButton";
+import FileUpload from "@/components/common/FileUpload";
+import ContactDetails from "@/components/common/ContactDetails";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -51,6 +58,7 @@ const columns = [
 
 export const EngineerOfRecord = (props) => {
   const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships } = props;
+
   const [, setUploading] = useState(false);
   const [currentEor, setCurrentEor] = useState(null);
   const handleCreateEOR = (value) => {
@@ -67,14 +75,17 @@ export const EngineerOfRecord = (props) => {
       "engineer_of_record.mine_party_appt_guid",
       null
     );
+    setCurrentEor(null);
     props.closeModal();
   };
 
   useEffect(() => {
     if (partyRelationships.length > 0) {
       const activeEor = partyRelationships.find(
-        (eor) => eor.party_guid === props.formValues?.engineer_of_record?.party_guid
+        (eor) =>
+          eor.mine_party_appt_guid === props.formValues?.engineer_of_record?.mine_party_appt_guid
       );
+
       if (activeEor) {
         setCurrentEor(activeEor);
       }
@@ -88,6 +99,7 @@ export const EngineerOfRecord = (props) => {
         onSubmit: handleCreateEOR,
         onCancel: props.closeModal,
         title: "Select Contact",
+        mine_party_appt_type_code: "EOR",
       },
       content: modalConfig.ADD_CONTACT,
     });
@@ -114,6 +126,35 @@ export const EngineerOfRecord = (props) => {
     );
     props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "engineer_of_record.eor_document_guid", null);
   };
+
+  const validateEorStartDateOverlap = (val) => {
+    if (props.formValues?.engineer_of_record?.mine_party_appt_guid) {
+      // Skip validation for existing EoRs
+      return undefined;
+    }
+
+    const existingEors = partyRelationships?.filter(
+      (p) =>
+        p.mine_party_appt_type_code === "EOR" &&
+        p.mine_guid === mineGuid &&
+        p.related_guid === props.formValues.mine_tailings_storage_facility_guid
+    );
+
+    return (
+      validateDateRanges(
+        existingEors || [],
+        { ...props.formValues?.engineer_of_record, start_date: val },
+        "EOR",
+        true
+      )?.start_date || undefined
+    );
+  };
+
+  const daysToEORExpiry =
+    currentEor?.end_date &&
+    moment(currentEor.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
 
   return (
     <Row>
@@ -147,6 +188,25 @@ export const EngineerOfRecord = (props) => {
             type="info"
           />
         )}
+
+        {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
+          <Alert
+            message="Engineer of Record will Expire within 30 Days"
+            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+            showIcon
+            type="warning"
+          />
+        )}
+
+        {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
+          <Alert
+            message="No Engineer of Record"
+            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+            showIcon
+            type="error"
+          />
+        )}
+
         <Typography.Title level={4} className="margin-large--top">
           Contact Information
         </Typography.Title>
@@ -169,7 +229,7 @@ export const EngineerOfRecord = (props) => {
         {currentEor && currentEor.documents.length > 0 && (
           <div>
             <Typography.Title level={4} className="margin-large--top">
-              Uploaded Documents
+              Acceptance Letter
             </Typography.Title>
             <Table
               align="left"
@@ -180,27 +240,34 @@ export const EngineerOfRecord = (props) => {
             />
           </div>
         )}
-        <div className="margin-large--top margin-large--bottom">
-          <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
-          <Typography.Text>
-            Letter must be officially signed. A notification will be sent to the Mine Manager upon
-            upload.
-          </Typography.Text>
-        </div>
-        <Field
-          name="engineer_of_record.acceptance_letter"
-          id="engineer_of_record.acceptance_letter"
-          onFileLoad={onFileLoad}
-          onRemoveFile={onRemoveFile}
-          component={FileUpload}
-          addFileStart={() => setUploading(true)}
-          onAbort={() => setUploading(false)}
-          uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
-          acceptedFileTypesMap={{ ...PDF }}
-          labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
-          allowRevert
-          onprocessfiles={() => setUploading(false)}
-        />
+
+        {!props.formValues?.engineer_of_record?.mine_party_appt_guid && (
+          <>
+            <div className="margin-large--top margin-large--bottom">
+              <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+              <Typography.Text>
+                Letter must be officially signed. A notification will be sent to the Mine Manager
+                upon upload.
+              </Typography.Text>
+            </div>
+            <Field
+              name="engineer_of_record.eor_document_guid"
+              id="engineer_of_record.eor_document_guid"
+              onFileLoad={onFileLoad}
+              onRemoveFile={onRemoveFile}
+              validate={[required]}
+              component={FileUpload}
+              disabled={!props.formValues?.engineer_of_record?.party_guid}
+              addFileStart={() => setUploading(true)}
+              onAbort={() => setUploading(false)}
+              uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
+              acceptedFileTypesMap={{ ...PDF }}
+              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+              allowRevert
+              onprocessfiles={() => setUploading(false)}
+            />
+          </>
+        )}
         <Typography.Title level={4} className="margin-large--top">
           EOR Term
         </Typography.Title>
@@ -210,18 +277,24 @@ export const EngineerOfRecord = (props) => {
               id="engineer_of_record.start_date"
               name="engineer_of_record.start_date"
               label="Start Date"
-              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
+              disabled={
+                !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
+                !props.formValues?.engineer_of_record?.party_guid
+              }
               component={renderConfig.DATE}
-              validate={[required]}
+              validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
             />
           </Col>
           <Col span={12}>
             <Field
               id="engineer_of_record.end_date"
               name="engineer_of_record.end_date"
-              label="End Date"
-              disabled={!!props.formValues?.engineer_of_record?.mine_party_appt_guid}
-              validate={[required]}
+              label="End Date (Optional)"
+              disabled={
+                !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
+                !props.formValues?.engineer_of_record?.party_guid
+              }
+              validate={[dateInFuture]}
               component={renderConfig.DATE}
             />
           </Col>

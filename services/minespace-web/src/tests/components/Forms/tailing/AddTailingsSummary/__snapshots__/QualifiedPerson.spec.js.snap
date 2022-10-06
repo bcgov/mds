@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QualifiedPerson renders properly 1`] = `
+<Row>
+  <Col
+    span={24}
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[Function]}
+      placement="top"
+      style={
+        Object {
+          "maxWidth": "150px",
+        }
+      }
+      title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        style={
+          Object {
+            "display": "inline",
+            "float": "right",
+          }
+        }
+        type="primary"
+      >
+        <ForwardRef(PlusCircleFilled) />
+        Assign a new Qualified Person
+      </Button>
+    </ForwardRef>
+    <Title
+      level={3}
+    >
+      Qualified Person
+    </Title>
+    <Alert
+      description="There's no Qualified Person (EOR) on file for this facility. Click above to assign a new QP."
+      showIcon={true}
+      type="info"
+    />
+    <Title
+      className="margin-large--top"
+      level={4}
+    >
+      Contact Information
+    </Title>
+    <Row
+      justify="center"
+    >
+      <Col
+        span={24}
+      >
+        <Empty
+          description={false}
+          image={<Simple />}
+          imageStyle={
+            Object {
+              "transform": "scale(1.5)",
+            }
+          }
+        />
+      </Col>
+      <Paragraph>
+        No Data
+      </Paragraph>
+    </Row>
+    <Title
+      className="margin-large--top"
+      level={4}
+    >
+      QP Term
+    </Title>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={12}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="qualified_person.start_date"
+          label="Start Date"
+          name="qualified_person.start_date"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </Col>
+      <Col
+        span={12}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="qualified_person.end_date"
+          label="End Date (Optional)"
+          name="qualified_person.end_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;
