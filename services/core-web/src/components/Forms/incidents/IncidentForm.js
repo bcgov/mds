@@ -53,6 +53,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: customPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -569,7 +570,6 @@ const renderMinistryFollowUp = (props, isEditMode) => {
                 placeholder="Search for inspector..."
                 component={renderConfig.GROUPED_SELECT}
                 format={null}
-                validate={[required]}
                 data={props.inspectorOptions}
                 disabled={!isEditMode}
               />
@@ -583,7 +583,6 @@ const renderMinistryFollowUp = (props, isEditMode) => {
                 component={renderConfig.GROUPED_SELECT}
                 format={null}
                 placeholder="Search for responsible inspector..."
-                validate={[required]}
                 data={props.inspectorOptions}
                 disabled={!isEditMode}
               />
@@ -808,7 +807,7 @@ const IncidentForm = (props) => {
   const isNewIncident = Boolean(!props.match.params?.mineIncidentGuid);
 
   return (
-    <Form layout="vertical" onSubmit={parentHandlers.handleSaveData}>
+    <Form layout="vertical" onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>

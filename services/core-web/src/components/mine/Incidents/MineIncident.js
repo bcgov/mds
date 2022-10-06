@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import {
@@ -58,6 +59,7 @@ const propTypes = {
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formIsDirty: PropTypes.bool.isRequired,
+  formErrors: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineIncident extends Component {
@@ -123,10 +125,14 @@ export class MineIncident extends Component {
   handleSaveData = (e) => {
     e.preventDefault();
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
-    if (!incidentExists) {
-      return this.handleCreateMineIncident(this.formatPayload(this.props.formValues));
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      if (!incidentExists) {
+        return this.handleCreateMineIncident(this.formatPayload(this.props.formValues));
+      }
+      return this.handleUpdateMineIncident(this.formatPayload(this.props.formValues));
     }
-    return this.handleUpdateMineIncident(this.formatPayload(this.props.formValues));
+    return null;
   };
 
   handleDeleteDocument = (params) => {
