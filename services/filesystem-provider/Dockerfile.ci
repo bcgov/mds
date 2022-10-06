@@ -26,6 +26,9 @@ RUN mkdir /.dotnet
 RUN chmod -R 700 /.dotnet
 RUN chown -R 1001:0 /.dotnet
 
+RUN chgrp -R 0 /.dotnet && \
+    chmod -R g=u /.dotnet
+
 USER 1001
 
 ENTRYPOINT [ "./init.sh" ]
