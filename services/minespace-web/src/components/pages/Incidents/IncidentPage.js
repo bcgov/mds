@@ -350,7 +350,8 @@ export class IncidentPage extends Component {
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: values?.initial_notification_documents,
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
-      mine_determination_type_code: mineDeterminationTypeCode,
+      mine_determination_type_code:
+        mineDeterminationTypeCode ?? values?.mine_determination_type_code,
     };
   };
 
