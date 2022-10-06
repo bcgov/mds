@@ -260,14 +260,14 @@ export const MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
   dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
-    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/${link}`,
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
   component: MineIncident,
 };
 
 export const CREATE_MINE_INCIDENT = {
   route: "/mines/:mineGuid/new-incident",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/new-incident`,
-  hashRoute: (mineGuid, link) => `/mines/${mineGuid}/new-incident/${link}`,
+  hashRoute: (mineGuid, link) => `/mines/${mineGuid}/new-incident${link}`,
   component: MineIncident,
 };
 

@@ -11,7 +11,7 @@ import {
   touch,
   isDirty,
 } from "redux-form";
-import { Row, Col, Tag } from "antd";
+import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -72,11 +72,22 @@ export class MineIncident extends Component {
     this.handleFetchData().then(() => {
       this.setState({ isLoaded: true, isEditMode: this.props.location.state?.isEditMode });
     });
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
   }
 
   componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
     this.props.clearMineIncident();
   }
+
+  handleScroll = () => {
+    if (window.pageYOffset > 170 && !this.state.fixedTop) {
+      this.setState({ fixedTop: true });
+    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
+      this.setState({ fixedTop: false });
+    }
+  };
 
   handleFetchData = () => {
     const { mineGuid, mineIncidentGuid } = this.props.match.params;
@@ -193,6 +204,7 @@ export class MineIncident extends Component {
                   ? "padding-lg view--header fixed-scroll"
                   : " padding-lg view--header"
               }
+              style={{ paddingBottom: 0 }}
             >
               <h1>
                 {this.props.incident.mine_incident_guid ? "Mine Incident" : "Create New Incident"}
@@ -215,7 +227,7 @@ export class MineIncident extends Component {
               </Link>
               <hr />
             </div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
               <ScrollSideMenu
                 menuOptions={[
                   { href: "initial-report", title: "Initial Report" },
@@ -233,30 +245,34 @@ export class MineIncident extends Component {
                 ]}
               />
             </div>
-            <Row>
-              <Col span={24}>
-                <IncidentForm
-                  initialValues={
-                    !isNewIncident
-                      ? this.formatInitialValues(this.props.incident)
-                      : {
-                          initial_incident_documents: [],
-                          final_report_documents: [],
-                          internal_ministry_documents: [],
-                        }
-                  }
-                  isEditMode={this.state.isEditMode}
-                  isNewIncident={isNewIncident}
-                  incident={this.props.incident}
-                  handlers={{
-                    deleteDocument: this.handleDeleteDocument,
-                    toggleEditMode: this.toggleEditMode,
-                    handleSaveData: this.handleSaveData,
-                    handleCancelEdit: this.handleCancelEdit,
-                  }}
-                />
-              </Col>
-            </Row>
+            <div
+              className={
+                this.state.fixedTop
+                  ? "side-menu--content with-fixed-top top-125"
+                  : "side-menu--content"
+              }
+            >
+              <IncidentForm
+                initialValues={
+                  !isNewIncident
+                    ? this.formatInitialValues(this.props.incident)
+                    : {
+                        initial_incident_documents: [],
+                        final_report_documents: [],
+                        internal_ministry_documents: [],
+                      }
+                }
+                isEditMode={this.state.isEditMode}
+                isNewIncident={isNewIncident}
+                incident={this.props.incident}
+                handlers={{
+                  deleteDocument: this.handleDeleteDocument,
+                  toggleEditMode: this.toggleEditMode,
+                  handleSaveData: this.handleSaveData,
+                  handleCancelEdit: this.handleCancelEdit,
+                }}
+              />
+            </div>
           </div>
         </>
       )) || <Loading />
