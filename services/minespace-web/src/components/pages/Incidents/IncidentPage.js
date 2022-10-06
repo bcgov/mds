@@ -356,7 +356,7 @@ export class IncidentPage extends Component {
 
   formatInitialValues = (incident) => ({
     ...incident,
-    categories: incident?.categories,
+    categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
     incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     mine_determination_type_code: incident?.mine_determination_type_code

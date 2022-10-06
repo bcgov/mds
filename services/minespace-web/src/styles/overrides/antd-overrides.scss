@@ -309,6 +309,18 @@ tr.ant-table-expanded-row {
   border: 1px solid $table-seperator;
 }
 
+.ant-select-disabled.ant-select-multiple .ant-select-selection-item {
+  color: #bfbfbf;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.ant-select-disabled.ant-select-multiple .ant-select-selector {
+  background: #f5f5f5;
+  border-color: #bbbbbb;
+  cursor: not-allowed;
+}
+
 // Descriptions
 
 .ant-descriptions-item-label {

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm, change, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Card, Checkbox, Col, Row, Input, Typography, Divider } from "antd";
+import { Card, Checkbox, Col, Row, Typography, Divider } from "antd";
 import {
   required,
   requiredList,
@@ -91,31 +91,17 @@ const renderInitialReport = (props) => (
       <Typography.Paragraph>
         Select one or more incident types for this submission.
       </Typography.Paragraph>
-      {!props.isReviewSubmitStage && (
-        <Form.Item label="Incident type(s)">
-          <Field
-            id="categories"
-            name="categories"
-            placeholder="Select incident type(s)"
-            component={renderConfig.MULTI_SELECT}
-            validate={[requiredList]}
-            data={props?.incidentCategoryCodeOptions}
-          />
-        </Form.Item>
-      )}
-      {props.isReviewSubmitStage && (
-        <Input
-          value={
-            props.initialValues?.categories && props.initialValues?.categories.length > 0
-              ? props.initialValues.categories
-                  .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                  .map((c) => c.description)
-                  .join(", ")
-              : Strings.EMPTY_FIELD
-          }
-          disabled
+      <Form.Item label="Incident type(s)">
+        <Field
+          id="categories"
+          name="categories"
+          placeholder="Select incident type(s)"
+          component={renderConfig.MULTI_SELECT}
+          validate={[requiredList]}
+          data={props?.incidentCategoryCodeOptions}
+          disabled={props.isReviewSubmitStage}
         />
-      )}
+      </Form.Item>
     </Col>
   </Row>
 );
