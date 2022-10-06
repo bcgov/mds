@@ -49,6 +49,7 @@ import InformationRequirementsTableTab from "@/components/mine/Projects/Informat
 import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
+import MineIncident from "@/components/mine/Incidents/MineIncident";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -253,6 +254,21 @@ export const MINE_INCIDENTS = {
   route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
   component: MineIncidents,
+};
+
+export const MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
+  dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/${link}`,
+  component: MineIncident,
+};
+
+export const CREATE_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/new-incident",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/new-incident`,
+  hashRoute: (mineGuid, link) => `/mines/${mineGuid}/new-incident/${link}`,
+  component: MineIncident,
 };
 
 export const MINE_INSPECTIONS = {
