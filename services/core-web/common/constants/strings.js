@@ -65,6 +65,7 @@ export const VARIANCE_DENIED_CODE = "DEN";
 export const INCIDENT_DOCUMENT_TYPES = {
   initial: "INI",
   final: "FIN",
+  internalMinistry: "INM",
 };
 
 export const INCIDENT_DETERMINATION_TYPES = {
@@ -77,6 +78,7 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   miu: "MIU",
   none: "NO",
   unknown: "HUK",
+  inspectorInvestigation: "INS",
 };
 
 export const BUSINESS_ROLES = {
