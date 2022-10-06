@@ -26,12 +26,15 @@ venv*
 
 act/
 
+# Terraform
 .terraform
 terragrunt.auto.tfvars
 credentials.tfrc.json
 backend.tf
 .terragrunt-cache
 .terraform.lock.hcl
+
+
 
 cypress.env.json
 

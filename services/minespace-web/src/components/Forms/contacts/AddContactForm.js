@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-  getEngineersOfRecordOptions,
-  getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
+import { uniqBy } from "lodash";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import PropTypes from "prop-types";
 import AddContactFormDetails from "./AddContactFormDetails";
 
-import {
-  party as partyType,
-  partyRelationship as PartyRelationShipType,
-} from "@/customPropTypes/parties";
+import { partyRelationship as PartyRelationShipType } from "@/customPropTypes/parties";
 
 const propTypes = {
-  contacts: PropTypes.arrayOf(partyType).isRequired,
   parties: PropTypes.arrayOf(PartyRelationShipType).isRequired,
+  mine_party_appt_type_code: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
@@ -36,10 +31,20 @@ export const AddContactForm = (props) => {
     }
   };
 
+  const contacts = uniqBy(props.parties || [], (partyAppt) => partyAppt.party.party_guid)
+    .filter(
+      ({ mine_party_appt_type_code }) =>
+        !props.mine_party_appt_type_code ||
+        mine_party_appt_type_code === props.mine_party_appt_type_code
+    )
+    .map(({ party: { name, party_guid } }) => ({
+      label: name,
+      value: party_guid,
+    }));
+
   return (
     <AddContactFormDetails
-      contacts={props.contacts}
-      parties={props.parties}
+      contacts={contacts}
       initialValues={selectedParty}
       handleSelectChange={handleSelectChange}
       onCancel={props.onCancel}
@@ -52,7 +57,6 @@ AddContactForm.propTypes = propTypes;
 AddContactForm.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  contacts: getEngineersOfRecordOptions(state),
   parties: getPartyRelationships(state),
 });
 

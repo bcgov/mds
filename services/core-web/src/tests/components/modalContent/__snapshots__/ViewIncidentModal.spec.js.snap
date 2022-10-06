@@ -352,7 +352,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
             Incident Status
           </p>
           <p>
-            Final
+            Closed
           </p>
         </div>
       </div>

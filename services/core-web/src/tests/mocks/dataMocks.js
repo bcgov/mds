@@ -1737,7 +1737,7 @@ export const INCIDENT = {
   reported_timestamp: "2019-07-04 14:05",
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
-  status_code: "FIN",
+  status_code: "CLD",
 };
 
 export const INCIDENTS = {
@@ -2685,16 +2685,25 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
 };
 
 export const INCIDENT_STATUS_OPTIONS = [
-  { description: "Preliminary", mine_incident_status_code: "PRE" },
-  {
-    description: "Final",
-    mine_incident_status_code: "FIN",
-  },
+  { mine_incident_status_code: "IRS", description: "Initial Report Submitted" },
+  { mine_incident_status_code: "AFR", description: "Awaiting final report" },
+  { mine_incident_status_code: "FRS", description: "Final report submitted" },
+  { mine_incident_status_code: "UNR", description: "Under review" },
+  { mine_incident_status_code: "INV", description: "Investigating" },
+  { mine_incident_status_code: "MIU", description: "MIU" },
+  { mine_incident_status_code: "CLD", description: "Closed" },
+  { mine_incident_status_code: "DFT", description: "Draft" },
 ];
 
 export const INCIDENT_STATUS_OPTIONS_HASH = {
-  PRE: "Preliminary",
-  FIN: "Final",
+  IRS: "Initial Report Submitted",
+  AFR: "Awaiting final report",
+  FRS: "Final report submitted",
+  UNR: "Under review",
+  INV: "Investigating",
+  MIU: "MIU",
+  CLD: "Closed",
+  DFT: "Draft",
 };
 
 export const INCIDENT_CATEGORY_OPTIONS_HASH = {};
@@ -3322,8 +3331,14 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
   ],
   incidentStatusCodeOptions: [
-    { mine_incident_status_code: "PRE", description: "Preliminary" },
-    { mine_incident_status_code: "FIN", description: "Final" },
+    { mine_incident_status_code: "IRS", description: "Initial Report Submitted" },
+    { mine_incident_status_code: "AFR", description: "Awaiting final report" },
+    { mine_incident_status_code: "FRS", description: "Final report submitted" },
+    { mine_incident_status_code: "UNR", description: "Under review" },
+    { mine_incident_status_code: "INV", description: "Investigating" },
+    { mine_incident_status_code: "MIU", description: "MIU" },
+    { mine_incident_status_code: "CLD", description: "Closed" },
+    { mine_incident_status_code: "DFT", description: "Draft" },
   ],
   incidentCategoryCodeOptions: [
     {

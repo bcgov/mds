@@ -48,3 +48,14 @@ variable "configs" {
 variable "storage_buckets" {
   description = "Contains a list of s3 buckets for this workspace"
 }
+
+## Sysdig ##
+
+data "aws_secretsmanager_secret" "secrets" {
+  arn = "arn:aws:secretsmanager:ca-central-1:786397676156:secret:prod/mds/sysdig_monitor_api_token-rU7REF"
+}
+
+data "aws_secretsmanager_secret_version" "creds" {
+  # Fill in the name you gave to your secret
+  secret_id = data.aws_secretsmanager_secret.secrets.id
+}

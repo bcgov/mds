@@ -9,16 +9,22 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createMineIncident = (mine_guid, payload) => (dispatch) => {
+export const createMineIncident = (
+  mine_guid,
+  payload,
+  message = "Successfully created incident."
+) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
     .then((response) => {
-      notification.success({
-        message: "Successfully created incident.",
-        duration: 10,
-      });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
@@ -60,7 +66,12 @@ export const fetchMineIncident = (mine_guid, mine_incident_guid) => (dispatch) =
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
+export const updateMineIncident = (
+  mineGuid,
+  mineIncidentGuid,
+  payload,
+  message = "Successfully updated incident."
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -70,10 +81,12 @@ export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (disp
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({
-        message: "Successfully updated incident.",
-        duration: 10,
-      });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })

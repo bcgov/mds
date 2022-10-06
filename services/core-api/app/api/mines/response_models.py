@@ -320,7 +320,8 @@ MINE_TSF_MODEL = api.model(
         'tailings_storage_facility_type': fields.String,
         'storage_location': fields.String,
         'mines_act_permit_no': fields.String,
-        'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
+        'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY),
+        'qualified_person': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
 
 MINE_WORK_INFORMATION_MODEL = api.model(

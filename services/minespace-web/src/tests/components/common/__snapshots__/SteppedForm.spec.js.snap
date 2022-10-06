@@ -19,7 +19,6 @@ exports[`SteppedForm renders properly 1`] = `
     >
       <MenuItem
         className="stepped-menu-item"
-        disabled={false}
         key="1"
         onClick={[Function]}
       >
@@ -27,7 +26,6 @@ exports[`SteppedForm renders properly 1`] = `
       </MenuItem>
       <MenuItem
         className="stepped-menu-item"
-        disabled={true}
         key="2"
         onClick={[Function]}
       >

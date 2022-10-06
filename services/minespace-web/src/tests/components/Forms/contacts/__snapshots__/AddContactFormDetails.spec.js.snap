@@ -121,6 +121,7 @@ exports[`AddContactFormDetails renders properly 1`] = `
           data={Array []}
           id="job_title_code"
           name="job_title_code"
+          onChange={[Function]}
           placeholder="Select a job title"
           validate={
             Array [
@@ -143,6 +144,7 @@ exports[`AddContactFormDetails renders properly 1`] = `
           handleChange={[Function]}
           id="organization_guid"
           name="organization_guid"
+          onChange={[Function]}
           placeholder="Search organizations"
         />
       </FormItem>
