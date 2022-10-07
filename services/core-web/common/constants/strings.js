@@ -98,6 +98,9 @@ export const MINE_REPORTS_TYPE = {
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
 
+export const EMLI_INSPECTION_MAPPER_BASE_URL =
+  "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6";
+
 export const PERMIT_AMENDMENT_TYPES = {
   original: "OGP",
   amendment: "AMD",
