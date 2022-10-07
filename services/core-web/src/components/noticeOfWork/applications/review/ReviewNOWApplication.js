@@ -32,6 +32,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
 import * as FORM from "@/constants/forms";
+import { OPEN_NEW_TAB } from "@/constants/assets";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
@@ -103,6 +104,13 @@ export const ReviewNOWApplication = (props) => {
     "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
 
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+
+  const generateEmliInspectionMapperUrl = (nowApplicationGuid) => {
+    const queryString = encodeURIComponent(
+      `query=bcgw_pub_whse_mineral_tenure_8797,NOW_APPLICATION_GUID,${nowApplicationGuid}`
+    );
+    return `${Strings.EMLI_INSPECTION_MAPPER_BASE_URL}&${queryString}`;
+  };
 
   const renderMineInfo = () => (
     <div>
@@ -218,6 +226,16 @@ export const ReviewNOWApplication = (props) => {
             validate={[number]}
             disabled
           />
+          <div className="field-title">
+            Open and view NoW on the Inspection Mapper (new window)&nbsp;&nbsp;
+            <a
+              href={generateEmliInspectionMapperUrl(props.now_application_guid)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img alt="Open link in new window" src={OPEN_NEW_TAB} style={{ width: "1.25em" }} />
+            </a>
+          </div>
         </Col>
       </Row>
     </div>

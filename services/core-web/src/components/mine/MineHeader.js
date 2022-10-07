@@ -26,7 +26,7 @@ import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
-import { EDIT_OUTLINE_VIOLET, EDIT } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -55,6 +55,13 @@ const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   exemptionFeeStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   governmentAgencyHash: PropTypes.objectOf(PropTypes.string).isRequired,
+};
+
+const generateEmliInspectionMapperUrl = (lat, lng) => {
+  const formattedLat = parseFloat(lat);
+  const formattedLng = parseFloat(lng);
+  const queryString = encodeURIComponent(`center=${formattedLng},${formattedLat}&level=10`);
+  return `${String.EMLI_INSPECTION_MAPPER_BASE_URL}&${queryString}`;
 };
 
 export class MineHeader extends Component {
@@ -323,6 +330,21 @@ export class MineHeader extends Component {
             <div className="field-title">Number of Contractors</div>
             <div>{this.props.mine.number_of_contractors || String.EMPTY_FIELD}</div>
             <CoreTooltip title="Approximate number of contractors on site" />
+          </div>
+          <div className="inline-flex padding-sm wrap">
+            <div className="field-title">View on the EMLI Inspection Mapper</div>
+            <div>
+              <a
+                href={generateEmliInspectionMapperUrl(
+                  this.props.mine.mine_location?.latitude || "",
+                  this.props.mine.mine_location?.longitude || ""
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img alt="Open link in new window" src={OPEN_NEW_TAB} style={{ width: "1.25em" }} />
+              </a>
+            </div>
           </div>
         </div>
         <div className="dashboard__header--card__map">
