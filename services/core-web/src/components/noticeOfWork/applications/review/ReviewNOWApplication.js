@@ -25,6 +25,9 @@ import {
   validateSelectOptions,
   number,
 } from "@common/utils/Validate";
+import * as Strings from "@common/constants/strings";
+import { USER_ROLES } from "@common/constants/environment";
+import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -37,11 +40,8 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
-import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
-import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
-import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
@@ -107,9 +107,9 @@ export const ReviewNOWApplication = (props) => {
 
   const generateEmliInspectionMapperUrl = (nowApplicationGuid) => {
     const queryString = encodeURIComponent(
-      `query=bcgw_pub_whse_mineral_tenure_8797,NOW_APPLICATION_GUID,${nowApplicationGuid}`
+      `bcgw_pub_whse_mineral_tenure_8797,NOW_APPLICATION_GUID,${nowApplicationGuid}`
     );
-    return `${Strings.EMLI_INSPECTION_MAPPER_BASE_URL}&${queryString}`;
+    return `${Strings.EMLI_INSPECTION_MAPPER_BASE_URL}&query=${queryString}`;
   };
 
   const renderMineInfo = () => (

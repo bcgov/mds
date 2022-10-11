@@ -60,8 +60,8 @@ const propTypes = {
 const generateEmliInspectionMapperUrl = (lat, lng) => {
   const formattedLat = parseFloat(lat);
   const formattedLng = parseFloat(lng);
-  const queryString = encodeURIComponent(`center=${formattedLng},${formattedLat}&level=10`);
-  return `${String.EMLI_INSPECTION_MAPPER_BASE_URL}&${queryString}`;
+  const coordinateString = encodeURIComponent(`${formattedLng},${formattedLat}`);
+  return `${String.EMLI_INSPECTION_MAPPER_BASE_URL}&center=${coordinateString}&level=10`;
 };
 
 export class MineHeader extends Component {
@@ -331,21 +331,27 @@ export class MineHeader extends Component {
             <div>{this.props.mine.number_of_contractors || String.EMPTY_FIELD}</div>
             <CoreTooltip title="Approximate number of contractors on site" />
           </div>
-          <div className="inline-flex padding-sm wrap">
-            <div className="field-title">View on the EMLI Inspection Mapper</div>
-            <div>
-              <a
-                href={generateEmliInspectionMapperUrl(
-                  this.props.mine.mine_location?.latitude || "",
-                  this.props.mine.mine_location?.longitude || ""
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img alt="Open link in new window" src={OPEN_NEW_TAB} style={{ width: "1.25em" }} />
-              </a>
+          {this.props.mine.mine_location?.latitude && this.props.mine.mine_location?.longitude && (
+            <div className="inline-flex padding-sm wrap">
+              <div className="field-title">View on the EMLI Inspection Mapper</div>
+              <div>
+                <a
+                  href={generateEmliInspectionMapperUrl(
+                    this.props.mine.mine_location?.latitude,
+                    this.props.mine.mine_location?.longitude
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    alt="Open link in new window"
+                    src={OPEN_NEW_TAB}
+                    style={{ width: "1.25em" }}
+                  />
+                </a>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="dashboard__header--card__map">
           <MineHeaderMapLeaflet mine={this.props.mine} />
