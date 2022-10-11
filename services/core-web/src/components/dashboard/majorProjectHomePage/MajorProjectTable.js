@@ -41,6 +41,7 @@ const transformRowData = (projects, mineCommodityHash) =>
     name: project.contacts
       .filter((contact) => contact.is_primary)
       .map((contact) => contact.name)[0],
+    project_lead_name: project.project_lead_name,
     commodity:
       project.mine.mine_type && project.mine.mine_type.length > 0
         ? uniqBy(
@@ -72,27 +73,11 @@ const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, 
   handleSearch(params);
 };
 
-const linkStage = (record) => {
-  if (record.project_stage === "Project Summary") {
-    return (
-      <Link to={router.PRE_APPLICATIONS.dynamicRoute(record.key, record.guid)}>
-        <Button type="primary">Open</Button>
-      </Link>
-    );
-  }
-  if (record.project_stage === "IRT") {
-    return (
-      <Link to={router.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(record.key, record.guid)}>
-        <Button type="primary">Open</Button>
-      </Link>
-    );
-  }
-  return (
-    <Link to={router.MAJOR_MINE_APPLICATION.dynamicRoute(record.key, record.guid)}>
-      <Button type="primary">Open</Button>
-    </Link>
-  );
-};
+const linkStage = (record) => (
+  <Link to={router.PROJECTS.dynamicRoute(record.key)}>
+    <Button type="primary">Open</Button>
+  </Link>
+);
 
 export const MajorProjectTable = (props) => {
   const columns = [
@@ -151,12 +136,12 @@ export const MajorProjectTable = (props) => {
       ),
     },
     {
-      key: "name",
-      title: "Primary Contact",
-      dataIndex: "name",
-      sortField: "name",
+      key: "project_lead_name",
+      title: "EMLI Project Lead",
+      dataIndex: "project_lead_name",
+      sortField: "project_lead_name",
       sorter: true,
-      render: (text) => <div title="Primary Contact">{text}</div>,
+      render: (text) => <div title="EMLI Project Lead">{text}</div>,
     },
     {
       key: "commodity",

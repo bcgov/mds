@@ -77,6 +77,29 @@ export class MajorProjectsSearchForm extends Component {
                 />
               </Col>
             </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="mrc_review_required"
+                  name="mrc_review_required"
+                  placeholder="Select MRC review"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "true", label: "Required" },
+                    { value: "false", label: "No Required" },
+                  ]}
+                  format={null}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
+                  id="project_lead_name"
+                  name="project_lead_name"
+                  placeholder="Search by EMLI project lead"
+                  component={renderConfig.FIELD}
+                />
+              </Col>
+            </Row>
           </div>
         )}
         <div className="left center-mobile">

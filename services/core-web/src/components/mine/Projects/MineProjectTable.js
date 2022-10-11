@@ -25,11 +25,12 @@ const transformRowData = (projects) => {
       key: project.project_guid,
       project,
       mine_guid: project.mine_guid,
-      project_stage: project.project_summary.status_code,
+      project_stage: project.project_summary?.status_code,
       project_id: project.project_id || Strings.EMPTY_FIELD,
       project_name: project.project_title,
       proponent_project_id: project.proponent_project_id || Strings.EMPTY_FIELD,
       project_contact: contact?.name || Strings.EMPTY_FIELD,
+      project_lead_name: project.project_lead_name,
       last_updated_date: formatDate(project.update_timestamp),
     };
   });
@@ -50,9 +51,9 @@ export const MineProjectTable = (props) => {
       render: (text) => <div title="Project ID">{text}</div>,
     },
     {
-      key: "project_summary_lead_name",
+      key: "project_lead_name",
       title: "EMLI Project Lead",
-      dataIndex: "project_summary_lead_name",
+      dataIndex: "project_lead_name",
       render: (text) => <div title="EMLI Project Lead">{text}</div>,
     },
     {

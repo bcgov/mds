@@ -1,6 +1,6 @@
 from datetime import date, datetime
 import pytz
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
@@ -97,6 +97,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'project_stage': 'project stage (Project Summary, IRT, Final Application) to filter the project list on.',
             'status_code': 'Filter by status code.',
             'contact': 'Primary contact for the project',
+            'project_lead_name': 'EMLI project lead for the project',
             'mine_commodity_code': 'A specific commodity to filter the project list on.',
             'update_timestamp': 'filter by projects by updated date',
             'sort_field': 'The field the returned results will be ordered by',
@@ -110,7 +111,8 @@ class ProjectListDashboardResource(Resource, UserMixin):
             "sort_dir": request.args.get('sort_dir', 'asc', type=str),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "search_terms":request.args.get('search', type=str),
-            "mrc_review_required": request.args.get('mrc_review_required', type=bool),
+            "mrc_review_required": request.args.get('mrc_review_required', type=str),
+            "project_lead_name": request.args.get('project_lead_name', type=str),
             "status_code":request.args.get('status_code', type=str),
             "application_stage" :request.args.get('application_stage',type=str),
             "mine_commodity_code": request.args.get('mine_commodity_code', type=str),
@@ -177,13 +179,14 @@ class ProjectListDashboardResource(Resource, UserMixin):
                         'mrc_review_required': project.mrc_review_required,
                         'status_code': status_code,
                         'contacts': project.contacts,
+                        'project_lead_party_guid': project.project_lead_party_guid,
+                        'project_lead_name': project.project_lead_name,
                         'update_timestamp': update_timestamp,
                         'mine': project.mine
                     }
 
             if record:
                 most_recent_projects.append(record)
-
 
         return {
             'records': most_recent_projects,
@@ -208,12 +211,17 @@ class ProjectListDashboardResource(Resource, UserMixin):
         sort_models = {
             'project_title': 'Project',
             'project_id': 'Project',
+            'first_name': 'Party',
+            'party_name': 'Party',
             'mrc_review_required': 'Project',
-            'name': 'ProjectContact',
             'mine_name': 'Mine',
         }
 
-        sort_model = sort_models.get(args['sort_field'])
+        if args['sort_field']=='project_lead_name':
+            sort_model = 'Party'
+        else:
+            sort_model = sort_models.get(args['sort_field'])
+
 
         query = Project.query
         conditions =[]
@@ -226,7 +234,8 @@ class ProjectListDashboardResource(Resource, UserMixin):
             conditions.append({'or': search_conditions})
 
         if args["mrc_review_required"]:
-            conditions.append(self._build_filter('Project','mrc_review_required', '==',args["mrc_review_required"]))
+            mrc_review_required = True if args["mrc_review_required"]=="true" else False
+            conditions.append(self._build_filter('Project','mrc_review_required', '==', mrc_review_required))
 
         application_stage = args.get("application_stage", None)
 
@@ -276,11 +285,36 @@ class ProjectListDashboardResource(Resource, UserMixin):
                 ]
                 conditions.append({'or': update_timestamp})
 
+        if args['project_lead_name'] is not None:
+            lead_items = args['project_lead_name'].split()
+            project_lead_conditions=[]
+            if len(lead_items) == 1:
+                project_lead_conditions = [
+                    self._build_filter('Party','first_name','ilike','%{}%'.format(lead_items[0])),
+                    self._build_filter('Party','party_name','ilike','%{}%'.format(lead_items[0]))
+                ]
+            elif len(lead_items) > 1:
+                project_lead_conditions = [
+                    self._build_filter('Party','first_name','ilike','%{}%'.format(lead_items[:-1])),
+                    self._build_filter('Party','party_name','ilike','%{}%'.format(lead_items[-1]))
+                ]
+            else:
+                project_lead_conditions = []
+
+            if len(project_lead_conditions) == 2:
+                conditions.append({'or': project_lead_conditions})
+
         projects_query = apply_filters(query, conditions)
 
         # Apply sorting
         if sort_model and args['sort_field'] and args['sort_dir']:
-            sort_criteria = [{'model': sort_model, 'field': args['sort_field'], 'direction': args['sort_dir']}]
+            sort_criteria=[]
+            if sort_model == 'Party':
+                sort_criteria = [{'model': sort_model, 'field': 'first_name', 'direction': args['sort_dir']},
+                                 {'model': sort_model, 'field': 'party_name', 'direction': args['sort_dir']}]
+            else:
+                sort_criteria = [{'model': sort_model, 'field': args['sort_field'], 'direction': args['sort_dir']}]
+
             projects_query = apply_sort(projects_query, sort_criteria)
 
         return  apply_pagination(projects_query, args["page_number"], args["page_size"])
