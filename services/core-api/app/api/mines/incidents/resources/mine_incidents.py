@@ -325,7 +325,7 @@ class MineIncidentResource(Resource, UserMixin):
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
                     trigger_notifcation(f'A new Mine Incident has been created for ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
-                    setattr(incident, key, value)
+                setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
 
