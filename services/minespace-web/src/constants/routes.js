@@ -12,6 +12,8 @@ import ReturnPage from "@/components/pages/ReturnPage";
 import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
 import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
+import { UsersPage } from "@/components/pages/UsersPage";
+import queryString from "query-string";
 
 export const HOME = {
   route: "/",
