@@ -18,6 +18,7 @@ exports[`FileUpload renders properly 1`] = `
     allowRevert={false}
     fileValidateTypeDetectType={[Function]}
     fileValidateTypeLabelExpectedTypesMap={Object {}}
+    labelIdle="Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span>"
     maxFileSize="750MB"
     name="file"
     onaddfilestart={[MockFunction]}

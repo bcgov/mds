@@ -6,6 +6,7 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
+
 import { bindActionCreators, compose } from "redux";
 import { clearTsf, storeTsf } from "@common/actions/tailingsActions";
 import {
@@ -78,17 +79,21 @@ const defaultProps = {
 export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [tsfGuid, setTsfGuid] = useState(null);
 
   const handleFetchData = async (forceReload = false) => {
+    setIsReloading(true);
     const { tailingsStorageFacilityGuid } = match?.params;
     await props.fetchPermits(match.params.mineGuid);
+
     await props.fetchPartyRelationships({
       mine_guid: match.params.mineGuid,
       relationships: "party",
       include_permit_contacts: "true",
     });
+
     if (tailingsStorageFacilityGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
         const mine = await props.fetchMineRecordById(match.params.mineGuid);
@@ -100,6 +105,7 @@ export const TailingsSummaryPage = (props) => {
       setTsfGuid(tailingsStorageFacilityGuid);
     }
     setIsLoaded(true);
+    setIsReloading(false);
   };
 
   useEffect(() => {
@@ -176,6 +182,7 @@ export const TailingsSummaryPage = (props) => {
             },
             successMessage
           );
+
           if (uploadedFiles.length > 0) {
             await handleAddDocuments(relationship.data.mine_party_appt_guid);
           }
@@ -249,6 +256,7 @@ export const TailingsSummaryPage = (props) => {
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
+              loading={isReloading}
               eors={eors}
               mineGuid={mineGuid}
               uploadedFiles={uploadedFiles}
@@ -256,7 +264,7 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson mineGuid={mineGuid} />
+            <QualifiedPerson loading={isReloading} mineGuid={mineGuid} />
           </Step>
           <Step key="registry-document" disabled={!hasCreatedTSF}>
             <div />
