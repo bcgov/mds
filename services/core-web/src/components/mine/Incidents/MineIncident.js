@@ -122,8 +122,7 @@ export class MineIncident extends Component {
       .then(() => this.setState({ isLoaded: true }));
   };
 
-  handleSaveData = (e) => {
-    e.preventDefault();
+  handleSaveData = () => {
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {

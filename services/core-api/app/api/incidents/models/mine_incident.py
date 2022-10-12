@@ -1,7 +1,6 @@
 from sre_constants import IN
 import uuid
 import datetime
-import dateutil.parser
 from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -31,8 +30,7 @@ def getYear():
 
 
 def format_incident_date(datetime_string):
-    # datetime_object = dateutil.parser.isoparse(datetime_string)
-    return datetime_string.strftime('%b %d %Y, at %-I:%-M')
+    return datetime_string.strftime('%b %d %Y, at %-H:%M')
 
 
 class MineIncident(SoftDeleteMixin, AuditMixin, Base):
