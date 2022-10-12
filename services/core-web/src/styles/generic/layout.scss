@@ -51,6 +51,9 @@ html {
 
 .violet {
   color: $violet;
+  &-border {
+    border-color: $violet;
+  }
 }
 
 .grey {

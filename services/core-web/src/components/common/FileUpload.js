@@ -25,6 +25,7 @@ const propTypes = {
   onRemoveFile: PropTypes.func,
   addFileStart: PropTypes.func,
   chunkSize: PropTypes.number,
+  labelIdle: PropTypes.string,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
   onProcessFiles: PropTypes.func,
@@ -42,6 +43,7 @@ const defaultProps = {
   allowMultiple: true,
   onProcessFiles: () => {},
   onAbort: () => {},
+  labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
 };
 
 class FileUpload extends React.Component {
@@ -138,6 +140,7 @@ class FileUpload extends React.Component {
           acceptedFileTypes={acceptedFileTypes}
           onprocessfiles={this.props.onProcessFiles}
           onprocessfileabort={this.props.onAbort}
+          labelIdle={this.props?.labelIdle}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {
