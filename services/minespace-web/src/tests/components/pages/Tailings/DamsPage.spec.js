@@ -1,41 +1,25 @@
-import React from "react";
 import { shallow } from "enzyme";
-import { TailingsSummaryPage } from "@/components/pages/Tailings/TailingsSummaryPage";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import { store } from "@/App";
 
 let props = {};
 let dispatchProps = {};
 
 const setupProps = () => {
   props = {
-    mines: MOCK.MINES.mines,
-    TSFOperatingStatusCodeHash: {},
-    consequenceClassificationStatusCodeHash: {},
-    match: {
-      params: {
-        tab: "basic-information",
-        mineGuid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-        tailingsStorageFacilityGuid: "e2629897-053e-4218-9299-479375e47f78",
-      },
-    },
-    history: { push: jest.fn, replace: jest.fn },
-    eors: [],
-    location: { pathname: "" },
+    tsf:
+      MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"].mine_tailings_storage_facilities[0],
+    initialValues: {},
+    formValues: {},
+    formErrors: {},
   };
 };
 
 const setupDispatchProps = () => {
   dispatchProps = {
-    fetchPartyRelationships: jest.fn(),
-    addDocumentToRelationship: jest.fn(),
-    updateTailingsStorageFacility: jest.fn(),
-    createTailingsStorageFacility: jest.fn(),
-    addPartyRelationship: jest.fn(),
-    fetchPermits: jest.fn(),
+    storeTsfs: jest.fn(),
+    storeDam: jest.fn(),
     fetchMineRecordById: jest.fn(),
-    storeTsf: jest.fn(),
-    clearTsf: jest.fn(),
-    submit: jest.fn(),
+    fetchDam: jest.fn(),
   };
 };
 
@@ -44,9 +28,13 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("TailingsSummaryPage", () => {
+describe("DamsPage", () => {
   it("renders properly", () => {
-    const component = shallow(<TailingsSummaryPage {...props} {...dispatchProps} />);
+    const component = shallow(
+      <Provider store={store}>
+        <DamsPage {...props} {...dispatchProps} />
+      </Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });

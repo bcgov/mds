@@ -312,4 +312,5 @@ export const ACTIVITIES = () => "/activities";
 export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";
 
 // Dams
-export const DAMS = (tsfGuid) => `/dams?mine_tailings_storage_facility_guid=${tsfGuid}`;
+export const DAMS = () => `/dams`;
+export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");

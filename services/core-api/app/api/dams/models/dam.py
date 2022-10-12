@@ -101,8 +101,9 @@ class Dam(SoftDeleteMixin, AuditMixin, Base):
         return dict([('total', len(result)), ('records', result)])
 
     @classmethod
-    def find_one(cls, dam_guid):
-        return cls.query.filter_by(dam_guid=dam_guid, deleted_ind=False).first()
+    def find_one(cls, __guid):
+        query = cls.query.filter_by(dam_guid=__guid)
+        return query.first()
 
     def update(self, **kwargs):
         for key, value in kwargs.items():

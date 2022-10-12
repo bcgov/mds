@@ -27,12 +27,17 @@ const AssociatedDams = (props) => {
   const handleNavigateToEdit = (event, dam) => {
     event.preventDefault();
     props.storeDam(dam);
-    const url = EDIT_DAM.dynamicRoute(dam.mine_tailings_storage_facility_guid, dam.dam_guid);
+    const url = EDIT_DAM.dynamicRoute(
+      tsf.mine_guid,
+      dam.mine_tailings_storage_facility_guid,
+      dam.dam_guid
+    );
     history.push(url);
   };
 
   const handleNavigateToCreate = () => {
-    const url = ADD_DAM.dynamicRoute(tsf.mine_tailings_storage_facility_guid);
+    props.storeDam({});
+    const url = ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
     history.push(url);
   };
 
@@ -114,10 +119,17 @@ const AssociatedDams = (props) => {
           </Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={tsf.dams} locale={{ emptyText: "No Data Yet" }} />
+      <Table
+        columns={columns}
+        dataSource={tsf.dams}
+        locale={{ emptyText: "No Data Yet" }}
+        pagination={false}
+      />
     </div>
   );
 };
+
+AssociatedDams.propTypes = propTypes;
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam }, dispatch);
 

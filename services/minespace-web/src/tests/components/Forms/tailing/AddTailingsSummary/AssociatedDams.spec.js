@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import React from "react";
 import { shallow } from "enzyme";
 import { store } from "@/App";
-import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
+import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
 
 let props = {};
 let dispatchProps = {};
@@ -25,11 +25,11 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("DamsForm", () => {
+describe("Associated Dams", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>
-        <DamForm {...props} {...dispatchProps} />
+        <AssociatedDams {...props} {...dispatchProps} />
       </Provider>
     );
     expect(component).toMatchSnapshot();

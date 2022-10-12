@@ -1,6 +1,7 @@
+import * as Strings from "@common/constants/strings";
+
 import { memoize } from "lodash";
 import moment from "moment";
-import * as Strings from "@common/constants/strings";
 
 /**
  * Utility class for validating inputs using redux forms
@@ -176,6 +177,15 @@ export const validateSelectOptions = memoize((data, allowEmptyData = false) => (
     return data?.find((opt) => opt.value === value) !== undefined
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
+  }
+});
+
+export const decimalPlaces = memoize((places) => (value) => {
+  if (value && !Validate.checkWholeNumber(value)) {
+    const decimalPlaces = value.split(".")[1];
+    return decimalPlaces && decimalPlaces.length > places
+      ? `Must be ${places} decimal places or less`
+      : undefined;
   }
 });
 

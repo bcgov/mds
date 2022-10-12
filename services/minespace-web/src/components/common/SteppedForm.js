@@ -1,4 +1,4 @@
-import { Button, Col, Menu, Row } from "antd";
+import { Button, Col, Menu, Popconfirm, Row } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
@@ -14,19 +14,37 @@ const propTypes = {
   handleTabChange: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func,
   handleSaveData: PropTypes.func,
+  handleCancel: PropTypes.func,
   activeTab: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string),
+  submitText: PropTypes.string,
+  cancelText: PropTypes.string,
+  cancelConfirmMessage: PropTypes.string,
 };
 
 const defaultProps = {
+  submitText: undefined,
+  cancelText: undefined,
   handleSaveDraft: undefined,
   handleSaveData: undefined,
+  handleCancel: undefined,
+  cancelConfirmMessage: undefined,
   errors: [],
 };
 
 const SteppedForm = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { children, handleTabChange, activeTab, handleSaveDraft, handleSaveData } = props;
+  const {
+    children,
+    handleTabChange,
+    activeTab,
+    handleSaveDraft,
+    handleSaveData,
+    submitText,
+    cancelText,
+    handleCancel,
+    cancelConfirmMessage,
+  } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
@@ -90,7 +108,7 @@ const SteppedForm = (props) => {
         {children && (
           <div className="stepped-form-form-container">
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
-            <Row justify={isFirst ? "end" : "space-between"}>
+            <Row justify={isFirst && tabs.length > 1 ? "end" : "space-between"}>
               {!isFirst && (
                 <Button
                   type="primary"
@@ -99,6 +117,19 @@ const SteppedForm = (props) => {
                 >
                   <LeftOutlined /> Back
                 </Button>
+              )}
+              {handleCancel && (
+                <Popconfirm
+                  title={cancelConfirmMessage}
+                  disabled={!cancelConfirmMessage}
+                  onConfirm={handleCancel}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="secondary" disabled={isSubmitting}>
+                    {cancelText || "Cancel"}
+                  </Button>
+                </Popconfirm>
               )}
 
               {!isLast && (
@@ -121,6 +152,15 @@ const SteppedForm = (props) => {
                     Next <RightOutlined />
                   </Button>
                 </div>
+              )}
+              {isLast && (
+                <Button
+                  type="primary"
+                  disabled={isSubmitting || props.errors?.length > 0}
+                  onClick={handleSaveData}
+                >
+                  {submitText || "Submit"}
+                </Button>
               )}
             </Row>
           </div>

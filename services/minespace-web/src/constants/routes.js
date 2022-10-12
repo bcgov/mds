@@ -148,15 +148,15 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
 };
 
 export const ADD_DAM = {
-  route: "/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
-  dynamicRoute: (tailingsStorageFacilityGuid) =>
-    `/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
   component: DamsPage,
 };
 
 export const EDIT_DAM = {
-  route: "/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
-  dynamicRoute: (tailingsStorageFacilityGuid, damGuid) =>
-    `/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
   component: DamsPage,
 };
