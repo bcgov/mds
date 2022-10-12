@@ -17,8 +17,8 @@ exports[`MineProjectTable renders properly 1`] = `
         "title": "Project ID",
       },
       Object {
-        "dataIndex": "project_summary_lead_name",
-        "key": "project_summary_lead_name",
+        "dataIndex": "project_lead_name",
+        "key": "project_lead_name",
         "render": [Function],
         "title": "EMLI Project Lead",
       },
@@ -77,6 +77,7 @@ exports[`MineProjectTable renders properly 1`] = `
         },
         "project_contact": "N/A",
         "project_id": "N/A",
+        "project_lead_name": undefined,
         "project_name": "Test Project Title",
         "project_stage": undefined,
         "proponent_project_id": "N/A",
