@@ -73,12 +73,6 @@ const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, 
   handleSearch(params);
 };
 
-const linkStage = (record) => (
-  <Link to={router.PROJECTS.dynamicRoute(record.key)}>
-    <Button type="primary">Open</Button>
-  </Link>
-);
-
 export const MajorProjectTable = (props) => {
   const columns = [
     {
@@ -167,7 +161,11 @@ export const MajorProjectTable = (props) => {
       render: (text, record) => (
         <div title="" align="right">
           <Row gutter={1}>
-            <Col span={12}>{linkStage(record)}</Col>
+            <Col span={12}>
+              <Link to={router.PROJECTS.dynamicRoute(record.key)}>
+                <Button type="primary">Open</Button>
+              </Link>
+            </Col>
           </Row>
         </div>
       ),
