@@ -16,9 +16,11 @@ from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 def validate_document(document):
     schema = {
         'message': {
+            'required': True,
             'type': 'string'
         },
         'metadata': {
+            'required': True,
             'type': 'dict',
             'schema': {
                 'mine': {
@@ -37,13 +39,16 @@ def validate_document(document):
                     }
                 },
                 'entity': {
+                    'required': True,
                     'type': 'string',
                 },
                 'entity_guid': {
+                    'required': True,
                     'type': 'string',
                     'regex': '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
                 },
                 'permit': {
+                    'required': False,
                     'type': 'dict',
                     'schema': {
                         'permit_no': {
@@ -54,7 +59,7 @@ def validate_document(document):
             }
         }
     }
-    v = Validator(schema, require_all=True)
+    v = Validator(schema)
     if (v.validate(document)):
         return v.document
     else:

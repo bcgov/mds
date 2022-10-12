@@ -212,7 +212,6 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.save()
             if is_minespace_user():
                 incident.send_incidents_email()
-            trigger_notifcation('', mine, 'MineIncident', incident.mine_incident_guid, extra_data=None)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
@@ -321,8 +320,11 @@ class MineIncidentResource(Resource, UserMixin):
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
                     setattr(incident, key, value)
             if key in ['status_code']:
-                if value == '':
-                    set_stuff()
+                if value == 'AFR':
+                    # Need to send an email to the proponent and OIC with mostly same content just slightly different.
+                    incident.send_awaiting_final_report_email(True)
+                    incident.send_awaiting_final_report_email(False)
+                    trigger_notifcation(f'A new Mine Incident has been created for ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                     setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
