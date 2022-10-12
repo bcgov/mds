@@ -23,9 +23,8 @@ export const createDam = (payload) => (dispatch) => {
       dispatch(success(CREATE_DAM));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(CREATE_DAM));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
