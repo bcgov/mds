@@ -279,4 +279,4 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
             body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
 
-        EmailService.send_email(subject, recipients, body)
+        EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)
