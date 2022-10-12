@@ -23,7 +23,7 @@ RUN chown -R 1001:0 ${APP_ROOT}/app
 
 # Provide user permissions to temp dotnet workspace
 RUN mkdir /.dotnet
-RUN chmod -R 756 /.dotnet
+RUN chmod -R 757 /.dotnet
 RUN chown -R 1001:0 /.dotnet
 
 USER 1001
