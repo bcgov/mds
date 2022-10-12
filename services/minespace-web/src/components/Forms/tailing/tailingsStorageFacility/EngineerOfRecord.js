@@ -38,6 +38,11 @@ const propTypes = {
   setUploadedFiles: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  loading: PropTypes.bool,
+};
+
+const defaultProps = {
+  loading: false,
 };
 
 const columns = [
@@ -57,7 +62,7 @@ const columns = [
 ];
 
 export const EngineerOfRecord = (props) => {
-  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships } = props;
+  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading } = props;
 
   const [, setUploading] = useState(false);
   const [currentEor, setCurrentEor] = useState(null);
@@ -128,7 +133,7 @@ export const EngineerOfRecord = (props) => {
   };
 
   const validateEorStartDateOverlap = (val) => {
-    if (props.formValues?.engineer_of_record?.mine_party_appt_guid) {
+    if (props.formValues?.engineer_of_record?.mine_party_appt_guid || loading) {
       // Skip validation for existing EoRs
       return undefined;
     }
@@ -279,7 +284,8 @@ export const EngineerOfRecord = (props) => {
               label="Start Date"
               disabled={
                 !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
-                !props.formValues?.engineer_of_record?.party_guid
+                !props.formValues?.engineer_of_record?.party_guid ||
+                loading
               }
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
@@ -292,7 +298,8 @@ export const EngineerOfRecord = (props) => {
               label="End Date (Optional)"
               disabled={
                 !!props.formValues?.engineer_of_record?.mine_party_appt_guid ||
-                !props.formValues?.engineer_of_record?.party_guid
+                !props.formValues?.engineer_of_record?.party_guid ||
+                loading
               }
               validate={[dateInFuture]}
               component={renderConfig.DATE}
@@ -320,5 +327,6 @@ const mapStateToProps = (state) => ({
 });
 
 EngineerOfRecord.propTypes = propTypes;
+EngineerOfRecord.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(EngineerOfRecord);

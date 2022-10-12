@@ -28,6 +28,11 @@ const propTypes = {
   formValues: PropTypes.objectOf(TSFType).isRequired,
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineGuid: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
+};
+
+const defaultProps = {
+  loading: false,
 };
 
 export const QualifiedPerson = (props) => {
@@ -58,7 +63,7 @@ export const QualifiedPerson = (props) => {
   };
 
   const validateQPStartDateOverlap = (val) => {
-    if (props.formValues?.qualified_person?.mine_party_appt_guid) {
+    if (props.formValues?.qualified_person?.mine_party_appt_guid || props.loading) {
       // Skip validation for existing TQPs
       return undefined;
     }
@@ -142,7 +147,8 @@ export const QualifiedPerson = (props) => {
               label="Start Date"
               disabled={
                 !!props.formValues?.qualified_person?.mine_party_appt_guid ||
-                !props.formValues?.qualified_person?.party_guid
+                !props.formValues?.qualified_person?.party_guid ||
+                props.loading
               }
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture, validateQPStartDateOverlap]}
@@ -155,7 +161,8 @@ export const QualifiedPerson = (props) => {
               label="End Date (Optional)"
               disabled={
                 !!props.formValues?.qualified_person?.mine_party_appt_guid ||
-                !props.formValues?.qualified_person?.party_guid
+                !props.formValues?.qualified_person?.party_guid ||
+                props.loading
               }
               validate={[dateInFuture]}
               component={renderConfig.DATE}
@@ -183,5 +190,6 @@ const mapStateToProps = (state) => ({
 });
 
 QualifiedPerson.propTypes = propTypes;
+QualifiedPerson.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(QualifiedPerson);
