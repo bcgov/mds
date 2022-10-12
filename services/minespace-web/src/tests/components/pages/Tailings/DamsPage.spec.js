@@ -1,13 +1,15 @@
+import React from "react";
 import { shallow } from "enzyme";
 import { store } from "@/App";
+import { Provider } from "react-redux";
+import DamsPage from "@/components/pages/Tailings/DamsPage";
 
 let props = {};
 let dispatchProps = {};
 
 const setupProps = () => {
   props = {
-    tsf:
-      MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"].mine_tailings_storage_facilities[0],
+    tsf: {},
     initialValues: {},
     formValues: {},
     formErrors: {},

@@ -1,7 +1,6 @@
 import * as MOCK from "@/tests/mocks/dataMocks";
-
-import { Provider } from "react-redux";
 import React from "react";
+import { Provider } from "react-redux";
 import { shallow } from "enzyme";
 import { store } from "@/App";
 import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
