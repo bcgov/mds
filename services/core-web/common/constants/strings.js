@@ -217,3 +217,36 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "EXT", label: "Extreme" },
   { value: "NOD", label: "N/A (No Dam)" },
 ];
+
+export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
+  LOW: "Low",
+  HIG: "High",
+  SIG: "Significant",
+  VHIG: "Very High",
+  EXT: "Extreme",
+  NOD: "N/A (No Dam)",
+};
+
+export const DAM_TYPES = [{ value: "dam", label: "Dam" }];
+
+export const DAM_TYPES_HASH = {
+  dam: "Dam",
+};
+
+export const DAM_OPERATING_STATUS = [
+  { value: "construction", label: "Construction" },
+  { value: "operation", label: "Operation" },
+  { value: "care_and_maintenance", label: "Care and Maintenance" },
+  { value: "closure_transition", label: "Closure - Transition" },
+  { value: "closure_active_care", label: "Closure - Active Care" },
+  { value: "closure_passive_care", label: "Closure - Passive Care" },
+];
+
+export const DAM_OPERATING_STATUS_HASH = {
+  construction: "Construction",
+  operation: "Operation",
+  care_and_maintenance: "Care and Maintenance",
+  closure_transition: "Closure - Transition",
+  closure_active_care: "Closure - Active Care",
+  closure_passive_care: "Closure - Passive Care",
+};

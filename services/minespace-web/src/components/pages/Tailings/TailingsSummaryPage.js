@@ -1,3 +1,11 @@
+import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
+
+import {
+  ADD_TAILINGS_STORAGE_FACILITY,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+  MINE_DASHBOARD,
+} from "@/constants/routes";
 import { Col, Divider, Row, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -15,30 +23,24 @@ import {
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import { flattenObject, resetForm } from "@common/utils/helpers";
-import { getFormSyncErrors, getFormValues, reduxForm, submit, touch, isDirty } from "redux-form";
+import { getFormSyncErrors, getFormValues, isDirty, reduxForm, submit, touch } from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import CustomPropTypes from "@/customPropTypes";
+import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import Loading from "@/components/common/Loading";
 import PropTypes from "prop-types";
+import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
+import Step from "@/components/common/Step";
+import SteppedForm from "@/components/common/SteppedForm";
 import { connect } from "react-redux";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
-import CustomPropTypes from "@/customPropTypes";
-import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
-import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
-import Loading from "@/components/common/Loading";
-import Step from "@/components/common/Step";
-import SteppedForm from "@/components/common/SteppedForm";
-import {
-  ADD_TAILINGS_STORAGE_FACILITY,
-  EDIT_TAILINGS_STORAGE_FACILITY,
-  MINE_DASHBOARD,
-} from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
-import * as FORM from "@/constants/forms";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -266,8 +268,8 @@ export const TailingsSummaryPage = (props) => {
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
             <QualifiedPerson loading={isReloading} mineGuid={mineGuid} />
           </Step>
-          <Step key="registry-document" disabled={!hasCreatedTSF}>
-            <div />
+          <Step key="associated-dams" disabled={!hasCreatedTSF}>
+            <AssociatedDams />
           </Step>
           <Step key="reports" disabled={!hasCreatedTSF}>
             <div />

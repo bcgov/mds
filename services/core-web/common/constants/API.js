@@ -310,3 +310,7 @@ export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${crede
 // Activities
 export const ACTIVITIES = () => "/activities";
 export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";
+
+// Dams
+export const DAMS = () => `/dams`;
+export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");

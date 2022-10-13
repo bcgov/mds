@@ -1,9 +1,11 @@
-import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Result, Button, Typography } from "antd";
-import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
+
+import { Button, Result, Typography } from "antd";
+import { Link, Route, Switch } from "react-router-dom";
+
+import AuthenticationGuard from "@/HOC/AuthenticationGuard";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import React from "react";
 
 const Routes = () => (
   <Switch>
@@ -84,6 +86,14 @@ const Routes = () => (
     <Route
       path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
       component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
+    />
+    <Route
+      path={routes.ADD_DAM.route}
+      component={AuthenticationGuard()(routes.ADD_DAM.component)}
+    />
+    <Route
+      path={routes.EDIT_DAM.route}
+      component={AuthenticationGuard()(routes.EDIT_DAM.component)}
     />
     <Route
       path={routes.ADD_MINE_INCIDENT.route}

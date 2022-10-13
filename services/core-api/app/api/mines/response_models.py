@@ -1,6 +1,7 @@
 from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.dams.dto import DAM_MODEL
 from app.api.mines.tailings.models.tailings import StorageLocation, TailingsStorageFacilityType, FacilityType
 from app.api.parties.response_models import PARTY
 from app.extensions import api
@@ -321,7 +322,8 @@ MINE_TSF_MODEL = api.model(
         'storage_location': fields.String,
         'mines_act_permit_no': fields.String,
         'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY),
-        'qualified_person': fields.Nested(MINE_PARTY_APPT_PARTY)
+        'qualified_person': fields.Nested(MINE_PARTY_APPT_PARTY),
+        'dams': fields.List(fields.Nested(DAM_MODEL)),
     })
 
 MINE_WORK_INFORMATION_MODEL = api.model(

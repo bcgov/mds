@@ -4,6 +4,8 @@ from random import randrange
 import factory
 import factory.fuzzy
 
+from app.api.dams import Dam
+from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -196,6 +198,28 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     facility_type = FacilityType['tailings_storage_facility']
     tailings_storage_facility_type = TailingsStorageFacilityType['pit']
     mines_act_permit_no = '123456'
+
+class DamFactory(BaseFactory):
+    class Meta:
+        model = Dam
+
+    class Params:
+        tsf = factory.SubFactory('tests.factories.MineTailingsStorageFacilityFactory')
+
+    dam_guid = GUID
+    mine_tailings_storage_facility_guid = factory.SelfAttribute('tsf.mine_tailings_storage_facility_guid')
+    dam_type = DamType['dam']
+    dam_name = 'Dam Name'
+    latitude = factory.Faker('latitude')
+    longitude = factory.Faker('longitude')
+    operating_status = OperatingStatus['operation']
+    consequence_classification = ConsequenceClassification['LOW']
+    permitted_dam_crest_elevation = 100.11
+    current_dam_height = 100.11
+    current_elevation = 100.11
+    max_pond_elevation = 100.11
+    min_freeboard_required = 100.11
+
 
 
 class MineCommentFactory(BaseFactory):
