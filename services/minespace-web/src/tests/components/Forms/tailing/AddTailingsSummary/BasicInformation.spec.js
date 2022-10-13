@@ -3,7 +3,9 @@ import { shallow } from "enzyme";
 import { BasicInformation } from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
 
 const dispatchProps = {};
-const props = {};
+const props = {
+  permits: [{}],
+};
 
 const setupDispatchProps = () => {};
 

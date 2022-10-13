@@ -227,6 +227,15 @@ export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
   NOD: "N/A (No Dam)",
 };
 
+export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
+  NOD: 0,
+  LOW: 1,
+  HIG: 2,
+  SIG: 3,
+  VHIG: 4,
+  EXT: 5,
+};
+
 export const DAM_TYPES = [{ value: "dam", label: "Dam" }];
 
 export const DAM_TYPES_HASH = {
