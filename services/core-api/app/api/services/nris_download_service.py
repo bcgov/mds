@@ -58,9 +58,20 @@ class NRISDownloadService():
         file_download_req = requests.get(
             f'{file_url}', stream=True, headers={"Authorization": f"Bearer {_nris_token}"})
 
+        try:
+            file_download_req.raise_for_status()
+        except:
+            current_app.logger.error('Failed to download file from NRIS - HTTP Status: {}, message: {}'.format(
+                file_download_req.status_code,
+                str(file_download_req.content or '','utf-8')
+            ))
+
+            raise
+
         file_download_resp = Response(
             stream_with_context(
                 file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)))
+
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
         file_download_resp.headers[
