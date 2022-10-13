@@ -2,7 +2,9 @@
 
 exports[`MinistryInternalComments renders properly 1`] = `
 <div>
-  <h4>
+  <h4
+    id="internal-ministry-comments"
+  >
     Internal Ministry Comments
   </h4>
   <br />

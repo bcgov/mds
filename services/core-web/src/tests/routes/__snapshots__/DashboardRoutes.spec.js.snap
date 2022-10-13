@@ -335,17 +335,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/external-authorizations"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineIncidents)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     path="/mine-dashboard/:id/oversight/incidents-and-investigations"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mines/:mineGuid/incidents/:mineIncidentGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mines/:mineGuid/new-incident"
   />
   <Route
     component={

@@ -3,37 +3,7 @@
 exports[`DocumentTable renders properly 1`] = `
 <Table
   align="left"
-  columns={
-    Array [
-      Object {
-        "dataIndex": "name",
-        "key": "name",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Name",
-      },
-      Object {
-        "dataIndex": "category",
-        "key": "category",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Category",
-      },
-      Object {
-        "dataIndex": "uploaded",
-        "defaultSortOrder": "descend",
-        "key": "uploaded",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Uploaded",
-      },
-      Object {
-        "className": "column-hide",
-        "key": "remove",
-        "render": [Function],
-      },
-    ]
-  }
+  columns={Array []}
   dataSource={Array []}
   locale={
     Object {
