@@ -182,11 +182,24 @@ export const validateSelectOptions = memoize((data, allowEmptyData = false) => (
 
 export const decimalPlaces = memoize((places) => (value) => {
   if (value && !Validate.checkWholeNumber(value)) {
-    const decimalPlaces = value.split(".")[1];
-    return decimalPlaces && decimalPlaces.length > places
+    const valueDecimalPlaces = value.split(".")[1];
+    return valueDecimalPlaces && valueDecimalPlaces.length > places
       ? `Must be ${places} decimal places or less`
       : undefined;
   }
+  return undefined;
+});
+
+export const maxDigits = memoize((digits) => (value) => {
+  if (value) {
+    const valueDigits = value.toString().includes(".")
+      ? value.toString().split(".")[0]
+      : value.toString();
+    return valueDigits && valueDigits.length > digits
+      ? `Must be ${digits} digits or less`
+      : undefined;
+  }
+  return undefined;
 });
 
 export const wholeNumber = (value) =>

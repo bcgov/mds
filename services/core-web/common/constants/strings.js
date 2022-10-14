@@ -215,7 +215,7 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "SIG", label: "Significant" },
   { value: "VHIG", label: "Very High" },
   { value: "EXT", label: "Extreme" },
-  { value: "NOD", label: "N/A (No Dam)" },
+  { value: "NRT", label: "Not Rated" },
 ];
 
 export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
@@ -224,7 +224,7 @@ export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
   SIG: "Significant",
   VHIG: "Very High",
   EXT: "Extreme",
-  NOD: "N/A (No Dam)",
+  NRT: "Not Rated",
 };
 
 export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
