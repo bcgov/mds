@@ -1,3 +1,4 @@
+from sre_constants import IN
 import uuid
 import datetime
 from flask.globals import current_app
@@ -26,6 +27,10 @@ from app.api.constants import INCIDENTS_EMAIL, MDS_EMAIL
 
 def getYear():
     return datetime.datetime.utcnow().year
+
+
+def format_incident_date(datetime_string):
+    return datetime_string.strftime('%b %d %Y, at %-H:%M')
 
 
 class MineIncident(SoftDeleteMixin, AuditMixin, Base):
@@ -109,6 +114,16 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     recommendations = db.relationship(
         'MineIncidentRecommendation',
         primaryjoin="and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
+        lazy='selectin')
+
+    responsible_inspector = db.relationship(
+        'Party',
+        primaryjoin="and_(Party.party_guid == MineIncident.responsible_inspector_party_guid)",
+        lazy='selectin')
+
+    reported_to_inspector = db.relationship(
+        'Party',
+        primaryjoin="and_(Party.party_guid == MineIncident.reported_to_inspector_party_guid)",
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
@@ -243,3 +258,23 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/oversight/incidents-and-investigations'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
+
+    def send_awaiting_final_report_email(self, is_prop):
+        OCI_EMAIL = self.reported_to_inspector.email
+        PROP_EMAIL = self.reported_by_email
+        recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
+
+        subject = f'[CORE] An {", ".join(element.description for element in self.categories)}, {self.determination_type.description} ({self.mine_incident_no}) has been reported at {self.mine_name} ({self.mine_table.mine_no}) on {format_incident_date(self.incident_timestamp)}'
+
+        body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
+        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
+        body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
+        link = ''
+        if is_prop:
+            link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review'
+            body += f'<p>View updates in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
+        else:
+            link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+            body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)

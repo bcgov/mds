@@ -23,7 +23,7 @@ exports[`MineIncidents renders properly 1`] = `
       </AddButton>
     </Connect(AuthorizationWrapper)>
   </div>
-  <Connect(MineIncidentTable)
+  <withRouter(Connect(MineIncidentTable))
     followupActions={
       Array [
         Object {

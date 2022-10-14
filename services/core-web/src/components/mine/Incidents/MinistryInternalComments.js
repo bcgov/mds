@@ -48,7 +48,7 @@ export class MinistryInternalComments extends Component {
   render() {
     return (
       <div>
-        <h4>Internal Ministry Comments</h4>
+        <h4 id="internal-ministry-comments">Internal Ministry Comments</h4>
         <br />
         <p>
           <strong>

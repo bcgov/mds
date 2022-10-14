@@ -248,6 +248,30 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
+    path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
     path="/mines/:mineGuid/incidents/new"
   />
   <Route

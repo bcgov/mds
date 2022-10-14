@@ -315,6 +315,7 @@ exports[`BondForm renders properly 1`] = `
     >
       <DocumentTable
         additionalColumnProps={Array []}
+        documentColumns={Array []}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={Array []}

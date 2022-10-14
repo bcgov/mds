@@ -20,6 +20,7 @@ const propTypes = {
   format: PropTypes.string,
   defaultOpenValue: PropTypes.string,
   fullWidth: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -29,6 +30,7 @@ const defaultProps = {
   format: "HH:mm",
   defaultOpenValue: "00:00",
   fullWidth: false,
+  disabled: false,
 };
 
 const RenderDate = (props) => (
@@ -44,6 +46,7 @@ const RenderDate = (props) => (
     }
   >
     <TimePicker
+      disabled={props.disabled}
       id={props.id}
       {...props.input}
       placeholder={props.placeholder}
