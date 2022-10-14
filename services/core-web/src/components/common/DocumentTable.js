@@ -30,7 +30,7 @@ const defaultProps = {
   removeDocument: () => {},
   excludedColumnKeys: [],
   additionalColumnProps: [],
-  documentColumns: [],
+  documentColumns: null,
   documentParent: null,
 };
 
