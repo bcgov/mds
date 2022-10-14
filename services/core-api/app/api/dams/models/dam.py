@@ -12,7 +12,7 @@ class ConsequenceClassification(Enum):
     SIG = 'SIG',
     VHIG = 'VHIG',
     EXT = 'EXT',
-    NOD = 'NOD'
+    NRT = 'NRT'
 
     def __str__(self):
         return self.value
@@ -96,7 +96,7 @@ class Dam(SoftDeleteMixin, AuditMixin, Base):
                  tsf_guid=None):
         query = cls.query.filter_by(deleted_ind=False)
         if tsf_guid:
-            query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid)
+            query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid).order_by(cls.update_timestamp.desc())
         result = query.all()
         return dict([('total', len(result)), ('records', result)])
 
