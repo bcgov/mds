@@ -13,6 +13,7 @@ import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@common/constants/strings";
+import { resetForm } from "@common/utils/helpers";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -263,6 +264,7 @@ export default compose(
     destroyOnUnmount: false,
     forceUnregisterOnUnmount: true,
     touchOnBlur: true,
+    onSubmitSuccess: resetForm(FORM.ADD_MINE_MAJOR_APPLICATION),
     onSubmit: () => {},
   })
 )(MajorMineApplicationForm);
