@@ -94,9 +94,9 @@ class Dam(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_all(cls,
                  tsf_guid=None):
-        query = cls.query.filter_by(deleted_ind=False)
+        query = cls.query.filter_by(deleted_ind=False).order_by(desc(cls.update_timestamp))
         if tsf_guid:
-            query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid).order_by(cls.update_timestamp.desc())
+            query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid)
         result = query.all()
         return dict([('total', len(result)), ('records', result)])
 
