@@ -448,7 +448,7 @@ const IncidentForm = (props) => {
   };
 
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
         <Col span={16} offset={4}>
           {renderInitialReport(props)}
