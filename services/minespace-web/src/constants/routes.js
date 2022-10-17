@@ -102,6 +102,12 @@ export const MAJOR_MINE_APPLICATION_SUCCESS = {
   component: MajorMineApplicationSuccessPage,
 };
 
+export const EDIT_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/:mmaGuid",
+  dynamicRoute: (projectGuid, mmaGuid) => `/projects/${projectGuid}/major-mine-application/${mmaGuid}`,
+  component: MajorMineApplicationPage,
+};
+
 export const ADD_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/new",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/incidents/new`,

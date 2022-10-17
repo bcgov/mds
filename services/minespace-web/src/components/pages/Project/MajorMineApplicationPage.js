@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { change, submit, getFormSyncErrors, getFormValues, reset, touch } from "redux-form";
+import { change, submit, getFormSyncErrors, getFormValues, isDirty, reset, touch } from "redux-form";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -92,7 +92,6 @@ const StepForms = (
     title: "Create Submission",
     content: (
       <MajorMineApplicationForm
-        isEditMode={state.isEditMode}
         initialValues={{
           mine_name: mineName,
           primary_contact: primaryContact,
@@ -109,14 +108,16 @@ const StepForms = (
         }}
         project={props.project}
         majorMinesApplicationDocumentTypesHash={props.majorMinesApplicationDocumentTypesHash}
+        onSubmit={handleSaveData}
       />
     ),
     buttons: [
       <React.Fragment key="step-2-buttons">
+        {props.formIsDirty && (
         <LinkButton
-          style={{ marginRight: "20px" }}
-          onClick={(e) =>
-            handleSaveData(
+          style={{ marginRight: "15px" }}
+          onClick={async (e) => {
+            const response = await handleSaveData(
               e,
               {
                 ...props.formValues,
@@ -127,14 +128,26 @@ const StepForms = (
                 ],
                 status_code: "DFT",
               },
-              "Successfully saved a draft major mine application."
-            )
-          }
-          disabled={!props.formValues?.primary_documents?.length > 0}
+              true
+            );
+            if (response){
+              const majorMineApplicationGuid = props.project.major_mine_application?.major_mine_application_guid ||
+              response?.major_mine_application_guid;
+              return props.history.push({
+                pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                 props.project?.project_guid,
+                 majorMineApplicationGuid
+              )}`,
+              state: { current: 1 },
+              });
+            }
+            return null;
+          }}
           title="Save Draft"
         >
           Save Draft
         </LinkButton>
+        )}
         <Button
           id="step-back"
           type="tertiary"
@@ -148,34 +161,33 @@ const StepForms = (
           id="step2-next"
           type="primary"
           onClick={async (e) => {
-            const statusCode = "DFT";
-            const payload = {
+            const response = await handleSaveData(
+              e,
+              {
               ...props.formValues,
               documents: [
                 ...(props.formValues?.primary_documents || []),
                 ...(props.formValues?.spatial_documents || []),
                 ...(props.formValues?.supporting_documents || []),
               ],
-            };
-            // Assign a status code if MMA has not been created yet
-            if (!props.formValues?.status_code) {
-              payload.status_code = statusCode;
-            }
-            const response = await handleSaveData(
-              e,
-              payload,
-              "Successfully saved a draft major mine application."
+              status_code: props.formValues?.status_code??"DFT",
+              },
+              false
             );
+            
             const majorMineApplicationGuid =
-              props.project.major_mine_application?.major_mine_application_guid ||
-              response?.major_mine_application_guid;
-            return props.history.push({
-              pathname: `${routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
-                props.project?.project_guid,
-                majorMineApplicationGuid
-              )}`,
-              state: { current: 2 },
-            });
+            props.project.major_mine_application?.major_mine_application_guid ||
+            response?.major_mine_application_guid;
+            if (majorMineApplicationGuid){
+              return props.history.push({
+                  pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                  props.project?.project_guid,
+                  majorMineApplicationGuid
+                )}`,
+                state: { current: 2 },
+                });
+            }
+            return null;
           }}
           disabled={!props.formValues?.primary_documents?.length > 0}
         >
@@ -202,7 +214,7 @@ const StepForms = (
           style={{ marginRight: "24px" }}
           onClick={() => {
             props.history.push({
-              pathname: `${routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(
+              pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
                 props.project.project_guid
               )}`,
               state: { current: 1 },
@@ -214,15 +226,22 @@ const StepForms = (
         <Popconfirm
           placement="topRight"
           title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
-          onConfirm={(e) => {
-            handleSaveData(
+          onConfirm={async(e) => {
+            await handleSaveData(
               e,
               {
                 ...props.project.major_mine_application,
                 status_code: "SUB",
               },
-              "Successfully submitted a major mine application."
+              false
             );
+            return props.history.push({
+              pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
+                props.project.major_mine_application?.project_guid,
+                props.project.major_mine_application?.major_mine_application_guid
+              )}`,
+              state: { project: props.project },
+            });
           }}
           okText="Yes"
           cancelText="No"
@@ -239,7 +258,6 @@ const StepForms = (
 export class MajorMineApplicationPage extends Component {
   state = {
     current: 0,
-    isEditMode: false,
     isLoaded: false,
     confirmedSubmission: false,
   };
@@ -248,6 +266,7 @@ export class MajorMineApplicationPage extends Component {
     this.handleFetchData().then(() => {
       this.setState((prevState) => ({
         current: this.props.location?.state?.current || prevState.current,
+        isLoaded: true,
       }));
     });
   }
@@ -258,17 +277,12 @@ export class MajorMineApplicationPage extends Component {
 
   handleFetchData = () => {
     const { projectGuid } = this.props.match?.params;
-
-    return this.props
-      .fetchProjectById(projectGuid)
-      .then(() =>
-        this.props.project.major_mine_application?.major_mine_application_guid
-          ? this.setState({ isLoaded: true, isEditMode: true })
-          : this.setState({ isLoaded: true, isEditMode: false })
-      );
+    return this.props.fetchProjectById(projectGuid);
   };
 
-  handleCreateMajorMineApplication = (values, message) => {
+  handleCreateMajorMineApplication = (values, isDraft) => {
+    this.setState({ isLoaded: false });
+    const message = isDraft ? "Successfully create a draft major mine application." : null;
     return this.props
       .createMajorMineApplication(
         {
@@ -283,11 +297,21 @@ export class MajorMineApplicationPage extends Component {
       });
   };
 
-  handleUpdateMajorMineApplication = (values, message) => {
+  handleUpdateMajorMineApplication = (values, isDraft) => {
     const {
       project_guid: projectGuid,
       major_mine_application_guid: majorMineApplicationGuid,
     } = values;
+    this.setState({ isLoaded: false });
+    let message;
+    if (isDraft){
+      message = "Successfully updated draft major mine application.";
+    } else if (this.props.location?.state?.current === 2) {
+      message = "Successfully submitted a new major mine application"
+    } else {
+      message = null;
+    }
+
     return this.props
       .updateMajorMineApplication(
         {
@@ -299,28 +323,21 @@ export class MajorMineApplicationPage extends Component {
       )
       .then(() => {
         this.handleFetchData();
+        this.setState({ isLoaded: true });
       });
   };
 
-  handleSaveData = async (e, values, message) => {
+  handleSaveData = async (e, formValues, isDraft) => {
     e.preventDefault();
     this.props.submit(FORM.ADD_MINE_MAJOR_APPLICATION);
     this.props.touch(FORM.ADD_MINE_MAJOR_APPLICATION);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
-      if (!this.state.isEditMode) {
-        return this.handleCreateMajorMineApplication(values, message);
+      const mmaExists = Boolean(formValues?.major_mine_application_guid);
+      if (!mmaExists){
+        return this.handleCreateMajorMineApplication(formValues, isDraft);
       }
-      await this.handleUpdateMajorMineApplication(values, message);
-      if (values?.status_code === "SUB") {
-        return this.props.history.push({
-          pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
-            this.props.project.major_mine_application?.project_guid,
-            this.props.project.major_mine_application?.major_mine_application_guid
-          )}`,
-          state: { project: this.props.project },
-        });
-      }
+      return this.handleUpdateMajorMineApplication(formValues, isDraft);
     }
     return null;
   };
@@ -416,7 +433,7 @@ export class MajorMineApplicationPage extends Component {
       )
     );
   }
-}
+}fetchProjectById
 
 MajorMineApplicationPage.propTypes = propTypes;
 MajorMineApplicationPage.defaultProps = defaultProps;
@@ -428,6 +445,7 @@ const mapStateToProps = (state) => ({
   majorMinesApplicationDocumentTypesHash: getMajorMinesApplicationDocumentTypesHash(state),
   formErrors: getFormSyncErrors(FORM.ADD_MINE_MAJOR_APPLICATION)(state),
   formValues: getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)(state) || {},
+  formIsDirty: isDirty(FORM.ADD_MINE_MAJOR_APPLICATION)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

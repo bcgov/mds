@@ -18,6 +18,8 @@ import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@/constants/fileTypes";
+import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
 
@@ -80,9 +82,10 @@ export class MajorMineApplicationForm extends Component {
     );
 
   render() {
+    const documentColumns = [uploadDateColumn("upload_date")];
     return (
       <div>
-        <Form layout="vertical">
+        <Form layout="vertical" onSubmit={this.props.handleSumit}>
           <Row>
             <Col span={24}>
               <Typography.Title level={4}>Basic Information</Typography.Title>
@@ -153,6 +156,13 @@ export class MajorMineApplicationForm extends Component {
             uploadType="primary_document"
             validate={[required]}
           />
+          {this.props.primary_documents.length > 0 && <DocumentTable
+            documents={this.props.primary_documents}
+            documentColumns={documentColumns}
+            documentParent="Major Mine Application"
+          />
+          }
+
           <br />
           <Typography.Title level={5}>Upload spatial documents</Typography.Title>
           <Typography.Text>
@@ -189,6 +199,12 @@ export class MajorMineApplicationForm extends Component {
             component={MajorMineApplicationFileUpload}
             uploadType="spatial_document"
           />
+          {this.props.spatial_document?.length > 0 && <DocumentTable
+            documents={this.props.spatial_document}
+            documentColumns={documentColumns}
+            documentParent="Major Mine Application"
+          />
+          }
           <br />
           <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
           <Typography.Text>
@@ -233,6 +249,12 @@ export class MajorMineApplicationForm extends Component {
             component={MajorMineApplicationFileUpload}
             uploadType="supporting_document"
           />
+          {this.props.supporting_documents?.length > 0 && <DocumentTable
+            documents={this.props.supporting_documents}
+            documentParent="Major Mine Application"
+            documentColumns={documentColumns}
+          />
+          }
         </Form>
       </div>
     );

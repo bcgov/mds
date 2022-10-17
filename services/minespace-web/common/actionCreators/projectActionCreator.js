@@ -193,6 +193,7 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
       );
       dispatch(success(reducerTypes.GET_MAJOR_MINES_APPLICATION));
       dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
+      return response
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT));
@@ -383,7 +384,12 @@ export const createMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       return response;
     })
@@ -408,7 +414,12 @@ export const updateMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       return response;
     })

@@ -88,6 +88,10 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
     />
     <Route
+      exact path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
       path={routes.ADD_DAM.route}
       component={AuthenticationGuard()(routes.ADD_DAM.component)}
     />
