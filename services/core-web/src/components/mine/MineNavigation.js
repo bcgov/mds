@@ -92,6 +92,11 @@ export class MineNavigation extends Component {
                 Notices of Departure
               </Link>
             </Menu.Item>
+            <Menu.Item key="tailings">
+              <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                Tailings Storage Facilities
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu
@@ -138,9 +143,9 @@ export class MineNavigation extends Component {
                 Permit Required Reports
               </Link>
             </Menu.Item>
-            <Menu.Item key="tailings">
-              <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
-                Tailing Storage Facilities
+            <Menu.Item key="tailings-reports">
+              <Link to={routes.MINE_TAILINGS_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Tailings Storage Facilities Reports
               </Link>
             </Menu.Item>
           </Menu>
