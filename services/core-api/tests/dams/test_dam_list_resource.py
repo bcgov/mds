@@ -13,8 +13,6 @@ class TestDamListResource:
         batch_size = 3
         tsf = MineTailingsStorageFacilityFactory()
         DamFactory.create_batch(size=batch_size, tsf=tsf)
-        # another_tsf = MineTailingsStorageFacilityFactory()
-        # DamFactory.create_batch(size=batch_size, tsf=another_tsf)
 
         get_resp = test_client.get(
             f'/dams?mine_tailings_storage_facility_guid={tsf.mine_tailings_storage_facility_guid}',
