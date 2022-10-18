@@ -228,7 +228,7 @@ export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
 };
 
 export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
-  NOD: 0,
+  NRT: 0,
   LOW: 1,
   HIG: 2,
   SIG: 3,
