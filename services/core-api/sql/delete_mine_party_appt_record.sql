@@ -1,10 +1,9 @@
 -- Deletes the given mine party appointment and associated document references.
 -- Raises exception if trying to delete an appointment that is part of an explosives permit.
 
-CREATE OR REPLACE FUNCTION delete_mine_party_appt(_party_appt_guid varchar) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION delete_mine_party_appt(_party_appt_guid uuid) RETURNS VOID AS $$
 
 DECLARE
-	_party_appt_guid uuid;
 	_party_appt_id integer;
     _mine_guid uuid;
 
@@ -12,12 +11,6 @@ DECLARE
 	explosives_permit_perm integer[];
 
 BEGIN
-
-	-- Look up mine party appointments to make sure it exists
-	SELECT mine_party_appt_guid INTO _party_appt_guid
-	FROM mine_party_appt
-	WHERE mine_party_appt_guid = _party_appt_guid;
-
 	SELECT mine_party_appt_id INTO _party_appt_id
 	FROM mine_party_appt
 	WHERE mine_party_appt_guid = _party_appt_guid;
@@ -35,15 +28,15 @@ BEGIN
         RAISE EXCEPTION 'Party is listed on permit, cannot delete';
     END IF;
 
-	RAISE NOTICE 'Deleting records associated with the mine_party_appt_guid record with mine_guid %', _mine_guid;
-
-    DELETE FROM mine_party_appt_document_xref
-    WHERE mine_party_appt_id=_party_appt_id;
-
 	-- Get the mine_guid associated with this party.
 	SELECT mine_guid INTO _mine_guid
 	FROM mine_party_appt
 	WHERE mine_party_appt_guid=_party_appt_guid;
+
+	RAISE NOTICE 'Deleting records associated with the mine_party_appt_guid record with mine_guid %', _mine_guid;
+
+    DELETE FROM mine_party_appt_document_xref
+    WHERE mine_party_appt_id=_party_appt_id;
 
 	-- Delete the record.
 	RAISE NOTICE 'Deleting appointment';
@@ -62,8 +55,9 @@ $$ LANGUAGE PLPGSQL;
 -- SELECT delete_mine_party_appt('f87dbc7b-f9f2-4579-9d42-23918ea70916');
 -- SELECT delete_mine_party_appt('60d66828-8a41-4427-9d9b-4ccc1c6dc492');
 
--- Ran Oct 12, 2023
--- SELECT delete_mine_party_appt('256e3afe-bdc0-4613-8eea-07ea178864eb');
+-- Ran Oct 18, 2023
+-- SELECT delete_mine_party_appt('4d0856ef-eaa4-4d5f-ab48-aae5f9e021a2');
+-- SELECT delete_mine_party_appt('9ab0de6a-ef31-4293-89c3-b27443752f28');
 
 -- Drop the function.
-DROP FUNCTION delete_mine_party_appt(varchar);
+DROP FUNCTION delete_mine_party_appt;
