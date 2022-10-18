@@ -183,19 +183,19 @@ export class MineTailingsInfoTabs extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Tailing Storage Facilities</h2>
+          <h2>Tailings Storage Facilities</h2>
           <Divider />
         </div>
         <Tabs type="card" style={{ textAlign: "left !important" }}>
           {tabEnabled("tsf") && (
             <Tabs.TabPane
-              tab={`Tailing Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+              tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
               key="tsf"
             >
               <div>
                 <br />
                 <div className="inline-flex between">
-                  <h4 className="uppercase">Tailing Storage Facilities</h4>
+                  <h4 className="uppercase">Tailings Storage Facilities</h4>
                   <AuthorizationWrapper permission={Permission.EDIT_TSF}>
                     <AddButton
                       onClick={(event) =>

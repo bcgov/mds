@@ -12,7 +12,7 @@ exports[`Tailings renders properly 1`] = `
         <Title
           level={4}
         >
-          Tailing Storage Facilities
+          Tailings Storage Facilities
         </Title>
         <Paragraph>
           This table shows 
@@ -20,7 +20,7 @@ exports[`Tailings renders properly 1`] = `
             className="color-primary"
             strong={true}
           >
-            Tailing Storage Facilities
+            Tailings Storage Facilities
           </Text>
            for your mine.
         </Paragraph>
