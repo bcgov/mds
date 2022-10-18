@@ -1,5 +1,5 @@
 from enum import Enum
-
+from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
