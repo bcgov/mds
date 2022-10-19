@@ -3,7 +3,8 @@
     "private": true,
     "description": "Mines Digital Services Packages",
     "engines": {
-        "node": ">=16.17.1"
+        "node": ">=14.8.1",
+        "npm": ">=6.14.7"
     },
     "scripts": {
         "format:staged": "yarn pretty-quick --staged",
