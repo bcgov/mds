@@ -4,7 +4,7 @@ import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { useEffect } from "react";
 import { bindActionCreators, compose } from "redux";
-import { createDam, fetchDam } from "@common/actionCreators/damActionCreator";
+import { createDam } from "@common/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form";
 
 import { ADD_EDIT_DAM } from "@/constants/forms";
@@ -24,15 +24,14 @@ import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   tsf: PropTypes.objectOf(PropTypes.any).isRequired,
   storeTsf: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchDam: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
   submit: PropTypes.func.isRequired,
+  createDam: PropTypes.func.isRequired,
 };
 
 const DamsPage = (props) => {
@@ -45,7 +44,7 @@ const DamsPage = (props) => {
       (async () => {
         const mine = await props.fetchMineRecordById(mineGuid);
         const existingTsf = mine.data.mine_tailings_storage_facilities?.find(
-          (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
+          (t) => t.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
         );
         props.storeTsf(existingTsf);
         const currentDam = existingTsf.dams.find((dam) => dam.dam_guid === damGuid);
@@ -73,7 +72,7 @@ const DamsPage = (props) => {
         ...formValues,
         mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
       });
-      const updatedTsf = { ...tsf, dams: [...tsf.dams, newDam.data] };
+      const updatedTsf = { ...tsf, dams: [newDam.data, ...tsf.dams] };
       props.storeTsf(updatedTsf);
       history.push(backUrl);
     }
@@ -140,10 +139,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { createDam, fetchMineRecordById, fetchDam, storeTsf, storeDam, submit },
-    dispatch
-  );
+  bindActionCreators({ createDam, fetchMineRecordById, storeTsf, storeDam, submit }, dispatch);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
