@@ -35,6 +35,21 @@ const Routes = () => (
     />
     <Route
       exact
+      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
       path={routes.MINE_INCIDENT_SUCCESS.route}
       component={AuthenticationGuard()(routes.MINE_INCIDENT_SUCCESS.component)}
     />
@@ -68,14 +83,6 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
     />
     <Route
-      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
-      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
       path={routes.EDIT_PROJECT.route}
       component={AuthenticationGuard()(routes.EDIT_PROJECT.component)}
     />
@@ -86,10 +93,6 @@ const Routes = () => (
     <Route
       path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
       component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
-    />
-    <Route
-      exact path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
     />
     <Route
       path={routes.ADD_DAM.route}

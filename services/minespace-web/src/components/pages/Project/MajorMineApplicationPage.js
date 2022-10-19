@@ -2,7 +2,16 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { change, submit, getFormSyncErrors, getFormValues, isDirty, reset, touch } from "redux-form";
+import {
+  change,
+  submit,
+  getFormSyncErrors,
+  getFormValues,
+  isDirty,
+  destroy,
+  reset,
+  touch,
+} from "redux-form";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -46,6 +55,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   touch: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -114,39 +124,40 @@ const StepForms = (
     buttons: [
       <React.Fragment key="step-2-buttons">
         {props.formIsDirty && (
-        <LinkButton
-          style={{ marginRight: "15px" }}
-          onClick={async (e) => {
-            const response = await handleSaveData(
-              e,
-              {
-                ...props.formValues,
-                documents: [
-                  ...(props.formValues?.primary_documents || []),
-                  ...(props.formValues?.spatial_documents || []),
-                  ...(props.formValues?.supporting_documents || []),
-                ],
-                status_code: "DFT",
-              },
-              true
-            );
-            if (response){
-              const majorMineApplicationGuid = props.project.major_mine_application?.major_mine_application_guid ||
-              response?.major_mine_application_guid;
-              return props.history.push({
-                pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-                 props.project?.project_guid,
-                 majorMineApplicationGuid
-              )}`,
-              state: { current: 1 },
-              });
-            }
-            return null;
-          }}
-          title="Save Draft"
-        >
-          Save Draft
-        </LinkButton>
+          <LinkButton
+            style={{ marginRight: "15px" }}
+            onClick={async (e) => {
+              const response = await handleSaveData(
+                e,
+                {
+                  ...props.formValues,
+                  documents: [
+                    ...(props.formValues?.primary_documents || []),
+                    ...(props.formValues?.spatial_documents || []),
+                    ...(props.formValues?.supporting_documents || []),
+                  ],
+                  status_code: "DFT",
+                },
+                true
+              );
+              if (response) {
+                const majorMineApplicationGuid =
+                  props.project.major_mine_application?.major_mine_application_guid ||
+                  response?.major_mine_application_guid;
+                return props.history.push({
+                  pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                    props.project?.project_guid,
+                    majorMineApplicationGuid
+                  )}`,
+                  state: { current: 1 },
+                });
+              }
+              return null;
+            }}
+            title="Save Draft"
+          >
+            Save Draft
+          </LinkButton>
         )}
         <Button
           id="step-back"
@@ -161,31 +172,27 @@ const StepForms = (
           id="step2-next"
           type="primary"
           onClick={async (e) => {
-            const response = await handleSaveData(
-              e,
-              {
+            const response = await handleSaveData(e, {
               ...props.formValues,
               documents: [
                 ...(props.formValues?.primary_documents || []),
                 ...(props.formValues?.spatial_documents || []),
                 ...(props.formValues?.supporting_documents || []),
               ],
-              status_code: props.formValues?.status_code??"DFT",
-              },
-              false
-            );
-            
+              status_code: props.formValues?.status_code ?? "DFT",
+            });
+
             const majorMineApplicationGuid =
-            props.project.major_mine_application?.major_mine_application_guid ||
-            response?.major_mine_application_guid;
-            if (majorMineApplicationGuid){
+              props.project.major_mine_application?.major_mine_application_guid ??
+              response?.major_mine_application_guid;
+            if (majorMineApplicationGuid) {
               return props.history.push({
-                  pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                   props.project?.project_guid,
                   majorMineApplicationGuid
-                )}`,
+                ),
                 state: { current: 2 },
-                });
+              });
             }
             return null;
           }}
@@ -215,7 +222,9 @@ const StepForms = (
           onClick={() => {
             props.history.push({
               pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-                props.project.project_guid
+                props.project.project_guid,
+                props.project.major_mine_application?.major_mine_application_guid ??
+                  props.formValues.major_mine_application_guid
               )}`,
               state: { current: 1 },
             });
@@ -226,7 +235,7 @@ const StepForms = (
         <Popconfirm
           placement="topRight"
           title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
-          onConfirm={async(e) => {
+          onConfirm={async (e) => {
             await handleSaveData(
               e,
               {
@@ -273,6 +282,7 @@ export class MajorMineApplicationPage extends Component {
 
   componentWillUnmount() {
     this.props.clearMajorMinesApplication();
+    this.props.destroy(FORM.ADD_MINE_MAJOR_APPLICATION);
   }
 
   handleFetchData = () => {
@@ -292,7 +302,6 @@ export class MajorMineApplicationPage extends Component {
         message
       )
       .then((response) => {
-        this.handleFetchData();
         return response?.data;
       });
   };
@@ -304,10 +313,10 @@ export class MajorMineApplicationPage extends Component {
     } = values;
     this.setState({ isLoaded: false });
     let message;
-    if (isDraft){
+    if (isDraft) {
       message = "Successfully updated draft major mine application.";
     } else if (this.props.location?.state?.current === 2) {
-      message = "Successfully submitted a new major mine application"
+      message = "Successfully submitted a new major mine application";
     } else {
       message = null;
     }
@@ -334,7 +343,7 @@ export class MajorMineApplicationPage extends Component {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length === 0) {
       const mmaExists = Boolean(formValues?.major_mine_application_guid);
-      if (!mmaExists){
+      if (!mmaExists) {
         return this.handleCreateMajorMineApplication(formValues, isDraft);
       }
       return this.handleUpdateMajorMineApplication(formValues, isDraft);
@@ -433,7 +442,7 @@ export class MajorMineApplicationPage extends Component {
       )
     );
   }
-}fetchProjectById
+}
 
 MajorMineApplicationPage.propTypes = propTypes;
 MajorMineApplicationPage.defaultProps = defaultProps;
@@ -459,6 +468,7 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       touch,
       change,
+      destroy,
     },
     dispatch
   );

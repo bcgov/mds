@@ -82,9 +82,10 @@ export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
   component: InformationRequirementsTableSuccessPage,
 };
 
-export const ADD_MAJOR_MINE_APPLICATION = {
-  route: "/projects/:projectGuid/major-mine-application/new",
-  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/major-mine-application/new`,
+export const EDIT_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/:mmaGuid/edit",
+  dynamicRoute: (projectGuid, mmaGuid) =>
+    `/projects/${projectGuid}/major-mine-application/${mmaGuid}/edit`,
   component: MajorMineApplicationPage,
 };
 
@@ -102,9 +103,9 @@ export const MAJOR_MINE_APPLICATION_SUCCESS = {
   component: MajorMineApplicationSuccessPage,
 };
 
-export const EDIT_MAJOR_MINE_APPLICATION = {
-  route: "/projects/:projectGuid/major-mine-application/:mmaGuid",
-  dynamicRoute: (projectGuid, mmaGuid) => `/projects/${projectGuid}/major-mine-application/${mmaGuid}`,
+export const ADD_MAJOR_MINE_APPLICATION = {
+  route: "/projects/:projectGuid/major-mine-application/new",
+  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/major-mine-application/new`,
   component: MajorMineApplicationPage,
 };
 

@@ -26,6 +26,7 @@ import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMin
 const propTypes = {
   project: customPropTypes.project.isRequired,
   change: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   primary_documents: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
   ),
@@ -60,7 +61,6 @@ export class MajorMineApplicationForm extends Component {
       document_manager_guid,
       major_mine_application_document_type_code: documentTypeCode,
     });
-
     return this.props.change(
       documentTypeField,
       this.state.uploadedFiles.filter(
@@ -81,11 +81,44 @@ export class MajorMineApplicationForm extends Component {
       (doc) => doc?.major_mine_application_document_type_code === applicationDocumentTypeCode
     );
 
+  uniqueDocs = (formDocuments, mmaDocuments, type_code) => {
+    const documents = [
+      ...formDocuments,
+      ...(mmaDocuments
+        ? mmaDocuments?.filter((doc) => doc.major_mine_application_document_type_code === type_code)
+        : []),
+    ];
+    const document_manager_guids = documents.map((o) => o.document_manager_guid);
+
+    if (documents.length > 0) {
+      return documents?.filter(
+        ({ document_manager_guid }, index) =>
+          !document_manager_guids.includes(document_manager_guid, index + 1)
+      );
+    }
+    return null;
+  };
+
   render() {
     const documentColumns = [uploadDateColumn("upload_date")];
+    const primaryDocuments = this.uniqueDocs(
+      this.props.primary_documents,
+      this.props.project?.major_mine_application?.documents,
+      "PRM"
+    );
+    const spatialDocuments = this.uniqueDocs(
+      this.props.spatial_documents,
+      this.props.project?.major_mine_application?.documents,
+      "SPT"
+    );
+    const supportDocuments = this.uniqueDocs(
+      this.props.supporting_documents,
+      this.props.project?.major_mine_application?.documents,
+      "SPR"
+    );
     return (
       <div>
-        <Form layout="vertical" onSubmit={this.props.handleSumit}>
+        <Form layout="vertical" onSubmit={this.props.handleSubmit}>
           <Row>
             <Col span={24}>
               <Typography.Title level={4}>Basic Information</Typography.Title>
@@ -125,7 +158,6 @@ export class MajorMineApplicationForm extends Component {
             Please upload the main document for the submission. If your single document contains all
             supporting information you may not need to include separate supporting documentation.
           </Typography.Paragraph>
-
           <Field
             id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
             name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
@@ -156,12 +188,13 @@ export class MajorMineApplicationForm extends Component {
             uploadType="primary_document"
             validate={[required]}
           />
-          {this.props.primary_documents.length > 0 && <DocumentTable
-            documents={this.props.primary_documents}
-            documentColumns={documentColumns}
-            documentParent="Major Mine Application"
-          />
-          }
+          {primaryDocuments?.length > 0 && (
+            <DocumentTable
+              documents={primaryDocuments}
+              documentColumns={documentColumns}
+              documentParent="Major Mine Application"
+            />
+          )}
 
           <br />
           <Typography.Title level={5}>Upload spatial documents</Typography.Title>
@@ -199,12 +232,13 @@ export class MajorMineApplicationForm extends Component {
             component={MajorMineApplicationFileUpload}
             uploadType="spatial_document"
           />
-          {this.props.spatial_document?.length > 0 && <DocumentTable
-            documents={this.props.spatial_document}
-            documentColumns={documentColumns}
-            documentParent="Major Mine Application"
-          />
-          }
+          {spatialDocuments?.length > 0 && (
+            <DocumentTable
+              documents={spatialDocuments}
+              documentColumns={documentColumns}
+              documentParent="Major Mine Application"
+            />
+          )}
           <br />
           <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
           <Typography.Text>
@@ -249,12 +283,13 @@ export class MajorMineApplicationForm extends Component {
             component={MajorMineApplicationFileUpload}
             uploadType="supporting_document"
           />
-          {this.props.supporting_documents?.length > 0 && <DocumentTable
-            documents={this.props.supporting_documents}
-            documentParent="Major Mine Application"
-            documentColumns={documentColumns}
-          />
-          }
+          {supportDocuments?.length > 0 && (
+            <DocumentTable
+              documents={supportDocuments}
+              documentParent="Major Mine Application"
+              documentColumns={documentColumns}
+            />
+          )}
         </Form>
       </div>
     );
@@ -286,6 +321,7 @@ export default compose(
     destroyOnUnmount: false,
     forceUnregisterOnUnmount: true,
     touchOnBlur: true,
+    enableReinitialize: true,
     onSubmitSuccess: resetForm(FORM.ADD_MINE_MAJOR_APPLICATION),
     onSubmit: () => {},
   })
