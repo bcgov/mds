@@ -16,6 +16,7 @@ from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
+from app.api.parties.party.models.party import Party
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine import Mine
@@ -247,7 +248,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             if application_stage == 'ProjectSummary':
                 query = query.join(ProjectSummary)
         else:
-            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True)
+            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, isouter=True)
 
         if args["mine_commodity_code"]:
             conditions.append(self._build_filter('MineType','active_ind','==',True))
