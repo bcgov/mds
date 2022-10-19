@@ -91,6 +91,45 @@ exports[`PrivateRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    path="/projects/:projectGuid/major-mine-application/:mmaGuid/review"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/projects/:projectGuid/major-mine-application/:mmaGuid/edit"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/projects/:projectGuid/major-mine-application/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
     path="/mines/:mineGuid/incidents/:mineIncidentGuid/success"
   />
   <Route
@@ -177,30 +216,6 @@ exports[`PrivateRoutes  renders properly 1`] = `
       }
     }
     path="/projects/:projectGuid/information-requirements-table/:irtGuid/success"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authenticationGuard)",
-        "type": [Function],
-      }
-    }
-    path="/projects/:projectGuid/major-mine-application/new"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authenticationGuard)",
-        "type": [Function],
-      }
-    }
-    path="/projects/:projectGuid/major-mine-application/:mmaGuid/review"
   />
   <Route
     component={
