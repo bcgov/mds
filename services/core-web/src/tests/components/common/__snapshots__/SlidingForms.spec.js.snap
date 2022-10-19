@@ -3,27 +3,17 @@
 exports[`SlidingForms renders properly 1`] = `
 <div>
   <Carousel
+    autoPlay={false}
     axis="horizontal"
+    centerMode={false}
     centerSlidePercentage={80}
+    dynamicHeight={false}
+    emulateTouch={false}
+    infiniteLoop={false}
     interval={3000}
-    labels={
-      Object {
-        "item": "slide item",
-        "leftArrow": "previous slide / item",
-        "rightArrow": "next slide / item",
-      }
-    }
     onChange={[Function]}
     onClickItem={[Function]}
     onClickThumb={[Function]}
-    onSwipeEnd={[Function]}
-    onSwipeMove={[Function]}
-    onSwipeStart={[Function]}
-    renderArrowNext={[Function]}
-    renderArrowPrev={[Function]}
-    renderIndicator={[Function]}
-    renderItem={[Function]}
-    renderThumbs={[Function]}
     selectedItem={1}
     showArrows={false}
     showIndicators={false}
@@ -34,6 +24,7 @@ exports[`SlidingForms renders properly 1`] = `
     swipeScrollTolerance={5}
     swipeable={false}
     transitionTime={350}
+    useKeyboardArrows={false}
     verticalSwipe="standard"
     width="100%"
   />
