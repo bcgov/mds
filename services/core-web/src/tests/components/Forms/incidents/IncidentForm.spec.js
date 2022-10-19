@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import IncidentForm from "@/components/Forms/incidents/IncidentForm";
+import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -27,6 +27,16 @@ const setupProps = () => {
     mineGuid: "448014a5-981f-47b8-8687-4963666776b8",
     mineIncidentGuid: "668014a5-981f-47b8-8687-4963666776b9",
   };
+  props.documents = [
+    {
+      mine_incident_document_type_code: "INI",
+    },
+  ];
+  props.incidentFollowUpActionOptions = [
+    {
+      mine_incident_followup_investigation_type: "TEST",
+    },
+  ];
 };
 
 beforeEach(() => {

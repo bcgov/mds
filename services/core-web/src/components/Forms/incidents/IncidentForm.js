@@ -41,8 +41,8 @@ import {
 } from "@/components/common/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
 import customPropTypes from "@/customPropTypes";
-import IncidentFileUpload from "./IncidentFileUpload";
 import MinistryInternalComments from "@/components/mine/Incidents/MinistryInternalComments";
+import IncidentFileUpload from "./IncidentFileUpload";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -777,7 +777,7 @@ const renderEditSaveControls = (props, isEditMode, isNewIncident) => (
   </div>
 );
 
-const IncidentForm = (props) => {
+export const IncidentForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
