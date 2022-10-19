@@ -116,7 +116,5 @@ $$ LANGUAGE PLPGSQL;
 -- NOTE: Manually check/add the records to delete here before running this script.
 -- SELECT delete_now('1640544-2021-01');
 
-select delete_now('11');
-
 -- Drop the function.
 DROP FUNCTION delete_now(varchar, varchar);
