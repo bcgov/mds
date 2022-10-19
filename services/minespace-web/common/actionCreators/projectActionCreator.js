@@ -193,7 +193,6 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
       );
       dispatch(success(reducerTypes.GET_MAJOR_MINES_APPLICATION));
       dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
-      return response
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_PROJECT));
