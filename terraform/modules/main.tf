@@ -27,7 +27,7 @@ provider "aws" {
 }
 
 provider "sysdig" {
-  sysdig_monitor_api_token = data.aws_secretsmanager_secret_version.creds.secret_id
+  sysdig_monitor_api_token = data.aws_secretsmanager_secret_version.sysdig_monitor_token.secret_id
 }
 
 locals {
