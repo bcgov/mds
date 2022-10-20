@@ -15,11 +15,11 @@ import Loading from "@/components/common/Loading";
 import { MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
+import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
-import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 
 const propTypes = {
@@ -136,7 +136,9 @@ export class ProjectPage extends Component {
       }
       if (["DFT", "CHR"].includes(status)) {
         return this.props.history.push({
-          pathname: router.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(this.props.project.project_guid),
+          pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+            this.props.project.project_guid
+          ),
           state: { current: 1 },
         });
       }
