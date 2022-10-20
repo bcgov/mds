@@ -120,9 +120,11 @@ $$ LANGUAGE PLPGSQL;
 
 -- Call the function.
 -- NOTE: Manually check/add the records to delete here before running this script.
--- SELECT delete_now('1640544-2021-01');
+-- SELECT delete_now('e78021f0-28a4-4569-9681-2020e170e6db');
 
-SELECT delete_now('1630769-2016-01');
+-- Ran Oct 20, 2022
+-- SELECT delete_mine_party_appt('e78021f0-28a4-4569-9681-2020e170e6db');
+
 
 -- Drop the function.
 DROP FUNCTION delete_now(varchar);
