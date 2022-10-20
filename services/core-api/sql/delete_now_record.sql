@@ -40,6 +40,12 @@ WHERE now_application_id = _now_application_id;
 -- Delete the records associated with Notices of Work.
 RAISE NOTICE 'Deleting records associated with Notices of Work';
 
+delete from now_application_delay
+where now_application_guid = _now_application_guid;
+
+delete from mine_type
+where now_application_guid = _now_application_guid;
+
 SELECT array_agg(activity_summary_id) INTO activity_summary_ids
 FROM activity_summary
 WHERE now_application_id = _now_application_id;
@@ -116,5 +122,7 @@ $$ LANGUAGE PLPGSQL;
 -- NOTE: Manually check/add the records to delete here before running this script.
 -- SELECT delete_now('1640544-2021-01');
 
+SELECT delete_now('1630769-2016-01');
+
 -- Drop the function.
-DROP FUNCTION delete_now(varchar, varchar);
+DROP FUNCTION delete_now(varchar);
