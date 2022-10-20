@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e 
 
+# Run this to clear 100 cache entries in GHA
+
 curl \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token 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" \
