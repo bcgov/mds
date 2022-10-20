@@ -15,7 +15,7 @@ curl \
         curl \
             -X DELETE \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token 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" \
+            -H "Authorization: token $GH_TOKEN" \
             https://api.github.com/repos/bcgov/mds/actions/caches/$cache_id
 
     done
