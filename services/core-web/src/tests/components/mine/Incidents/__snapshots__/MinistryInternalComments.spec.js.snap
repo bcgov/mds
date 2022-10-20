@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryInternalComments renders properly 1`] = `
+<div>
+  <h4
+    id="internal-ministry-comments"
+  >
+    Internal Ministry Comments
+  </h4>
+  <br />
+  <p>
+    <strong>
+      These comments are for interal staff only and will not be shown to proponents.
+    </strong>
+     
+    Add comments to this incident for future reference. Anything written in these comments may be requested under FOIPPA. Keep it professional and concise.
+  </p>
+  <br />
+  <Connect(CommentPanel)
+    comments={Array []}
+    createPermission="role_edit_incidents"
+    loading={true}
+    onSubmit={[Function]}
+    renderEditor={true}
+  />
+</div>
+`;

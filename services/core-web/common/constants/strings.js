@@ -65,6 +65,7 @@ export const VARIANCE_DENIED_CODE = "DEN";
 export const INCIDENT_DOCUMENT_TYPES = {
   initial: "INI",
   final: "FIN",
+  internalMinistry: "INM",
 };
 
 export const INCIDENT_DETERMINATION_TYPES = {
@@ -77,6 +78,7 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   miu: "MIU",
   none: "NO",
   unknown: "HUK",
+  inspectorInvestigation: "INS",
 };
 
 export const BUSINESS_ROLES = {
@@ -97,6 +99,9 @@ export const MINE_REPORTS_TYPE = {
 
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
+
+export const EMLI_INSPECTION_MAPPER_BASE_URL =
+  "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6";
 
 export const PERMIT_AMENDMENT_TYPES = {
   original: "OGP",
@@ -213,5 +218,47 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "SIG", label: "Significant" },
   { value: "VHIG", label: "Very High" },
   { value: "EXT", label: "Extreme" },
-  { value: "NOD", label: "N/A (No Dam)" },
+  { value: "NRT", label: "Not Rated" },
 ];
+
+export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
+  LOW: "Low",
+  HIG: "High",
+  SIG: "Significant",
+  VHIG: "Very High",
+  EXT: "Extreme",
+  NRT: "Not Rated",
+};
+
+export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
+  NRT: 0,
+  LOW: 1,
+  HIG: 2,
+  SIG: 3,
+  VHIG: 4,
+  EXT: 5,
+};
+
+export const DAM_TYPES = [{ value: "dam", label: "Dam" }];
+
+export const DAM_TYPES_HASH = {
+  dam: "Dam",
+};
+
+export const DAM_OPERATING_STATUS = [
+  { value: "construction", label: "Construction" },
+  { value: "operation", label: "Operation" },
+  { value: "care_and_maintenance", label: "Care and Maintenance" },
+  { value: "closure_transition", label: "Closure - Transition" },
+  { value: "closure_active_care", label: "Closure - Active Care" },
+  { value: "closure_passive_care", label: "Closure - Passive Care" },
+];
+
+export const DAM_OPERATING_STATUS_HASH = {
+  construction: "Construction",
+  operation: "Operation",
+  care_and_maintenance: "Care and Maintenance",
+  closure_transition: "Closure - Transition",
+  closure_active_care: "Closure - Active Care",
+  closure_passive_care: "Closure - Passive Care",
+};

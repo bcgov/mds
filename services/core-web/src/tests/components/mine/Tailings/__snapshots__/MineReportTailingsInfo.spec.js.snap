@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineReportTailingsInfo renders properly 1`] = `
+<Connect(MineTailingsInfoTabs)
+  enabledTabs={
+    Array [
+      "reports",
+      "map",
+    ]
+  }
+/>
+`;

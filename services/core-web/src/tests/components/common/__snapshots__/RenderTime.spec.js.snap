@@ -10,6 +10,7 @@ exports[`RenderTime renders properly 1`] = `
   <TimePicker
     className={false}
     defaultOpenValue={"2019-08-27T07:00:00.000Z"}
+    disabled={false}
     format="HH:mm"
     id={1}
     onBlur={[Function]}

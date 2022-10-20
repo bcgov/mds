@@ -36,7 +36,7 @@ export const BasicInformation = (props) => {
       setPermitOptions(
         permits.map((permit) => ({
           label: permit.permit_no,
-          value: permit.permit_guid,
+          value: permit.permit_no,
         }))
       );
     }

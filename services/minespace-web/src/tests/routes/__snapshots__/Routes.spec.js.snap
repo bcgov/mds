@@ -90,6 +90,32 @@ exports[`PrivateRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
+    exact={true}
+    path="/mines/:mineGuid/incidents/:mineIncidentGuid/success"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mines/:mineGuid/incidents/:mineIncidentGuid/review"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
     path="/mines/:mineGuid/project-description/new/:tab"
   />
   <Route
@@ -211,6 +237,30 @@ exports[`PrivateRoutes  renders properly 1`] = `
       }
     }
     path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
+      }
+    }
+    path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
   />
   <Route
     component={

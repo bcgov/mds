@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IncidentSuccessPage renders properly 1`] = `
+<Fragment>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title>
+        Record a Mine Incident - 
+      </Title>
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      span={24}
+    >
+      <Link
+        to="/mines/undefined/incidents?"
+      >
+        <ForwardRef(ArrowLeftOutlined)
+          className="padding-sm--right"
+        />
+        Back to All Incidents
+      </Link>
+    </Col>
+  </Row>
+  <Divider />
+  <Row>
+    <Col
+      span={24}
+    >
+      <Title
+        level={4}
+      >
+        Record New Mine Incident
+      </Title>
+    </Col>
+    <Col
+      span={24}
+    >
+      <div
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        <Row>
+          <Col
+            span={24}
+          >
+            <ForwardRef(CheckCircleOutlined)
+              className="success-page"
+            />
+          </Col>
+        </Row>
+        <br />
+        <Paragraph>
+          <Title
+            level={5}
+          >
+            Thank you, your Mines Incident has been submitted!
+          </Title>
+          Your submission will soon be reviewed by the ministry.
+        </Paragraph>
+        <div>
+          <p>
+            <Link
+              to="/mines/undefined/incidents?"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                Back to All incidents
+              </Button>
+            </Link>
+          </p>
+          <p>
+            <Link
+              to={
+                Object {
+                  "pathname": "/mines/undefined/incidents/undefined/review",
+                  "state": Object {
+                    "current": 2,
+                  },
+                }
+              }
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+              >
+                View Mine Incident
+              </Button>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </Col>
+  </Row>
+</Fragment>
+`;

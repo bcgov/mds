@@ -1,8 +1,12 @@
+import {
+  CONSEQUENCE_CLASSIFICATION_CODE_HASH,
+  CONSEQUENCE_CLASSIFICATION_RANK_HASH,
+} from "@common/constants/strings";
+import { get, isEmpty, isNil, sortBy } from "lodash";
+import { createNumberMask } from "redux-form-input-masks";
 /* eslint-disable */
 import moment from "moment";
 import { reset } from "redux-form";
-import { createNumberMask } from "redux-form-input-masks";
-import { get, sortBy, isEmpty, isNil, startCase } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -12,7 +16,7 @@ import { get, sortBy, isEmpty, isNil, startCase } from "lodash";
     form: formName,
     onSubmitSuccess: resetForm(formName),
   })(Component)
-  );
+ );
  *
  */
 export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
@@ -72,6 +76,21 @@ export const formatDate = (dateString) =>
 export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
+
+export const timeAgo = (dateTime, unit = "day") => {
+  const startDate = dateTime;
+  const endDate = new Date().toUTCString();
+
+  if (unit === "day") {
+    return moment(endDate).diff(moment(startDate), "days");
+  } else if (unit === "hours") {
+    return moment(endDate).diff(moment(startDate), "hours");
+  } else if (unit === "minutes") {
+    return moment(endDate).diff(moment(startDate), "minutes");
+  } else {
+    return moment(endDate).diff(moment(startDate), "seconds");
+  }
+};
 
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
@@ -529,4 +548,26 @@ export const cleanFilePondFile = () => {
   if (fileUploaded.length > 0) {
     fileUploaded.forEach((file) => file.click());
   }
+};
+
+/**
+ *  @param tsf: A complete tailings storage facility object
+ *  This function checks the consequence classification for the tsf and it's child dams, and then returns
+ *  the text for the highest consequence entry to be displayed.
+ *  **/
+export const getHighestConsequence = (tsf) => {
+  if (!tsf.dams || tsf.dams.length <= 0) {
+    return CONSEQUENCE_CLASSIFICATION_CODE_HASH[tsf.consequence_classification_status_code];
+  }
+
+  const highestRankedDam = tsf.dams.reduce((prev, current) =>
+    CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
+    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      ? prev
+      : current
+  );
+  return CONSEQUENCE_CLASSIFICATION_RANK_HASH[highestRankedDam.consequence_classification] >
+    CONSEQUENCE_CLASSIFICATION_RANK_HASH[tsf.consequence_classification_status_code]
+    ? CONSEQUENCE_CLASSIFICATION_CODE_HASH[highestRankedDam.consequence_classification]
+    : CONSEQUENCE_CLASSIFICATION_CODE_HASH[tsf.consequence_classification_status_code];
 };

@@ -64,6 +64,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent="project summary"
         documents={Array []}
         excludedColumnKeys={
@@ -96,6 +97,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent="irt"
         documents={Array []}
         excludedColumnKeys={
@@ -140,6 +142,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={
@@ -178,6 +181,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={
@@ -216,6 +220,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={

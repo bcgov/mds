@@ -1,6 +1,8 @@
 name: FILESYSTEM-PROVIDER - Build & Deploy To DEV
 
 on:
+  workflow_dispatch:
+  # Manual
   push:
     branches:
       - develop
@@ -23,6 +25,9 @@ jobs:
       - name: Login
         run: |
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
       - name: Build n Tag
         run: |
           docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
@@ -48,7 +53,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh filesystem-provider ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+        run: ./gitops/watch-deployment.sh filesystem-provider dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04

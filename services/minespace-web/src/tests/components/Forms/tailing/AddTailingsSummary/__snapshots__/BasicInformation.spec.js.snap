@@ -173,8 +173,8 @@ exports[`BasicInformation renders properly 1`] = `
           "value": "EXT",
         },
         Object {
-          "label": "N/A (No Dam)",
-          "value": "NOD",
+          "label": "Not Rated",
+          "value": "NRT",
         },
       ]
     }

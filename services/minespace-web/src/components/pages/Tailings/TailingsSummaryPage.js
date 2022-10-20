@@ -1,3 +1,11 @@
+import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
+
+import {
+  ADD_TAILINGS_STORAGE_FACILITY,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+  MINE_DASHBOARD,
+} from "@/constants/routes";
 import { Col, Divider, Row, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -6,6 +14,7 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
+
 import { bindActionCreators, compose } from "redux";
 import { clearTsf, storeTsf } from "@common/actions/tailingsActions";
 import {
@@ -14,30 +23,24 @@ import {
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import { flattenObject, resetForm } from "@common/utils/helpers";
-import { getFormSyncErrors, getFormValues, reduxForm, submit, touch, isDirty } from "redux-form";
+import { getFormSyncErrors, getFormValues, isDirty, reduxForm, submit, touch } from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import CustomPropTypes from "@/customPropTypes";
+import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
+import Loading from "@/components/common/Loading";
 import PropTypes from "prop-types";
+import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
+import Step from "@/components/common/Step";
+import SteppedForm from "@/components/common/SteppedForm";
 import { connect } from "react-redux";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import BasicInformation from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
-import CustomPropTypes from "@/customPropTypes";
-import EngineerOfRecord from "@/components/Forms/tailing/tailingsStorageFacility/EngineerOfRecord";
-import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
-import Loading from "@/components/common/Loading";
-import Step from "@/components/common/Step";
-import SteppedForm from "@/components/common/SteppedForm";
-import {
-  ADD_TAILINGS_STORAGE_FACILITY,
-  EDIT_TAILINGS_STORAGE_FACILITY,
-  MINE_DASHBOARD,
-} from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
-import * as FORM from "@/constants/forms";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -78,17 +81,21 @@ const defaultProps = {
 export const TailingsSummaryPage = (props) => {
   const { mines, match, history, formErrors, formValues, eors } = props;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [tsfGuid, setTsfGuid] = useState(null);
 
   const handleFetchData = async (forceReload = false) => {
+    setIsReloading(true);
     const { tailingsStorageFacilityGuid } = match?.params;
     await props.fetchPermits(match.params.mineGuid);
+
     await props.fetchPartyRelationships({
       mine_guid: match.params.mineGuid,
       relationships: "party",
       include_permit_contacts: "true",
     });
+
     if (tailingsStorageFacilityGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
         const mine = await props.fetchMineRecordById(match.params.mineGuid);
@@ -100,6 +107,7 @@ export const TailingsSummaryPage = (props) => {
       setTsfGuid(tailingsStorageFacilityGuid);
     }
     setIsLoaded(true);
+    setIsReloading(false);
   };
 
   useEffect(() => {
@@ -176,6 +184,7 @@ export const TailingsSummaryPage = (props) => {
             },
             successMessage
           );
+
           if (uploadedFiles.length > 0) {
             await handleAddDocuments(relationship.data.mine_party_appt_guid);
           }
@@ -249,6 +258,7 @@ export const TailingsSummaryPage = (props) => {
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
+              loading={isReloading}
               eors={eors}
               mineGuid={mineGuid}
               uploadedFiles={uploadedFiles}
@@ -256,10 +266,10 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson mineGuid={mineGuid} />
+            <QualifiedPerson loading={isReloading} mineGuid={mineGuid} />
           </Step>
-          <Step key="registry-document" disabled={!hasCreatedTSF}>
-            <div />
+          <Step key="associated-dams" disabled={!hasCreatedTSF}>
+            <AssociatedDams />
           </Step>
           <Step key="reports" disabled={!hasCreatedTSF}>
             <div />

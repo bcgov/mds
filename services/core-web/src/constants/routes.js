@@ -49,6 +49,8 @@ import InformationRequirementsTableTab from "@/components/mine/Projects/Informat
 import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
+import MineIncident from "@/components/mine/Incidents/MineIncident";
+import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -243,6 +245,12 @@ export const MINE_NOW_APPLICATIONS = {
   component: MineApplications,
 };
 
+export const MINE_TAILINGS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/tailings",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
+  component: MineTailingsInfo,
+};
+
 export const MINE_EXTERNAL_AUTHORIZATIONS = {
   route: "/mine-dashboard/:id/external-authorizations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/external-authorizations`,
@@ -253,6 +261,21 @@ export const MINE_INCIDENTS = {
   route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
   component: MineIncidents,
+};
+
+export const MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
+  dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
+  component: MineIncident,
+};
+
+export const CREATE_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/new-incident",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/new-incident`,
+  hashRoute: (mineGuid, link) => `/mines/${mineGuid}/new-incident${link}`,
+  component: MineIncident,
 };
 
 export const MINE_INSPECTIONS = {
@@ -276,10 +299,10 @@ export const MINE_PERMIT_REQUIRED_REPORTS = {
   component: PermitRequiredReports,
 };
 
-export const MINE_TAILINGS = {
-  route: "/mine-dashboard/:id/reports/tailings",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
-  component: MineTailingsInfo,
+export const MINE_TAILINGS_REPORTS = {
+  route: "/mine-dashboard/:id/reports/tailings-reports",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
+  component: MineReportTailingsInfo,
 };
 
 export const PARTY_PROFILE = {

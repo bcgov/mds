@@ -322,6 +322,11 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/applications"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/tailings"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -335,17 +340,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/external-authorizations"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineIncidents)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     path="/mine-dashboard/:id/oversight/incidents-and-investigations"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mines/:mineGuid/incidents/:mineIncidentGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mines/:mineGuid/new-incident"
   />
   <Route
     component={
@@ -387,17 +394,9 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/reports/permit-required-reports"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineTailingsInfo)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    path="/mine-dashboard/:id/reports/tailings"
+    path="/mine-dashboard/:id/reports/tailings-reports"
   />
   <Route
     component={

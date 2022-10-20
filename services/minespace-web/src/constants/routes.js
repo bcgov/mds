@@ -1,17 +1,19 @@
-import queryString from "query-string";
-import LandingPage from "@/components/pages/LandingPage";
-import MinesPage from "@/components/pages/MinesPage";
-import UsersPage from "@/components/pages/UsersPage";
-import MineDashboard from "@/components/dashboard/mine/MineDashboard";
-import ReturnPage from "@/components/pages/ReturnPage";
-import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
-import ProjectPage from "@/components/pages/Project/ProjectPage";
+import DamsPage from "@/components/pages/Tailings/DamsPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
+import LandingPage from "@/components/pages/LandingPage";
 import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
 import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
+import MineDashboard from "@/components/dashboard/mine/MineDashboard";
+import MinesPage from "@/components/pages/MinesPage";
+import ProjectPage from "@/components/pages/Project/ProjectPage";
+import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
+import ReturnPage from "@/components/pages/ReturnPage";
 import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
+import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
+import { UsersPage } from "@/components/pages/UsersPage";
+import queryString from "query-string";
 
 export const HOME = {
   route: "/",
@@ -112,6 +114,20 @@ export const EDIT_MINE_INCIDENT = {
   component: IncidentPage,
 };
 
+export const REVIEW_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid/review",
+  dynamicRoute: (mineGuid, mineIncidentGuid) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review`,
+  component: IncidentPage,
+};
+
+export const MINE_INCIDENT_SUCCESS = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid/success",
+  dynamicRoute: (mineGuid, mineIncidentGuid) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/success`,
+  component: IncidentSuccessPage,
+};
+
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
@@ -131,4 +147,18 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
   component: TailingsSummaryPage,
+};
+
+export const ADD_DAM = {
+  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  component: DamsPage,
+};
+
+export const EDIT_DAM = {
+  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  component: DamsPage,
 };

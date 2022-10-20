@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm, change, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Typography, Divider } from "antd";
+import { Card, Checkbox, Col, Row, Typography, Divider } from "antd";
 import {
   required,
   requiredList,
@@ -38,6 +38,15 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: customPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  applicationSubmitted: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
+  isReviewSubmitStage: PropTypes.bool,
+};
+
+const defaultProps = {
+  applicationSubmitted: false,
+  isReviewSubmitStage: false,
 };
 
 const DOCUMENTS_FORM_FIELD = "initial_notification_documents";
@@ -46,6 +55,34 @@ const documentColumns = [
   uploadedByColumn("Uploader", "update_user"),
   uploadDateColumn("upload_date"),
 ];
+
+const confirmationSubmission = (props) =>
+  props.isReviewSubmitStage &&
+  !props.applicationSubmitted &&
+  !props.formValues?.status_code && (
+    <Col span={24}>
+      <Card>
+        <>
+          <p>
+            <b>Confirmation of Submission</b>
+          </p>
+          <p>
+            <span>
+              <Checkbox
+                checked={props.confirmedSubmission}
+                onChange={props.setConfirmedSubmission}
+              />
+              &nbsp;&nbsp;
+            </span>
+            I understand that this application and supporting files are submitted on behalf of the
+            owner, agent or mine manager of this project.
+            <span style={{ color: "red" }}>*</span>
+          </p>
+        </>
+      </Card>
+      <br />
+    </Col>
+  );
 
 const renderInitialReport = (props) => (
   <Row>
@@ -62,13 +99,14 @@ const renderInitialReport = (props) => (
           component={renderConfig.MULTI_SELECT}
           validate={[requiredList]}
           data={props?.incidentCategoryCodeOptions}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
   </Row>
 );
 
-const renderReporterDetails = () => (
+const renderReporterDetails = (props) => (
   <Row gutter={[16]}>
     <Col span={24}>
       <Typography.Title level={4}>Reporter Details</Typography.Title>
@@ -84,6 +122,7 @@ const renderReporterDetails = () => (
           placeholder="Enter name of reporter"
           component={renderConfig.FIELD}
           validate={[required]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -96,6 +135,7 @@ const renderReporterDetails = () => (
           component={renderConfig.FIELD}
           validate={[phoneNumber, maxLength(12)]}
           normalize={normalizePhone}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -107,6 +147,7 @@ const renderReporterDetails = () => (
           placeholder="xxxxxx"
           component={renderConfig.FIELD}
           validate={[number, maxLength(6)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -118,13 +159,14 @@ const renderReporterDetails = () => (
           placeholder="example@domain.com"
           component={renderConfig.FIELD}
           validate={[email]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
   </Row>
 );
 
-const renderIncidentDetails = () => (
+const renderIncidentDetails = (props) => (
   <Row gutter={[16]}>
     <Col span={24}>
       <Typography.Title level={4}>Incident Details</Typography.Title>
@@ -142,6 +184,7 @@ const renderIncidentDetails = () => (
           placeholder="Please select date"
           component={renderConfig.DATE}
           validate={[required, dateNotInFuture]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -153,6 +196,7 @@ const renderIncidentDetails = () => (
           placeholder="Please select time"
           component={renderConfig.TIME}
           validate={[required]}
+          disabled={props.isReviewSubmitStage}
           fullWidth
         />
       </Form.Item>
@@ -164,6 +208,7 @@ const renderIncidentDetails = () => (
           name="proponent_incident_no"
           component={renderConfig.FIELD}
           validate={[maxLength(20)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -174,6 +219,7 @@ const renderIncidentDetails = () => (
           name="number_of_injuries"
           component={renderConfig.FIELD}
           validate={[wholeNumber, maxLength(10)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -184,6 +230,7 @@ const renderIncidentDetails = () => (
           name="number_of_fatalities"
           component={renderConfig.FIELD}
           validate={[wholeNumber, maxLength(10)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -194,6 +241,7 @@ const renderIncidentDetails = () => (
           name="emergency_services_called"
           placeholder="Please choose one"
           component={renderConfig.RADIO}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -205,6 +253,7 @@ const renderIncidentDetails = () => (
           placeholder="Provide a detailed description of the incident"
           component={renderConfig.SCROLL_FIELD}
           validate={[required, maxLength(4000)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -216,6 +265,7 @@ const renderIncidentDetails = () => (
           placeholder="Provide a detailed description of any immediate measures taken"
           component={renderConfig.SCROLL_FIELD}
           validate={[maxLength(4000)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -227,6 +277,7 @@ const renderIncidentDetails = () => (
           placeholder="Provide a detailed description of any injuries"
           component={renderConfig.SCROLL_FIELD}
           validate={[maxLength(4000)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -239,6 +290,7 @@ const renderIncidentDetails = () => (
           component={renderConfig.FIELD}
           placeholder="Enter name of rep"
           validate={[maxLength(100)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -248,6 +300,7 @@ const renderIncidentDetails = () => (
           id="johsc_worker_rep_contacted"
           name="johsc_worker_rep_contacted"
           component={renderConfig.RADIO}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -259,6 +312,7 @@ const renderIncidentDetails = () => (
           component={renderConfig.FIELD}
           placeholder="Enter name of rep"
           validate={[maxLength(100)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -268,13 +322,14 @@ const renderIncidentDetails = () => (
           id="johsc_management_rep_contacted"
           name="johsc_management_rep_contacted"
           component={renderConfig.RADIO}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
   </Row>
 );
 
-const renderDangerousOccurenceDetermination = () => (
+const renderDangerousOccurenceDetermination = (props) => (
   <Row gutter={[16]}>
     <Col span={24}>
       <Typography.Title level={4}>Dangerous Occurrence Determination</Typography.Title>
@@ -289,6 +344,7 @@ const renderDangerousOccurenceDetermination = () => (
           id="mine_determination_type_code"
           name="mine_determination_type_code"
           component={renderConfig.RADIO}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -299,6 +355,7 @@ const renderDangerousOccurenceDetermination = () => (
           name="mine_determination_representative"
           component={renderConfig.FIELD}
           validate={[maxLength(255)]}
+          disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
@@ -309,42 +366,56 @@ const renderUploadInitialNotificationDocuments = (props, handlers, parentHandler
   const { mine_guid: mineGuid, mine_incident_guid: mineIncidentGuid } = props.formValues;
   return (
     <Row>
-      <Col span={24}>
-        <Typography.Title level={4}>Upload Initial Notification Documents</Typography.Title>
-        <Typography.Paragraph>
-          Please upload any initial notifications that will provide context with this incident
-          report.
-        </Typography.Paragraph>
-      </Col>
-      <Col span={24}>
-        <Form.Item>
-          <Field
-            id={DOCUMENTS_FORM_FIELD}
-            name={DOCUMENTS_FORM_FIELD}
-            onFileLoad={(document_name, document_manager_guid) =>
-              handlers.onFileLoad(
-                document_name,
-                document_manager_guid,
-                Strings.INCIDENT_DOCUMENT_TYPES.initial
-              )
-            }
-            onRemoveFile={parentHandlers.deleteDocument}
-            mineGuid={props.match.params?.mineGuid}
-            component={IncidentFileUpload}
-          />
-        </Form.Item>
-      </Col>
+      {!props.isReviewSubmitStage && (
+        <>
+          <Col span={24}>
+            <Typography.Title level={4}>Upload Initial Notification Documents</Typography.Title>
+            <Typography.Paragraph>
+              Please upload any initial notifications that will provide context with this incident
+              report.
+            </Typography.Paragraph>
+          </Col>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id={DOCUMENTS_FORM_FIELD}
+                name={DOCUMENTS_FORM_FIELD}
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handlers.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial
+                  )
+                }
+                onRemoveFile={parentHandlers?.deleteDocument}
+                mineGuid={props.match.params?.mineGuid}
+                component={IncidentFileUpload}
+              />
+            </Form.Item>
+          </Col>
+        </>
+      )}
       {props.formValues?.documents?.length > 0 && (
         <Col span={24}>
+          {props.isReviewSubmitStage && <Typography.Title level={3}>Record Files</Typography.Title>}
           <Typography.Title level={4}>Initial Notification Documents</Typography.Title>
-          <DocumentTable
-            documents={props.formValues?.documents}
-            documentColumns={documentColumns}
-            documentParent="Mine Incident"
-            handleDeleteDocument={props.handlers.deleteDocument}
-            deletePayload={{ mineGuid, mineIncidentGuid }}
-            deletePermission
-          />
+          {props.isReviewSubmitStage && (
+            <DocumentTable
+              documents={props.formValues?.documents}
+              documentColumns={documentColumns}
+              documentParent="Mine Incident"
+            />
+          )}
+          {!props.isReviewSubmitStage && (
+            <DocumentTable
+              documents={props.formValues?.documents}
+              documentColumns={documentColumns}
+              documentParent="Mine Incident"
+              handleDeleteDocument={props.handlers.deleteDocument}
+              deletePayload={{ mineGuid, mineIncidentGuid }}
+              deletePermission
+            />
+          )}
         </Col>
       )}
     </Row>
@@ -393,6 +464,7 @@ const IncidentForm = (props) => {
             { onFileLoad, onRemoveFile },
             props.handlers
           )}
+          {confirmationSubmission(props)}
         </Col>
       </Row>
     </Form>
@@ -400,6 +472,7 @@ const IncidentForm = (props) => {
 };
 
 IncidentForm.propTypes = propTypes;
+IncidentForm.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
