@@ -260,6 +260,8 @@ PROJECT_MINE_LIST_MODEL = api.model(
         'mrc_review_required': fields.Boolean,
         'status_code': fields.String,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
+        'project_lead_party_name': fields.String,
+        'project_lead_name': fields.String,
         'update_timestamp': fields.DateTime,
         'mine': fields.Nested(MINES_MODEL),
     })
