@@ -9,7 +9,6 @@ jobs:
   clean-cache:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
-    needs: build-frontend
     steps:
       - name: Clear Cache
         run: ./gitops/clear_caches.sh ${{ secrets.GH_TOKEN }}
