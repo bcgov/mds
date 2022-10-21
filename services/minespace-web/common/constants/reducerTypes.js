@@ -296,4 +296,5 @@ export const TAILINGS = "TAILINGS";
 // Dams
 export const DAMS = "DAMS";
 export const CREATE_DAM = "CREATE_DAM";
+export const UPDATE_DAM = "UPDATE_DAM";
 export const GET_DAM = "GET_DAM";

@@ -39,17 +39,6 @@ CREATE_DAM_MODEL = api.model('Dam', {
     'min_freeboard_required': fields.String
 })
 
-UPDATE_DAM_MODEL = api.model('Dam', {
+UPDATE_DAM_MODEL = api.inherit('DamUpdate', CREATE_DAM_MODEL, {
     'dam_guid': fields.String,
-    'dam_type': fields.String,
-    'dam_name': fields.String,
-    'latitude': fields.String,
-    'longitude': fields.String,
-    'operating_status': fields.String,
-    'consequence_classification': fields.String,
-    'permitted_dam_crest_elevation': fields.String,
-    'current_dam_height': fields.String,
-    'current_elevation': fields.String,
-    'max_pond_elevation': fields.String,
-    'min_freeboard_required': fields.String
 })
