@@ -745,14 +745,12 @@ select {
 }
 
 .ant-table-row-expand-icon-cell {
-  //padding: 0 !important;
   width: 25px;
 }
 
 .ant-table-row-expand-icon-cell > span {
-  z-index: 1000;
+  z-index: 100;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  //margin-top: 50% !important;
 }
