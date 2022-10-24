@@ -716,3 +716,43 @@ select {
 .ant-descriptions-item-label {
   font-weight: 600;
 }
+
+.ant-table-row-expand-icon {
+  background-color: $primary-color;
+  color: $white;
+  border: 2px solid $primary-color;
+  border-radius: 9px;
+  height: 18px;
+  width: 18px;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border: 2px solid $primary-color;
+  }
+  &:before {
+    top: 6.2px;
+    right: 3px;
+    left: 3.2px;
+    height: 2px;
+  }
+  &:after {
+    top: 3px;
+    bottom: 3px;
+    left: 6px;
+    width: 2px;
+  }
+}
+
+.ant-table-row-expand-icon-cell {
+  //padding: 0 !important;
+  width: 25px;
+}
+
+.ant-table-row-expand-icon-cell > span {
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  //margin-top: 50% !important;
+}
