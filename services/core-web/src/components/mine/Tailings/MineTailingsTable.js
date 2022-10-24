@@ -201,7 +201,7 @@ const MineTailingsTable = (props) => {
       tableProps={{
         align: "center",
         pagination: false,
-        expandable: !IN_PROD() ? { expandedRowRender } : null,
+        expandable: IN_PROD() ? null : { expandedRowRender },
         expandRowByClick: true,
         onExpand: (expanded, record) => handleRowExpand(record),
         expandedRows,
