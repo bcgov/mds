@@ -97,7 +97,7 @@ export const NOWApplicationManageDocuments = (props) => {
         <NOWDocuments
           documents={props.noticeOfWork.documents.filter(
             ({ mine_document, now_application_document_sub_type_code }) =>
-              mine_document.mine_document_guid && now_application_document_sub_type_code === "GDO"
+              mine_document?.mine_document_guid && now_application_document_sub_type_code === "GDO"
           )}
           isViewMode={props.isViewMode}
           isAdminView
