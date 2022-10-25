@@ -4,7 +4,7 @@ import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { useEffect } from "react";
 import { bindActionCreators, compose } from "redux";
-import { createDam } from "@common/actionCreators/damActionCreator";
+import { createDam, updateDam } from "@common/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form";
 
 import { ADD_EDIT_DAM } from "@/constants/forms";
@@ -32,6 +32,7 @@ const propTypes = {
   formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
   submit: PropTypes.func.isRequired,
   createDam: PropTypes.func.isRequired,
+  updateDam: PropTypes.func.isRequired,
 };
 
 const DamsPage = (props) => {
@@ -59,27 +60,32 @@ const DamsPage = (props) => {
     "associated-dams"
   );
 
+  const handleBack = () => {
+    history.push(backUrl);
+  };
+
+  const handleCompleteSubmit = (dam) => {
+    const dams = tsf.dams?.filter((tsfDam) => tsfDam.dam_guid !== dam?.dam_guid);
+    const updatedTsf = { ...tsf, dams: [dam, ...dams] };
+    props.storeTsf(updatedTsf);
+    handleBack();
+  };
+
   const handleSave = async () => {
     if (Object.keys(formErrors).length > 0) {
       props.submit();
       return;
     }
     if (damGuid) {
-      // TODO: Update Dam
-      console.log("handle update save", formErrors);
+      const updatedDam = await props.updateDam(damGuid, formValues);
+      handleCompleteSubmit(updatedDam.data);
     } else {
       const newDam = await props.createDam({
         ...formValues,
         mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
       });
-      const updatedTsf = { ...tsf, dams: [newDam.data, ...tsf.dams] };
-      props.storeTsf(updatedTsf);
-      history.push(backUrl);
+      handleCompleteSubmit(newDam.data);
     }
-  };
-
-  const handleBack = () => {
-    history.push(backUrl);
   };
 
   return (
@@ -139,7 +145,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ createDam, fetchMineRecordById, storeTsf, storeDam, submit }, dispatch);
+  bindActionCreators(
+    { createDam, updateDam, fetchMineRecordById, storeTsf, storeDam, submit },
+    dispatch
+  );
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

@@ -1,6 +1,6 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
-import { CREATE_DAM, GET_DAM } from "../constants/reducerTypes";
+import { CREATE_DAM, GET_DAM, UPDATE_DAM } from "../constants/reducerTypes";
 import { DAM, DAMS } from "../constants/API";
 import { error, request, success } from "../actions/genericActions";
 
@@ -25,6 +25,23 @@ export const createDam = (payload) => (dispatch) => {
     })
     .catch(() => {
       dispatch(error(CREATE_DAM));
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateDam = (damGuid, payload) => (dispatch) => {
+  dispatch(request(UPDATE_DAM));
+  dispatch(showLoading());
+
+  return CustomAxios()
+    .patch(`${ENVIRONMENT.apiUrl}${DAM(damGuid)}`, payload, createRequestHeader())
+    .then((response) => {
+      dispatch(success(UPDATE_DAM));
+      dispatch(storeDam(response.data));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(UPDATE_DAM));
     })
     .finally(() => dispatch(hideLoading()));
 };
