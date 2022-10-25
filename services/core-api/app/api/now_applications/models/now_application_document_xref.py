@@ -46,7 +46,9 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     mine_document = db.relationship(
         'MineDocument',
         lazy='joined',
-        backref=backref('now_application_document_xref', uselist=False))
+        primaryjoin='and_(MineDocument.mine_document_guid == NOWApplicationDocumentXref.mine_document_guid, MineDocument.deleted_ind==False)',
+        backref=backref('now_application_document_xref', uselist=False)
+    )
 
     def __repr__(self):
         return '<ApplicationDocumentXref %r>' % self.now_application_document_xref_guid
