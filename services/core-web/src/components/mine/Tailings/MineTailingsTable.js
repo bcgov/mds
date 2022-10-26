@@ -1,24 +1,26 @@
+import React, { useState } from "react";
 import * as Permission from "@/constants/permissions";
-
+import * as router from "@/constants/routes";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { EyeOutlined } from "@ant-design/icons";
 import { Button, Tooltip, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
   EMPTY_FIELD,
 } from "@common/constants/strings";
-import React, { useState } from "react";
+
 import {
   getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -28,6 +30,7 @@ const propTypes = {
   openEditTailingsModal: PropTypes.func.isRequired,
   handleEditTailings: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {};
@@ -130,11 +133,30 @@ const MineTailingsTable = (props) => {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
+                onClick={(event) =>
+                  props.openEditTailingsModal(event, props.handleEditTailings, record)
+                }
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
               </Button>
+
+              {!IN_PROD() && <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={() =>
+                  props.history.push(
+                    router.MINE_TAILINGS_DETAILS.dynamicRoute(
+                      record.mine_guid,
+                      record.mine_tailings_storage_facility_guid
+                    )
+                  )
+                }
+              >
+                <EyeOutlined className="icon-lg icon-svg-filter" />
+              </Button>}
             </AuthorizationWrapper>
+
           </div>
         );
       },
@@ -223,4 +245,4 @@ const mapStateToProps = (state) => ({
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
-export default connect(mapStateToProps)(MineTailingsTable);
+export default withRouter(connect(mapStateToProps)(MineTailingsTable));

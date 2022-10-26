@@ -62,7 +62,10 @@ const SteppedForm = (props) => {
   const handleTabClick = (tab) => {
     if (tabIndex !== tabs.indexOf(tab)) {
       setTabIndex(indexOf(tabs, tab));
-      handleTabChange(tab);
+
+      if (handleTabChange) {
+        handleTabChange(tab);
+      }
     }
   };
 
@@ -72,7 +75,10 @@ const SteppedForm = (props) => {
     setIsSubmitting(true);
 
     try {
-      await handleSaveData(null, tab);
+      if (handleSaveData) {
+        await handleSaveData(null, tab);
+      }
+
       setTabIndex(indexOf(tabs, tab));
     } finally {
       setIsSubmitting(false);

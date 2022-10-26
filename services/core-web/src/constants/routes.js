@@ -51,6 +51,7 @@ import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplica
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import MineIncident from "@/components/mine/Incidents/MineIncident";
 import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
+import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -249,6 +250,13 @@ export const MINE_TAILINGS = {
   route: "/mine-dashboard/:id/permits-and-approvals/tailings",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
   component: MineTailingsInfo,
+};
+
+export const MINE_TAILINGS_DETAILS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
+  dynamicRoute: (mineGuid, tsfGuid, tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
+  component: MineTailingsDetailsPage,
 };
 
 export const MINE_EXTERNAL_AUTHORIZATIONS = {

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
-import SteppedForm from "@/components/common/SteppedForm";
-import Step from "@/components/common/Step";
+import SteppedForm from "@common/components/SteppedForm";
+import Step from "@common/components/Step";
 
 const dispatchProps = {};
 const props = {
