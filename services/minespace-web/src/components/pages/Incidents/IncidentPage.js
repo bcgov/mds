@@ -95,8 +95,8 @@ const renderReviewSubmitStep = (props, state) => {
         setConfirmedSubmission={props.setConfirmedSubmission}
         confirmedSubmission={props.confirmedSubmission}
         initialValues={props.initialValues}
-        isReviewSubmitStage={props.isReviewSubmitStage}
-        isFinalReviewStage={props.isFinalReviewStage}
+        isReviewSubmitStage
+        isFinalReviewStage={false}
         applicationSubmitted={false}
         incident={props?.incident}
         handlers={{
@@ -126,7 +126,7 @@ const renderReviewSubmitStep = (props, state) => {
             setConfirmedSubmission={props.setConfirmedSubmission}
             confirmedSubmission={props.confirmedSubmission}
             initialValues={props.initialValues}
-            isReviewSubmitStage={props.isReviewSubmitStage}
+            isReviewSubmitStage={false}
             isFinalReviewStage={props.isFinalReviewStage}
             applicationSubmitted
             incident={props?.incident}
