@@ -87,14 +87,16 @@ export class ProjectOverviewTab extends Component {
       this.props.project.information_requirements_table?.irt_guid
     );
 
-    const project_lead_contact = this.props.projectLeads?.filter((lead) =>
-      lead.party_guid.includes(this.props.project.project_lead_party_guid)
-    );
+    const project_lead_contact =
+      this.props.projectLeads?.filter((lead) =>
+        lead.party_guid.includes(this.props.project.project_lead_party_guid)
+      ) ?? [];
     if (project_lead_contact?.length > 0) {
       project_lead_contact[0].is_project_lead_contact = true;
     } else {
       project_lead_contact.push({ is_project_lead_contact: true });
     }
+
     const contactsAndProjectLead = [...this.props.project.contacts];
     contactsAndProjectLead.push(project_lead_contact[0]);
 
