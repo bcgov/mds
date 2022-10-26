@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import MineIncident from "@/components/mine/Incidents/MineIncident";
+import { MineIncident } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -16,8 +16,10 @@ const setupProps = () => {
   };
   props.formIsDirty = false;
   props.match = {
-    mineGuid: "448014a5-981f-47b8-8687-4963666776b8",
-    mineIncidentGuid: "668014a5-981f-47b8-8687-4963666776b9",
+    params: {
+      mineGuid: "448014a5-981f-47b8-8687-4963666776b8",
+      mineIncidentGuid: "668014a5-981f-47b8-8687-4963666776b9",
+    },
   };
   props.location = {
     state: {
