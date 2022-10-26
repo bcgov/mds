@@ -1,9 +1,9 @@
-import * as MOCK from "@/tests/mocks/dataMocks";
 
 import { BrowserRouter } from "react-router-dom";
 import React from "react";
-import { TailingsTable } from "@/components/dashboard/mine/tailings/TailingsTable";
 import { shallow } from "enzyme";
+import { TailingsTable } from "@/components/dashboard/mine/tailings/TailingsTable";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {
   editTailings: jest.fn(),
@@ -13,6 +13,7 @@ const props = {
 };
 const dispatchProps = {
   storeDam: jest.fn(),
+  storeTsf: jest.fn(),
 };
 
 const setupProps = () => {

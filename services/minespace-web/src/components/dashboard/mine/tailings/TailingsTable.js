@@ -1,9 +1,8 @@
-import * as Strings from "@/constants/strings";
-
 import { Button, Table, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
+  EMPTY_FIELD,
 } from "@common/constants/strings";
 import {
   getConsequenceClassificationStatusCodeOptionsHash,
@@ -12,9 +11,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { useHistory, useParams } from "react-router-dom";
 
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_DAM } from "@/constants/routes";
-import { EDIT_PENCIL } from "@/constants/assets";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import PropTypes from "prop-types";
 import React from "react";
@@ -23,6 +19,9 @@ import { connect } from "react-redux";
 import { getHighestConsequence } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
+import { EDIT_PENCIL } from "@/constants/assets";
+import { EDIT_DAM } from "@/constants/routes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -84,9 +83,7 @@ export const TailingsTable = (props) => {
       title: "Operating Status",
       dataIndex: "tsf_operating_status_code",
       render: (text) => (
-        <div title="Operating Status">
-          {props.TSFOperatingStatusCodeHash[text] || Strings.EMPTY_FIELD}
-        </div>
+        <div title="Operating Status">{props.TSFOperatingStatusCodeHash[text] || EMPTY_FIELD}</div>
       ),
       sorter: (a, b) => (a.tsf_operating_status_code > b.tsf_operating_status_code ? -1 : 1),
     },
@@ -104,7 +101,7 @@ export const TailingsTable = (props) => {
       dataIndex: "itrb_exemption_status_code",
       render: (text) => (
         <div title="Has Independent Tailings Review Board?">
-          {props.itrmExemptionStatusCodeHash[text] || Strings.EMPTY_FIELD}
+          {props.itrmExemptionStatusCodeHash[text] || EMPTY_FIELD}
         </div>
       ),
       sorter: (a, b) => (a.itrb_exemption_status_code > b.itrb_exemption_status_code ? -1 : 1),
@@ -119,31 +116,38 @@ export const TailingsTable = (props) => {
       title: "Engineer of Record",
       dataIndex: "engineer_of_record",
       render: (text) => (
-        <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>
+        <div title="Engineer of Record">{text ? text.party.name : EMPTY_FIELD}</div>
       ),
       sorter: (a, b) => (a.engineer_of_record > b.engineer_of_record ? -1 : 1),
     },
     {
+      title: "Qualified Person",
+      dataIndex: "qualified_person",
+      render: (text) => <div title="Qualified Person">{text ? text.party.name : EMPTY_FIELD}</div>,
+      sorter: (a, b) => (a.qualified_person > b.qualified_person ? -1 : 1),
+    },
+    {
       title: "Latitude",
       dataIndex: "latitude",
-      render: (text) => <div title="Latitude">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Latitude">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.latitude > b.latitude ? -1 : 1),
     },
     {
       title: "Longitude",
       dataIndex: "longitude",
-      render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.longitude > b.longitude ? -1 : 1),
     },
     {
       title: "Notes",
       dataIndex: "notes",
-      render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
     {
       title: "",
       dataIndex: "edit",
+      fixed: "right",
       render: (text, record) => {
         return (
           <div title="" align="right">
@@ -190,6 +194,7 @@ export const TailingsTable = (props) => {
       },
       {
         title: "",
+        fixed: "right",
         dataIndex: "edit",
         render: (text, record) => {
           return (
