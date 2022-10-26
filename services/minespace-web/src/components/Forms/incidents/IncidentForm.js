@@ -186,10 +186,10 @@ const renderInitialReport = (props, formDisabled) => (
 
 const renderReporterDetails = (props, formDisabled) => {
   const { reported_by_phone_no, reported_by_email } = props.formValues;
-  const reportedPhoneValidation = !reported_by_email ? [email, required] : [email];
-  const reportedEmailValidation = !reported_by_phone_no
+  const reportedPhoneValidation = !reported_by_email
     ? [phoneNumber, maxLength(12), required]
     : [phoneNumber, maxLength(12)];
+  const reportedEmailValidation = !reported_by_phone_no ? [email, required] : [email];
   const reportedEmailAndPhoneSet = Boolean(reported_by_email) && Boolean(reported_by_phone_no);
 
   return (
