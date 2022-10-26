@@ -470,14 +470,16 @@ const renderUploadInitialNotificationDocuments = (
   const subTitle = props?.isFinalReviewStage
     ? "Incident Documents"
     : "Initial Notification Documents";
-  const initialIncidentDocuments = props.initialValues?.documents?.filter(
-    (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
-  );
-  const finalReportDocuments = props.initialValues?.documents?.filter(
-    (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
-  );
+  const initialIncidentDocuments =
+    props.incident?.documents?.filter(
+      (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
+    ) ?? [];
+  const finalReportDocuments =
+    props.incident?.documents?.filter(
+      (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+    ) ?? [];
   const isDangerousOccurence =
-    Boolean(props.formValues?.mine_determination_type_code) ||
+    props.formValues?.mine_determination_type_code ||
     props.formValues?.determination_type_code === "DO";
 
   return (
@@ -506,6 +508,7 @@ const renderUploadInitialNotificationDocuments = (
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={props.match.params?.mineGuid}
                 component={IncidentFileUpload}
+                labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
               />
             </Form.Item>
           </Col>
