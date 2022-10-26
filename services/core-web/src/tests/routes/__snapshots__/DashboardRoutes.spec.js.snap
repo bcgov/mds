@@ -327,6 +327,11 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/tailings"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),

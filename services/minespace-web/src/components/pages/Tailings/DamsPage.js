@@ -1,5 +1,3 @@
-import * as Permission from "@/constants/permissions";
-
 import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { useEffect } from "react";
@@ -7,14 +5,10 @@ import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@common/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form";
 
-import { ADD_EDIT_DAM } from "@/constants/forms";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import PropTypes from "prop-types";
-import Step from "@/components/common/Step";
-import SteppedForm from "@/components/common/SteppedForm";
+import Step from "@common/components/Step";
+import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getDam } from "@common/selectors/damSelectors";
@@ -22,6 +16,11 @@ import { getTsf } from "@common/selectors/tailingsSelectors";
 import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
+import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import { ADD_EDIT_DAM } from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   tsf: PropTypes.objectOf(PropTypes.any).isRequired,

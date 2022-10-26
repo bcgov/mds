@@ -30,7 +30,7 @@ exports[`MineTailingsTable renders properly 1`] = `
     }
   }
 >
-  <Connect(MineTailingsTable)
+  <withRouter(Connect(MineTailingsTable))
     TSFOperatingStatusCodeHash={Object {}}
     consequenceClassificationStatusCodeHash={Object {}}
     isLoaded={true}
