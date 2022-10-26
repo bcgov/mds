@@ -59,7 +59,7 @@ from app.api.projects.project_decision_package.models.project_decision_package i
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.now)
+TODAY = factory.LazyFunction(datetime.utcnow)
 
 FACTORY_LIST = []
 
