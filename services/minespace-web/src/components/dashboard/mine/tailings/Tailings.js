@@ -82,11 +82,11 @@ export const Tailings = (props) => {
       <Col span={24}>
         <Row justify={!IN_PROD() ? "space-between" : "start"}>
           <Col>
-            <Title level={4}>Tailing Storage Facilities</Title>
+            <Title level={4}>Tailings Storage Facilities</Title>
             <Paragraph>
               This table shows&nbsp;
               <Text className="color-primary" strong>
-                Tailing Storage Facilities
+                Tailings Storage Facilities
               </Text>
               &nbsp;for your mine.
             </Paragraph>

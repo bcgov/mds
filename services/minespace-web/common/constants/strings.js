@@ -100,6 +100,9 @@ export const MINE_REPORTS_TYPE = {
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
 
+export const EMLI_INSPECTION_MAPPER_BASE_URL =
+  "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6";
+
 export const PERMIT_AMENDMENT_TYPES = {
   original: "OGP",
   amendment: "AMD",
@@ -215,7 +218,7 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "SIG", label: "Significant" },
   { value: "VHIG", label: "Very High" },
   { value: "EXT", label: "Extreme" },
-  { value: "NOD", label: "N/A (No Dam)" },
+  { value: "NRT", label: "Not Rated" },
 ];
 
 export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
@@ -224,11 +227,11 @@ export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
   SIG: "Significant",
   VHIG: "Very High",
   EXT: "Extreme",
-  NOD: "N/A (No Dam)",
+  NRT: "Not Rated",
 };
 
 export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
-  NOD: 0,
+  NRT: 0,
   LOW: 1,
   HIG: 2,
   SIG: 3,

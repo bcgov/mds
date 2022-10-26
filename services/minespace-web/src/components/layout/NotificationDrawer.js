@@ -13,7 +13,7 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { storeActivities } from "@common/actions/activityActions";
 import { useHistory } from "react-router-dom";
-import { MINE_DASHBOARD } from "@/constants/routes";
+import { MINE_DASHBOARD, EDIT_MINE_INCIDENT } from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -98,6 +98,11 @@ const NotificationDrawer = (props) => {
             nod: notification.notification_document.metadata.entity_guid,
           }
         );
+      case "MineIncident":
+        return EDIT_MINE_INCIDENT.dynamicRoute(
+          notification.notification_document.metadata.mine.mine_guid,
+          notification.notification_document.metadata.entity_guid
+        );
       default:
         return null;
     }
@@ -171,17 +176,21 @@ const NotificationDrawer = (props) => {
                         {activity.notification_document?.metadata?.mine?.mine_name}
                       </Typography.Text>
                     </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
-                    <Col>
-                      <Typography.Text className="notification-info-text">
-                        {activity.notification_document?.metadata?.permit?.permit_no}
-                      </Typography.Text>
-                    </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
+                    {activity.notification_document?.metadata?.permit && (
+                      <>
+                        <Col>
+                          <div className="notification-separator" />
+                        </Col>
+                        <Col>
+                          <Typography.Text className="notification-info-text">
+                            {activity.notification_document?.metadata?.permit?.permit_no}
+                          </Typography.Text>
+                        </Col>
+                        <Col>
+                          <div className="notification-separator" />
+                        </Col>
+                      </>
+                    )}
                     <Col>
                       <Typography.Text className="notification-info-text">
                         {formatDateTime(activity.create_timestamp)}

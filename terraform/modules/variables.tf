@@ -51,11 +51,8 @@ variable "storage_buckets" {
 
 ## Sysdig ##
 
-data "aws_secretsmanager_secret" "secrets" {
-  arn = "arn:aws:secretsmanager:ca-central-1:786397676156:secret:prod/mds/sysdig_monitor_api_token-rU7REF"
+data "aws_secretsmanager_secret_version" "sysdig_monitor_token" {
+  # Fill in the name you gave to your secret
+  secret_id = "prod/mds/sysdig_monitor_api_token"
 }
 
-data "aws_secretsmanager_secret_version" "creds" {
-  # Fill in the name you gave to your secret
-  secret_id = data.aws_secretsmanager_secret.secrets.id
-}

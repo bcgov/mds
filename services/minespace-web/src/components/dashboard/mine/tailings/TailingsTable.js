@@ -1,5 +1,3 @@
-import * as Strings from "@/constants/strings";
-
 import { Button, Table, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
@@ -12,9 +10,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { useHistory, useParams } from "react-router-dom";
 
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_DAM } from "@/constants/routes";
-import { EDIT_PENCIL } from "@/constants/assets";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import PropTypes from "prop-types";
 import React from "react";
@@ -22,6 +17,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getHighestConsequence } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
+import { storeTsf } from "@common/actions/tailingsActions";
+import { EDIT_PENCIL } from "@/constants/assets";
+import { EDIT_DAM } from "@/constants/routes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -37,17 +37,24 @@ const propTypes = {
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   editTailings: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
+  storeTsf: PropTypes.func.isRequired,
 };
 
 export const TailingsTable = (props) => {
   const history = useHistory();
   const { id: mineGuid } = useParams();
   const [expandedRows, setExpandedRows] = React.useState([]);
-  const { editTailings } = props;
+  const { editTailings, tailings } = props;
 
   const handleEditDam = (event, dam) => {
     event.preventDefault();
     props.storeDam(dam);
+    const tsf = tailings.find(
+      (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
+    );
+    if (tsf) {
+      props.storeTsf(tsf);
+    }
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
@@ -227,14 +234,14 @@ export const TailingsTable = (props) => {
       expandedRowClassName={() => "tailings-table-expanded-row"}
       rowKey={(record) => record.mine_tailings_storage_facility_guid}
       locale={{ emptyText: "This mine has no tailing storage facilities data." }}
-      dataSource={props.tailings}
+      dataSource={tailings}
     />
   );
 };
 
 TailingsTable.propTypes = propTypes;
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam, storeTsf }, dispatch);
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),

@@ -383,7 +383,12 @@ export const createMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       return response;
     })
@@ -408,7 +413,12 @@ export const updateMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       return response;
     })

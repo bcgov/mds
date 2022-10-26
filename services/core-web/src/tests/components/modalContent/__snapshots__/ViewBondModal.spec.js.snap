@@ -153,7 +153,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
       <DocumentTable
         additionalColumnProps={Array []}
-        documentColumns={Array []}
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={Array []}

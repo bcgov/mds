@@ -25,6 +25,9 @@ import {
   validateSelectOptions,
   number,
 } from "@common/utils/Validate";
+import * as Strings from "@common/constants/strings";
+import { USER_ROLES } from "@common/constants/environment";
+import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -32,15 +35,13 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
 import * as FORM from "@/constants/forms";
+import { OPEN_NEW_TAB } from "@/constants/assets";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
-import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
-import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
-import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
@@ -103,6 +104,13 @@ export const ReviewNOWApplication = (props) => {
     "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
 
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+
+  const generateEmliInspectionMapperUrl = (nowApplicationGuid) => {
+    const queryString = encodeURIComponent(
+      `bcgw_pub_whse_mineral_tenure_8797,NOW_APPLICATION_GUID,${nowApplicationGuid}`
+    );
+    return `${Strings.EMLI_INSPECTION_MAPPER_BASE_URL}&query=${queryString}`;
+  };
 
   const renderMineInfo = () => (
     <div>
@@ -218,6 +226,16 @@ export const ReviewNOWApplication = (props) => {
             validate={[number]}
             disabled
           />
+          <div className="field-title">
+            Open and view NoW on the Inspection Mapper (new window)&nbsp;&nbsp;
+            <a
+              href={generateEmliInspectionMapperUrl(props.now_application_guid)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img alt="Open link in new window" src={OPEN_NEW_TAB} style={{ width: "1.25em" }} />
+            </a>
+          </div>
         </Col>
       </Row>
     </div>

@@ -151,7 +151,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       </p>
       <p>
         <Link
-          to="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/reports/tailings"
+          to="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/tailings"
         >
           1
         </Link>

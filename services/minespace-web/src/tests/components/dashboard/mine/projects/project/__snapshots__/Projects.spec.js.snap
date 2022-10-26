@@ -93,6 +93,7 @@ exports[`Projects renders properly 1`] = `
         >
           <Button
             block={false}
+            disabled={true}
             ghost={false}
             htmlType="button"
             loading={false}

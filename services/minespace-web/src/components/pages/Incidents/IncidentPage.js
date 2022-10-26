@@ -212,6 +212,7 @@ const StepForms = (
       <IncidentForm
         initialValues={state.isEditMode ? formatInitialValues(props?.incident) : {}}
         handlers={{ deleteDocument: handlers?.deleteDocument }}
+        onSubmit={handlers?.save}
       />
     ),
     buttons: [
@@ -221,13 +222,16 @@ const StepForms = (
             style={{ marginRight: "15px" }}
             onClick={async (e) => {
               const response = await handlers?.save(e, props.formValues, true);
-              const incidentGuid =
-                props.incident?.mine_incident_guid || response?.mine_incident_guid;
-              const mineGuid = props.incident?.mine_guid || response?.mine_guid;
-              return props.history.push({
-                pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
-                state: { current: 1 },
-              });
+              if (response) {
+                const incidentGuid =
+                  props.incident?.mine_incident_guid || response?.mine_incident_guid;
+                const mineGuid = props.incident?.mine_guid || response?.mine_guid;
+                return props.history.push({
+                  pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
+                  state: { current: 1 },
+                });
+              }
+              return null;
             }}
             title="Save Draft"
           >

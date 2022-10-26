@@ -536,6 +536,30 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 ]
               }
             />
+            <div
+              className="field-title"
+            >
+              Open and view NoW on the Inspection Mapper (new window)  
+              <a
+                href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6&query=bcgw_pub_whse_mineral_tenure_8797%2CNOW_APPLICATION_GUID%2Cundefined"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  alt="Open link in new window"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  style={
+                    Object {
+                      "width": "1.25em",
+                    }
+                  }
+                />
+              </a>
+            </div>
           </Col>
         </Row>
       </div>

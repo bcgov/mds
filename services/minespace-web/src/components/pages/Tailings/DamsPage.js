@@ -1,20 +1,12 @@
-import * as Permission from "@/constants/permissions";
-
 import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { useEffect } from "react";
 import { bindActionCreators, compose } from "redux";
-import { createDam, fetchDam } from "@common/actionCreators/damActionCreator";
+import { createDam, updateDam } from "@common/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form";
 
-import { ADD_EDIT_DAM } from "@/constants/forms";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import PropTypes from "prop-types";
-import Step from "@/components/common/Step";
-import SteppedForm from "@/components/common/SteppedForm";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getDam } from "@common/selectors/damSelectors";
@@ -22,17 +14,24 @@ import { getTsf } from "@common/selectors/tailingsSelectors";
 import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
+import SteppedForm from "@/components/common/SteppedForm";
+import Step from "@/components/common/Step";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
+import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import { ADD_EDIT_DAM } from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   tsf: PropTypes.objectOf(PropTypes.any).isRequired,
   storeTsf: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchDam: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
   submit: PropTypes.func.isRequired,
+  createDam: PropTypes.func.isRequired,
+  updateDam: PropTypes.func.isRequired,
 };
 
 const DamsPage = (props) => {
@@ -45,7 +44,7 @@ const DamsPage = (props) => {
       (async () => {
         const mine = await props.fetchMineRecordById(mineGuid);
         const existingTsf = mine.data.mine_tailings_storage_facilities?.find(
-          (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
+          (t) => t.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
         );
         props.storeTsf(existingTsf);
         const currentDam = existingTsf.dams.find((dam) => dam.dam_guid === damGuid);
@@ -60,27 +59,32 @@ const DamsPage = (props) => {
     "associated-dams"
   );
 
+  const handleBack = () => {
+    history.push(backUrl);
+  };
+
+  const handleCompleteSubmit = (dam) => {
+    const dams = tsf.dams?.filter((tsfDam) => tsfDam.dam_guid !== dam?.dam_guid);
+    const updatedTsf = { ...tsf, dams: [dam, ...dams] };
+    props.storeTsf(updatedTsf);
+    handleBack();
+  };
+
   const handleSave = async () => {
     if (Object.keys(formErrors).length > 0) {
       props.submit();
       return;
     }
     if (damGuid) {
-      // TODO: Update Dam
-      console.log("handle update save", formErrors);
+      const updatedDam = await props.updateDam(damGuid, formValues);
+      handleCompleteSubmit(updatedDam.data);
     } else {
       const newDam = await props.createDam({
         ...formValues,
         mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
       });
-      const updatedTsf = { ...tsf, dams: [...tsf.dams, newDam.data] };
-      props.storeTsf(updatedTsf);
-      history.push(backUrl);
+      handleCompleteSubmit(newDam.data);
     }
-  };
-
-  const handleBack = () => {
-    history.push(backUrl);
   };
 
   return (
@@ -141,7 +145,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
-    { createDam, fetchMineRecordById, fetchDam, storeTsf, storeDam, submit },
+    { createDam, updateDam, fetchMineRecordById, storeTsf, storeDam, submit },
     dispatch
   );
 

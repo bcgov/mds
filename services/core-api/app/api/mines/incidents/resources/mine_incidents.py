@@ -325,6 +325,10 @@ class MineIncidentResource(Resource, UserMixin):
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
                     trigger_notifcation(f'A new Mine Incident has been created for ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                if value == 'FRS':
+                    incident.send_final_report_received_email(True)
+                    incident.send_final_report_received_email(False)
+                    trigger_notifcation(f'A final report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 setattr(incident, key, value)
             else:
                 setattr(incident, key, value)

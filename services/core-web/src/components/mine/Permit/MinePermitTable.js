@@ -18,13 +18,13 @@ import {
   getPermitAmendmentTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
+import { isEmpty } from "lodash";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
-import { isEmpty } from "lodash";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
@@ -424,20 +424,6 @@ const childColumns = [
         <p className="wrapped-text" style={{ maxWidth: "800px" }}>
           {text}
         </p>
-      </div>
-    ),
-  },
-  {
-    title: "Maps",
-    dataIndex: "maps",
-    key: "maps",
-    render: (text) => (
-      <div title="Maps">
-        <ul>
-          {text?.map((file) => (
-            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
-          ))}
-        </ul>
       </div>
     ),
   },

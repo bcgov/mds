@@ -1,5 +1,5 @@
 from enum import Enum
-
+from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -12,7 +12,7 @@ class ConsequenceClassification(Enum):
     SIG = 'SIG',
     VHIG = 'VHIG',
     EXT = 'EXT',
-    NOD = 'NOD'
+    NRT = 'NRT'
 
     def __str__(self):
         return self.value
@@ -94,7 +94,7 @@ class Dam(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_all(cls,
                  tsf_guid=None):
-        query = cls.query.filter_by(deleted_ind=False)
+        query = cls.query.filter_by(deleted_ind=False).order_by(desc(cls.update_timestamp))
         if tsf_guid:
             query = query.filter_by(mine_tailings_storage_facility_guid=tsf_guid)
         result = query.all()

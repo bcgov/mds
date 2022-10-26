@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { flattenObject } from "@common/utils/helpers";
+import { flattenObject, resetForm } from "@common/utils/helpers";
 import { compose, bindActionCreators } from "redux";
 import { isNil } from "lodash";
 import {
@@ -256,6 +256,7 @@ export default compose(
     form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     touchOnBlur: true,
     touchOnChange: false,
+    onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
     onSubmit: () => {},
   })
 )(withRouter(ProjectSummaryForm));

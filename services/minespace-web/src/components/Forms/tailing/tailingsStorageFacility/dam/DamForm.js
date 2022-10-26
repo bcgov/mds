@@ -8,17 +8,19 @@ import {
   decimalPlaces,
   lat,
   lon,
+  maxDigits,
   maxLength,
+  number,
   required,
   requiredList,
   validateSelectOptions,
 } from "@common/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { Field } from "redux-form";
 import PropTypes from "prop-types";
 import React from "react";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -115,35 +117,35 @@ const DamForm = (props) => {
         name="permitted_dam_crest_elevation"
         label="Permitted Dam Crest Elevation (meters above sea level)"
         component={renderConfig.FIELD}
-        validate={[required, decimalPlaces(2)]}
+        validate={[required, decimalPlaces(2), number, maxDigits(10)]}
       />
       <Field
         id="current_dam_height"
         name="current_dam_height"
         label="Current Dam Height (downstream toe to crest in meters)"
         component={renderConfig.FIELD}
-        validate={[required, decimalPlaces(2)]}
+        validate={[required, decimalPlaces(2), number, maxDigits(10)]}
       />
       <Field
         id="current_elevation"
         name="current_elevation"
         label="Current Elevation (elevation at the top of the dam in meters)"
         component={renderConfig.FIELD}
-        validate={[required, decimalPlaces(2)]}
+        validate={[required, decimalPlaces(2), number, maxDigits(10)]}
       />
       <Field
         id="max_pond_elevation"
         name="max_pond_elevation"
         label="Maximum Pond Elevation (meters above sea level recorded in the previous 12 months)"
         component={renderConfig.FIELD}
-        validate={[required, decimalPlaces(2)]}
+        validate={[required, decimalPlaces(2), number, maxDigits(10)]}
       />
       <Field
         id="min_freeboard_required"
         name="min_freeboard_required"
         label="Minimum Freeboard Required (water surface to the crest of the dam, in meters)"
         component={renderConfig.FIELD}
-        validate={[required, decimalPlaces(2)]}
+        validate={[required, decimalPlaces(2), number, maxDigits(10)]}
       />
     </div>
   );

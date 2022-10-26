@@ -1,11 +1,10 @@
-import * as routes from "@/constants/routes";
-
 import { Button, Result, Typography } from "antd";
 import { Link, Route, Switch } from "react-router-dom";
 
-import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import React from "react";
+import AuthenticationGuard from "@/HOC/AuthenticationGuard";
+import * as routes from "@/constants/routes";
 
 const Routes = () => (
   <Switch>
@@ -32,6 +31,21 @@ const Routes = () => (
       exact
       path={routes.MAJOR_MINE_APPLICATION_SUCCESS.route}
       component={AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)}
+    />
+    <Route
+      exact
+      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
     />
     <Route
       exact
@@ -66,14 +80,6 @@ const Routes = () => (
     <Route
       path={routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.route}
       component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
-    />
-    <Route
-      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
-      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
     />
     <Route
       path={routes.EDIT_PROJECT.route}

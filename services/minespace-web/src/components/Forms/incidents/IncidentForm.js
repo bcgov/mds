@@ -45,6 +45,7 @@ const propTypes = {
   incidentCategoryCodeOptions: customPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   applicationSubmitted: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -736,7 +737,7 @@ const IncidentForm = (props) => {
   const parentColumnProps = props.isFinalReviewStage ? {} : { span: 16, offset: 4 };
 
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
         <Col {...parentColumnProps}>
           {props.isFinalReviewStage && renderIncidentStatusCallout(props)}

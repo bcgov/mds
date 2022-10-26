@@ -96,7 +96,8 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             raise BadRequest(
                 'You cannot remove a document that is a part of the Consultation Package.')
 
-        mine_document.now_application_document_xref.delete()
+        mine_document.deleted_ind = True
+        mine_document.save()
         return None, 204
 
     @api.response(requests.codes.ok, 'Successfully updated document details.')

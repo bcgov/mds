@@ -181,7 +181,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           "GEN": "General",
         }
       }
-      documentColumns={Array []}
+      documentColumns={null}
       documentParent="project summary"
       documents={Array []}
       excludedColumnKeys={Array []}
