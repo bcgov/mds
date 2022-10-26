@@ -15,7 +15,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  labelIdle: null,
+  labelIdle: undefined,
 };
 
 export const IncidentFileUpload = (props) => (
