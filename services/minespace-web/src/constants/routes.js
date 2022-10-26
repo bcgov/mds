@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import DamsPage from "@/components/pages/Tailings/DamsPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
@@ -13,7 +14,6 @@ import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
 import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
 import { UsersPage } from "@/components/pages/UsersPage";
-import queryString from "query-string";
 
 export const HOME = {
   route: "/",
@@ -118,6 +118,8 @@ export const REVIEW_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid/review",
   dynamicRoute: (mineGuid, mineIncidentGuid) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review/${link}`,
   component: IncidentPage,
 };
 
