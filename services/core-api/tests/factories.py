@@ -59,7 +59,7 @@ from app.api.projects.project_decision_package.models.project_decision_package i
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.utcnow)
+TODAY = factory.LazyFunction(datetime.now)
 
 FACTORY_LIST = []
 
@@ -240,7 +240,7 @@ class MineAlertFactory(BaseFactory):
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     start_date = TODAY
-    contact_name = factory.Faker('contact_name')
+    contact_name = factory.Faker('name')
     contact_phone = factory.Faker('numerify', text='###-###-####')
     message = factory.Faker('paragraph')
 
