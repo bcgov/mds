@@ -55,11 +55,13 @@ export class ProjectOverviewTab extends Component {
                 <>
                   <Typography.Text>{c.name}</Typography.Text>
                   <br />
-                  <Typography.Text>{c.phone_number}</Typography.Text>
+                  <Typography.Text>{c.phone_no || c.phone_number}</Typography.Text>
                   <br />
-                  <Typography.Text>
-                    <a href={`mailto:${c.email}`}>{c.email}</a>
-                  </Typography.Text>
+                  {c.email && (
+                    <Typography.Text>
+                      <a href={`mailto:${c.email}`}>{c.email}</a>
+                    </Typography.Text>
+                  )}
                 </>
               )}
             </Typography.Paragraph>
