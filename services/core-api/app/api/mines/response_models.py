@@ -475,6 +475,23 @@ MINE_INCIDENT_MODEL = api.model(
         'johsc_management_rep_contacted': fields.Boolean
     })
 
+MINE_ALERT_MODEL = api.model(
+    'Mine Alert', {
+        'mine_alert_id': fields.Integer,
+        'mine_alert_guid': fields.String,
+        'mine_guid': fields.String,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
+        'contact_name': fields.String,
+        'contact_phone': fields.String,
+        'message': fields.String,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+    }
+)
+
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
     'created_at': fields.Date,
     'variance_document_category_code': fields.String
