@@ -13,6 +13,7 @@ import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDepart
 import ImportIRTSuccessModal from "@/components/modalContent/informationRequirementsTable/ImportIRTSuccessModal";
 import ImportIRTErrorModal from "@/components/modalContent/informationRequirementsTable/ImportIRTErrorModal";
 import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
+import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -30,6 +31,7 @@ export const modalConfig = {
   IMPORT_IRT_SUCCESS: ImportIRTSuccessModal,
   IMPORT_IRT_FAILURE: ImportIRTErrorModal,
   VIEW_FILE_HISTORY: ViewFileHistoryModal,
+  UPLOAD_INCIDENT_DOCUMENT: UploadIncidentDocumentModal,
 };
 
 export default modalConfig;
