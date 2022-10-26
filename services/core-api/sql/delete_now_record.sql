@@ -28,17 +28,12 @@ _now_application_id bigint;
 BEGIN
 
     -- Get the now_application_id.
-SELECT now_application_id INTO _now_application_id
+SELECT now_application_id, now_application_guid INTO _now_application_id, _now_application_guid
 FROM now_application_identity
 WHERE now_number = _now_number;
 
--- Get the now_application_guid.
-SELECT now_application_guid INTO _now_application_guid
-FROM now_application_identity
-WHERE now_application_id = _now_application_id;
-
 -- Delete the records associated with Notices of Work.
-RAISE NOTICE 'Deleting records associated with Notices of Work';
+RAISE NOTICE 'Deleting records associated with Notices of Work ID: %, GUID: %', _now_application_id, _now_application_guid;
 
 delete from now_application_delay
 where now_application_guid = _now_application_guid;
@@ -125,6 +120,8 @@ $$ LANGUAGE PLPGSQL;
 -- Ran Oct 20, 2022
 -- SELECT delete_mine_party_appt('e78021f0-28a4-4569-9681-2020e170e6db');
 
+-- Ran Oct 25, 2022
+-- SELECT delete_now('1621211-2021-02');
 
 -- Drop the function.
 DROP FUNCTION delete_now(varchar);
