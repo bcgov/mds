@@ -261,7 +261,7 @@ const renderReporterDetails = (props, formDisabled) => {
   );
 };
 
-const renderIncidentDetails = (props, formDisabled) => (
+const renderIncidentDetails = (formDisabled) => (
   <Row gutter={[16]}>
     <Col span={24}>
       <Typography.Title level={4} id="incident-details">
@@ -426,7 +426,7 @@ const renderIncidentDetails = (props, formDisabled) => (
   </Row>
 );
 
-const renderDangerousOccurenceDetermination = (props, formDisabled) => (
+const renderDangerousOccurenceDetermination = (formDisabled) => (
   <Row gutter={[16]}>
     <Col span={24}>
       <Typography.Title level={4}>Dangerous Occurrence Determination</Typography.Title>
@@ -745,9 +745,9 @@ const IncidentForm = (props) => {
           <br />
           {renderReporterDetails(props, formDisabled)}
           <br />
-          {renderIncidentDetails(props, formDisabled)}
+          {renderIncidentDetails(formDisabled)}
           <br />
-          {renderDangerousOccurenceDetermination(props, formDisabled)}
+          {renderDangerousOccurenceDetermination(formDisabled)}
           <br />
           {renderUploadInitialNotificationDocuments(
             props,
