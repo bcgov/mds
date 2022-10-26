@@ -1,0 +1,19 @@
+{
+    "name": "mds",
+    "private": true,
+    "description": "Mines Digital Services Packages",
+    "engines": {
+        "node": ">=14.8.1",
+        "npm": ">=6.14.7"
+    },
+    "scripts": {
+        "format:staged": "yarn pretty-quick --staged",
+        "format:check": "yarn prettier --check .",
+        "format:write": "yarn prettier --write .",
+        "watch": "run-p 'watch:common'"
+    },
+    "workspaces": [
+        "services/core-web",
+        "services/minespace-web"
+    ]
+}
