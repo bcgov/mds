@@ -14,7 +14,7 @@ def test_get_project_by_project_guid(test_client, db_session, auth_headers):
 
     assert get_resp.status_code == 200
     assert get_data['project_guid'] == str(project.project_guid)
-    assert get_data['project_title'] == 'Test Project Title'
+    assert get_data['project_title'] == project.project_title
 
 
 def test_get_projects_by_mine_guid(test_client, db_session, auth_headers):
