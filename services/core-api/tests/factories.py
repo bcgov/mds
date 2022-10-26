@@ -32,7 +32,6 @@ from app.api.mines.permits.permit_conditions.models.standard_permit_conditions i
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
 from app.api.securities.models.bond import Bond
-from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
@@ -50,8 +49,6 @@ from app.api.projects.project_contact.models.project_contact import ProjectConta
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
-from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
@@ -59,6 +56,7 @@ from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 from app.api.activity.models.activity_notification import ActivityNotification
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
+from app.api.mines.alerts.models.mine_alert import MineAlert
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -199,6 +197,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     tailings_storage_facility_type = TailingsStorageFacilityType['pit']
     mines_act_permit_no = '123456'
 
+
 class DamFactory(BaseFactory):
     class Meta:
         model = Dam
@@ -221,7 +220,6 @@ class DamFactory(BaseFactory):
     min_freeboard_required = 100.11
 
 
-
 class MineCommentFactory(BaseFactory):
     class Meta:
         model = MineComment
@@ -231,6 +229,22 @@ class MineCommentFactory(BaseFactory):
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_comment = factory.Faker('paragraph')
+
+
+class MineAlertFactory(BaseFactory):
+    class Meta:
+        model = MineAlert
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    start_date = TODAY
+    contact_name = factory.Faker('contact_name')
+    contact_phone = factory.Faker('numerify', text='###-###-####')
+    message = factory.Faker('paragraph')
+
+    end_date = None
 
 
 class VarianceFactory(BaseFactory):
@@ -540,7 +554,7 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('company'),
             email=factory.Faker('company_email'),
             party_type_code='ORG',
-            
+
         )
 
     first_name = None
@@ -686,7 +700,8 @@ class MineFactory(BaseFactory):
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0,
-            comments=0)
+            comments=0,
+            alerts=0)
         operating = factory.Trait(
             mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
@@ -713,6 +728,7 @@ class MineFactory(BaseFactory):
     mine_variance = []
     mine_reports = []
     comments = []
+    alerts = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -786,6 +802,16 @@ class MineFactory(BaseFactory):
 
         if obj.major_mine_ind:
             ProjectFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def alerts(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineAlertFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
 
 class PermitFactory(BaseFactory):
@@ -1070,7 +1096,7 @@ class ProjectFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     project_guid = GUID
     proponent_project_id = factory.Faker('sentence', nb_words=1)
-    project_title = 'Test Project Title'
+    project_title = factory.Faker('text', max_nb_chars=50)
     contacts = []
 
     proponent_project_id = None
