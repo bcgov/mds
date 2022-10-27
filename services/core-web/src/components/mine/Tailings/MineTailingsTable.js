@@ -10,7 +10,6 @@ import {
 } from "@common/constants/strings";
 import { getHighestConsequence } from "@common/utils/helpers";
 import {
-  getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
@@ -23,7 +22,6 @@ import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
   openEditTailingsModal: PropTypes.func.isRequired,
@@ -37,8 +35,6 @@ const defaultProps = {};
 const MineTailingsTable = (props) => {
   const {
     TSFOperatingStatusCodeHash,
-    // eslint-disable-next-line no-unused-vars
-    consequenceClassificationStatusCodeHash,
     itrmExemptionStatusCodeHash,
     openEditTailingsModal,
     handleEditTailings,
@@ -238,7 +234,6 @@ MineTailingsTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
-  consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
