@@ -215,7 +215,22 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             }
           }
           title="Project Contacts"
-        />
+        >
+          <Paragraph
+            className="ministry-contact-item"
+          >
+            <Text
+              className="ministry-contact-title"
+              strong={true}
+            >
+              EMLI Project Lead
+            </Text>
+            <br />
+            <Text>
+              Project Lead has not been assigned
+            </Text>
+          </Paragraph>
+        </Card>
       </Col>
     </Row>
   </Col>
