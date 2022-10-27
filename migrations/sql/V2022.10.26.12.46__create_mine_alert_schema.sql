@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS mine_alert (
   deleted_ind             boolean DEFAULT false                    NOT NULL,
 
   CONSTRAINT mine_alert_id UNIQUE (mine_alert_id),
-  CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED
+  CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT mine_guid_date_range_uniq EXCLUDE USING gist ((mine_guid::text) WITH =, tstzrange(start_date,end_date,'[]') WITH &&)
 );
 ALTER TABLE mine_alert OWNER TO mds;
 --
