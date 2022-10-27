@@ -5,7 +5,6 @@ import {
   EMPTY_FIELD,
 } from "@common/constants/strings";
 import {
-  getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
@@ -25,15 +24,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   openEditTailingsModal: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   handleEditTailings: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   editTailings: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
@@ -44,7 +37,14 @@ export const TailingsTable = (props) => {
   const history = useHistory();
   const { id: mineGuid } = useParams();
   const [expandedRows, setExpandedRows] = React.useState([]);
-  const { editTailings, tailings } = props;
+  const {
+    editTailings,
+    tailings,
+    openEditTailingsModal,
+    handleEditTailings,
+    TSFOperatingStatusCodeHash,
+    itrmExemptionStatusCodeHash,
+  } = props;
 
   const handleEditDam = (event, dam) => {
     event.preventDefault();
@@ -83,7 +83,7 @@ export const TailingsTable = (props) => {
       title: "Operating Status",
       dataIndex: "tsf_operating_status_code",
       render: (text) => (
-        <div title="Operating Status">{props.TSFOperatingStatusCodeHash[text] || EMPTY_FIELD}</div>
+        <div title="Operating Status">{TSFOperatingStatusCodeHash[text] || EMPTY_FIELD}</div>
       ),
       sorter: (a, b) => (a.tsf_operating_status_code > b.tsf_operating_status_code ? -1 : 1),
     },
@@ -101,7 +101,7 @@ export const TailingsTable = (props) => {
       dataIndex: "itrb_exemption_status_code",
       render: (text) => (
         <div title="Has Independent Tailings Review Board?">
-          {props.itrmExemptionStatusCodeHash[text] || EMPTY_FIELD}
+          {itrmExemptionStatusCodeHash[text] || EMPTY_FIELD}
         </div>
       ),
       sorter: (a, b) => (a.itrb_exemption_status_code > b.itrb_exemption_status_code ? -1 : 1),
@@ -159,9 +159,7 @@ export const TailingsTable = (props) => {
               ) : (
                 <Button
                   type="link"
-                  onClick={(event) =>
-                    props.openEditTailingsModal(event, props.handleEditTailings, record)
-                  }
+                  onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
                 >
                   <img src={EDIT_PENCIL} alt="Edit" />
                 </Button>
@@ -251,7 +249,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam, storeTsf
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
-  consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
