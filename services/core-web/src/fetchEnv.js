@@ -1,7 +1,22 @@
 import axios from "axios";
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@mds/common";
+import {
+  KEYCLOAK as K,
+  ENVIRONMENT as E,
+  DEFAULT_ENVIRONMENT as DE,
+  MINE_COMPLIANCE_SUMMARY,
+} from "@mds/common";
+import { KEYCLOAK, ENVIRONMENT, DEFAULT_ENVIRONMENT } from "@common/constants/environment";
 
 export default function fetchEnv() {
+  console.log("APPLES");
+  console.log("APPLES", MINE_COMPLIANCE_SUMMARY("vyas"));
+  console.log("APPLES");
+  console.log("APPLES", KEYCLOAK);
+  console.log("APPLES", K);
+  console.log("APPLES", DEFAULT_ENVIRONMENT);
+  console.log("APPLES", DE);
+  console.log("APPLES", ENVIRONMENT);
+  console.log("APPLES", E);
   return axios
     .get(`${process.env.BASE_PATH}/env`)
     .then((res) => {
@@ -16,7 +31,6 @@ export default function fetchEnv() {
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
       ENVIRONMENT.docManUrl = env.docManUrl;
-      ENVIRONMENT.firstNationsLayerUrl = env.firstNationsLayerUrl;
       ENVIRONMENT.filesystemProviderUrl = env.filesystemProviderUrl;
       ENVIRONMENT.matomoUrl = env.matomoUrl;
       KEYCLOAK.clientId = env.keycloak_clientId;

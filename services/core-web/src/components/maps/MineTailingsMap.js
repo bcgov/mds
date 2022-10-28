@@ -11,11 +11,11 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { FIRST_NATIONS_LAYER_URL } from "@common/constants/environment";
 import * as Strings from "@common/constants/strings";
+import { Descriptions } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
-import { Descriptions } from "antd";
 import {
   baseMapsArray,
   admininstrativeBoundariesLayerArray,
@@ -91,10 +91,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
 });
 
 const getFirstNationLayer = () => {
-  const firstNationSource = LeafletWms.source(
-    ENVIRONMENT.firstNationsLayerUrl,
-    leafletWMSTiledOptions
-  );
+  const firstNationSource = LeafletWms.source(FIRST_NATIONS_LAYER_URL, leafletWMSTiledOptions);
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
