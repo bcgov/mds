@@ -5,13 +5,12 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
+import { ENVIRONMENT } from "@common/constants/environment";
+import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
-
-import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import { ENVIRONMENT } from "@common/constants/environment";
 
 let instance = {};
 
