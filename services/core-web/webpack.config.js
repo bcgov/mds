@@ -15,6 +15,25 @@ const PORT = process.env.PORT || 3000;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
 
+function excludeNodeModulesExcept(modules) {
+  var pathSep = path.sep;
+  if (pathSep == "\\")
+    // must be quoted for use in a regexp:
+    pathSep = "\\\\";
+  var moduleRegExps = modules.map(function(modName) {
+    return new RegExp("node_modules" + pathSep + modName);
+  });
+
+  return function(modulePath) {
+    if (/node_modules/.test(modulePath)) {
+      for (var i = 0; i < moduleRegExps.length; i++)
+        if (moduleRegExps[i].test(modulePath)) return false;
+      return true;
+    }
+    return false;
+  };
+}
+
 const PATHS = {
   src: path.join(__dirname, "src"),
   entry: path.join(__dirname, "src", "index.js"),
@@ -82,6 +101,7 @@ const commonConfig = merge([
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
     include: [PATHS.src, PATHS.commonPackage],
+    exclude: excludeNodeModulesExcept(["@common/mds"]),
   }),
   parts.loadFonts({
     exclude: path.join(PATHS.src, "assets", "images"),
