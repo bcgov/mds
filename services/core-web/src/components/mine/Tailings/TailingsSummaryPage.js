@@ -10,7 +10,7 @@ import { bindActionCreators, compose } from "redux";
 import { storeTsf } from "@common/actions/tailingsActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { resetForm } from "@common/utils/helpers";
-import { reduxForm, touch } from "redux-form";
+import { getFormValues, reduxForm, touch } from "redux-form";
 import PropTypes from "prop-types";
 
 import Step from "@common/components/Step";
@@ -44,6 +44,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   storeTsf: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -73,14 +74,15 @@ export const TailingsSummaryPage = (props) => {
           (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
         );
         props.storeTsf(existingTsf);
+        resetForm(FORM.ADD_STORAGE_FACILITY);
       }
     }
     setIsLoaded(true);
   };
 
   useEffect(() => {
-    handleFetchData();
-  }, []);
+    handleFetchData(true);
+  }, [match?.params.tailingsStorageFacilityGuid]);
 
   const mineName = mines[mineGuid]?.mine_name || "";
 
@@ -90,7 +92,7 @@ export const TailingsSummaryPage = (props) => {
         <Row>
           <Col span={24}>
             <Typography.Title>
-              {props.initialValues.mine_tailings_storage_facility_name}
+              {props.formValues.mine_tailings_storage_facility_name}
             </Typography.Title>
           </Col>
         </Row>
@@ -132,6 +134,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   initialValues: getTsf(state),
   mineGuid: getMineGuid(state),
+  formValues: getFormValues(FORM.ADD_STORAGE_FACILITY)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
