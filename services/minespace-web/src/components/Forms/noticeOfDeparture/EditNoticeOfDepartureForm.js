@@ -13,7 +13,7 @@ import {
 } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
 import { compose } from "redux";
-import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -193,7 +193,7 @@ const EditNoticeOfDepartureForm = (props) => {
           <a
             href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             click here to download
           </a>

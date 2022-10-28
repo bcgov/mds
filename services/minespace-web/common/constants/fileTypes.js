@@ -27,7 +27,6 @@ export const OPEN_DOC = {
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
 export const IMAGE = {
-  ".jpg": "image/jpg",
   ".jpeg": "image/jpeg",
   ".png": "image/png",
 };
@@ -57,4 +56,8 @@ export const UNIQUELY_SPATIAL = {
   ".wkt": APPLICATION_OCTET_STREAM,
 };
 
-export const SPATIAL = { ...UNIQUELY_SPATIAL, ".csv": "text/csv", ".xml": "application/xml" };
+export const SPATIAL = {
+  ...UNIQUELY_SPATIAL,
+  ".csv": "text/csv",
+  ".xml": "application/xml",
+};

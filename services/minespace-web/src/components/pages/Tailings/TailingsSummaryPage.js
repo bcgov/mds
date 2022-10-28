@@ -258,6 +258,7 @@ export const TailingsSummaryPage = (props) => {
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
+              formType={FORM.ADD_TAILINGS_STORAGE_FACILITY}
               loading={isReloading}
               eors={eors}
               mineGuid={mineGuid}
