@@ -16,7 +16,7 @@ import {
   detectIE,
   detectTestEnvironment,
   detectDevelopmentEnvironment,
-} from "../../environment/environmentUtils";
+} from "@common/utils/environmentUtils";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
