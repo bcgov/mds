@@ -1,0 +1,15 @@
+{
+  "name": "@mds/common",
+  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Common library for MDS Frontend",
+  "private": true,
+  "homepage": "${BASE_PATH}/",
+  "dependencies": {
+    "query-string": "5.1.1",
+    "react": "16.13.1"
+  },
+  "scripts": {
+    "test": "echo \"Still no test specified\" && exit 0"
+  }
+}

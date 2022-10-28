@@ -68,8 +68,8 @@ The backend is now running and seeded with random data. Run the following
 commands from within the `/frontend` directory to initialize the frontend:
 
 ```
-$ npm ci
-$ npm run serve
+$ yarn
+$ yarn serve
 ```
 
 ## Generating Test Data
@@ -101,7 +101,7 @@ To address this, you may:
 
 ### Using the Document Manager and Document Generator locally
 
-If you are running the frontend using npm run serve then you will not be able to use the document manager at the same time as the document generator. If you wish to do this then you need to make an addition to your hosts file so the browser can resolve the document_manager_backend to localhost.
+If you are running the frontend using yarn serve then you will not be able to use the document manager at the same time as the document generator. If you wish to do this then you need to make an addition to your hosts file so the browser can resolve the document_manager_backend to localhost.
 
 If you are on a windows machine ensure that you open powershell in administrator mode as that is required to modify the hosts file and run the following command at the root of this project:
 

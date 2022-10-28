@@ -10,13 +10,19 @@ jobs:
     name: tests-unit-frontend
     runs-on: ubuntu-20.04
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        name: checkout
+
+      - uses: actions/cache@v3
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: mds-core-web
+          restore-keys: mds-core-web
 
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
 
       - name: Run frontend tests
-        run: |
-          cd services/core-web/ && npm ci && npm run test
+        run: cd services/core-web/ && yarn && yarn test

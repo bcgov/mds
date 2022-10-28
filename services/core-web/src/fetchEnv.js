@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
+import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@mds/common";
 
 export default function fetchEnv() {
   return axios

@@ -1,20 +1,26 @@
 FROM node:14.8.0 as builder
 
+# ENV Setup 
+
+# RUN npm i -g corepack
+# RUN npm i -g yarn
+# RUN yarn set version 3.2.4
+
+
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
 
-# Install app dependencies
-COPY package.json package-lock.json ./
-RUN npm ci
-
-# Copy app files
+# Copy all files to the working directory
 COPY . .
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# Install Dependencies
+RUN yarn
 
-# Run build
-RUN npm run build
+# Build Core Web Only
+RUN yarn workspace @mds/core-web build
+
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Remove dependencies
 RUN rm -rf /app/node_modules
@@ -28,11 +34,13 @@ FROM node:14.8.0-alpine as runner
 WORKDIR /app
 
 # Copy the app files with build output
-COPY --from=builder /app ./
+COPY --from=builder /app/services/core-web/build ./build
+COPY --from=builder /app/services/core-web/vendor ./vendor
+COPY --from=builder /app/services/core-web/runner ./runner
 
 WORKDIR /app/runner 
 
-# Install node runner deps. and ignore devDependencies with --production flag
+# Install node webapp host / runner deps. and ignore devDependencies with --production flag
 RUN npm ci --production 
 
 EXPOSE 3000
