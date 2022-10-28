@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
 import { Button, Tooltip, Typography } from "antd";
 import {
@@ -237,4 +238,4 @@ const mapStateToProps = (state) => ({
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
-export default connect(mapStateToProps)(MineTailingsTable);
+export default withRouter(connect(mapStateToProps)(MineTailingsTable));
