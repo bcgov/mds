@@ -23,51 +23,106 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
+
   "ssl-required": "external",
-  url: "<URL>",
+  "public-client": true,
+  "confidential-port": 0,
+
   idir_idpHint: "idir",
   bceid_idpHint: "bceid",
   vcauthn_idpHint: "ms-verifiable-credential",
-  resource: "<RESOURCE>",
-  "public-client": true,
-  "confidential-port": 0,
+
+  url: "<URL>",
   clientId: "<CLIENT_ID>",
+  resource: "<RESOURCE>",
+
+  keycloakLogoutURL: "<URL>",
+  siteMinderLogoutURL: "<URL>",
   loginURL: "<URL>",
   tokenURL: "<URL>",
   userInfoURL: "<URL>",
-  keycloakLogoutURL: "<URL>",
-  siteMinderLogoutURL: "<URL>",
 };
 
-export const setupEnvironment = (
-  apiUrl,
-  docManUrl,
-  filesystemProviderUrl,
-  matomoUrl,
-  keycloak_clientId,
-  keycloak_resource,
-  keycloak_url,
-  keycloak_idir_idpHint,
-  keycloak_bceid_idpHint,
-  keycloak_vcauthn_idpHint,
-  environment
-) => {
-  console.log("LIB", apiUrl);
-  console.log("LIB", docManUrl);
+export function setupEnvironment(apiUrl, docManUrl, filesystemProviderUrl, matomoUrl, environment) {
+  if (!apiUrl) {
+    throw new Error("apiUrl Is Mandatory");
+  }
+
+  if (!docManUrl) {
+    throw new Error("docManUrl Is Mandatory");
+  }
+
+  if (!filesystemProviderUrl) {
+    throw new Error("filesystemProviderUrl Is Mandatory");
+  }
+
+  if (!matomoUrl) {
+    throw new Error("matomoUrl Is Mandatory");
+  }
+
+  if (!environment) {
+    throw new Error("environment Is Mandatory");
+  }
+
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;
   ENVIRONMENT.matomoUrl = matomoUrl;
-  KEYCLOAK.clientId = keycloak_clientId;
-  KEYCLOAK.resource = keycloak_resource;
-  KEYCLOAK.url = keycloak_url;
-  KEYCLOAK.idir_idpHint = keycloak_idir_idpHint;
-  KEYCLOAK.bceid_idpHint = keycloak_bceid_idpHint;
-  KEYCLOAK.vcauthn_idpHint = keycloak_vcauthn_idpHint;
-  ENVIRONMENT.environment = environment;
-  console.log("LIB", ENVIRONMENT);
-  console.log("LIB", KEYCLOAK);
-};
+  ENVIRONMENT.environment = environment || "development";
+}
+
+export function setupKeycloak(
+  clientId,
+  resource,
+  url,
+  idirHint,
+  bceidHint,
+  vcauthnHint,
+  vcauthnPresReqConfId,
+  siteMinderURL
+) {
+  if (!clientId) {
+    throw new Error("clientId Is Mandatory");
+  }
+
+  if (!resource) {
+    throw new Error("resource Is Mandatory");
+  }
+
+  if (!url) {
+    throw new Error("url Is Mandatory");
+  }
+
+  if (!idirHint) {
+    throw new Error("idirHint Is Mandatory");
+  }
+
+  if (!bceidHint) {
+    throw new Error("bceidHint Is Mandatory");
+  }
+
+  if (!vcauthnHint) {
+    throw new Error("vcauthnHint Is Mandatory");
+  }
+
+  if (!siteMinderURL) {
+    throw new Error("siteMinderURL Is Mandatory");
+  }
+
+  KEYCLOAK.clientId = clientId;
+  KEYCLOAK.resource = resource;
+  KEYCLOAK.url = url;
+  KEYCLOAK.idir_idpHint = idirHint;
+  KEYCLOAK.bceid_idpHint = bceidHint;
+  KEYCLOAK.vcauthn_idpHint = vcauthnHint;
+
+  KEYCLOAK.keycloakLogoutURL = `${url}/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
+  KEYCLOAK.loginURL = `${url}/realms/mds/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${vcauthnPresReqConfId}&client_id=${clientId}&redirect_uri=`;
+  KEYCLOAK.tokenURL = `${url}/realms/mds/protocol/openid-connect/token`;
+  KEYCLOAK.userInfoURL = `${url}/realms/mds/protocol/openid-connect/userinfo`;
+
+  KEYCLOAK.siteMinderLogoutURL = `${siteMinderURL}/clp-cgi/logoff.cgi?returl=`;
+}
 
 export const USER_ROLES = {
   role_view: "core_view_all",

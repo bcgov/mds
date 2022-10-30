@@ -7,7 +7,7 @@ import { DownOutlined, DownloadOutlined, FileOutlined, DeleteOutlined } from "@a
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 
 const propTypes = {

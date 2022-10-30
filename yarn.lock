@@ -1793,7 +1793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mds/common@0.1.0, @mds/common@workspace:services/common":
+"@mds/common@0.1.0, @mds/common@workspace:^, @mds/common@workspace:services/common":
   version: 0.0.0-use.local
   resolution: "@mds/common@workspace:services/common"
   dependencies:
@@ -1972,7 +1972,6 @@ __metadata:
     webpack-dev-server: 3.11.0
     webpack-manifest-plugin: 2.2.0
     webpack-merge: 4.2.2
-    webpack-node-externals: ^3.0.0
   dependenciesMeta:
     jest:
       optional: true
@@ -2004,7 +2003,7 @@ __metadata:
     "@babel/runtime-corejs3": 7.15.3
     "@datapunt/matomo-tracker-react": 0.1.5
     "@hot-loader/react-dom": 16.13.0
-    "@mds/common": 0.1.0
+    "@mds/common": "workspace:^"
     "@syncfusion/ej2-base": 19.1.57
     "@syncfusion/ej2-buttons": 19.1.54
     "@syncfusion/ej2-data": 19.1.56

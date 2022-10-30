@@ -5,11 +5,10 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "webpack — watch",
     "build": "webpack --env production",
-    "watch": "webpack --watch --watch-poll --hot --env development",
-    "test": "echo \"Still no test specified\" && exit 0"
+    "watch": "webpack --watch --watch-poll --hot --env development"
   },
   "dependencies": {
     "@babel/runtime": "7.15.3",
