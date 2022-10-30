@@ -5,7 +5,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,

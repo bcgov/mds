@@ -6,7 +6,7 @@ import * as reducerTypes from "../constants/reducerTypes";
 import * as partyActions from "../actions/partyActions";
 import * as Strings from "../constants/strings";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

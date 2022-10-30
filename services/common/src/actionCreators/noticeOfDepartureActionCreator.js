@@ -9,7 +9,7 @@ import {
   UPDATE_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,

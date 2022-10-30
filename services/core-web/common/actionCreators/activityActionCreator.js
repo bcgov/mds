@@ -1,7 +1,7 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { success, error, request } from "../actions/genericActions";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { GET_ACTIVITIES } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { storeActivities } from "../actions/activityActions";

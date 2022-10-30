@@ -4,7 +4,7 @@ import { request, success, error } from "../actions/genericActions";
 import * as securitiesActions from "../actions/securitiesActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

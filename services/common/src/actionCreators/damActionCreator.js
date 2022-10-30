@@ -5,7 +5,7 @@ import { DAM, DAMS } from "../constants/API";
 import { error, request, success } from "../actions/genericActions";
 
 import CustomAxios from "../customAxios";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { storeDam } from "../actions/damActions";
 

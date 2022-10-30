@@ -5,7 +5,7 @@ import * as staticContentActions from "../actions/staticContentActions";
 import * as partyActions from "../actions/partyActions";
 import * as String from "../constants/strings";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

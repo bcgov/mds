@@ -11,7 +11,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-import { FIRST_NATIONS_LAYER_URL } from "@common/constants/environment";
+import { FIRST_NATIONS_LAYER_URL } from "@mds/common";
 import * as Strings from "@common/constants/strings";
 import { Descriptions } from "antd";
 import CustomPropTypes from "@/customPropTypes";

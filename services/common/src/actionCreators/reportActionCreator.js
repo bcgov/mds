@@ -5,7 +5,7 @@ import * as reducerTypes from "../constants/reducerTypes";
 import * as mineReportActions from "../actions/mineReportActions";
 import * as API from "../constants/API";
 import * as Strings from "../constants/strings";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

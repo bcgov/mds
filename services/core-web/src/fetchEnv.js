@@ -5,7 +5,7 @@ import axios from "axios";
 //   DEFAULT_ENVIRONMENT as DE,
 //   MINE_COMPLIANCE_SUMMARY,
 // } from "@mds/common";
-import { KEYCLOAK, ENVIRONMENT, DEFAULT_ENVIRONMENT } from "@common/constants/environment";
+import { KEYCLOAK, ENVIRONMENT, DEFAULT_ENVIRONMENT } from "@mds/common";
 
 export default function fetchEnv() {
   console.log("APPLES");

@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,

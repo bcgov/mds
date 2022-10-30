@@ -6,7 +6,7 @@ import * as mineActions from "../actions/mineActions";
 import * as tsfActions from "../actions/tailingsActions";
 import * as String from "../constants/strings";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "../constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
