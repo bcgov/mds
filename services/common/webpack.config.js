@@ -10,7 +10,10 @@ module.exports = (mode) => {
       path: path.resolve(__dirname, "dist"), //<-where to save ur bundle
       filename: "index.js", //<-filename for bundled file
       library: pkg.name,
-      libraryTarget: "amd", //<- to which version are we compiling js
+      // Using common JS2 here because JEST is not able to process amd module directly
+      // I think webpack when compiling this commonjs2 module will minifiy it and optimize,
+      // amd module might be just for direct script based imports and if you don't neeed to test the module with dependencies?
+      libraryTarget: "commonjs2", //<- to which version are we compiling js
     },
     module: {
       rules: [
@@ -27,6 +30,5 @@ module.exports = (mode) => {
         },
       ],
     },
-    target: "web",
   };
 };
