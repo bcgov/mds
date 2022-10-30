@@ -1,8 +1,8 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { ENVIRONMENT } from "@mds/common";
 import { error, request, success } from "../actions/genericActions";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import * as noticeOfWorkActions from "../actions/noticeOfWorkActions";

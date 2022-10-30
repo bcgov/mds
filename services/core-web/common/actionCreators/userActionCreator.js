@@ -1,8 +1,8 @@
+import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as userActions from "../actions/userActions";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

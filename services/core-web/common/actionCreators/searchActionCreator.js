@@ -1,9 +1,9 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { ENVIRONMENT } from "@mds/common";
 import { request, success, error, clear } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as searchActions from "../actions/searchActions";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
