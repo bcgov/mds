@@ -25,7 +25,7 @@ setupEnvironment(
   process.env.KEYCLOAK_IDP_HINT,
   process.env.KEYCLOAK_IDP_HINT,
   process.env.KEYCLOAK_IDP_HINT,
-  "development"
+  process.env.ENVIRONMENT || "development"
 );
 
 class Index extends Component {
