@@ -24,5 +24,11 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Common Package
+        run: cd services/common/ && yarn build
+
       - name: Run minespace tests
         run: cd services/minespace-web/ && yarn && yarn test
