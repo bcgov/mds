@@ -3,6 +3,7 @@ name: MINESPACE - Unit Tests
 on:
   pull_request:
     paths:
+      - services/common/**
       - services/minespace-web/**
 
 jobs:

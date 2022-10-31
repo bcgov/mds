@@ -3,6 +3,7 @@ name: CORE WEB - Unit Tests
 on:
   pull_request:
     paths:
+      - services/common/**
       - services/core-web/**
 
 jobs:
@@ -29,6 +30,6 @@ jobs:
 
       - name: Build Common Package
         run: cd services/common/ && yarn build
-        
+
       - name: Run frontend tests
         run: cd services/core-web/ && yarn && yarn test
