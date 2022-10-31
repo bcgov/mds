@@ -4,9 +4,9 @@ import TailingsProvider from "@common/components/tailings/TailingsProvider";
 import ContactDetails from "@common/components/ContactDetails";
 import { renderConfig } from "@/components/common/config";
 import TailingsSummaryPage from "./TailingsSummaryPage";
-import LinkButton from "@/components/common/LinkButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
+import LinkButton from "@/components/common/buttons/LinkButton";
 
 export const TailingsSummaryPageWrapper = () => {
   const tsfComponents = {
@@ -18,8 +18,8 @@ export const TailingsSummaryPageWrapper = () => {
     <TailingsProvider
       components={tsfComponents}
       renderConfig={renderConfig}
-      addContactModalConfig={modalConfig.ADD_CONTACT}
-      tsfFormName={FORM.ADD_TAILINGS_STORAGE_FACILITY}
+      addContactModalConfig={modalConfig.ADD_PARTY_RELATIONSHIP}
+      tsfFormName={FORM.ADD_STORAGE_FACILITY}
     >
       <TailingsSummaryPage />
     </TailingsProvider>

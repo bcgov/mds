@@ -21,6 +21,7 @@ import { getTsf } from "@common/selectors/tailingsSelectors";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import BasicInformation from "@common/components/tailings/BasicInformation";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import EngineerOfRecord from "@common/components/tailings/EngineerOfRecord";
 import { renderConfig } from "@/components/common/config";
 import Loading from "@/components/common/Loading";
 import * as FORM from "@/constants/forms";
@@ -110,7 +111,7 @@ export const TailingsSummaryPage = (props) => {
             <BasicInformation viewOnly renderConfig={renderConfig} />
           </Step>
           <Step key="engineer-of-record">
-            <div>eor</div>
+            <EngineerOfRecord />
           </Step>
           <Step key="qualified-person">
             <div>qfp</div>
