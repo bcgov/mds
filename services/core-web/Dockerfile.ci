@@ -1,12 +1,5 @@
 FROM node:14.8.0 as builder
 
-# ENV Setup 
-
-# RUN npm i -g corepack
-# RUN npm i -g yarn
-# RUN yarn set version 3.2.4
-
-
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
@@ -16,6 +9,9 @@ COPY . .
 
 # Install Dependencies
 RUN yarn
+
+# Build Common Package
+RUN yarn workspace @mds/common build
 
 # Build Core Web Only
 RUN yarn workspace @mds/core-web build
