@@ -58,15 +58,11 @@ class Validator {
   }
 
   checkPostalCode(code, country = "CAN") {
-    switch (country) {
-      case "CAN":
-        return this.CAN_POSTAL_CODE_REGEX.test(code);
-      case "USA":
-        return this.US_POSTAL_CODE_REGEX.test(code);
-      default:
-        // international/not entered
-        return true;
-    }
+    if (country === "USA") {
+      return this.US_POSTAL_CODE_REGEX.test(code);
+    } 
+      return this.CAN_POSTAL_CODE_REGEX.test(code);
+    
   }
 
   checkCurrency(number) {
@@ -137,7 +133,7 @@ export const postalCode = (value, allValues, formProps) => {
   const { sub_division_code } = allValues;
   const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
     ?.subType;
-  return value && country && !Validate.checkPostalCode(value, country)
+  return value && !Validate.checkPostalCode(value, country)
     ? "Invalid postal code or zip code"
     : undefined;
 };

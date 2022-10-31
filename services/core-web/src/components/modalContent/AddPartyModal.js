@@ -85,10 +85,10 @@ export class AddPartyModal extends Component {
     event.preventDefault();
     this.setState({ submitting: true });
     const party_type_code = this.state.isPerson ? "PER" : "ORG";
-    const selectedProvince = this.props.provinceOptions.find(
-      (prov) => prov.value === this.props.addPartyFormValues.sub_division_code
-    );
-    const address_type_code = selectedProvince.subType;
+    const address_type_code =
+      this.props.provinceOptions.find(
+        (prov) => prov.value === this.props.addPartyFormValues.sub_division_code
+      )?.subType ?? "";
     const payload = { party_type_code, address_type_code, ...this.props.addPartyFormValues };
     const party = await this.props
       .createParty(payload)
