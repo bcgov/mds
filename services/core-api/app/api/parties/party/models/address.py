@@ -35,7 +35,8 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             'address_line_2': self.address_line_2,
             'city': self.city,
             'sub_division_code': self.sub_division_code,
-            'post_code': self.post_code
+            'post_code': self.post_code,
+            'address_type_code': self.address_type_code
         }
 
     @hybrid_property
@@ -57,6 +58,8 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
                 full += f' {self.sub_division_code}'
             if self.post_code:
                 full += f' {self.post_code}'
+            if self.address_type_code:
+                full += f' {self.address_type_code}'
 
         return full.strip()
 
@@ -68,6 +71,7 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
                city=None,
                sub_division_code=None,
                post_code=None,
+               address_type_code=None,
                add_to_session=True):
         address = cls(
             suite_no=suite_no,
@@ -75,18 +79,23 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             address_line_2=address_line_2,
             city=city,
             sub_division_code=sub_division_code,
-            post_code=post_code)
+            post_code=post_code,
+            address_type_code=address_type_code)
         if add_to_session:
             address.save(commit=False)
         return address
 
-    @validates('post_code')
-    def validate_post_code(self, key, post_code):
-        if post_code and len(post_code) > 6:
-            raise AssertionError('post_code must not exceed 6 characters.')
-        validPostalCode = re.compile(
-            r"(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)"
-        )
-        if post_code and not validPostalCode.match(post_code):
-            raise AssertionError('Invalid post_code format.')
-        return post_code
+    # will be called for both fields, in the order defined in model, 1st call will be missing 2nd value
+    @validates('post_code', 'address_type_code')
+    def validate_address_code(self, key, value):
+        if key == 'address_type_code':
+            maxLength = 6
+            validPostalCode = re.compile(r"(^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\d[ABCEGHJ-NPRSTV-Z]\d$)")
+            if value == 'USA':
+                maxLength = 10
+                validPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
+            if len(value) > maxLength:
+                raise AssertionError(f'post_code must not exceed {maxLength} characters.')
+            if not validPostalCode.match(self.post_code):
+                raise AssertionError(f'Invalid post_code format.')
+        return value
