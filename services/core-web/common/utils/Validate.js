@@ -60,9 +60,8 @@ class Validator {
   checkPostalCode(code, country = "CAN") {
     if (country === "USA") {
       return this.US_POSTAL_CODE_REGEX.test(code);
-    } 
-      return this.CAN_POSTAL_CODE_REGEX.test(code);
-    
+    }
+    return this.CAN_POSTAL_CODE_REGEX.test(code);
   }
 
   checkCurrency(number) {
