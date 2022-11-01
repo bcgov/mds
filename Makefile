@@ -52,13 +52,14 @@ testbe:
 testbe_folder:
 	@echo "+\n++ Running $f tests in backend container ...\n+"
 	@docker-compose $(DC_FILE) exec backend pytest -s --disable-warnings tests/$f
+
 testfe:
 	@echo "+\n++ Running tests in frontend container ...\n+"
-	@docker-compose $(DC_FILE) exec frontend npm run test
+	@docker-compose $(DC_FILE) exec frontend yarn test
 
 testms:
 	@echo "+\n++ Running tests in minespace container ...\n+"
-	@docker-compose $(DC_FILE) exec minespace npm run test
+	@docker-compose $(DC_FILE) exec minespace yarn test
 
 ms:
 	@echo "+\n++ Building minespace ...\n+"
@@ -73,7 +74,7 @@ fe:
 	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
 	@docker-compose $(DC_FILE) rm -f -v -s frontend
 	@rm -rf ./services/core-web/node_modules/
-	@cd ./services/core-web/; npm i; npm run serve; cd ..
+	@cd ./services/core-web/; yarn; yarn serve; cd ..
 
 db:
 	@echo "+\n++ Performing postgres build ...\n+"

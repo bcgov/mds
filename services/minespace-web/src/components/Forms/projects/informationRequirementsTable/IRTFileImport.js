@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { Alert, Typography, Row, Col } from "antd";
 import { Form } from "@ant-design/compatible";
 import { remove } from "lodash";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import {
   createInformationRequirementsTable,

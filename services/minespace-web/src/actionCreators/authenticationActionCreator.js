@@ -2,7 +2,7 @@ import axios from "axios";
 import { notification } from "antd";
 import jwt from "jsonwebtoken";
 import queryString from "query-string";
-import * as COMMON_ENV from "@common/constants/environment";
+import * as COMMON_ENV from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";

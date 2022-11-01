@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
+import { setupEnvironment, setupKeycloak, ENVIRONMENT, KEYCLOAK } from "@mds/common";
 import { DEFAULT_ENVIRONMENT } from "@/constants/environment";
 
 export default function fetchEnv() {
@@ -15,20 +15,25 @@ export default function fetchEnv() {
     })
     .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
-      ENVIRONMENT.apiUrl = env.apiUrl;
-      ENVIRONMENT.docManUrl = env.docManUrl;
-      ENVIRONMENT.matomoUrl = env.matomoUrl;
-      ENVIRONMENT.filesystemProviderUrl = env.filesystemProviderUrl;
-      ENVIRONMENT.environment = env.environment;
+      setupEnvironment(
+        env.apiUrl,
+        env.docManUrl,
+        env.filesystemProviderUrl,
+        env.matomoUrl,
+        env.environment
+      );
 
-      KEYCLOAK.clientId = env.keycloak_clientId;
-      KEYCLOAK.bceid_idpHint = env.keycloak_bceid_idpHint;
-      KEYCLOAK.vcauthn_idpHint = env.keycloak_vcauthn_idpHint;
-      KEYCLOAK.resource = env.keycloak_resource;
-      KEYCLOAK.siteMinderLogoutURL = `${env.siteminder_url}/clp-cgi/logoff.cgi?returl=`;
-      KEYCLOAK.loginURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${env.vcauthn_pres_req_conf_id}&client_id=${env.keycloak_clientId}&redirect_uri=`;
-      KEYCLOAK.keycloakLogoutURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
-      KEYCLOAK.tokenURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/token`;
-      KEYCLOAK.userInfoURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/userinfo`;
+      setupKeycloak(
+        env.keycloak_clientId,
+        env.keycloak_resource,
+        env.keycloak_url,
+        env.keycloak_idir_idpHint,
+        env.keycloak_bceid_idpHint,
+        env.keycloak_vcauthn_idpHint,
+        env.vcauthn_pres_req_conf_id,
+        env.siteminder_url
+      );
+
+      console.log("MS", ENVIRONMENT, KEYCLOAK);
     });
 }

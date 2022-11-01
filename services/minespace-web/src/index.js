@@ -6,7 +6,7 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import App from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";

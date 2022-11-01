@@ -11,7 +11,7 @@ import {
   HourglassOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import { cleanFilePondFile } from "@common/utils/helpers";
 import { getProject, getRequirements } from "@common/selectors/projectSelectors";

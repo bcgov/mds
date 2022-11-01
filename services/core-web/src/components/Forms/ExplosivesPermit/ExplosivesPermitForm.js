@@ -7,7 +7,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {
   required,

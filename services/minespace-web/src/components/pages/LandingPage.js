@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Row, Col, Card, Button, Typography } from "antd";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
-import * as COMMON_ENV from "@common/constants/environment";
+import * as COMMON_ENV from "@mds/common";
 // Uncomment when image is re-introduced
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";

@@ -2,7 +2,7 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { searchOrgBook, fetchOrgBookCredential } from "@common/actionCreators/orgbookActionCreator";
 import * as genericActions from "@common/actions/genericActions";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import * as MOCK from "../mocks/dataMocks";
 

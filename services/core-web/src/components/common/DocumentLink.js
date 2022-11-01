@@ -9,7 +9,7 @@ import { truncateFilename } from "@common/utils/helpers";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
