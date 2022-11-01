@@ -296,6 +296,7 @@ MINE_REPORT_SUBMISSION_STATUS = api.model(
 
 MINE_PARTY_APPT_PARTY = api.model(
     'MinePartyAppointment', {
+        'update_timestamp': fields.DateTime,
         'mine_party_appt_guid': fields.String,
         'mine_guid': fields.String,
         'party_guid': fields.String,

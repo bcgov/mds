@@ -20,6 +20,8 @@ export const TailingsSummaryPageWrapper = () => {
       renderConfig={renderConfig}
       addContactModalConfig={modalConfig.ADD_PARTY_RELATIONSHIP}
       tsfFormName={FORM.ADD_STORAGE_FACILITY}
+      showUpdateTimestamp
+      canAssignEor={false}
     >
       <TailingsSummaryPage />
     </TailingsProvider>

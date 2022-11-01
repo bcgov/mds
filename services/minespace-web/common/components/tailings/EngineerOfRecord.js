@@ -17,7 +17,7 @@ import {
   dateInFuture,
   validateDateRanges,
 } from "@common/utils/Validate";
-import { truncateFilename } from "@common/utils/helpers";
+import { truncateFilename, formatDateTime } from "@common/utils/helpers";
 import { PDF } from "@common/constants/fileTypes";
 
 import moment from "moment";
@@ -58,9 +58,14 @@ const columns = (LinkButton) => [
 export const EngineerOfRecord = (props) => {
   const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading } = props;
 
-  const { renderConfig, components, addContactModalConfig, tsfFormName } = useContext(
-    TailingsContext
-  );
+  const {
+    renderConfig,
+    components,
+    addContactModalConfig,
+    tsfFormName,
+    showUpdateTimestamp,
+    canAssignEor,
+  } = useContext(TailingsContext);
 
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
 
@@ -153,35 +158,51 @@ export const EngineerOfRecord = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Popconfirm
-          style={{ maxWidth: "150px" }}
-          placement="top"
-          title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={openCreateEORModal}
-        >
-          <Button style={{ display: "inline", float: "right" }} type="primary">
-            <PlusCircleFilled />
-            Assign a new Engineer of Record
-          </Button>
-        </Popconfirm>
+        <Row type="flex" justify="space-between">
+          <Typography.Title level={3}>Engineer of Record</Typography.Title>
 
-        <Typography.Title level={3}>Engineer of Record</Typography.Title>
+          <Col span={12}>
+            <Row type="flex" justify="end">
+              {canAssignEor && (
+                <Popconfirm
+                  style={{ maxWidth: "150px" }}
+                  placement="top"
+                  title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={openCreateEORModal}
+                >
+                  <Button style={{ display: "inline", float: "right" }} type="primary">
+                    <PlusCircleFilled />
+                    Assign a new Engineer of Record
+                  </Button>
+                </Popconfirm>
+              )}
+              {showUpdateTimestamp && formValues?.engineer_of_record?.update_timestamp && (
+                <Typography.Paragraph style={{ textAlign: "right" }}>
+                  <b>Last Updated</b>
+                  <br />
+                  {formatDateTime(formValues.engineer_of_record.update_timestamp)}
+                </Typography.Paragraph>
+              )}
+            </Row>
+          </Col>
+        </Row>
 
-        {formValues?.engineer_of_record?.party_guid ? (
-          <Alert
-            description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
-            showIcon
-            type="info"
-          />
-        ) : (
-          <Alert
-            description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new EoR. A notification will be sent to the Ministry whereby their acknowledgment is required before the EoR is considered Active."
-            showIcon
-            type="info"
-          />
-        )}
+        {canAssignEor &&
+          (formValues?.engineer_of_record?.party_guid ? (
+            <Alert
+              description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
+              showIcon
+              type="info"
+            />
+          ) : (
+            <Alert
+              description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new EoR. A notification will be sent to the Ministry whereby their acknowledgment is required before the EoR is considered Active."
+              showIcon
+              type="info"
+            />
+          ))}
 
         {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
           <Alert
