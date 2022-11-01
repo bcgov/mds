@@ -30,7 +30,7 @@ jobs:
       #   continue-on-error: true
       - name: Build n Tag
         run: |
-          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} . -f ${{ env.CONTEXT }}Dockerfile.ci
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
       - name: Push
