@@ -215,6 +215,7 @@ const MineTailingsTable = (props) => {
       dataSource={transformRowData(props.tailings)}
       columns={columns}
       tableProps={{
+        className: 'tailings-table',
         align: "center",
         pagination: false,
         expandable: IN_PROD() ? null : { expandedRowRender },
