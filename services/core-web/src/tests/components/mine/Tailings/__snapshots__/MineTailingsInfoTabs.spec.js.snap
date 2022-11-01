@@ -42,7 +42,7 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
             </AddButton>
           </Connect(AuthorizationWrapper)>
         </div>
-        <Connect(MineTailingsTable)
+        <withRouter(Connect(MineTailingsTable))
           handleEditTailings={[Function]}
           isLoaded={false}
           openEditTailingsModal={[Function]}

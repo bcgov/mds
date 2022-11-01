@@ -315,6 +315,7 @@ MINE_TSF_MODEL = api.model(
         'longitude': fields.Fixed(decimals=7),
         'consequence_classification_status_code': fields.String,
         'itrb_exemption_status_code': fields.String,
+        'update_timestamp': fields.DateTime,
         'tsf_operating_status_code': fields.String,
         'notes': fields.String,
         'facility_type': fields.String,

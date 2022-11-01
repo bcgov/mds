@@ -1,32 +1,34 @@
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { EyeOutlined } from "@ant-design/icons";
 import { Button, Tooltip, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
   EMPTY_FIELD,
 } from "@common/constants/strings";
-import React, { useState } from "react";
+import { getHighestConsequence } from "@common/utils/helpers";
 import {
-  getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
   openEditTailingsModal: PropTypes.func.isRequired,
   handleEditTailings: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {};
@@ -34,7 +36,6 @@ const defaultProps = {};
 const MineTailingsTable = (props) => {
   const {
     TSFOperatingStatusCodeHash,
-    consequenceClassificationStatusCodeHash,
     itrmExemptionStatusCodeHash,
     openEditTailingsModal,
     handleEditTailings,
@@ -74,11 +75,7 @@ const MineTailingsTable = (props) => {
     {
       title: "Consequence Classification",
       dataIndex: "consequence_classification_status_code",
-      render: (text) => (
-        <div title="Consequence Classification">
-          {consequenceClassificationStatusCodeHash[text] || EMPTY_FIELD}
-        </div>
-      ),
+      render: (text, record) => <Typography.Text>{getHighestConsequence(record)}</Typography.Text>,
     },
     {
       title: "Independent Tailings Review Board",
@@ -121,6 +118,7 @@ const MineTailingsTable = (props) => {
     {
       key: "operations",
       title: "Actions",
+      fixed: "right",
       render: (text, record) => {
         return (
           <div align="right">
@@ -133,6 +131,24 @@ const MineTailingsTable = (props) => {
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
               </Button>
+
+              {!IN_PROD() && (
+                <Button
+                  type="primary"
+                  size="small"
+                  ghost
+                  onClick={() =>
+                    props.history.push(
+                      router.MINE_TAILINGS_DETAILS.dynamicRoute(
+                        record.mine_guid,
+                        record.mine_tailings_storage_facility_guid
+                      )
+                    )
+                  }
+                >
+                  <EyeOutlined className="icon-lg icon-svg-filter" />
+                </Button>
+              )}
             </AuthorizationWrapper>
           </div>
         );
@@ -161,6 +177,7 @@ const MineTailingsTable = (props) => {
       },
       {
         title: "",
+        fixed: "right",
         dataIndex: "edit",
         render: () => {
           return (
@@ -218,8 +235,7 @@ MineTailingsTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
-  consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
-export default connect(mapStateToProps)(MineTailingsTable);
+export default withRouter(connect(mapStateToProps)(MineTailingsTable));

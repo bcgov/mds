@@ -1,0 +1,56 @@
+.stepped-form-menu-container {
+    position: relative;
+    padding-right: 10px;
+    border-right: 1px solid #949494;
+}
+
+.stepped-form {
+    position: sticky;
+    top: 90px;
+    border-right: unset;
+}
+
+.stepped-form .ant-menu-item::after {
+    border-right: unset !important;
+}
+
+.stepped-form>.ant-menu-item-selected {
+    border-left: 4px solid $gov-blue;
+    background-color: #FFFFFF !important;
+    border-right: unset !important;
+}
+
+.stepped-menu-item {
+    transition: all .1s ease-in-out;
+    color: $violet;
+    // text-decoration: underline;
+}
+
+.stepped-menu-item:hover {
+    background-color: $violet !important;
+    color: $white;
+}
+
+.stepped-form-form-container {
+    margin: 0 24px;
+}
+
+.draft-button,
+.draft-button:active {
+    border: none;
+    background-color: #FFFFFF;
+    transition: 0.3s ease-in-out;
+}
+
+.draft-button>span {
+    font-size: 14px;
+    color: $violet;
+    text-decoration: underline;
+    transition: all .3s ease-in-out;
+}
+
+.draft-button:hover {
+    color: #000;
+    background-color: #FFFFFF;
+    border: none;
+}

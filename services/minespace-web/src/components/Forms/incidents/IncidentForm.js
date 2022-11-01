@@ -711,7 +711,7 @@ const renderMinistryFollowUp = (props, formDisabled) => (
   </Row>
 );
 
-const IncidentForm = (props) => {
+export const IncidentForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {

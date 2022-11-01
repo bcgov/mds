@@ -1,10 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { BasicInformation } from "@/components/Forms/tailing/tailingsStorageFacility/BasicInformation";
+import { BasicInformation } from "@common/components/tailings/BasicInformation";
+import { renderConfig } from "@/components/common/config";
 
 const dispatchProps = {};
 const props = {
   permits: [{}],
+  renderConfig,
 };
 
 const setupDispatchProps = () => {};

@@ -7,6 +7,8 @@ import { getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form"
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import Step from "@common/components/Step";
+import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getDam } from "@common/selectors/damSelectors";
@@ -14,8 +16,6 @@ import { getTsf } from "@common/selectors/tailingsSelectors";
 import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
-import SteppedForm from "@/components/common/SteppedForm";
-import Step from "@/components/common/Step";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
