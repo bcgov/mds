@@ -52,3 +52,5 @@ gitops/tenant-gitops-4c2ba9
 .yarn/install-state.gz
 #/.pnp.*
 .yarn/yarn.build.json
+
+.yarn/.DS_Store
