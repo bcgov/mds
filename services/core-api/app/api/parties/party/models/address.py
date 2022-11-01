@@ -94,7 +94,7 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             if value == 'USA':
                 maxLength = 10
                 validPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
-            if len(value) > maxLength:
+            if len(self.post_code) > maxLength:
                 raise AssertionError(f'post_code must not exceed {maxLength} characters.')
             if not validPostalCode.match(self.post_code):
                 raise AssertionError(f'Invalid post_code format.')
