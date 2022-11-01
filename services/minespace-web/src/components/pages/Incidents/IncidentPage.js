@@ -528,15 +528,17 @@ export class IncidentPage extends Component {
       isFinalReviewStage
     );
 
-    let headerClasses = "";
+    let headerDivProps = {};
     if (isFinalReviewStage) {
-      headerClasses = this.state.fixedTop ? "padding-lg view--header fixed-scroll" : "view--header";
+      headerDivProps = this.state.fixedTop
+        ? { className: "padding-lg view--header fixed-scroll" }
+        : { className: "view--header" };
     }
 
     return (
       (this.state.isLoaded && (
         <>
-          <div className={headerClasses}>
+          <div {...headerDivProps}>
             <Row>
               <Col span={24}>
                 <Typography.Title>{title}</Typography.Title>
