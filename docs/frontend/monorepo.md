@@ -22,8 +22,9 @@ So for the first cut of upgrades, only the local development on the host machine
 
 Nothing huge has changed, but here is a quick explanation on how to work with yarn monorepo. 
 
-1. Delete any existing `node_modules` in minespace, core-web, root of the repo etc.
-2. Run `yarn` command on the root of the repo. This will use the monorepo `yarn.lock` to install dependencies. Any new dependencies you want to add use yarn workspaces command
-3.  Running `yarn` on the root of the repo will hoist `node_modules` to the root of the repo with very few dependencies inside the services folders. 
-4.  Open a new terminal, run `cd services/common` and run `yarn watch`. This will watch any changes to the common package. 
-5.  Open new terminals for `minespace` and `core-web` respectively and run `yarn serve` for local development.
+1. Run `make be` instead of `make lite` - This spins up all backend dependencies. 
+2. Delete any existing `node_modules` in minespace, core-web, root of the repo etc.
+3. Run `yarn` command on the root of the repo. This will use the monorepo `yarn.lock` to install dependencies. Any new dependencies you want to add use yarn workspaces command
+4.  Running `yarn` on the root of the repo will hoist `node_modules` to the root of the repo with very few dependencies inside the services folders. 
+5.  Open a new terminal, run `cd services/common` and run `yarn watch`. This will watch any changes to the common package. 
+6.  Open new terminals for `minespace` and `core-web` respectively and run `yarn serve` for local development.
