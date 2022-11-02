@@ -28,8 +28,8 @@ const propTypes = {
 };
 
 const DamForm = (props) => {
-  const history = useHistory();
   const { tsf } = props;
+  const history = useHistory();
   const { tailingsStorageFacilityGuid, mineGuid } = useParams();
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
