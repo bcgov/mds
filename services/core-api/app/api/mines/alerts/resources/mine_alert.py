@@ -1,6 +1,6 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
-from datetime import timedelta
+from datetime import timedelta, datetime as dt, timezone
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import api
@@ -58,6 +58,9 @@ class MineAlertListResource(Resource, UserMixin):
 
         if len(historic_alerts) > 0:
             raise BadRequest('Start date cannot come before a historic alert. Please check history for more details.')
+
+        if active_alert and data.get('start_date') >= dt.now(tz=timezone.utc):
+            raise BadRequest('Cannot create an alert with a start date in the future with an existing active alert.')
 
         try:
             if active_alert_indefinite:

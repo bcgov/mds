@@ -61,6 +61,26 @@ class TestPostMineAlerts:
         assert post_data['contact_phone'] == new_alert_data.get('contact_phone')
         assert post_data['message'] == new_alert_data.get('message')
 
+    def test_post_mine_alert_future_alert_with_active_invalid(self, test_client, db_session, auth_headers):
+        """Should return a 400 when providing a start date in the future when an active alert is present on the mine"""
+
+        mine = MineFactory(minimal=True)
+        MineAlertFactory(mine=mine)
+        start_date = (datetime.now(tz=timezone.utc) + timedelta(days=5)).strftime('%Y-%m-%dT%H:%M:%S%z')
+        new_alert_data = {
+            'start_date': start_date,
+            'contact_name': 'Test Man',
+            'contact_phone': '111-111-1111',
+            'message': 'This is a test alert for this test mine!'
+        }
+
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/alerts', headers=auth_headers['full_auth_header'], json=new_alert_data)
+        post_data = json.loads(post_resp.data.decode())
+
+        assert post_resp.status_code == 400, post_resp.response
+        assert 'Cannot create an alert with a start date in the future with an existing active alert.' in post_data['message']
+
     def test_post_mine_alert_invalid_body(self, test_client, db_session, auth_headers):
         """Should return a 400 when providing an invalid request body"""
 
@@ -84,17 +104,3 @@ class TestPostMineAlerts:
 
         assert post_resp.status_code == 400, post_resp.response
         assert 'Start date cannot come before a historic alert. Please check history for more details.' in post_data['message']
-
-    def test_post_mine_alert_date_overlap_invalid(self, test_client, db_session, auth_headers):
-        """Should return a 400 when providing a start/end date that overlaps an existing alert date range"""
-
-        mine = MineFactory(minimal=True)
-        MineAlertFactory(mine=mine, set_end_date=True)
-        invalid_start_date = (self.FACTORY_DEFAULT_START_DATE + timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%S%z')
-        data = {'start_date': invalid_start_date, 'contact_name': 'Test Man', 'contact_phone': '111-111-1111', 'message': 'This is a test alert for this test mine!'}
-        post_resp = test_client.post(
-            f'/mines/{mine.mine_guid}/alerts', headers=auth_headers['full_auth_header'], json=data)
-        post_data = json.loads(post_resp.data.decode())
-
-        assert post_resp.status_code == 400, post_resp.response
-        assert 'Start/end date cannot overlap with an existing alert on this mine. Please check history for more details.' in post_data['message']
