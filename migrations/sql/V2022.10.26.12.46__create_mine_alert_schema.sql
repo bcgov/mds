@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS mine_alert (
   update_user             character varying(60)                    NOT NULL,
   update_timestamp        timestamp with time zone DEFAULT now()   NOT NULL,
   deleted_ind             boolean DEFAULT false                    NOT NULL,
+  is_active               boolean DEFAULT true                     NOT NULL,
 
   CONSTRAINT mine_alert_id UNIQUE (mine_alert_id),
   CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,

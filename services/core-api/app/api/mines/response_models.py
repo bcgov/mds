@@ -485,6 +485,7 @@ MINE_ALERT_MODEL = api.model(
         'contact_name': fields.String,
         'contact_phone': fields.String,
         'message': fields.String,
+        'is_active': fields.String,
         'create_user': fields.String,
         'create_timestamp': fields.DateTime,
         'update_user': fields.String,
