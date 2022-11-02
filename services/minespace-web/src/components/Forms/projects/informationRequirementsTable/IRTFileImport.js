@@ -14,9 +14,9 @@ import {
   updateInformationRequirementsTableByFile,
 } from "@common/actionCreators/projectActionCreator";
 import { getProject } from "@common/selectors/projectSelectors";
+import { MODERN_EXCEL } from "@common/constants/fileTypes";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/LinkButton";
-import { MODERN_EXCEL } from "@/constants/fileTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";

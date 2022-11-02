@@ -14,10 +14,10 @@ import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@common/constants/strings";
 import { resetForm } from "@common/utils/helpers";
+import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@common/constants/fileTypes";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@/constants/fileTypes";
 import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";

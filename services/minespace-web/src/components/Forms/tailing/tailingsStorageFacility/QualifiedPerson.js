@@ -15,7 +15,7 @@ import {
   dateInFuture,
   validateDateRanges,
 } from "@common/utils/Validate";
-import ContactDetails from "@/components/common/ContactDetails";
+import ContactDetails from "@common/components/ContactDetails";
 import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
 import { modalConfig } from "@/components/modalContent/config";
 import { renderConfig } from "@/components/common/config";
