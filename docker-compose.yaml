@@ -68,6 +68,7 @@ services:
       - document_manager_backend
       - tusd
       - filesystem_provider
+      - docgen-api
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s

@@ -38,6 +38,7 @@ exports[`TailingsTable renders properly 1`] = `
     }
     openEditTailingsModal={[MockFunction]}
     storeDam={[MockFunction]}
+    storeTsf={[MockFunction]}
     tailings={
       Array [
         Object {

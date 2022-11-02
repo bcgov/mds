@@ -3,9 +3,9 @@ import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 import ReactIframeResizer from "react-iframe-resizer-super";
+import { PageTracker } from "@common/utils/trackers";
 import SearchBar from "@/components/search/SearchBar";
 import { BACKGROUND, HSRC_PDF, MEMP_PDF } from "@/constants/assets";
-import { PageTracker } from "@common/utils/trackers";
 
 const iframeResizerOptions = { checkOrigin: false };
 

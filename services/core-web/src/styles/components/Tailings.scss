@@ -1,0 +1,21 @@
+.tailings-table-expanded-row > td {
+  padding-left: 106px !important;
+}
+
+.tailings-table-expanded-row thead {
+  background-color: #F2F2F2;
+  color: #000;
+}
+
+.tailings-table-expanded-row thead th, .tailings-table thead th {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  font-weight: 700;
+  border-bottom: 1px solid #B7B7B7;
+  color: #494949;
+  text-decoration: none;
+}
+
+.tailings-nested-table tr:nth-child(2n) td {
+  background-color: #F9F9F9;
+}

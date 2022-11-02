@@ -2,7 +2,6 @@
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   environment: "development",
-  firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
@@ -11,7 +10,6 @@ export const DEFAULT_ENVIRONMENT = {
 
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
-  firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };
 
@@ -36,4 +34,3 @@ export const USER_ROLES = {
   role_edit_variances: "core_edit_variances",
   role_close_permits: "core_close_permits",
 };
-

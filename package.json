@@ -1,0 +1,16 @@
+{
+  "name": "mds",
+  "packageManager": "yarn@3.2.4",
+  "private": true,
+  "description": "Mines Digital Services Packages",
+  "engines": {
+    "node": "=14.8.1"
+  },
+  "workspaces": {
+    "packages": [
+      "services/core-web",
+      "services/minespace-web",
+      "services/common"
+    ]
+  }
+}

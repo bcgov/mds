@@ -1,10 +1,12 @@
 // environment config variables for test/dev/prod
+
+export const FIRST_NATIONS_LAYER_URL = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov";
+
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
-  firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
@@ -17,7 +19,6 @@ export const ENVIRONMENT = {
   docManUrl: "<DOCUMENT_MANAGER_URL>",
   matomoUrl: "<MATOMO_URL>",
   filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
-  firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };
 

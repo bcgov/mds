@@ -1,6 +1,6 @@
 # MineSpace
 
-The project uses a [Node.js (v10)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
+The project uses a [Node.js (v14)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
 
 ## Module and Library dependencies
 
@@ -74,18 +74,18 @@ Follow the `.env-example` template to create an `.env` file with valid values be
 
 A. OS Level Installation
 
-- [Node.js 8](https://nodejs.org/en/download/)
+- [Node.js 14](https://nodejs.org/en/download/)
 
 1. Install package dependencies
 
 ```
-npm ci
+yarn
 ```
 
 2. Run the application
 
 ```
-npm run serve
+yarn serve
 ```
 
 B. Using a docker container

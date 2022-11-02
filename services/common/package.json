@@ -1,0 +1,48 @@
+{
+  "name": "@mds/common",
+  "version": "0.1.0",
+  "description": "Common library for MDS Frontend",
+  "private": true,
+  "homepage": "${BASE_PATH}/",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack --env production",
+    "watch": "webpack --watch --watch-poll --hot --env development"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.15.3",
+    "@babel/runtime-corejs3": "7.15.3",
+    "query-string": "5.1.1",
+    "react": "16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.15.0",
+    "@babel/plugin-proposal-class-properties": "7.14.5",
+    "@babel/plugin-transform-runtime": "7.15.0",
+    "@babel/preset-env": "7.15.0",
+    "@babel/preset-react": "7.14.5",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "24.9.0",
+    "babel-loader": "8.2.2",
+    "babel-plugin-import": "1.13.3",
+    "babel-preset-stage-2": "6.24.1",
+    "clean-webpack-plugin": "3.0.0",
+    "copy-webpack-plugin": "5.1.1",
+    "hard-source-webpack-plugin": "0.13.1",
+    "html-webpack-plugin": "3.2.0",
+    "image-webpack-loader": "5.0.0",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "postcss-loader": "3.0.0",
+    "prettier": "1.19.1",
+    "react-hot-loader": "4.12.21",
+    "style-loader": "0.23.1",
+    "terser-webpack-plugin": "1.3.0",
+    "webpack": "4.41.5",
+    "webpack-cli": "3.3.10",
+    "webpack-dev-server": "3.11.0",
+    "webpack-manifest-plugin": "2.2.0",
+    "webpack-merge": "4.2.2",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

@@ -34,7 +34,7 @@ const transformRowData = (projects, mineCommodityHash) =>
     project_title: project.project_title,
     project_id: project.project_id,
     mrc_review_required: project.mrc_review_required ? "Yes" : "No",
-    mine_name: project.mine.mine_name,
+    mine_name: project.mine?.mine_name,
     project_stage: project.stage,
     status_code: project.status_code,
     guid: project.guid,

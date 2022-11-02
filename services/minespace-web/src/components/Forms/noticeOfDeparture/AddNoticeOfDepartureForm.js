@@ -15,8 +15,8 @@ import {
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE, NOD_TYPE_FIELD_VALUE } from "@common/constants/strings";
 import { compose } from "redux";
+import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
-import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -29,6 +29,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+};
+
+const renderContactsPropTypes = {
+  fields: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export const renderContacts = (props) => {
@@ -169,7 +173,7 @@ const AddNoticeOfDepartureForm = (props) => {
           <a
             href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             Click Here
           </a>
@@ -243,7 +247,7 @@ const AddNoticeOfDepartureForm = (props) => {
         </h4>
         <Typography.Text>
           Please upload your completed Self-assessment form (
-          <a href={NOTICE_OF_DEPARTURE_DOWNLOAD_LINK} target="_blank" rel="noreferrer">
+          <a href={NOTICE_OF_DEPARTURE_DOWNLOAD_LINK} target="_blank" rel="noopener noreferrer">
             click here to download
           </a>
           ) below. Remember your completed form must be signed by the Mine Manager and any
@@ -336,6 +340,7 @@ const AddNoticeOfDepartureForm = (props) => {
 };
 
 AddNoticeOfDepartureForm.propTypes = propTypes;
+renderContacts.propTypes = renderContactsPropTypes;
 
 export default compose(
   reduxForm({

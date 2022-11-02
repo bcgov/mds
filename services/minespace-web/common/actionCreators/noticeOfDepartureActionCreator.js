@@ -1,5 +1,6 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
+import { ENVIRONMENT } from "@mds/common";
 import { error, request, success } from "../actions/genericActions";
 import {
   CREATE_NOTICE_OF_DEPARTURE,
@@ -9,7 +10,6 @@ import {
   UPDATE_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
-import { ENVIRONMENT } from "../constants/environment";
 import {
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENTS,

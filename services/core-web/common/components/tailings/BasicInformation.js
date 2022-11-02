@@ -17,19 +17,27 @@ import {
   TSF_OPERATING_STATUS_CODE,
   CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
 } from "@common/constants/strings";
-import { renderConfig } from "@/components/common/config";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { getPermits } from "@common/selectors/permitSelectors";
+import { getTsf } from "@common/selectors/tailingsSelectors";
+import { formatDateTime } from "@common/utils/helpers";
 
 const propTypes = {
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  permits: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showUpdateTimestamp: PropTypes.bool.isRequired,
+  renderConfig: PropTypes.objectOf(PropTypes.any).isRequired,
+  tsf: PropTypes.objectOf(PropTypes.any).isRequired,
+  viewOnly: PropTypes.bool,
+};
+
+const defaultProps = {
+  viewOnly: false,
 };
 
 export const BasicInformation = (props) => {
   const [permitOptions, setPermitOptions] = useState([]);
-  const { permits } = props;
+  const { permits, renderConfig, viewOnly = false } = props;
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -43,12 +51,22 @@ export const BasicInformation = (props) => {
   }, [permits]);
   return (
     <>
-      <Typography.Title level={3}>Basic Information</Typography.Title>
+      <Row type="flex" justify="space-between">
+        <Typography.Title level={3}>Basic Information</Typography.Title>
+        {props.showUpdateTimestamp && props.tsf?.update_timestamp && (
+          <Typography.Paragraph style={{ textAlign: "right" }}>
+            <b>Last Updated</b>
+            <br />
+            {formatDateTime(props.tsf.update_timestamp)}
+          </Typography.Paragraph>
+        )}
+      </Row>
       <Field
         id="facility_type"
         name="facility_type"
         label="Facility Type"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         data={FACILITY_TYPES}
         validate={[requiredList, validateSelectOptions(FACILITY_TYPES)]}
       />
@@ -57,6 +75,7 @@ export const BasicInformation = (props) => {
         id="mines_act_permit_no"
         name="mines_act_permit_no"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         validate={[requiredList, validateSelectOptions(permitOptions)]}
         data={permitOptions}
       />
@@ -65,6 +84,7 @@ export const BasicInformation = (props) => {
         name="tailings_storage_facility_type"
         label="Tailings Storage Facility Type"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         validate={[requiredList, validateSelectOptions(TSF_TYPES)]}
         data={TSF_TYPES}
       />
@@ -73,6 +93,7 @@ export const BasicInformation = (props) => {
         name="storage_location"
         label="Underground or Above Ground?"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         data={STORAGE_LOCATION}
         validate={[requiredList, validateSelectOptions(STORAGE_LOCATION)]}
       />
@@ -81,6 +102,7 @@ export const BasicInformation = (props) => {
         name="mine_tailings_storage_facility_name"
         label="Facility Name"
         component={renderConfig.FIELD}
+        disabled={viewOnly}
         validate={[maxLength(60), required]}
       />
       <Row gutter={16}>
@@ -90,6 +112,7 @@ export const BasicInformation = (props) => {
             name="latitude"
             label="Latitude"
             component={renderConfig.FIELD}
+            disabled={viewOnly}
             validate={[lat, required]}
           />
         </Col>
@@ -99,6 +122,7 @@ export const BasicInformation = (props) => {
             name="longitude"
             label="Longitude"
             component={renderConfig.FIELD}
+            disabled={viewOnly}
             validate={[lon, required]}
           />
         </Col>
@@ -108,6 +132,7 @@ export const BasicInformation = (props) => {
         name="consequence_classification_status_code"
         label="Consequence Classification"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
         validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
       />
@@ -117,6 +142,7 @@ export const BasicInformation = (props) => {
         label="Operating Status"
         data={TSF_OPERATING_STATUS_CODE}
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         validate={[requiredList, validateSelectOptions(TSF_OPERATING_STATUS_CODE)]}
       />
       <Field
@@ -124,6 +150,7 @@ export const BasicInformation = (props) => {
         name="itrb_exemption_status_code"
         label="Independent Tailings Review Board Member"
         component={renderConfig.SELECT}
+        disabled={viewOnly}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         validate={[maxLength(300), required]}
       />
@@ -132,9 +159,11 @@ export const BasicInformation = (props) => {
 };
 
 BasicInformation.propTypes = propTypes;
+BasicInformation.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
+  tsf: getTsf(state),
 });
 
 export default connect(mapStateToProps)(BasicInformation);

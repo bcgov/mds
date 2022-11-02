@@ -9,7 +9,9 @@ import moment from "moment";
 class Validator {
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
 
-  CAN_POSTAL_CODE_REGEX = /(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)/;
+  CAN_POSTAL_CODE_REGEX = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\d[ABCEGHJ-NPRSTV-Z]\d$/;
+
+  US_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)/;
 
   EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
@@ -55,7 +57,10 @@ class Validator {
     return this.EMAIL_REGEX.test(email);
   }
 
-  checkPostalCode(code) {
+  checkPostalCode(code, country = "CAN") {
+    if (country === "USA") {
+      return this.US_POSTAL_CODE_REGEX.test(code);
+    }
     return this.CAN_POSTAL_CODE_REGEX.test(code);
   }
 
@@ -123,8 +128,14 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
-export const postalCode = (value) =>
-  value && !Validate.checkPostalCode(value) ? "Invalid postal code or zip code" : undefined;
+export const postalCode = (value, allValues, formProps) => {
+  const { sub_division_code } = allValues;
+  const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
+    ?.subType;
+  return value && !Validate.checkPostalCode(value, country)
+    ? "Invalid postal code or zip code"
+    : undefined;
+};
 
 export const protocol = (value) =>
   value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;

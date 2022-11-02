@@ -1,18 +1,16 @@
-from decimal import Decimal
 from datetime import datetime, timezone
+from decimal import Decimal
+
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
-from app.extensions import api
-from app.api.utils.resources_mixins import UserMixin
-
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, TailingsStorageFacilityType, \
-    FacilityType, StorageLocation
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.response_models import MINE_TSF_MODEL
-
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, FacilityType
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.utils.access_decorators import requires_any_of, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api
 
 
 class MineTailingsStorageFacilityResource(Resource, UserMixin):
@@ -131,7 +129,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
         storage_location = data.get('storage_location')
         if storage_location != None:
-            setattr(mine_tsf, 'storage_locatin', storage_location)
+            setattr(mine_tsf, 'storage_location', storage_location)
 
         tailings_storage_facility_type = data.get('tailings_storage_facility_type')
         if tailings_storage_facility_type != None:

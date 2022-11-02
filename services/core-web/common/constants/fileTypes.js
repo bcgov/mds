@@ -57,4 +57,8 @@ export const UNIQUELY_SPATIAL = {
   ".wkt": APPLICATION_OCTET_STREAM,
 };
 
-export const SPATIAL = { ...UNIQUELY_SPATIAL, ".csv": "text/csv", ".xml": "application/xml" };
+export const SPATIAL = {
+  ...UNIQUELY_SPATIAL,
+  ".csv": "text/csv",
+  ".xml": "application/xml",
+};

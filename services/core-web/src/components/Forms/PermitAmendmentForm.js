@@ -21,7 +21,7 @@ import * as FORM from "@/constants/forms";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 
 const originalPermit = "OGP";
 
