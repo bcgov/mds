@@ -148,6 +148,7 @@ PAGINATED_PARTY_LIST = api.inherit('PartyList', PAGINATED_LIST, {
 SUB_DIVISION_CODE_MODEL = api.model(
     'SubDivisionCodeModel', {
         'sub_division_code': fields.String,
+        'address_type_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
         'active_ind': fields.Boolean

@@ -210,7 +210,7 @@ export const getDropdownCommodityOptions = createSelectorWrapper(
 export const getDropdownProvinceOptions = createSelectorWrapper(
   getProvinceOptions,
   createDropDownList,
-  ["sub_division_code", "sub_division_code", "active_ind"]
+  ["sub_division_code", "sub_division_code", "active_ind", "address_type_code"]
 );
 
 // no need for wrapper, does not have a 'active_ind'

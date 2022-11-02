@@ -80,6 +80,11 @@ class PartyListResource(Resource, UserMixin):
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
     parser.add_argument(
+        'address_type_code',
+        type=str,
+        store_missing=False,
+        help='The country where the party is located. Ex: CAN')
+    parser.add_argument(
         'job_title',
         type=str,
         store_missing=False,
@@ -190,7 +195,8 @@ class PartyListResource(Resource, UserMixin):
                 address_line_2=data.get('address_line_2'),
                 city=data.get('city'),
                 sub_division_code=data.get('sub_division_code'),
-                post_code=data.get('post_code'))
+                post_code=data.get('post_code'),
+                address_type_code=data.get('address_type_code'))
             party.address.append(address)
 
         party.save()
