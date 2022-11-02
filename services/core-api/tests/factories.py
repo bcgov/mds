@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from random import randrange
 import factory
 import factory.fuzzy
@@ -237,12 +237,15 @@ class MineAlertFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory')
+        set_end_date = factory.Trait(end_date=(datetime.now(tz=timezone.utc) + timedelta(days=10)))
+        set_inactive = factory.Trait(is_active=False)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     start_date = TODAY
     contact_name = factory.Faker('name')
     contact_phone = factory.Faker('numerify', text='###-###-####')
     message = factory.Faker('paragraph')
+    is_active = True
 
     end_date = None
 
