@@ -34,6 +34,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { MineAlert } from "@/components/mine/MineAlert";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -168,16 +169,18 @@ export class MineHeader extends Component {
 
     const mapRoute = this.props.mine.mine_location
       ? route.MINE_HOME_PAGE.mapRoute({
-          lat: this.props.mine.mine_location.latitude,
-          long: this.props.mine.mine_location.longitude,
-          zoom: String.HIGH_ZOOM,
-          mineName: this.props.mine.mine_name,
-        })
+        lat: this.props.mine.mine_location.latitude,
+        long: this.props.mine.mine_location.longitude,
+        zoom: String.HIGH_ZOOM,
+        mineName: this.props.mine.mine_name,
+      })
       : route.MINE_HOME_PAGE.mapRoute();
 
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
+          <MineAlert mine={this.props.mine} {...this.props} />
+          <br />
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>
@@ -236,8 +239,8 @@ export class MineHeader extends Component {
               <p>
                 {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
                   ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
-                      .map((tenure) => this.props.mineTenureHash[tenure])
-                      .join(", ")
+                    .map((tenure) => this.props.mineTenureHash[tenure])
+                    .join(", ")
                   : String.EMPTY_FIELD}
               </p>
             </div>
@@ -304,8 +307,8 @@ export class MineHeader extends Component {
                 <div>
                   {this.props.mine.exemption_fee_status_code
                     ? this.props.exemptionFeeStatusOptionsHash[
-                        this.props.mine.exemption_fee_status_code
-                      ]
+                    this.props.mine.exemption_fee_status_code
+                    ]
                     : String.EMPTY_FIELD}
                   {this.props.mine.exemption_fee_status_note && (
                     <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
