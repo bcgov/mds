@@ -314,3 +314,7 @@ export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";
 // Dams
 export const DAMS = () => `/dams`;
 export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");
+
+// Alerts
+export const MINE_ALERTS = (mine_guid) => `/mines/${mine_guid}/alerts`;
+export const MINE_ALERT =  (mine_guid, mine_alert_guid) => `/mines/${mine_guid}/alerts/${mine_alert_guid}`;

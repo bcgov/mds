@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+// import { getFormValues, getFormSyncErrors } from "redux-form";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { uniqBy } from "lodash";
@@ -12,6 +13,10 @@ import {
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
+  createMineAlert,
+  updateMineAlert,
+  fetchMineAlertByMine,
+  deleteMineAlert,
 } from "@common/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -34,6 +39,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import MineAlert from "@/components/mine/MineAlert";
+// import * as FORM from "@/constants/forms";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -65,6 +72,15 @@ const generateEmliInspectionMapperUrl = (lat, lng) => {
 };
 
 export class MineHeader extends Component {
+  // componentDidMount() {
+  //   this.fetchAlerts();
+  // }
+
+  // fetchAlerts() {
+  //   // this.setState({ loading: true });
+  //   return this.props.fetchMineAlertByMine(this.props.mine.mine_guid);
+  // }
+
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
@@ -178,6 +194,8 @@ export class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
+          <MineAlert mine={this.props.mine} />
+          <br />
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>
@@ -234,7 +252,7 @@ export class MineHeader extends Component {
             <p className="field-title">Tenure</p>
             <div>
               <p>
-                {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
+                {this.props.transformedMineTypes?.mine_tenure_type_code.length > 0
                   ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
                       .map((tenure) => this.props.mineTenureHash[tenure])
                       .join(", ")
@@ -398,6 +416,9 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   exemptionFeeStatusOptionsHash: getExemptionFeeStatusOptionsHash(state),
   governmentAgencyHash: getGovernmentAgencyHash(state),
+  // mineAlerts: getMineAlerts(state),
+  // formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state),
+  // formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -410,6 +431,10 @@ const mapDispatchToProps = (dispatch) =>
       removeMineType,
       fetchMineRecordById,
       createTailingsStorageFacility,
+      fetchMineAlertByMine,
+      updateMineAlert,
+      deleteMineAlert,
+      createMineAlert,
     },
     dispatch
   );

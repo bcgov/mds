@@ -101,3 +101,6 @@ export const ADD_STORAGE_FACILITY = "ADD_STORAGE_FACILITY";
 
 // Dams
 export const ADD_EDIT_DAM = "ADD_EDIT_DAM";
+
+// Staff Alerts
+export const ADD_EDIT_MINE_ALERT = "ADD_EDIT_MINE_ALERT";
