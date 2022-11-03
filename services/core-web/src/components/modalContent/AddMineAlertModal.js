@@ -15,7 +15,6 @@ export const AddMineAlertModal = (props) => (
       closeModal={props.closeModal}
       mine={props.mine}
       title={props.title}
-      {...props}
     />
   </div>
 );

@@ -13,7 +13,10 @@ import {
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
+  createMineAlert,
+  updateMineAlert,
   fetchMineAlertByMine,
+  deleteMineAlert
 } from "@common/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -37,6 +40,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { MineAlert } from "@/components/mine/MineAlert";
+// import * as FORM from "@/constants/forms";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -68,6 +72,16 @@ const generateEmliInspectionMapperUrl = (lat, lng) => {
 };
 
 export class MineHeader extends Component {
+
+  // componentDidMount() {
+  //   this.fetchAlerts();
+  // }
+
+  // fetchAlerts() {
+  //   // this.setState({ loading: true });
+  //   return this.props.fetchMineAlertByMine(this.props.mine.mine_guid);
+  // }
+
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
@@ -403,6 +417,9 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   exemptionFeeStatusOptionsHash: getExemptionFeeStatusOptionsHash(state),
   governmentAgencyHash: getGovernmentAgencyHash(state),
+  // mineAlerts: getMineAlerts(state),
+  // formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state),
+  // formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -416,6 +433,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       createTailingsStorageFacility,
       fetchMineAlertByMine,
+      updateMineAlert,
+      deleteMineAlert,
+      createMineAlert,
     },
     dispatch
   );
