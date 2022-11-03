@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+// import { getFormValues, getFormSyncErrors } from "redux-form";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { uniqBy } from "lodash";
@@ -12,6 +13,7 @@ import {
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
+  fetchMineAlertByMine,
 } from "@common/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -413,6 +415,7 @@ const mapDispatchToProps = (dispatch) =>
       removeMineType,
       fetchMineRecordById,
       createTailingsStorageFacility,
+      fetchMineAlertByMine,
     },
     dispatch
   );
