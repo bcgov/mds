@@ -264,7 +264,7 @@ export class MineDashboard extends Component {
             actions={[storeMine]}
             listActions={[storeVariances, storePermits]}
             requests={[
-              () => this.props.fetchNoticesOfDeparture({ mineGuid: id }),
+              () => this.props.fetchNoticesOfDeparture(id),
               () => this.props.fetchVariancesByMine({ mineGuid: id }),
               () => this.props.fetchPermits(mine.mine_guid),
               () => this.props.fetchMineRecordById(id),
