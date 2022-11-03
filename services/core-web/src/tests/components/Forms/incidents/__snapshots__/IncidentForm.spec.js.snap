@@ -90,7 +90,7 @@ exports[`IncidentForm renders properly 1`] = `
             >
               <FormItem
                 hasFeedback={false}
-                label="Phone number (optional)"
+                label="* Phone number"
               >
                 <Field
                   component={[Function]}
@@ -101,6 +101,7 @@ exports[`IncidentForm renders properly 1`] = `
                   placeholder="xxx-xxx-xxxx"
                   validate={
                     Array [
+                      [Function],
                       [Function],
                       [Function],
                     ]
@@ -137,7 +138,7 @@ exports[`IncidentForm renders properly 1`] = `
             >
               <FormItem
                 hasFeedback={false}
-                label="Email (optional)"
+                label="* Email"
               >
                 <Field
                   component={[Function]}
@@ -147,6 +148,7 @@ exports[`IncidentForm renders properly 1`] = `
                   placeholder="example@domain.com"
                   validate={
                     Array [
+                      [Function],
                       [Function],
                     ]
                   }
