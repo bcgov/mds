@@ -19,7 +19,7 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     sub_division_code = db.Column(
         db.String, db.ForeignKey('sub_division_code.sub_division_code'), nullable=True)
     post_code = db.Column(db.String, nullable=True)
-    address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
+    address_type_code = db.Column(db.String, nullable=True, server_default=FetchedValue())
 
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
     party = db.relationship('Party', lazy='joined')

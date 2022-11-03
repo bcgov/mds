@@ -1,0 +1,1 @@
+ALTER TABLE address ALTER column address_type_code DROP NOT NULL;
