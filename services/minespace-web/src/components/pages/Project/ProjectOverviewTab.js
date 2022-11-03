@@ -9,7 +9,6 @@ import {
   getInformationRequirementsTableStatusCodesHash,
   getMajorMinesApplicationStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import {
   getProjectSummary,
   getProject,
@@ -101,16 +100,7 @@ export class ProjectOverviewTab extends Component {
         navigateForward: () =>
           this.props.navigateForward("IRT", this.props.informationRequirementsTable?.status_code),
       },
-    ];
-    const documentColumns = [
-      categoryColumn(
-        "project_summary_document_type_code",
-        this.props.projectSummaryDocumentTypesHash
-      ),
-      uploadDateColumn("upload_date"),
-    ];
-    if (!IN_PROD()) {
-      projectStages.push({
+      {
         title: "Application",
         key: this.props.majorMinesApplication?.major_mine_application_id,
         status: this.props.majorMinesApplication?.status_code,
@@ -120,8 +110,15 @@ export class ProjectOverviewTab extends Component {
         required: true,
         navigateForward: () =>
           this.props.navigateForward("MMA", this.props.majorMinesApplication?.status_code),
-      });
-    }
+      },
+    ];
+    const documentColumns = [
+      categoryColumn(
+        "project_summary_document_type_code",
+        this.props.projectSummaryDocumentTypesHash
+      ),
+      uploadDateColumn("upload_date"),
+    ];
 
     // TODO: Add in ToC here
     // if (!IN_PROD()) {
