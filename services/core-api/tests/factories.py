@@ -366,6 +366,8 @@ class MineIncidentFactory(BaseFactory):
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
     reported_by_name = factory.Faker('name')
+    reported_by_phone_no = factory.Faker('numerify', text='###-###-####')
+    reported_by_email = factory.Faker('email')
     determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
     status_code = factory.LazyFunction(RandomIncidentStatusCode)
     followup_investigation_type_code = 'NO'
