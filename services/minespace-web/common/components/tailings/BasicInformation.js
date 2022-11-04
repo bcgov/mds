@@ -5,7 +5,7 @@ import {
   TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
   TSF_OPERATING_STATUS_CODE,
   TSF_TYPES,
-} from "@common/constants/strings";
+} from "@mds/common";
 import { Col, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import {
@@ -37,8 +37,13 @@ const defaultProps = {
 };
 
 export const BasicInformation = (props) => {
-  const { permits, renderConfig, viewOnly = false } = props;
+  const { permits, renderConfig, viewOnly = false, tsf } = props;
   const [permitOptions, setPermitOptions] = useState([]);
+
+  const includeClosedStatus =
+    tsf?.tsf_operating_status_code === "CLO"
+      ? [...TSF_OPERATING_STATUS_CODE, { value: "CLO", label: "Closed" }]
+      : TSF_OPERATING_STATUS_CODE;
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -141,10 +146,10 @@ export const BasicInformation = (props) => {
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
         label="Operating Status"
-        data={TSF_OPERATING_STATUS_CODE}
+        data={includeClosedStatus}
         component={renderConfig.SELECT}
         disabled={viewOnly}
-        validate={[requiredList, validateSelectOptions(TSF_OPERATING_STATUS_CODE)]}
+        validate={[requiredList, validateSelectOptions(includeClosedStatus)]}
       />
       <Field
         id="itrb_exemption_status_code"
