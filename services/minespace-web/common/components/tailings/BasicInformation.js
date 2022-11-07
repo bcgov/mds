@@ -40,7 +40,7 @@ export const BasicInformation = (props) => {
   const { permits, renderConfig, viewOnly = false, tsf } = props;
   const [permitOptions, setPermitOptions] = useState([]);
 
-  const includeClosedStatus =
+  const statusCodeOptions =
     tsf?.tsf_operating_status_code === "CLO"
       ? [...TSF_OPERATING_STATUS_CODE, { value: "CLO", label: "Closed" }]
       : TSF_OPERATING_STATUS_CODE;
@@ -146,10 +146,10 @@ export const BasicInformation = (props) => {
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
         label="Operating Status"
-        data={includeClosedStatus}
+        data={statusCodeOptions}
         component={renderConfig.SELECT}
         disabled={viewOnly}
-        validate={[requiredList, validateSelectOptions(includeClosedStatus)]}
+        validate={[requiredList, validateSelectOptions(statusCodeOptions)]}
       />
       <Field
         id="itrb_exemption_status_code"
