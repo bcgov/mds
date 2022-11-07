@@ -92,8 +92,12 @@
       position: fixed;
       width: 100vw;
       background-color: $pure-white;
-      z-index: 1100;
+      z-index: 990;
       box-shadow: $default-box-shadow;
+
+      .ant-select-dropdown {
+          z-index: 1010;
+        }
     }
     &--content {
       padding: 10px;
