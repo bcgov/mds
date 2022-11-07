@@ -39,8 +39,8 @@ export const PastMineAlert = (props) => {
         }
         type="warning"
         showIcon
-        style={{ backgroundColor: "#FFF2F0", border: "#FFCCC7" }}
-        className="ant-alert-info ant-alert-info-custom-with-red-icon anticon-info-circle anticon-info-circle-custom"
+        style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}
+        className="ant-alert-warning ant-alert-warning-custom-with-red-icon"
       />
     </div>
   );

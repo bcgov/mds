@@ -221,7 +221,7 @@ export class MineAlert extends Component {
             }
             type="info"
             showIcon
-            style={{ backgroundColor: "#F4F0F0", border: "1px solid #525252" }}
+            style={{ backgroundColor: "#F4F0F0", border: "1.5px solid #525252" }}
             className="ant-alert-info ant-alert-info-custom-with-black-icon"
           />
         )}
@@ -265,7 +265,7 @@ export class MineAlert extends Component {
             }
             type="warning"
             showIcon
-            style={{ backgroundColor: "#FFF2F0", border: "1px solid #FF0000" }}
+            style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}
             className="ant-alert-warning ant-alert-warning-custom-with-red-icon"
           />
         )}
