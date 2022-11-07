@@ -7,7 +7,6 @@ export const IncidentGetStarted = () => {
   return (
     <Row>
       <Col span={16} offset={4}>
-        <Typography.Title level={3}>Notice of a reportable incident</Typography.Title>
         <Typography.Title level={4}>
           Verbal notice of a reportable incident, within 4 hours
         </Typography.Title>
@@ -42,15 +41,16 @@ export const IncidentGetStarted = () => {
           type="warning"
           description={
             <>
-              <Typography.Paragraph strong>
+              <Typography.Paragraph>
                 A written notice of a reportable incident received within 4-hours satisfies both the
                 requirement for the verbal report and the written report.
               </Typography.Paragraph>
             </>
           }
+          showIcon
         />
         <br />
-        <Typography.Title level={4}>
+        <Typography.Title level={5}>
           Do not disturb the scene of any reportable incident
         </Typography.Title>
         <Typography.Paragraph>
@@ -62,7 +62,7 @@ export const IncidentGetStarted = () => {
         <Typography.Paragraph>
           Only your OHSC worker representative or an inspector can release the scene.
         </Typography.Paragraph>
-        <Typography.Title level={4}>
+        <Typography.Title level={5}>
           After you complete your submission in MineSpace
         </Typography.Title>
         <Typography.Paragraph>
@@ -73,6 +73,7 @@ export const IncidentGetStarted = () => {
           After submitting your written notice of a reportable incident through MineSpace you are
           required to come back to your submission and add your investigation report.
         </Typography.Paragraph>
+        <br />
       </Col>
     </Row>
   );

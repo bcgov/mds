@@ -381,7 +381,9 @@ export class IncidentPage extends Component {
     const mineName =
       this.props.formValues?.mine_name ?? this.props.location.state?.mine?.mine_name ?? "";
     const title = `Record a Mine Incident - ${mineName}`;
-    const subTitle = this.state.isEditMode ? "Edit Mine Incident" : "Record New Mine Incident";
+    const subTitle = this.state.isEditMode
+      ? "Edit Mine Incident"
+      : "New Notice of a Reportable Incident";
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledButton = errors.length > 0;
 
