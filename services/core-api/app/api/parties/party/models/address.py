@@ -88,7 +88,7 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     # will be called for both fields, in the order defined in model, 1st call will be missing 2nd value
     @validates('post_code', 'address_type_code')
     def validate_address_code(self, key, value):
-        if key == 'address_type_code':
+        if key == 'address_type_code' and self.post_code is not None:
             maxLength = 6
             validPostalCode = re.compile(r"(^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\d[ABCEGHJ-NPRSTV-Z]\d$)")
             if value == 'USA':
