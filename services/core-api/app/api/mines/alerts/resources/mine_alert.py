@@ -76,6 +76,10 @@ class MineAlertListResource(Resource, UserMixin):
 
             mine_alert.save()
 
+            if mine_alert:
+                active_alert.is_active = False
+                active_alert.save()
+
             return mine_alert, 201
         except SQLAlchemyError as ex:
             if EXCLUSION_CONSTRAINT_MINE_GUID_DATE_RANGE_MESSAGE in str(ex):

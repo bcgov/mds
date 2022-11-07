@@ -138,6 +138,7 @@
   }
 }
 
+
 .ant-btn-danger {
   background-color: $danger-btn-color;
   color: white;
@@ -240,6 +241,18 @@
     border-style: none !important;
     border: 0;
   }
+}
+
+.ant-btn-alert-warning-ghost {
+  background: #FFF2F0 !important;
+  border-color: #000000 !important;
+  border-style: solid !important;
+}
+
+.ant-btn-alert-info-ghost {
+  background: #F4F0F0 !important;
+  border-color: #000000 !important;
+  border-style: solid !important;
 }
 
 // POPUP CONFIRM
@@ -350,6 +363,13 @@
   .ant-alert-icon {
     margin-top: 4px;
   }
+  &.ant-alert-warning-custom-with-red-icon{
+    .ant-alert-icon {
+      background-color: #FFF2F0 !important;
+      color: red !important;
+      top: 20px;
+     }
+  }
 }
 
 .ant-alert-error {
@@ -378,6 +398,13 @@
   .ant-alert-icon {
     background-color: #ecf6fd !important;
     color: #3d6de7 !important;
+  }
+  &.ant-alert-info-custom-with-black-icon{
+    .ant-alert-icon {
+      background-color: #F4F0F0 !important;
+      color: black !important;
+      top: 20px;
+     }
   }
 }
 

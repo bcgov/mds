@@ -56,6 +56,7 @@ import ViewNoticeOfDepartureModal from "./ViewNoticeOfDepartureModal";
 import UploadProjectDecisionPackageDocumentModal from "./UploadProjectDecisionPackageDocumentModal";
 import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPackageDocumentModal";
 import AddMineAlertModal from "./AddMineAlertModal";
+import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -116,6 +117,7 @@ export const modalConfig = {
   UPLOAD_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL: UploadProjectDecisionPackageDocumentModal,
   UPDATE_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL: UpdateProjectDecisionPackageDocumentModal,
   ADD_MINE_ALERT: AddMineAlertModal,
+  VIEW_PAST_MINE_ALERTS: ViewPastMineAlertModal,
 };
 
 export default modalConfig;

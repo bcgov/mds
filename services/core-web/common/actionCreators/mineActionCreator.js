@@ -363,7 +363,7 @@ export const fetchMineAlertByMine = (mineGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_ALERTS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_ALERTS));
-      dispatch(mineActions.storeMineAlert(response.data));
+      dispatch(mineActions.storeMineAlerts(response.data));
       return response;
     })
     .catch((err) => {
@@ -377,11 +377,7 @@ export const createMineAlert = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_ALERTS));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}${API.MINE_ALERTS(mineGuid)}`,
-      payload,
-      createRequestHeader()
-    )
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_ALERTS(mineGuid)}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully created an alert.",

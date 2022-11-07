@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { connect } from "react-redux";
@@ -15,14 +15,17 @@ import {
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any),
+  title: PropTypes.string.isRequired,
+};
+
+const defaultProps = {
+  formValues: {},
 };
 
 export const AddMineAlertForm = (props) => {
@@ -31,7 +34,8 @@ export const AddMineAlertForm = (props) => {
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Typography.Paragraph>
           <Typography.Text>
-            Creating a new staff alert will overwrite any previous alerts. Please use the edit alert option if you need to update an existing alert.
+            Creating a new staff alert will overwrite any previous alerts. Please use the edit alert
+            option if you need to update an existing alert.
           </Typography.Text>
         </Typography.Paragraph>
         <Row gutter={16}>
@@ -79,7 +83,7 @@ export const AddMineAlertForm = (props) => {
                 id="start_date"
                 name="start_date"
                 label="Start Date"
-                placeholder="Select Work Start Date"
+                placeholder="Select Date"
                 component={renderConfig.DATE}
                 validate={[required, dateNotAfterOther(props.formValues.stop_date)]}
                 format={null}
@@ -89,10 +93,10 @@ export const AddMineAlertForm = (props) => {
           <Col span={12}>
             <Form.Item>
               <Field
-                id="stop_date"
-                name="stop_date"
-                label="Stop Date"
-                placeholder="Select Work Stop Date"
+                id="end_date"
+                name="end_date"
+                label="Expiry Date (optional)"
+                placeholder="Select Date"
                 component={renderConfig.DATE}
                 validate={[dateNotBeforeOther(props.formValues.start_date)]}
                 format={null}
@@ -101,6 +105,14 @@ export const AddMineAlertForm = (props) => {
           </Col>
         </Row>
         <div className="right center-mobile">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+          >
+            {props.title}
+          </Button>
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
@@ -113,21 +125,14 @@ export const AddMineAlertForm = (props) => {
               Cancel
             </Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            {props.title}
-          </Button>
         </div>
       </Form>
     </div>
   );
-}
+};
 
 AddMineAlertForm.propTypes = propTypes;
+AddMineAlertForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({

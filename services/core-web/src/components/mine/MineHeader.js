@@ -16,7 +16,7 @@ import {
   createMineAlert,
   updateMineAlert,
   fetchMineAlertByMine,
-  deleteMineAlert
+  deleteMineAlert,
 } from "@common/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -39,7 +39,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { MineAlert } from "@/components/mine/MineAlert";
+import MineAlert from "@/components/mine/MineAlert";
 // import * as FORM from "@/constants/forms";
 
 /**
@@ -72,7 +72,6 @@ const generateEmliInspectionMapperUrl = (lat, lng) => {
 };
 
 export class MineHeader extends Component {
-
   // componentDidMount() {
   //   this.fetchAlerts();
   // }
@@ -185,17 +184,17 @@ export class MineHeader extends Component {
 
     const mapRoute = this.props.mine.mine_location
       ? route.MINE_HOME_PAGE.mapRoute({
-        lat: this.props.mine.mine_location.latitude,
-        long: this.props.mine.mine_location.longitude,
-        zoom: String.HIGH_ZOOM,
-        mineName: this.props.mine.mine_name,
-      })
+          lat: this.props.mine.mine_location.latitude,
+          long: this.props.mine.mine_location.longitude,
+          zoom: String.HIGH_ZOOM,
+          mineName: this.props.mine.mine_name,
+        })
       : route.MINE_HOME_PAGE.mapRoute();
 
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
-          <MineAlert mine={this.props.mine} {...this.props} />
+          <MineAlert mine={this.props.mine} />
           <br />
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
@@ -253,10 +252,10 @@ export class MineHeader extends Component {
             <p className="field-title">Tenure</p>
             <div>
               <p>
-                {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
+                {this.props.transformedMineTypes?.mine_tenure_type_code.length > 0
                   ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
-                    .map((tenure) => this.props.mineTenureHash[tenure])
-                    .join(", ")
+                      .map((tenure) => this.props.mineTenureHash[tenure])
+                      .join(", ")
                   : String.EMPTY_FIELD}
               </p>
             </div>
@@ -323,8 +322,8 @@ export class MineHeader extends Component {
                 <div>
                   {this.props.mine.exemption_fee_status_code
                     ? this.props.exemptionFeeStatusOptionsHash[
-                    this.props.mine.exemption_fee_status_code
-                    ]
+                        this.props.mine.exemption_fee_status_code
+                      ]
                     : String.EMPTY_FIELD}
                   {this.props.mine.exemption_fee_status_note && (
                     <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
