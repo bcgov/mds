@@ -73,7 +73,7 @@ exports[`SteppedForm renders properly 1`] = `
           </Button>
           <Button
             block={false}
-            disabled={true}
+            disabled={false}
             ghost={false}
             htmlType="button"
             loading={false}
