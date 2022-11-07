@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderSelect renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  id="1"
+  label=""
+  onSelect={[Function]}
+  validateStatus=""
+  value={null}
+>
+  <Select
+    allowClear={true}
+    bordered={true}
+    choiceTransitionName=""
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    dropdownStyle={
+      Object {
+        "position": "relative",
+      }
+    }
+    filterOption={[Function]}
+    getPopupContainer={[Function]}
+    id="1"
+    onSelect={[Function]}
+    optionFilterProp="children"
+    placeholder="Please select"
+    showSearch={true}
+    transitionName="slide-up"
+    value={null}
+    virtual={false}
+  >
+    <Option
+      disabled={false}
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    />
+    <Option
+      disabled={false}
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    />
+  </Select>
+</FormItem>
+`;
