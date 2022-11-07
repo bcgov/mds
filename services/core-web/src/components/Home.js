@@ -105,7 +105,7 @@ export class Home extends Component {
               backgroundColor: Styles.COLOR.violet,
               position: "fixed",
               top: 53,
-              zIndex: 1111,
+              zIndex: 999,
               height: 8,
             }}
           />

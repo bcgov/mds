@@ -277,7 +277,7 @@
 // TOAST
 .ant-notification-notice,
 .ant-notification {
-  z-index: 1500 !important;
+  z-index: 1000 !important;
 }
 
 .ant-notification-notice-message {
@@ -650,7 +650,7 @@ select {
 }
 
 .ant-select-dropdown {
-  z-index: 950;
+  z-index: 900;
 }
 
 // update HTML select component to look like the ant design select. This block of code changes the default icon
