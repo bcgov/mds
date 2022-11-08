@@ -125,6 +125,8 @@ export const REVIEW_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid/review",
   dynamicRoute: (mineGuid, mineIncidentGuid) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review/${link}`,
   component: IncidentPage,
 };
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
+import { Provider } from "react-redux";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { store } from "@/App";
-import { Provider } from "react-redux";
 
 const props = {};
 
