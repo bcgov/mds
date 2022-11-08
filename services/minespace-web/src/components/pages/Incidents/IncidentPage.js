@@ -504,6 +504,9 @@ export class IncidentPage extends Component {
   render() {
     const mineName =
       this.props.formValues?.mine_name ?? this.props.location.state?.mine?.mine_name ?? "";
+    const isFinalReviewStage = POST_SUBMISSION_INCIDENT_STATUSES.includes(
+      this.props.incident.status_code
+    );
     const title = `Record a Mine Incident - ${mineName}`;
     const subTitle = this.state.isEditMode
       ? "Edit Mine Incident"
