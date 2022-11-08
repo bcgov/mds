@@ -127,20 +127,20 @@ const renderReporterDetails = (props) => (
       </Form.Item>
     </Col>
     <Col xs={24} md={10}>
-      <Form.Item label="Phone number (optional)">
+      <Form.Item label="Phone number">
         <Field
           id="reported_by_phone_no"
           name="reported_by_phone_no"
           placeholder="xxx-xxx-xxxx"
           component={renderConfig.FIELD}
-          validate={[phoneNumber, maxLength(12)]}
+          validate={[required, phoneNumber, maxLength(12)]}
           normalize={normalizePhone}
           disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
     </Col>
     <Col xs={24} md={4}>
-      <Form.Item label="Ext.">
+      <Form.Item label="Ext. (optional)">
         <Field
           id="reported_by_phone_ext"
           name="reported_by_phone_ext"
@@ -152,13 +152,13 @@ const renderReporterDetails = (props) => (
       </Form.Item>
     </Col>
     <Col md={10} xs={24}>
-      <Form.Item label="Email (optional)">
+      <Form.Item label="Email">
         <Field
           id="reported_by_email"
           name="reported_by_email"
           placeholder="example@domain.com"
           component={renderConfig.FIELD}
-          validate={[email]}
+          validate={[required, email]}
           disabled={props.isReviewSubmitStage}
         />
       </Form.Item>
