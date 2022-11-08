@@ -46,11 +46,6 @@ export const storeEpicInfo = (payload) => ({
   payload,
 });
 
-export const storeMineAlert = (payload) => ({
-  type: ActionTypes.STORE_MINE_ALERT,
-  payload,
-});
-
 export const storeMineAlerts = (payload) => ({
   type: ActionTypes.STORE_MINE_ALERTS,
   payload,

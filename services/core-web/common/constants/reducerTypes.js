@@ -300,8 +300,6 @@ export const UPDATE_DAM = "UPDATE_DAM";
 export const GET_DAM = "GET_DAM";
 
 // Alerts
-export const MINE_ALERTS = "MINE_ALERTS";
-export const MINE_ALERT = "MINE_ALERT";
 export const CREATE_MINE_ALERTS = "CREATE_MINE_ALERTS";
 export const UPDATE_MINE_ALERT = "UPDATE_MINE_ALERT";
 export const DELETE_MINE_ALERT = "DELETE_MINE_ALERT";

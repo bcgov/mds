@@ -17,6 +17,7 @@ const initialState = {
   mineDocuments: [],
   subscribedMines: [],
   mineComments: [],
+  mineAlerts: [],
 };
 
 export const mineReducer = (state = initialState, action) => {
@@ -69,6 +70,11 @@ export const mineReducer = (state = initialState, action) => {
         ...state,
         mineComments: action.payload.records,
       };
+    case actionTypes.STORE_MINE_ALERTS:
+      return {
+        ...state,
+        mineAlerts: action.payload.records,
+      };
     default:
       return state;
   }
@@ -90,5 +96,6 @@ export const getCurrentUserVerifiedMines = (state) => state[MINES].currentUserVe
 export const getCurrentUserUnverifiedMines = (state) =>
   state[MINES].currentUserUnverifiedMinesMines;
 export const getMineComments = (state) => state[MINES].mineComments;
+export const getMineAlerts = (state) => state[MINES].mineAlerts;
 
 export default mineReducerObject;

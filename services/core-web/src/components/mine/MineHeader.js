@@ -72,15 +72,6 @@ const generateEmliInspectionMapperUrl = (lat, lng) => {
 };
 
 export class MineHeader extends Component {
-  // componentDidMount() {
-  //   this.fetchAlerts();
-  // }
-
-  // fetchAlerts() {
-  //   // this.setState({ loading: true });
-  //   return this.props.fetchMineAlertByMine(this.props.mine.mine_guid);
-  // }
-
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props

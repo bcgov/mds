@@ -45,3 +45,12 @@ export const storeEpicInfo = (payload) => ({
   type: ActionTypes.STORE_MINE_EPIC_INFO,
   payload,
 });
+
+export const storeMineAlerts = (payload) => ({
+  type: ActionTypes.STORE_MINE_ALERTS,
+  payload,
+});
+
+export const clearMineAlert = () => ({
+  type: ActionTypes.CLEAR_MINE_ALERT,
+});
