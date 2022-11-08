@@ -9,7 +9,7 @@ const dispatchProps = {};
 const setupDispatchProps = () => {
   dispatchProps.createMineAlert = jest.fn();
   dispatchProps.updateMineAlert = jest.fn();
-  dispatchProps.fetchMineAlertByMine = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineAlertsByMine = jest.fn(() => Promise.resolve());
   dispatchProps.deleteMineAlert = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.openModal = jest.fn();

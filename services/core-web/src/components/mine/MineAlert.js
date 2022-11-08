@@ -10,7 +10,7 @@ import * as ModalContent from "@/constants/modalContent";
 import {
   createMineAlert,
   updateMineAlert,
-  fetchMineAlertByMine,
+  fetchMineAlertsByMine,
   deleteMineAlert,
 } from "@common/actionCreators/mineActionCreator";
 import { getMineAlerts } from "@common/selectors/mineSelectors";
@@ -26,7 +26,7 @@ const propTypes = {
   createMineAlert: PropTypes.func.isRequired,
   updateMineAlert: PropTypes.func.isRequired,
   deleteMineAlert: PropTypes.func.isRequired,
-  fetchMineAlertByMine: PropTypes.func.isRequired,
+  fetchMineAlertsByMine: PropTypes.func.isRequired,
   mineAlerts: CustomPropTypes.mineAlert.isRequired,
   mine: CustomPropTypes.mine.isRequired,
 };
@@ -126,12 +126,12 @@ export class MineAlert extends Component {
   };
 
   fetchAlerts() {
-    return this.props.fetchMineAlertByMine(this.props.mine.mine_guid).then(() => {
+    return this.props.fetchMineAlertsByMine(this.props.mine.mine_guid).then(() => {
       this.setState({
-        activeMineAlert: this.props.mineAlerts?.filter((alert) => alert.is_active === "True")[0],
+        activeMineAlert: this.props.mineAlerts?.filter((alert) => alert.is_active)?.[0],
       });
       this.setState({
-        pastMineAlerts: this.props.mineAlerts?.filter((alert) => alert.is_active === "False"),
+        pastMineAlerts: this.props.mineAlerts?.filter((alert) => !alert.is_active),
       });
       this.setState({ loaded: true });
     });
@@ -285,7 +285,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
-      fetchMineAlertByMine,
+      fetchMineAlertsByMine,
       updateMineAlert,
       deleteMineAlert,
       createMineAlert,

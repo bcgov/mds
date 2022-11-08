@@ -46,7 +46,7 @@ export const AddMineAlertForm = (props) => {
                 name="contact_name"
                 label="Contact Name"
                 component={renderConfig.FIELD}
-                validate={[required]}
+                validate={[required,maxLength(200)]}
               />
             </Form.Item>
           </Col>

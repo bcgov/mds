@@ -356,7 +356,7 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
     });
 };
 
-export const fetchMineAlertByMine = (mineGuid) => (dispatch) => {
+export const fetchMineAlertsByMine = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_ALERTS));
   dispatch(showLoading("modal"));
   return CustomAxios()
