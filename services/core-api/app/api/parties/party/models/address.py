@@ -1,4 +1,5 @@
 import re
+from flask import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -97,5 +98,6 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             if len(self.post_code) > maxLength:
                 raise AssertionError(f'post_code must not exceed {maxLength} characters.')
             if not validPostalCode.match(self.post_code):
+                current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {self.post_code}, address_type_code: {self.address_type_code}, value: {value}',)
                 raise AssertionError(f'Invalid post_code format.')
         return value
