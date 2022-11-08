@@ -125,6 +125,7 @@ exports[`IncidentForm renders properly 1`] = `
                 Array [
                   [Function],
                   [Function],
+                  [Function],
                 ]
               }
             />
@@ -136,7 +137,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Ext."
+            label="Ext. (optional)"
           >
             <Field
               component={[Function]}
@@ -169,6 +170,7 @@ exports[`IncidentForm renders properly 1`] = `
               placeholder="example@domain.com"
               validate={
                 Array [
+                  [Function],
                   [Function],
                 ]
               }

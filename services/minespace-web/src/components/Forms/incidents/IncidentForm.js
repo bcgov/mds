@@ -184,82 +184,65 @@ const renderInitialReport = (props, formDisabled) => (
   </Row>
 );
 
-const renderReporterDetails = (props, formDisabled) => {
-  const { reported_by_phone_no, reported_by_email } = props.formValues;
-  const reportedPhoneValidation = !reported_by_email
-    ? [phoneNumber, maxLength(12), required]
-    : [phoneNumber, maxLength(12)];
-  const reportedEmailValidation = !reported_by_phone_no ? [email, required] : [email];
-  const reportedEmailAndPhoneSet = Boolean(reported_by_email) && Boolean(reported_by_phone_no);
-
-  return (
-    <Row gutter={[16]}>
-      <Col span={24}>
-        <Typography.Title level={4}>Reporter Details</Typography.Title>
-        <Typography.Paragraph>
-          Enter all available details about the reporter of this incident.
-        </Typography.Paragraph>
-      </Col>
-      <Col xs={24} md={10}>
-        <Form.Item label="Reported by">
-          <Field
-            id="reported_by_name"
-            name="reported_by_name"
-            placeholder="Enter name of reporter"
-            component={renderConfig.FIELD}
-            validate={[required]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={10}>
-        <Form.Item
-          label={
-            !reported_by_email || reportedEmailAndPhoneSet
-              ? "Phone number"
-              : "Phone number (optional)"
-          }
-        >
-          <Field
-            id="reported_by_phone_no"
-            name="reported_by_phone_no"
-            placeholder="xxx-xxx-xxxx"
-            component={renderConfig.FIELD}
-            validate={reportedPhoneValidation}
-            normalize={normalizePhone}
-            disabled={formDisabled}
-          />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={4}>
-        <Form.Item label="Ext.">
-          <Field
-            id="reported_by_phone_ext"
-            name="reported_by_phone_ext"
-            placeholder="xxxxxx"
-            component={renderConfig.FIELD}
-            validate={[number, maxLength(6)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
-      </Col>
-      <Col md={10} xs={24}>
-        <Form.Item
-          label={!reported_by_phone_no || reportedEmailAndPhoneSet ? "Email" : "Email (optional)"}
-        >
-          <Field
-            id="reported_by_email"
-            name="reported_by_email"
-            placeholder="example@domain.com"
-            component={renderConfig.FIELD}
-            validate={reportedEmailValidation}
-            disabled={formDisabled}
-          />
-        </Form.Item>
-      </Col>
-    </Row>
-  );
-};
+const renderReporterDetails = (props) => (
+  <Row gutter={[16]}>
+    <Col span={24}>
+      <Typography.Title level={4}>Reporter Details</Typography.Title>
+      <Typography.Paragraph>
+        Enter all available details about the reporter of this incident.
+      </Typography.Paragraph>
+    </Col>
+    <Col xs={24} md={10}>
+      <Form.Item label="Reported by">
+        <Field
+          id="reported_by_name"
+          name="reported_by_name"
+          placeholder="Enter name of reporter"
+          component={renderConfig.FIELD}
+          validate={[required]}
+          disabled={props.isReviewSubmitStage}
+        />
+      </Form.Item>
+    </Col>
+    <Col xs={24} md={10}>
+      <Form.Item label="Phone number">
+        <Field
+          id="reported_by_phone_no"
+          name="reported_by_phone_no"
+          placeholder="xxx-xxx-xxxx"
+          component={renderConfig.FIELD}
+          validate={[required, phoneNumber, maxLength(12)]}
+          normalize={normalizePhone}
+          disabled={props.isReviewSubmitStage}
+        />
+      </Form.Item>
+    </Col>
+    <Col xs={24} md={4}>
+      <Form.Item label="Ext. (optional)">
+        <Field
+          id="reported_by_phone_ext"
+          name="reported_by_phone_ext"
+          placeholder="xxxxxx"
+          component={renderConfig.FIELD}
+          validate={[number, maxLength(6)]}
+          disabled={props.isReviewSubmitStage}
+        />
+      </Form.Item>
+    </Col>
+    <Col md={10} xs={24}>
+      <Form.Item label="Email">
+        <Field
+          id="reported_by_email"
+          name="reported_by_email"
+          placeholder="example@domain.com"
+          component={renderConfig.FIELD}
+          validate={[required, email]}
+          disabled={props.isReviewSubmitStage}
+        />
+      </Form.Item>
+    </Col>
+  </Row>
+);
 
 const renderIncidentDetails = (formDisabled) => (
   <Row gutter={[16]}>
