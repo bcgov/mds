@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { flattenObject , resetForm } from "@common/utils/helpers";
+import { flattenObject, resetForm } from "@common/utils/helpers";
 import { compose, bindActionCreators } from "redux";
 import { isNil } from "lodash";
 import {

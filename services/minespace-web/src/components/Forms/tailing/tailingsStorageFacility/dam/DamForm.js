@@ -17,10 +17,10 @@ import {
 } from "@common/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { Field } from "redux-form";
 import PropTypes from "prop-types";
 import React from "react";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
