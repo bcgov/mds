@@ -20,7 +20,6 @@ const baseExpectedValue = {
   subscribedMines: [],
   mineComments: [],
   mineAlerts: [],
-  mineAlert: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
