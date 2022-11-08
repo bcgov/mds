@@ -14,7 +14,7 @@ import {
   storeKeycloakData,
   storeUserAccessData,
 } from "@common/actions/authenticationActions";
-import { KEYCLOAK, USER_ROLES } from "@common/constants/environment";
+import { KEYCLOAK, USER_ROLES } from "@mds/common";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 

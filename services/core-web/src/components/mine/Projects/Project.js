@@ -164,15 +164,15 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
+          <Tabs.TabPane tab="Final Application" key="final-app" disabled={!hasFinalAplication}>
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <div className="padding-lg">
+                <MajorMineApplicationTab />
+              </div>
+            </LoadingWrapper>
+          </Tabs.TabPane>
           {!IN_PROD() && (
             <>
-              <Tabs.TabPane tab="Final Application" key="final-app" disabled={!hasFinalAplication}>
-                <LoadingWrapper condition={this.state.isLoaded}>
-                  <div className="padding-lg">
-                    <MajorMineApplicationTab />
-                  </div>
-                </LoadingWrapper>
-              </Tabs.TabPane>
               <Tabs.TabPane tab="Decision Package" key="decision-package">
                 <LoadingWrapper condition={this.state.isLoaded}>
                   <div className="padding-lg">

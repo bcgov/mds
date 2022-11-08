@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Spin, List, Button, Popconfirm } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Avatar, Divider, Row, Col, Spin, List } from "antd";
 
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import MinistryComment from "@/components/common/comments/MinistryComment";

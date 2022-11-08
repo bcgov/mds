@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
+import { DOCUMENT, EXCEL } from "@common/constants/fileTypes";
 import { VARIANCE_DOCUMENTS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,

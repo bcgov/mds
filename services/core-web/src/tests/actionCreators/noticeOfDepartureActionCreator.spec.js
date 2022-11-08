@@ -9,7 +9,7 @@ import {
   removeFileFromDocumentManager,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import * as genericActions from "@common/actions/genericActions";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import {
   NOTICE_OF_DEPARTURE,

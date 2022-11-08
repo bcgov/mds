@@ -7,9 +7,9 @@ WORKDIR /app
 # Install app dependencies
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN yarn
 
 COPY . .
 
 EXPOSE 3020
-CMD [ "npm", "run", "serve" ]
+CMD [ "yarn", "serve" ]

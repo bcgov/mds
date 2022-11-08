@@ -5,7 +5,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Input, Button, Checkbox } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,

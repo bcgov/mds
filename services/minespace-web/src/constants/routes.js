@@ -10,7 +10,7 @@ import MinesPage from "@/components/pages/MinesPage";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
 import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
 import ReturnPage from "@/components/pages/ReturnPage";
-import TailingsSummaryPage from "@/components/pages/Tailings/TailingsSummaryPage";
+import TailingsSummaryPageWrapper from "@/components/pages/Tailings/TailingsSummaryPageWrapper";
 import IncidentPage from "@/components/pages/Incidents/IncidentPage";
 import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
 import { UsersPage } from "@/components/pages/UsersPage";
@@ -148,14 +148,14 @@ export const ADD_TAILINGS_STORAGE_FACILITY = {
   route: "/mines/:mineGuid/tailings-storage-facility/new/:tab",
   dynamicRoute: (mineGuid, tab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/new/${tab}`,
-  component: TailingsSummaryPage,
+  component: TailingsSummaryPageWrapper,
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab",
   dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
-  component: TailingsSummaryPage,
+  component: TailingsSummaryPageWrapper,
 };
 
 export const ADD_DAM = {

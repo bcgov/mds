@@ -99,9 +99,10 @@ class MergeResource(Resource, UserMixin):
         city = address_data.get('city')
         sub_division_code = address_data.get('sub_division_code')
         post_code = address_data.get('post_code')
-        if (suite_no or address_line_1 or address_line_2 or city or sub_division_code or post_code):
+        address_type_code = address_data.get('address_type_code')
+        if (suite_no or address_line_1 or address_line_2 or city or sub_division_code or post_code or address_type_code):
             merged_address = Address.create(suite_no, address_line_1, address_line_2, city,
-                                            sub_division_code, post_code)
+                                            sub_division_code, post_code, address_type_code)
             merged_party.address.append(merged_address)
 
         # Delete the addresses of the merged parties.

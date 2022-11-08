@@ -4,8 +4,8 @@ import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
+import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import FileUpload from "@/components/common/FileUpload";
-import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,

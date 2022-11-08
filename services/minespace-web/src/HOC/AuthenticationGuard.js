@@ -11,7 +11,7 @@ import {
 } from "@/actionCreators/authenticationActionCreator";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
-import * as COMMON_ENV from "@common/constants/environment";
+import * as COMMON_ENV from "@mds/common";
 import * as route from "@/constants/routes";
 import * as ENV from "@/constants/environment";
 

@@ -186,13 +186,13 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                       Object {
                         "isActive": true,
                         "label": "AB",
-                        "subType": null,
+                        "subType": "CAN",
                         "value": "AB",
                       },
                       Object {
                         "isActive": true,
                         "label": "BC",
-                        "subType": null,
+                        "subType": "CAN",
                         "value": "BC",
                       },
                     ]

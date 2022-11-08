@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Col, Row, Typography } from "antd";
-import { Field } from "redux-form";
 import {
-  maxLength,
-  requiredList,
-  lat,
-  lon,
-  required,
-  validateSelectOptions,
-} from "@common/utils/Validate";
-import {
+  CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
   FACILITY_TYPES,
-  TSF_TYPES,
   STORAGE_LOCATION,
   TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
   TSF_OPERATING_STATUS_CODE,
-  CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
-} from "@common/constants/strings";
-import { connect } from "react-redux";
+  TSF_TYPES,
+} from "@mds/common";
+import { Col, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  lat,
+  lon,
+  maxLength,
+  required,
+  requiredList,
+  validateSelectOptions,
+} from "@common/utils/Validate";
+
+import { Field } from "redux-form";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { formatDateTime } from "@common/utils/helpers";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
-import { formatDateTime } from "@common/utils/helpers";
 
 const propTypes = {
   permits: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -36,15 +37,20 @@ const defaultProps = {
 };
 
 export const BasicInformation = (props) => {
+  const { permits, renderConfig, viewOnly = false, tsf } = props;
   const [permitOptions, setPermitOptions] = useState([]);
-  const { permits, renderConfig, viewOnly = false } = props;
+
+  const statusCodeOptions =
+    tsf?.tsf_operating_status_code === "CLO"
+      ? [...TSF_OPERATING_STATUS_CODE, { value: "CLO", label: "Closed" }]
+      : TSF_OPERATING_STATUS_CODE;
 
   useEffect(() => {
     if (permits.length > 0) {
       setPermitOptions(
         permits.map((permit) => ({
           label: permit.permit_no,
-          value: permit.permit_guid,
+          value: permit.permit_no,
         }))
       );
     }
@@ -140,10 +146,10 @@ export const BasicInformation = (props) => {
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
         label="Operating Status"
-        data={TSF_OPERATING_STATUS_CODE}
+        data={statusCodeOptions}
         component={renderConfig.SELECT}
         disabled={viewOnly}
-        validate={[requiredList, validateSelectOptions(TSF_OPERATING_STATUS_CODE)]}
+        validate={[requiredList, validateSelectOptions(statusCodeOptions)]}
       />
       <Field
         id="itrb_exemption_status_code"

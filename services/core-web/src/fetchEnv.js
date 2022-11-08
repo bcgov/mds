@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
+import { setupEnvironment, setupKeycloak, DEFAULT_ENVIRONMENT } from "@mds/common";
 
 export default function fetchEnv() {
   return axios
@@ -14,17 +14,23 @@ export default function fetchEnv() {
     })
     .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
-      ENVIRONMENT.apiUrl = env.apiUrl;
-      ENVIRONMENT.docManUrl = env.docManUrl;
-      ENVIRONMENT.firstNationsLayerUrl = env.firstNationsLayerUrl;
-      ENVIRONMENT.filesystemProviderUrl = env.filesystemProviderUrl;
-      ENVIRONMENT.matomoUrl = env.matomoUrl;
-      KEYCLOAK.clientId = env.keycloak_clientId;
-      KEYCLOAK.resource = env.keycloak_resource;
-      KEYCLOAK.url = env.keycloak_url;
-      KEYCLOAK.idir_idpHint = env.keycloak_idir_idpHint;
-      KEYCLOAK.bceid_idpHint = env.keycloak_bceid_idpHint;
-      KEYCLOAK.vcauthn_idpHint = env.keycloak_vcauthn_idpHint;
-      ENVIRONMENT.environment = env.environment;
+      setupEnvironment(
+        env.apiUrl,
+        env.docManUrl,
+        env.filesystemProviderUrl,
+        env.matomoUrl,
+        env.environment
+      );
+
+      setupKeycloak(
+        env.keycloak_clientId,
+        env.keycloak_resource,
+        env.keycloak_url,
+        env.keycloak_idpHint,
+        env.keycloak_bceid_idpHint || "na",
+        env.keycloak_vcauthn_idpHint || "na",
+        env.vcauthn_pres_req_conf_id || "na",
+        env.siteminder_url || "na"
+      );
     });
 }

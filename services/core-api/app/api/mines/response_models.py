@@ -2,7 +2,6 @@ from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
-from app.api.mines.tailings.models.tailings import StorageLocation, TailingsStorageFacilityType, FacilityType
 from app.api.parties.response_models import PARTY
 from app.extensions import api
 
@@ -297,6 +296,7 @@ MINE_REPORT_SUBMISSION_STATUS = api.model(
 
 MINE_PARTY_APPT_PARTY = api.model(
     'MinePartyAppointment', {
+        'update_timestamp': fields.DateTime,
         'mine_party_appt_guid': fields.String,
         'mine_guid': fields.String,
         'party_guid': fields.String,
@@ -311,8 +311,8 @@ MINE_TSF_MODEL = api.model(
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
-        'latitude': fields.Fixed(decimals=7),
-        'longitude': fields.Fixed(decimals=7),
+        'latitude': fields.Float,
+        'longitude': fields.Float,
         'consequence_classification_status_code': fields.String,
         'itrb_exemption_status_code': fields.String,
         'update_timestamp': fields.DateTime,
@@ -476,6 +476,24 @@ MINE_INCIDENT_MODEL = api.model(
         'johsc_management_rep_contacted': fields.Boolean
     })
 
+MINE_ALERT_MODEL = api.model(
+    'Mine Alert', {
+        'mine_alert_id': fields.Integer,
+        'mine_alert_guid': fields.String,
+        'mine_guid': fields.String,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
+        'contact_name': fields.String,
+        'contact_phone': fields.String,
+        'message': fields.String,
+        'is_active': fields.String,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+    }
+)
+
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
     'created_at': fields.Date,
     'variance_document_category_code': fields.String
@@ -612,8 +630,7 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'default_due_date': fields.Date,
         'active_ind': fields.Boolean,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
-        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
-        'active_ind': fields.Boolean
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL))
     })
 
 PAGINATED_LIST = api.model(
@@ -681,7 +698,6 @@ PERMIT_CONDITION_MODEL = api.model(
         'condition_type_code': fields.String,
         'condition_category_code': fields.String,
         'parent_permit_condition_id': fields.Integer,
-        'condition_type_code': fields.String,
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
         'display_order': fields.Integer
@@ -713,7 +729,6 @@ STANDARD_PERMIT_CONDITION_MODEL = api.model(
         'notice_of_work_type': fields.String,
         'standard_permit_condition_guid': fields.String,
         'condition': fields.String,
-        'condition_type_code': fields.String,
         'condition_category_code': fields.String,
         'parent_standard_permit_condition_id': fields.Integer,
         'parent_permit_condition_id': fields.Integer,

@@ -5,18 +5,21 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-COPY package.json package-lock.json ./
-RUN npm ci
-
-# Copy app files
 COPY . .
 
-# Run build
-RUN npm run build
+# Install Dependencies
+RUN yarn
+
+# Build Common Package
+RUN yarn workspace @mds/common build
+
+# Build Core Web Only
+RUN yarn workspace @mds/minespace-web build
+
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Remove dependencies
 RUN rm -rf /app/node_modules
-
 
 # --------------------------------------------------------#
 # Multi Stage Build: Node JS Runtime - App Runner 
@@ -27,7 +30,8 @@ FROM node:14.8.0-alpine as runner
 WORKDIR /app
 
 # Copy the app files with build output
-COPY --from=builder /app ./
+COPY --from=builder /app/services/minespace-web/build ./build
+COPY --from=builder /app/services/minespace-web/runner ./runner
 
 WORKDIR /app/runner 
 

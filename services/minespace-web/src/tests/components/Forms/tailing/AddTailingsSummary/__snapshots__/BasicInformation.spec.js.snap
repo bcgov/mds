@@ -206,8 +206,28 @@ exports[`BasicInformation renders properly 1`] = `
     data={
       Array [
         Object {
-          "label": "Operating",
+          "label": "Construction",
+          "value": "CON",
+        },
+        Object {
+          "label": "Operation",
           "value": "OPT",
+        },
+        Object {
+          "label": "Care and Maintenance",
+          "value": "CAM",
+        },
+        Object {
+          "label": "Closure - Transition",
+          "value": "CLT",
+        },
+        Object {
+          "label": "Closure - Active Care",
+          "value": "CLA",
+        },
+        Object {
+          "label": "Closure - Passive Care",
+          "value": "CLP",
         },
       ]
     }

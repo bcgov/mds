@@ -33,7 +33,7 @@ import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import AddButton from "@/components/common/buttons/AddButton";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
-import TailingsSummaryPage from "./TailingsSummaryPage";
+import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -193,7 +193,7 @@ export class MineTailingsInfoTabs extends Component {
               tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
               key="tsfDetails"
             >
-              <TailingsSummaryPage />
+              <TailingsSummaryPageWrapper />
             </Tabs.TabPane>
           )}
           {tabEnabled("tsf") && (

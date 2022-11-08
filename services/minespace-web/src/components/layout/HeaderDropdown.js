@@ -5,7 +5,7 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Button, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import * as COMMON_ENV from "@common/constants/environment";
+import * as COMMON_ENV from "@mds/common";
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";

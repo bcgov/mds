@@ -26,7 +26,7 @@ import {
   number,
 } from "@common/utils/Validate";
 import * as Strings from "@common/constants/strings";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
