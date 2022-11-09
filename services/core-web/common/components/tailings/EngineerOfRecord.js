@@ -25,7 +25,6 @@ import { isNumber } from "lodash";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 
-
 const propTypes = {
   change: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -39,7 +38,6 @@ const propTypes = {
 
 const defaultProps = {
   loading: false,
-  
 };
 
 const columns = (LinkButton) => [
@@ -68,6 +66,7 @@ export const EngineerOfRecord = (props) => {
     tsfFormName,
     showUpdateTimestamp,
     canAssignEor,
+    eorHistoryColumns,
   } = useContext(TailingsContext);
 
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
@@ -160,175 +159,173 @@ export const EngineerOfRecord = (props) => {
 
   return (
     <>
-    <Row>
-      <Col span={24}>
-        <Row type="flex" justify="space-between">
-          <Typography.Title level={3}>Engineer of Record</Typography.Title>
+      <Row>
+        <Col span={24}>
+          <Row type="flex" justify="space-between">
+            <Typography.Title level={3}>Engineer of Record</Typography.Title>
 
-          <Col span={12}>
-            <Row type="flex" justify="end">
-              {canAssignEor && (
-                <Popconfirm
-                  style={{ maxWidth: "150px" }}
-                  placement="top"
-                  title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
-                  okText="Yes"
-                  cancelText="No"
-                  onConfirm={openCreateEORModal}
-                >
-                  <Button style={{ display: "inline", float: "right" }} type="primary">
-                    <PlusCircleFilled />
-                    Assign a new Engineer of Record
-                  </Button>
-                </Popconfirm>
-              )}
-              {showUpdateTimestamp && formValues?.engineer_of_record?.update_timestamp && (
-                <Typography.Paragraph style={{ textAlign: "right" }}>
-                  <b>Last Updated</b>
-                  <br />
-                  {formatDateTime(formValues.engineer_of_record.update_timestamp)}
-                </Typography.Paragraph>
-              )}
-            </Row>
-          </Col>
-        </Row>
+            <Col span={12}>
+              <Row type="flex" justify="end">
+                {canAssignEor && (
+                  <Popconfirm
+                    style={{ maxWidth: "150px" }}
+                    placement="top"
+                    title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={openCreateEORModal}
+                  >
+                    <Button style={{ display: "inline", float: "right" }} type="primary">
+                      <PlusCircleFilled />
+                      Assign a new Engineer of Record
+                    </Button>
+                  </Popconfirm>
+                )}
+                {showUpdateTimestamp && formValues?.engineer_of_record?.update_timestamp && (
+                  <Typography.Paragraph style={{ textAlign: "right" }}>
+                    <b>Last Updated</b>
+                    <br />
+                    {formatDateTime(formValues.engineer_of_record.update_timestamp)}
+                  </Typography.Paragraph>
+                )}
+              </Row>
+            </Col>
+          </Row>
 
-        {canAssignEor &&
-          (formValues?.engineer_of_record?.party_guid ? (
+          {canAssignEor &&
+            (formValues?.engineer_of_record?.party_guid ? (
+              <Alert
+                description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
+                showIcon
+                type="info"
+              />
+            ) : (
+              <Alert
+                description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new EoR. A notification will be sent to the Ministry whereby their acknowledgment is required before the EoR is considered Active."
+                showIcon
+                type="info"
+              />
+            ))}
+
+          {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
             <Alert
-              description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
+              message="Engineer of Record will Expire within 30 Days"
+              description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
               showIcon
-              type="info"
+              type="warning"
             />
+          )}
+
+          {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
+            <Alert
+              message="No Engineer of Record"
+              description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+              showIcon
+              type="error"
+            />
+          )}
+
+          <Typography.Title level={4} className="margin-large--top">
+            Contact Information
+          </Typography.Title>
+
+          {formValues?.engineer_of_record?.party_guid ? (
+            <ContactDetails contact={formValues.engineer_of_record.party} />
           ) : (
-            <Alert
-              description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new EoR. A notification will be sent to the Ministry whereby their acknowledgment is required before the EoR is considered Active."
-              showIcon
-              type="info"
-            />
-          ))}
+            <Row justify="center">
+              <Col span={24}>
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  imageStyle={{ transform: "scale(1.5)" }}
+                  description={false}
+                />
+              </Col>
 
-        {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
-          <Alert
-            message="Engineer of Record will Expire within 30 Days"
-            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
-            showIcon
-            type="warning"
-          />
-        )}
+              <Typography.Paragraph>No Data</Typography.Paragraph>
+            </Row>
+          )}
+          {currentEor && currentEor.documents.length > 0 && (
+            <div>
+              <Typography.Title level={4} className="margin-large--top">
+                Acceptance Letter
+              </Typography.Title>
+              <Table
+                align="left"
+                pagination={false}
+                columns={columns(LinkButton)}
+                dataSource={currentEor.documents}
+                locale={{ emptyText: "This EoR does not currently have any documents" }}
+              />
+            </div>
+          )}
 
-        {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
-          <Alert
-            message="No Engineer of Record"
-            description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
-            showIcon
-            type="error"
-          />
-        )}
-
-        <Typography.Title level={4} className="margin-large--top">
-          Contact Information
-        </Typography.Title>
-
-        {formValues?.engineer_of_record?.party_guid ? (
-          <ContactDetails contact={formValues.engineer_of_record.party} />
-        ) : (
-          <Row justify="center">
-            <Col span={24}>
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                imageStyle={{ transform: "scale(1.5)" }}
-                description={false}
+          {!formValues?.engineer_of_record?.mine_party_appt_guid && (
+            <>
+              <div className="margin-large--top margin-large--bottom">
+                <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+                <Typography.Text>
+                  Letter must be officially signed. A notification will be sent to the Mine Manager
+                  upon upload.
+                </Typography.Text>
+              </div>
+              <Field
+                name="engineer_of_record.eor_document_guid"
+                id="engineer_of_record.eor_document_guid"
+                onFileLoad={onFileLoad}
+                onRemoveFile={onRemoveFile}
+                validate={[required]}
+                component={renderConfig.FILE_UPLOAD}
+                disabled={!formValues?.engineer_of_record?.party_guid}
+                addFileStart={() => setUploading(true)}
+                onAbort={() => setUploading(false)}
+                uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
+                acceptedFileTypesMap={{ ...PDF }}
+                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+                allowRevert
+                onprocessfiles={() => setUploading(false)}
+              />
+            </>
+          )}
+          <Typography.Title level={4} className="margin-large--top">
+            EOR Term
+          </Typography.Title>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Field
+                id="engineer_of_record.start_date"
+                name="engineer_of_record.start_date"
+                label="Start Date"
+                disabled={
+                  !!formValues?.engineer_of_record?.mine_party_appt_guid ||
+                  !formValues?.engineer_of_record?.party_guid ||
+                  loading
+                }
+                component={renderConfig.DATE}
+                validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
               />
             </Col>
-
-            <Typography.Paragraph>No Data</Typography.Paragraph>
+            <Col span={12}>
+              <Field
+                id="engineer_of_record.end_date"
+                name="engineer_of_record.end_date"
+                label="End Date (Optional)"
+                disabled={
+                  !!formValues?.engineer_of_record?.mine_party_appt_guid ||
+                  !formValues?.engineer_of_record?.party_guid ||
+                  loading
+                }
+                validate={[dateInFuture]}
+                component={renderConfig.DATE}
+              />
+            </Col>
           </Row>
-        )}
-        {currentEor && currentEor.documents.length > 0 && (
-          <div>
-            <Typography.Title level={4} className="margin-large--top">
-              Acceptance Letter
-            </Typography.Title>
-            <Table
-              align="left"
-              pagination={false}
-              columns={columns(LinkButton)}
-              dataSource={currentEor.documents}
-              locale={{ emptyText: "This EoR does not currently have any documents" }}
-            />
-          </div>
-        )}
-
-        {!formValues?.engineer_of_record?.mine_party_appt_guid && (
-          <>
-            <div className="margin-large--top margin-large--bottom">
-              <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
-              <Typography.Text>
-                Letter must be officially signed. A notification will be sent to the Mine Manager
-                upon upload.
-              </Typography.Text>
-            </div>
-            <Field
-              name="engineer_of_record.eor_document_guid"
-              id="engineer_of_record.eor_document_guid"
-              onFileLoad={onFileLoad}
-              onRemoveFile={onRemoveFile}
-              validate={[required]}
-              component={renderConfig.FILE_UPLOAD}
-              disabled={!formValues?.engineer_of_record?.party_guid}
-              addFileStart={() => setUploading(true)}
-              onAbort={() => setUploading(false)}
-              uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
-              acceptedFileTypesMap={{ ...PDF }}
-              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
-              allowRevert
-              onprocessfiles={() => setUploading(false)}
-            />
-          </>
-        )}
-        <Typography.Title level={4} className="margin-large--top">
-          EOR Term
-        </Typography.Title>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Field
-              id="engineer_of_record.start_date"
-              name="engineer_of_record.start_date"
-              label="Start Date"
-              disabled={
-                !!formValues?.engineer_of_record?.mine_party_appt_guid ||
-                !formValues?.engineer_of_record?.party_guid ||
-                loading
-              }
-              component={renderConfig.DATE}
-              validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
-            />
-          </Col>
-          <Col span={12}>
-            <Field
-              id="engineer_of_record.end_date"
-              name="engineer_of_record.end_date"
-              label="End Date (Optional)"
-              disabled={
-                !!formValues?.engineer_of_record?.mine_party_appt_guid ||
-                !formValues?.engineer_of_record?.party_guid ||
-                loading
-              }
-              validate={[dateInFuture]}
-              component={renderConfig.DATE}
-            />
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-    <Row>
-      <Col span={24}>
-        <PartyAppointmentTable
-          columns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}
-          partyRelationships={existingEors} />
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <PartyAppointmentTable columns={eorHistoryColumns} partyRelationships={existingEors} />
+        </Col>
+      </Row>
     </>
   );
 };
