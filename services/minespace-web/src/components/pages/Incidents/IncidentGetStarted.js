@@ -7,47 +7,72 @@ export const IncidentGetStarted = () => {
   return (
     <Row>
       <Col span={16} offset={4}>
-        <Typography.Title level={3}>Dangerous Occurence Reporting</Typography.Title>
-        <Typography.Paragraph>
-          You are required to report all dangerous Occurrence, pursuant to section 1.7.3 of the Code
-          (including serious injuries).
-        </Typography.Paragraph>
         <Typography.Title level={4}>
-          Reporting a dangerous occurence through MineSpace
+          Verbal notice of a reportable incident, within 4 hours
         </Typography.Title>
         <Typography.Paragraph>
-          Mines must submit an initial report of the Dangerous Occurrence within 16 hours, pursuant
-          to 1.7.1(1)(b) of the Code.
+          Reportable incidents that cause <b>serious injury</b> or <b>loss of life</b> must be{" "}
+          <b>reported verbally to the Ministry within 4 hours</b> of the incident occurrence. (Mines
+          code, section 1.7.1(1)(a))
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Call the <b>Mine Incident Reporting Line at </b>
+          <a href="tel:1-888-348-0299">
+            <b>1-888-348-0299</b>
+          </a>{" "}
+          . This line is monitored 24/7 by an On-call Inspector.
         </Typography.Paragraph>
         <Typography.Title level={4}>
-          After you complete your submission in minespace
+          Written notice of a reportable incident, within 16 hours
         </Typography.Title>
         <Typography.Paragraph>
-          Mines must investigate the Dangerous Occurrence and prepare a report to be submitted to an
-          Inspector of Mines, pursuant to 1.7.1(4) & 1.7.2 of the Code. After initial submission you
-          are required to come back to your report and add your final investigation document.
+          All reportable incidents must be{" "}
+          <b>reported in writing to the Ministry within 16 hours</b> of the incident occurrence.
+          This includes a reportable incident that caused, or had the potential to cause, serious
+          injury or loss of life, or is classified as a dangerous occurrence. (Mines code, section
+          1.7.1(1)(b))
         </Typography.Paragraph>
-        <Typography.Title level={4}>
-          Upload initial and final investigtation documents
-        </Typography.Title>
-        <Typography.Paragraph>
-          You can upload a variety of files directly to your record. This will help ministry staff
-          understand the incident and allows for faster reviews.{" "}
+        <Typography.Paragraph strong>
+          Submitting a written notice of a reportable incident within MineSpace meets your mine’s
+          written reporting responsibilities under the Ministry’s Incident Management Process
+          Policy.
         </Typography.Paragraph>
         <Alert
           type="warning"
-          message={<b>Did this incident result in the loss of life?</b>}
           description={
             <>
               <Typography.Paragraph>
-                Immediately (within 4 hours) phone Mine Incident Reporting Line at{" "}
-                <a href="tel:1-888-348-0299">1-888-348-0299</a> to submit an oral report and secure
-                the accident scene.
+                A written notice of a reportable incident received within 4-hours satisfies both the
+                requirement for the verbal report and the written report.
               </Typography.Paragraph>
             </>
           }
           showIcon
         />
+        <br />
+        <Typography.Title level={5}>
+          Do not disturb the scene of any reportable incident
+        </Typography.Title>
+        <Typography.Paragraph>
+          The scene of a reportable incident must not be disturbed (e.g., to return to regular
+          operations), except for the purpose of <b>saving life</b> or{" "}
+          <b>relieving human suffering</b>. This is to preserve evidence for both the mine’s and the
+          Ministry’s investigations. (Mines code, section 1.7.3)
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Only your OHSC worker representative or an inspector can release the scene.
+        </Typography.Paragraph>
+        <Typography.Title level={5}>
+          After you complete your submission in MineSpace
+        </Typography.Title>
+        <Typography.Paragraph>
+          Mines must investigate the reportable incident and prepare an <b>investigation report</b>{" "}
+          to be submitted to an Inspector of Mines (Mines code, sections 1.7.1(4) & 1.7.2).
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          After submitting your written notice of a reportable incident through MineSpace you are
+          required to come back to your submission and add your investigation report.
+        </Typography.Paragraph>
         <br />
       </Col>
     </Row>

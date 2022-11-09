@@ -507,9 +507,10 @@ export class IncidentPage extends Component {
     const isFinalReviewStage = POST_SUBMISSION_INCIDENT_STATUSES.includes(
       this.props.incident.status_code
     );
-    const partialTitle = isFinalReviewStage ? "Mine Incident" : "Record a Mine Incident";
-    const title = `${partialTitle} - ${mineName}`;
-    const subTitle = this.state.isEditMode ? "Edit Mine Incident" : "Record New Mine Incident";
+    const title = `Record a Mine Incident - ${mineName}`;
+    const subTitle = this.state.isEditMode
+      ? "Edit Mine Incident"
+      : "New Notice of a Reportable Incident";
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledButton = errors.length > 0;
 
