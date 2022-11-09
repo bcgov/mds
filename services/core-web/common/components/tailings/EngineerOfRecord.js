@@ -23,6 +23,8 @@ import { PDF } from "@common/constants/fileTypes";
 import moment from "moment";
 import { isNumber } from "lodash";
 import TailingsContext from "@common/components/tailings/TailingsContext";
+import PartyAppointmentTable from "../PartyAppointmentTable";
+
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -37,6 +39,7 @@ const propTypes = {
 
 const defaultProps = {
   loading: false,
+  
 };
 
 const columns = (LinkButton) => [
@@ -126,18 +129,18 @@ export const EngineerOfRecord = (props) => {
     props.change(tsfFormName, "engineer_of_record.eor_document_guid", null);
   };
 
+  const existingEors = partyRelationships?.filter(
+    (p) =>
+      p.mine_party_appt_type_code === "EOR" &&
+      p.mine_guid === mineGuid &&
+      p.related_guid === formValues.mine_tailings_storage_facility_guid
+  );
+
   const validateEorStartDateOverlap = (val) => {
     if (formValues?.engineer_of_record?.mine_party_appt_guid || loading) {
       // Skip validation for existing EoRs
       return undefined;
     }
-
-    const existingEors = partyRelationships?.filter(
-      (p) =>
-        p.mine_party_appt_type_code === "EOR" &&
-        p.mine_guid === mineGuid &&
-        p.related_guid === formValues.mine_tailings_storage_facility_guid
-    );
 
     return (
       validateDateRanges(
@@ -156,6 +159,7 @@ export const EngineerOfRecord = (props) => {
       .diff(moment().startOf("day"), "days");
 
   return (
+    <>
     <Row>
       <Col span={24}>
         <Row type="flex" justify="space-between">
@@ -318,6 +322,14 @@ export const EngineerOfRecord = (props) => {
         </Row>
       </Col>
     </Row>
+    <Row>
+      <Col span={24}>
+        <PartyAppointmentTable
+          columns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}
+          partyRelationships={existingEors} />
+      </Col>
+    </Row>
+    </>
   );
 };
 
