@@ -90,7 +90,7 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     @validates('post_code')
     def validate_address_code(self, key, post_code):
         if post_code and len(post_code) > 10:
-            raise AssertionError('post_code must not exceed 6 characters.')
+            raise AssertionError('post_code must not exceed 10 characters.')
         # regex: CA | US postal codes
         validCaPostalCode = re.compile(r"(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)")
         validUsPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
