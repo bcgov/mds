@@ -391,8 +391,9 @@
   }
   &.ant-alert-warning-custom-with-red-icon{
     .ant-alert-icon {
-      background-color: #FFF2F0 !important;
-      color: red !important;
+      background-color: #ff0000 !important;
+      color: #FFF2F0  !important;
+      border-radius: 50%;
       top: 20px;
      }
   }

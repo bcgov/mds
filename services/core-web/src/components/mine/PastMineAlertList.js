@@ -16,7 +16,7 @@ export const PastMineAlertList = (props) => {
         <List
           itemLayout="horizontal"
           dataSource={props.mineAlerts}
-          locale={{ emptyText: "No Data Yet" }}
+          locale={{ emptyText: "There are no active alerts for this mine" }}
           renderItem={(item) => {
             return (
               <>
