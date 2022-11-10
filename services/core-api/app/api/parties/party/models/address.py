@@ -99,3 +99,4 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {post_code}, address_type_code: {self.address_type_code}')
 
             raise AssertionError('Invalid post_code format.')
+        return post_code
