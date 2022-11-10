@@ -98,3 +98,6 @@ export const NOTICE_OF_DEPARTURE_FORM = "NOTICE_OF_DEPARTURE_FORM";
 
 // Tailings
 export const ADD_STORAGE_FACILITY = "ADD_STORAGE_FACILITY";
+
+// Dams
+export const ADD_EDIT_DAM = "ADD_EDIT_DAM";

@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { store } from "@/App";
 import { Provider } from "react-redux";
-import DamsPage from "@/components/pages/Tailings/DamsPage";
+import DamsPage from "../../../../../common/components/tailings/dam/DamsPage";
 
 let props = {};
 let dispatchProps = {};

@@ -23,6 +23,7 @@ import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
 import * as Strings from "@common/constants/strings";
+import DamsPage from "@common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -196,6 +197,14 @@ export class MineTailingsInfoTabs extends Component {
               <TailingsSummaryPageWrapper />
             </Tabs.TabPane>
           )}
+          {tabEnabled("dam") && (
+            <Tabs.TabPane
+              tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+              key="dam"
+            >
+              <DamsPage />
+            </Tabs.TabPane>
+          )}
           {tabEnabled("tsf") && (
             <Tabs.TabPane
               tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
@@ -262,7 +271,7 @@ export class MineTailingsInfoTabs extends Component {
                   </p>
                   <p>
                     <img
-                      SRC={SMALL_PIN_SELECTED}
+                      src={SMALL_PIN_SELECTED}
                       className="icon-sm--img"
                       alt="TSF Pin"
                       style={{ marginTop: "10px" }}

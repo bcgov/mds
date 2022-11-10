@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, useParams } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
-import { Button, Tooltip, Typography } from "antd";
+import { Button, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -15,11 +15,14 @@ import {
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { bindActionCreators } from "redux";
+import { storeDam } from "@common/actions/damActions";
+import { storeTsf } from "@common/actions/tailingsActions";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
+import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 
 const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -29,16 +32,20 @@ const propTypes = {
   handleEditTailings: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  storeDam: PropTypes.func.isRequired,
+  storeTsf: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 const MineTailingsTable = (props) => {
+  const { id: mineGuid } = useParams();
   const {
     TSFOperatingStatusCodeHash,
     itrmExemptionStatusCodeHash,
     openEditTailingsModal,
     handleEditTailings,
+    tailings,
   } = props;
   const [expandedRows, setExpandedRows] = useState([]);
 
@@ -50,13 +57,31 @@ const MineTailingsTable = (props) => {
     setExpandedRows(expandedRowKeys);
   };
 
-  const transformRowData = (tailings) => {
-    return tailings.map((tailing) => {
+  const transformRowData = (items) => {
+    return items.map((tailing) => {
       return {
         key: tailing.mine_tailings_storage_facility_guid,
         ...tailing,
       };
     });
+  };
+
+  const handleEditDam = (event, dam) => {
+    event.preventDefault();
+    props.storeDam(dam);
+    const tsf = tailings.find(
+      (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
+    );
+    if (tsf) {
+      props.storeTsf(tsf);
+    }
+    const url = EDIT_DAM.dynamicRoute(
+      mineGuid,
+      dam.mine_tailings_storage_facility_guid,
+      dam.dam_guid
+    );
+    props.history.push(url);
+    // history.push(url);
   };
 
   const columns = [
@@ -139,7 +164,7 @@ const MineTailingsTable = (props) => {
                   ghost
                   onClick={() =>
                     props.history.push(
-                      router.MINE_TAILINGS_DETAILS.dynamicRoute(
+                      MINE_TAILINGS_DETAILS.dynamicRoute(
                         record.mine_guid,
                         record.mine_tailings_storage_facility_guid
                       )
@@ -179,15 +204,20 @@ const MineTailingsTable = (props) => {
         title: "",
         fixed: "right",
         dataIndex: "edit",
-        render: () => {
+        render: (text, record) => {
           return (
             <div title="" align="right">
               <AuthorizationWrapper>
-                <Tooltip title="Edit Dam page does not yet exist">
-                  <Button type="primary" size="small" ghost onClick={() => {}}>
-                    <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
-                  </Button>
-                </Tooltip>
+                <Button
+                  type="primary"
+                  size="small"
+                  ghost
+                  onClick={(event) => {
+                    handleEditDam(event, record);
+                  }}
+                >
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
+                </Button>
               </AuthorizationWrapper>
             </div>
           );
@@ -215,7 +245,7 @@ const MineTailingsTable = (props) => {
       dataSource={transformRowData(props.tailings)}
       columns={columns}
       tableProps={{
-        className: 'tailings-table',
+        className: "tailings-table",
         align: "center",
         pagination: false,
         expandable: IN_PROD() ? null : { expandedRowRender },
@@ -234,9 +264,11 @@ const MineTailingsTable = (props) => {
 MineTailingsTable.propTypes = propTypes;
 MineTailingsTable.defaultProps = defaultProps;
 
+const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam, storeTsf }, dispatch);
+
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
   itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
-export default withRouter(connect(mapStateToProps)(MineTailingsTable));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MineTailingsTable));
