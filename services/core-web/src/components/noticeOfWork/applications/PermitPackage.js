@@ -6,8 +6,6 @@ import { Button, notification } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
-import { modalConfig } from "@/components/modalContent/config";
-import CustomPropTypes from "@/customPropTypes";
 import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
@@ -18,9 +16,11 @@ import {
   getNoticeOfWork,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
+import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET, EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
-import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 /**
@@ -199,7 +199,7 @@ export class PermitPackage extends Component {
         noticeOfWork: this.props.noticeOfWork,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
-        documents: this.props.noticeOfWork.documents,
+        documents: this.props.noticeOfWork.documents.filter(({mine_document}) => mine_document?.mine_document_guid),
         finalDocuments,
         finalSubmissionDocuments,
         onSubmit: this.createFinalDocumentPackage,

@@ -49,7 +49,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
                 now_application_document_type_code,
                 mine_document,
               }) =>
-                applicationFilesTypes.includes(now_application_document_sub_type_code) &&
+                mine_document?.mine_document_guid && applicationFilesTypes.includes(now_application_document_sub_type_code) &&
                 (now_application_document_type_code !== "PMT" ||
                   now_application_document_type_code !== "PMA" ||
                   mine_document.document_name.includes("DRAFT"))
