@@ -1,4 +1,5 @@
 import re
+from flask import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -86,16 +87,16 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
         return address
 
     # will be called for both fields, in the order defined in model, 1st call will be missing 2nd value
-    @validates('post_code', 'address_type_code')
-    def validate_address_code(self, key, value):
-        if key == 'address_type_code':
-            maxLength = 6
-            validPostalCode = re.compile(r"(^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\d[ABCEGHJ-NPRSTV-Z]\d$)")
-            if value == 'USA':
-                maxLength = 10
-                validPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
-            if len(self.post_code) > maxLength:
-                raise AssertionError(f'post_code must not exceed {maxLength} characters.')
-            if not validPostalCode.match(self.post_code):
-                raise AssertionError(f'Invalid post_code format.')
-        return value
+    @validates('post_code')
+    def validate_address_code(self, key, post_code):
+        if post_code and len(post_code) > 10:
+            raise AssertionError('post_code must not exceed 10 characters.')
+        # regex: CA | US postal codes
+        validCaPostalCode = re.compile(r"(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)")
+        validUsPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
+
+        if post_code and not validCaPostalCode.match(post_code) and not validUsPostalCode.match(post_code):
+            current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {post_code}, address_type_code: {self.address_type_code}')
+
+            raise AssertionError('Invalid post_code format.')
+        return post_code

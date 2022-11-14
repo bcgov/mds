@@ -12,7 +12,6 @@ import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import Loading from "@/components/common/Loading";
-import { MINE_DASHBOARD } from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
@@ -184,7 +183,7 @@ export class ProjectPage extends Component {
           </Row>
           <Row gutter={[0, 16]}>
             <Col span={24}>
-              <Link to={MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
+              <Link to={router.MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
                 <ArrowLeftOutlined className="padding-sm--right" />
                 Back to: {mineName} Mine Projects
               </Link>
@@ -206,11 +205,9 @@ export class ProjectPage extends Component {
                     mrcReviewRequired={mrcReviewRequired}
                   />
                 </Tabs.TabPane>
-                {!IN_PROD() && (
-                  <Tabs.TabPane tab="Application" key="major-mine-application">
-                    {majorMineApplicationTabContent}
-                  </Tabs.TabPane>
-                )}
+                <Tabs.TabPane tab="Application" key="major-mine-application">
+                  {majorMineApplicationTabContent}
+                </Tabs.TabPane>
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Documents" key="documents">
                     <DocumentsTab project={this.props.project} />

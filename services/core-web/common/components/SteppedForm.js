@@ -44,6 +44,7 @@ const SteppedForm = (props) => {
     cancelText,
     handleCancel,
     cancelConfirmMessage,
+    errors,
   } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -78,6 +79,8 @@ const SteppedForm = (props) => {
       if (handleSaveData) {
         await handleSaveData(null, tab);
       }
+
+      if (errors.length > 0) return;
 
       setTabIndex(indexOf(tabs, tab));
     } finally {
@@ -152,7 +155,7 @@ const SteppedForm = (props) => {
                   )}
                   <Button
                     type="secondary"
-                    disabled={isSubmitting || props.errors?.length > 0}
+                    disabled={isSubmitting}
                     onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
                     Next <RightOutlined />
@@ -160,11 +163,7 @@ const SteppedForm = (props) => {
                 </div>
               )}
               {isLast && (
-                <Button
-                  type="primary"
-                  disabled={isSubmitting || props.errors?.length > 0}
-                  onClick={handleSaveData}
-                >
+                <Button type="primary" disabled={isSubmitting} onClick={handleSaveData}>
                   {submitText || "Submit"}
                 </Button>
               )}

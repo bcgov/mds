@@ -210,7 +210,14 @@ export const TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD = [
   { value: "NO", label: "No" },
 ];
 
-export const TSF_OPERATING_STATUS_CODE = [{ value: "OPT", label: "Operating" }];
+export const TSF_OPERATING_STATUS_CODE = [
+  { value: "CON", label: "Construction" },
+  { value: "OPT", label: "Operation" },
+  { value: "CAM", label: "Care and Maintenance" },
+  { value: "CLT", label: "Closure - Transition" },
+  { value: "CLA", label: "Closure - Active Care" },
+  { value: "CLP", label: "Closure - Passive Care" },
+];
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "LOW", label: "Low" },

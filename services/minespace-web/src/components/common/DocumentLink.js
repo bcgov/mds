@@ -64,7 +64,7 @@ export const DocumentLink = (props) => {
 
   const canDeleteFile =
     (typeof props?.deletePermission === "boolean" && props.deletePermission) ||
-    props.userRoles.includes(USER_ROLES[props?.deletePermission]);
+    props.userRoles?.includes(USER_ROLES[props?.deletePermission]);
 
   const onClickMenu = (event) => {
     switch (event.key) {

@@ -75,7 +75,6 @@ export const TailingsSummaryPage = (props) => {
           (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
         );
         props.storeTsf(existingTsf);
-        resetForm(FORM.ADD_STORAGE_FACILITY);
       }
     }
     setIsLoaded(true);
@@ -111,7 +110,7 @@ export const TailingsSummaryPage = (props) => {
             <BasicInformation viewOnly renderConfig={renderConfig} />
           </Step>
           <Step key="engineer-of-record">
-            <EngineerOfRecord />
+            <EngineerOfRecord mineGuid={mineGuid}/>
           </Step>
           <Step key="qualified-person">
             <div>qfp</div>

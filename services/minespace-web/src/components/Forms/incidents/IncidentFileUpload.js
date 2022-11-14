@@ -11,6 +11,11 @@ const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  labelIdle: PropTypes.string,
+};
+
+const defaultProps = {
+  labelIdle: undefined,
 };
 
 export const IncidentFileUpload = (props) => (
@@ -25,10 +30,12 @@ export const IncidentFileUpload = (props) => (
       onRemoveFile={props.onRemoveFile}
       allowRevert
       allowMultiple
+      labelIdle={props.labelIdle}
     />
   </Form.Item>
 );
 
 IncidentFileUpload.propTypes = propTypes;
+IncidentFileUpload.defaultProps = defaultProps;
 
 export default IncidentFileUpload;

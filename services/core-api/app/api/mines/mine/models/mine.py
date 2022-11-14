@@ -118,6 +118,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
         lazy='joined')
 
+    alerts = db.relationship(
+        'MineAlert',
+        order_by='MineAlert.start_date',
+        primaryjoin='and_(MineAlert.mine_guid == Mine.mine_guid, MineAlert.deleted_ind == False)'
+    )
+
     region = db.relationship('MineRegionCode', lazy='select')
 
     government_agency_type_code = db.Column(

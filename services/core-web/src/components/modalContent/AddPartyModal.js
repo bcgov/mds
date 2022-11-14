@@ -88,7 +88,7 @@ export class AddPartyModal extends Component {
     const address_type_code =
       this.props.provinceOptions.find(
         (prov) => prov.value === this.props.addPartyFormValues.sub_division_code
-      )?.subType ?? "";
+      )?.subType ?? null;
     const payload = { party_type_code, address_type_code, ...this.props.addPartyFormValues };
     const party = await this.props
       .createParty(payload)
