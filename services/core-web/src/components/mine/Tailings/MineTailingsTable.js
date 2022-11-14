@@ -81,7 +81,6 @@ const MineTailingsTable = (props) => {
       dam.dam_guid
     );
     props.history.push(url);
-    // history.push(url);
   };
 
   const columns = [
