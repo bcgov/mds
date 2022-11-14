@@ -140,7 +140,7 @@ const prodConfig = merge([
         quality: 40,
       },
       pngquant: {
-        quality: "50-60",
+        quality: [0.50, 0.60],
         speed: 4,
       },
     },
