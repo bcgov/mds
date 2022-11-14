@@ -3,7 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { shallow } from "enzyme";
 import { store } from "@/App";
-import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
+import AssociatedDams from "../../../../../../common/components/tailings/AssociatedDams";
 
 let props = {};
 let dispatchProps = {};

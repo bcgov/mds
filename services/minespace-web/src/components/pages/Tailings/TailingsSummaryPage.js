@@ -32,7 +32,7 @@ import QualifiedPerson from "@/components/Forms/tailing/tailingsStorageFacility/
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import AssociatedDams from "@/components/Forms/tailing/tailingsStorageFacility/AssociatedDams";
+import AssociatedDams from "../../../../common/components/tailings/AssociatedDams";
 import {
   ADD_TAILINGS_STORAGE_FACILITY,
   EDIT_TAILINGS_STORAGE_FACILITY,

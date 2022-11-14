@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import DamsPage from "@/components/pages/Tailings/DamsPage";
+import DamsPage from "@common/components/tailings/dam/DamsPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
 import LandingPage from "@/components/pages/LandingPage";
