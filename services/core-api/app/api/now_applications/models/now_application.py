@@ -161,7 +161,7 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None, NOWApplicationDocumentXref.deleted_ind==False)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
     application_reason_codes = db.relationship(
