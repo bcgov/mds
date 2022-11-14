@@ -23,6 +23,7 @@ import { PDF } from "@common/constants/fileTypes";
 import moment from "moment";
 import { isNumber } from "lodash";
 import TailingsContext from "@common/components/tailings/TailingsContext";
+import { getMines } from "@common/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 
 const propTypes = {
@@ -57,7 +58,7 @@ const columns = (LinkButton) => [
 ];
 
 export const EngineerOfRecord = (props) => {
-  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading } = props;
+  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading, mines } = props;
 
   const {
     renderConfig,
@@ -76,6 +77,7 @@ export const EngineerOfRecord = (props) => {
   const [, setUploading] = useState(false);
   const [currentEor, setCurrentEor] = useState(null);
   const handleCreateEOR = (value) => {
+    console.log(value);
     props.change(tsfFormName, "engineer_of_record.party_guid", value.party_guid);
     props.change(tsfFormName, "engineer_of_record.party", value);
     props.change(tsfFormName, "engineer_of_record.start_date", null);
@@ -104,11 +106,23 @@ export const EngineerOfRecord = (props) => {
         onSubmit: handleCreateEOR,
         onCancel: props.closeModal,
         title: "Select Contact",
+        partyRelationships,
         mine_party_appt_type_code: "EOR",
+        partyRelationshipType: "EOR",
+        mine: mines[mineGuid],
+        createPartyOnly: true,
       },
       content: addContactModalConfig,
     });
   };
+
+  // title: `${title}: ${value.description}`,
+  // partyRelationships,
+  // partyRelationshipType: value,
+  // mine,
+  // minePermits: this.props.permits,
+  // onFileLoad: this.onFileLoad,
+  // onRemoveFile: this.onRemoveFile,
 
   const onFileLoad = (documentName, document_manager_guid) => {
     setUploadedFiles([
@@ -342,6 +356,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
+  mines: getMines(state),
 });
 
 EngineerOfRecord.propTypes = propTypes;

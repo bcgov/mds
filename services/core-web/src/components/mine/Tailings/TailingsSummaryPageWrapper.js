@@ -21,8 +21,8 @@ export const TailingsSummaryPageWrapper = () => {
       addContactModalConfig={modalConfig.ADD_PARTY_RELATIONSHIP}
       tsfFormName={FORM.ADD_STORAGE_FACILITY}
       showUpdateTimestamp
-      canAssignEor={false}
       eorHistoryColumns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}
+      canAssignEor
     >
       <TailingsSummaryPage />
     </TailingsProvider>
