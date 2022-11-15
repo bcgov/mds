@@ -24,6 +24,7 @@ import {
   updateMineIncident,
   removeDocumentFromMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
+import { fetchInspectors } from "@common/actionCreators/staticContentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
@@ -43,6 +44,7 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
+  fetchInspectors: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   touch: PropTypes.func.isRequired,
@@ -273,6 +275,7 @@ export class IncidentPage extends Component {
         isLoaded: true,
         isEditMode: Boolean(this.props.match.params?.mineIncidentGuid),
       }));
+      this.props.fetchInspectors();
     });
   }
 
@@ -350,11 +353,37 @@ export class IncidentPage extends Component {
     if (typeof values?.mine_determination_type_code === "boolean") {
       mineDeterminationTypeCode = values.mine_determination_type_code ? "DO" : "NDO";
     }
+
+    const reportedToInspectorDateSet =
+      values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
+    const johscWorkerRepDateSet =
+      values?.johsc_worker_rep_contact_date && values?.johsc_worker_rep_contact_time;
+    const johscManagementRepDateSet =
+      values?.johsc_management_rep_contact_date && values?.johsc_management_rep_contact_time;
+
     return {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: values?.initial_notification_documents,
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
+      reported_to_inspector_contact_timestamp: reportedToInspectorDateSet
+        ? this.formatTimestamp(
+            values?.reported_to_inspector_contact_date,
+            values?.reported_to_inspector_contact_time
+          )
+        : null,
+      johsc_worker_rep_contact_timestamp: johscWorkerRepDateSet
+        ? this.formatTimestamp(
+            values?.johsc_worker_rep_contact_date,
+            values?.johsc_worker_rep_contact_time
+          )
+        : null,
+      johsc_management_rep_contact_timestamp: johscManagementRepDateSet
+        ? this.formatTimestamp(
+            values?.johsc_management_rep_contact_date,
+            values?.johsc_management_rep_contact_time
+          )
+        : null,
       mine_determination_type_code:
         mineDeterminationTypeCode ?? values?.mine_determination_type_code,
     };
@@ -365,6 +394,24 @@ export class IncidentPage extends Component {
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
     incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
+    reported_to_inspector_contact_date: incident?.reported_to_inspector_contact_timestamp
+      ? moment(incident?.reported_to_inspector_contact_timestamp).format("YYYY-MM-DD")
+      : null,
+    reported_to_inspector_contact_time: incident?.reported_to_inspector_contact_timestamp
+      ? moment(incident?.reported_to_inspector_contact_timestamp).format("HH:mm")
+      : null,
+    johsc_worker_rep_contact_date: incident?.johsc_worker_rep_contact_timestamp
+      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("YYYY-MM-DD")
+      : null,
+    johsc_worker_rep_contact_time: incident?.johsc_worker_rep_contact_timestamp
+      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("HH:mm")
+      : null,
+    johsc_management_rep_contact_date: incident?.johsc_management_rep_contact_timestamp
+      ? moment(incident?.johsc_management_rep_contact_timestamp).format("YYYY-MM-DD")
+      : null,
+    johsc_management_rep_contact_time: incident?.johsc_management_rep_contact_timestamp
+      ? moment(incident?.johsc_management_rep_contact_timestamp).format("HH:mm")
+      : null,
     mine_determination_type_code: incident?.mine_determination_type_code
       ? incident.mine_determination_type_code === "DO"
       : null,
@@ -471,6 +518,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncident,
       updateMineIncident,
       removeDocumentFromMineIncident,
+      fetchInspectors,
       submit,
       reset,
       touch,
