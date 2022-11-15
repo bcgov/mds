@@ -61,7 +61,7 @@ const PartyAppointmentTable = (props) => {
   );
 
   const transformRowData = (partyRelationships) =>
-    partyRelationships.map((r) => {
+    partyRelationships.map((r, ind) => {
       let endDate = r.end_date;
 
       if (!endDate && r.start_date) {
@@ -76,14 +76,15 @@ const PartyAppointmentTable = (props) => {
         startDate: r.start_date || "Unknown",
         endDate,
         letters: r.documents || [],
-        status: moment(r.end_date).isBefore(moment()) || !r.start_date ? "Inactive" : "Active",
+        status: ind === 0? "Active": "Inactive",
         ministryAcknowledged: "N/A",
       };
     });
 
-  const sortedRelationships = props.partyRelationships.sort((a, b) =>
-    moment(a.start_date, "YYYY-MM-DD") >= moment(b.start_date, "YYYY-MM-DD") ? -1 : 1
-  );
+  const sortedRelationships = props.partyRelationships.sort((a, b) => {
+      return moment(a.start_date || '1970-01-01', "YYYY-MM-DD").isAfter(moment(b.start_date || '1970-01-01', "YYYY-MM-DD")) ? -1 : 1
+    }
+  );  
 
   return (
     <Row>
