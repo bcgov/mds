@@ -17,6 +17,7 @@ DAM_MODEL = api.model('Dam', {
     'current_elevation': fields.Fixed(decimals=2),
     'max_pond_elevation': fields.Fixed(decimals=2),
     'min_freeboard_required': fields.Fixed(decimals=2),
+    'update_timestamp': fields.DateTime,
 })
 
 DAM_MODEL_LIST = api.model('DamList', {

@@ -22,6 +22,7 @@ export const TailingsSummaryPageWrapper = () => {
       tsfFormName={FORM.ADD_STORAGE_FACILITY}
       showUpdateTimestamp
       canAssignEor={false}
+      eorHistoryColumns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}
     >
       <TailingsSummaryPage />
     </TailingsProvider>

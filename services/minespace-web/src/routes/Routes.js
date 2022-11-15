@@ -1,11 +1,10 @@
-import * as routes from "@/constants/routes";
-
 import { Button, Result, Typography } from "antd";
 import { Link, Route, Switch } from "react-router-dom";
 
-import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import React from "react";
+import AuthenticationGuard from "@/HOC/AuthenticationGuard";
+import * as routes from "@/constants/routes";
 
 const Routes = () => (
   <Switch>

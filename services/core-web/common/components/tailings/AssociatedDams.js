@@ -1,4 +1,3 @@
-import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
 import { Button, Col, Row, Space, Table, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
@@ -6,23 +5,30 @@ import {
 } from "@common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 
-import { EditIcon } from "@/assets/icons";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { getTsf } from "@common/reducers/tailingsReducer";
+import moment from "moment";
 import { storeDam } from "@common/actions/damActions";
 import { useHistory } from "react-router-dom";
+import { EditIcon } from "@/assets/icons";
+import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
 
 const propTypes = {
   tsf: PropTypes.objectOf(PropTypes.any).isRequired,
   storeDam: PropTypes.func.isRequired,
+  isCore: PropTypes.bool,
+};
+
+const defaultProps = {
+  isCore: false,
 };
 
 const AssociatedDams = (props) => {
   const history = useHistory();
-  const { tsf } = props;
+  const { tsf, isCore } = props;
 
   const handleNavigateToEdit = (event, dam) => {
     event.preventDefault();
@@ -101,9 +107,16 @@ const AssociatedDams = (props) => {
     },
   ];
 
+  const mostRecentUpdatedDate = moment(
+    Math.max.apply(
+      null,
+      tsf.dams.map((dam) => moment(dam.update_timestamp))
+    )
+  ).format("DD-MM-YYYY H:mm");
+
   return (
     <div>
-      <Row justify="space-between" align="middle">
+      <Row justify="space-between" align="middle" className="associated-dams-header">
         <Col>
           <Typography.Title level={3} className="gov-blue-title">
             Associated Dams
@@ -113,10 +126,17 @@ const AssociatedDams = (props) => {
           </Typography.Text>
         </Col>
         <Col>
-          <Button type="primary" onClick={handleNavigateToCreate}>
-            <PlusCircleFilled />
-            Create a new dam
-          </Button>
+          {isCore ? (
+            <div>
+              <Typography.Paragraph strong>Last Updated</Typography.Paragraph>
+              <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
+            </div>
+          ) : (
+            <Button type="primary" onClick={handleNavigateToCreate}>
+              <PlusCircleFilled />
+              Create a new dam
+            </Button>
+          )}
         </Col>
       </Row>
       <Table
@@ -130,6 +150,7 @@ const AssociatedDams = (props) => {
 };
 
 AssociatedDams.propTypes = propTypes;
+AssociatedDams.defaultProps = defaultProps;
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam }, dispatch);
 

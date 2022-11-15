@@ -17,18 +17,23 @@ import {
 } from "@common/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
-import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { Field } from "redux-form";
 import PropTypes from "prop-types";
 import React from "react";
+import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   tsf: PropTypes.objectOf(PropTypes.any).isRequired,
+  dam: PropTypes.objectOf(PropTypes.any),
+};
+
+const defaultProps = {
+  dam: {},
 };
 
 const DamForm = (props) => {
-  const { tsf } = props;
+  const { tsf, dam } = props;
   const history = useHistory();
   const { tailingsStorageFacilityGuid, mineGuid } = useParams();
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
@@ -44,7 +49,7 @@ const DamForm = (props) => {
   return (
     <div>
       <div className="margin-large--bottom">
-        <Typography.Title level={3}>Associated Dams</Typography.Title>
+        <Typography.Title level={3}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
           title={`Are you sure you want to cancel ${
             tailingsStorageFacilityGuid ? "updating this" : "creating a new"
@@ -55,7 +60,7 @@ const DamForm = (props) => {
           placement="right"
           onConfirm={handleBack}
         >
-          <Typography.Link>
+          <Typography.Link className="associated-dams-link">
             Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
           </Typography.Link>
         </Popconfirm>
@@ -152,5 +157,6 @@ const DamForm = (props) => {
 };
 
 DamForm.propTypes = propTypes;
+DamForm.defaultProps = defaultProps;
 
 export default DamForm;

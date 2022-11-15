@@ -47,11 +47,11 @@
 // Divider
 
 .ant-divider:not(.ant-divider-plain) {
-  background-color: $primary-color;
+  background-color: $primary-color; 
+}
 
-  &-horizontal {
-    height: 3px;
-  }
+.ant-divider-horizontal {
+  height: 3px;
 }
 
 // Buttons

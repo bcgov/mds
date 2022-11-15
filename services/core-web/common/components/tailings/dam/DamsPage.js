@@ -17,7 +17,7 @@ import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
-import DamForm from "@/components/Forms/tailing/tailingsStorageFacility/dam/DamForm";
+import DamForm from "./DamForm";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import { ADD_EDIT_DAM } from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
@@ -32,11 +32,12 @@ const propTypes = {
   submit: PropTypes.func.isRequired,
   createDam: PropTypes.func.isRequired,
   updateDam: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const DamsPage = (props) => {
   const history = useHistory();
-  const { tsf, formValues, formErrors } = props;
+  const { tsf, formValues, formErrors, initialValues } = props;
   const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams();
 
   useEffect(() => {
@@ -126,7 +127,7 @@ const DamsPage = (props) => {
       >
         {[
           <Step key="basic-dam-information">
-            <DamForm tsf={tsf} />
+            <DamForm tsf={tsf} dam={initialValues} />
           </Step>,
         ]}
       </SteppedForm>

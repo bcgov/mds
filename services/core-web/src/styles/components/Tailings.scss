@@ -19,3 +19,24 @@
 .tailings-nested-table tr:nth-child(2n) td {
   background-color: #F9F9F9;
 }
+
+.associated-dams-header {
+  margin-bottom: 16px;
+}
+
+.associated-dams-header > div > div {
+  text-align: right;
+}
+
+.associated-dams-header h3 {
+  color: #003366;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: -0.41px;
+}
+
+.associated-dams-link {
+  color: #5E46A1 !important;
+  text-decoration: underline !important;
+}

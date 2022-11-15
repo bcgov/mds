@@ -26,6 +26,7 @@ import { renderConfig } from "@/components/common/config";
 import Loading from "@/components/common/Loading";
 import * as FORM from "@/constants/forms";
 import { MINE_TAILINGS } from "@/constants/routes";
+import AssociatedDams from "../../../../common/components/tailings/AssociatedDams";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -75,7 +76,6 @@ export const TailingsSummaryPage = (props) => {
           (tsf) => tsf.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
         );
         props.storeTsf(existingTsf);
-        resetForm(FORM.ADD_STORAGE_FACILITY);
       }
     }
     setIsLoaded(true);
@@ -111,13 +111,13 @@ export const TailingsSummaryPage = (props) => {
             <BasicInformation viewOnly renderConfig={renderConfig} />
           </Step>
           <Step key="engineer-of-record">
-            <EngineerOfRecord />
+            <EngineerOfRecord mineGuid={mineGuid}/>
           </Step>
           <Step key="qualified-person">
             <div>qfp</div>
           </Step>
           <Step key="associated-dams">
-            <div />
+            <AssociatedDams isCore />
           </Step>
           <Step key="reports">
             <div />

@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import DamsPage from "@/components/pages/Tailings/DamsPage";
+import DamsPage from "@common/components/tailings/dam/DamsPage";
 import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
 import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
 import LandingPage from "@/components/pages/LandingPage";
@@ -125,6 +125,8 @@ export const REVIEW_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid/review",
   dynamicRoute: (mineGuid, mineIncidentGuid) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review/${link}`,
   component: IncidentPage,
 };
 

@@ -121,13 +121,13 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
           </p>
           <p>
             <img
-              SRC={
+              alt="TSF Pin"
+              className="icon-sm--img"
+              src={
                 Object {
                   "process": [Function],
                 }
               }
-              alt="TSF Pin"
-              className="icon-sm--img"
               style={
                 Object {
                   "marginTop": "10px",

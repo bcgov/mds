@@ -63,7 +63,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         'MineTailingsStorageFacility.mine_tailings_storage_facility_guid, '
         'MinePartyAppointment.mine_party_appt_type_code == "EOR", MinePartyAppointment.deleted_ind == False)',
         order_by=
-        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
     )
     dams = db.relationship(
         'Dam',
@@ -81,7 +81,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         primaryjoin=
         'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "TQP", MinePartyAppointment.deleted_ind == False)',
         order_by=
-        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
     )
 
     @hybrid_property
