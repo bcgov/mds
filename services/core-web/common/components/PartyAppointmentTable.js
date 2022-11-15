@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Row, Table, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { Field } from "redux-form";
 import DocumentLink from "@/components/common/DocumentLink";
+import TailingsContext from "./tailings/TailingsContext";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
@@ -15,6 +17,13 @@ const defaultProps = {
 
 const PartyAppointmentTable = (props) => {
   const { columns } = props;
+
+  const { renderConfig } = useContext(TailingsContext);
+
+  const ministryAcknowledgedColumns = [
+    { value: "not_acknowledged", label: "Not acknowledged" },
+    { value: "acknowledged", label: "Acknowledged" },  
+  ];
 
   const columnDefinitions = [
     {
@@ -52,7 +61,13 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Ministry Acknowledged",
       dataIndex: "ministryAcknowledged",
-      render: (text) => <div title="ministryAcknowledged">{text}</div>,
+      render: () => <Field
+        value="not_acknowledged"
+        id="ministryAcknowledged"
+        name="ministryAcknowledged"
+        component={renderConfig.SELECT}
+        data={ministryAcknowledgedColumns}
+      />
     },
   ];
 

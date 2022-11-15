@@ -22,11 +22,11 @@ import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import BasicInformation from "@common/components/tailings/BasicInformation";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import EngineerOfRecord from "@common/components/tailings/EngineerOfRecord";
+import AssociatedDams from "@common/components/tailings/AssociatedDams";
 import { renderConfig } from "@/components/common/config";
 import Loading from "@/components/common/Loading";
 import * as FORM from "@/constants/forms";
 import { MINE_TAILINGS } from "@/constants/routes";
-import AssociatedDams from "../../../../common/components/tailings/AssociatedDams";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types

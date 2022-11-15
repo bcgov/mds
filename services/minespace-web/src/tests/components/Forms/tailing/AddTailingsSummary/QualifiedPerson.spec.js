@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { QualifiedPerson } from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
+import { QualifiedPerson } from "@common/components/tailings/QualifiedPerson";
 
 let dispatchProps = {};
 let props = {};
