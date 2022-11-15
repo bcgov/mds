@@ -190,7 +190,6 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <Title
-            id="incident-details"
             level={4}
           >
             Incident Details
@@ -209,7 +208,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="incident_date"
               name="incident_date"
               placeholder="Please select date"
@@ -232,7 +230,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               fullWidth={true}
               id="incident_time"
               name="incident_time"
@@ -255,7 +252,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="proponent_incident_no"
               name="proponent_incident_no"
               validate={
@@ -276,7 +272,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="number_of_injuries"
               name="number_of_injuries"
               validate={
@@ -298,7 +293,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="number_of_fatalities"
               name="number_of_fatalities"
               validate={
@@ -320,7 +314,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="emergency_services_called"
               name="emergency_services_called"
               placeholder="Please choose one"
@@ -336,7 +329,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="incident_description"
               name="incident_description"
               placeholder="Provide a detailed description of the incident"
@@ -358,7 +350,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="immediate_measures_taken"
               name="immediate_measures_taken"
               placeholder="Provide a detailed description of any immediate measures taken"
@@ -379,7 +370,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="injuries_description"
               name="injuries_description"
               placeholder="Provide a detailed description of any injuries"
@@ -427,8 +417,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              data={Array []}
-              disabled={false}
               id="reported_to_inspector_party_guid"
               name="reported_to_inspector_party_guid"
               placeholder="Enter name"
@@ -450,14 +438,8 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="reported_to_inspector_contacted"
               name="reported_to_inspector_contacted"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
             />
           </FormItem>
         </Col>
@@ -481,7 +463,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="johsc_worker_rep_name"
               name="johsc_worker_rep_name"
               placeholder="Enter name"
@@ -503,7 +484,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="johsc_worker_rep_contacted"
               name="johsc_worker_rep_contacted"
             />
@@ -529,7 +509,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="johsc_management_rep_name"
               name="johsc_management_rep_name"
               placeholder="Enter name"
@@ -551,7 +530,6 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
               id="johsc_management_rep_contacted"
               name="johsc_management_rep_contacted"
             />

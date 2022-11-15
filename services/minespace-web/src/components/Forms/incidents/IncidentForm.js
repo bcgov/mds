@@ -274,6 +274,10 @@ const renderIncidentDetails = (props) => {
     managementRepContacted,
   } = retrieveIncidentDetailsDynamicValidation(props);
 
+  const inspectorOptions = props.inspectorOptions
+    ?.filter((i) => i.groupName === "Active")
+    ?.flatMap((fi) => fi.opt);
+
   return (
     <Row gutter={[16]}>
       <Col span={24}>
@@ -412,9 +416,7 @@ const renderIncidentDetails = (props) => {
             component={renderConfig.SELECT}
             placeholder="Enter name"
             validate={[maxLength(100)]}
-            data={props.inspectorOptions
-              .filter((i) => i.groupName === "Active")
-              .flatMap((fi) => fi.opt)}
+            data={inspectorOptions}
             disabled={props.isReviewSubmitStage}
           />
         </Form.Item>
