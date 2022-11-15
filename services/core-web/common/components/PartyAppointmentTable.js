@@ -76,15 +76,18 @@ const PartyAppointmentTable = (props) => {
         startDate: r.start_date || "Unknown",
         endDate,
         letters: r.documents || [],
-        status: ind === 0? "Active": "Inactive",
+        status: ind === 0 ? "Active" : "Inactive",
         ministryAcknowledged: "N/A",
       };
     });
 
   const sortedRelationships = props.partyRelationships.sort((a, b) => {
-      return moment(a.start_date || '1970-01-01', "YYYY-MM-DD").isAfter(moment(b.start_date || '1970-01-01', "YYYY-MM-DD")) ? -1 : 1
-    }
-  );  
+    return moment(a.start_date || "1970-01-01", "YYYY-MM-DD").isAfter(
+      moment(b.start_date || "1970-01-01", "YYYY-MM-DD")
+    )
+      ? -1
+      : 1;
+  });
 
   return (
     <Row>
