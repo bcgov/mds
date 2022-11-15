@@ -12,6 +12,10 @@ const setupProps = () => {
   props.formValues = { ...MOCK.INCIDENT };
   props.handlers = { deleteDocument: jest.fn(() => Promise.resolve()) };
   props.match = { params: { mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
+  props.inspectorOptions = [
+    { groupName: "Active", opt: [] },
+    { groupName: "Inactive", opt: [] },
+  ];
 };
 
 const setupDispatchProps = () => {
