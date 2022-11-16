@@ -932,7 +932,7 @@ export const IncidentForm = (props) => {
           <br />
           {renderReporterDetails(props, formDisabled)}
           <br />
-          {renderIncidentDetails(formDisabled)}
+          {renderIncidentDetails(props)}
           <br />
           {renderDangerousOccurenceDetermination(formDisabled)}
           <br />
