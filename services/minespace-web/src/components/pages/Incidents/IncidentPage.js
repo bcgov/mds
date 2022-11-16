@@ -464,8 +464,8 @@ export class IncidentPage extends Component {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: [
-        ...values?.[INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD],
-        ...values?.[FINAL_REPORT_DOCUMENTS_FORM_FIELD],
+        ...(values?.[INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD] || []),
+        ...(values?.[FINAL_REPORT_DOCUMENTS_FORM_FIELD] || []),
       ],
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
       reported_to_inspector_contact_timestamp: reportedToInspectorDateSet
