@@ -25,6 +25,7 @@ import {
 import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";
@@ -179,8 +180,12 @@ export class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
-          <MineAlert mine={this.props.mine} />
-          <br />
+          {!IN_PROD() && (
+            <>
+              <MineAlert mine={this.props.mine} />
+              <br />
+            </>
+          )}
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>

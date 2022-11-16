@@ -2,23 +2,22 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { getFormValues, getFormSyncErrors } from "redux-form";
 import { Alert, Button, Col, Row, Menu, Dropdown, Popconfirm } from "antd";
-import { modalConfig } from "@/components/modalContent/config";
-import * as ModalContent from "@/constants/modalContent";
-import {
-  createMineAlert,
-  updateMineAlert,
-  fetchMineAlertsByMine,
-  deleteMineAlert,
-} from "@common/actionCreators/mineActionCreator";
-import { getMineAlerts } from "@common/selectors/mineSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { formatDate } from "@common/utils/helpers";
 import { DownOutlined } from "@ant-design/icons";
-import * as FORM from "@/constants/forms";
 import moment from "moment";
+import { getMineAlerts } from "@/selectors/mineAlertSelectors";
+import { createMineAlert,
+  updateMineAlert,
+  fetchMineAlertsByMine,
+  deleteMineAlert } from "@/actionCreators/mineAlertActionCreator";
+import * as FORM from "@/constants/forms";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
+
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,

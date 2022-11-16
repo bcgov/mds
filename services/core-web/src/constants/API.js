@@ -24,3 +24,7 @@ export const EXPLOSIVES_PERMIT_DOCUMENT_GENERATION = (token) =>
 // NODs
 export const NOTICE_OF_DEPARTURE_DOCUMENTS = (mineGuid) =>
   `/mines/${mineGuid}/notices-of-departure/documents`;
+
+// Alerts
+export const MINE_ALERTS = (mine_guid) => `/mines/${mine_guid}/alerts`;
+export const MINE_ALERT =  (mine_guid, mine_alert_guid) => `/mines/${mine_guid}/alerts/${mine_alert_guid}`;

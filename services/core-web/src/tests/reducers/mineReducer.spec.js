@@ -5,7 +5,6 @@ import {
   storeMineNameList,
   storeSubscribedMines,
   storeMineComments,
-  storeMineAlerts,
 } from "@common/actions/mineActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -19,7 +18,6 @@ const baseExpectedValue = {
   mineDocuments: [],
   subscribedMines: [],
   mineComments: [],
-  mineAlerts: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -92,10 +90,4 @@ describe("mineReducer", () => {
     expect(result).toEqual(expectedValue);
   });
 
-  it("receives STORE_MINE_ALERTS", () => {
-    const expectedValue = getBaseExpectedValue();
-    expectedValue.mineAlerts = MOCK.MINE_ALERTS.records;
-    const result = mineReducer(undefined, storeMineAlerts(MOCK.MINE_ALERTS));
-    expect(result).toEqual(expectedValue);
-  });
 });
