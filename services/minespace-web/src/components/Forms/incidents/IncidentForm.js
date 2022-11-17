@@ -655,11 +655,11 @@ const renderUploadInitialNotificationDocuments = (
     ? "Incident Documents"
     : "Initial Notification Documents";
   const initialIncidentDocuments =
-    props.incident?.documents?.filter(
+    props.formValues?.documents?.filter(
       (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
     ) ?? [];
   const finalReportDocuments =
-    props.incident?.documents?.filter(
+    props.formValues?.documents?.filter(
       (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
     ) ?? [];
   const isDangerousOccurence =
@@ -686,7 +686,8 @@ const renderUploadInitialNotificationDocuments = (
                   handlers.onFileLoad(
                     document_name,
                     document_manager_guid,
-                    Strings.INCIDENT_DOCUMENT_TYPES.initial
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial,
+                    INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
                   )
                 }
                 onRemoveFile={parentHandlers?.deleteDocument}
