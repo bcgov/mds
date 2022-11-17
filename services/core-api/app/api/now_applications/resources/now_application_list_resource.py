@@ -18,12 +18,14 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
+SORT_FIELD_DEFAULT = 'received_date'
+SORT_DIR_DEFAULT = 'desc'
 
 
 class NOWApplicationListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('permit_guid', type=str, required=True)
-    #required because only allowed on Major Mine Permit Amendment Application
+    # required because only allowed on Major Mine Permit Amendment Application
     parser.add_argument('mine_guid', type=str, required=True)
     parser.add_argument('notice_of_work_type_code', type=str, required=True)
     parser.add_argument('submitted_date', type=str, required=True)
@@ -37,17 +39,23 @@ class NOWApplicationListResource(Resource, UserMixin):
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
+            'sort_field': f'The field to sort on. Default: {SORT_FIELD_DEFAULT}',
+            'sort_dir': f'The direction to sort on, accepts asc|desc. Default: {SORT_DIR_DEFAULT}',
             'now_application_status_description':
             'Comma-separated list of statuses to include in results. Default: All statuses.',
             'notice_of_work_type_description': 'Substring to match with a NoW\'s type',
-            'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'now_number': 'Number of the NoW',
+            'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
+            'mine_name': 'Substring to match against a mine name',
+            'mine_guid': 'filter by a given mine guid',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
             'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
-            'mine_guid': 'filter by a given mine guid',
+            'lead_inspector_name': 'Substring to match against a lead inspector\'s name',
+            'issuing_inspector_name': 'Substring to match against an issuing inspector\'s name',
             'import_timestamp_since': 'Filter by applications created since this date.',
             'update_timestamp_since': 'Filter by applications updated since this date.',
-            'application_type': 'Application type NOW or ADA.'
+            'application_type': 'Application type NOW or ADA.',
+            'originating_system': 'System that the application was submitted through (ex: Core, MMS, VFCBC). Default: All systems',
         })
     @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_VIEW_LIST, code=200)
@@ -55,8 +63,8 @@ class NOWApplicationListResource(Resource, UserMixin):
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            sort_field=request.args.get('sort_field', 'received_date', type=str),
-            sort_dir=request.args.get('sort_dir', 'desc', type=str),
+            sort_field=request.args.get('sort_field', SORT_FIELD_DEFAULT, type=str),
+            sort_dir=request.args.get('sort_dir', SORT_DIR_DEFAULT, type=str),
             originating_system=request.args.getlist('originating_system', type=str),
             mine_guid=request.args.get('mine_guid', type=str),
             now_application_status_description=request.args.getlist(
@@ -68,7 +76,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
-            issuing_inspector_name= request.args.get('issuing_inspector_name', type=str),
+            issuing_inspector_name=request.args.get('issuing_inspector_name', type=str),
             submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'],
             import_timestamp_since=request.args.get(
                 'import_timestamp_since',
