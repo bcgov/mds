@@ -5871,6 +5871,19 @@ export const MINE_COMMENTS = {
   ],
 };
 
+export const MINE_ALERTS = {
+  records: [
+    {
+      mine_alert_guid: "3a31287c-82a3-46f0-a973-7a8a399718ad",
+      start_date: "2022-10-27",
+      end_date: "2022-10-31",
+      contact_name: "mock name",
+      contact_phone: "337-588-3109",
+      message: "Mine under construction",
+    },
+  ],
+};
+
 export const ORGBOOK_SEARCH_RESULTS = [
   {
     id: 777855,

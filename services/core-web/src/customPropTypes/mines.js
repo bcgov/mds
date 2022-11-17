@@ -13,7 +13,7 @@ export const mine = shape({
   mine_permit_numbers: PropTypes.arrayOf(PropTypes.string),
   mine_tailings_storage_facilities: arrayOf(tailingsStorageFacility),
   number_of_mine_employees: PropTypes.number,
-  number_of_contractors: PropTypes.number
+  number_of_contractors: PropTypes.number,
 });
 
 export const mineProfile = shape({
@@ -68,4 +68,13 @@ export const mineComment = shape({
   comment_user: PropTypes.string.isRequired,
   mine_comment: PropTypes.string.isRequired,
   comment_datetime: PropTypes.string.isRequired,
+});
+
+export const mineAlert = shape({
+  mine_alert_guid: PropTypes.string.isRequired,
+  start_date: PropTypes.string,
+  end_date: PropTypes.string,
+  contact_name: PropTypes.string,
+  contact_phone: PropTypes.string,
+  message: PropTypes.string,
 });
