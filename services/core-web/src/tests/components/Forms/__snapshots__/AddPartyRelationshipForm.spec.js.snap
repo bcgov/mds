@@ -5,7 +5,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onSubmit={[Function]}
 >
   <Row
     gutter={16}
@@ -21,6 +21,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
           allowAddingParties={true}
           id="party_guid"
           name="party_guid"
+          onSelect={[Function]}
           validate={
             Array [
               [Function],
