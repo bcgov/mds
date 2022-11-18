@@ -159,7 +159,11 @@ const incidentStatusCalloutContent = (statusCode) => {
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     default:
-      return null;
+      return {
+        message: null,
+        title: null,
+        severity: null,
+      };
   }
 };
 
