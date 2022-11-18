@@ -33,9 +33,7 @@ const defaultProps = {
 };
 
 export const QualifiedPerson = (props) => {
-  const { renderConfig, addContactModalConfig, tsfFormName } = useContext(
-    TailingsContext
-  );
+  const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
 
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);

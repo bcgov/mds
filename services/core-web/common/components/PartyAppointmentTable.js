@@ -22,7 +22,7 @@ const PartyAppointmentTable = (props) => {
 
   const ministryAcknowledgedColumns = [
     { value: "not_acknowledged", label: "Not acknowledged" },
-    { value: "acknowledged", label: "Acknowledged" },  
+    { value: "acknowledged", label: "Acknowledged" },
   ];
 
   const columnDefinitions = [
@@ -61,13 +61,15 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Ministry Acknowledged",
       dataIndex: "ministryAcknowledged",
-      render: () => <Field
-        value="not_acknowledged"
-        id="ministryAcknowledged"
-        name="ministryAcknowledged"
-        component={renderConfig.SELECT}
-        data={ministryAcknowledgedColumns}
-      />
+      render: () => (
+        <Field
+          value="not_acknowledged"
+          id="ministryAcknowledged"
+          name="ministryAcknowledged"
+          component={renderConfig.SELECT}
+          data={ministryAcknowledgedColumns}
+        />
+      ),
     },
   ];
 
