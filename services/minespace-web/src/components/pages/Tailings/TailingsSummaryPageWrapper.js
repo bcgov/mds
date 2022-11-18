@@ -13,8 +13,20 @@ import {
   EDIT_TAILINGS_STORAGE_FACILITY,
   MINE_DASHBOARD,
 } from "@/constants/routes";
+import PropTypes from "prop-types";
 
-export const TailingsSummaryPageWrapper = () => {
+const propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+      tailingsStorageFacilityGuid: PropTypes.string,
+      tab: PropTypes.string,
+    }),
+  }).isRequired,
+}
+
+export const TailingsSummaryPageWrapper = (props) => {
+  const { match } = props;
   const tsfComponents = {
     LinkButton,
     ContactDetails,
@@ -37,9 +49,16 @@ export const TailingsSummaryPageWrapper = () => {
       routes={routes}
       eorHistoryColumns={["name", "status", "dates", "letters"]}
     >
-      <TailingsSummaryPage form={FORM.ADD_TAILINGS_STORAGE_FACILITY} />
+      <TailingsSummaryPage
+          form={FORM.ADD_TAILINGS_STORAGE_FACILITY}
+          mineGuid={match.params.mineGuid}
+          tsfGuid={match.params.tailingsStorageFacilityGuid}
+          tab={match.params.tab}
+      />
     </TailingsProvider>
   );
 };
+
+TailingsSummaryPageWrapper.propTypes = propTypes;
 
 export default TailingsSummaryPageWrapper;
