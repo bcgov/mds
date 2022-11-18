@@ -31,3 +31,7 @@ export const EDIT_REPORT = "Edit a Mine Report";
 export const ADD_REPORT = "Add a Report";
 
 export const ADD_NOW_REVIEW = "Add a Notice of Work Review";
+
+export const CREATE_MINE_ALERT_RECORD = "Create Staff Alert";
+export const EDIT_MINE_ALERT_RECORD = "Edit Staff Alert";
+export const PAST_MINE_ALERT_RECORD = "Past Alerts";

@@ -89,4 +89,5 @@ describe("mineReducer", () => {
     const result = mineReducer(undefined, storeMineComments(MOCK.MINE_COMMENTS));
     expect(result).toEqual(expectedValue);
   });
+
 });

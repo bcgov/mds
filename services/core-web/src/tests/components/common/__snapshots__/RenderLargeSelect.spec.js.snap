@@ -15,6 +15,7 @@ exports[`RenderLargeSelect renders properly 1`] = `
     disabled={false}
     dropdownMatchSelectWidth={true}
     filterOption={[Function]}
+    getPopupContainer={[Function]}
     id="parties"
     notFoundContent="Not Found"
     onChange={

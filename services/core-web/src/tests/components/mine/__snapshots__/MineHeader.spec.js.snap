@@ -7,6 +7,64 @@ exports[`MineHeader renders dispatchProperly 1`] = `
   <div
     className="dashboard__header--card__content"
   >
+    <Connect(MineAlert)
+      mine={
+        Object {
+          "major_mine_ind": true,
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+          "mine_permit_numbers": Array [],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "consequence_classification_status_code": "LOW",
+              "itrb_exemption_status_code": "YES",
+              "latitude": null,
+              "longitude": null,
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "mine_tailings_storage_facility_name": "MockTSF",
+              "tsf_operating_status_code": "OPT",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+              "mine_type_detail": Array [],
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+              "mine_type_detail": Array [],
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
+        }
+      }
+    />
+    <br />
     <div
       className="inline-flex between horizontal-center"
     >

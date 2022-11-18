@@ -64,6 +64,7 @@ const RenderLargeSelect = (props) => (
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
+      getPopupContainer={(trigger) => trigger.parentNode}
       style={{ width: "100%" }}
       options={props.dataSource}
       placeholder={props.placeholder}

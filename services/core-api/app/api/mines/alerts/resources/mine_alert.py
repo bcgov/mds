@@ -65,6 +65,8 @@ class MineAlertListResource(Resource, UserMixin):
         try:
             if active_alert_indefinite:
                 active_alert.end_date = start_date - timedelta(seconds=1)
+            
+            if active_alert:
                 active_alert.is_active = False
                 active_alert.save()
 
