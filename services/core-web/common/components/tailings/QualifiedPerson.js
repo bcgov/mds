@@ -2,7 +2,7 @@ import * as PropTypes from "prop-types";
 
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { Field, change, getFormValues } from "redux-form";
-import React from "react";
+import React, { useContext } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 
@@ -16,16 +16,13 @@ import {
   validateDateRanges,
 } from "@common/utils/Validate";
 import ContactDetails from "@common/components/ContactDetails";
-import { tailingsStorageFacility as TSFType } from "@/customPropTypes/tailings";
-import { modalConfig } from "@/components/modalContent/config";
-import { renderConfig } from "@/components/common/config";
-import * as FORM from "@/constants/forms";
+import TailingsContext from "@common/components/tailings/TailingsContext";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  formValues: PropTypes.objectOf(TSFType).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineGuid: PropTypes.string.isRequired,
   loading: PropTypes.bool,
@@ -36,16 +33,14 @@ const defaultProps = {
 };
 
 export const QualifiedPerson = (props) => {
+  const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
+
   const handleCreateQP = (value) => {
-    props.change(
-      FORM.ADD_TAILINGS_STORAGE_FACILITY,
-      "qualified_person.party_guid",
-      value.party_guid
-    );
-    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "qualified_person.party", value);
-    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "qualified_person.start_date", null);
-    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "qualified_person.end_date", null);
-    props.change(FORM.ADD_TAILINGS_STORAGE_FACILITY, "qualified_person.mine_party_appt_guid", null);
+    props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
+    props.change(tsfFormName, "qualified_person.party", value);
+    props.change(tsfFormName, "qualified_person.start_date", null);
+    props.change(tsfFormName, "qualified_person.end_date", null);
+    props.change(tsfFormName, "qualified_person.mine_party_appt_guid", null);
     props.closeModal();
   };
 
@@ -58,7 +53,7 @@ export const QualifiedPerson = (props) => {
         title: "Select Contact",
         mine_party_appt_type_code: "TQP",
       },
-      content: modalConfig.ADD_CONTACT,
+      content: addContactModalConfig,
     });
   };
 
@@ -184,8 +179,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-const mapStateToProps = (state) => ({
-  formValues: getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)(state),
+const mapStateToProps = (state, ownProps) => ({
+  formValues: getFormValues(ownProps.tsfFormName)(state),
   partyRelationships: getPartyRelationships(state),
 });
 

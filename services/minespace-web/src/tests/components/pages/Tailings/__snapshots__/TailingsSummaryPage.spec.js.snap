@@ -1,3 +1,401 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TailingsSummaryPage renders properly 1`] = `<Loading />`;
+exports[`TailingsSummaryPage renders properly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "children": <TailingsSummaryPage
+        TSFOperatingStatusCodeHash={Object {}}
+        addDocumentToRelationship={[MockFunction]}
+        addPartyRelationship={[MockFunction]}
+        clearTsf={[MockFunction]}
+        consequenceClassificationStatusCodeHash={Object {}}
+        createTailingsStorageFacility={[MockFunction]}
+        eors={Array []}
+        fetchMineRecordById={[MockFunction]}
+        fetchPartyRelationships={[MockFunction]}
+        fetchPermits={[MockFunction]}
+        formErrors={Object {}}
+        formValues={Object {}}
+        history={
+          Object {
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+        initialValues={Object {}}
+        location={
+          Object {
+            "pathname": "",
+          }
+        }
+        match={
+          Object {
+            "params": Object {
+              "mineGuid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "tab": "basic-information",
+              "tailingsStorageFacilityGuid": "e2629897-053e-4218-9299-479375e47f78",
+            },
+          }
+        }
+        mines={
+          Object {
+            "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_location": Object {
+                "latitude": null,
+                "longitude": null,
+              },
+              "mine_name": "mine3",
+              "mine_no": "BLAH9091",
+              "mine_permit": Array [],
+              "mine_region": "NE",
+              "mine_status": Object {
+                "effective_date": "2018-10-16",
+                "expiry_date": "9999-12-31",
+                "status_labels": Array [
+                  "Closed",
+                  "Care & Maintenance",
+                ],
+                "statusvalue": Array [
+                  "CLD",
+                  "CM",
+                ],
+              },
+              "mine_tailings_storage_facilities": Array [
+                Object {
+                  "dams": Array [
+                    Object {
+                      "consequence_classification": "low",
+                      "current_dam_height": "123",
+                      "current_elevation": "123",
+                      "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
+                      "dam_name": "MockDam",
+                      "dam_type": "dam",
+                      "latitude": "123",
+                      "longitude": "123",
+                      "max_pond_elevation": "123",
+                      "min_freeboard_required": "123",
+                      "operating_status": "operation",
+                      "permitted_dam_crest_elevation": "123",
+                    },
+                  ],
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                  "mine_tailings_storage_facility_name": "MockTSF",
+                },
+              ],
+              "mine_type": Array [
+                Object {
+                  "mine_tenure_type_code": "PLR",
+                },
+                Object {
+                  "mine_tenure_type_code": "MIN",
+                },
+              ],
+            },
+            "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_location": Object {
+                "latitude": null,
+                "longitude": null,
+              },
+              "mine_name": "mine2",
+              "mine_no": "BLAH9091",
+              "mine_permit": Array [
+                Object {
+                  "authorization_end_date": "9999-12-31",
+                  "issue_date": "9999-12-31",
+                  "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+                  "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                  "permit_no": "KNaaWwVdiJ40",
+                  "permit_status_code": "Z",
+                  "permittee": Array [
+                    Object {
+                      "effective_date": "2018-10-02",
+                      "expiry_date": "9999-12-31",
+                      "party": Object {
+                        "effective_date": "2018-10-03",
+                        "email": "JgHxeyjv@aezZIwee.com",
+                        "expiry_date": "9999-12-31",
+                        "first_name": "Tiyudoveh",
+                        "name": "Tiyudoveh Higesewawa",
+                        "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                        "party_name": "Higesewawa",
+                        "party_type_code": "PER",
+                        "phone_ext": null,
+                        "phone_no": "123-123-1234",
+                      },
+                      "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                      "party_name": "Yivihoke",
+                      "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                      "permittee_guid": "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
+                    },
+                  ],
+                },
+                Object {
+                  "authorization_end_date": "9999-12-31",
+                  "issue_date": "9999-12-31",
+                  "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+                  "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                  "permit_no": "xfM0c0ZKEw7B",
+                  "permit_status_code": "Z",
+                  "permittee": Array [
+                    Object {
+                      "effective_date": "2018-10-02",
+                      "expiry_date": "9999-12-31",
+                      "party": Object {
+                        "effective_date": "2018-10-03",
+                        "email": "JgHxeyjv@aezZIwee.com",
+                        "expiry_date": "9999-12-31",
+                        "first_name": "Tiyudoveh",
+                        "name": "Tiyudoveh Higesewawa",
+                        "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                        "party_name": "Higesewawa",
+                        "party_type_code": "PER",
+                        "phone_ext": null,
+                        "phone_no": "123-123-1234",
+                      },
+                      "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                      "party_name": "Yivihoke",
+                      "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                      "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+                    },
+                  ],
+                },
+              ],
+              "mine_region": "NE",
+              "mine_status": Object {
+                "effective_date": "2018-10-16",
+                "expiry_date": "9999-12-31",
+                "status_labels": Array [
+                  "Closed",
+                  "Care & Maintenance",
+                ],
+                "statusvalue": Array [
+                  "CLD",
+                  "CM",
+                ],
+              },
+              "mine_tailings_storage_facilities": Array [
+                Object {
+                  "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+                  "mine_tailings_storage_facility_name": "MockTSF1",
+                },
+              ],
+              "mine_type": Array [
+                Object {
+                  "mine_tenure_type_code": "PLR",
+                },
+                Object {
+                  "mine_tenure_type_code": "MIN",
+                },
+              ],
+            },
+          }
+        }
+        storeTsf={[MockFunction]}
+        submit={[MockFunction]}
+        updateTailingsStorageFacility={[MockFunction]}
+      />,
+    }
+  }
+>
+  <TailingsSummaryPage
+    TSFOperatingStatusCodeHash={Object {}}
+    addDocumentToRelationship={[MockFunction]}
+    addPartyRelationship={[MockFunction]}
+    clearTsf={[MockFunction]}
+    consequenceClassificationStatusCodeHash={Object {}}
+    createTailingsStorageFacility={[MockFunction]}
+    eors={Array []}
+    fetchMineRecordById={[MockFunction]}
+    fetchPartyRelationships={[MockFunction]}
+    fetchPermits={[MockFunction]}
+    formErrors={Object {}}
+    formValues={Object {}}
+    history={
+      Object {
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+    initialValues={Object {}}
+    location={
+      Object {
+        "pathname": "",
+      }
+    }
+    match={
+      Object {
+        "params": Object {
+          "mineGuid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "tab": "basic-information",
+          "tailingsStorageFacilityGuid": "e2629897-053e-4218-9299-479375e47f78",
+        },
+      }
+    }
+    mines={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+          "mine_permit": Array [],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": "9999-12-31",
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "dams": Array [
+                Object {
+                  "consequence_classification": "low",
+                  "current_dam_height": "123",
+                  "current_elevation": "123",
+                  "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
+                  "dam_name": "MockDam",
+                  "dam_type": "dam",
+                  "latitude": "123",
+                  "longitude": "123",
+                  "max_pond_elevation": "123",
+                  "min_freeboard_required": "123",
+                  "operating_status": "operation",
+                  "permitted_dam_crest_elevation": "123",
+                },
+              ],
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "mine_tailings_storage_facility_name": "MockTSF",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+            },
+          ],
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine2",
+          "mine_no": "BLAH9091",
+          "mine_permit": Array [
+            Object {
+              "authorization_end_date": "9999-12-31",
+              "issue_date": "9999-12-31",
+              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+              "permit_no": "KNaaWwVdiJ40",
+              "permit_status_code": "Z",
+              "permittee": Array [
+                Object {
+                  "effective_date": "2018-10-02",
+                  "expiry_date": "9999-12-31",
+                  "party": Object {
+                    "effective_date": "2018-10-03",
+                    "email": "JgHxeyjv@aezZIwee.com",
+                    "expiry_date": "9999-12-31",
+                    "first_name": "Tiyudoveh",
+                    "name": "Tiyudoveh Higesewawa",
+                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                    "party_name": "Higesewawa",
+                    "party_type_code": "PER",
+                    "phone_ext": null,
+                    "phone_no": "123-123-1234",
+                  },
+                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                  "party_name": "Yivihoke",
+                  "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                  "permittee_guid": "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
+                },
+              ],
+            },
+            Object {
+              "authorization_end_date": "9999-12-31",
+              "issue_date": "9999-12-31",
+              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+              "permit_no": "xfM0c0ZKEw7B",
+              "permit_status_code": "Z",
+              "permittee": Array [
+                Object {
+                  "effective_date": "2018-10-02",
+                  "expiry_date": "9999-12-31",
+                  "party": Object {
+                    "effective_date": "2018-10-03",
+                    "email": "JgHxeyjv@aezZIwee.com",
+                    "expiry_date": "9999-12-31",
+                    "first_name": "Tiyudoveh",
+                    "name": "Tiyudoveh Higesewawa",
+                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                    "party_name": "Higesewawa",
+                    "party_type_code": "PER",
+                    "phone_ext": null,
+                    "phone_no": "123-123-1234",
+                  },
+                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                  "party_name": "Yivihoke",
+                  "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                  "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+                },
+              ],
+            },
+          ],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": "9999-12-31",
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+              "mine_tailings_storage_facility_name": "MockTSF1",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+            },
+          ],
+        },
+      }
+    }
+    storeTsf={[MockFunction]}
+    submit={[MockFunction]}
+    updateTailingsStorageFacility={[MockFunction]}
+  />
+</ContextProvider>
+`;

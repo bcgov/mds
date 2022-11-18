@@ -2,16 +2,41 @@ import React from "react";
 
 import TailingsProvider from "@common/components/tailings/TailingsProvider";
 import ContactDetails from "@common/components/ContactDetails";
+import TailingsSummaryPage from "@common/components/tailings/TailingsSummaryPage";
 import { renderConfig } from "@/components/common/config";
-import TailingsSummaryPage from "./TailingsSummaryPage";
 import LinkButton from "@/components/common/LinkButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
+import Loading from "@/components/common/Loading";
+import {
+  ADD_TAILINGS_STORAGE_FACILITY,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+  MINE_DASHBOARD,
+} from "@/constants/routes";
+import PropTypes from "prop-types";
 
-export const TailingsSummaryPageWrapper = () => {
+const propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+      tailingsStorageFacilityGuid: PropTypes.string,
+      tab: PropTypes.string,
+    }),
+  }).isRequired,
+}
+
+export const TailingsSummaryPageWrapper = (props) => {
+  const { match } = props;
   const tsfComponents = {
     LinkButton,
     ContactDetails,
+    Loading,
+  };
+
+  const routes = {
+    ADD_TAILINGS_STORAGE_FACILITY,
+    EDIT_TAILINGS_STORAGE_FACILITY,
+    MINE_DASHBOARD,
   };
 
   return (
@@ -21,11 +46,19 @@ export const TailingsSummaryPageWrapper = () => {
       addContactModalConfig={modalConfig.ADD_CONTACT}
       tsfFormName={FORM.ADD_TAILINGS_STORAGE_FACILITY}
       canAssignEor
+      routes={routes}
       eorHistoryColumns={["name", "status", "dates", "letters"]}
     >
-      <TailingsSummaryPage />
+      <TailingsSummaryPage
+          form={FORM.ADD_TAILINGS_STORAGE_FACILITY}
+          mineGuid={match.params.mineGuid}
+          tsfGuid={match.params.tailingsStorageFacilityGuid}
+          tab={match.params.tab}
+      />
     </TailingsProvider>
   );
 };
+
+TailingsSummaryPageWrapper.propTypes = propTypes;
 
 export default TailingsSummaryPageWrapper;

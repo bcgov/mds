@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { TailingsSummaryPage } from "@/components/pages/Tailings/TailingsSummaryPage";
+import { TailingsSummaryPage } from "@common/components/tailings/TailingsSummaryPage";
+import TailingsProvider from "@common/components/tailings/TailingsProvider";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 let props = {};
@@ -46,7 +47,11 @@ beforeEach(() => {
 
 describe("TailingsSummaryPage", () => {
   it("renders properly", () => {
-    const component = shallow(<TailingsSummaryPage {...props} {...dispatchProps} />);
+    const component = shallow(
+      <TailingsProvider>
+        <TailingsSummaryPage {...props} {...dispatchProps} />
+      </TailingsProvider>
+    );
     expect(component).toMatchSnapshot();
   });
 });
