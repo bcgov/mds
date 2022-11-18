@@ -306,5 +306,6 @@ export default compose(
     touchOnChange: false,
     enableReinitialize: true,
     destroyOnUnmount: true,
+    onSubmit: () => {},
   })
 )(withRouter(AuthorizationGuard(Permission.IN_TESTING)(TailingsSummaryPage)));
