@@ -14,7 +14,7 @@ import {
   fetchMineRecordById,
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
-import { flattenObject, resetForm } from "@common/utils/helpers";
+import { flattenObject } from "@common/utils/helpers";
 import { getFormSyncErrors, getFormValues, isDirty, reduxForm, submit, touch } from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -75,7 +75,7 @@ export const TailingsSummaryPage = (props) => {
   const { renderConfig, components, routes, isCore } = useContext(TailingsContext);
 
   const { Loading } = components;
-  
+
   const handleFetchData = async (forceReload = false) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
@@ -92,7 +92,7 @@ export const TailingsSummaryPage = (props) => {
         const existingTsf = mine.data.mine_tailings_storage_facilities.find(
           (tsf) => tsf.mine_tailings_storage_facility_guid === tsfGuid
         );
-  
+
         props.storeTsf(existingTsf);
       }
     }
@@ -198,11 +198,7 @@ export const TailingsSummaryPage = (props) => {
     let url;
 
     if (tsfGuid) {
-      url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-        tsfGuid,
-        mineGuid,
-        newActiveTab
-      );
+      url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(tsfGuid, mineGuid, newActiveTab);
     } else {
       url = routes.ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(newActiveTab);
     }
@@ -256,7 +252,7 @@ export const TailingsSummaryPage = (props) => {
             <QualifiedPerson tsfFormName={props.form} loading={isReloading} mineGuid={mineGuid} />
           </Step>
           <Step key="associated-dams" disabled={!hasCreatedTSF}>
-            <AssociatedDams isCore={isCore}/>
+            <AssociatedDams isCore={isCore} />
           </Step>
           <Step key="reports" disabled={!hasCreatedTSF}>
             <div />

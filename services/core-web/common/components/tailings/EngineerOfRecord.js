@@ -35,6 +35,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   loading: PropTypes.bool,
+  mines: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -77,7 +78,6 @@ export const EngineerOfRecord = (props) => {
   const [, setUploading] = useState(false);
   const [currentEor, setCurrentEor] = useState(null);
   const handleCreateEOR = (value) => {
-    console.log(value);
     props.change(tsfFormName, "engineer_of_record.party_guid", value.party_guid);
     props.change(tsfFormName, "engineer_of_record.party", value);
     props.change(tsfFormName, "engineer_of_record.start_date", null);
@@ -115,14 +115,6 @@ export const EngineerOfRecord = (props) => {
       content: addContactModalConfig,
     });
   };
-
-  // title: `${title}: ${value.description}`,
-  // partyRelationships,
-  // partyRelationshipType: value,
-  // mine,
-  // minePermits: this.props.permits,
-  // onFileLoad: this.onFileLoad,
-  // onRemoveFile: this.onRemoveFile,
 
   const onFileLoad = (documentName, document_manager_guid) => {
     setUploadedFiles([
