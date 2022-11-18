@@ -15,10 +15,13 @@ filesystem-provider
 minespace-web
 tusd
 "
+if [ -z "$INPUT" ];
+    then
+        echo "This command can be destructive if you have valid .env's in place and run this multiple times!"
+        echo "Continue? (only accepts 'yes')"
+        read INPUT
+fi
 
-echo "This command can be destructive if you have valid .env's in place and run this multiple times!"
-echo "Continue? (only accepts 'yes')"
-read INPUT
 if [ "$INPUT" = "yes" ];
 then
     for S in $SERVICES
