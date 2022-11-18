@@ -1,5 +1,4 @@
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -105,9 +104,8 @@ class MineIncidentListResource(Resource, UserMixin):
                     raise BadRequest(
                         'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3'
                     )
-
-        reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] and is_minespace_user() else data['reported_timestamp']
+        # TODO: This logic/flow needs to be reworked since the CORE form no longer has this value.
+        reported_timestamp_default = datetime.utcnow()
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
@@ -210,8 +208,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            if is_minespace_user():
-                incident.send_incidents_email()
+            incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

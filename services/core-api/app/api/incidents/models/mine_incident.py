@@ -1,7 +1,6 @@
 from sre_constants import IN
 import uuid
 import datetime
-from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -248,16 +247,48 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         return reported_timestamp
 
     def send_incidents_email(self):
-        recipients = [INCIDENTS_EMAIL, MDS_EMAIL]
+        emli_recipients = [INCIDENTS_EMAIL]
+        cc = [MDS_EMAIL]
+        minespace_recipients = [self.reported_by_email]
+        duration = self.reported_timestamp - self.incident_timestamp
+        duration_in_s = duration.total_seconds()
+        days = divmod(duration_in_s, 86400)
+        hours = divmod(days[1], 3600)
 
-        subject = f'Incident Notification for {self.mine_table.mine_name}'
-        body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
-        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
-        body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
+        emli_body = open("app/templates/email/incident/emli_incident_email.html", "r").read()
+        minespace_body = open("app/templates/email/incident/minespace_incident_email.html", "r").read()
+        subject = f'{self.mine_table.mine_name}: A new notice of reportable incident has been created'
+        categories = ", ".join(element.description for element in self.categories)
+        emli_context = {
+            "incident": {
+                "mine_incident_report_no": self.mine_incident_report_no,
+                "incident_timestamp": self.incident_timestamp.strftime('%b %d %Y at %H:%M'),
+                "reported_timestamp": self.reported_timestamp.strftime('%b %d %Y at %H:%M'),
+                "report_time_diff": f'{int(days[0])} days and {int(hours[0])} hours',
+                "reported_by_name": self.reported_by_name,
+                "catagories": categories,
+                "incident_description": self.incident_description,
+            },
+            "mine": {
+                "mine_name": self.mine_table.mine_name,
+                "mine_no": self.mine_table.mine_no,
+            },
+            "incident_link": f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+        }
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/oversight/incidents-and-investigations'
-        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+        minespace_context = {
+            "incident": {
+                "mine_incident_report_no": self.mine_incident_report_no,
+            },
+            "mine": {
+                "mine_name": self.mine_table.mine_name,
+                "mine_no": self.mine_table.mine_no,
+            },
+            "minespace_incident_link": f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+        }
+
+        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
+        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc, send_to_proponent=True)
 
     def send_awaiting_final_report_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
