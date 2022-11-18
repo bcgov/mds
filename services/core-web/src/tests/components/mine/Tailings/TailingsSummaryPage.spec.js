@@ -1,8 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
 import TailingsProvider from "@common/components/tailings/TailingsProvider";
-import { TailingsSummaryPage } from "@/components/mine/Tailings/TailingsSummaryPage";
 
+import TailingsSummaryPage from "@common/components/tailings/TailingsSummaryPage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 let props = {};

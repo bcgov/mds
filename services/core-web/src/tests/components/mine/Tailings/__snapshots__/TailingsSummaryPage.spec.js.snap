@@ -4,7 +4,7 @@ exports[`TailingsSummaryPage renders properly 1`] = `
 <ContextProvider
   value={
     Object {
-      "children": <TailingsSummaryPage
+      "children": <UNDEFINED
         TSFOperatingStatusCodeHash={Object {}}
         clearTsf={[MockFunction]}
         consequenceClassificationStatusCodeHash={Object {}}
@@ -17,7 +17,6 @@ exports[`TailingsSummaryPage renders properly 1`] = `
             "replace": [Function],
           }
         }
-        initialValues={Object {}}
         location={
           Object {
             "pathname": "",
@@ -32,7 +31,6 @@ exports[`TailingsSummaryPage renders properly 1`] = `
             },
           }
         }
-        mineGuid={null}
         mines={
           Object {
             "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
@@ -151,7 +149,7 @@ exports[`TailingsSummaryPage renders properly 1`] = `
     }
   }
 >
-  <TailingsSummaryPage
+  <Connect(ReduxForm)
     TSFOperatingStatusCodeHash={Object {}}
     clearTsf={[MockFunction]}
     consequenceClassificationStatusCodeHash={Object {}}
@@ -164,7 +162,6 @@ exports[`TailingsSummaryPage renders properly 1`] = `
         "replace": [Function],
       }
     }
-    initialValues={Object {}}
     location={
       Object {
         "pathname": "",
@@ -179,7 +176,6 @@ exports[`TailingsSummaryPage renders properly 1`] = `
         },
       }
     }
-    mineGuid={null}
     mines={
       Object {
         "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
