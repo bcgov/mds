@@ -249,7 +249,12 @@ export const TailingsSummaryPage = (props) => {
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
-            <QualifiedPerson tsfFormName={props.form} loading={isReloading} mineGuid={mineGuid} isCore={isCore}/>
+            <QualifiedPerson
+              tsfFormName={props.form}
+              loading={isReloading}
+              mineGuid={mineGuid}
+              isCore={isCore}
+            />
           </Step>
           <Step key="associated-dams" disabled={!hasCreatedTSF}>
             <AssociatedDams isCore={isCore} />
