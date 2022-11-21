@@ -1,6 +1,5 @@
 -- Update legacy category codes to "is_historic"
-UPDATE mine_incident_category 
-SET is_historic = TRUE WHERE mine_incident_category_code IN ('H&S', 'GTC', 'ENV', 'SPI');
+UPDATE mine_incident_category SET is_historic = TRUE WHERE mine_incident_category_code IN ('H&S', 'GTC', 'ENV', 'SPI');
 
 -- Insert new top level category codes
 INSERT INTO mine_incident_category
@@ -67,5 +66,3 @@ VALUES
 
   ('UGF', 'Underground fire', TRUE, 'system-mds', 'system-mds', 480, 'FNE'),
   ('FTH', 'Fire that threatened persons, or equipment', TRUE, 'system-mds', 'system-mds', 490, 'FNE');
-  
-  

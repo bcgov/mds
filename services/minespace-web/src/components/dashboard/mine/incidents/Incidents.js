@@ -98,7 +98,7 @@ export class Incidents extends Component {
               type="primary"
               onClick={(event) =>
                 // ENV FLAG FOR MINE INCIDENTS //
-                IN_PROD()
+                !IN_PROD()
                   ? this.openCreateIncidentModal(event)
                   : this.props.history.push({
                       pathname: routes.ADD_MINE_INCIDENT.dynamicRoute(this.props.mine?.mine_guid),
