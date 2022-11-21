@@ -104,8 +104,8 @@ class MineIncidentListResource(Resource, UserMixin):
                     raise BadRequest(
                         'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3'
                     )
-        # TODO: This logic/flow needs to be reworked since the CORE form no longer has this value.
-        reported_timestamp_default = datetime.utcnow()
+
+        reported_timestamp_default = data.get('reported_timestamp', datetime.utcnow())
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
