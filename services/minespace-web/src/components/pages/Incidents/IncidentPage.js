@@ -468,7 +468,7 @@ export class IncidentPage extends Component {
         ...(values?.[FINAL_REPORT_DOCUMENTS_FORM_FIELD] || []),
       ],
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
-      reported_to_inspector_contact_timestamp: reportedToInspectorDateSet
+      reported_timestamp: reportedToInspectorDateSet
         ? this.formatTimestamp(
             values?.reported_to_inspector_contact_date,
             values?.reported_to_inspector_contact_time
@@ -496,11 +496,11 @@ export class IncidentPage extends Component {
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
     incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
-    reported_to_inspector_contact_date: incident?.reported_to_inspector_contact_timestamp
-      ? moment(incident?.reported_to_inspector_contact_timestamp).format("YYYY-MM-DD")
+    reported_to_inspector_contact_date: incident?.reported_timestamp
+      ? moment(incident?.reported_timestamp).format("YYYY-MM-DD")
       : null,
-    reported_to_inspector_contact_time: incident?.reported_to_inspector_contact_timestamp
-      ? moment(incident?.reported_to_inspector_contact_timestamp).format("HH:mm")
+    reported_to_inspector_contact_time: incident?.reported_timestamp
+      ? moment(incident?.reported_timestamp).format("HH:mm")
       : null,
     johsc_worker_rep_contact_date: incident?.johsc_worker_rep_contact_timestamp
       ? moment(incident?.johsc_worker_rep_contact_timestamp).format("YYYY-MM-DD")

@@ -72,7 +72,6 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     johsc_management_rep_contact_timestamp = db.Column(db.DateTime)
     reported_to_inspector_contacted = db.Column(db.Boolean)
     reported_to_inspector_contact_method = db.Column(db.String)
-    reported_to_inspector_contact_timestamp = db.Column(db.DateTime)
 
     reported_to_inspector_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)

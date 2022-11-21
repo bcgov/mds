@@ -52,7 +52,6 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
     parser.add_argument('reported_to_inspector_contacted', type=inputs.boolean, location='json')
     parser.add_argument('reported_to_inspector_contact_method', type=str, location='json'),
-    parser.add_argument('reported_to_inspector_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
     parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
     parser.add_argument('determination_inspector_party_guid', type=str, location='json')
     parser.add_argument('proponent_incident_no', type=str, location='json')
@@ -114,7 +113,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     )
 
         reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] and is_minespace_user() else data['reported_timestamp']
+        ) if not data['reported_timestamp'] else data['reported_timestamp']
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
@@ -150,7 +149,6 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.johsc_management_rep_contact_timestamp = data.get('johsc_management_rep_contact_timestamp')
         incident.reported_to_inspector_contacted = data.get('reported_to_inspector_contacted')
         incident.reported_to_inspector_contact_method = data.get('reported_to_inspector_contact_method')
-        incident.reported_to_inspector_contact_timestamp = data.get('reported_to_inspector_contact_timestamp')
 
         incident.status_code = data.get('status_code')
 
@@ -259,7 +257,6 @@ class MineIncidentResource(Resource, UserMixin):
         'reported_to_inspector_party_guid', type=str, location='json', store_missing=False)
     parser.add_argument('reported_to_inspector_contacted', type=inputs.boolean, location='json', store_missing=False)
     parser.add_argument('reported_to_inspector_contact_method', type=str, location='json', store_missing=False),
-    parser.add_argument('reported_to_inspector_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json', store_missing=False)
     parser.add_argument(
         'responsible_inspector_party_guid', type=str, location='json', store_missing=False)
     parser.add_argument(

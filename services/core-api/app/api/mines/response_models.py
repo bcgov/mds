@@ -453,7 +453,6 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_to_inspector_party': fields.String,
         'reported_to_inspector_contacted': fields.Boolean,
         'reported_to_inspector_contact_method': fields.String,
-        'reported_to_inspector_contact_timestamp': DateTime,
         'responsible_inspector_party_guid': fields.String,
         'responsible_inspector_party': fields.String,
         'determination_type_code': fields.String,
