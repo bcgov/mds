@@ -17,6 +17,7 @@ import {
 } from "@common/utils/Validate";
 import ContactDetails from "@common/components/ContactDetails";
 import TailingsContext from "@common/components/tailings/TailingsContext";
+import moment from "moment";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -26,16 +27,20 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineGuid: PropTypes.string.isRequired,
   loading: PropTypes.bool,
+  isCore: PropTypes.bool,
 };
 
 const defaultProps = {
   loading: false,
+  isCore: false,
 };
 
 export const QualifiedPerson = (props) => {
+  const { isCore, mineGuid } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
 
   const handleCreateQP = (value) => {
+    console.log("submitted value", value);
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
     props.change(tsfFormName, "qualified_person.party", value);
     props.change(tsfFormName, "qualified_person.start_date", null);
@@ -52,6 +57,9 @@ export const QualifiedPerson = (props) => {
         onCancel: props.closeModal,
         title: "Select Contact",
         mine_party_appt_type_code: "TQP",
+        partyRelationshipType: "TQP",
+        mine: mineGuid,
+        createPartyOnly: true,
       },
       content: addContactModalConfig,
     });
@@ -81,23 +89,61 @@ export const QualifiedPerson = (props) => {
   };
 
   return (
-    <Row>
+    <Row className="tailings-section">
       <Col span={24}>
-        <Popconfirm
-          style={{ maxWidth: "150px" }}
-          placement="top"
-          title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={openCreateQPModal}
-        >
-          <Button style={{ display: "inline", float: "right" }} type="primary">
-            <PlusCircleFilled />
-            Assign a new Qualified Person
-          </Button>
-        </Popconfirm>
-
-        <Typography.Title level={3}>Qualified Person</Typography.Title>
+        <Row justify="space-between" align="middle">
+          <Col span={14}>
+            <Typography.Title level={3} className="tailings-section-title">
+              Qualified Person
+            </Typography.Title>
+          </Col>
+          {isCore ? (
+            <Col span={10}>
+              <Row justify="space-between" align="middle" gutter={65}>
+                <Col span={12}>
+                  <Popconfirm
+                    placement="top"
+                    title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={openCreateQPModal}
+                  >
+                    <Button style={{ whiteSpace: "normal", height: "auto" }} type="primary">
+                      <span>
+                        <PlusCircleFilled className="margin-medium--right" />
+                        Update Qualified Person
+                      </span>
+                    </Button>
+                  </Popconfirm>
+                </Col>
+                <Col style={{ textAlign: "right" }}>
+                  <Typography.Paragraph strong>Last Updated</Typography.Paragraph>
+                  <Typography.Paragraph style={{ marginBottom: 0 }}>
+                    {moment(props.formValues?.qualified_person.update_timestamp).format(
+                      "DD-MM-YYYY H:mm"
+                    )}
+                  </Typography.Paragraph>
+                </Col>
+              </Row>
+            </Col>
+          ) : (
+            <Col>
+              <Popconfirm
+                style={{ maxWidth: "150px" }}
+                placement="top"
+                title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={openCreateQPModal}
+              >
+                <Button style={{ display: "inline", float: "right" }} type="primary">
+                  <PlusCircleFilled />
+                  Assign a new Qualified Person
+                </Button>
+              </Popconfirm>
+            </Col>
+          )}
+        </Row>
 
         {props.formValues?.qualified_person?.party_guid ? (
           <Alert
