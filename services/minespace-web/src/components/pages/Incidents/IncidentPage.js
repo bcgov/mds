@@ -81,7 +81,7 @@ const defaultProps = {
   formErrors: {},
 };
 
-export const POST_SUBMISSION_INCIDENT_STATUSES = ["AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
+export const POST_SUBMISSION_INCIDENT_STATUSES = ["IRS", "AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
 const sideMenuOptions = [
   { href: "initial-report", title: "Initial Report" },
   { href: "incident-details", title: "Incident Details" },
@@ -213,7 +213,10 @@ const StepForms = (
     content: (
       <IncidentForm
         initialValues={state.isEditMode ? formatInitialValues(props?.incident) : {}}
-        handlers={{ deleteDocument: handlers?.deleteDocument }}
+        handlers={{
+          deleteDocument: handlers?.deleteDocument,
+          openUploadIncidentDocumentsModal: handlers?.openModal,
+        }}
         onSubmit={handlers?.save}
       />
     ),
@@ -310,9 +313,15 @@ const StepForms = (
           placement="topRight"
           title="Are you sure you want to submit your final incident? No changes can be made after submitting."
           onConfirm={async (e) => {
+            const status_code =
+              props.incident?.documents?.filter(
+                (doc) => doc.mine_incident_document_type_code === "FIN"
+              )?.length > 0
+                ? "FRS"
+                : "IRS";
             await handlers?.save(e, {
               ...props.incident,
-              status_code: "IRS",
+              status_code,
             });
             const url = routes.MINE_INCIDENT_SUCCESS.dynamicRoute(
               props.incident?.mine_guid,
@@ -406,7 +415,7 @@ export class IncidentPage extends Component {
       message = "Successfully updated draft incident.";
     } else if (isFinalReviewStage) {
       message = "Successfully updated incident.";
-    } else if (this.props.location.state.current === 2) {
+    } else if (this.props.location.state.current === 2 && values.status_code) {
       message = "Successfully submitted a new incident.";
     } else {
       message = null;
@@ -463,14 +472,20 @@ export class IncidentPage extends Component {
       values?.johsc_worker_rep_contact_date && values?.johsc_worker_rep_contact_time;
     const johscManagementRepDateSet =
       values?.johsc_management_rep_contact_date && values?.johsc_management_rep_contact_time;
+    const updatedDocuments = [
+      ...new Map(
+        [
+          ...(values?.[INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD] || []),
+          ...(values?.[FINAL_REPORT_DOCUMENTS_FORM_FIELD] || []),
+          ...(values?.documents || []),
+        ].map((item) => [item.document_manager_guid, item])
+      ).values(),
+    ];
 
     return {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
-      updated_documents: [
-        ...(values?.[INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD] || []),
-        ...(values?.[FINAL_REPORT_DOCUMENTS_FORM_FIELD] || []),
-      ],
+      updated_documents: updatedDocuments,
       incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
       reported_timestamp: reportedToInspectorDateSet
         ? this.formatTimestamp(
@@ -534,9 +549,14 @@ export class IncidentPage extends Component {
 
   openUploadIncidentDocumentsModal = (event, documentTypeCode) => {
     event.preventDefault();
-    const title = documentTypeCode === "FIN" ? "Upload Final Report" : "Upload Incident Documents";
+    const title =
+      documentTypeCode === "FIN"
+        ? "Upload Final Report"
+        : "Upload Supporting Notification Documentation";
     const subTitle =
-      documentTypeCode === "FIN" ? "Upload Final Incident Report" : "Upload Incident Documents";
+      documentTypeCode === "FIN"
+        ? "Upload Final Incident Report"
+        : "Upload Supporting Notification Documentation";
 
     return this.props.openModal({
       props: {
@@ -545,7 +565,8 @@ export class IncidentPage extends Component {
         mineGuid: this.props?.incident?.mine_guid,
         title,
         subTitle,
-        description: "Please upload all of the required documents.",
+        description:
+          "Please upload any documents that support this written incident notification. You may return later to upload additional documents as needed.",
         documentTypeCode,
       },
       content: modalConfig.UPLOAD_INCIDENT_DOCUMENT,
