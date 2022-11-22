@@ -418,7 +418,11 @@ export class IncidentPage extends Component {
     });
   };
 
-  handleSaveData = (e, formValues, isDraft, fromModal = false) => {
+  handleSaveData = (e, formValues, isDraft = false, fromModal = false) => {
+    const updatedFormValues = { ...formValues };
+    if (isDraft && !formValues?.status_code) {
+      updatedFormValues.status_code = "DFT";
+    }
     if (!fromModal) {
       e.preventDefault();
       this.props.submit(FORM.ADD_EDIT_INCIDENT);
@@ -428,9 +432,9 @@ export class IncidentPage extends Component {
     if (errors.length === 0 || fromModal) {
       const incidentExists = Boolean(formValues?.mine_incident_guid);
       if (!incidentExists) {
-        return this.handleCreateMineIncident(this.formatPayload(formValues), isDraft);
+        return this.handleCreateMineIncident(this.formatPayload(updatedFormValues), isDraft);
       }
-      return this.handleUpdateMineIncident(this.formatPayload(formValues), isDraft);
+      return this.handleUpdateMineIncident(this.formatPayload(updatedFormValues), isDraft);
     }
     return null;
   };
