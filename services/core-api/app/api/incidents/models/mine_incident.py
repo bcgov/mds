@@ -64,8 +64,14 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     injuries_description = db.Column(db.String)
     johsc_worker_rep_name = db.Column(db.String(255))
     johsc_worker_rep_contacted = db.Column(db.Boolean)
+    johsc_worker_rep_contact_method = db.Column(db.String)
+    johsc_worker_rep_contact_timestamp = db.Column(db.DateTime)
     johsc_management_rep_name = db.Column(db.String(255))
     johsc_management_rep_contacted = db.Column(db.Boolean)
+    johsc_management_rep_contact_method = db.Column(db.String)
+    johsc_management_rep_contact_timestamp = db.Column(db.DateTime)
+    reported_to_inspector_contacted = db.Column(db.Boolean)
+    reported_to_inspector_contact_method = db.Column(db.String)
 
     reported_to_inspector_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
@@ -246,6 +252,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             if reported_timestamp > datetime.datetime.utcnow():
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
+
+    @validates(name=['reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method'])
+    def validates_contact_method(self, key, value):
+        if value:
+            if value not in ['PHN', 'EML', 'MRP', 'MRE']:
+                raise AssertionError(f'{key} must use a valid option')
+        return value
 
     def send_incidents_email(self):
         recipients = [INCIDENTS_EMAIL, MDS_EMAIL]
