@@ -73,6 +73,8 @@ MINE_INCIDENT_MODEL = api.model(
         'number_of_fatalities': fields.Integer,
         'reported_to_inspector_party_guid': fields.String,
         'reported_to_inspector_party': fields.String,
+        'reported_to_inspector_contacted': fields.Boolean,
+        'reported_to_inspector_contact_method': fields.String,
         'responsible_inspector_party_guid': fields.String,
         'responsible_inspector_party': fields.String,
         'determination_type_code': fields.String,
@@ -94,8 +96,12 @@ MINE_INCIDENT_MODEL = api.model(
         'injuries_description': fields.String,
         'johsc_worker_rep_name': fields.String,
         'johsc_worker_rep_contacted': fields.Boolean,
+        'johsc_worker_rep_contact_method': fields.String,
+        'johsc_worker_rep_contact_timestamp': fields.DateTime,
         'johsc_management_rep_name': fields.String,
-        'johsc_management_rep_contacted': fields.Boolean
+        'johsc_management_rep_contacted': fields.Boolean,
+        'johsc_management_rep_contact_method': fields.String,
+        'johsc_management_rep_contact_timestamp': fields.DateTime,
     })
 
 MINE_INCIDENT_NOTE_MODEL = api.model(

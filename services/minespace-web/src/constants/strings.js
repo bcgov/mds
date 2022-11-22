@@ -30,3 +30,12 @@ export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Informati
 
 export const NOTICE_OF_DEPARTURE_DOWNLOAD_LINK =
   "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval";
+
+export const INCIDENT_CONTACT_METHOD_OPTIONS = [
+  { label: "Phone", value: "PHN" },
+  { label: "Email", value: "EML" },
+  { label: "Direct phone", value: "PHN", inspectorOnly: true },
+  { label: "Direct email", value: "EML", inspectorOnly: true },
+  { label: "Ministry reporting phone line", value: "MRP", inspectorOnly: true },
+  { label: "Ministry reporting email", value: "MRE", inspectorOnly: true },
+];

@@ -14,11 +14,13 @@ const propTypes = {
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   minePermits: CustomPropTypes.permits,
+  createPartyOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   partyRelationships: [],
   minePermits: [],
+  createPartyOnly: false,
 };
 
 export const AddPartyRelationshipModal = (props) => (
@@ -34,6 +36,7 @@ export const AddPartyRelationshipModal = (props) => (
       minePermits={props.minePermits}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}
+      createPartyOnly={props.createPartyOnly}
     />
   </div>
 );

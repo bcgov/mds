@@ -19,7 +19,7 @@ import CustomPropTypes from "@/customPropTypes";
 import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
@@ -31,12 +31,14 @@ const propTypes = {
   mine: CustomPropTypes.mine,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   submitting: PropTypes.bool.isRequired,
+  createPartyOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   mine: {},
   related_guid: "",
   start_date: null,
+  createPartyOnly: false,
 };
 
 const minePartyApptToValidate = ["PMT", "EOR", "MMG"];
@@ -143,6 +145,7 @@ export class AddPartyRelationshipForm extends Component {
   state = {
     skipDateValidation: false,
     currentAppointment: {},
+    selectedParty: null,
   };
 
   // When the start_date and/or the related_guid are changed this checks to see if the the only appointment
@@ -205,8 +208,18 @@ export class AddPartyRelationshipForm extends Component {
         options = <div />;
         break;
     }
+
+    const handleSubmit = (event, val) => {
+      event.preventDefault();
+      if(this.props.createPartyOnly) {
+        this.props.onSubmit(this.state.selectedParty);
+      } else {
+        this.props.onSubmit(val);
+      }
+    }
+
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onSubmit={handleSubmit}>
         <Row gutter={16}>
           <Col md={24} xs={24}>
             <Form.Item>
@@ -214,11 +227,16 @@ export class AddPartyRelationshipForm extends Component {
                 id="party_guid"
                 name="party_guid"
                 validate={[required]}
+                onSelect={val => {
+                  this.setState({selectedParty: val.originalValue});
+                }}
                 allowAddingParties
               />
             </Form.Item>
           </Col>
         </Row>
+        
+        {!this.props.createPartyOnly && (<>
         <Row gutter={16}>
           <Col md={12} xs={24}>
             <Form.Item>
@@ -282,6 +300,7 @@ export class AddPartyRelationshipForm extends Component {
             )}
           </Col>
         </Row>
+        </>)}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

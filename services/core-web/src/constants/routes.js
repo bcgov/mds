@@ -255,7 +255,7 @@ export const MINE_TAILINGS = {
 
 export const MINE_TAILINGS_DETAILS = {
   route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (mineGuid, tsfGuid, tab = "basic-information") =>
+  dynamicRoute: (tsfGuid, mineGuid,  tab = "basic-information") =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
   component: MineTailingsDetailsPage,
 };
