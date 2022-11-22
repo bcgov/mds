@@ -1,4 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from enum import Enum
+from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
@@ -7,6 +9,15 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
+
+
+class MinePartyAppointmentStatus(Enum):
+    active = 'active',
+    pending = 'pending',
+    inactive = 'inactive',
+
+    def __str__(self):
+        return self.value
 
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
@@ -19,6 +30,9 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     merged_from_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     mine_party_appt_type_code = db.Column(
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
+
+    status = db.Column(db.Enum(MinePartyAppointmentStatus), nullable=True)
+
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     processed_by = db.Column(db.String(60), server_default=FetchedValue())
@@ -108,7 +122,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             'start_date': str(self.start_date) if self.start_date else None,
             'end_date': str(self.end_date) if self.end_date else None,
             'union_rep_company': self.union_rep_company,
-            'documents': [doc.json() for doc in self.documents]
+            'documents': [doc.json() for doc in self.documents],
+            'status': self.status
         }
         if 'party' in relationships:
             result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
@@ -163,6 +178,20 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)
         return ordered_dates
+
+    @classmethod
+    def find_expiring_appointments(cls, mine_party_appt_type_code, expiring_before_days):
+        expiring_delta = datetime.utcnow() + timedelta(days=expiring_before_days)
+        now = datetime.utcnow()
+
+        qs = cls.query.filter_by(
+            mine_party_appt_type_code=mine_party_appt_type_code,
+            status=MinePartyAppointmentStatus.active
+        ).filter(
+            and_(MinePartyAppointment.end_date < expiring_delta, MinePartyAppointment.end_date > now)
+        )
+
+        return qs.all()
 
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
@@ -247,7 +276,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                union_rep_company=None,
                permit=None,
                tsf=None,
-               add_to_session=True):
+               add_to_session=True,
+               status=None):
 
         if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             mine = None
@@ -266,7 +296,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             start_date=start_date,
             end_date=end_date,
             union_rep_company=union_rep_company,
-            processed_by=processed_by)
+            processed_by=processed_by,
+            status=status)
 
         if add_to_session:
             mpa.save(commit=False)
