@@ -127,7 +127,7 @@ export const IncidentsTable = (props) => {
           size="small"
           onClick={() => {
             // ENV FLAG FOR MINE INCIDENTS //
-            if (IN_PROD()) {
+            if (!IN_PROD()) {
               if (record.status_code) {
                 return props.history.push({
                   pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
