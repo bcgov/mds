@@ -148,7 +148,7 @@ export class PartySelectField extends Component {
 
       // If a new party was just added, add that party to the list of search results.
       if (lastCreatedPartyUpdated) {
-        filteredParties.push(nextProps.lastCreatedParty);
+        filteredParties.unshift(nextProps.lastCreatedParty);
       }
 
       this.setState(() => {

@@ -237,7 +237,7 @@ export const TailingsSummaryPage = (props) => {
           activeTab={tab}
         >
           <Step key="basic-information">
-            <BasicInformation renderConfig={renderConfig} viewOnly={isCore} />
+            <BasicInformation renderConfig={renderConfig} />
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
