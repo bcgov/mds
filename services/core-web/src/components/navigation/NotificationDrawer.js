@@ -13,7 +13,7 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
-import { NOTICE_OF_DEPARTURE, MINE_INCIDENT } from "@/constants/routes";
+import { NOTICE_OF_DEPARTURE, MINE_INCIDENT, PRE_APPLICATIONS } from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -98,6 +98,11 @@ const NotificationDrawer = (props) => {
       case "MineIncident":
         return MINE_INCIDENT.dynamicRoute(
           notification.notification_document.metadata.mine_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "ProjectSummary":
+        return PRE_APPLICATIONS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
           notification.notification_document.metadata.entity_guid
         );
       default:
