@@ -13,7 +13,7 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
-import { NOTICE_OF_DEPARTURE, MINE_INCIDENT } from "@/constants/routes";
+import { NOTICE_OF_DEPARTURE, MINE_INCIDENT, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -99,6 +99,18 @@ const NotificationDrawer = (props) => {
         return MINE_INCIDENT.dynamicRoute(
           notification.notification_document.metadata.mine_guid,
           notification.notification_document.metadata.entity_guid
+        );
+      case "TSF_EngineerOfRecord":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.mine.mine_guid,
+          notification.notification_document.metadata.entity_guid,
+          "engineer-of-record"
+        );
+      case "TSF_QualifiedPerson":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.mine.mine_guid,
+          notification.notification_document.metadata.entity_guid,
+          "qualified-person"
         );
       default:
         return null;
