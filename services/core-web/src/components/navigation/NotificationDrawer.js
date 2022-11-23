@@ -18,6 +18,7 @@ import {
   MINE_INCIDENT,
   PRE_APPLICATIONS,
   INFORMATION_REQUIREMENTS_TABLE,
+  PROJECTS,
 } from "@/constants/routes";
 
 const propTypes = {
@@ -114,6 +115,11 @@ const NotificationDrawer = (props) => {
         return INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
           notification.notification_document.metadata.project.project_guid,
           notification.notification_document.metadata.entity_guid
+        );
+      case "MajorMineApplication":
+        return PROJECTS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          "final-app"
         );
       default:
         return null;

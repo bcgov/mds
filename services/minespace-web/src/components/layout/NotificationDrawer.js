@@ -18,6 +18,7 @@ import {
   EDIT_MINE_INCIDENT,
   EDIT_PROJECT_SUMMARY,
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
+  REVIEW_MAJOR_MINE_APPLICATION,
 } from "@/constants/routes";
 
 const propTypes = {
@@ -130,6 +131,14 @@ const NotificationDrawer = (props) => {
           ),
           state: { current: 2 },
         };
+      case "MajorMineApplication":
+        return {
+          route: REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
+            notification.notification_document.metadata.project.project_guid,
+            notification.notification_document.metadata.entity_guid
+          ),
+          state: { current: 2 },
+        };
       default:
         return null;
     }
@@ -139,7 +148,7 @@ const NotificationDrawer = (props) => {
     await handleMarkAsRead(notification.notification_guid);
     handleCollapse();
     const routeSpecifics = await navigationHandler(notification);
-    const route = { pathname: routeSpecifics.route, state: { ...routeSpecifics.state } };
+    const route = { pathname: routeSpecifics?.route, state: { ...(routeSpecifics?.state ?? {}) } };
     history.push(route);
   };
 
