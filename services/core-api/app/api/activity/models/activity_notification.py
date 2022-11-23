@@ -1,6 +1,8 @@
 from datetime import datetime
 import json
 from enum import Enum
+
+from sqlalchemy import func
 from cerberus import Validator
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID, JSONB
@@ -16,6 +18,10 @@ from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 def validate_document(document):
     schema = {
         'message': {
+            'required': True,
+            'type': 'string'
+        },
+        'activity_type': {
             'required': True,
             'type': 'string'
         },
@@ -64,6 +70,15 @@ def validate_document(document):
                             'type': 'string'
                         }
                     }
+                },
+                'mine_tailings_storage_facility': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'mine_tailings_storage_facility_guid': {
+                            'type': 'string'
+                        }
+                    }
                 }
             }
         }
@@ -75,8 +90,14 @@ def validate_document(document):
         raise ValueError(json.dumps(v.errors))
 
 
-class ActivityType(Enum):
+class ActivityType(str, Enum):
     mine = 'mine'
+    eor_expiring_60_days = 'eor_expiring_60_days'
+    tsf_eor_expired = 'tsf_eor_expired'
+    incident_report_submitted = 'incident_report_submitted'
+    mine_incident_created = 'mine_incident_created'
+    nod_status_changed = 'nod_status_changed'
+    nod_submitted = 'nod_submitted'
 
     def __str__(self):
         return self.value
@@ -91,6 +112,7 @@ class ActivityNotification(AuditMixin, Base):
     notification_document = db.Column(JSONB(astext_type=db.Text()), nullable=False)
     notification_read = db.Column(db.Boolean(), nullable=False, default=False)
     notification_recipient = db.Column(db.String(60), nullable=False)
+    idempotency_key = db.Column(db.String(120), nullable=True)
 
     @classmethod
     def create(cls, notification_recipient, notification_document, commit=False):
@@ -99,7 +121,7 @@ class ActivityNotification(AuditMixin, Base):
         return new_activity.save(commit)
 
     @classmethod
-    def create_many(cls, mine_guid, document):
+    def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True):
         MinespaceUserMineTable = table(MinespaceUserMine.__tablename__, column('mine_guid'), column('user_id'))
         MinespaceUserTable = table(MinespaceUser.__tablename__, column('email_or_username'), column('user_id'))
         SubscriptionTable = table(Subscription.__tablename__, column('mine_guid'), column('user_name'))
@@ -111,6 +133,13 @@ class ActivityNotification(AuditMixin, Base):
 
         core_users = [x[1] for x in (db.session.query(SubscriptionTable).filter(SubscriptionTable.c.mine_guid == mine_guid).all())]
 
+        # Look up users that already recieved a notification with the given idempotency key
+        # so they will not receive the notification again
+        already_sent_notification_recipients = [res[0] for res in cls.query \
+            .with_entities(cls.notification_recipient) \
+            .filter_by(idempotency_key=idempotency_key) \
+            .all()] if idempotency_key else []
+
         users.extend(core_users)
         notifications = []
 
@@ -118,11 +147,17 @@ class ActivityNotification(AuditMixin, Base):
             validated_notification_document = validate_document(document)
             formatted_user_name = user.replace('idir\\', '')
 
-            notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document)
-            notifications.append(notification)
+            if formatted_user_name not in already_sent_notification_recipients:
+                notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
+                notifications.append(notification)
 
-        db.session.bulk_save_objects(notifications)
-        db.session.commit()
+        if len(notifications) > 0:
+            db.session.bulk_save_objects(notifications, return_defaults = True)
+
+            if commit:
+                db.session.commit()
+        
+        return notifications
 
     @classmethod
     def find_by_guid(cls, notification_guid):
@@ -147,6 +182,10 @@ class ActivityNotification(AuditMixin, Base):
 
         result = query.all()
         return dict([('total', len(result)), ('records', result)])
+
+    @classmethod
+    def count(cls):
+        return cls.query.count()
 
     def save(self, commit=True):
         self.update_user = User().get_user_username()

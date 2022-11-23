@@ -166,6 +166,13 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @classmethod
+    def update_status_many(cls, mine_party_appt_ids, status, commit=True):
+        cls.query.filter(cls.mine_party_appt_id.in_(mine_party_appt_ids)).update({'status': status}, synchronize_session=False)
+
+        if commit:
+            db.session.commit()
+
+    @classmethod
     def find_by_permit_id(cls, _id):
         return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
@@ -190,6 +197,17 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         ).filter(
             and_(MinePartyAppointment.end_date < expiring_delta, MinePartyAppointment.end_date > now)
         )
+
+        return qs.all()
+
+    @classmethod
+    def find_expired_appointments(cls, mine_party_appt_type_code):
+        now = datetime.utcnow()
+
+        qs = cls.query.filter_by(
+            mine_party_appt_type_code=mine_party_appt_type_code,
+            status=MinePartyAppointmentStatus.active
+        ).filter(MinePartyAppointment.end_date < now)
 
         return qs.all()
 
