@@ -1,5 +1,4 @@
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -223,8 +222,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            if is_minespace_user():
-                incident.send_incidents_email()
+            incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
