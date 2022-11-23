@@ -117,7 +117,7 @@ export function setupKeycloak(
   KEYCLOAK.vcauthn_idpHint = vcauthnHint;
 
   KEYCLOAK.keycloakLogoutURL = `${url}/realms/standard/protocol/openid-connect/logout?redirect_uri=`;
-  KEYCLOAK.loginURL = `${url}/realms/standard/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${vcauthnPresReqConfId}&client_id=${clientId}&post_logout_redirect_uri=`;
+  KEYCLOAK.loginURL = `${url}/realms/standard/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${vcauthnPresReqConfId}&client_id=${clientId}&redirect_uri=`;
   KEYCLOAK.tokenURL = `${url}/realms/standard/protocol/openid-connect/token`;
   KEYCLOAK.userInfoURL = `${url}/realms/standard/protocol/openid-connect/userinfo`;
 
