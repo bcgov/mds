@@ -669,16 +669,14 @@ const renderUploadInitialNotificationDocuments = (
       )
     : [];
 
-  const initialDocumentsForm =
-    // initialIncidentDocumentsForm.length === 0?
-    [
-      ...new Map(
-        [...formValuesDocumentsInitial, ...formValuesInitialNotificationDocs].map((item) => [
-          item.document_manager_guid,
-          item,
-        ])
-      ).values(),
-    ];
+  const initialDocumentsForm = [
+    ...new Map(
+      [...formValuesDocumentsInitial, ...formValuesInitialNotificationDocs].map((item) => [
+        item.document_manager_guid,
+        item,
+      ])
+    ).values(),
+  ];
 
   const initialIncidentDocuments = [...(initialDocumentsForm || [])];
 
@@ -690,9 +688,12 @@ const renderUploadInitialNotificationDocuments = (
     props.formValues?.mine_determination_type_code ||
     props.formValues?.determination_type_code === "DO";
 
+  const noDocumentsInForm =
+    !props.formValues?.documents || props.formValues?.documents?.length === 0;
+
   return (
     <Row>
-      {(!props.formValues?.documents || props.formValues?.documents?.length === 0) &&
+      {noDocumentsInForm &&
         (!props.formValues.status_code || props.formValues.status_code === "IRS") &&
         !props.isFinalReviewStage &&
         !props.isReviewSubmitStage && (
