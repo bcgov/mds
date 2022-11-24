@@ -688,8 +688,7 @@ const renderUploadInitialNotificationDocuments = (
     props.formValues?.mine_determination_type_code ||
     props.formValues?.determination_type_code === "DO";
 
-  const noDocumentsInForm =
-    !props.formValues?.documents || props.formValues?.documents?.length === 0;
+  const noDocumentsInForm = props.formValues?.documents?.length === 0;
 
   return (
     <Row>
