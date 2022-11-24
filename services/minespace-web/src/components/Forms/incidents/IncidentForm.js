@@ -90,7 +90,7 @@ const retrieveIncidentDetailsDynamicValidation = (props) => {
 const confirmationSubmission = (props) =>
   props.isReviewSubmitStage &&
   !props.applicationSubmitted &&
-  !props.formValues?.status_code && (
+  ( props.formValues?.status_code === "DFT") && (
     <Col span={24}>
       <Card>
         <>
