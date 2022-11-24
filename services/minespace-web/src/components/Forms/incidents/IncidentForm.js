@@ -90,7 +90,7 @@ const retrieveIncidentDetailsDynamicValidation = (props) => {
 const confirmationSubmission = (props) =>
   props.isReviewSubmitStage &&
   !props.applicationSubmitted &&
-  ( props.formValues?.status_code === "DFT") && (
+  props.formValues?.status_code === "DFT" && (
     <Col span={24}>
       <Card>
         <>
@@ -691,7 +691,7 @@ const renderUploadInitialNotificationDocuments = (
   return (
     <Row>
       {props.formValues?.documents?.length === 0 &&
-        (!props.formValues.status_code || props.formValues.status_code === "IRS") &&
+        (!props.formValues.status_code || props.formValues.status_code === "WNS") &&
         !props.isFinalReviewStage &&
         !props.isReviewSubmitStage && (
           <>

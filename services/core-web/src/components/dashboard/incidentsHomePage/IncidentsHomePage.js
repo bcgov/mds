@@ -203,7 +203,7 @@ export class IncidentsHomePage extends Component {
       props: {
         newIncident,
         initialValues: {
-          status_code: "IRS",
+          status_code: "WNS",
           ...this.parseIncidentIntoFormData(existingIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String

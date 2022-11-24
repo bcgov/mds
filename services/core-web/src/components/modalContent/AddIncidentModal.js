@@ -275,7 +275,7 @@ export class AddIncidentModal extends Component {
       // came in before this date. As of the time of this PR there were 84 incidents that met this criteria.
       if (
         finalDocs.length > 0 ||
-        (finalDocs.length === 0 && values.status_code === "IRS") ||
+        (finalDocs.length === 0 && values.status_code === "WNS") ||
         moment(values.reported_date) < moment("2021-01-20")
       ) {
         disableSubmit = false;
