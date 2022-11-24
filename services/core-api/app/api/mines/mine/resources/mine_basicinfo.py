@@ -5,6 +5,7 @@ from app.extensions import jwt, api, db
 from app.api.mines.response_models import MINES_MODEL
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
+from flask import current_app
 
 
 class MineBasicInfoResource(Resource, UserMixin):
@@ -23,7 +24,7 @@ class MineBasicInfoResource(Resource, UserMixin):
     @api.doc(description='Returns a list of basic mine info.')
     @jwt.requires_roles(["core_view_all"])
     def post(self):
-
+        current_app.logger.info('Fetching basic mine info')
         data = self.parser.parse_args()
         mines = data.get('mine_guids', [])
         simple = data.get('simple', False)

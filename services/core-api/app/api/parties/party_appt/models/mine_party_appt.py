@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from enum import Enum
+
+from flask import current_app
 from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -19,6 +21,12 @@ class MinePartyAppointmentStatus(Enum):
     def __str__(self):
         return self.value
 
+class MinePartyAcknowledgedStatus(Enum):
+    acknowledged = 'acknowledged'
+    not_acknowledged = 'not_acknowledged'
+
+    def __str__(self):
+        return self.value
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_party_appt'
@@ -32,6 +40,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
 
     status = db.Column(db.Enum(MinePartyAppointmentStatus), nullable=True)
+    mine_party_acknowledgement_status = db.Column(db.Enum(MinePartyAcknowledgedStatus), nullable=True)
 
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
@@ -123,8 +132,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             'end_date': str(self.end_date) if self.end_date else None,
             'union_rep_company': self.union_rep_company,
             'documents': [doc.json() for doc in self.documents],
-            'status': self.status
+            'status': MinePartyAppointmentStatus.__str__(self.status) if self.status else None,
+            'mine_party_acknowledgement_status': MinePartyAcknowledgedStatus.__str__(self.mine_party_acknowledgement_status) if self.mine_party_acknowledgement_status else None,
         }
+        current_app.logger.debug(result)
         if 'party' in relationships:
             result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
 
@@ -266,7 +277,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                             permit_contacts.append(pa)
                         else:
                             if pa.end_date is None or (
-                                (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
+                                    (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
                                     and pa.end_date >= datetime.utcnow().date()):
                                 permit_contacts.append(pa)
 
