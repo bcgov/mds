@@ -688,11 +688,9 @@ const renderUploadInitialNotificationDocuments = (
     props.formValues?.mine_determination_type_code ||
     props.formValues?.determination_type_code === "DO";
 
-  const noDocumentsInForm = props.formValues?.documents?.length === 0;
-
   return (
     <Row>
-      {noDocumentsInForm &&
+      {props.formValues?.documents?.length === 0 &&
         (!props.formValues.status_code || props.formValues.status_code === "IRS") &&
         !props.isFinalReviewStage &&
         !props.isReviewSubmitStage && (
