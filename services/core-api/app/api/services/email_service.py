@@ -209,8 +209,7 @@ class EmailService():
                             delay=0,
                             encoding=EmailEncoding.UTF8.value,
                             priority=EmailPriority.NORMAL.value,
-                            tag=None,
-                            send_to_proponent=False):
+                            tag=None):
         '''Sends an email.'''
 
         # Validate enum parameters.

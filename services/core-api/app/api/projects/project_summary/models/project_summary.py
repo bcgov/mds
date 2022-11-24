@@ -17,7 +17,7 @@ from app.api.projects.project_summary.models.project_summary_contact import Proj
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
-from app.api.constants import PROJECT_SUMMARY_EMAILS
+from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL
 from app.api.services.email_service import EmailService
 from app.config import Config
 
@@ -46,13 +46,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project = db.relationship("Project", back_populates="project_summary")
     contacts = db.relationship(
         'ProjectContact',
-        primaryjoin=
-        "and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)"
+        primaryjoin="and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)"
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
-        primaryjoin=
-        'and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
+        primaryjoin='and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
@@ -61,8 +59,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='project_summary_document_xref',
-        secondaryjoin=
-        'and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
     def __repr__(self):
@@ -286,27 +283,34 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(ProjectSummary, self).delete(commit)
 
-    def send_project_summary_email_to_ministry(self, mine):
-        recipients = PROJECT_SUMMARY_EMAILS
+    def send_project_summary_email(self, mine):
+        emli_recipients = PROJECT_SUMMARY_EMAILS
+        cc = [MDS_EMAIL]
+        minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
+        emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+        minespace_body = open("app/templates/email/projects/minespace_project_summary_email.html", "r").read()
         subject = f'Project Description Notification for {mine.mine_name}'
-        body = f'<p>{mine.mine_name} (Mine no: {mine.mine_no}) has submitted Project Description data in MineSpace</p>'
-        body += f'<p>Overview: {self.project_summary_description}'
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{mine.mine_guid}/permits-and-approvals/pre-applications'
-        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+        emli_context = {
+            "project_summary": {
+                "project_summary_description": self.project_summary_description,
+            },
+            "mine": {
+                "mine_name": mine.mine_name,
+                "mine_no": mine.mine_no,
+            },
+            "core_project_summary_link": f'{Config.CORE_PRODUCTION_URL}/pre-applications/{self.project.project_guid}/overview'
+        }
 
-    def send_project_summary_email_to_proponent(self, mine):
-        recipients = [contact.email for contact in self.contacts if contact.is_primary]
-        project_description_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{mine.mine_guid}/project-description/{self.project_summary_guid}/basic-information'
+        minespace_context = {
+            "mine": {
+                "mine_name": mine.mine_name,
+                "mine_no": mine.mine_no,
+            },
+            "minespace_project_summary_link": f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/overview',
+            "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
+        }
 
-        subject = f'Project Description Notification for {mine.mine_name}'
-        body = f'<p>A project description has been submitted for {mine.mine_name} (Mine no: {mine.mine_no}) in Minespace. The Major Mines Office will be in '\
-               f'contact with you regarding your submission.</p>'
-        body += f'<p><a href="{project_description_link}">{project_description_link}</a></p>'
-        body += f'<p>If you indicated that your project involves a permit under the Environmental Management Act, '\
-                f'you will also need to complete an intake form and pay and application fee for each of the permits you require. ' \
-                f'<a href="{Config.EMA_AUTH_LINK}">Learn more about EMA authorizations or submit an application.</a></p>'
-
-        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
+        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
+        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)

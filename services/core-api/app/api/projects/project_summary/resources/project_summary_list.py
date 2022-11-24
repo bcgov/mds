@@ -135,8 +135,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
                                      data.get('proponent_project_id'),
                                      data.get('mrc_review_required', False),
                                      data.get('contacts', []),
-                                     data.get('project_lead_party_guid',None))
-
+                                     data.get('project_lead_party_guid', None))
 
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None
@@ -153,8 +152,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
             project_summary.save()
             if is_minespace_user():
                 if project_summary.status_code == 'SUB':
-                    project_summary.send_project_summary_email_to_ministry(mine)
-                    project_summary.send_project_summary_email_to_proponent(mine)
+                    project_summary.send_project_summary_email(mine)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
