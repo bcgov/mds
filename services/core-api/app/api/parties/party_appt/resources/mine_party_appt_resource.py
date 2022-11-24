@@ -14,7 +14,8 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party.models.party import Party
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment, MinePartyAppointmentStatus, \
+    MinePartyAcknowledgedStatus
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
@@ -43,6 +44,19 @@ class MinePartyApptResource(Resource, UserMixin):
         type=str,
         help='The company/organization of the Union Rep (applicable to this type only).',
         store_missing=False)
+    parser.add_argument(
+        'status',
+        type=MinePartyAppointmentStatus,
+        choices=list(MinePartyAppointmentStatus),
+        help='The status of the appointment.',
+        store_missing=False)
+    parser.add_argument(
+        'mine_party_acknowledgement_status',
+        type=MinePartyAcknowledgedStatus,
+        choices=list(MinePartyAcknowledgedStatus),
+        help='Indicator of Ministry acknowledgement of the appointment.',
+        store_missing=False)
+
 
     @api.doc(
         description='Returns a list of party appointments',
@@ -118,7 +132,7 @@ class MinePartyApptResource(Resource, UserMixin):
 
         if not can_edit_mines():
             # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine 
-            if mine_party_appt_type_code not in  TSF_ALLOWED_CONTACT_TYPES:
+            if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
                 raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
 
             if not tsf or mine.mine_guid != tsf.mine_guid:
@@ -141,6 +155,7 @@ class MinePartyApptResource(Resource, UserMixin):
                     mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
             if len(current_mpa) != 1:
                 raise BadRequest('There is currently not exactly one active appointment.')
+            current_mpa[0].status = MinePartyAppointmentStatus.inactive
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
 
@@ -180,6 +195,9 @@ class MinePartyApptResource(Resource, UserMixin):
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
             raise NotFound('mine party appointment not found')
+
+        status = data.get('status')
+
 
         for key, value in data.items():
             if key in ['party_guid', 'mine_guid']:
