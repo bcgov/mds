@@ -287,7 +287,7 @@ const StepForms = (
     ),
     buttons: [
       <React.Fragment key="step-3-buttons">
-        {!props.incident.status_code && (
+        {props.incident.status_code === "DFT" && (
           <Button
             id="step-back3"
             type="tertiary"
@@ -325,7 +325,7 @@ const StepForms = (
           okText="Yes"
           cancelText="No"
         >
-          {!props.incident?.status_code && (
+          {props.incident.status_code === "DFT" && (
             <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
               Submit Now
             </Button>
@@ -420,7 +420,7 @@ export class IncidentPage extends Component {
 
   handleSaveData = (e, formValues, isDraft = false, fromModal = false) => {
     const updatedFormValues = { ...formValues };
-    if (isDraft && !formValues?.status_code) {
+    if (isDraft || !formValues?.status_code) {
       updatedFormValues.status_code = "DFT";
     }
     if (!fromModal) {
