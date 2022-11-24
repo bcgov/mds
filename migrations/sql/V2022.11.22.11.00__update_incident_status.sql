@@ -49,6 +49,6 @@ BEGIN
     INSERT INTO mine_incident_status_code
         (mine_incident_status_code, description, display_order, create_user, update_user)
     VALUES ('RSS', 'Reviewing Severity Status',min_display_order - 20,'system-mds','system-mds'),
-           ('IMS', 'Information Missing status',min_display_order - 10,'system-mds','system-mds');
+           ('IMS', 'Information Missing Status',min_display_order - 10,'system-mds','system-mds');
 
 END $$;
