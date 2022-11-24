@@ -77,30 +77,46 @@ const documentColumns = [
 
 const alertText = (status, updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
   let text = "";
+
   if (selectedStatusCode === "UNR" && !responsibleInspector) {
     text = `Please select an inspector responsible for this incident before changing the status to "Under Review".`;
-  } else if (status === "WNS") {
-    text = `This incident was submitted on ${formatDate(
-      updateDate
-    )} by ${updateUser} and has not yet been reviewed.`;
-  } else if (status === "UNR") {
-    text = `This incident currently under review by ${responsibleInspector}.`;
-  } else if (status === "RSS") {
-    text = `This incident's severity may have incorrectly been determined by the proponent, further clarification is being requested by the proponent.`;
-  } else if (status === "IMS") {
-    text = `This incident is missing critical information. The proponent has been notified that further information is required.`;
-  } else if (status === "AFR") {
-    text = `The incident was determined to be a dangerous occurence by the reporter and requires a final report to be submitted.`;
-  } else if (status === "INV") {
-    text = `This incident currently an EMLI under investigation.`;
-  } else if (status === "MIU") {
-    text = `This incident currently under MIU investigation.`;
-  } else if (status === "FRS") {
-    text = `This incident contains a final report submitted.`;
-  } else if (status === "CLD") {
-    text = `This incident was closed on ${formatDate(updateDate)} by ${updateUser}.`;
-  } else if (status === "DFT") {
-    text = `This incident currently is under draft ${formatDate(updateDate)} by ${updateUser}.`;
+  } else {
+    switch (selectedStatusCode) {
+      case "WNS":
+        text = `This incident was submitted on ${formatDate(
+          updateDate
+        )} by ${updateUser} and has not yet been reviewed.`;
+        break;
+      case "UNR":
+        text = `This incident currently under review by ${responsibleInspector}.`;
+        break;
+      case "RSS":
+        text = `This incident's severity may have incorrectly been determined by the proponent, further clarification is being requested by the proponent.`;
+        break;
+      case "IMS":
+        text = `This incident is missing critical information. The proponent has been notified that further information is required.`;
+        break;
+      case "AFR":
+        text = `The incident was determined to be a dangerous occurence by the reporter and requires a final report to be submitted.`;
+        break;
+      case "INV":
+        text = `This incident currently is under EMLI investigation.`;
+        break;
+      case "MIU":
+        text = `This incident currently is under MIU investigation.`;
+        break;
+      case "FRS":
+        text = `Final report submitted.`;
+        break;
+      case "CLD":
+        text = `This incident was closed on ${formatDate(updateDate)} by ${updateUser}.`;
+        break;
+      case "DFT":
+        text = `This incident currently is under draft ${formatDate(updateDate)} by ${updateUser}.`;
+        break;
+      default:
+        break;
+    }
   }
 
   return <Typography.Text>{text}</Typography.Text>;
@@ -791,7 +807,7 @@ const updateIncidentStatus = (props, isNewIncident) => {
               </p>
             </Col>
             <Col xs={24} md={6}>
-              {props.incident?.status_code && !isClosed && (
+              {!isClosed && (
                 <Form.Item>
                   <Field
                     id="status_code"
