@@ -117,7 +117,7 @@ const confirmationSubmission = (props) =>
 
 const incidentStatusCalloutContent = (statusCode) => {
   switch (statusCode) {
-    case "AFT":
+    case "AFR":
       return {
         message:
           "You determined that this incident was a dangerous occurence please provide investigation documentation in the final documentation section.",
