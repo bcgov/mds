@@ -691,7 +691,7 @@ const renderUploadInitialNotificationDocuments = (
   return (
     <Row>
       {props.formValues?.documents?.length === 0 &&
-        (!props.formValues.status_code || props.formValues.status_code === "WNS") &&
+        (!props.formValues.status_code || props.formValues.status_code === "DFT") &&
         !props.isFinalReviewStage &&
         !props.isReviewSubmitStage && (
           <>
