@@ -14,12 +14,10 @@ import * as Strings from "@common/constants/strings";
 import { getProject } from "@common/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
 import ProjectStagesTable from "./ProjectStagesTable";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
   projectLeads: CustomPropTypes.projectContact.isRequired,
@@ -82,7 +80,6 @@ export class ProjectOverviewTab extends Component {
       project_summary_id,
       project_summary_guid,
       status_code,
-      documents,
     } = this.props.project.project_summary;
 
     const hasInformationRequirementsTable = Boolean(
@@ -220,30 +217,6 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
-          <Typography.Title level={4}>Project Documents</Typography.Title>
-          <DocumentTable
-            documents={documents?.reduce(
-              (docs, doc) => [
-                {
-                  key: doc.mine_document_guid,
-                  mine_document_guid: doc.mine_document_guid,
-                  document_manager_guid: doc.document_manager_guid,
-                  name: doc.document_name,
-                  category: this.props.projectSummaryDocumentTypesHash[
-                    doc.project_summary_document_type_code
-                  ],
-                  uploaded: doc.upload_date,
-                },
-                ...docs,
-              ],
-              []
-            )}
-            documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
-            documentParent="project summary"
-            categoryDataIndex="project_summary_document_type_code"
-            uploadDateIndex="upload_date"
-            isViewOnly
-          />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>
