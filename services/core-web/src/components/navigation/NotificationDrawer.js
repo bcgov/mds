@@ -100,13 +100,13 @@ const NotificationDrawer = (props) => {
           notification.notification_document.metadata.mine_guid,
           notification.notification_document.metadata.entity_guid
         );
-      case "TSF_EngineerOfRecord":
+      case "EngineerOfRecord":
         return MINE_TAILINGS_DETAILS.dynamicRoute(
           notification.notification_document.metadata.entity_guid,
           notification.notification_document.metadata.mine.mine_guid,
           "engineer-of-record"
         );
-      case "TSF_QualifiedPerson":
+      case "QualifiedPerson":
         return MINE_TAILINGS_DETAILS.dynamicRoute(
           notification.notification_document.metadata.entity_guid,
           notification.notification_document.metadata.mine.mine_guid,

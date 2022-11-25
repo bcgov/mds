@@ -167,9 +167,9 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap')
 
         if mine_party_appt_type_code == "EOR":
-            trigger_notifcation(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', mine, "TSF_EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
+            trigger_notifcation(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
         if mine_party_appt_type_code == "TQP":
-            trigger_notifcation(f'A new Qualified Person for {mine.mine_name} has been assigned.', mine, "TSF_QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
+            trigger_notifcation(f'A new Qualified Person for {mine.mine_name} has been assigned.', mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
 
         return new_mpa.json()
 
