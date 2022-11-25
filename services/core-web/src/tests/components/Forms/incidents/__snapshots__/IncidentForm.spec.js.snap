@@ -7,6 +7,9 @@ exports[`IncidentForm renders properly 1`] = `
   layout="vertical"
   onSubmit={[Function]}
 >
+  <Col
+    span={24}
+  />
   <Row>
     <Col
       span={24}

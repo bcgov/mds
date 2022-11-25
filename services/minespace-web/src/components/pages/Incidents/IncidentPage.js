@@ -81,7 +81,7 @@ const defaultProps = {
   formErrors: {},
 };
 
-export const POST_SUBMISSION_INCIDENT_STATUSES = ["IRS", "AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
+export const POST_SUBMISSION_INCIDENT_STATUSES = ["WNS", "AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
 const sideMenuOptions = [
   { href: "initial-report", title: "Initial Report" },
   { href: "incident-details", title: "Incident Details" },
@@ -318,7 +318,7 @@ const StepForms = (
                 (doc) => doc.mine_incident_document_type_code === "FIN"
               )?.length > 0
                 ? "FRS"
-                : "IRS";
+                : "WNS";
             await handlers?.save(e, {
               ...props.incident,
               status_code,

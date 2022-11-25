@@ -2695,7 +2695,9 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
 };
 
 export const INCIDENT_STATUS_OPTIONS = [
-  { mine_incident_status_code: "IRS", description: "Initial Report Submitted" },
+  { mine_incident_status_code: "WNS", description: "Written Notice Submitted" },
+  { mine_incident_status_code: "RRS", description: "Reviewing Severity Status" },
+  { mine_incident_status_code: "IMS", description: "Information Missing Status" },
   { mine_incident_status_code: "AFR", description: "Awaiting final report" },
   { mine_incident_status_code: "FRS", description: "Final report submitted" },
   { mine_incident_status_code: "UNR", description: "Under review" },
@@ -2706,7 +2708,9 @@ export const INCIDENT_STATUS_OPTIONS = [
 ];
 
 export const INCIDENT_STATUS_OPTIONS_HASH = {
-  IRS: "Initial Report Submitted",
+  WNS: "Written Notice Submitted",
+  RRS: "Reviewing Severity Status",
+  IMS: "Information Missing Status",
   AFR: "Awaiting final report",
   FRS: "Final report submitted",
   UNR: "Under review",
@@ -3344,7 +3348,9 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
   ],
   incidentStatusCodeOptions: [
-    { mine_incident_status_code: "IRS", description: "Initial Report Submitted" },
+    { mine_incident_status_code: "WNS", description: "Written Notice Submitted" },
+    { mine_incident_status_code: "RSS", description: "Reviewing Severity Status" },
+    { mine_incident_status_code: "IMS", description: "Information Missing Status" },
     { mine_incident_status_code: "AFR", description: "Awaiting final report" },
     { mine_incident_status_code: "FRS", description: "Final report submitted" },
     { mine_incident_status_code: "UNR", description: "Under review" },
