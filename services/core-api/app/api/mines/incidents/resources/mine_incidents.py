@@ -375,7 +375,7 @@ class MineIncidentResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
-        if updated_documents is not None:
+        if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
                 if not any(
                         str(doc.document_manager_guid) == updated_document['document_manager_guid']
