@@ -1,5 +1,4 @@
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -88,6 +87,9 @@ class MineIncidentListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound("Mine not found")
+
+        if not is_minespace_user():
+            return [i for i in mine.mine_incidents if i.deleted_ind == False and i.status_code != "DFT"]
         return [i for i in mine.mine_incidents if i.deleted_ind == False]
 
     def _get_year_incident(self, incident_timestamp):
@@ -223,8 +225,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            if is_minespace_user():
-                incident.send_incidents_email()
+            incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
@@ -374,7 +375,7 @@ class MineIncidentResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
-        if updated_documents is not None:
+        if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
                 if not any(
                         str(doc.document_manager_guid) == updated_document['document_manager_guid']

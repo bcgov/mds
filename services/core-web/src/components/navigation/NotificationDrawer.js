@@ -19,6 +19,7 @@ import {
   PRE_APPLICATIONS,
   INFORMATION_REQUIREMENTS_TABLE,
   PROJECTS,
+  MINE_TAILINGS_DETAILS,
 } from "@/constants/routes";
 
 const propTypes = {
@@ -120,6 +121,18 @@ const NotificationDrawer = (props) => {
         return PROJECTS.dynamicRoute(
           notification.notification_document.metadata.project.project_guid,
           "final-app"
+        );
+      case "EngineerOfRecord":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "engineer-of-record"
+        );
+      case "QualifiedPerson":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "qualified-person"
         );
       default:
         return null;

@@ -19,6 +19,7 @@ import {
   EDIT_PROJECT_SUMMARY,
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
+  EDIT_TAILINGS_STORAGE_FACILITY,
 } from "@/constants/routes";
 
 const propTypes = {
@@ -138,6 +139,24 @@ const NotificationDrawer = (props) => {
             notification.notification_document.metadata.entity_guid
           ),
           state: { current: 2 },
+        };
+      case "EngineerOfRecord":
+        return {
+          route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine.mine_guid,
+            "engineer-of-record"
+          ),
+          state: {},
+        };
+      case "QualifiedPerson":
+        return {
+          route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine.mine_guid,
+            "qualified-person"
+          ),
+          state: {},
         };
       default:
         return null;

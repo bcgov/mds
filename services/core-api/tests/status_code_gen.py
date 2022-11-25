@@ -127,7 +127,7 @@ def RandomIncidentDeterminationTypeCode():
 
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_all()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_all() if x.mine_incident_status_code != 'DFT'])
 
 
 def RandomIncidentDocumentType():
