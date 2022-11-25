@@ -437,6 +437,12 @@
       top: 20px;
      }
   }
+  &.ant-alert-info-custom-core-color-icon{
+    .ant-alert-icon {
+      background-color: #FFFFFF !important;
+      color: $primary-color !important;
+     }
+  }
 }
 
 .ant-alert-close-icon .anticon-close:hover {

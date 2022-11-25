@@ -128,7 +128,7 @@ export const IncidentsTable = (props) => {
           onClick={() => {
             // ENV FLAG FOR MINE INCIDENTS //
             if (!IN_PROD()) {
-              if (record.status_code) {
+              if (record.status_code && record.status_code !== "DFT") {
                 return props.history.push({
                   pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
                     record.mine_guid,

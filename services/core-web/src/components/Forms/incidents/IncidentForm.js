@@ -7,7 +7,7 @@ import { Field, FieldArray, reduxForm, change, getFormValues, formValueSelector 
 import { LockOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Typography, Divider, Empty, Button, Popconfirm } from "antd";
+import { Col, Row, Typography, Divider, Empty, Button, Popconfirm, Alert } from "antd";
 import {
   required,
   requiredList,
@@ -19,7 +19,7 @@ import {
   wholeNumber,
   validateSelectOptions,
 } from "@common/utils/Validate";
-import { normalizePhone } from "@common/utils/helpers";
+import { normalizePhone, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import {
@@ -27,6 +27,7 @@ import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
+  getDropdownIncidentStatusCodeOptions,
   getIncidentStatusCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -52,6 +53,7 @@ const propTypes = {
   handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: customPropTypes.options.isRequired,
+  dropdownIncidentStatusCodeOptions: PropTypes.objectOf(PropTypes.string).isRequired,
   change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   isEditMode: PropTypes.bool.isRequired,
@@ -72,6 +74,53 @@ const documentColumns = [
   uploadedByColumn("update_user"),
   uploadDateColumn("upload_date"),
 ];
+
+const alertText = (status, updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
+  let text = "";
+
+  if (selectedStatusCode === "UNR" && !responsibleInspector) {
+    text = `Please select an inspector responsible for this incident before changing the status to "Under Review".`;
+  } else {
+    switch (selectedStatusCode) {
+      case "WNS":
+        text = `This incident was submitted on ${formatDate(
+          updateDate
+        )} by ${updateUser} and has not yet been reviewed.`;
+        break;
+      case "UNR":
+        text = `This incident currently under review by ${responsibleInspector}.`;
+        break;
+      case "RSS":
+        text = `This incident's severity may have incorrectly been determined by the proponent, further clarification is being requested by the proponent.`;
+        break;
+      case "IMS":
+        text = `This incident is missing critical information. The proponent has been notified that further information is required.`;
+        break;
+      case "AFR":
+        text = `The incident was determined to be a dangerous occurence by the reporter and requires a final report to be submitted.`;
+        break;
+      case "INV":
+        text = `This incident currently is under EMLI investigation.`;
+        break;
+      case "MIU":
+        text = `This incident currently is under MIU investigation.`;
+        break;
+      case "FRS":
+        text = `Final report submitted.`;
+        break;
+      case "CLD":
+        text = `This incident was closed on ${formatDate(updateDate)} by ${updateUser}.`;
+        break;
+      case "DFT":
+        text = `This incident currently is under draft ${formatDate(updateDate)} by ${updateUser}.`;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return <Typography.Text>{text}</Typography.Text>;
+};
 
 const validateDoSubparagraphs = (value) =>
   value?.length === 0 ? "This is a required field" : undefined;
@@ -736,6 +785,68 @@ const renderInternalDocumentsComments = (props, isEditMode, handlers, parentHand
   );
 };
 
+const updateIncidentStatus = (props, isNewIncident) => {
+  const isClosed = props.incident?.status_code === "CLD";
+  const selectedStatusCode = props.formValues.status_code;
+  const responsibleInspector = props.incident?.responsible_inspector_party;
+  return !isNewIncident ? (
+    <Col span={24}>
+      <Alert
+        message={props.incidentStatusCodeHash[props.incident?.status_code] || "Undefined Status"}
+        description={
+          <Row>
+            <Col xs={24} md={18}>
+              <p>
+                {alertText(
+                  props.incident?.status_code,
+                  props.incident?.update_user,
+                  props.incident?.update_timestamp,
+                  responsibleInspector,
+                  selectedStatusCode
+                )}
+              </p>
+            </Col>
+            <Col xs={24} md={6}>
+              {!isClosed && (
+                <Form.Item>
+                  <Field
+                    id="status_code"
+                    name="status_code"
+                    label=""
+                    placeholder="Action"
+                    component={renderConfig.SELECT}
+                    validate={[required]}
+                    data={props.dropdownIncidentStatusCodeOptions}
+                  />
+                </Form.Item>
+              )}
+              {!props.pristine && !isClosed && (
+                <div className="right center-mobile">
+                  <Button
+                    className="full-mobile"
+                    type="primary"
+                    htmlType="submit"
+                    disabled={selectedStatusCode === "UNR" && !responsibleInspector}
+                  >
+                    Update Status
+                  </Button>
+                </div>
+              )}
+            </Col>
+          </Row>
+        }
+        type={!isClosed ? "warning" : "info"}
+        showIcon
+        style={{
+          backgroundColor: isClosed ? "#FFFFFF" : "",
+          border: isClosed ? "1.5px solid #5e46a1" : "",
+        }}
+        className={isClosed ? "ant-alert-info ant-alert-info-custom-core-color-icon" : null}
+      />
+    </Col>
+  ) : null;
+};
+
 const renderEditSaveControls = (props, isEditMode, isNewIncident) => (
   <div className="right center-mobile violet">
     {!isEditMode && (
@@ -808,6 +919,7 @@ export const IncidentForm = (props) => {
 
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
+      <Col span={24}>{updateIncidentStatus(props, isNewIncident)}</Col>
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
@@ -841,6 +953,7 @@ const mapStateToProps = (state) => ({
   inspectorOptions: getDropdownInspectors(state) || [],
   documents: selector(state, "documents") || [],
   formValues: getFormValues(FORM.ADD_EDIT_INCIDENT)(state) || {},
+  dropdownIncidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

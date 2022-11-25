@@ -13,7 +13,11 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { storeActivities } from "@common/actions/activityActions";
 import { useHistory } from "react-router-dom";
-import { MINE_DASHBOARD, EDIT_MINE_INCIDENT } from "@/constants/routes";
+import {
+  MINE_DASHBOARD,
+  EDIT_MINE_INCIDENT,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+} from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -102,6 +106,18 @@ const NotificationDrawer = (props) => {
         return EDIT_MINE_INCIDENT.dynamicRoute(
           notification.notification_document.metadata.mine.mine_guid,
           notification.notification_document.metadata.entity_guid
+        );
+      case "EngineerOfRecord":
+        return EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "engineer-of-record"
+        );
+      case "QualifiedPerson":
+        return EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "qualified-person"
         );
       default:
         return null;

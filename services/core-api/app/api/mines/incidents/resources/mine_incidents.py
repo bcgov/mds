@@ -87,6 +87,9 @@ class MineIncidentListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound("Mine not found")
+
+        if not is_minespace_user():
+            return [i for i in mine.mine_incidents if i.deleted_ind == False and i.status_code != "DFT"]
         return [i for i in mine.mine_incidents if i.deleted_ind == False]
 
     def _get_year_incident(self, incident_timestamp):
@@ -372,7 +375,7 @@ class MineIncidentResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
-        if updated_documents is not None:
+        if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
                 if not any(
                         str(doc.document_manager_guid) == updated_document['document_manager_guid']
