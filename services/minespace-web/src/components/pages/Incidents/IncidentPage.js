@@ -415,7 +415,7 @@ export class IncidentPage extends Component {
       message = "Successfully updated draft incident.";
     } else if (isFinalReviewStage) {
       message = "Successfully updated incident.";
-    } else if (this.props.location.state.current === 2 && values.status_code) {
+    } else if (this.props.location.state.current === 2 && values.status_code !== "DFT") {
       message = "Successfully submitted a new incident.";
     } else {
       message = null;
