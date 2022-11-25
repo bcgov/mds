@@ -76,6 +76,13 @@ def validate_document(document):
                     'type': 'dict',
                     'schema': {
                         'mine_tailings_storage_facility_guid': {
+                        }
+                    }
+                },
+                'project': {
+                    'type': 'dict',
+                    'schema': {
+                        'project_guid': {
                             'type': 'string'
                         }
                     }
