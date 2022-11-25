@@ -536,7 +536,6 @@ export class IncidentPage extends Component {
     mine_determination_type_code: incident?.mine_determination_type_code
       ? incident.mine_determination_type_code === "DO"
       : null,
-    documents: [],
     [INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD]: [],
     [FINAL_REPORT_DOCUMENTS_FORM_FIELD]: [],
   });
