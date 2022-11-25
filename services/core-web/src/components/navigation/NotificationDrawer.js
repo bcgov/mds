@@ -13,7 +13,14 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
-import { NOTICE_OF_DEPARTURE, MINE_INCIDENT, MINE_TAILINGS_DETAILS } from "@/constants/routes";
+import {
+  NOTICE_OF_DEPARTURE,
+  MINE_INCIDENT,
+  PRE_APPLICATIONS,
+  INFORMATION_REQUIREMENTS_TABLE,
+  PROJECTS,
+  MINE_TAILINGS_DETAILS,
+} from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -99,6 +106,21 @@ const NotificationDrawer = (props) => {
         return MINE_INCIDENT.dynamicRoute(
           notification.notification_document.metadata.mine_guid,
           notification.notification_document.metadata.entity_guid
+        );
+      case "ProjectSummary":
+        return PRE_APPLICATIONS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "InformationRequirementsTable":
+        return INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "MajorMineApplication":
+        return PROJECTS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          "final-app"
         );
       case "EngineerOfRecord":
         return MINE_TAILINGS_DETAILS.dynamicRoute(
