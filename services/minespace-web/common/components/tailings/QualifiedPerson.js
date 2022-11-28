@@ -87,10 +87,13 @@ export const QualifiedPerson = (props) => {
     );
   };
 
-  const fieldsDisabled =
-    !!props.formValues?.qualified_person?.mine_party_appt_guid ||
-    !props.formValues?.qualified_person?.party_guid ||
-    props.loading;
+  // Enable editing of the QFP when a new EoR party has been selected (party_guid is set),
+  // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).
+  const canEditQFP =
+    props.formValues?.qualified_person?.party_guid &&
+    !props.formValues?.qualified_person?.mine_party_appt_guid;
+
+  const fieldsDisabled = !canEditQFP || props.loading;
 
   return (
     <Row className="tailings-section">
