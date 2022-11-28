@@ -165,7 +165,8 @@ export const EngineerOfRecord = (props) => {
 
   // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
   // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).
-  const canEditEOR = formValues?.engineer_of_record?.party_guid &&
+  const canEditEOR =
+    formValues?.engineer_of_record?.party_guid &&
     !formValues?.engineer_of_record?.mine_party_appt_guid;
 
   const fieldsDisabled = !canEditEOR || loading;
