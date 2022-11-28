@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -36,72 +36,88 @@ const defaultProps = {
   content: () => {},
 };
 
-export class ModalWrapper extends Component {
-  constructor(props) {
-    super(props);
-    // listens for browser back || forward button click and invokes function to close the modal,
-    window.onpopstate = this.onBrowserButtonEvent;
-  }
+const ModalWrapper = (props) => {
+  const {
+    props: childProps,
+    closeModal: propCloseModal,
+    isModalOpen,
+    isViewOnly,
+    width,
+    clearOnSubmit,
+    content,
+  } = props;
 
-  onBrowserButtonEvent = () => {
-    this.props.closeModal();
+  const onBrowserButtonEvent = () => {
+    propCloseModal();
   };
 
-  closeModal = (event) => {
+  window.onpopstate = onBrowserButtonEvent;
+
+  useEffect(() => {
+    // disable background scroll when there is a modal open
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isModalOpen]);
+
+  const closeModal = (event) => {
     event.preventDefault();
-    this.props.closeModal();
-    this.props.props.afterClose();
+    propCloseModal();
+    // default props only shallow merged, may be undefined
+    if (childProps.afterClose) {
+      childProps.afterClose();
+    }
   };
 
-  render() {
-    return (
-      <Modal
-        width={this.props.width}
-        title={this.props.props.title}
-        visible={this.props.isModalOpen}
-        closable={false}
-        footer={null}
-      >
-        {this.props.isViewOnly ? (
-          <Button ghost className="modal__close" onClick={(event) => this.closeModal(event)}>
+  return (
+    <Modal
+      width={width}
+      title={childProps.title}
+      visible={isModalOpen}
+      closable={false}
+      footer={null}
+    >
+      {isViewOnly ? (
+        <Button ghost className="modal__close" onClick={(event) => closeModal(event)}>
+          <CloseOutlined className="icon-sm" />
+        </Button>
+      ) : (
+        <Popconfirm
+          placement="bottomRight"
+          title="Are you sure you want to cancel?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={(event) => closeModal(event)}
+        >
+          <Button ghost className="modal__close">
             <CloseOutlined className="icon-sm" />
           </Button>
-        ) : (
-          <Popconfirm
-            placement="bottomRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={(event) => this.closeModal(event)}
-          >
-            <Button ghost className="modal__close">
-              <CloseOutlined className="icon-sm" />
-            </Button>
-          </Popconfirm>
-        )}
-        <LoadingBar
-          scope="modal"
-          style={{
-            position: "absolute",
-            top: "54px",
-            left: 0,
-            backgroundColor: Styles.COLOR.violet,
-            height: "3px",
-            zIndex: 100,
-          }}
+        </Popconfirm>
+      )}
+      <LoadingBar
+        scope="modal"
+        style={{
+          position: "absolute",
+          top: "54px",
+          left: 0,
+          backgroundColor: Styles.COLOR.violet,
+          height: "3px",
+          zIndex: 100,
+        }}
+      />
+      {content && (
+        <AddPartyComponentWrapper
+          closeModal={propCloseModal}
+          clearOnSubmit={clearOnSubmit}
+          content={content}
+          childProps={childProps}
         />
-        {this.props.content && (
-          <AddPartyComponentWrapper
-            closeModal={this.props.closeModal}
-            clearOnSubmit={this.props.clearOnSubmit}
-            content={this.props.content}
-            childProps={this.props.props}
-          />
-        )}
-      </Modal>
-    );
-  }
-}
+      )}
+    </Modal>
+  );
+};
 
 const mapStateToProps = (state) => ({
   width: getWidth(state),
