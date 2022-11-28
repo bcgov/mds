@@ -57,7 +57,7 @@ const RenderSelect = (props) => {
         dropdownMatchSelectWidth
         getPopupContainer={(trigger) => trigger.parentNode}
         showSearch
-        dropdownStyle={{ position: "relative" }}
+        dropdownStyle={{ zIndex: 100000, position: "relative" }}
         placeholder={props.placeholder}
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -71,7 +71,7 @@ const RenderSelect = (props) => {
       >
         {props.data.map((opt) => (
           <Select.Option
-            style={{ position: "relative" }}
+            style={{ zIndex: 10000, position: "relative" }}
             disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
             key={opt.value}
             value={opt.value}

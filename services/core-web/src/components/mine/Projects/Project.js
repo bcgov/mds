@@ -45,6 +45,16 @@ export class Project extends Component {
     this.handleScroll();
   }
 
+  // Handle clicking an activity notification link(MMA tab) while Project component is mounted
+  componentDidUpdate(prevProps) {
+    const currentTab = this.props.match.params.tab;
+    const tabChanged = prevProps.match.params.tab !== currentTab;
+    if (tabChanged && currentTab !== this.state.activeTab) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ activeTab: currentTab });
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -61,10 +71,11 @@ export class Project extends Component {
 
   handleFetchData = (params) => {
     const { projectGuid } = params;
+    const activeTab = params?.tab ? { activeTab: params?.tab } : { activeTab: "overview" };
     if (projectGuid) {
       return this.props
         .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true }))
+        .then(() => this.setState({ isLoaded: true, isValid: true, ...activeTab }))
         .catch(() => this.setState({ isLoaded: false, isValid: false }));
     }
     return null;
