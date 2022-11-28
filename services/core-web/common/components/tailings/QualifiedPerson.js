@@ -92,6 +92,10 @@ export const QualifiedPerson = (props) => {
     );
   };
 
+  const fieldsDisabled = !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+    !props.formValues?.qualified_person?.party_guid ||
+    props.loading;
+
   return (
     <Row className="tailings-section">
       <Col span={24}>
@@ -198,13 +202,9 @@ export const QualifiedPerson = (props) => {
               id="qualified_person.start_date"
               name="qualified_person.start_date"
               label="Start Date"
-              disabled={
-                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
-                !props.formValues?.qualified_person?.party_guid ||
-                props.loading
-              }
+              disabled={fieldsDisabled}
               component={renderConfig.DATE}
-              validate={[required, dateNotInFuture, validateQPStartDateOverlap]}
+              validate={!fieldsDisabled && [required, dateNotInFuture, validateQPStartDateOverlap]}
             />
           </Col>
           <Col span={12}>
@@ -212,12 +212,8 @@ export const QualifiedPerson = (props) => {
               id="qualified_person.end_date"
               name="qualified_person.end_date"
               label="End Date (Optional)"
-              disabled={
-                !!props.formValues?.qualified_person?.mine_party_appt_guid ||
-                !props.formValues?.qualified_person?.party_guid ||
-                props.loading
-              }
-              validate={[dateInFuture]}
+              disabled={fieldsDisabled}
+              validate={!fieldsDisabled && [dateInFuture]}
               component={renderConfig.DATE}
             />
           </Col>

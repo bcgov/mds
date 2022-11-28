@@ -146,6 +146,10 @@ export const TailingsSummaryPage = (props) => {
         break;
       case "engineer-of-record":
       case "qualified-person":
+        if (!props.isDirty) {
+          break;
+        }
+
         const { attr, apptType, successMessage } = {
           "engineer-of-record": {
             attr: "engineer_of_record",
@@ -159,7 +163,7 @@ export const TailingsSummaryPage = (props) => {
           },
         }[tab];
 
-        if (!formValues[attr].mine_party_appt_guid) {
+        if (!formValues[attr].mine_party_appt_guid && formValues[attr].party_guid) {
           // Only add party relationship if changed
           const relationship = await props.addPartyRelationship(
             {
