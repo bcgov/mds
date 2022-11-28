@@ -7,6 +7,7 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
+  getMajorMinesApplicationStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { getProjectLeads } from "@common/selectors/partiesSelectors";
 import { formatDate } from "@common/utils/helpers";
@@ -21,6 +22,7 @@ const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  majorMineApplicationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
   projectLeads: CustomPropTypes.projectContact.isRequired,
 };
@@ -121,20 +123,36 @@ export class ProjectOverviewTab extends Component {
       },
     ];
 
-    requiredProjectStages.push({
-      title: "Project description",
-      key: `ps-${project_summary_id}`,
-      status: status_code,
-      payload: this.props.project.project_summary,
-      statusHash: this.props.projectSummaryStatusCodesHash,
-      link: (
-        <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
-          <Button className="full-mobile margin-small" type="secondary">
-            View
-          </Button>
-        </Link>
-      ),
-    });
+    requiredProjectStages.push(
+      {
+        title: "Project description",
+        key: `ps-${project_summary_id}`,
+        status: status_code,
+        payload: this.props.project.project_summary,
+        statusHash: this.props.projectSummaryStatusCodesHash,
+        link: (
+          <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
+            <Button className="full-mobile margin-small" type="secondary">
+              View
+            </Button>
+          </Link>
+        ),
+      },
+      {
+        title: "Final Application",
+        key: `ps-${this.props.project.major_mine_application.major_mine_application_id}`,
+        status: this.props.project.major_mine_application.status_code,
+        payload: this.props.project.major_mine_application,
+        statusHash: this.props.majorMineApplicationStatusCodeHash,
+        link: (
+          <Link to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}>
+            <Button className="full-mobile margin-small" type="secondary">
+              View
+            </Button>
+          </Link>
+        ),
+      }
+    );
 
     const irt = {
       title: "Final IRT",
@@ -259,6 +277,7 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  majorMineApplicationStatusCodeHash: getMajorMinesApplicationStatusCodesHash(state),
   informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
     state
   ),
