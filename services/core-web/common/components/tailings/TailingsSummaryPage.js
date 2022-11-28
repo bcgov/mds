@@ -146,7 +146,7 @@ export const TailingsSummaryPage = (props) => {
         break;
       case "engineer-of-record":
       case "qualified-person":
-        if(!props.isDirty) {
+        if (!props.isDirty) {
           break;
         }
 

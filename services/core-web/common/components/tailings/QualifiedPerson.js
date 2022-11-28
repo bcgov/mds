@@ -24,8 +24,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any))
-    .isRequired,
+  partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineGuid: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   isCore: PropTypes.bool,
@@ -38,8 +37,7 @@ const defaultProps = {
 
 export const QualifiedPerson = (props) => {
   const { isCore, mineGuid } = props;
-  const { renderConfig, addContactModalConfig, tsfFormName } =
-    useContext(TailingsContext);
+  const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
 
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
@@ -67,10 +65,7 @@ export const QualifiedPerson = (props) => {
   };
 
   const validateQPStartDateOverlap = (val) => {
-    if (
-      props.formValues?.qualified_person?.mine_party_appt_guid ||
-      props.loading
-    ) {
+    if (props.formValues?.qualified_person?.mine_party_appt_guid || props.loading) {
       // Skip validation for existing TQPs
       return undefined;
     }
@@ -92,7 +87,8 @@ export const QualifiedPerson = (props) => {
     );
   };
 
-  const fieldsDisabled = !!props.formValues?.qualified_person?.mine_party_appt_guid ||
+  const fieldsDisabled =
+    !!props.formValues?.qualified_person?.mine_party_appt_guid ||
     !props.formValues?.qualified_person?.party_guid ||
     props.loading;
 
@@ -116,10 +112,7 @@ export const QualifiedPerson = (props) => {
                     cancelText="No"
                     onConfirm={openCreateQPModal}
                   >
-                    <Button
-                      style={{ whiteSpace: "normal", height: "auto" }}
-                      type="primary"
-                    >
+                    <Button style={{ whiteSpace: "normal", height: "auto" }} type="primary">
                       <span>
                         <PlusCircleFilled className="margin-medium--right" />
                         Update Qualified Person
@@ -128,13 +121,11 @@ export const QualifiedPerson = (props) => {
                   </Popconfirm>
                 </Col>
                 <Col style={{ textAlign: "right" }}>
-                  <Typography.Paragraph strong>
-                    Last Updated
-                  </Typography.Paragraph>
+                  <Typography.Paragraph strong>Last Updated</Typography.Paragraph>
                   <Typography.Paragraph style={{ marginBottom: 0 }}>
-                    {moment(
-                      props.formValues?.qualified_person.update_timestamp
-                    ).format("DD-MM-YYYY H:mm")}
+                    {moment(props.formValues?.qualified_person.update_timestamp).format(
+                      "DD-MM-YYYY H:mm"
+                    )}
                   </Typography.Paragraph>
                 </Col>
               </Row>
@@ -149,10 +140,7 @@ export const QualifiedPerson = (props) => {
                 cancelText="No"
                 onConfirm={openCreateQPModal}
               >
-                <Button
-                  style={{ display: "inline", float: "right" }}
-                  type="primary"
-                >
+                <Button style={{ display: "inline", float: "right" }} type="primary">
                   <PlusCircleFilled />
                   Assign a new Qualified Person
                 </Button>

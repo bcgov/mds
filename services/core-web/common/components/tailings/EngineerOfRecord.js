@@ -163,7 +163,8 @@ export const EngineerOfRecord = (props) => {
       .startOf("day")
       .diff(moment().startOf("day"), "days");
 
-  const fieldsDisabled = !!formValues?.engineer_of_record?.mine_party_appt_guid ||
+  const fieldsDisabled =
+    !!formValues?.engineer_of_record?.mine_party_appt_guid ||
     !formValues?.engineer_of_record?.party_guid ||
     loading;
 
@@ -307,7 +308,9 @@ export const EngineerOfRecord = (props) => {
                 label="Start Date"
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
-                validate={!fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]}
+                validate={
+                  !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
+                }
               />
             </Col>
             <Col span={12}>
