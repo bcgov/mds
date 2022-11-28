@@ -162,33 +162,6 @@ exports[`ProjectOverviewTab renders properly 1`] = `
         ]
       }
     />
-    <Title
-      level={4}
-    >
-      Project Documents
-    </Title>
-    <DocumentTable
-      deletePayload={Object {}}
-      deletePermission={null}
-      documentColumns={
-        Array [
-          Object {
-            "dataIndex": "project_summary_document_type_code",
-            "render": [Function],
-            "title": "Category",
-          },
-          Object {
-            "dataIndex": "upload_date",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Upload Date",
-          },
-        ]
-      }
-      documentParent="project summary"
-      documents={Array []}
-      handleDeleteDocument={[Function]}
-    />
   </Col>
   <Col
     lg={
