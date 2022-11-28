@@ -36,7 +36,7 @@ const defaultProps = {
   content: () => {},
 };
 
-const ModalWrapper = (props) => {
+export const ModalWrapper = (props) => {
   const {
     props: childProps,
     closeModal: propCloseModal,
