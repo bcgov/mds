@@ -353,7 +353,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                permit=None,
                tsf=None,
                add_to_session=True,
-               status=None):
+               status=None,
+               mine_party_acknowledgement_status=None):
 
         if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             mine = None
@@ -373,7 +374,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             end_date=end_date,
             union_rep_company=union_rep_company,
             processed_by=processed_by,
-            status=status)
+            status=status,
+            mine_party_acknowledgement_status=mine_party_acknowledgement_status)
 
         if add_to_session:
             mpa.save(commit=False)

@@ -3,6 +3,7 @@ import json
 import uuid
 
 from flask import request, current_app
+from app.api.utils.access_decorators import is_minespace_user
 from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, Forbidden
@@ -154,8 +155,18 @@ class MinePartyApptResource(Resource, UserMixin):
             if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
                 raise Forbidden("Party is not associated with the given mine")
 
+        new_status = None
+        mine_party_acknowledgement_status = None
 
+        if is_minespace_user() and mine_party_appt_type_code == 'EOR':
+            # EORs created through minespace should have a status of "pending"
+            new_status = MinePartyAppointmentStatus.pending
+            mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.not_acknowledged
+        elif mine_party_appt_type_code == 'EOR':
+            mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
+        
         if end_current:
+            new_status = MinePartyAppointmentStatus.active
             MinePartyAppointment.end_current(
                 mine_guid=mine_guid,
                 mine_party_appt_type_code=mine_party_appt_type_code,
@@ -173,7 +184,9 @@ class MinePartyApptResource(Resource, UserMixin):
             start_date=start_date,
             end_date=end_date,
             union_rep_company=union_rep_company,
-            processed_by=self.get_user_info())
+            processed_by=self.get_user_info(),
+            status=new_status,
+            mine_party_acknowledgement_status=mine_party_acknowledgement_status)
         new_mpa.assign_related_guid(mine_party_appt_type_code, related_guid)
 
         try:

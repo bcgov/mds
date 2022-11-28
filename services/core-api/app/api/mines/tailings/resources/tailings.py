@@ -1,6 +1,10 @@
 from datetime import datetime, timezone
 from decimal import Decimal
 
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAcknowledgedStatus
+
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
+
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
@@ -103,13 +107,25 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
                                        or eor_party_guid != mine_tsf.engineer_of_record.party_guid):
             if mine_tsf.engineer_of_record:
                 mine_tsf.engineer_of_record.end_date = datetime.now(tz=timezone.utc)
+
+            if is_minespace_user():
+                # EORs created through minespace should have a status of "pending"
+                new_status = MinePartyAppointmentStatus.pending
+                mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.not_acknowledged
+            else:
+                mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
+                new_status = MinePartyAppointmentStatus.active
+
             new_eor = MinePartyAppointment.create(
                 mine=mine,
                 tsf=mine_tsf,
                 party_guid=eor_party_guid,
                 mine_party_appt_type_code='EOR',
                 processed_by=self.get_user_info(),
-                start_date=datetime.now(tz=timezone.utc))
+                start_date=datetime.now(tz=timezone.utc),
+                status = new_status,
+                mine_party_acknowledgement_status=mine_party_acknowledgement_status
+            )
             related_guid = mine_tsf.mine_tailings_storage_facility_guid
             new_eor.assign_related_guid('EOR', related_guid)
             new_eor.save(commit=False)
