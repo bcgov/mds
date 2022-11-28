@@ -2,12 +2,14 @@
 
 export const FIRST_NATIONS_LAYER_URL = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov";
 
+const defaultHost = process.env.CODESPACE_NAME? `https://${process.env.CODESPACE_NAME}`: 'http://localhost';
+
 export const DEFAULT_ENVIRONMENT = {
-  apiUrl: "http://localhost:5000",
-  docManUrl: "http://localhost:5001",
+  apiUrl: `${defaultHost}:5000`,
+  docManUrl: `${defaultHost}:5001`,
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
-  filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
+  filesystemProviderUrl: `${defaultHost}:62870/file-api/AmazonS3Provider/`,
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",

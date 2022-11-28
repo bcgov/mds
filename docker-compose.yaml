@@ -98,7 +98,7 @@ services:
       context: services/core-web
     command: [ "npm", "run", "serve" ]
     volumes:
-      - ./services/core-web/src:/app/src
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/core-web/src:/app/src
     ports:
       - 3000:3000
     depends_on:
@@ -120,7 +120,7 @@ services:
       context: services/minespace-web
     command: [ "npm", "run", "serve" ]
     volumes:
-      - ./services/minespace-web/src:/app/src
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/minespace-web/src:/app/src
     ports:
       - 3020:3020
     depends_on:
@@ -141,7 +141,7 @@ services:
     ports:
       - 5500:5500
     volumes:
-      - ./services/nris-api/backend:/app
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/nris-api/backend:/app
     depends_on:
       - flyway
       - redis
@@ -160,7 +160,7 @@ services:
       dockerfile: Dockerfile.migrate
       context: services/nris-api/backend
     volumes:
-      - ./services/nris-api/backend:/app
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/nris-api/backend:/app
     depends_on:
       - flyway
       - redis
@@ -193,7 +193,7 @@ services:
     ports:
       - 5001:5001
     volumes:
-      - ./services/document-manager/backend:/app
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis
@@ -211,7 +211,7 @@ services:
     ports:
       - 5555:5555
     volumes:
-      - ./services/document-manager/backend:/app
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis
@@ -225,7 +225,7 @@ services:
       dockerfile: Dockerfile.migrate
       context: services/document-manager/backend
     volumes:
-      - ./services/document-manager/backend:/app
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/services/document-manager/backend:/app
     depends_on:
       - postgres
       - redis

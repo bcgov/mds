@@ -2,7 +2,10 @@
 	"name": "Debian",
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 	"features": {
-		"ghcr.io/devcontainers/features/docker-from-docker:1": {},
+		"ghcr.io/devcontainers/features/docker-from-docker:1": {
+			"version": "latest",
+			"moby": true
+		},
 		"ghcr.io/devcontainers/features/git:1": {},
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/devcontainers/features/python:1": {},
@@ -16,33 +19,43 @@
 			"version": "14.8.0"
 		}
 	},
-	  "forwardPorts": ["3000:3000", "3020:3020", "5000:5000", "5432:5432", "5500:5500", "5001:5001"],
-	  "portsAttributes": {
+	"forwardPorts": [
+		"3000:3000",
+		"3020:3020",
+		"5000:5000",
+		"5432:5432",
+		"5500:5500",
+		"5001:5001"
+	],
+	"portsAttributes": {
 		"3000": {
-		  "label": "Core",
-		  "onAutoForward": "notify"
+			"label": "Core",
+			"onAutoForward": "notify"
 		},
 		"3020": {
-		  "label": "Minespace",
-		  "onAutoForward": "notify"
+			"label": "Minespace",
+			"onAutoForward": "notify"
 		},
 		"5000": {
-		  "label": "API",
-		  "onAutoForward": "notify"
+			"label": "API",
+			"onAutoForward": "notify"
 		},
 		"5432": {
-		  "label": "Postgres",
-		  "onAutoForward": "notify"
+			"label": "Postgres",
+			"onAutoForward": "notify"
 		},
 		"5500": {
-		  "label": "NRIS",
-		  "onAutoForward": "notify"
+			"label": "NRIS",
+			"onAutoForward": "notify"
 		},
 		"5001": {
-		  "label": "Document Manager",
-		  "onAutoForward": "notify"
+			"label": "Document Manager",
+			"onAutoForward": "notify"
 		}
-	  },
-		"onCreateCommand": "make INPUT=yes env",
-		"postCreateCommand": "make be && make seeddb && yarn install"
+	},
+	"onCreateCommand": "make INPUT=yes env",
+	"postCreateCommand": "make be && make seeddb && yarn install",
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	}
 }
