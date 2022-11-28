@@ -39,7 +39,7 @@ const defaultProps = {
 export const ModalWrapper = (props) => {
   const {
     props: childProps,
-    closeModal: propCloseModal,
+    closeModal: handleCloseModal,
     isModalOpen,
     isViewOnly,
     width,
@@ -48,7 +48,7 @@ export const ModalWrapper = (props) => {
   } = props;
 
   const onBrowserButtonEvent = () => {
-    propCloseModal();
+    handleCloseModal();
   };
 
   // listens for browser back || forward button click and invokes function to close the modal
@@ -65,7 +65,7 @@ export const ModalWrapper = (props) => {
 
   const closeModal = (event) => {
     event.preventDefault();
-    propCloseModal();
+    handleCloseModal();
     // default props only shallow merged, may be undefined
     if (childProps.afterClose) {
       childProps.afterClose();
@@ -110,7 +110,7 @@ export const ModalWrapper = (props) => {
       />
       {content && (
         <AddPartyComponentWrapper
-          closeModal={propCloseModal}
+          closeModal={handleCloseModal}
           clearOnSubmit={clearOnSubmit}
           content={content}
           childProps={childProps}
