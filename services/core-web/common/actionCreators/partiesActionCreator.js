@@ -140,6 +140,7 @@ export const fetchPartyRelationships = (params) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
+      return response.data;
     })
     .catch(() => dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS)))
     .finally(() => dispatch(hideLoading()));

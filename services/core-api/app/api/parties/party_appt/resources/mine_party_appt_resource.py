@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import json
 import uuid
 
 from flask import request, current_app
@@ -31,6 +32,11 @@ class MinePartyApptResource(Resource, UserMixin):
         type=str,
         help='code for the type of appt.',
         store_missing=False)
+    parser.add_argument(
+        'mine_tailings_storage_facility_guid',
+        type=str,
+        help='GUID of tailings storage facility to filter by.',
+        store_missing=False)
     parser.add_argument('related_guid', type=str, store_missing=False)
     parser.add_argument('end_current', type=bool)
     parser.add_argument(
@@ -47,16 +53,16 @@ class MinePartyApptResource(Resource, UserMixin):
         help='The company/organization of the Union Rep (applicable to this type only).',
         store_missing=False)
     parser.add_argument(
-        'status',
-        type=MinePartyAppointmentStatus,
-        choices=list(MinePartyAppointmentStatus),
-        help='The status of the appointment.',
-        store_missing=False)
-    parser.add_argument(
         'mine_party_acknowledgement_status',
         type=MinePartyAcknowledgedStatus,
         choices=list(MinePartyAcknowledgedStatus),
         help='Indicator of Ministry acknowledgement of the appointment.',
+        store_missing=False)
+    parser.add_argument(
+        'status',
+        type=MinePartyAppointmentStatus,
+        choices=list(MinePartyAppointmentStatus),
+        help='Indicator of status of acknowledgement.',
         store_missing=False)
 
 
@@ -64,6 +70,7 @@ class MinePartyApptResource(Resource, UserMixin):
         description='Returns a list of party appointments',
         params={
             'mine_party_appt_guid': 'Mine party appointment serial id',
+            'mine_tailings_storage_facility_guid': 'GUID of tsf to filter by',
             'mine_guid': 'Mine serial id',
             'party_guid': 'Party serial id',
             'start_date': 'Date the mine appointment started',
@@ -87,12 +94,16 @@ class MinePartyApptResource(Resource, UserMixin):
                     'include_permittees', 'false').lower() == 'true'
             act_only = request.args.get('active_only', 'true').lower() == 'true'
             types = request.args.getlist('types')
+
+            mine_tailings_storage_facility_guid = request.args.get('mine_tailings_storage_facility_guid')
+
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid,
                 party_guid=party_guid,
                 mine_party_appt_type_codes=types,
                 include_permit_contacts=include_permit_contacts,
-                active_only=act_only)
+                active_only=act_only,
+                mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
 
@@ -143,23 +154,15 @@ class MinePartyApptResource(Resource, UserMixin):
             if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
                 raise Forbidden("Party is not associated with the given mine")
 
+
         if end_current:
-            if mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_guid=mine_guid,
-                    mine_party_appt_type_code=mine_party_appt_type_code,
-                    mine_tailings_storage_facility_guid=related_guid)
-            elif mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
-            else:
-                current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
-            if len(current_mpa) != 1:
-                raise BadRequest('There is currently not exactly one active appointment.')
-            current_mpa[0].status = MinePartyAppointmentStatus.inactive
-            current_mpa[0].end_date = start_date - timedelta(days=1)
-            current_mpa[0].save()
+            MinePartyAppointment.end_current(
+                mine_guid=mine_guid,
+                mine_party_appt_type_code=mine_party_appt_type_code,
+                mine_tailings_storage_facility_guid=related_guid,
+                permit_id=permit.permit_id,
+                new_start_date=start_date
+            )
 
         new_mpa = MinePartyAppointment.create(
             mine=mine,
@@ -203,15 +206,17 @@ class MinePartyApptResource(Resource, UserMixin):
         if not mpa:
             raise NotFound('mine party appointment not found')
 
-        status = data.get('status')
-
-
         for key, value in data.items():
+            print(key, value)
             if key in ['party_guid', 'mine_guid']:
                 continue
             elif key == 'related_guid':
                 related_guid = data.get('related_guid', None)
                 mpa.assign_related_guid(mpa.mine_party_appt_type_code, related_guid)
+            
+            elif key == 'mine_party_acknowledgement_status' and value == 'acknowledged' and mpa.mine_party_acknowledgement_status != 'active':
+                mpa.set_active()
+                setattr(mpa, key, value)
             else:
                 setattr(mpa, key, value)
 

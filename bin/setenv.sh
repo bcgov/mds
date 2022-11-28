@@ -18,7 +18,12 @@ tusd
 
 echo "This command can be destructive if you have valid .env's in place and run this multiple times!"
 echo "Continue? (only accepts 'yes')"
-read INPUT
+
+if [ -z "$INPUT"];
+    then
+        read INPUT
+fi
+
 if [ "$INPUT" = "yes" ];
 then
     for S in $SERVICES

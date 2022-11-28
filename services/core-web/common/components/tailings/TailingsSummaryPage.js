@@ -80,10 +80,11 @@ export const TailingsSummaryPage = (props) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
 
-    await props.fetchPartyRelationships({
+    const parties = await props.fetchPartyRelationships({
       mine_guid: mineGuid,
       relationships: "party",
       include_permit_contacts: "true",
+      mine_tailings_storage_facility_guid: tsfGuid,
     });
 
     if (tsfGuid) {
@@ -93,7 +94,11 @@ export const TailingsSummaryPage = (props) => {
           (tsf) => tsf.mine_tailings_storage_facility_guid === tsfGuid
         );
 
-        props.storeTsf(existingTsf);
+        props.storeTsf({
+          ...existingTsf,
+          engineers_of_record: parties.filter(p => p.mine_party_appt_type_code==='EOR'),
+          qualified_persons: parties.filter(p => p.mine_party_appt_type_code==='QFP')
+        });
       }
     }
     setIsLoaded(true);

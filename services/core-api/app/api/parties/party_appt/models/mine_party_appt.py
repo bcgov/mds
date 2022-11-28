@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from enum import Enum
+from http.client import BAD_REQUEST
 
 from flask import current_app
 from sqlalchemy import and_
@@ -254,12 +255,15 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 party_guid=None,
                 mine_party_appt_type_codes=None,
                 include_permit_contacts=False,
-                active_only=True):
+                active_only=True,
+                mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
         if party_guid:
             built_query = built_query.filter_by(party_guid=party_guid)
+        if mine_tailings_storage_facility_guid:
+            built_query = built_query.filter_by(mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
@@ -283,6 +287,49 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
             results = results + permit_contacts
         return results
+
+    def set_active(self):
+        # Sets the current status of the party to active
+        # if this appointment starts later than the current appointment.
+        # updates the status of the previous appointment to inactive
+        if self.mine_party_appt_type == 'EOR':
+
+            previous_mpa_ended = self.end_current(
+                mine_guid=self.mine_guid,
+                mine_party_appt_type_code=self.mine_party_appt_type_code,
+                new_start_date=self.start_date,
+                related_guid=self.mine_tailings_storage_facility_guid,
+                permit=self.permit_id,
+                validate_new_start_date=True
+            )
+
+            if previous_mpa_ended:
+                self.status = MinePartyAppointmentStatus.active
+
+    @classmethod
+    def end_current(cls, mine_guid, mine_party_appt_type_code, new_start_date, related_guid=None, permit=None, validate_new_start_date=False):
+        if mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
+            current_mpa = MinePartyAppointment.find_current_appointments(
+                mine_guid=mine_guid,
+                mine_party_appt_type_code=mine_party_appt_type_code,
+                mine_tailings_storage_facility_guid=related_guid)
+        elif mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+            current_mpa = MinePartyAppointment.find_current_appointments(
+                mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
+        else:
+            current_mpa = MinePartyAppointment.find_current_appointments(
+                mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
+        if len(current_mpa) != 1:
+            raise BAD_REQUEST('There is currently not exactly one active appointment.')
+
+        if validate_new_start_date and current_mpa.start_date and new_start_date < current_mpa.start_date:
+            return False
+
+        current_mpa[0].status = MinePartyAppointmentStatus.inactive
+        current_mpa[0].end_date = new_start_date - timedelta(days=1)
+        current_mpa[0].save()
+
+        return True
 
     @classmethod
     def to_csv(cls, records, columns):

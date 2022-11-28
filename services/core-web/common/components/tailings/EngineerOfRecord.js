@@ -331,7 +331,7 @@ export const EngineerOfRecord = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <PartyAppointmentTable columns={eorHistoryColumns} partyRelationships={existingEors} />
+          <PartyAppointmentTable columns={eorHistoryColumns} partyRelationships={formValues?.engineers_of_record} />
         </Col>
       </Row>
     </>
