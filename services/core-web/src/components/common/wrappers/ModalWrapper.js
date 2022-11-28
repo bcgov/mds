@@ -51,6 +51,7 @@ const ModalWrapper = (props) => {
     propCloseModal();
   };
 
+  // listens for browser back || forward button click and invokes function to close the modal
   window.onpopstate = onBrowserButtonEvent;
 
   useEffect(() => {
