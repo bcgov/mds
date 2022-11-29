@@ -148,8 +148,7 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
-            project_summary.send_project_summary_email_to_ministry(mine)
-            project_summary.send_project_summary_email_to_proponent(mine)
+            project_summary.send_project_summary_email(mine)
             # Trigger notification for newly submitted Project Summary
             message = f'A Major Mine Description called ({project.project_title}) has been submitted for ({project.mine_name})'
             extra_data = {'project': {'project_guid': str(project.project_guid)}}
