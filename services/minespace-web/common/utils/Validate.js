@@ -167,6 +167,21 @@ export const dateNotBeforeOther = memoize((other) => (value) =>
     : undefined
 );
 
+export const dateNotBeforeStrictOther = memoize((other) => (value) =>
+  value && other && new Date(value) < new Date(other) ? `Date cannot be before ${other}` : undefined
+);
+
+export const timeNotBeforeOther = memoize(
+  (comparableDate, baseDate, baseTime) => (comparableTime) => baseTime &&
+      baseDate &&
+      comparableDate &&
+      comparableTime &&
+      baseDate === comparableDate &&
+      comparableTime < baseTime
+      ? `Time cannot be before ${baseTime.format("H:mm")} hrs.`
+      : undefined
+);
+
 export const dateNotAfterOther = memoize((other) => (value) =>
   value && other && new Date(value) >= new Date(other)
     ? `Date cannot be on or after ${other}`

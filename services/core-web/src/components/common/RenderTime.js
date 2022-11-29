@@ -33,7 +33,7 @@ const defaultProps = {
   disabled: false,
 };
 
-const RenderDate = (props) => (
+const RenderTime = (props) => (
   <Form.Item
     label={props.label}
     validateStatus={
@@ -60,7 +60,7 @@ const RenderDate = (props) => (
   </Form.Item>
 );
 
-RenderDate.propTypes = propTypes;
-RenderDate.defaultProps = defaultProps;
+RenderTime.propTypes = propTypes;
+RenderTime.defaultProps = defaultProps;
 
-export default RenderDate;
+export default RenderTime;

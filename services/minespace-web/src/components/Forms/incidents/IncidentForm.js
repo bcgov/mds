@@ -15,6 +15,8 @@ import {
   phoneNumber,
   number,
   dateNotInFuture,
+  dateNotBeforeStrictOther,
+  timeNotBeforeOther,
   wholeNumber,
   requiredRadioButton,
 } from "@common/utils/Validate";
@@ -446,7 +448,11 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.DATE}
                 disabled={formDisabled}
                 placeholder="Please select date"
-                validate={[required, dateNotInFuture]}
+                validate={[
+                  required,
+                  dateNotInFuture,
+                  dateNotBeforeStrictOther(props.formValues.incident_date),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -458,7 +464,14 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.TIME}
                 disabled={formDisabled}
                 placeholder="Please select time"
-                validate={[required]}
+                validate={[
+                  required,
+                  timeNotBeforeOther(
+                    props.formValues.reported_to_inspector_contact_date,
+                    props.formValues.incident_date,
+                    props.formValues.incident_time
+                  ),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -513,7 +526,11 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.DATE}
                 disabled={formDisabled}
                 placeholder="Please select date"
-                validate={[required, dateNotInFuture]}
+                validate={[
+                  required,
+                  dateNotInFuture,
+                  dateNotBeforeStrictOther(props.formValues.incident_date),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -525,7 +542,14 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.TIME}
                 disabled={formDisabled}
                 placeholder="Please select time"
-                validate={[required]}
+                validate={[
+                  required,
+                  timeNotBeforeOther(
+                    props.formValues.johsc_worker_rep_contact_date,
+                    props.formValues.incident_date,
+                    props.formValues.incident_time
+                  ),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -580,7 +604,11 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.DATE}
                 disabled={formDisabled}
                 placeholder="Please select date"
-                validate={[required, dateNotInFuture]}
+                validate={[
+                  required,
+                  dateNotInFuture,
+                  dateNotBeforeStrictOther(props.formValues.incident_date),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -592,7 +620,14 @@ const renderIncidentDetails = (props, formDisabled) => {
                 component={renderConfig.TIME}
                 disabled={formDisabled}
                 placeholder="Please select time"
-                validate={[required]}
+                validate={[
+                  required,
+                  timeNotBeforeOther(
+                    props.formValues.johsc_management_rep_contact_date,
+                    props.formValues.incident_date,
+                    props.formValues.incident_time
+                  ),
+                ]}
               />
             </Form.Item>
           </Col>
