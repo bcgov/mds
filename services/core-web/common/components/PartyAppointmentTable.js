@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Row, Table, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Field, FieldArray, change } from "redux-form";
@@ -6,14 +6,16 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
   updatePartyRelationship,
+  fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
-import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@common/constants/strings";
+import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
   updatePartyRelationship: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
 };
 
@@ -22,20 +24,43 @@ const defaultProps = {
 };
 
 const PartyAppointmentTable = (props) => {
-  const { columns } = props;
+  const { columns, formValues } = props;
 
-  const { renderConfig, isCore, tsfFormName } = useContext(TailingsContext);
+  const { renderConfig, isCore, tsfFormName, mineGuid, tsfGuid } = useContext(TailingsContext);
+
+  const [loadingField, setLoadingField] = useState({});
 
   const ministryAcknowledgedColumns = Object.entries(MINISTRY_ACKNOWLEDGED_STATUS).map(([value, label]) => ({value, label}));
   const statusColumns = Object.entries(PARTY_APPOINTMENT_STATUS).map(([value, label]) => ({value, label}));
 
   const partyAppointmentChanged = async (rowName, mine_party_appt_guid, key, value) => {
-    props.updatePartyRelationship({
-      mine_party_appt_guid,
-      [key]: value
+    const formPropName = `${rowName}.${key}`;
+
+    setLoadingField({
+      ...loadingField,
+      [formPropName]: true
     });
 
-    props.change(tsfFormName, `${rowName}.${key}`, value);
+    props.change(tsfFormName, formPropName, value);
+
+    try {
+      await props.updatePartyRelationship({
+        mine_party_appt_guid,
+        [key]: value
+      });
+
+      await props.fetchPartyRelationships({
+        mine_guid: mineGuid,
+        relationships: "party",
+        include_permit_contacts: "true",
+        mine_tailings_storage_facility_guid: tsfGuid,
+      });
+    } finally {
+      setLoadingField({
+        ...loadingField,
+        [formPropName]: undefined
+      });
+    }
   };
 
   const columnDefinitions = [
@@ -47,19 +72,20 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Status",
       dataIndex: "status",
-      render: (text, record) => {
+      render: (status, record) => {
         if(isCore) {
           return <Field
             id={`${record.rowName}.status`}
             name={`${record.rowName}.status`}
             component={renderConfig.SELECT}
             data={statusColumns}
+            loading={loadingField[`${record.rowName}.status`]}
             onChange={(val) => partyAppointmentChanged(record.rowName, record.key, 'status', val)}
           />
 
         } 
         
-        return <div title="status">{text}</div>
+        return <div title="status">{PARTY_APPOINTMENT_STATUS[status]}</div>
       },
     },
     {
@@ -93,6 +119,7 @@ const PartyAppointmentTable = (props) => {
           name={`${record.rowName}.mine_party_acknowledgement_status`}
           component={renderConfig.SELECT}
           data={ministryAcknowledgedColumns}
+          loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
           onChange={(val) => partyAppointmentChanged(record.rowName, record.key, 'mine_party_acknowledgement_status', val)}
         />
       ),
@@ -122,7 +149,7 @@ const PartyAppointmentTable = (props) => {
         startDate: r.start_date || "Unknown",
         endDate,
         letters: r.documents || [],
-        status: ind === 0 ? "Active" : "Inactive",
+        status: r.status,
         ministryAcknowledged: r.mine_party_acknowledgement_status,
       };
     });
@@ -164,6 +191,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       updatePartyRelationship,
+      fetchPartyRelationships,
       change,
     },
     dispatch

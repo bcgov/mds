@@ -269,14 +269,3 @@ export const DAM_OPERATING_STATUS_HASH = {
   closure_active_care: "Closure - Active Care",
   closure_passive_care: "Closure - Passive Care",
 };
-
-export const MINISTRY_ACKNOWLEDGED_STATUS = {
-  not_acknowledged: "Not acknowledged",
-  acknowledged: "Acknowledged",
-};
-
-export const PARTY_APPOINTMENT_STATUS = {
-  pending: "Pending",
-  active: "Active",
-  inactive: "Inactive",
-};

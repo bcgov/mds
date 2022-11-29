@@ -80,12 +80,6 @@ export const TailingsSummaryPage = (props) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
 
-    await props.fetchPartyRelationships({
-      mine_guid: mineGuid,
-      relationships: "party",
-      include_permit_contacts: "true",
-    });
-
     if (tsfGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
         const mine = await props.fetchMineRecordById(mineGuid);
@@ -93,15 +87,27 @@ export const TailingsSummaryPage = (props) => {
           (tsf) => tsf.mine_tailings_storage_facility_guid === tsfGuid
         );
 
-        props.storeTsf(existingTsf);
+        props.storeTsf({
+          ...existingTsf,
+        });
       }
+
+      await props.fetchPartyRelationships({
+        mine_guid: mineGuid,
+        relationships: "party",
+        include_permit_contacts: "true",
+        mine_tailings_storage_facility_guid: tsfGuid,
+      });
     }
+
     setIsLoaded(true);
     setIsReloading(false);
   };
 
   useEffect(() => {
-    handleFetchData(true);
+    if (mineGuid && tsfGuid) {
+      handleFetchData(true);
+    }
   }, [mineGuid, tsfGuid]);
 
   const handleAddDocuments = async (minePartyApptGuid) => {

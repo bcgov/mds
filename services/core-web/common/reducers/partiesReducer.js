@@ -47,8 +47,24 @@ export const partiesReducer = (state = initialState, action) => {
           value: p.party_guid,
           label: p.party.name,
         }));
+
+      const {tsf} = state;
+      
+      if(state.tsf) {
+        const eorRecords = action.payload.filter(p => p.mine_party_appt_type_code === 'EOR' && p.related_guid === tsf.mine_tailings_storage_facility_guid);
+        const qfpRecords = action.payload.filter(p => p.mine_party_appt_type_code === 'QFP' && p.related_guid === tsf.mine_tailings_storage_facility_guid);
+
+        if(eorRecords?.length) {
+          tsf.engineers_of_record = eorRecords;
+        }
+        if(qfpRecords?.length) {
+          tsf.qualified_persons = qfpRecords;
+        }
+      }
+
       return {
         ...state,
+        tsf,
         partyRelationships: action.payload,
         engineersOfRecordOptions: uniqBy(eors, "value"),
       };

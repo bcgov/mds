@@ -221,13 +221,14 @@ class MinePartyApptResource(Resource, UserMixin):
 
         for key, value in data.items():
             print(key, value)
+            # import pdb; pdb.set_trace()
             if key in ['party_guid', 'mine_guid']:
                 continue
             elif key == 'related_guid':
                 related_guid = data.get('related_guid', None)
                 mpa.assign_related_guid(mpa.mine_party_appt_type_code, related_guid)
             
-            elif key == 'mine_party_acknowledgement_status' and value == 'acknowledged' and mpa.mine_party_acknowledgement_status != 'active':
+            elif key == 'mine_party_acknowledgement_status' and value == MinePartyAcknowledgedStatus.acknowledged and mpa.status != MinePartyAppointmentStatus.active:
                 mpa.set_active()
                 setattr(mpa, key, value)
             else:
