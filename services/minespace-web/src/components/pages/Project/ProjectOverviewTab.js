@@ -18,13 +18,10 @@ import {
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
-import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
 
 const propTypes = {
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   EMLIcontactInfo: PropTypes.arrayOf(CustomPropTypes.EMLIContactInfo).isRequired,
   project: CustomPropTypes.project.isRequired,
@@ -112,13 +109,6 @@ export class ProjectOverviewTab extends Component {
           this.props.navigateForward("MMA", this.props.majorMinesApplication?.status_code),
       },
     ];
-    const documentColumns = [
-      categoryColumn(
-        "project_summary_document_type_code",
-        this.props.projectSummaryDocumentTypesHash
-      ),
-      uploadDateColumn("upload_date"),
-    ];
 
     // TODO: Add in ToC here
     // if (!IN_PROD()) {
@@ -180,12 +170,6 @@ export class ProjectOverviewTab extends Component {
           </Row>
           <Typography.Title level={4}>Project Stages</Typography.Title>
           <ProjectStagesTable projectStages={projectStages} />
-          <Typography.Title level={4}>Project Documents</Typography.Title>
-          <DocumentTable
-            documents={this.props.projectSummary.documents}
-            documentParent="project summary"
-            documentColumns={documentColumns}
-          />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row gutter={[0, 16]}>

@@ -168,27 +168,6 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
     />
     <br />
-    <Title
-      level={4}
-    >
-      Project Documents
-    </Title>
-    <DocumentTable
-      additionalColumnProps={Array []}
-      categoryDataIndex="project_summary_document_type_code"
-      documentCategoryOptionsHash={
-        Object {
-          "GEN": "General",
-        }
-      }
-      documentColumns={null}
-      documentParent="project summary"
-      documents={Array []}
-      excludedColumnKeys={Array []}
-      isViewOnly={true}
-      removeDocument={[Function]}
-      uploadDateIndex="upload_date"
-    />
   </Col>
   <Col
     lg={
