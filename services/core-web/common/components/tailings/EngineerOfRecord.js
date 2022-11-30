@@ -4,6 +4,7 @@ import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "a
 import { Field, change, getFormValues } from "redux-form";
 import React, { useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import { PARTY_APPOINTMENT_STATUS } from "@mds/common";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
 import { PlusCircleFilled } from "@ant-design/icons";
@@ -69,6 +70,7 @@ export const EngineerOfRecord = (props) => {
     showUpdateTimestamp,
     canAssignEor,
     eorHistoryColumns,
+    isCore,
   } = useContext(TailingsContext);
 
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
@@ -171,6 +173,8 @@ export const EngineerOfRecord = (props) => {
 
   const fieldsDisabled = !canEditEOR || loading;
 
+  const hasPendingEOR = formValues?.engineers_of_record?.some(eor => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending)
+
   return (
     <>
       <Row>
@@ -221,10 +225,19 @@ export const EngineerOfRecord = (props) => {
               />
             ))}
 
-          {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 30 && (
+          {hasPendingEOR  && isCore && (
             <Alert
-              message="Engineer of Record will Expire within 30 Days"
-              description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+              description="An Engineer of Record for this facility is awaiting Ministry acknowledgment below. Please contact the mine directly for any issues."
+              showIcon
+              type="warning"
+            />
+          
+          )}
+
+          {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 60 && (
+            <Alert
+              message="Engineer of Record will Expire within 60 Days"
+              description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
               showIcon
               type="warning"
             />
@@ -233,11 +246,12 @@ export const EngineerOfRecord = (props) => {
           {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
             <Alert
               message="No Engineer of Record"
-              description="To be in compliance, you must have a current, Ministry-approved Engineer of Record on file."
+              description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
               showIcon
               type="error"
             />
           )}
+
 
           <Typography.Title level={4} className="margin-large--top">
             Contact Information

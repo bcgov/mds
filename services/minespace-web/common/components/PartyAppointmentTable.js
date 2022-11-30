@@ -150,14 +150,6 @@ const PartyAppointmentTable = (props) => {
     });
   };
 
-  // const sortedRelationships = props.partyRelationships.sort((a, b) => {
-  //   return moment(a.start_date || "1970-01-01", "YYYY-MM-DD").isAfter(
-  //     moment(b.start_date || "1970-01-01", "YYYY-MM-DD")
-  //   )
-  //     ? -1
-  //     : 1;
-  // });
-
   return (
     <Row>
       <Col span={24}>

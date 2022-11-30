@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Row, Table, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Field, FieldArray, change } from "redux-form";
@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 const PartyAppointmentTable = (props) => {
-  const { columns, formValues } = props;
+  const { columns } = props;
 
   const { renderConfig, isCore, tsfFormName, mineGuid, tsfGuid } = useContext(TailingsContext);
 
@@ -47,7 +47,7 @@ const PartyAppointmentTable = (props) => {
       await props.updatePartyRelationship({
         mine_party_appt_guid,
         [key]: value
-      });
+      }, 'Successfully updated Engineer of Record');
 
       await props.fetchPartyRelationships({
         mine_guid: mineGuid,
@@ -155,14 +155,6 @@ const PartyAppointmentTable = (props) => {
     });
   }
 
-  // const sortedRelationships = props.partyRelationships.sort((a, b) => {
-  //   return moment(a.start_date || "1970-01-01", "YYYY-MM-DD").isAfter(
-  //     moment(b.start_date || "1970-01-01", "YYYY-MM-DD")
-  //   )
-  //     ? -1
-  //     : 1;
-  // });
-
   return (
     <Row>
       <Col span={24}>
@@ -186,6 +178,9 @@ const PartyAppointmentTable = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  tsf: state.tsf
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -200,4 +195,4 @@ const mapDispatchToProps = (dispatch) =>
 PartyAppointmentTable.propTypes = propTypes;
 PartyAppointmentTable.defaultProps = defaultProps;
 
-export default connect(null, mapDispatchToProps)(PartyAppointmentTable);
+export default connect(mapStateToProps, mapDispatchToProps)(PartyAppointmentTable);

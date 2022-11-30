@@ -105,7 +105,7 @@ export const addPartyRelationship = (payload, successMessage = null) => (dispatc
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePartyRelationship = (payload) => (dispatch) => {
+export const updatePartyRelationship = (payload, successMessage = null) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -116,7 +116,7 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     )
     .then((response) => {
       notification.success({
-        message: `Successfully updated contact information`,
+        message: successMessage || `Successfully updated contact information`,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
