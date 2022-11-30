@@ -153,8 +153,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
             project_summary.save()
             if project_summary.status_code == 'SUB':
                 if is_minespace_user():
-                    project_summary.send_project_summary_email_to_ministry(mine)
-                    project_summary.send_project_summary_email_to_proponent(mine)
+                    project_summary.send_project_summary_email(mine)
                 # Trigger notification for newly submitted Project Summary
                 message = f'A Major Mine Description called ({new_project.project_title}) has been submitted for ({new_project.mine_name})'
                 extra_data = {'project': {'project_guid': str(new_project.project_guid)}}

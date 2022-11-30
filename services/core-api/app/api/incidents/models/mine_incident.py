@@ -301,7 +301,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         }
 
         EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
-        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc, send_to_proponent=True)
+        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
 
     def send_awaiting_final_report_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
