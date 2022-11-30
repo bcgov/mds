@@ -36,13 +36,11 @@ const defaultProps = {
 };
 
 export const QualifiedPerson = (props) => {
-  console.log(props);
   const { isCore, mineGuid, partyRelationships } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
-
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
-
   const [currentQp, setCurrentQp] = useState(null);
+
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
     props.change(tsfFormName, "qualified_person.party", value);
@@ -69,7 +67,6 @@ export const QualifiedPerson = (props) => {
       .startOf("day")
       .diff(moment().startOf("day"), "days");
 
-  console.log("days to qp expiry: ", daysToQPExpiry);
   const openCreateQPModal = (event) => {
     event.preventDefault();
     props.openModal({
