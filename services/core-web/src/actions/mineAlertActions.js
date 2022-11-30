@@ -9,3 +9,6 @@ export const storeMineAlerts = (payload) => ({
   export const clearMineAlert = () => ({
     type: ActionTypes.CLEAR_MINE_ALERT,
   });
+  
+
+  
