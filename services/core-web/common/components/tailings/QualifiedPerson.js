@@ -2,13 +2,13 @@ import * as PropTypes from "prop-types";
 
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { Field, change, getFormValues } from "redux-form";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 
 import { PlusCircleFilled } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   required,
   dateNotInFuture,
@@ -36,9 +36,13 @@ const defaultProps = {
 };
 
 export const QualifiedPerson = (props) => {
-  const { isCore, mineGuid } = props;
+  console.log(props);
+  const { isCore, mineGuid, partyRelationships } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
 
+  const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
+
+  const [currentQp, setCurrentQp] = useState(null);
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
     props.change(tsfFormName, "qualified_person.party", value);
@@ -48,6 +52,24 @@ export const QualifiedPerson = (props) => {
     props.closeModal();
   };
 
+  useEffect(() => {
+    if (partyRelationships.length > 0) {
+      const activeQp = partyRelationships.find(
+        (qp) => qp.mine_party_appt_guid === formValues?.qualified_person?.mine_party_appt_guid
+      );
+      if (activeQp) {
+        setCurrentQp(activeQp);
+      }
+    }
+  }, [partyRelationships]);
+
+  const daysToQPExpiry =
+    currentQp?.end_date &&
+    moment(currentQp?.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
+
+  console.log("days to qp expiry: ", daysToQPExpiry);
   const openCreateQPModal = (event) => {
     event.preventDefault();
     props.openModal({
@@ -163,6 +185,14 @@ export const QualifiedPerson = (props) => {
             description="There's no Qualified Person (EOR) on file for this facility. Click above to assign a new QP."
             showIcon
             type="info"
+          />
+        )}
+        {daysToQPExpiry && daysToQPExpiry < 0 && (
+          <Alert
+            message="The Qualified Person's term has expired."
+            description=""
+            showIcon
+            type="error"
           />
         )}
         <Typography.Title level={4} className="margin-large--top">
