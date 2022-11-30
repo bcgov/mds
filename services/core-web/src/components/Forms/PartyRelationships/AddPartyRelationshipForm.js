@@ -19,6 +19,7 @@ import CustomPropTypes from "@/customPropTypes";
 import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 
 const propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   onFileLoad: PropTypes.func.isRequired,
@@ -209,12 +210,15 @@ export class AddPartyRelationshipForm extends Component {
         break;
     }
 
-    const handleSubmit = (event, val) => {
-      event.preventDefault();
+    const handleSubmit = (evt) => {
       if(this.props.createPartyOnly) {
+        // Override redux-form submit to allow submitting the selected party
+        // instead of the form values
+        evt.preventDefault();
         this.props.onSubmit(this.state.selectedParty);
       } else {
-        this.props.onSubmit(val);
+        // Let redux-form handle submission
+        this.props.handleSubmit(evt);
       }
     }
 
@@ -269,7 +273,7 @@ export class AddPartyRelationshipForm extends Component {
                   id="end_current"
                   name="end_current"
                   label={`Would you like to set the end date of ${
-                    this.state.currentAppointment.party.name
+                    this.state.currentAppointment?.party?.name
                   } to ${moment(this.props.start_date)
                     .subtract(1, "days")
                     .format("MMMM Do YYYY")}`}
