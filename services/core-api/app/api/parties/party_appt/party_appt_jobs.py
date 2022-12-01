@@ -1,19 +1,23 @@
 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from app.api.activity.models.activity_notification import ActivityType
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db
-
+from app.tasks.celery import celery
 
 class PartyAppointmentJobs():
+    @celery.task(name='party_appt.notify_expiring_party_appointments')
     def notify_expiring_party_appointments(self):
         expiring_parties = MinePartyAppointment.find_expiring_appointments('EOR', 60)
         message = lambda party: f'60 days notice Engineer of Record expiry for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
-        return list(self._notify_party_appointments(expiring_parties, message, ActivityType.eor_expiring_60_days))
+        notifications = list(self._notify_party_appointments(expiring_parties, message, ActivityType.eor_expiring_60_days))
+        db.session.commit()
 
+        return notifications
 
+    @celery.task(name='party_appt.notify_and_update_expired_party_appointments')
     def notify_and_update_expired_party_appointments(self):
         expired_parties = MinePartyAppointment.find_expired_appointments('EOR')
 
@@ -39,7 +43,7 @@ class PartyAppointmentJobs():
         for party in parties:
             idempotency_key = f'{activity_type}_{party.mine_party_appt_guid}_{party.end_date.strftime("%Y-%m-%d")}'
 
-            nots = trigger_notifcation(message(party), activity_type, party.mine, 'EngineerOfRecord', party.mine_party_appt_guid,
+            nots = trigger_notification(message(party), activity_type, party.mine, 'EngineerOfRecord', party.mine_party_appt_guid,
                 {
                     'mine_tailings_storage_facility': {
                         'mine_tailings_storage_facility_guid': str(party.mine_tailings_storage_facility_guid),

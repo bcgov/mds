@@ -5,11 +5,12 @@ from flask import request
 from app.extensions import api
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_INFORMATION_REQUIREMENTS_TABLE
 from app.api.utils.resources_mixins import UserMixin
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 
 from app.api.projects.response_models import IRT_MODEL
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
+from app.api.activity.models.activity_notification import ActivityType
 
 
 class InformationRequirementsTableResource(Resource, UserMixin):
@@ -62,7 +63,7 @@ class InformationRequirementsTableResource(Resource, UserMixin):
                 # Trigger notification for newly submitted IRT
                 message = f'An Information Requirements Table for ({irt.project.project_title}) has been submitted for ({irt.project.mine_name})'
                 extra_data = {'project': {'project_guid': str(irt.project.project_guid)}}
-                trigger_notifcation(message, irt.project.mine, 'InformationRequirementsTable', irt.irt_guid, extra_data)
+                trigger_notification(message, ActivityType.ir_table_submitted, irt.project.mine, 'InformationRequirementsTable', irt.irt_guid, extra_data)
 
             return irt_updated
         except BadRequest as err:

@@ -1,7 +1,8 @@
+from app.api.activity.models.activity_notification import ActivityType
 from flask_restplus import Resource, reqparse, inputs
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 from app.api.utils.access_decorators import (requires_any_of, EDIT_DO, MINESPACE_PROPONENT)
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodStatus, NodType
 from app.api.notice_of_departure.dto import NOD_MODEL, UPDATE_NOD_MODEL
@@ -82,7 +83,7 @@ class NoticeOfDepartureResource(Resource, UserMixin):
             }
 
             message = "Notice Of Departure %s status changed from %s to %s" % (update_nod.nod_no, old_status.display_name(), update_nod.nod_status.display_name())
-            trigger_notifcation(message, update_nod.mine, 'NoticeOfDeparture', update_nod.nod_guid, extra_notification_data)
+            trigger_notification(message, ActivityType.nod_status_changed, update_nod.mine, 'NoticeOfDeparture', update_nod.nod_guid, extra_notification_data)
 
         return update_nod
 

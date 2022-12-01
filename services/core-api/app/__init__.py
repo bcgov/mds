@@ -2,12 +2,13 @@ import datetime
 import requests
 import os
 from logging.config import dictConfig
-from flask import Flask, request
+from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_oidc.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
+import traceback
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -37,6 +38,7 @@ from app.config import Config
 from app.extensions import db, jwt, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
+from app.tasks.celery import celery
 
 
 def create_app(test_config=None):
@@ -56,8 +58,38 @@ def create_app(test_config=None):
     register_routes(app)
     register_commands(app)
 
+    make_celery(app)
+
     return app
 
+def make_celery(app):    
+    TaskBase = celery.Task
+    class ContextTask(TaskBase):
+        """
+        Make celery aware of the flask application context
+        to enable functionality that requires the application context within tasks
+        (e.g. Datbase calls etc.)
+        """
+        abstract = True
+        track_started = True
+
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+
+    celery.Task = ContextTask
+
+    celery.conf.update(
+        result_backend = Config.CELERY_RESULT_BACKEND,
+        broker_url = Config.CELERY_BROKER_URL,
+         # Set default queue to put tasks in
+        task_default_queue = Config.CELERY_DEFAULT_QUEUE,
+        # Register beat schedule (for triggering scheduled tasks)
+        beat_schedule = Config.CELERY_BEAT_SCHEDULE,
+        # scheduler = 'redbeat.RedBeatScheduler'
+    )
+
+    return celery
 
 def register_extensions(app):
 
@@ -236,6 +268,7 @@ def register_routes(app):
     def sqlalchemy_error_handler(error):
         app.logger.error(str(error))
         app.logger.error(type(error))
+        app.logger.error(traceback.format_exc())
         return {
             'status': getattr(error, 'status_code', 400),
             'message': str(error),
