@@ -24,13 +24,17 @@ import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { getEngineersOfRecordOptions } from "@common/reducers/partiesReducer";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
 import EngineerOfRecord from "@common/components/tailings/EngineerOfRecord";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import QualifiedPerson from "@common/components/tailings/QualifiedPerson";
 import AssociatedDams from "@common/components/tailings/AssociatedDams";
+import {
+  getEngineersOfRecord,
+  getQualifiedPersons,
+  getEngineersOfRecordOptions,
+} from "@common/selectors/partiesSelectors";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 
@@ -80,12 +84,6 @@ export const TailingsSummaryPage = (props) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
 
-    await props.fetchPartyRelationships({
-      mine_guid: mineGuid,
-      relationships: "party",
-      include_permit_contacts: "true",
-    });
-
     if (tsfGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
         const mine = await props.fetchMineRecordById(mineGuid);
@@ -95,6 +93,13 @@ export const TailingsSummaryPage = (props) => {
 
         props.storeTsf(existingTsf);
       }
+
+      await props.fetchPartyRelationships({
+        mine_guid: mineGuid,
+        relationships: "party",
+        include_permit_contacts: "true",
+        mine_tailings_storage_facility_guid: tsfGuid,
+      });
     }
     setIsLoaded(true);
     setIsReloading(false);
@@ -275,17 +280,25 @@ export const TailingsSummaryPage = (props) => {
   );
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  anyTouched: state.form[ownProps.form]?.anyTouched || false,
-  isDirty: isDirty(ownProps.form)(state),
-  fieldsTouched: state.form[ownProps.form]?.fields || {},
-  mines: getMines(state),
-  formErrors: getFormSyncErrors(ownProps.form)(state),
-  formValues: getFormValues(ownProps.form)(state),
-  initialValues: getTsf(state),
-  eors: getEngineersOfRecordOptions(state),
-  form: ownProps.form,
-});
+const mapStateToProps = (state, ownProps) => {
+  const tsf = getTsf(state);
+
+  return {
+    anyTouched: state.form[ownProps.form]?.anyTouched || false,
+    isDirty: isDirty(ownProps.form)(state),
+    fieldsTouched: state.form[ownProps.form]?.fields || {},
+    mines: getMines(state),
+    formErrors: getFormSyncErrors(ownProps.form)(state),
+    formValues: getFormValues(ownProps.form)(state),
+    initialValues: {
+      ...tsf,
+      engineers_of_record: getEngineersOfRecord(state),
+      qualified_persons: getQualifiedPersons(state),
+    },
+    eors: getEngineersOfRecordOptions(state),
+    form: ownProps.form,
+  };
+};
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(

@@ -1,3 +1,4 @@
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.extensions import api
 from flask_restplus import fields
 
@@ -45,7 +46,10 @@ MINE_PARTY_APPT = api.model(
         'start_date': fields.Date,
         'end_date': fields.Date,
         'documents': fields.Nested(MINE_DOCUMENT),
-        'union_rep_company': fields.String
+        'union_rep_company': fields.String,
+        'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'mine_party_acknowledgement_status': fields.String(
+            enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
     })
 
 NOW_APPLICATION_MODEL = api.model('NOWApplication', {

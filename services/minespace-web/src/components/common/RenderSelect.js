@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -20,6 +21,7 @@ const propTypes = {
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
   usedOptions: PropTypes.arrayOf(PropTypes.string),
+  loading: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -30,6 +32,7 @@ const defaultProps = {
   meta: {},
   onSelect: () => {},
   usedOptions: [],
+  loading: false,
 };
 
 const RenderSelect = (props) => {
@@ -68,6 +71,7 @@ const RenderSelect = (props) => {
         value={props.input.value ? props.input.value : null}
         onChange={props.input.onChange}
         onSelect={props.onSelect}
+        suffixIcon={props.loading ? <LoadingOutlined /> : undefined}
       >
         {props.data.map((opt) => (
           <Select.Option

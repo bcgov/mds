@@ -2,6 +2,7 @@ from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.api.parties.response_models import PARTY
 from app.extensions import api
 
@@ -303,7 +304,10 @@ MINE_PARTY_APPT_PARTY = api.model(
         'mine_party_appt_type_code': fields.String,
         'start_date': fields.Date,
         'end_date': fields.Date,
-        'party': fields.Nested(PARTY)
+        'party': fields.Nested(PARTY),
+        'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'mine_party_acknowledgement_status': fields.String(
+            enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
     })
 
 MINE_TSF_MODEL = api.model(
