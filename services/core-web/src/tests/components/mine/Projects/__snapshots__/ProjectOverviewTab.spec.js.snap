@@ -133,6 +133,29 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "title": "Project description",
           },
           Object {
+            "key": "ps-undefined",
+            "link": <ForwardRef
+              to="/pre-applications/undefined/final-app"
+            >
+              <ForwardRef(InternalButton)
+                block={false}
+                className="full-mobile margin-small"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="secondary"
+              >
+                View
+              </ForwardRef(InternalButton)>
+            </ForwardRef>,
+            "payload": Object {
+              "documents": Array [],
+            },
+            "status": undefined,
+            "statusHash": undefined,
+            "title": "Final Application",
+          },
+          Object {
             "isOptional": true,
             "isTitle": true,
             "key": "opt-stages-id",
@@ -168,27 +191,6 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
     />
     <br />
-    <Title
-      level={4}
-    >
-      Project Documents
-    </Title>
-    <DocumentTable
-      additionalColumnProps={Array []}
-      categoryDataIndex="project_summary_document_type_code"
-      documentCategoryOptionsHash={
-        Object {
-          "GEN": "General",
-        }
-      }
-      documentColumns={null}
-      documentParent="project summary"
-      documents={Array []}
-      excludedColumnKeys={Array []}
-      isViewOnly={true}
-      removeDocument={[Function]}
-      uploadDateIndex="upload_date"
-    />
   </Col>
   <Col
     lg={

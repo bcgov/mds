@@ -74,7 +74,7 @@ export class Incidents extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          status_code: "IRS",
+          status_code: "WNS",
           determination_type_code: "PEN",
         },
         onSubmit: this.handleCreateIncident,

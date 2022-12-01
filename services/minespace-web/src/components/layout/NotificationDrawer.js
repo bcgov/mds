@@ -13,7 +13,14 @@ import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { storeActivities } from "@common/actions/activityActions";
 import { useHistory } from "react-router-dom";
-import { MINE_DASHBOARD, EDIT_MINE_INCIDENT } from "@/constants/routes";
+import {
+  MINE_DASHBOARD,
+  EDIT_MINE_INCIDENT,
+  EDIT_PROJECT_SUMMARY,
+  REVIEW_INFORMATION_REQUIREMENTS_TABLE,
+  REVIEW_MAJOR_MINE_APPLICATION,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+} from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -91,18 +98,66 @@ const NotificationDrawer = (props) => {
   const navigationHandler = (notification) => {
     switch (notification.notification_document.metadata.entity) {
       case "NoticeOfDeparture":
-        return MINE_DASHBOARD.dynamicRoute(
-          notification.notification_document.metadata.mine.mine_guid,
-          "nods",
-          {
-            nod: notification.notification_document.metadata.entity_guid,
-          }
-        );
+        return {
+          route: MINE_DASHBOARD.dynamicRoute(
+            notification.notification_document.metadata.mine.mine_guid,
+            "nods",
+            {
+              nod: notification.notification_document.metadata.entity_guid,
+            }
+          ),
+          state: {},
+        };
       case "MineIncident":
-        return EDIT_MINE_INCIDENT.dynamicRoute(
-          notification.notification_document.metadata.mine.mine_guid,
-          notification.notification_document.metadata.entity_guid
-        );
+        return {
+          route: EDIT_MINE_INCIDENT.dynamicRoute(
+            notification.notification_document.metadata.mine.mine_guid,
+            notification.notification_document.metadata.entity_guid
+          ),
+          state: {},
+        };
+      case "ProjectSummary":
+        return {
+          route: EDIT_PROJECT_SUMMARY.dynamicRoute(
+            notification.notification_document.metadata.project.project_guid,
+            notification.notification_document.metadata.entity_guid
+          ),
+          state: {},
+        };
+      case "InformationRequirementsTable":
+        return {
+          route: REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+            notification.notification_document.metadata.project.project_guid,
+            notification.notification_document.metadata.entity_guid
+          ),
+          state: { current: 2 },
+        };
+      case "MajorMineApplication":
+        return {
+          route: REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
+            notification.notification_document.metadata.project.project_guid,
+            notification.notification_document.metadata.entity_guid
+          ),
+          state: { current: 2 },
+        };
+      case "EngineerOfRecord":
+        return {
+          route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine.mine_guid,
+            "engineer-of-record"
+          ),
+          state: {},
+        };
+      case "QualifiedPerson":
+        return {
+          route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine.mine_guid,
+            "qualified-person"
+          ),
+          state: {},
+        };
       default:
         return null;
     }
@@ -111,7 +166,8 @@ const NotificationDrawer = (props) => {
   const activityClickHandler = async (notification) => {
     await handleMarkAsRead(notification.notification_guid);
     handleCollapse();
-    const route = await navigationHandler(notification);
+    const routeSpecifics = await navigationHandler(notification);
+    const route = { pathname: routeSpecifics?.route, state: { ...(routeSpecifics?.state ?? {}) } };
     history.push(route);
   };
 

@@ -5,7 +5,7 @@ from enum import Enum
 from flask import current_app
 
 from app.config import Config
-from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED
+from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED, BC_GOV_LOGO_BASE64_ENCODED
 
 
 class EmailBodyType(Enum):
@@ -176,6 +176,92 @@ class EmailService():
             'priority': priority,
             'tag': tag
         }
+        resp = requests.post(url, json.dumps(data), headers=headers)
+        try:
+            resp_data = resp.json()
+        except ValueError:
+            resp_data = None
+
+        if resp.status_code != requests.codes.created:
+            message = f'Common Services email request returned {resp.status_code}.'
+            if resp_data:
+                message += f'\nError: {resp_data.get("title")}\nDescription: {resp_data.get("detail")}'
+                current_app.logger.debug(resp_data)
+            current_app.logger.error(message)
+            return
+
+        current_app.logger.debug(
+            f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}'
+        )
+
+    # NOTE: See here for details: https://ches.nrs.gov.bc.ca/api/v1/docs#tag/Email
+    @classmethod
+    def send_template_email(cls,
+                            subject,
+                            recipients,
+                            body,
+                            context,
+                            sender=Config.MDS_NO_REPLY_EMAIL,
+                            body_type=EmailBodyType.HTML.value,
+                            attachments=[],
+                            bcc=[],
+                            cc=[],
+                            delay=0,
+                            encoding=EmailEncoding.UTF8.value,
+                            priority=EmailPriority.NORMAL.value,
+                            tag=None):
+        '''Sends an email.'''
+
+        # Validate enum parameters.
+        if not body_type in EmailBodyType._value2member_map_:
+            raise Exception('Email body type is invalid')
+        if not encoding in EmailEncoding._value2member_map_:
+            raise Exception('Email encoding is invalid')
+        if not priority in EmailPriority._value2member_map_:
+            raise Exception('Email priority is invalid')
+
+        # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
+        if not Config.EMAIL_ENABLED:
+            current_app.logger.info('Not sending email: Emails are disabled.')
+            return
+        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE:
+            current_app.logger.info(
+                'Not sending email: Recipient override must be set when not in prod environment!')
+            return
+
+        if Config.EMAIL_RECIPIENT_OVERRIDE:
+            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+
+        EmailService.perform_health_check()
+
+        url = f'{Config.COMMON_SERVICES_EMAIL_HOST}/emailMerge'
+        auth_token = EmailService.get_auth_token()
+        headers = {'Authorization': f'Bearer {auth_token}', 'Content-Type': 'application/json'}
+        context['bc_gov_logo'] = BC_GOV_LOGO_BASE64_ENCODED
+        context['core_logo'] = CORE_PURPLE_LOGO_BASE64_ENCODED
+        context['minespace_logo'] = MINESPACE_LOGO_BASE64_ENCODED
+        contexts = [
+            {
+                "bcc": bcc,
+                "cc": cc,
+                "context": context,
+                'delayTS': delay,
+                'tag': tag,
+                'to': recipients,
+            }
+        ]
+
+        data = {
+            'subject': subject,
+            'from': sender,
+            'body': body,
+            'contexts': contexts,
+            'bodyType': body_type,
+            'attachments': attachments,
+            'encoding': encoding,
+            'priority': priority,
+        }
+
         resp = requests.post(url, json.dumps(data), headers=headers)
         try:
             resp_data = resp.json()

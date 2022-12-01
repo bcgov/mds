@@ -18,6 +18,8 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
+from app.api.activity.utils import trigger_notifcation
+from app.config import Config
 
 class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -117,8 +119,8 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise NotFound('TSF not found')
 
         if not can_edit_mines():
-            # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine 
-            if mine_party_appt_type_code not in  TSF_ALLOWED_CONTACT_TYPES:
+            # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine
+            if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
                 raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
 
             if not tsf or mine.mine_guid != tsf.mine_guid:
@@ -163,6 +165,13 @@ class MinePartyApptResource(Resource, UserMixin):
                 mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
                     data.get('mine_party_appt_type_code')).description
                 raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap')
+
+        if Config.ENVIRONMENT_NAME != 'prod':
+            # TODO: Remove this once TSF functionality is ready to go live
+            if mine_party_appt_type_code == "EOR":
+                trigger_notifcation(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
+            if mine_party_appt_type_code == "TQP":
+                trigger_notifcation(f'A new Qualified Person for {mine.mine_name} has been assigned.', mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
 
         return new_mpa.json()
 

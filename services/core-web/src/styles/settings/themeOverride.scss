@@ -236,7 +236,6 @@
 }
 
 .ant-popover {
-  position: fixed;
   width: 500px;
 }
 
@@ -435,6 +434,12 @@
       background-color: #F4F0F0 !important;
       color: black !important;
       top: 20px;
+     }
+  }
+  &.ant-alert-info-custom-core-color-icon{
+    .ant-alert-icon {
+      background-color: #FFFFFF !important;
+      color: $primary-color !important;
      }
   }
 }
@@ -675,10 +680,6 @@ select {
 
 .ant-select-multiple.ant-select-sm .ant-select-selection-search-input {
   margin-top: -12px;
-}
-
-.ant-select-dropdown {
-  z-index: 900;
 }
 
 // update HTML select component to look like the ant design select. This block of code changes the default icon

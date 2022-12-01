@@ -55,6 +55,15 @@ def validate_document(document):
                             'type': 'string'
                         }
                     }
+                },
+                'project': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'project_guid': {
+                            'type': 'string'
+                        }
+                    }
                 }
             }
         }

@@ -164,8 +164,8 @@ const MineTailingsTable = (props) => {
                   onClick={() =>
                     props.history.push(
                       MINE_TAILINGS_DETAILS.dynamicRoute(
+                        record.mine_tailings_storage_facility_guid,
                         record.mine_guid,
-                        record.mine_tailings_storage_facility_guid
                       )
                     )
                   }

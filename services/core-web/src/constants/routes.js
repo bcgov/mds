@@ -255,7 +255,7 @@ export const MINE_TAILINGS = {
 
 export const MINE_TAILINGS_DETAILS = {
   route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (mineGuid, tsfGuid, tab = "basic-information") =>
+  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information") =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
   component: MineTailingsDetailsPage,
 };
@@ -472,16 +472,17 @@ export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
   `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;
 
 export const ADD_DAM = {
-  route: "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
+  route:
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
-      `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
   component: DamsDetailsPage,
 };
 
-
 export const EDIT_DAM = {
-  route: "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
+  route:
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
-      `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
   component: DamsDetailsPage,
 };

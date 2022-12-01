@@ -1,3 +1,295 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TailingsSummaryPage renders properly 1`] = `<Loading />`;
+exports[`TailingsSummaryPage renders properly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "children": <UNDEFINED
+        TSFOperatingStatusCodeHash={Object {}}
+        clearTsf={[MockFunction]}
+        consequenceClassificationStatusCodeHash={Object {}}
+        fetchMineRecordById={[MockFunction]}
+        fetchPartyRelationships={[MockFunction]}
+        fetchPermits={[MockFunction]}
+        history={
+          Object {
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+        location={
+          Object {
+            "pathname": "",
+          }
+        }
+        match={
+          Object {
+            "params": Object {
+              "mineGuid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "tab": "basic-information",
+              "tailingsStorageFacilityGuid": "e2629897-053e-4218-9299-479375e47f78",
+            },
+          }
+        }
+        mines={
+          Object {
+            "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+              "major_mine_ind": true,
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_location": Object {
+                "latitude": null,
+                "longitude": null,
+              },
+              "mine_name": "mine3",
+              "mine_no": "BLAH9091",
+              "mine_permit_numbers": Array [],
+              "mine_region": "NE",
+              "mine_status": Object {
+                "effective_date": "2018-10-16",
+                "expiry_date": null,
+                "status_labels": Array [
+                  "Closed",
+                  "Care & Maintenance",
+                ],
+                "statusvalue": Array [
+                  "CLD",
+                  "CM",
+                ],
+              },
+              "mine_tailings_storage_facilities": Array [
+                Object {
+                  "consequence_classification_status_code": "LOW",
+                  "itrb_exemption_status_code": "YES",
+                  "latitude": null,
+                  "longitude": null,
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                  "mine_tailings_storage_facility_name": "MockTSF",
+                  "tsf_operating_status_code": "OPT",
+                },
+              ],
+              "mine_type": Array [
+                Object {
+                  "mine_tenure_type_code": "PLR",
+                  "mine_type_detail": Array [],
+                },
+                Object {
+                  "mine_tenure_type_code": "MIN",
+                  "mine_type_detail": Array [],
+                },
+              ],
+              "verified_status": Object {
+                "healthy_ind": null,
+                "mine_guid": null,
+                "mine_name": null,
+                "verifying_timestamp": null,
+                "verifying_user": null,
+              },
+            },
+            "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+              "major_mine_ind": true,
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_location": Object {
+                "latitude": null,
+                "longitude": null,
+              },
+              "mine_name": "mine2",
+              "mine_no": "BLAH9091",
+              "mine_permit_numbers": Array [
+                "KNaaWwVdiJ40",
+                "xfM0c0ZKEw7B",
+              ],
+              "mine_region": "NE",
+              "mine_status": Object {
+                "effective_date": "2018-10-16",
+                "expiry_date": null,
+                "status_labels": Array [
+                  "Closed",
+                  "Care & Maintenance",
+                ],
+                "statusvalue": Array [
+                  "CLD",
+                  "CM",
+                ],
+              },
+              "mine_tailings_storage_facilities": Array [
+                Object {
+                  "consequence_classification_status_code": "LOW",
+                  "itrb_exemption_status_code": "YES",
+                  "latitude": null,
+                  "longitude": null,
+                  "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+                  "mine_tailings_storage_facility_name": "MockTSF1",
+                  "tsf_operating_status_code": "OPT",
+                },
+              ],
+              "mine_type": Array [
+                Object {
+                  "mine_tenure_type_code": "PLR",
+                  "mine_type_detail": Array [],
+                },
+                Object {
+                  "mine_tenure_type_code": "MIN",
+                  "mine_type_detail": Array [],
+                },
+              ],
+              "verified_status": Object {
+                "healthy_ind": true,
+                "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "mine_name": "mine2",
+                "verifying_timestamp": null,
+                "verifying_user": null,
+              },
+            },
+          }
+        }
+        storeTsf={[MockFunction]}
+      />,
+    }
+  }
+>
+  <Connect(ReduxForm)
+    TSFOperatingStatusCodeHash={Object {}}
+    clearTsf={[MockFunction]}
+    consequenceClassificationStatusCodeHash={Object {}}
+    fetchMineRecordById={[MockFunction]}
+    fetchPartyRelationships={[MockFunction]}
+    fetchPermits={[MockFunction]}
+    history={
+      Object {
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+    location={
+      Object {
+        "pathname": "",
+      }
+    }
+    match={
+      Object {
+        "params": Object {
+          "mineGuid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "tab": "basic-information",
+          "tailingsStorageFacilityGuid": "e2629897-053e-4218-9299-479375e47f78",
+        },
+      }
+    }
+    mines={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "major_mine_ind": true,
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+          "mine_permit_numbers": Array [],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "consequence_classification_status_code": "LOW",
+              "itrb_exemption_status_code": "YES",
+              "latitude": null,
+              "longitude": null,
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "mine_tailings_storage_facility_name": "MockTSF",
+              "tsf_operating_status_code": "OPT",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+              "mine_type_detail": Array [],
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+              "mine_type_detail": Array [],
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "major_mine_ind": true,
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine2",
+          "mine_no": "BLAH9091",
+          "mine_permit_numbers": Array [
+            "KNaaWwVdiJ40",
+            "xfM0c0ZKEw7B",
+          ],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "consequence_classification_status_code": "LOW",
+              "itrb_exemption_status_code": "YES",
+              "latitude": null,
+              "longitude": null,
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+              "mine_tailings_storage_facility_name": "MockTSF1",
+              "tsf_operating_status_code": "OPT",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+              "mine_type_detail": Array [],
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+              "mine_type_detail": Array [],
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": true,
+            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_name": "mine2",
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
+        },
+      }
+    }
+    storeTsf={[MockFunction]}
+  />
+</ContextProvider>
+`;

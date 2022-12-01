@@ -19,6 +19,7 @@ exports[`RenderSelect renders properly 1`] = `
     dropdownStyle={
       Object {
         "position": "relative",
+        "zIndex": 100000,
       }
     }
     filterOption={[Function]}
@@ -37,6 +38,7 @@ exports[`RenderSelect renders properly 1`] = `
       style={
         Object {
           "position": "relative",
+          "zIndex": 10000,
         }
       }
     />
@@ -45,6 +47,7 @@ exports[`RenderSelect renders properly 1`] = `
       style={
         Object {
           "position": "relative",
+          "zIndex": 10000,
         }
       }
     />

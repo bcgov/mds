@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { QualifiedPerson } from "@/components/Forms/tailing/tailingsStorageFacility/QualifiedPerson";
+import { QualifiedPerson } from "@common/components/tailings/QualifiedPerson";
+import TailingsProvider from "@common/components/tailings/TailingsProvider";
 
 let dispatchProps = {};
 let props = {};
@@ -26,7 +27,11 @@ beforeEach(() => {
 
 describe("QualifiedPerson", () => {
   it("renders properly", () => {
-    const component = shallow(<QualifiedPerson {...dispatchProps} {...props} />);
+    const component = shallow(
+      <TailingsProvider>
+        <QualifiedPerson {...dispatchProps} {...props} />
+      </TailingsProvider>
+    );
     expect(component).toMatchSnapshot();
   });
 });

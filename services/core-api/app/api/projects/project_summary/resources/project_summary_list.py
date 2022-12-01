@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from werkzeug.exceptions import InternalServerError
+from app.api.activity.utils import trigger_notifcation
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
@@ -135,8 +136,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
                                      data.get('proponent_project_id'),
                                      data.get('mrc_review_required', False),
                                      data.get('contacts', []),
-                                     data.get('project_lead_party_guid',None))
-
+                                     data.get('project_lead_party_guid', None))
 
         submission_date = datetime.now(
             tz=timezone.utc) if data.get('status_code') == 'SUB' else None
@@ -151,10 +151,13 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
 
         try:
             project_summary.save()
-            if is_minespace_user():
-                if project_summary.status_code == 'SUB':
-                    project_summary.send_project_summary_email_to_ministry(mine)
-                    project_summary.send_project_summary_email_to_proponent(mine)
+            if project_summary.status_code == 'SUB':
+                if is_minespace_user():
+                    project_summary.send_project_summary_email(mine)
+                # Trigger notification for newly submitted Project Summary
+                message = f'A Major Mine Description called ({new_project.project_title}) has been submitted for ({new_project.mine_name})'
+                extra_data = {'project': {'project_guid': str(new_project.project_guid)}}
+                trigger_notifcation(message, new_project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

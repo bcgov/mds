@@ -10,7 +10,7 @@ import RenderRadioButtons from "./RenderRadioButtons";
 import RenderCheckbox from "./RenderCheckbox";
 import RenderGroupCheckbox from "./RenderGroupCheckbox";
 import RenderAutocomplete from "./RenderAutoComplete";
-import FileUpload from "./FileUpload";
+import RenderFileUpload from "./RenderFileUpload";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -27,5 +27,5 @@ export const renderConfig = {
   RADIO: RenderRadioButtons,
   CHECK_BOX: RenderCheckbox,
   GROUP_CHECK_BOX: RenderGroupCheckbox,
-  FILE_UPLOAD: FileUpload,
+  FILE_UPLOAD: RenderFileUpload,
 };

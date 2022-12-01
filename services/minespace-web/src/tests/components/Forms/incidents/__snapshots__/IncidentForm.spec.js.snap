@@ -190,7 +190,6 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <Title
-            id="incident-details"
             level={4}
           >
             Incident Details
@@ -393,19 +392,45 @@ exports[`IncidentForm renders properly 1`] = `
         </Col>
         <Divider />
         <Col
+          span={24}
+        >
+          <Title
+            level={4}
+          >
+            Inspectors, OHSC, Local Union or Worker Representatives
+          </Title>
+        </Col>
+        <Col
+          span={24}
+        >
+          <Paragraph>
+            Please enter the details of any inspectors, OHSC, local union, or worker representatives that you have contacted
+          </Paragraph>
+        </Col>
+        <Col
+          span={24}
+        >
+          <Title
+            level={5}
+          >
+            Inspector Information
+          </Title>
+        </Col>
+        <Col
           md={12}
           xs={24}
         >
           <FormItem
             hasFeedback={false}
-            label="JOHSC/Worker Rep Name (optional)"
+            label="Inspector Name (optional)"
           >
             <Field
               component={[Function]}
+              data={Array []}
               disabled={false}
-              id="johsc_worker_rep_name"
-              name="johsc_worker_rep_name"
-              placeholder="Enter name of rep"
+              id="reported_to_inspector_party_guid"
+              name="reported_to_inspector_party_guid"
+              placeholder="Enter name"
               validate={
                 Array [
                   [Function],
@@ -420,7 +445,60 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Was this person contacted? (optional)"
+            label="Has this person already been informed of the incident?"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="reported_to_inspector_contacted"
+              name="reported_to_inspector_contacted"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <hr />
+          <Title
+            level={5}
+          >
+            OHSC Worker Representative
+          </Title>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="OHSC Worker Rep Name (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="johsc_worker_rep_name"
+              name="johsc_worker_rep_name"
+              placeholder="Enter name"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Has this person already been informed of the incident?"
           >
             <Field
               component={[Function]}
@@ -431,19 +509,29 @@ exports[`IncidentForm renders properly 1`] = `
           </FormItem>
         </Col>
         <Col
+          span={24}
+        >
+          <hr />
+          <Title
+            level={5}
+          >
+            OHSC Management Representative
+          </Title>
+        </Col>
+        <Col
           md={12}
           xs={24}
         >
           <FormItem
             hasFeedback={false}
-            label="JOHSC/Management Rep Name (optional)"
+            label="OHSC Management Rep Name (optional)"
           >
             <Field
               component={[Function]}
               disabled={false}
               id="johsc_management_rep_name"
               name="johsc_management_rep_name"
-              placeholder="Enter name of rep"
+              placeholder="Enter name"
               validate={
                 Array [
                   [Function],
@@ -458,7 +546,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Was this person contacted? (optional)"
+            label="Has this person already been informed of the incident?"
           >
             <Field
               component={[Function]}
@@ -532,34 +620,6 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <Title
-            level={4}
-          >
-            Upload Initial Notification Documents
-          </Title>
-          <Paragraph>
-            Please upload any initial notifications that will provide context with this incident report.
-          </Paragraph>
-        </Col>
-        <Col
-          span={24}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              id="initial_notification_documents"
-              labelIdle="<strong class=\\"filepond--label-action\\">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>"
-              name="initial_notification_documents"
-              onFileLoad={[Function]}
-              onRemoveFile={[MockFunction]}
-            />
-          </FormItem>
-        </Col>
-        <Col
-          span={24}
-        >
           <Row>
             <Col
               md={12}
@@ -574,7 +634,24 @@ exports[`IncidentForm renders properly 1`] = `
             <Col
               md={12}
               xs={24}
-            />
+            >
+              <div
+                className="right center-mobile"
+              >
+                <Button
+                  block={false}
+                  className="full-mobile violet violet-border"
+                  ghost={false}
+                  htmlType="button"
+                  id="mine-incident-add-documentation"
+                  loading={false}
+                  onClick={[Function]}
+                  type="secondary"
+                >
+                  + Add Documentation
+                </Button>
+              </div>
+            </Col>
           </Row>
           <DocumentTable
             deletePayload={
@@ -613,54 +690,6 @@ exports[`IncidentForm renders properly 1`] = `
             handleDeleteDocument={[MockFunction]}
           />
           <br />
-          <Row>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <Title
-                id="final-report"
-                level={4}
-              >
-                Final Report
-              </Title>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            />
-          </Row>
-          <Col
-            span={24}
-          >
-            <Empty
-              description={
-                <div
-                  className="center"
-                >
-                  <Paragraph
-                    strong={true}
-                  >
-                    This incident requires a final investigation report.
-                  </Paragraph>
-                  <Paragraph>
-                    You determined that this incident was a dangerous occurence. Please add your final report documentation by clicking below.
-                  </Paragraph>
-                  <ForwardRef(InternalButton)
-                    block={false}
-                    ghost={false}
-                    htmlType="button"
-                    loading={false}
-                    onClick={[Function]}
-                    type="primary"
-                  >
-                    Add Final Report
-                  </ForwardRef(InternalButton)>
-                </div>
-              }
-              image={<Simple />}
-            />
-          </Col>
         </Col>
       </Row>
     </Col>

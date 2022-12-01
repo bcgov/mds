@@ -34,6 +34,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.string),
   allowNull: PropTypes.bool,
   disabled: PropTypes.bool,
+  onSelect: PropTypes.func,
 };
 
 const defaultProps = {
@@ -49,6 +50,7 @@ const defaultProps = {
   initialValues: {},
   allowNull: false,
   disabled: false,
+  onSelect: null,
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -65,6 +67,7 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
 const transformData = (data, options, header) => {
   const transformedData = data.map((opt) => ({
     value: options[opt].party_guid,
+    originalValue: options[opt],
     label: (
       <div>
         <span>{options[opt].name}</span>
@@ -145,7 +148,7 @@ export class PartySelectField extends Component {
 
       // If a new party was just added, add that party to the list of search results.
       if (lastCreatedPartyUpdated) {
-        filteredParties.push(nextProps.lastCreatedParty);
+        filteredParties.unshift(nextProps.lastCreatedParty);
       }
 
       this.setState(() => {
@@ -179,6 +182,12 @@ export class PartySelectField extends Component {
 
   handleSelect = (value, option) => {
     this.setState({ selectedOption: option });
+    if(this.props.onSelect){
+      this.props.onSelect({
+        ...option,
+        ...value.originalValue
+      });
+    }
   };
 
   // Validator to ensure the selected option is in the collection of available options.

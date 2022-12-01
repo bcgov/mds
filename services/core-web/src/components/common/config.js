@@ -15,7 +15,7 @@ import RenderRadioButtons from "./RenderRadioButtons";
 import RenderGroupedSelect from "./RenderGroupedSelect";
 import RenderMineSelect from "./RenderMineSelect";
 import RenderLabel from "./RenderLabel";
-import FileUpload from "@/components/common/FileUpload";
+import RenderFileUpload from "./RenderFileUpload";
 
 
 // This file is anticipated to have multiple exports
@@ -38,5 +38,5 @@ export const renderConfig = {
   GROUPED_SELECT: RenderGroupedSelect,
   MINE_SELECT: RenderMineSelect,
   LABEL: RenderLabel,
-  FILE_UPLOAD: FileUpload,
+  FILE_UPLOAD: RenderFileUpload,
 };

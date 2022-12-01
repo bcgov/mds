@@ -24,6 +24,8 @@ We do this because postgis is updated by a major version 2 -> 3 and has architec
 sed -i '/raster_columns/d' tmp.sql
 sed -i '/raster_overviews/d' tmp.sql
 sed -i '/REFRESH MATERIALIZED VIEW public.now_application_gis_export_view;/d' tmp.sql
+sed -i '/CREATE MATERIALIZED VIEW public.now_application_gis_export_view AS/,/WITH NO DATA;/d' tmp.sql
+sed -i '/now_application_gis_export_view/d' tmp.sql
 ```
 
 ### Step 3

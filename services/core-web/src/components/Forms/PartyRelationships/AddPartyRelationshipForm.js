@@ -20,6 +20,7 @@ import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
@@ -31,12 +32,14 @@ const propTypes = {
   mine: CustomPropTypes.mine,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   submitting: PropTypes.bool.isRequired,
+  createPartyOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   mine: {},
   related_guid: "",
   start_date: null,
+  createPartyOnly: false,
 };
 
 const minePartyApptToValidate = ["PMT", "EOR", "MMG"];
@@ -143,6 +146,7 @@ export class AddPartyRelationshipForm extends Component {
   state = {
     skipDateValidation: false,
     currentAppointment: {},
+    selectedParty: null,
   };
 
   // When the start_date and/or the related_guid are changed this checks to see if the the only appointment
@@ -205,8 +209,21 @@ export class AddPartyRelationshipForm extends Component {
         options = <div />;
         break;
     }
+
+    const handleSubmit = (evt) => {
+      if(this.props.createPartyOnly) {
+        // Override redux-form submit to allow submitting the selected party
+        // instead of the form values
+        evt.preventDefault();
+        this.props.onSubmit(this.state.selectedParty);
+      } else {
+        // Let redux-form handle submission
+        this.props.handleSubmit(evt);
+      }
+    }
+
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onSubmit={handleSubmit}>
         <Row gutter={16}>
           <Col md={24} xs={24}>
             <Form.Item>
@@ -214,11 +231,16 @@ export class AddPartyRelationshipForm extends Component {
                 id="party_guid"
                 name="party_guid"
                 validate={[required]}
+                onSelect={val => {
+                  this.setState({selectedParty: val.originalValue});
+                }}
                 allowAddingParties
               />
             </Form.Item>
           </Col>
         </Row>
+        
+        {!this.props.createPartyOnly && (<>
         <Row gutter={16}>
           <Col md={12} xs={24}>
             <Form.Item>
@@ -251,7 +273,7 @@ export class AddPartyRelationshipForm extends Component {
                   id="end_current"
                   name="end_current"
                   label={`Would you like to set the end date of ${
-                    this.state.currentAppointment.party.name
+                    this.state.currentAppointment?.party?.name
                   } to ${moment(this.props.start_date)
                     .subtract(1, "days")
                     .format("MMMM Do YYYY")}`}
@@ -282,6 +304,7 @@ export class AddPartyRelationshipForm extends Component {
             )}
           </Col>
         </Row>
+        </>)}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

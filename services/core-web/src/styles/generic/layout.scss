@@ -393,7 +393,42 @@ html {
 }
 
 .margin-small {
+  &--left {
+    margin-left: $default-margin-sm  !important;
+  }
+
+  &--right {
+    margin-right: $default-margin-sm  !important;
+  }
+
+  &--top {
+    margin-top: $default-margin-sm  !important;
+  }
+
+  &--bottom {
+    margin-bottom: $default-margin-sm  !important;
+  }
+
   margin: $default-margin-sm;
+}
+.margin-medium {
+  &--left {
+    margin-left: $default-margin-md  !important;
+  }
+
+  &--right {
+    margin-right: $default-margin-md  !important;
+  }
+
+  &--top {
+    margin-top: $default-margin-md  !important;
+  }
+
+  &--bottom {
+    margin-bottom: $default-margin-md  !important;
+  }
+
+  margin: $default-margin-md;
 }
 
 .margin-large {

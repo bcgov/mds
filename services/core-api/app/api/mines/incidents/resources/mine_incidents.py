@@ -1,5 +1,4 @@
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -50,6 +49,8 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('number_of_injuries', type=int, location='json')
     parser.add_argument('number_of_fatalities', type=int, location='json')
     parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
+    parser.add_argument('reported_to_inspector_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('reported_to_inspector_contact_method', type=str, location='json'),
     parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
     parser.add_argument('determination_inspector_party_guid', type=str, location='json')
     parser.add_argument('proponent_incident_no', type=str, location='json')
@@ -72,8 +73,12 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('injuries_description', type=str, location='json')
     parser.add_argument('johsc_worker_rep_name', type=str, location='json')
     parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_worker_rep_contact_method', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
     parser.add_argument('johsc_management_rep_name', type=str, location='json')
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
+    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -82,6 +87,9 @@ class MineIncidentListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound("Mine not found")
+
+        if not is_minespace_user():
+            return [i for i in mine.mine_incidents if i.deleted_ind == False and i.status_code != "DFT"]
         return [i for i in mine.mine_incidents if i.deleted_ind == False]
 
     def _get_year_incident(self, incident_timestamp):
@@ -107,7 +115,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     )
 
         reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] and is_minespace_user() else data['reported_timestamp']
+        ) if not data['reported_timestamp'] else data['reported_timestamp']
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
@@ -135,8 +143,14 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.injuries_description = data.get('injuries_description')
         incident.johsc_worker_rep_name = data.get('johsc_worker_rep_name')
         incident.johsc_worker_rep_contacted = data.get('johsc_worker_rep_contacted')
+        incident.johsc_worker_rep_contact_method = data.get('johsc_worker_rep_contact_method')
+        incident.johsc_worker_rep_contact_timestamp = data.get('johsc_worker_rep_contact_timestamp')
         incident.johsc_management_rep_name = data.get('johsc_management_rep_name')
         incident.johsc_management_rep_contacted = data.get('johsc_management_rep_contacted')
+        incident.johsc_management_rep_contact_method = data.get('johsc_management_rep_contact_method')
+        incident.johsc_management_rep_contact_timestamp = data.get('johsc_management_rep_contact_timestamp')
+        incident.reported_to_inspector_contacted = data.get('reported_to_inspector_contacted')
+        incident.reported_to_inspector_contact_method = data.get('reported_to_inspector_contact_method')
 
         incident.status_code = data.get('status_code')
 
@@ -145,10 +159,6 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.followup_inspection_date = data.get('followup_inspection_date')
 
             # lookup and validated inspector party relationships
-            tmp_party = Party.query.filter_by(
-                party_guid=data.get('reported_to_inspector_party_guid')).first()
-            if tmp_party and 'INS' in tmp_party.business_roles_codes:
-                incident.reported_to_inspector_party_guid = tmp_party.party_guid
             tmp_party = Party.query.filter_by(
                 party_guid=data.get('responsible_inspector_party_guid')).first()
             if tmp_party and 'INS' in tmp_party.business_roles_codes:
@@ -168,6 +178,11 @@ class MineIncidentListResource(Resource, UserMixin):
                         'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
                     )
                 incident.dangerous_occurrence_subparagraphs.append(sub)
+
+        reported_to_inspector_party = Party.query.filter_by(
+            party_guid=data.get('reported_to_inspector_party_guid')).first()
+        if reported_to_inspector_party and 'INS' in reported_to_inspector_party.business_roles_codes:
+            incident.reported_to_inspector_party_guid = reported_to_inspector_party.party_guid
 
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
@@ -210,8 +225,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            if is_minespace_user():
-                incident.send_incidents_email()
+            incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
@@ -242,6 +256,8 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('number_of_fatalities', type=int, location='json', store_missing=False)
     parser.add_argument(
         'reported_to_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument('reported_to_inspector_contacted', type=inputs.boolean, location='json', store_missing=False)
+    parser.add_argument('reported_to_inspector_contact_method', type=str, location='json', store_missing=False),
     parser.add_argument(
         'responsible_inspector_party_guid', type=str, location='json', store_missing=False)
     parser.add_argument(
@@ -271,8 +287,12 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('injuries_description', type=str, location='json')
     parser.add_argument('johsc_worker_rep_name', type=str, location='json')
     parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_worker_rep_contact_method', type=str, location='json')
+    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
     parser.add_argument('johsc_management_rep_name', type=str, location='json')
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
+    parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
+    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
@@ -355,7 +375,7 @@ class MineIncidentResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
-        if updated_documents is not None:
+        if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
                 if not any(
                         str(doc.document_manager_guid) == updated_document['document_manager_guid']

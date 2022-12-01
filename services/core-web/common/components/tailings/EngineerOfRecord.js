@@ -23,6 +23,7 @@ import { PDF } from "@common/constants/fileTypes";
 import moment from "moment";
 import { isNumber } from "lodash";
 import TailingsContext from "@common/components/tailings/TailingsContext";
+import { getMines } from "@common/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 
 const propTypes = {
@@ -34,6 +35,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   partyRelationships: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   loading: PropTypes.bool,
+  mines: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -57,7 +59,7 @@ const columns = (LinkButton) => [
 ];
 
 export const EngineerOfRecord = (props) => {
-  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading } = props;
+  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading, mines } = props;
 
   const {
     renderConfig,
@@ -104,7 +106,11 @@ export const EngineerOfRecord = (props) => {
         onSubmit: handleCreateEOR,
         onCancel: props.closeModal,
         title: "Select Contact",
+        partyRelationships,
         mine_party_appt_type_code: "EOR",
+        partyRelationshipType: "EOR",
+        mine: mines[mineGuid],
+        createPartyOnly: true,
       },
       content: addContactModalConfig,
     });
@@ -156,6 +162,14 @@ export const EngineerOfRecord = (props) => {
     moment(currentEor.end_date)
       .startOf("day")
       .diff(moment().startOf("day"), "days");
+
+  // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
+  // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).
+  const canEditEOR =
+    formValues?.engineer_of_record?.party_guid &&
+    !formValues?.engineer_of_record?.mine_party_appt_guid;
+
+  const fieldsDisabled = !canEditEOR || loading;
 
   return (
     <>
@@ -273,9 +287,9 @@ export const EngineerOfRecord = (props) => {
                 id="engineer_of_record.eor_document_guid"
                 onFileLoad={onFileLoad}
                 onRemoveFile={onRemoveFile}
-                validate={[required]}
+                validate={!fieldsDisabled && [required]}
                 component={renderConfig.FILE_UPLOAD}
-                disabled={!formValues?.engineer_of_record?.party_guid}
+                disabled={fieldsDisabled}
                 addFileStart={() => setUploading(true)}
                 onAbort={() => setUploading(false)}
                 uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
@@ -295,13 +309,11 @@ export const EngineerOfRecord = (props) => {
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
                 label="Start Date"
-                disabled={
-                  !!formValues?.engineer_of_record?.mine_party_appt_guid ||
-                  !formValues?.engineer_of_record?.party_guid ||
-                  loading
-                }
+                disabled={fieldsDisabled}
                 component={renderConfig.DATE}
-                validate={[required, dateNotInFuture, validateEorStartDateOverlap]}
+                validate={
+                  !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
+                }
               />
             </Col>
             <Col span={12}>
@@ -309,12 +321,8 @@ export const EngineerOfRecord = (props) => {
                 id="engineer_of_record.end_date"
                 name="engineer_of_record.end_date"
                 label="End Date (Optional)"
-                disabled={
-                  !!formValues?.engineer_of_record?.mine_party_appt_guid ||
-                  !formValues?.engineer_of_record?.party_guid ||
-                  loading
-                }
-                validate={[dateInFuture]}
+                disabled={fieldsDisabled}
+                validate={!fieldsDisabled && [dateInFuture]}
                 component={renderConfig.DATE}
               />
             </Col>
@@ -342,6 +350,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
+  mines: getMines(state),
 });
 
 EngineerOfRecord.propTypes = propTypes;
