@@ -9,13 +9,7 @@ module.exports = {
     es6: true,
   },
   plugins: ["jest"],
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "airbnb",
-    "prettier",
-    "prettier/react",
-  ],
+  extends: ["eslint:recommended", "plugin:react/recommended", "airbnb", "prettier"],
   settings: {
     "import/resolver": {
       alias: {
@@ -34,6 +28,8 @@ module.exports = {
     "react/display-name": 0,
     "react/no-deprecated": 0,
     "import/no-named-as-default": 0,
+    // TODO: fix unresolved imports for eslint with @common aliases
+    "import/no-unresolved": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": "off",
     camelcase: 0,

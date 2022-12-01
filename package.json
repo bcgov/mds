@@ -12,5 +12,38 @@
       "services/minespace-web",
       "services/common"
     ]
+  },
+  "devDependencies": {
+    "eslint": "7.27.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-import-resolver-alias": "1.1.2",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jest": "27.1.6",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.18.0",
+    "husky": "8.0.2",
+    "lint-prepush": "2.2.1",
+    "lint-staged": "10.0.0",
+    "prettier": "2.8.0"
+  },
+  "scripts": {
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write --ignore-unknown --config .prettierrc.json"
+    ],
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "lint-prepush": {
+    "base": "develop",
+    "tasks": {
+      "*.js": [
+        "jest --env=jsdom --runInBand --findRelatedTests"
+      ]
+    }
   }
 }

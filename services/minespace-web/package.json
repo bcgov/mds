@@ -100,12 +100,9 @@
     "file-loader": "4.3.0",
     "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-plugin": "3.2.0",
-    "husky": "2.7.0",
     "image-webpack-loader": "8.1.0",
     "less": "3.5.0",
     "less-loader": "6.2.0",
-    "lint-prepush": "0.4.2",
-    "lint-staged": "8.2.1",
     "mini-css-extract-plugin": "0.7.0",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "postcss-loader": "3.0.0",
@@ -185,37 +182,5 @@
   },
   "browserslist": [
     "> 0.1%"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "lint-prepush && cd ../core-web && lint-prepush"
-    }
-  },
-  "lint-staged": {
-    "*.{js,css,json,md}": [
-      "yarn format:write",
-      "git add"
-    ],
-    "../minespace-web/**/*.{js,css,json,md}": [
-      "yarn format:write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "../minespace-web/**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "lint-prepush": {
-    "base": "develop",
-    "tasks": {
-      "*.js": [
-        "jest --env=jsdom --runInBand --findRelatedTests"
-      ]
-    }
-  }
+  ]
 }
