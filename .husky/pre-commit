@@ -3,5 +3,3 @@
 
 echo "linting staged files"
 yarn lint-staged
-echo "running tests"
-yarn test
