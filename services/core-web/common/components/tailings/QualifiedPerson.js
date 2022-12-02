@@ -179,7 +179,7 @@ export const QualifiedPerson = (props) => {
           />
         ) : (
           <Alert
-            description="There's no Qualified Person (EOR) on file for this facility. Click above to assign a new QP."
+            description="There is no Qualified Person (QP) on file for this facility. Click above to assign a new Qualified Person."
             showIcon
             type="info"
           />
@@ -212,7 +212,7 @@ export const QualifiedPerson = (props) => {
           </Row>
         )}
         <Typography.Title level={4} className="margin-large--top">
-          QP Term
+          Qualified Person Term
         </Typography.Title>
         <Row gutter={16}>
           <Col span={12}>
