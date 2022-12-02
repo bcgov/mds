@@ -80,22 +80,6 @@ def validate_document(document):
                             'type': 'string'
                         }
                     }
-                },
-                'mine_tailings_storage_facility': {
-                    'required': False,
-                    'type': 'dict',
-                    'schema': {
-                        'mine_tailings_storage_facility_guid': {
-                        }
-                    }
-                },
-                'project': {
-                    'type': 'dict',
-                    'schema': {
-                        'project_guid': {
-                            'type': 'string'
-                        }
-                    }
                 }
             }
         }
