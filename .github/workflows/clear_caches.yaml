@@ -16,5 +16,5 @@ jobs:
         run: |
           chmod 755 ./gitops/clear_caches.sh
       - name: Clear Cache
-        run: ./gitops/clear_caches.sh ${{ github.token }}
+        run: ./gitops/clear_caches.sh ${{ GH_TOKEN }}
       
