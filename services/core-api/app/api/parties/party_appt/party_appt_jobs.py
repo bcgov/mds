@@ -8,17 +8,17 @@ from app.tasks.celery import celery
 
 class PartyAppointmentJobs():
     @celery.task(name='party_appt.notify_expiring_party_appointments')
-    def notify_expiring_party_appointments(self):
+    def notify_expiring_party_appointments():
         expiring_parties = MinePartyAppointment.find_expiring_appointments('EOR', 60)
         message = lambda party: f'60 days notice Engineer of Record expiry for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
-        notifications = list(self._notify_party_appointments(expiring_parties, message, ActivityType.eor_expiring_60_days))
+        notifications = list(PartyAppointmentJobs._notify_party_appointments(expiring_parties, message, ActivityType.eor_expiring_60_days))
         db.session.commit()
 
         return notifications
 
     @celery.task(name='party_appt.notify_and_update_expired_party_appointments')
-    def notify_and_update_expired_party_appointments(self):
+    def notify_and_update_expired_party_appointments():
         expired_parties = MinePartyAppointment.find_expired_appointments('EOR')
 
         MinePartyAppointment.update_status_many(
@@ -27,18 +27,20 @@ class PartyAppointmentJobs():
             commit=False
         )
 
-        notifications = list(self.notify_expired_party_appointments(expired_parties))
+        notifications = list(PartyAppointmentJobs.notify_expired_party_appointments(expired_parties))
 
         db.session.commit()
 
         return list(notifications)
 
-    def notify_expired_party_appointments(self, expired_parties):
+    @classmethod
+    def notify_expired_party_appointments(cls, expired_parties):
         message = lambda party: f'Engineer of Record expired on {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
-        return list(self._notify_party_appointments(expired_parties, message, ActivityType.tsf_eor_expired))
+        return list(cls._notify_party_appointments(expired_parties, message, ActivityType.tsf_eor_expired))
 
-    def _notify_party_appointments(self, parties, message, activity_type):
+    @classmethod
+    def _notify_party_appointments(cls, parties, message, activity_type):
         created_notifications = [] 
         for party in parties:
             idempotency_key = f'{activity_type}_{party.mine_party_appt_guid}_{party.end_date.strftime("%Y-%m-%d")}'

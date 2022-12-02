@@ -41,6 +41,14 @@ def expired_eor_info(setup_info):
     eor.save()
     yield setup_info
 
+@pytest.fixture(scope="function")
+def db_session(db_session):
+    # Fixes a Instance is not bound to a session error that pops up
+    # with the celery/pytest/flask combination
+    # https://github.com/jeancochrane/pytest-flask-sqlalchemy/issues/27
+    with mock.patch.object(db_session, "remove", lambda: None):
+        yield db_session
+
 class TestExpiringPartyAppointment():
 
     def test_notify_expiring_party_appointments_triggers_notification_when_expiring(self, setup_info):
