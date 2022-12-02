@@ -115,18 +115,13 @@ export const QualifiedPerson = (props) => {
   const fieldsDisabled = !canEditQFP || props.loading;
 
   return (
-    <Row className="tailings-section">
+    <Row>
       <Col span={24}>
-        <Row justify="space-between" align="middle">
-          <Col span={14}>
-            <Typography.Title level={3} className="tailings-section-title">
-              Qualified Person
-            </Typography.Title>
-          </Col>
+        <Row justify="space-between">
+            <Typography.Title level={3}>Qualified Person</Typography.Title>
           {isCore ? (
-            <Col span={10}>
-              <Row justify="space-between" align="middle" gutter={65}>
-                <Col span={12}>
+            <Col span={12}>
+              <Row justify="end" type="flex">
                   <Popconfirm
                     placement="top"
                     title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
@@ -134,22 +129,18 @@ export const QualifiedPerson = (props) => {
                     cancelText="No"
                     onConfirm={openCreateQPModal}
                   >
-                    <Button style={{ whiteSpace: "normal", height: "auto" }} type="primary">
-                      <span>
-                        <PlusCircleFilled className="margin-medium--right" />
+                    <Button style={{ whiteSpace: "normal"}} type="primary">
+                        <PlusCircleFilled/>
                         Update Qualified Person
-                      </span>
                     </Button>
                   </Popconfirm>
-                </Col>
-                <Col style={{ textAlign: "right" }}>
-                  <Typography.Paragraph strong>Last Updated</Typography.Paragraph>
-                  <Typography.Paragraph style={{ marginBottom: 0 }}>
+                  {formValues?.qualified_person?.update_timestamp && (<Typography.Paragraph style={{textAlign: "right"}} >
+                    <b>Last Updated</b>
+                    <br />
                     {moment(props.formValues?.qualified_person.update_timestamp).format(
                       "DD-MM-YYYY H:mm"
                     )}
-                  </Typography.Paragraph>
-                </Col>
+                  </Typography.Paragraph>)}
               </Row>
             </Col>
           ) : (
