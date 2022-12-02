@@ -43,7 +43,7 @@ def expired_eor_info(setup_info):
 
 @pytest.fixture(scope="function")
 def db_session(db_session):
-    # Fixes a Instance is not bound to a session error that pops up
+    # Fixes a Instance is not bound to a "Instance is not bound to a session" error that pops up
     # with the celery/pytest/flask combination
     # https://github.com/jeancochrane/pytest-flask-sqlalchemy/issues/27
     with mock.patch.object(db_session, "remove", lambda: None):
