@@ -1,14 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Row, Table, Typography } from "antd";
-import moment from "moment";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
-import DocumentLink from "@/components/common/DocumentLink";
+import { Field, FieldArray, change } from "redux-form";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import {
+  updatePartyRelationship,
+  fetchPartyRelationships,
+} from "@common/actionCreators/partiesActionCreator";
+import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
+import DocumentLink from "@/components/common/DocumentLink";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
-  partyRelationships: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updatePartyRelationship: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -18,12 +26,50 @@ const defaultProps = {
 const PartyAppointmentTable = (props) => {
   const { columns } = props;
 
-  const { renderConfig } = useContext(TailingsContext);
+  const { renderConfig, isCore, tsfFormName, mineGuid, tsfGuid } = useContext(TailingsContext);
 
-  const ministryAcknowledgedColumns = [
-    { value: "not_acknowledged", label: "Not acknowledged" },
-    { value: "acknowledged", label: "Acknowledged" },
-  ];
+  const [loadingField, setLoadingField] = useState({});
+
+  const ministryAcknowledgedColumns = Object.entries(
+    MINISTRY_ACKNOWLEDGED_STATUS
+  ).map(([value, label]) => ({ value, label }));
+  const statusColumns = Object.entries(PARTY_APPOINTMENT_STATUS).map(([value, label]) => ({
+    value,
+    label,
+  }));
+
+  const partyAppointmentChanged = async (rowName, mine_party_appt_guid, key, value) => {
+    const formPropName = `${rowName}.${key}`;
+
+    setLoadingField({
+      ...loadingField,
+      [formPropName]: true,
+    });
+
+    props.change(tsfFormName, formPropName, value);
+
+    try {
+      await props.updatePartyRelationship(
+        {
+          mine_party_appt_guid,
+          [key]: value,
+        },
+        "Successfully updated Engineer of Record"
+      );
+
+      await props.fetchPartyRelationships({
+        mine_guid: mineGuid,
+        relationships: "party",
+        include_permit_contacts: "true",
+        mine_tailings_storage_facility_guid: tsfGuid,
+      });
+    } finally {
+      setLoadingField({
+        ...loadingField,
+        [formPropName]: undefined,
+      });
+    }
+  };
 
   const columnDefinitions = [
     {
@@ -34,7 +80,22 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Status",
       dataIndex: "status",
-      render: (text) => <div title="status">{text}</div>,
+      render: (status, record) => {
+        if (isCore) {
+          return (
+            <Field
+              id={`${record.rowName}.status`}
+              name={`${record.rowName}.status`}
+              component={renderConfig.SELECT}
+              data={statusColumns}
+              loading={loadingField[`${record.rowName}.status`]}
+              onChange={(val) => partyAppointmentChanged(record.rowName, record.key, "status", val)}
+            />
+          );
+        }
+
+        return <div title="status">{PARTY_APPOINTMENT_STATUS[status]}</div>;
+      },
     },
     {
       title: "Date",
@@ -61,13 +122,21 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Ministry Acknowledged",
       dataIndex: "ministryAcknowledged",
-      render: () => (
+      render: (ministryAcknowledged, record) => (
         <Field
-          value="not_acknowledged"
-          id="ministryAcknowledged"
-          name="ministryAcknowledged"
+          id={`${record.rowName}.mine_party_acknowledgement_status`}
+          name={`${record.rowName}.mine_party_acknowledgement_status`}
           component={renderConfig.SELECT}
           data={ministryAcknowledgedColumns}
+          loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
+          onChange={(val) =>
+            partyAppointmentChanged(
+              record.rowName,
+              record.key,
+              "mine_party_acknowledgement_status",
+              val
+            )
+          }
         />
       ),
     },
@@ -77,8 +146,9 @@ const PartyAppointmentTable = (props) => {
     (c) => !columns?.length || columns.includes(c.dataIndex)
   );
 
-  const transformRowData = (partyRelationships) =>
-    partyRelationships.map((r, ind) => {
+  const transformRowData = (rows) => {
+    return rows.map((rowName, ind) => {
+      const r = rows.get(ind);
       let endDate = r.end_date;
 
       if (!endDate && r.start_date) {
@@ -88,23 +158,18 @@ const PartyAppointmentTable = (props) => {
       }
 
       return {
+        index: ind,
+        rowName,
         key: r.mine_party_appt_guid,
-        name: r.party.name,
+        name: r.party?.name,
         startDate: r.start_date || "Unknown",
         endDate,
         letters: r.documents || [],
-        status: ind === 0 ? "Active" : "Inactive",
-        ministryAcknowledged: "N/A",
+        status: r.status,
+        ministryAcknowledged: r.mine_party_acknowledgement_status,
       };
     });
-
-  const sortedRelationships = props.partyRelationships.sort((a, b) => {
-    return moment(a.start_date || "1970-01-01", "YYYY-MM-DD").isAfter(
-      moment(b.start_date || "1970-01-01", "YYYY-MM-DD")
-    )
-      ? -1
-      : 1;
-  });
+  };
 
   return (
     <Row>
@@ -113,19 +178,38 @@ const PartyAppointmentTable = (props) => {
           Historical Engineer of Record List
         </Typography.Title>
 
-        <Table
-          align="left"
-          pagination={false}
-          columns={columnsToDisplay}
-          dataSource={transformRowData(sortedRelationships || [])}
-          locale={{ emptyText: "No Data Yet" }}
+        <FieldArray
+          name="engineers_of_record"
+          component={({ fields }) => (
+            <Table
+              align="left"
+              pagination={false}
+              columns={columnsToDisplay}
+              dataSource={transformRowData(fields || [])}
+              locale={{ emptyText: "No Data Yet" }}
+            />
+          )}
         />
       </Col>
     </Row>
   );
 };
 
+const mapStateToProps = (state) => ({
+  tsf: state.tsf,
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updatePartyRelationship,
+      fetchPartyRelationships,
+      change,
+    },
+    dispatch
+  );
+
 PartyAppointmentTable.propTypes = propTypes;
 PartyAppointmentTable.defaultProps = defaultProps;
 
-export default PartyAppointmentTable;
+export default connect(mapStateToProps, mapDispatchToProps)(PartyAppointmentTable);

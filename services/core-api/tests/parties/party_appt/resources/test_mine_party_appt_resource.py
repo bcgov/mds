@@ -188,6 +188,7 @@ def test_post_mine_party_appt_EOR_as_ms_user_success(test_client, db_session, au
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, str(post_resp.response)
     assert post_data['mine_guid'] == setup_info['mine_guid']
+    assert post_data['status'] == 'pending'
 
 def test_post_mine_party_appt_TQP_as_ms_user_success(test_client, db_session, auth_headers, setup_info):
     test_data = {
