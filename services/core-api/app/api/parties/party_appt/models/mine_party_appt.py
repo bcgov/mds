@@ -320,7 +320,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if len(current_mpa) != 1:
             raise BAD_REQUEST('There is currently not exactly one active appointment.')
 
-        if validate_new_start_date and current_mpa.start_date and new_start_date < current_mpa.start_date:
+        if validate_new_start_date and current_mpa[0].start_date and new_start_date < current_mpa[0].start_date:
             return False
 
         current_mpa[0].status = MinePartyAppointmentStatus.inactive

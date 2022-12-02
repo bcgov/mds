@@ -43,6 +43,7 @@ export const TailingsSummaryPageWrapper = (props) => {
       renderConfig={renderConfig}
       addContactModalConfig={modalConfig.ADD_PARTY_RELATIONSHIP}
       tsfFormName={FORM.ADD_STORAGE_FACILITY}
+      tsfGuid={match.params.tailingsStorageFacilityGuid}
       showUpdateTimestamp
       routes={routes}
       eorHistoryColumns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}

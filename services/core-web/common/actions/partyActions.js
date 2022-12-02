@@ -11,9 +11,10 @@ export const storeParty = (payload, id) => ({
   id,
 });
 
-export const storePartyRelationships = (payload) => ({
+export const storePartyRelationships = (payload, mine_tailings_storage_facility_guid=null) => ({
   type: ActionTypes.STORE_PARTY_RELATIONSHIPS,
   payload,
+  mine_tailings_storage_facility_guid,
 });
 
 export const storeAllPartyRelationships = (payload) => ({

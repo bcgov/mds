@@ -41,6 +41,7 @@ export const partiesReducer = (state = initialState, action) => {
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
+      const tsfGuid = action.mine_tailings_storage_facility_guid;
       const eors = action.payload
         .filter((p) => p.mine_party_appt_type_code === "EOR")
         .map((p) => ({
@@ -48,26 +49,26 @@ export const partiesReducer = (state = initialState, action) => {
           label: p.party.name,
         }));
 
-      const eorRecords = state.tsf
+      const eorRecords = tsfGuid
         ? action.payload.filter(
             (p) =>
               p.mine_party_appt_type_code === "EOR" &&
-              p.related_guid === state.tsf.mine_tailings_storage_facility_guid
+              p.related_guid === tsfGuid
           )
         : [];
-      const qfpRecords = state.tsf
+      const qfpRecords = tsfGuid
         ? action.payload.filter(
             (p) =>
               p.mine_party_appt_type_code === "QFP" &&
-              p.related_guid === state.tsf.mine_tailings_storage_facility_guid
+              p.related_guid === tsfGuid
           )
         : [];
 
       return {
         ...state,
         partyRelationships: action.payload,
-        engineersOfRecord: eorRecords,
-        qualifiedPersons: qfpRecords,
+        engineersOfRecord: tsfGuid? eorRecords: state.engineersOfRecord,
+        qualifiedPersons: tsfGuid? qfpRecords: state.qualifiedPersons,
         engineersOfRecordOptions: uniqBy(eors, "value"),
       };
     case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:
