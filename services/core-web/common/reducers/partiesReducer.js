@@ -51,24 +51,20 @@ export const partiesReducer = (state = initialState, action) => {
 
       const eorRecords = tsfGuid
         ? action.payload.filter(
-            (p) =>
-              p.mine_party_appt_type_code === "EOR" &&
-              p.related_guid === tsfGuid
+            (p) => p.mine_party_appt_type_code === "EOR" && p.related_guid === tsfGuid
           )
         : [];
       const qfpRecords = tsfGuid
         ? action.payload.filter(
-            (p) =>
-              p.mine_party_appt_type_code === "QFP" &&
-              p.related_guid === tsfGuid
+            (p) => p.mine_party_appt_type_code === "QFP" && p.related_guid === tsfGuid
           )
         : [];
 
       return {
         ...state,
         partyRelationships: action.payload,
-        engineersOfRecord: tsfGuid? eorRecords: state.engineersOfRecord,
-        qualifiedPersons: tsfGuid? qfpRecords: state.qualifiedPersons,
+        engineersOfRecord: tsfGuid ? eorRecords : state.engineersOfRecord,
+        qualifiedPersons: tsfGuid ? qfpRecords : state.qualifiedPersons,
         engineersOfRecordOptions: uniqBy(eors, "value"),
       };
     case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:

@@ -139,7 +139,12 @@ export const fetchPartyRelationships = (params) => (dispatch) => {
     )
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(partyActions.storePartyRelationships(response.data, params.mine_tailings_storage_facility_guid));
+      dispatch(
+        partyActions.storePartyRelationships(
+          response.data,
+          params.mine_tailings_storage_facility_guid
+        )
+      );
       return response.data;
     })
     .catch(() => dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS)))

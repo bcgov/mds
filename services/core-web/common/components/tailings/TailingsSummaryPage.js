@@ -98,7 +98,7 @@ export const TailingsSummaryPage = (props) => {
           relationships: "party",
           include_permit_contacts: "true",
           mine_tailings_storage_facility_guid: tsfGuid,
-        });  
+        });
       }
     }
     setIsLoaded(true);
