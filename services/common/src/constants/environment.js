@@ -22,11 +22,11 @@ export const ENVIRONMENT = {
 };
 
 export const KEYCLOAK = {
-  realm: "mds",
-
+  realm: "standard",
   "ssl-required": "external",
   "public-client": true,
   "confidential-port": 0,
+  pkceMethod: "S256",
 
   idir_idpHint: "idir",
   bceid_idpHint: "bceid",

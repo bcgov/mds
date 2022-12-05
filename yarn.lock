@@ -1940,7 +1940,7 @@ __metadata:
     jest-junit: 6.4.0
     jest-localstorage-mock: 2.4.0
     jest-sonar-reporter: 2.0.0
-    keycloak-js: 6.0.1
+    keycloak-js: 20.0.1
     leaflet: 1.5.1
     leaflet.markercluster: 1.4.1
     leaflet.wms: 0.2.0
@@ -4954,7 +4954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1":
+"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -12393,6 +12393,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-sha256@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "js-sha256@npm:0.9.0"
+  checksum: ffad54b3373f81581e245866abfda50a62c483803a28176dd5c28fd2d313e0bdf830e77dac7ff8afd193c53031618920f3d98daf21cbbe80082753ab639c0365
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -12684,10 +12691,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keycloak-js@npm:6.0.1":
-  version: 6.0.1
-  resolution: "keycloak-js@npm:6.0.1"
-  checksum: b636851984abf5fdff37385219c3a2f01c3a38b7746a562e6bdd7f65ab8d84a5319ae2870b8c1a3ee3af47cb32032b8c8ac58c2634d46289ec2260363d885872
+"keycloak-js@npm:20.0.1":
+  version: 20.0.1
+  resolution: "keycloak-js@npm:20.0.1"
+  dependencies:
+    base64-js: ^1.5.1
+    js-sha256: ^0.9.0
+  checksum: 55e33240eafff3ec695d79099dea6f2a4913e6dde223281229a9223695b079bc5e078940863f899436e7a3bcbb7d56773b73a2eba47113b45f4917cfac2cc22f
   languageName: node
   linkType: hard
 
