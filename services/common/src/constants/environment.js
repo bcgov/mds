@@ -10,7 +10,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_resource: "mines-digital-services-mds-public-client-4414",
   keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
-  keycloak_url: "https://dev.loginproxy.gov.bc.ca/auth",
+  keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
 };
 
 export const ENVIRONMENT = {

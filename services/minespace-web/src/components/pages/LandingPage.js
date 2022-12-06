@@ -9,6 +9,7 @@ import * as COMMON_ENV from "@mds/common";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
+import LoginButton from "../common/LoginButton";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -57,18 +58,7 @@ export const LandingPage = (props) => (
         </Typography.Paragraph>
         {!props.isAuthenticated && (
           <div>
-            <Button
-              type="primary"
-              size="large"
-              className="login"
-              style={{ "margin-right": "10px" }}
-            >
-              <a
-                href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
-              >
-                Log in with BCeID
-              </a>
-            </Button>
+            <LoginButton />
             <AuthorizationWrapper inTesting>
               <Button type="primary" size="large" className="login">
                 <a

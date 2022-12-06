@@ -2,8 +2,8 @@
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   environment: "development",
-  keycloak_resource: "mines-application-local",
-  keycloak_clientId: "mines-application-local",
+  keycloak_resource: "mines-digital-services-mds-public-client-4414",
+  keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
   keycloak_url: "http://keycloak:8080/auth",
 };

@@ -86,7 +86,7 @@ class Config(object):
     BUNDLE_ERRORS = True     #RequestParser global config
 
     def JWT_ROLE_CALLBACK(jwt_dict):
-        return (jwt_dict['realm_access']['roles'])
+        return (jwt_dict['client_roles'])
 
     # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
     JWT_OIDC_CACHING_ENABLED = True

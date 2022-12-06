@@ -43,7 +43,7 @@ class Config(object):
                                                     CACHE_REDIS_PORT)
 
     def JWT_ROLE_CALLBACK(jwt_dict):
-        return (jwt_dict['realm_access']['roles'])
+        return (jwt_dict['client_roles'])
 
 
 class TestConfig(Config):
