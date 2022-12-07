@@ -48,17 +48,20 @@ export const ReturnPage = (props) => {
       props.authenticateUser(keycloak.token);
     }
 
+  }, [keycloak.authenticated]);
+
+  useEffect(() => {
     const { type } = queryString.parse(props.location.search);
 
     // if a user manually navigates to this route, (thus type would not exist), they will be redirected home
-    if (!type || type === 'login') {
+    if (!type || type === RETURN_PAGE_TYPE.LOGOUT) {
       setRedirect(route.HOME.route);
     }
-  }, [keycloak.authenticated]);
 
-  if(!props.isAuthenticated) {
-    return <Loading />
-  }
+    if(props.isAuthenticated && (!props.redirect || !redirect)) {
+      setRedirect(route.MINES.route);
+    }
+  }, [props.isAuthenticated]);
 
   if (redirect) {
     return <Redirect push to={redirect} />;

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import * as COMMON_ENV from "@mds/common";
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
-import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
+import { signOutFromSSO } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
 import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
@@ -31,7 +31,7 @@ const defaultProps = {
 
 export class HeaderDropdown extends Component {
   handleLogout = () => {
-    signOutFromSiteMinder();
+    signOutFromSSO();
   };
 
   setActiveLink = (pathname) => {
