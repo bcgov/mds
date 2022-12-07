@@ -53,6 +53,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
 
       await keycloak
         .init({
+          checkLoginIframe: false,
           onLoad: "login-required",
           pkceMethod: KEYCLOAK.pkceMethod,
           idpHint: KEYCLOAK.idir_idpHint,
@@ -60,7 +61,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
         .success(() => {
           keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
           localStorage.setItem("jwt", keycloak.token);
-          this.props.storeUserAccessData(keycloak.realmAccess.roles);
+          this.props.storeUserAccessData(keycloak.userInfo?.client_roles || []);
           this.props.storeKeycloakData(keycloak);
         });
     }
