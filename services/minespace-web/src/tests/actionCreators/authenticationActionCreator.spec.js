@@ -52,30 +52,13 @@ describe("`getUserInfoFromToken` action creator", () => {
 });
 
 describe("`authenticateUser` action creator", () => {
-  const url = KEYCLOAK.tokenURL;
-  const code = "2434";
-  const data = {
-    code,
-    grant_type: "authorization_code",
-    redirect_uri: BCEID_LOGIN_REDIRECT_URI,
-    client_id: KEYCLOAK.clientId,
-  };
+  const accessToken = 'abc123';
   it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, queryString.stringify(data)).reply(200, mockResponse);
-    return authenticateUser(code)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
-  });
 
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return authenticateUser()(dispatch).catch(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
+    return authenticateUser(accessToken)(dispatch).then(() => {
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      const jwt = localStorage.getItem('jwt');
+      expect(jwt).toEqual('abc123');
     });
   });
 });

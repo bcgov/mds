@@ -1,4 +1,5 @@
 import { KEYCLOAK } from "@mds/common";
+import keycloak from '@/keycloak';
 import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,
@@ -6,13 +7,12 @@ import {
 } from "@/constants/environment";
 
 describe("`signOutFromSSO` function", () => {
-  jest.spyOn(window, "open");
+  jest.spyOn(keycloak, "logout");
   it("opens a new window with given url", () => {
     signOutFromSSO();
-    expect(window.open).toHaveBeenCalledWith(
-      `${KEYCLOAK.keycloakLogoutURL}${KEYCLOAK_LOGOUT_REDIRECT_URI}`,
-      "_self"
-    );
+    expect(keycloak.logout).toHaveBeenCalledWith({
+      redirectUri: KEYCLOAK_LOGOUT_REDIRECT_URI
+    });
   });
 });
 

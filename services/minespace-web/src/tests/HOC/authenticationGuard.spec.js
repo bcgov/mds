@@ -4,6 +4,21 @@ import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
 
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useEffect: (cb) => cb() // Run useEffect hooks manually as they do not work with shallow enzyme rendering
+}));
+
+jest.mock('@react-keycloak/web', () => ({
+  useKeycloak: () => ({
+    keycloak: {
+      authenticated: false
+    },
+    initialized: true,
+  })
+}));
+
+
 const Component = AuthenticationGuard()(() => <div>Test</div>);
 const dispatchProps = {};
 const props = {};
@@ -17,6 +32,7 @@ const setupprops = () => {
   props.isAuthenticated = true;
   props.fromCore = false;
 };
+
 
 beforeEach(() => {
   setupDispatchProps();

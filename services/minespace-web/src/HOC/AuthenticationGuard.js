@@ -32,12 +32,12 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     const [authComplete, setAuthComplete] = useState();
     const { keycloak, initialized } = useKeycloak();
 
-    const authenticate = async () => {
+    const authenticate = async () => {      
       const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
       const token = localStorage.getItem("jwt");
       const { type } = queryString.parse(window.location.search);
 
-      if(keycloak.isAuthenticated && !authenticatingFromCoreFlag && !type) {
+      if(keycloak.authenticated && !authenticatingFromCoreFlag && !type) {
         localStorage.setItem("authenticatingFromCoreFlag", true);
         await props.authenticateUser(keycloak.token)
           .then(() => {
@@ -86,6 +86,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     const { redirectingFromCore } = queryString.parse(window.location.search);
     const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
     const fromCore = !redirectingFromCore && !authenticatingFromCoreFlag;
+
     if (props.isAuthenticated || isPublic) {
       return <WrappedComponent {...props} />;
     }

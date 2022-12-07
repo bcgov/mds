@@ -55,31 +55,8 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
     });
 };
 
-export const authenticateUser = (accessToken) => (dispatch) => {
+export const authenticateUser = (accessToken) => async (dispatch) => {
   dispatch(success(reducerTypes.AUTHENTICATE_USER));
   localStorage.setItem("jwt", accessToken);
   dispatch(getUserInfoFromToken(accessToken));
-
-  
-  // const redirect_uri = redirectUrl ? redirectUrl : MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI;
-  // const data = {
-  //   code,
-  //   grant_type: "authorization_code",
-  //   redirect_uri,
-  //   client_id: COMMON_ENV.KEYCLOAK.clientId,
-  // };
-  // return axios
-  //   .post(COMMON_ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
-  //   .then((response) => {
-  //     return response;
-  //   })
-  //   .catch((err) => {
-  //     notification.error({
-  //       message: "Unexpected error occurred, please try again",
-  //       duration: 10,
-  //     });
-  //     dispatch(error(reducerTypes.AUTHENTICATE_USER));
-  //     dispatch(unAuthenticateUser());
-  //     throw new Error(err);
-  //   });
 };
