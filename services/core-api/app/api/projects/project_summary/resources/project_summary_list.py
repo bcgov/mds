@@ -6,13 +6,14 @@ from datetime import datetime, timezone
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from werkzeug.exceptions import InternalServerError
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_EDIT, is_minespace_user
 from app.api.mines.mine.models.mine import Mine
 from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.activity.models.activity_notification import ActivityType
 
 
 class ProjectSummaryListGetResource(Resource, UserMixin):
@@ -157,7 +158,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
                 # Trigger notification for newly submitted Project Summary
                 message = f'A Major Mine Description called ({new_project.project_title}) has been submitted for ({new_project.mine_name})'
                 extra_data = {'project': {'project_guid': str(new_project.project_guid)}}
-                trigger_notifcation(message, new_project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
+                trigger_notification(message, ActivityType.major_mine_desc_submitted, new_project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

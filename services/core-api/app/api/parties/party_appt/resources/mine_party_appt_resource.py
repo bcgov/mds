@@ -3,9 +3,11 @@ import json
 import uuid
 
 from flask import request, current_app
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
+from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
 from flask_restplus import Resource
-from sqlalchemy import or_, exc as alch_exceptions
+from sqlalchemy import and_, or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, Forbidden
 
 from app.extensions import api
@@ -21,8 +23,9 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
-from app.api.activity.utils import trigger_notifcation
 from app.config import Config
+from app.api.activity.utils import trigger_notification
+
 
 class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -200,11 +203,36 @@ class MinePartyApptResource(Resource, UserMixin):
         if Config.ENVIRONMENT_NAME != 'prod':
             # TODO: Remove this once TSF functionality is ready to go live
             if mine_party_appt_type_code == "EOR":
-                trigger_notifcation(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
+                trigger_notification(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', ActivityType.eor_created, mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
             if mine_party_appt_type_code == "TQP":
-                trigger_notifcation(f'A new Qualified Person for {mine.mine_name} has been assigned.', mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
+                trigger_notification(f'A new Qualified Person for {mine.mine_name} has been assigned.', ActivityType.qfp_created, mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
 
         return new_mpa.json()
+
+    @classmethod
+    def find_expiring_appointments(cls, mine_party_appt_type_code, expiring_before_days):
+        expiring_delta = datetime.utcnow() + timedelta(days=expiring_before_days)
+        now = datetime.utcnow()
+
+        qs = cls.query.filter_by(
+            mine_party_appt_type_code=mine_party_appt_type_code,
+            status=MinePartyAppointmentStatus.active
+        ).filter(
+            and_(MinePartyAppointment.end_date < expiring_delta, MinePartyAppointment.end_date > now)
+        )
+
+        return qs.all()
+
+    @classmethod
+    def find_expired_appointments(cls, mine_party_appt_type_code):
+        now = datetime.utcnow()
+
+        qs = cls.query.filter_by(
+            mine_party_appt_type_code=mine_party_appt_type_code,
+            status=MinePartyAppointmentStatus.active
+        ).filter(MinePartyAppointment.end_date < now)
+
+        return qs.all()
 
     @api.doc(
         params={

@@ -24,6 +24,8 @@ ARG USER_GID=1000
 RUN useradd -rm -d /home/$USERNAME -s /bin/bash -g root -G sudo -u $USER_UID $USERNAME
 USER $USERNAME
 
+RUN mkdir -p /tmp/celery
+
 # Run the server
 EXPOSE 5000
 CMD [ "flask", "run"]

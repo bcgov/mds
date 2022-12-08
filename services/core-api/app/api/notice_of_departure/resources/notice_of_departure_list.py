@@ -1,3 +1,4 @@
+from app.api.activity.models.activity_notification import ActivityType
 from flask_restplus import Resource, reqparse, inputs
 from werkzeug.exceptions import NotFound
 from app.extensions import api
@@ -8,7 +9,7 @@ from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDepar
 from app.api.notice_of_departure.dto import NOD_MODEL, NOD_MODEL_LIST, CREATE_NOD_MODEL, NOD_CONTACT_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.notice_of_departure.utils.validators import contact_validator
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 import json
 
 class NoticeOfDepartureListResource(Resource, UserMixin):
@@ -150,6 +151,6 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
             }
         }
 
-        trigger_notifcation(f'Notice of Departure Submitted for {mine.mine_name}', mine, 'NoticeOfDeparture', new_nod.nod_guid, extra_notification_data)
+        trigger_notification(f'Notice of Departure Submitted for {mine.mine_name}', ActivityType.nod_submitted, mine, 'NoticeOfDeparture', new_nod.nod_guid, extra_notification_data)
 
         return new_nod
