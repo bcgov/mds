@@ -2,12 +2,13 @@ from unittest import mock, TestCase
 import pytest
 from datetime import datetime, timedelta
 
+from app.api.parties.party_appt.tasks import notify_expiring_party_appointments, notify_and_update_expired_party_appointments
+
 from app.api.activity.models.activity_notification import ActivityType
 from tests.factories import SubscriptionFactory
 from app.api.activity.models.activity_notification import ActivityNotification
 from tests.factories import MineTailingsStorageFacilityFactory
 from tests.factories import MineFactory
-from app.api.parties.party_appt.party_appt_jobs import PartyAppointmentJobs
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from tests.factories import MinePartyAppointmentFactory
@@ -53,10 +54,10 @@ class TestExpiringPartyAppointment():
 
     def test_notify_expiring_party_appointments_triggers_notification_when_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
-            with  mock.patch('app.api.parties.party_appt.party_appt_jobs.trigger_notification') as trigger_mock:
+            with  mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
                 expiring_appointment_mock.side_effect = [[setup_info['eor']]]
                 
-                PartyAppointmentJobs().notify_expiring_party_appointments()
+                notify_expiring_party_appointments()
 
                 idempotency_key = f'eor_expiring_60_days_{setup_info["eor"].mine_party_appt_guid}_{setup_info["eor"].end_date.strftime("%Y-%m-%d")}'
         
@@ -73,28 +74,29 @@ class TestExpiringPartyAppointment():
 
     def test_notify_expiring_party_appointments_does_not_trigger_when_not_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
-            with mock.patch('app.api.parties.party_appt.party_appt_jobs.trigger_notification') as trigger_mock:
+            with mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
                 expiring_appointment_mock.side_effect = [[]]
+                notify_expiring_party_appointments()
 
-                PartyAppointmentJobs().notify_expiring_party_appointments()
+                notify_expiring_party_appointments()
 
                 trigger_mock.assert_not_called()
 
     def test_notify_expiring_should_not_trigger_without_parties(self, setup_info):
-        PartyAppointmentJobs().notify_expiring_party_appointments()
+        notify_expiring_party_appointments()
 
         assert(ActivityNotification.count() == 0)
 
     def test_notify_expiring_should_trigger_for_subscriber(self, setup_info):
         SubscriptionFactory(mine=setup_info['mine'])
-        PartyAppointmentJobs().notify_expiring_party_appointments()
+        notify_expiring_party_appointments()
 
         assert(ActivityNotification.count() == 1)
 
     def test_notify_expiring_should_trigger_for_subscriber_doesnt_duplicate(self, setup_info):
         SubscriptionFactory(mine=setup_info['mine'])
-        PartyAppointmentJobs().notify_expiring_party_appointments()
-        PartyAppointmentJobs().notify_expiring_party_appointments()
+        notify_expiring_party_appointments()
+        notify_expiring_party_appointments()
 
         assert(ActivityNotification.count() == 1)
 
@@ -102,7 +104,7 @@ class TestExpiringPartyAppointment():
 class TestExpiredEor():
     def test_notify_expired_notifies_when_expired(self, expired_eor_info):
         SubscriptionFactory(mine=expired_eor_info['mine'])
-        PartyAppointmentJobs().notify_and_update_expired_party_appointments()
+        notify_and_update_expired_party_appointments()
 
         assert(ActivityNotification.count() == 1)
 
@@ -112,7 +114,7 @@ class TestExpiredEor():
         eor.save()
 
         SubscriptionFactory(mine=expired_eor_info['mine'])
-        PartyAppointmentJobs().notify_and_update_expired_party_appointments()
+        notify_and_update_expired_party_appointments()
 
         assert(ActivityNotification.count() == 0)
 
@@ -123,7 +125,7 @@ class TestExpiredEor():
         assert len(appts) == 1
         assert appts[0].status == MinePartyAppointmentStatus.active
 
-        PartyAppointmentJobs().notify_and_update_expired_party_appointments()
+        notify_and_update_expired_party_appointments()
 
         appt = MinePartyAppointment.find_by_mine_party_appt_guid(appts[0].mine_party_appt_guid)
 
@@ -133,7 +135,7 @@ class TestExpiredEor():
     
     def test_notify_expired_party_appointments_triggers_correct_notification_data(self, expired_eor_info):
         sub = SubscriptionFactory(mine=expired_eor_info['mine'])
-        appts = list(PartyAppointmentJobs().notify_and_update_expired_party_appointments())
+        appts = list(notify_and_update_expired_party_appointments())
 
         assert(len(appts) == 1)
 

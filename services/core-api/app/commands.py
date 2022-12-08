@@ -83,18 +83,18 @@ def register_commands(app):
 
     @app.cli.command()
     def notify_expiring_party_appointments():
-        from app.api.parties.party_appt.party_appt_jobs import PartyAppointmentJobs
+        from app.api.parties.party_appt import notify_expiring_party_appointments
         from app import auth
         auth.apply_security = False
 
         with current_app.app_context():
-            PartyAppointmentJobs().notify_expiring_party_appointments()
+            notify_expiring_party_appointments()
 
     @app.cli.command()
     def notify_and_update_expired_party_appointments():
-        from app.api.parties.party_appt.party_appt_jobs import PartyAppointmentJobs
+        from app.api.parties.party_appt import notify_and_update_expired_party_appointments
         from app import auth
         auth.apply_security = False
 
         with current_app.app_context():
-            PartyAppointmentJobs().notify_and_update_expired_party_appointments()
+            notify_and_update_expired_party_appointments()

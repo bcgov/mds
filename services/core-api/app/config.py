@@ -168,19 +168,21 @@ class Config(object):
 
     # Celery settings
     CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
+    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}'
+    CELERY_READBEAT_BROKER_URL = f'{CELERY_BROKER_URL}'
     CELERY_DEFAULT_QUEUE = 'core_tasks'
 
-    # Celery Beat Schedule
+
     CELERY_BEAT_SCHEDULE = {
-        "party_appt.notify_expiring_party_appointments": {
-            "task": "party_appt.notify_expiring_party_appointments",
-            "schedule": crontab(minute="*/15")
+        'notify_expiring_party_appointments': {
+            'task': 'app.api.parties.party_appt.tasks.notify_expiring_party_appointments',
+            'schedule': crontab(),
         },
-        "party_appt.notify_and_update_expired_party_appointments": {
-            "task:": "party_appt.notify_and_update_expired_party_appointments",
-            "schedule": crontab(minute="*/15")
-        }
+        'notify_and_update_expired_party_appointments': {
+            'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
+            'schedule': crontab(),
+        },
+
     }
 
 
