@@ -1,4 +1,6 @@
-from flask_restplus import Resource, reqparse, inputs
+from app.api.activity.models.activity_notification import ActivityType
+from flask_restplus import Resource, reqparse, fields, inputs
+from flask import request, current_app
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -15,7 +17,7 @@ from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.party import Party
-from app.api.activity.utils import trigger_notifcation
+from app.api.activity.utils import trigger_notification
 
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
 
@@ -344,11 +346,11 @@ class MineIncidentResource(Resource, UserMixin):
                     # Need to send an email to the proponent and OIC with mostly same content just slightly different.
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
-                    trigger_notifcation(f'A new Mine Incident has been created for ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    trigger_notification(f'A new Mine Incident has been created for ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 if value == 'FRS':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
-                    trigger_notifcation(f'A final report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    trigger_notification(f'A final report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 setattr(incident, key, value)
             else:
                 setattr(incident, key, value)

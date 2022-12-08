@@ -2,6 +2,7 @@ import os
 
 from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
+from celery.schedules import crontab
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -164,6 +165,25 @@ class Config(object):
     TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', 'templates')
     TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/project/')
     TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template.xlsx')
+
+    # Celery settings
+    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}'
+    CELERY_READBEAT_BROKER_URL = f'{CELERY_BROKER_URL}'
+    CELERY_DEFAULT_QUEUE = 'core_tasks'
+
+
+    CELERY_BEAT_SCHEDULE = {
+        'notify_expiring_party_appointments': {
+            'task': 'app.api.parties.party_appt.tasks.notify_expiring_party_appointments',
+            'schedule': crontab(minute="*/15"),
+        },
+        'notify_and_update_expired_party_appointments': {
+            'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
+            'schedule': crontab(minute="*/15"),
+        },
+
+    }
 
 
 class TestConfig(Config):
