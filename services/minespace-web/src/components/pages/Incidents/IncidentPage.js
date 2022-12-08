@@ -492,19 +492,19 @@ export class IncidentPage extends Component {
             values?.reported_to_inspector_contact_date,
             values?.reported_to_inspector_contact_time
           )
-        : null,
+        : values?.reported_timestamp,
       johsc_worker_rep_contact_timestamp: johscWorkerRepDateSet
         ? this.formatTimestamp(
             values?.johsc_worker_rep_contact_date,
             values?.johsc_worker_rep_contact_time
           )
-        : null,
+        : values?.johsc_worker_rep_contact_timestamp,
       johsc_management_rep_contact_timestamp: johscManagementRepDateSet
         ? this.formatTimestamp(
             values?.johsc_management_rep_contact_date,
             values?.johsc_management_rep_contact_time
           )
-        : null,
+        : values?.johsc_management_rep_contact_timestamp,
       mine_determination_type_code:
         mineDeterminationTypeCode ?? values?.mine_determination_type_code,
     };
