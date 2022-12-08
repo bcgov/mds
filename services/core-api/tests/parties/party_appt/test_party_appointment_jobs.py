@@ -75,7 +75,7 @@ class TestExpiringPartyAppointment():
     def test_notify_expiring_party_appointments_does_not_trigger_when_not_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
             with mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
-                expiring_appointment_mock.side_effect = [[]]
+                expiring_appointment_mock.side_effect = [[], []]
                 notify_expiring_party_appointments()
 
                 notify_expiring_party_appointments()
