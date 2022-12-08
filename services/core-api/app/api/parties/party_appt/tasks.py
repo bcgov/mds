@@ -37,7 +37,6 @@ def notify_expired_party_appointments(expired_parties):
 
     return list(_notify_party_appointments(expired_parties, message, ActivityType.tsf_eor_expired))
 
-@classmethod
 def _notify_party_appointments(parties, message, activity_type):
     created_notifications = [] 
     for party in parties:
