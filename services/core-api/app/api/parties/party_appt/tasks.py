@@ -7,7 +7,7 @@ from app.tasks.celery import celery
 
 
 @celery.task()
-def notify_expiring_party_appointments(task):
+def notify_expiring_party_appointments():
     expiring_parties = MinePartyAppointment.find_expiring_appointments('EOR', 60)
     message = lambda party: f'60 days notice Engineer of Record expiry for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
@@ -17,7 +17,7 @@ def notify_expiring_party_appointments(task):
     return notifications
 
 @celery.task()
-def notify_and_update_expired_party_appointments(task):
+def notify_and_update_expired_party_appointments():
     expired_parties = MinePartyAppointment.find_expired_appointments('EOR')
 
     MinePartyAppointment.update_status_many(

@@ -176,11 +176,11 @@ class Config(object):
     CELERY_BEAT_SCHEDULE = {
         'notify_expiring_party_appointments': {
             'task': 'app.api.parties.party_appt.tasks.notify_expiring_party_appointments',
-            'schedule': crontab(),
+            'schedule': crontab(minute="*/15"),
         },
         'notify_and_update_expired_party_appointments': {
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
-            'schedule': crontab(),
+            'schedule': crontab(minute="*/15"),
         },
 
     }
