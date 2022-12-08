@@ -13,6 +13,11 @@ from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 
+from app.api.services.email_service import EmailService
+from app.api.services.css_sso_service import CSSService
+from app.config import Config
+from app.api.utils.access_decorators import EDIT_TSF
+
 
 class MinePartyAppointmentStatus(str, Enum):
     active = 'active'
@@ -316,6 +321,37 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
             if previous_mpa_ended:
                 self.status = MinePartyAppointmentStatus.active
+
+    def send_party_assigned_email(self):
+        """
+        Emails appropriate users when new party appointed
+            EoR: all users with core_edit_tsf role
+        """
+
+        party_title = 'Engineer of Record'
+        party_page = 'engineer-of-record'
+        email_body = open("app/templates/email/mine_party_appt/minespace_new_eor_email.html", "r").read()
+        recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
+
+        button_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings-storage-facility/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
+        MINESPACE_LINK = "https://minespace.gov.bc.ca/"
+        
+        email_context = {
+            "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
+            "start_date": self.start_date.strftime('%b %d %Y'),
+            "party": {                
+                "first_name": self.party.first_name,
+                "last_name": self.party.party_name
+            },
+            "mine": {
+                "mine_name": self.mine.mine_name,
+                "mine_no": self.mine.mine_no
+            },
+            "minespace_appt_link": button_link,
+            "minespace_login_link": MINESPACE_LINK
+        }
+        subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'        
+        EmailService.send_template_email(subject, recipients, email_body, email_context)
 
     @classmethod
     def end_current(cls, mine_guid, mine_party_appt_type_code, new_start_date, related_guid=None, permit=None, validate_new_start_date=False, fail_on_no_appointments=True):

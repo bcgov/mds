@@ -50,8 +50,6 @@ class CSSService():
         '''
         
         url = f'{Config.CSS_API_URL}/{Config.CSS_ENV}/user-role-mappings?roleName={rolename}'
-        current_app.logger.info(url)
-
         auth_token = CSSService.get_css_auth_token()
         headers = {'Authorization': f'Bearer {auth_token}'}
 

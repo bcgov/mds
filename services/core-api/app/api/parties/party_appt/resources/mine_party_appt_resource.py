@@ -210,30 +210,8 @@ class MinePartyApptResource(Resource, UserMixin):
                 trigger_notification(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', ActivityType.eor_created, mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
 
                 if is_minespace_user():
-
-                    link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{mine.mine_guid}/tailings-storage-facility/{tsf.mine_tailings_storage_facility_guid}/engineer-of-record'
-
-                    minespace_body = open("app/templates/email/eor/minespace_new_eor_email.html", "r").read()
-                    minespace_context = {
-                        "tsf_name": tsf.mine_tailings_storage_facility_name,
-
-                        "eor": {
-                            "start_date": start_date.strftime('%b %d %Y'),
-                            "first_name": party.first_name,
-                            "last_name": party.party_name
-                        },
-                        "mine": {
-                            "mine_name": mine.mine_name,
-                            "mine_no": mine.mine_no
-                        },
-                        "minespace_appt_link": link,
-                        "minespace_login_link": "https://minespace.gov.bc.ca/"
-                    }
-                    current_app.logger.debug(minespace_context)
-                    subject = f'{mine.mine_name}: A new Engineer of Record has been assigned'
-
-                    recipients = CSSService.get_recipients_by_rolename("core_edit_tsf")
-                    EmailService.send_template_email(subject, recipients, minespace_body, minespace_context)
+                    new_mpa.send_party_assigned_email()
+                    
             if mine_party_appt_type_code == "TQP":
                 trigger_notification(f'A new Qualified Person for {mine.mine_name} has been assigned.', ActivityType.qfp_created, mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
 
