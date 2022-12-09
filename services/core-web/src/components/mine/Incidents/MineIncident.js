@@ -164,10 +164,10 @@ export class MineIncident extends Component {
       ...values?.final_report_documents,
       ...values?.internal_ministry_documents,
     ];
+
     return {
       ...values,
       updated_documents: documents,
-      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
       mine_determination_type_code: mineDeterminationTypeCode,
     };
   };
@@ -175,8 +175,6 @@ export class MineIncident extends Component {
   formatInitialValues = (incident) => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     mine_determination_type_code: incident?.mine_determination_type_code
       ? incident.mine_determination_type_code === "DO"
       : null,
