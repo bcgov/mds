@@ -465,13 +465,6 @@ export class IncidentPage extends Component {
     if (typeof values?.mine_determination_type_code === "boolean") {
       mineDeterminationTypeCode = values.mine_determination_type_code ? "DO" : "NDO";
     }
-
-    const reportedToInspectorDateSet =
-      values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
-    const johscWorkerRepDateSet =
-      values?.johsc_worker_rep_contact_date && values?.johsc_worker_rep_contact_time;
-    const johscManagementRepDateSet =
-      values?.johsc_management_rep_contact_date && values?.johsc_management_rep_contact_time;
     const updatedDocuments = [
       ...new Map(
         [
@@ -486,25 +479,6 @@ export class IncidentPage extends Component {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: updatedDocuments,
-      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
-      reported_timestamp: reportedToInspectorDateSet
-        ? this.formatTimestamp(
-            values?.reported_to_inspector_contact_date,
-            values?.reported_to_inspector_contact_time
-          )
-        : values?.reported_timestamp,
-      johsc_worker_rep_contact_timestamp: johscWorkerRepDateSet
-        ? this.formatTimestamp(
-            values?.johsc_worker_rep_contact_date,
-            values?.johsc_worker_rep_contact_time
-          )
-        : values?.johsc_worker_rep_contact_timestamp,
-      johsc_management_rep_contact_timestamp: johscManagementRepDateSet
-        ? this.formatTimestamp(
-            values?.johsc_management_rep_contact_date,
-            values?.johsc_management_rep_contact_time
-          )
-        : values?.johsc_management_rep_contact_timestamp,
       mine_determination_type_code:
         mineDeterminationTypeCode ?? values?.mine_determination_type_code,
     };
@@ -513,26 +487,6 @@ export class IncidentPage extends Component {
   formatInitialValues = (incident) => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
-    reported_to_inspector_contact_date: incident?.reported_timestamp
-      ? moment(incident?.reported_timestamp).format("YYYY-MM-DD")
-      : null,
-    reported_to_inspector_contact_time: incident?.reported_timestamp
-      ? moment(incident?.reported_timestamp).format("HH:mm")
-      : null,
-    johsc_worker_rep_contact_date: incident?.johsc_worker_rep_contact_timestamp
-      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("YYYY-MM-DD")
-      : null,
-    johsc_worker_rep_contact_time: incident?.johsc_worker_rep_contact_timestamp
-      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("HH:mm")
-      : null,
-    johsc_management_rep_contact_date: incident?.johsc_management_rep_contact_timestamp
-      ? moment(incident?.johsc_management_rep_contact_timestamp).format("YYYY-MM-DD")
-      : null,
-    johsc_management_rep_contact_time: incident?.johsc_management_rep_contact_timestamp
-      ? moment(incident?.johsc_management_rep_contact_timestamp).format("HH:mm")
-      : null,
     mine_determination_type_code: incident?.mine_determination_type_code
       ? incident.mine_determination_type_code === "DO"
       : null,
