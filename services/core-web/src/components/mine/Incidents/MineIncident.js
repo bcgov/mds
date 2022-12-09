@@ -125,6 +125,14 @@ export class MineIncident extends Component {
   handleSaveData = () => {
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
     const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (!this.props.formValues.status_code) {
+      if (!this.props.formValues.mine_determination_type_code) {
+        this.props.formValues.status_code = "WNS";
+      } else {
+        this.props.formValues.status_code = "AFR";
+      }
+    }
+
     if (errors.length === 0) {
       if (!incidentExists) {
         return this.handleCreateMineIncident(this.formatPayload(this.props.formValues));
