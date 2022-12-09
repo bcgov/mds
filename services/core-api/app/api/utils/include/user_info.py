@@ -32,7 +32,7 @@ class User:
         if has_request_context():
 
             raw_info = self.get_user_raw_info()
-            realms = list(set(VALID_REALM) & set(raw_info['client_roles']))
+            realms = list(set(VALID_REALM) & set(raw_info.get('client_roles') or []))
             return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
                 'preferred_username']
         else:
