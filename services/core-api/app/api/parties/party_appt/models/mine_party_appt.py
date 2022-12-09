@@ -7,11 +7,11 @@ from sqlalchemy import and_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
-from app.extensions import db
+from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES, TIMEOUT_24_HOURS
 
 from app.api.services.email_service import EmailService
 from app.api.services.css_sso_service import CSSService
@@ -331,7 +331,12 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
         email_body = open("app/templates/email/mine_party_appt/minespace_new_eor_email.html", "r").read()
-        recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
+        
+        EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
+        recipients = cache.get(EDIT_TSF_EMAILS)
+        if not recipients:
+            recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
+            cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
 
         button_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings-storage-facility/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
         MINESPACE_LINK = "https://minespace.gov.bc.ca/"

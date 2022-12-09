@@ -1,6 +1,8 @@
 import requests
 from flask import current_app
 from app.config import Config
+from app.extensions import cache
+from app.api.constants import CSS_AUTH_TOKEN
 
 
 class CSSService():
@@ -14,6 +16,10 @@ class CSSService():
     @staticmethod
     def get_css_auth_token():
         '''Gets access token required for all requests'''
+
+        auth_token = cache.get(CSS_AUTH_TOKEN)
+        if auth_token is not None:
+            return auth_token
 
         url = Config.CSS_TOKEN_URL
         data = {'grant_type': 'client_credentials'}
@@ -39,6 +45,9 @@ class CSSService():
             current_app.logger.debug(resp_data)
             current_app.logger.error(message)
             return
+
+        timeout = resp_data.get('expires_in') - 10 # should be 300
+        cache.set(CSS_AUTH_TOKEN, auth_token, timeout=timeout)
         return auth_token
 
     @staticmethod
