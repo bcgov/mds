@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from pytz import timezone, utc
 from enum import Enum
 from http.client import BAD_REQUEST
 
@@ -330,17 +331,20 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
-        email_body = open("app/templates/email/mine_party_appt/minespace_new_eor_email.html", "r").read()
+        email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()
         
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
         recipients = cache.get(EDIT_TSF_EMAILS)
         if not recipients:
             recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
             cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
+        current_app.logger.info('recipients:')
+        current_app.logger.debug(recipients)
 
-        button_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings-storage-facility/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
-        MINESPACE_LINK = "https://minespace.gov.bc.ca/"
-        
+        button_link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
+        # change from UTC to PST
+        submitted_at = datetime.now().replace(tzinfo=utc).astimezone(timezone("America/Vancouver")).strftime('%b %d %Y at %H:%M PST')
+
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
             "start_date": self.start_date.strftime('%b %d %Y'),
@@ -352,8 +356,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": self.mine.mine_name,
                 "mine_no": self.mine.mine_no
             },
-            "minespace_appt_link": button_link,
-            "minespace_login_link": MINESPACE_LINK
+            "core_appt_link": button_link,
+            "submitted_at": submitted_at
         }
         subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'        
         EmailService.send_template_email(subject, recipients, email_body, email_context)
