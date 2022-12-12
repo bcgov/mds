@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from pytz import timezone, utc
 from enum import Enum
 from http.client import BAD_REQUEST
 
@@ -18,6 +17,7 @@ from app.api.services.email_service import EmailService
 from app.api.services.css_sso_service import CSSService
 from app.config import Config
 from app.api.utils.access_decorators import EDIT_TSF
+from app.api.utils.helpers import format_email_datetime_to_string
 
 
 class MinePartyAppointmentStatus(str, Enum):
@@ -343,11 +343,12 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
         button_link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
         # change from UTC to PST
-        submitted_at = datetime.now().replace(tzinfo=utc).astimezone(timezone("America/Vancouver")).strftime('%b %d %Y at %H:%M PST')
+        submitted_at = format_email_datetime_to_string(datetime.now())
+        start_date = self.start_date.strftime('%b %d %Y') if self.start_date else 'No date provided',
 
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
-            "start_date": self.start_date.strftime('%b %d %Y'),
+            "start_date": start_date
             "party": {                
                 "first_name": self.party.first_name,
                 "last_name": self.party.party_name
