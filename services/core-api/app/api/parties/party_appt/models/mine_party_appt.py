@@ -348,7 +348,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
-            "start_date": start_date
+            "start_date": start_date,
             "party": {                
                 "first_name": self.party.first_name,
                 "last_name": self.party.party_name
