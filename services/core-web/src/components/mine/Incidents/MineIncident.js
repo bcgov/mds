@@ -24,6 +24,7 @@ import {
   removeDocumentFromMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
+import * as Strings from "@common/constants/strings";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
@@ -125,8 +126,28 @@ export class MineIncident extends Component {
   handleSaveData = () => {
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
     const errors = Object.keys(flattenObject(this.props.formErrors));
+
+    let determinationTypeCode = null;
+    if (
+      this.props.formValues.determination_type_code &&
+      this.props.formValues.determination_type_code ===
+        Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance
+    ) {
+      determinationTypeCode = true;
+    } else if (
+      this.props.formValues.determination_type_code &&
+      [
+        Strings.INCIDENT_DETERMINATION_TYPES.pending,
+        Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance,
+      ].includes(this.props.formValues.determination_type_code)
+    ) {
+      determinationTypeCode = false;
+    } else {
+      determinationTypeCode = this.props.formValues.mine_determination_type_code;
+    }
+
     if (!this.props.formValues.status_code) {
-      if (!this.props.formValues.mine_determination_type_code) {
+      if (!determinationTypeCode) {
         this.props.formValues.status_code = "WNS";
       } else if (this.props.formValues.final_report_documents.length > 0) {
         this.props.formValues.status_code = "FRS";
