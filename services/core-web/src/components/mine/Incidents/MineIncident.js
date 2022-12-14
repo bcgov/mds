@@ -128,6 +128,8 @@ export class MineIncident extends Component {
     if (!this.props.formValues.status_code) {
       if (!this.props.formValues.mine_determination_type_code) {
         this.props.formValues.status_code = "WNS";
+      } else if (this.props.formValues.final_report_documents.length > 0) {
+        this.props.formValues.status_code = "FRS";
       } else {
         this.props.formValues.status_code = "AFR";
       }
