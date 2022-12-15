@@ -790,7 +790,10 @@ const renderMinistryFollowUp = (props, isEditMode) => {
                 name="followup_inspection_date"
                 placeholder="Please select date..."
                 component={renderConfig.DATE}
-                validate={[dateNotInFuture]}
+                validate={[
+                  dateNotInFuture,
+                  dateNotBeforeStrictOther(props.formValues.incident_timestamp),
+                ]}
                 disabled={!isEditMode}
               />
             </Form.Item>
