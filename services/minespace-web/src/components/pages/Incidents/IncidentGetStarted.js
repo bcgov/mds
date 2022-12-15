@@ -29,7 +29,7 @@ export const IncidentGetStarted = () => {
           All reportable incidents must be{" "}
           <b>reported in writing to the Ministry within 16 hours</b> of the incident occurrence.
           This includes a reportable incident that caused, or had the potential to cause, serious
-          injury or loss of life, or is classified as a dangerous occurrence. (Mines code, section
+          injury or loss of life, or is classified as a dangerous occurrence. (HSRC, section
           1.7.1(1)(b))
         </Typography.Paragraph>
         <Typography.Paragraph strong>
@@ -57,7 +57,7 @@ export const IncidentGetStarted = () => {
           The scene of a reportable incident must not be disturbed (e.g., to return to regular
           operations), except for the purpose of <b>saving life</b> or{" "}
           <b>relieving human suffering</b>. This is to preserve evidence for both the mine’s and the
-          Ministry’s investigations. (Mines code, section 1.7.3)
+          Ministry’s investigations. (HSRC, section 1.7.3)
         </Typography.Paragraph>
         <Typography.Paragraph>
           Only your OHSC worker representative or an inspector can release the scene.
@@ -67,7 +67,7 @@ export const IncidentGetStarted = () => {
         </Typography.Title>
         <Typography.Paragraph>
           Mines must investigate the reportable incident and prepare an <b>investigation report</b>{" "}
-          to be submitted to an Inspector of Mines (Mines code, sections 1.7.1(4) & 1.7.2).
+          to be submitted to an Inspector of Mines (HSRC, sections 1.7.1(4) & 1.7.2).
         </Typography.Paragraph>
         <Typography.Paragraph>
           After submitting your written notice of a reportable incident through MineSpace you are

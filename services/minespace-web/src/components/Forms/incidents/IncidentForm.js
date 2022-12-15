@@ -107,8 +107,8 @@ const confirmationSubmission = (props) =>
               />
               &nbsp;&nbsp;
             </span>
-            I understand that this application and supporting files are submitted on behalf of the
-            owner, agent or mine manager of this project.
+            I confirm that any information provided is accurate and complete to the best of my
+            knowledge.
             <span style={{ color: "red" }}>*</span>
           </p>
         </>
