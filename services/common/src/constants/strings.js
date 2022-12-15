@@ -81,6 +81,15 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   inspectorInvestigation: "INS",
 };
 
+export const INCIDENT_CONTACT_METHOD_OPTIONS = [
+  { label: "Phone", value: "PHN" },
+  { label: "Email", value: "EML" },
+  { label: "Direct phone", value: "PHN", inspectorOnly: true },
+  { label: "Direct email", value: "EML", inspectorOnly: true },
+  { label: "Ministry reporting phone line", value: "MRP", inspectorOnly: true },
+  { label: "Ministry reporting email", value: "MRE", inspectorOnly: true },
+];
+
 export const BUSINESS_ROLES = {
   inspector: "INS",
   projectLead: "PRL",
