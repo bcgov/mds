@@ -654,8 +654,8 @@ const renderDangerousOccurenceDetermination = (formDisabled) => (
     <Col span={24}>
       <Typography.Title level={4}>Dangerous Occurrence Determination</Typography.Title>
       <Typography.Paragraph>
-        If you determine that this incident was a dangerous occurance will be required to submit
-        your investigation report.
+        You will be required to submit a final investigation report if this incident is determined
+        to be a dangerous occurrence.
       </Typography.Paragraph>
     </Col>
     <Col md={12} xs={24}>
