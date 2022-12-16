@@ -80,6 +80,7 @@ const defaultParams = {
   incident_status: [],
   codes: [],
   determination: [],
+  responsible_inspector_party: [],
 };
 
 export class IncidentsHomePage extends Component {
@@ -90,6 +91,7 @@ export class IncidentsHomePage extends Component {
 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
+    console.log("In componentDidMount...", params);
     this.setState(
       (prevState) => ({
         params: {
@@ -99,6 +101,7 @@ export class IncidentsHomePage extends Component {
       }),
       () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
     );
+    console.log("state: ", this.state);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,6 +114,7 @@ export class IncidentsHomePage extends Component {
 
   renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
+    console.log("parsedParams: ", parsedParams);
     this.props.fetchIncidents(parsedParams).then(() => {
       this.setState({ incidentsLoaded: true });
     });
@@ -133,12 +137,18 @@ export class IncidentsHomePage extends Component {
   };
 
   handleIncidentSearch = (params) => {
+    console.log("In handleIncidentSearch - params: ", params);
     this.setState(
       {
-        params,
+        params: { ...params, page: defaultParams.page },
       },
-      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
+      () => {
+        const url = router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params);
+        console.log("url: ", url);
+        this.props.history.replace(url);
+      }
     );
+    console.log("state.params: ", this.state.params);
   };
 
   onPageChange = (page, per_page) => {
@@ -146,6 +156,7 @@ export class IncidentsHomePage extends Component {
       (prevState) => ({ params: { ...prevState.params, page, per_page } }),
       () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
     );
+    console.log("state.params: ", this.state.params);
   };
 
   openViewMineIncidentModal = (event, incident) => {

@@ -11,6 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.incidents.models.mine_incident import MineIncident
+from app.api.parties.party.models.party import Party
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.response_models import PAGINATED_INCIDENT_LIST
 
@@ -35,6 +36,7 @@ class IncidentsResource(Resource, UserMixin):
             'region': 'List of regions the mines associated with the incident are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
+            'responsible_inspector_party': 'The inspector responsible for this incident',
         })
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_INCIDENT_LIST, code=200)
@@ -52,6 +54,7 @@ class IncidentsResource(Resource, UserMixin):
             'sort_field': request.args.get('sort_field', type=str),
             'sort_dir': request.args.get('sort_dir', type=str),
             'mine_guid': request.args.get('mine_guid', type=str),
+            'responsible_inspector_party': request.args.get('responsible_inspector_party', type=str)
         }
 
         records, pagination_details = self._apply_filters_and_pagination(args)
@@ -75,7 +78,8 @@ class IncidentsResource(Resource, UserMixin):
             "incident_timestamp": 'MineIncident',
             "determination": 'MineIncident',
             "incident_status": 'MineIncident',
-            "mine_name": 'Mine',
+            'first_name': 'Party',
+            'party_name': 'Party',
         }
 
         sort_field = {
@@ -84,6 +88,7 @@ class IncidentsResource(Resource, UserMixin):
             "determination": 'determination_type_code',
             "incident_status": 'status_code',
             "mine_name": 'mine_name',
+            "responsible_inspector_party": "responsible_inspector_party",
         }
 
         query = MineIncident.query.filter_by(deleted_ind=False).join(Mine)
@@ -124,6 +129,25 @@ class IncidentsResource(Resource, UserMixin):
         if args["region"]:
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))
 
+        if args['responsible_inspector_party'] is not None:
+            inspector_items = args['responsible_inspector_party'].split()
+            inspector_conditions=[]
+            if len(inspector_items)==1:
+                inspector_conditions=[
+                   self._build_filter('Party','first_name','ilike','%{}%'.format(inspector_items[0])),
+                    self._build_filter('Party','party_name','ilike','%{}%'.format(inspector_items[0]))
+                ]
+            elif len(inspector_items)>1:
+                inspector_conditions=[
+                   self._build_filter('Party','first_name','ilike','%{}%'.format(inspector_items[0])),
+                    self._build_filter('Party','party_name','ilike','%{}%'.format(inspector_items[1]))
+                ]
+            else:
+                inspector_conditions=[]
+            if len(inspector_conditions) ==2:
+                conditions.append({'or': inspector_conditions})
+                query = MineIncident.query.filter_by(deleted_ind=False).join(Mine).join(Party, MineIncident.responsible_inspector_party_guid == Party.party_guid)
+
         filtered_query = apply_filters(query, conditions)
 
         # Apply sorting
@@ -138,6 +162,9 @@ class IncidentsResource(Resource, UserMixin):
                     'field': 'mine_incident_id',
                     'direction': args['sort_dir']
                 }]
+            # elif sort_model == 'Party':
+            #     sort_criteria = [{'model': sort_model, 'field': 'first_name', 'direction': args['sort_dir']},
+            #                      {'model': sort_model, 'field': 'party_name', 'direction': args['sort_dir']}]
             else:
                 # sorting by code section is not applicable since a single incident may have many sections associated.
                 sort_criteria = [{
