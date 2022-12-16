@@ -147,6 +147,8 @@ class EmailService():
                 'Not sending email: Recipient override must be set when not in prod environment!')
             return
 
+        original_recipients = recipients
+
         if Config.EMAIL_RECIPIENT_OVERRIDE:
             recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
 
@@ -191,7 +193,7 @@ class EmailService():
             return
 
         current_app.logger.debug(
-            f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}'
+            f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )
 
     # NOTE: See here for details: https://ches.nrs.gov.bc.ca/api/v1/docs#tag/Email
@@ -228,6 +230,8 @@ class EmailService():
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
             return
+
+        original_recipients = recipients
 
         if Config.EMAIL_RECIPIENT_OVERRIDE:
             recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
@@ -277,5 +281,5 @@ class EmailService():
             return
 
         current_app.logger.debug(
-            f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}'
+            f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )

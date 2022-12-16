@@ -334,12 +334,12 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()
         
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
+
         recipients = cache.get(EDIT_TSF_EMAILS)
         if not recipients:
             recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
-            cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
-        current_app.logger.info('recipients:')
-        current_app.logger.debug(recipients)
+            if recipients:
+                cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
 
         button_link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
         # change from UTC to PST
