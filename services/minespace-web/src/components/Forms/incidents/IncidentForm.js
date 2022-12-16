@@ -16,7 +16,6 @@ import {
   number,
   dateNotInFuture,
   dateNotBeforeStrictOther,
-  timeNotBeforeOther,
   wholeNumber,
   requiredRadioButton,
 } from "@common/utils/Validate";
@@ -29,10 +28,10 @@ import {
   getDropdownIncidentFollowupActionOptions,
 } from "@common/selectors/staticContentSelectors";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
-import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@/constants/strings";
 import DocumentTable from "@/components/common/DocumentTable";
 import { uploadDateColumn, uploadedByColumn } from "@/components/common/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
@@ -294,28 +293,16 @@ const renderIncidentDetails = (props, formDisabled) => {
           including them.
         </Typography.Paragraph>
       </Col>
-      <Col md={12} xs={24}>
-        <Form.Item label="Incident date">
+      <Col span={24}>
+        <Form.Item label="Incident date and time">
           <Field
-            id="incident_date"
-            name="incident_date"
-            placeholder="Please select date"
+            id="incident_timestamp"
+            name="incident_timestamp"
+            placeholder="Please select date and time"
             component={renderConfig.DATE}
+            showTime
             validate={[required, dateNotInFuture]}
             disabled={formDisabled}
-          />
-        </Form.Item>
-      </Col>
-      <Col md={12} xs={24}>
-        <Form.Item label="Incident time">
-          <Field
-            id="incident_time"
-            name="incident_time"
-            placeholder="Please select time"
-            component={renderConfig.TIME}
-            validate={[required]}
-            disabled={formDisabled}
-            fullWidth
           />
         </Form.Item>
       </Col>
@@ -440,37 +427,19 @@ const renderIncidentDetails = (props, formDisabled) => {
       </Col>
       {inspectorContacted && (
         <>
-          <Col md={6} xs={24}>
-            <Form.Item label="Date">
+          <Col md={12} xs={24}>
+            <Form.Item label="Date and time">
               <Field
-                id="reported_to_inspector_contact_date"
-                name="reported_to_inspector_contact_date"
+                id="reported_timestamp"
+                name="reported_timestamp"
                 component={renderConfig.DATE}
+                showTime
                 disabled={formDisabled}
-                placeholder="Please select date"
+                placeholder="Please select date and time"
                 validate={[
                   required,
                   dateNotInFuture,
-                  dateNotBeforeStrictOther(props.formValues.incident_date),
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={6} xs={24}>
-            <Form.Item label="Time">
-              <Field
-                id="reported_to_inspector_contact_time"
-                name="reported_to_inspector_contact_time"
-                component={renderConfig.TIME}
-                disabled={formDisabled}
-                placeholder="Please select time"
-                validate={[
-                  required,
-                  timeNotBeforeOther(
-                    props.formValues.reported_to_inspector_contact_date,
-                    props.formValues.incident_date,
-                    props.formValues.incident_time
-                  ),
+                  dateNotBeforeStrictOther(props.formValues.incident_timestamp),
                 ]}
               />
             </Form.Item>
@@ -518,37 +487,19 @@ const renderIncidentDetails = (props, formDisabled) => {
       </Col>
       {workerRepContacted && (
         <>
-          <Col md={6} xs={24}>
-            <Form.Item label="Date">
+          <Col md={12} xs={24}>
+            <Form.Item label="Date and time">
               <Field
-                id="johsc_worker_rep_contact_date"
-                name="johsc_worker_rep_contact_date"
+                id="johsc_worker_rep_contact_timestamp"
+                name="johsc_worker_rep_contact_timestamp"
                 component={renderConfig.DATE}
+                showTime
                 disabled={formDisabled}
-                placeholder="Please select date"
+                placeholder="Please select date and time"
                 validate={[
                   required,
                   dateNotInFuture,
-                  dateNotBeforeStrictOther(props.formValues.incident_date),
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={6} xs={24}>
-            <Form.Item label="Time">
-              <Field
-                id="johsc_worker_rep_contact_time"
-                name="johsc_worker_rep_contact_time"
-                component={renderConfig.TIME}
-                disabled={formDisabled}
-                placeholder="Please select time"
-                validate={[
-                  required,
-                  timeNotBeforeOther(
-                    props.formValues.johsc_worker_rep_contact_date,
-                    props.formValues.incident_date,
-                    props.formValues.incident_time
-                  ),
+                  dateNotBeforeStrictOther(props.formValues.incident_timestamp),
                 ]}
               />
             </Form.Item>
@@ -596,37 +547,19 @@ const renderIncidentDetails = (props, formDisabled) => {
       </Col>
       {managementRepContacted && (
         <>
-          <Col md={6} xs={24}>
-            <Form.Item label="Date">
+          <Col md={12} xs={24}>
+            <Form.Item label="Date and time">
               <Field
-                id="johsc_management_rep_contact_date"
-                name="johsc_management_rep_contact_date"
+                id="johsc_management_rep_contact_timestamp"
+                name="johsc_management_rep_contact_timestamp"
                 component={renderConfig.DATE}
+                showTime
                 disabled={formDisabled}
-                placeholder="Please select date"
+                placeholder="Please select date and time"
                 validate={[
                   required,
                   dateNotInFuture,
-                  dateNotBeforeStrictOther(props.formValues.incident_date),
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={6} xs={24}>
-            <Form.Item label="Time">
-              <Field
-                id="johsc_management_rep_contact_time"
-                name="johsc_management_rep_contact_time"
-                component={renderConfig.TIME}
-                disabled={formDisabled}
-                placeholder="Please select time"
-                validate={[
-                  required,
-                  timeNotBeforeOther(
-                    props.formValues.johsc_management_rep_contact_date,
-                    props.formValues.incident_date,
-                    props.formValues.incident_time
-                  ),
+                  dateNotBeforeStrictOther(props.formValues.incident_timestamp),
                 ]}
               />
             </Form.Item>

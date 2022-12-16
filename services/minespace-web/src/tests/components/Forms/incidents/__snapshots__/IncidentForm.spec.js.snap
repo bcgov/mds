@@ -199,45 +199,22 @@ exports[`IncidentForm renders properly 1`] = `
           </Paragraph>
         </Col>
         <Col
-          md={12}
-          xs={24}
+          span={24}
         >
           <FormItem
             hasFeedback={false}
-            label="Incident date"
+            label="Incident date and time"
           >
             <Field
               component={[Function]}
               disabled={false}
-              id="incident_date"
-              name="incident_date"
-              placeholder="Please select date"
+              id="incident_timestamp"
+              name="incident_timestamp"
+              placeholder="Please select date and time"
+              showTime={true}
               validate={
                 Array [
                   [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <FormItem
-            hasFeedback={false}
-            label="Incident time"
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              fullWidth={true}
-              id="incident_time"
-              name="incident_time"
-              placeholder="Please select time"
-              validate={
-                Array [
                   [Function],
                 ]
               }

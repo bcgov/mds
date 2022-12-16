@@ -202,45 +202,22 @@ exports[`IncidentForm renders properly 1`] = `
               </FormItem>
             </Col>
             <Col
-              md={12}
-              xs={24}
+              span={24}
             >
               <FormItem
                 hasFeedback={false}
-                label="* Incident date"
+                label="* Incident date and time"
               >
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id="incident_date"
-                  name="incident_date"
-                  placeholder="Please select date..."
+                  id="incident_timestamp"
+                  name="incident_timestamp"
+                  placeholder="Please select date and time"
+                  showTime={true}
                   validate={
                     Array [
                       [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Incident time"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  fullWidth={true}
-                  id="incident_time"
-                  name="incident_time"
-                  placeholder="Please select time..."
-                  validate={
-                    Array [
                       [Function],
                     ]
                   }
@@ -469,7 +446,6 @@ exports[`IncidentForm renders properly 1`] = `
                   name="johsc_management_rep_contacted"
                 />
               </FormItem>
-              <br />
             </Col>
             <Col
               span={24}
@@ -728,6 +704,22 @@ exports[`IncidentForm renders properly 1`] = `
             >
               <FormItem
                 hasFeedback={false}
+                label="Was this person contacted?"
+              >
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id="reported_to_inspector_contacted"
+                  name="reported_to_inspector_contacted"
+                />
+              </FormItem>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <FormItem
+                hasFeedback={false}
                 label="Inspector responsible"
               >
                 <Field
@@ -772,6 +764,7 @@ exports[`IncidentForm renders properly 1`] = `
                   placeholder="Please select date..."
                   validate={
                     Array [
+                      [Function],
                       [Function],
                     ]
                   }
