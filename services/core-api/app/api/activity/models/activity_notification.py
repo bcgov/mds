@@ -59,7 +59,8 @@ def validate_document(document):
                     'type': 'dict',
                     'schema': {
                         'permit_no': {
-                            'type': 'string'
+                            'type': 'string',
+                            'nullable': True
                         }
                     }
                 },
