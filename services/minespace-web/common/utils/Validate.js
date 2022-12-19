@@ -262,13 +262,13 @@ export const validateDateRanges = (
   }
 
   const dateAppointments = existingAppointments.map((appt) => {
-    const appointment = { ...appt };
+    const appointment = { ...appt};
     appointment.start_date = appt.start_date ? toDate(appt.start_date) : MIN_DATE;
     appointment.end_date = appt.end_date ? toDate(appt.end_date) : MAX_DATE;
     return appointment;
   });
 
-  const newDateAppt = { ...newAppt };
+  const newDateAppt = { ...newAppt};
   newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
   newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
   let conflictingAppointments;
