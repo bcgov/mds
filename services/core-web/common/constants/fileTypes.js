@@ -61,4 +61,5 @@ export const SPATIAL = {
   ...UNIQUELY_SPATIAL,
   ".csv": "text/csv",
   ".xml": "application/xml",
+  ".shp.xml": "text/xml",
 };
