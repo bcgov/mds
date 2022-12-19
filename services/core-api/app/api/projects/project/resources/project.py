@@ -69,7 +69,7 @@ class ProjectResource(Resource, UserMixin):
             raise NotFound('Project not found')
 
         data = self.parser.parse_args()
-        project_lead_party_guid = data.get('project_lead_party_guid') if not is_minespace_user() else project.project_lead_party_guid
+        project_lead_party_guid = project.project_lead_party_guid if is_minespace_user() else data.get('project_lead_party_guid')
         project.update(project.project_title, project.proponent_project_id,
                        project_lead_party_guid, data.get('mrc_review_required', False),
                        data.get('contacts', []))
