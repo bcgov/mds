@@ -63,9 +63,7 @@ export const QualifiedPerson = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();
@@ -100,7 +98,7 @@ export const QualifiedPerson = (props) => {
       validateDateRanges(
         existingEors || [],
         { ...props.formValues?.qualified_person, start_date: val },
-        "TQP",
+        "Qualified Person",
         true
       )?.start_date || undefined
     );
@@ -118,29 +116,31 @@ export const QualifiedPerson = (props) => {
     <Row>
       <Col span={24}>
         <Row justify="space-between">
-            <Typography.Title level={3}>Qualified Person</Typography.Title>
+          <Typography.Title level={3}>Qualified Person</Typography.Title>
           {isCore ? (
             <Col span={12}>
               <Row justify="end" type="flex">
-                  <Popconfirm
-                    placement="top"
-                    title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
-                    okText="Yes"
-                    cancelText="No"
-                    onConfirm={openCreateQPModal}
-                  >
-                    <Button style={{ whiteSpace: "normal"}} type="primary">
-                        <PlusCircleFilled/>
-                        Update Qualified Person
-                    </Button>
-                  </Popconfirm>
-                  {formValues?.qualified_person?.update_timestamp && (<Typography.Paragraph style={{textAlign: "right"}} >
+                <Popconfirm
+                  placement="top"
+                  title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={openCreateQPModal}
+                >
+                  <Button style={{ whiteSpace: "normal" }} type="primary">
+                    <PlusCircleFilled />
+                    Update Qualified Person
+                  </Button>
+                </Popconfirm>
+                {formValues?.qualified_person?.update_timestamp && (
+                  <Typography.Paragraph style={{ textAlign: "right" }}>
                     <b>Last Updated</b>
                     <br />
                     {moment(props.formValues?.qualified_person.update_timestamp).format(
                       "DD-MM-YYYY H:mm"
                     )}
-                  </Typography.Paragraph>)}
+                  </Typography.Paragraph>
+                )}
               </Row>
             </Col>
           ) : (
@@ -164,7 +164,7 @@ export const QualifiedPerson = (props) => {
 
         {props.formValues?.qualified_person?.party_guid ? (
           <Alert
-            description="Assigning a new Qualified Person will replace the current QP and set the previous QP’s status to inactive."
+            description="Assigning a new Qualified Person will replace the current Qualified Person and set the previous Qualified Person’s status to inactive."
             showIcon
             type="info"
           />

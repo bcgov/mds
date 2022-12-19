@@ -153,7 +153,7 @@ export const EngineerOfRecord = (props) => {
       validateDateRanges(
         existingEors || [],
         { ...formValues?.engineer_of_record, start_date: val },
-        "EOR",
+        "Engineer of Record",
         true
       )?.start_date || undefined
     );
@@ -161,9 +161,7 @@ export const EngineerOfRecord = (props) => {
 
   const daysToEORExpiry =
     currentEor?.end_date &&
-    moment(currentEor.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentEor.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
   // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).
@@ -215,13 +213,13 @@ export const EngineerOfRecord = (props) => {
           {canAssignEor &&
             (formValues?.engineer_of_record?.party_guid ? (
               <Alert
-                description="Assigning a new Engineer of Record will replace the current EOR and set the previous EOR’s status to inactive."
+                description="Assigning a new Engineer of Record will replace the current Engineer of Record and set the previous Engineer of Record’s status to inactive."
                 showIcon
                 type="info"
               />
             ) : (
               <Alert
-                description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new EoR. A notification will be sent to the Ministry whereby their acknowledgment is required before the EoR is considered Active."
+                description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new Engineer of Record. A notification will be sent to the Ministry whereby their acknowledgment is required before the Engineer of Record is considered Active."
                 showIcon
                 type="info"
               />
@@ -282,7 +280,9 @@ export const EngineerOfRecord = (props) => {
                 pagination={false}
                 columns={columns(LinkButton)}
                 dataSource={currentEor.documents}
-                locale={{ emptyText: "This EoR does not currently have any documents" }}
+                locale={{
+                  emptyText: "This Engineer of Record does not currently have any documents",
+                }}
               />
             </div>
           )}
@@ -315,7 +315,7 @@ export const EngineerOfRecord = (props) => {
             </>
           )}
           <Typography.Title level={4} className="margin-large--top">
-            EOR Term
+            Engineer of Record Term
           </Typography.Title>
           <Row gutter={16}>
             <Col span={12}>
