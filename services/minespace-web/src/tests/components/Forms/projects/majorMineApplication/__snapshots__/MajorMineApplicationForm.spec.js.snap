@@ -85,6 +85,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".ain": "application/octet-stream",
           ".atx": "application/octet-stream",
           ".cpg": "application/octet-stream",
+          ".csv": "text/csv",
           ".dbf": "application/dbf",
           ".doc": "application/msword",
           ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -106,10 +107,12 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".sbn": "application/octet-stream",
           ".sbx": "application/octet-stream",
           ".shp": "application/octet-stream",
+          ".shp.xml": "text/xml",
           ".shpz": "application/octet-stream",
           ".shx": "application/octet-stream",
           ".wkt": "application/octet-stream",
           ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          ".xml": "application/xml",
         }
       }
       allowMultiple={true}
@@ -144,6 +147,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".ain": "application/octet-stream",
           ".atx": "application/octet-stream",
           ".cpg": "application/octet-stream",
+          ".csv": "text/csv",
           ".dbf": "application/dbf",
           ".doc": "application/msword",
           ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -165,10 +169,12 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".sbn": "application/octet-stream",
           ".sbx": "application/octet-stream",
           ".shp": "application/octet-stream",
+          ".shp.xml": "text/xml",
           ".shpz": "application/octet-stream",
           ".shx": "application/octet-stream",
           ".wkt": "application/octet-stream",
           ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          ".xml": "application/xml",
         }
       }
       allowMultiple={true}
@@ -218,6 +224,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".ain": "application/octet-stream",
           ".atx": "application/octet-stream",
           ".cpg": "application/octet-stream",
+          ".csv": "text/csv",
           ".dbf": "application/dbf",
           ".doc": "application/msword",
           ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -239,10 +246,12 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           ".sbn": "application/octet-stream",
           ".sbx": "application/octet-stream",
           ".shp": "application/octet-stream",
+          ".shp.xml": "text/xml",
           ".shpz": "application/octet-stream",
           ".shx": "application/octet-stream",
           ".wkt": "application/octet-stream",
           ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          ".xml": "application/xml",
         }
       }
       allowMultiple={true}
