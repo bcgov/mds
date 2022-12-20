@@ -54,7 +54,7 @@ class IncidentsResource(Resource, UserMixin):
             'sort_field': request.args.get('sort_field', type=str),
             'sort_dir': request.args.get('sort_dir', type=str),
             'mine_guid': request.args.get('mine_guid', type=str),
-            'responsible_inspector_party': request.args.get('responsible_inspector_party', type=str)
+            'responsible_inspector_party': request.args.getlist('responsible_inspector_party', type=str)
         }
 
         records, pagination_details = self._apply_filters_and_pagination(args)
@@ -130,22 +130,18 @@ class IncidentsResource(Resource, UserMixin):
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))
 
         if args['responsible_inspector_party'] is not None:
-            inspector_items = args['responsible_inspector_party'].split()
-            inspector_conditions=[]
-            if len(inspector_items)==1:
-                inspector_conditions=[
-                   self._build_filter('Party','first_name','ilike','%{}%'.format(inspector_items[0])),
-                    self._build_filter('Party','party_name','ilike','%{}%'.format(inspector_items[0]))
-                ]
-            elif len(inspector_items)>1:
-                inspector_conditions=[
-                   self._build_filter('Party','first_name','ilike','%{}%'.format(inspector_items[0])),
-                    self._build_filter('Party','party_name','ilike','%{}%'.format(inspector_items[1]))
-                ]
-            else:
-                inspector_conditions=[]
-            if len(inspector_conditions) ==2:
+            inspector_items = args['responsible_inspector_party']
+            inspector_conditions = []
+
+            for item in inspector_items:
+                name_split = item.split()
+                inspector_conditions.extend([
+                    self._build_filter('Party', 'first_name', 'ilike', '%{}%'.format(name_split[0])),
+                    self._build_filter('Party', 'party_name', 'ilike', '%{}%'.format(name_split[1]))
+                ])
                 conditions.append({'or': inspector_conditions})
+
+            if len(inspector_conditions) >= 2:
                 query = MineIncident.query.filter_by(deleted_ind=False).join(Mine).join(Party, MineIncident.responsible_inspector_party_guid == Party.party_guid)
 
         filtered_query = apply_filters(query, conditions)
@@ -162,9 +158,6 @@ class IncidentsResource(Resource, UserMixin):
                     'field': 'mine_incident_id',
                     'direction': args['sort_dir']
                 }]
-            # elif sort_model == 'Party':
-            #     sort_criteria = [{'model': sort_model, 'field': 'first_name', 'direction': args['sort_dir']},
-            #                      {'model': sort_model, 'field': 'party_name', 'direction': args['sort_dir']}]
             else:
                 # sorting by code section is not applicable since a single incident may have many sections associated.
                 sort_criteria = [{
