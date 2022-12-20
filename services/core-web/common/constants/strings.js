@@ -221,8 +221,8 @@ export const TSF_OPERATING_STATUS_CODE = [
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "LOW", label: "Low" },
-  { value: "HIG", label: "High" },
   { value: "SIG", label: "Significant" },
+  { value: "HIG", label: "High" },
   { value: "VHIG", label: "Very High" },
   { value: "EXT", label: "Extreme" },
   { value: "NRT", label: "Not Rated" },
