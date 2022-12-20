@@ -315,7 +315,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 mine_party_appt_type_code=self.mine_party_appt_type_code,
                 new_start_date=self.start_date,
                 related_guid=self.mine_tailings_storage_facility_guid,
-                permit=self.permit_id,
+                permit=self.permit,
                 validate_new_start_date=True,
                 fail_on_no_appointments=False
             )
@@ -328,7 +328,6 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         Emails appropriate users when new party appointed
             EoR: all users with core_edit_tsf role
         """
-
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
         email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()

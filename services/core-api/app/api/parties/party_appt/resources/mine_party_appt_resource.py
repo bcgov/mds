@@ -171,14 +171,15 @@ class MinePartyApptResource(Resource, UserMixin):
         elif mine_party_appt_type_code == 'EOR':
             mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
         
-        if end_current:
+        if end_current and not is_minespace_user():
             new_status = MinePartyAppointmentStatus.active
             MinePartyAppointment.end_current(
                 mine_guid=mine_guid,
                 mine_party_appt_type_code=mine_party_appt_type_code,
-                mine_tailings_storage_facility_guid=related_guid,
-                permit_id=permit.permit_id,
-                new_start_date=start_date
+                related_guid=related_guid,
+                permit=permit,
+                new_start_date=start_date,
+                fail_on_no_appointments=False,
             )
 
         new_mpa = MinePartyAppointment.create(
