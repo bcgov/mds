@@ -127,33 +127,24 @@ export class MineIncident extends Component {
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
     const errors = Object.keys(flattenObject(this.props.formErrors));
 
-    let determinationTypeCode = null;
-    if (
-      this.props.formValues.determination_type_code &&
-      this.props.formValues.determination_type_code ===
-        Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance
-    ) {
-      determinationTypeCode = true;
-    } else if (
-      this.props.formValues.determination_type_code &&
-      [
-        Strings.INCIDENT_DETERMINATION_TYPES.pending,
-        Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance,
-      ].includes(this.props.formValues.determination_type_code)
-    ) {
-      determinationTypeCode = false;
-    } else {
-      determinationTypeCode = this.props.formValues.mine_determination_type_code;
-    }
+    const isFinalReport =
+      this.props.formValues.final_report_documents.length > 0 ||
+      (
+        this.props.formValues.documents?.filter(
+          (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+        ) ?? []
+      ).length > 0;
 
     if (!this.props.formValues.status_code) {
-      if (!determinationTypeCode) {
-        this.props.formValues.status_code = "WNS";
-      } else if (this.props.formValues.final_report_documents.length > 0) {
+      if (isFinalReport) {
         this.props.formValues.status_code = "FRS";
       } else {
         this.props.formValues.status_code = "AFR";
       }
+    } else if (this.props.formValues.status_code === "AFR" && isFinalReport) {
+      this.props.formValues.status_code = "FRS";
+    } else {
+      this.props.formValues.status_code = this.props.formValues.status_code;
     }
 
     if (errors.length === 0) {
@@ -186,10 +177,6 @@ export class MineIncident extends Component {
   };
 
   formatPayload = (values) => {
-    let mineDeterminationTypeCode = null;
-    if (typeof values?.mine_determination_type_code === "boolean") {
-      mineDeterminationTypeCode = values?.mine_determination_type_code ? "DO" : "NDO";
-    }
     const documents = [
       ...values?.initial_incident_documents,
       ...values?.final_report_documents,
@@ -199,16 +186,15 @@ export class MineIncident extends Component {
     return {
       ...values,
       updated_documents: documents,
-      mine_determination_type_code: mineDeterminationTypeCode,
+      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
     };
   };
 
   formatInitialValues = (incident) => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    mine_determination_type_code: incident?.mine_determination_type_code
-      ? incident.mine_determination_type_code === "DO"
-      : null,
+    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
+    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     initial_incident_documents: [],
     final_report_documents: [],
     internal_ministry_documents: [],

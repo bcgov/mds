@@ -100,7 +100,7 @@ const alertText = (status, updateUser, updateDate, responsibleInspector, selecte
         text = `This incident is missing critical information. The proponent has been notified that further information is required.`;
         break;
       case "AFR":
-        text = `The incident was determined to be a dangerous occurence by the reporter and requires a final report to be submitted.`;
+        text = `The incident requires a final report to be submitted before 60 days from creation time of the incident.`;
         break;
       case "INV":
         text = `This incident currently is under EMLI investigation.`;
@@ -131,363 +131,248 @@ const validateDoSubparagraphs = (value) =>
 const formatDocumentRecords = (documents) =>
   documents?.map((doc) => ({ ...doc, key: doc.mine_document_guid }));
 
-const retrieveInitialReportDynamicValidation = (props) => {
-  const inspectorSet = props.formValues?.reported_to_inspector_party_guid;
-  const workerRepSet = props.formValues?.johsc_worker_rep_name;
-  const managementRepSet = props.formValues?.johsc_management_rep_name;
-
-  return {
-    inspectorContactedValidation: inspectorSet ? { validate: [requiredRadioButton] } : {},
-    inspectorContacted: props.formValues?.reported_to_inspector_contacted,
-    workerRepContactedValidation: workerRepSet ? { validate: [requiredRadioButton] } : {},
-    workerRepContacted: props.formValues?.johsc_worker_rep_contacted,
-    managementRepContactedValidation: managementRepSet ? { validate: [requiredRadioButton] } : {},
-    managementRepContacted: props.formValues?.johsc_management_rep_contacted,
-  };
-};
-
-const renderInitialReport = (props, isEditMode) => {
-  const {
-    workerRepContactedValidation,
-    workerRepContacted,
-    managementRepContactedValidation,
-    managementRepContacted,
-  } = retrieveInitialReportDynamicValidation(props);
-
-  return (
-    <Row>
-      {/* Reporter Details */}
-      <Col span={24}>
-        <Typography.Title level={3} id="initial-report">
-          Initial Report
-        </Typography.Title>
-        <h4>Reporter Details</h4>
-        <Typography.Paragraph>
-          Enter all available details about the reporter of this incident.
-        </Typography.Paragraph>
-        <Row gutter={[16]}>
-          <Col xs={24} md={10}>
-            <Form.Item label="* Reported by">
-              <Field
-                id="reported_by_name"
-                name="reported_by_name"
-                placeholder="Enter name of reporter..."
-                component={renderConfig.FIELD}
-                validate={[required]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={10}>
-            <Form.Item label="* Phone number">
-              <Field
-                id="reported_by_phone_no"
-                name="reported_by_phone_no"
-                placeholder="xxx-xxx-xxxx"
-                component={renderConfig.FIELD}
-                validate={[required, phoneNumber, maxLength(12)]}
-                normalize={normalizePhone}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={4}>
-            <Form.Item label="Ext.">
-              <Field
-                id="reported_by_phone_ext"
-                name="reported_by_phone_ext"
-                placeholder="xxxxxx"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(6)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={10} xs={24}>
-            <Form.Item label="* Email">
-              <Field
-                id="reported_by_email"
-                name="reported_by_email"
-                placeholder="example@domain.com"
-                component={renderConfig.FIELD}
-                validate={[required, email]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <br />
-      </Col>
-      {/* Incident Details */}
-      <Col span={24}>
-        <h4 id="incident-details">Incident Details</h4>
-        <Typography.Paragraph>
-          Enter more information regarding the reported incident. Some fields may be marked as
-          optional but help the ministry understand the nature of the incident, please consider
-          including them.
-        </Typography.Paragraph>
-        <Row gutter={[16]}>
-          <Col span={24}>
-            <Form.Item label="* Incident type(s)">
-              <Field
-                id="categories"
-                name="categories"
-                placeholder="Select incident type(s)..."
-                component={renderConfig.MULTI_SELECT}
-                validate={[requiredList]}
-                data={props.incidentCategoryCodeOptions}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="* Incident date and time">
-              <Field
-                id="incident_timestamp"
-                name="incident_timestamp"
-                placeholder="Please select date and time"
-                component={renderConfig.DATE}
-                showTime
-                validate={[required, dateNotInFuture]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Proponent incident number (optional)">
-              <Field
-                id="proponent_incident_no"
-                name="proponent_incident_no"
-                component={renderConfig.FIELD}
-                validate={[maxLength(20)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Number of injuries (optional)">
-              <Field
-                id="number_of_injuries"
-                name="number_of_injuries"
-                component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Number of fatalities (optional)">
-              <Field
-                id="number_of_fatalities"
-                name="number_of_fatalities"
-                component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Were emergency services called? (optional)">
-              <Field
-                id="emergency_services_called"
-                name="emergency_services_called"
-                placeholder="Please choose one..."
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="* Description of incident">
-              <Field
-                id="incident_description"
-                name="incident_description"
-                placeholder="Provide a detailed description of the incident..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[required, maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="Immediate measures taken (optional)">
-              <Field
-                id="immediate_measures_taken"
-                name="immediate_measures_taken"
-                placeholder="Provide a detailed description of any immediate measures taken..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="If any injuries, please describe (optional)">
-              <Field
-                id="injuries_description"
-                name="injuries_description"
-                placeholder="Provide a detailed description of any injuries..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Divider />
-          <Col md={12} xs={24}>
-            <Form.Item label="JOHSC/Worker Rep Name (optional)">
-              <Field
-                id="johsc_worker_rep_name"
-                name="johsc_worker_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this person contacted? (optional)">
-              <Field
-                id="johsc_worker_rep_contacted"
-                name="johsc_worker_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-                {...workerRepContactedValidation}
-              />
-            </Form.Item>
-          </Col>
-          {workerRepContacted && (
-            <>
-              <Col md={12} xs={24}>
-                <Form.Item label="Date and time">
-                  <Field
-                    id="johsc_worker_rep_contact_timestamp"
-                    name="johsc_worker_rep_contact_timestamp"
-                    component={renderConfig.DATE}
-                    showTime
-                    disabled={!isEditMode}
-                    placeholder="Please select date and time"
-                    validate={[
-                      required,
-                      dateNotInFuture,
-                      dateNotBeforeStrictOther(props.formValues.incident_timestamp),
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col md={12} xs={24}>
-                <Form.Item label="Initial Contact Method">
-                  <Field
-                    id="johsc_worker_rep_contact_method"
-                    name="johsc_worker_rep_contact_method"
-                    component={renderConfig.RADIO}
-                    customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter(
-                      (cm) => !cm?.inspectorOnly
-                    )}
-                    disabled={!isEditMode}
-                    validate={[required]}
-                  />
-                </Form.Item>
-              </Col>
-            </>
-          )}
-
-          <Col md={12} xs={24}>
-            <Form.Item label="JOHSC/Management Rep Name (optional)">
-              <Field
-                id="johsc_management_rep_name"
-                name="johsc_management_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this person contacted? (optional)">
-              <Field
-                id="johsc_management_rep_contacted"
-                name="johsc_management_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-                {...managementRepContactedValidation}
-              />
-            </Form.Item>
-          </Col>
-          {managementRepContacted && (
-            <>
-              <Col md={12} xs={24}>
-                <Form.Item label="Date and time">
-                  <Field
-                    id="johsc_management_rep_contact_timestamp"
-                    name="johsc_management_rep_contact_timestamp"
-                    component={renderConfig.DATE}
-                    showTime
-                    disabled={!isEditMode}
-                    placeholder="Please select date and time"
-                    validate={[
-                      required,
-                      dateNotInFuture,
-                      dateNotBeforeStrictOther(props.formValues.incident_timestamp),
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col md={12} xs={24}>
-                <Form.Item label="Initial Contact Method">
-                  <Field
-                    id="johsc_management_rep_contact_method"
-                    name="johsc_management_rep_contact_method"
-                    component={renderConfig.RADIO}
-                    customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter(
-                      (cm) => !cm?.inspectorOnly
-                    )}
-                    disabled={!isEditMode}
-                    validate={[required]}
-                  />
-                </Form.Item>
-              </Col>
-              <br />
-            </>
-          )}
-          {/* Mine Dangerous Occurrence Determination */}
-          <Col span={24}>
-            <h4>Mine Dangerous Occurrence Determination</h4>
-            <Typography.Paragraph>
-              If you determine that this incident was a dangerous occurance will be required to
-              submit your investigation report.
-            </Typography.Paragraph>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this a dangerous occurrence? (optional)">
-              <Field
-                id="mine_determination_type_code"
-                name="mine_determination_type_code"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Mine representative who made determination (optional)">
-              <Field
-                id="mine_determination_representative"
-                name="mine_determination_representative"
-                placeholder="Enter name of representative..."
-                component={renderConfig.FIELD}
-                validate={[maxLength(255)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <br />
-      </Col>
-    </Row>
-  );
-};
+const renderInitialReport = ({ incidentCategoryCodeOptions }, isEditMode) => (
+  <Row>
+    {/* Reporter Details */}
+    <Col span={24}>
+      <Typography.Title level={3} id="initial-report">
+        Initial Report
+      </Typography.Title>
+      <h4>Reporter Details</h4>
+      <Typography.Paragraph>
+        Enter all available details about the reporter of this incident.
+      </Typography.Paragraph>
+      <Row gutter={[16]}>
+        <Col xs={24} md={10}>
+          <Form.Item label="* Reported by">
+            <Field
+              id="reported_by_name"
+              name="reported_by_name"
+              placeholder="Enter name of reporter..."
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={10}>
+          <Form.Item label="* Phone number">
+            <Field
+              id="reported_by_phone_no"
+              name="reported_by_phone_no"
+              placeholder="xxx-xxx-xxxx"
+              component={renderConfig.FIELD}
+              validate={[required, phoneNumber, maxLength(12)]}
+              normalize={normalizePhone}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={4}>
+          <Form.Item label="Ext.">
+            <Field
+              id="reported_by_phone_ext"
+              name="reported_by_phone_ext"
+              placeholder="xxxxxx"
+              component={renderConfig.FIELD}
+              validate={[number, maxLength(6)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={10} xs={24}>
+          <Form.Item label="* Email">
+            <Field
+              id="reported_by_email"
+              name="reported_by_email"
+              placeholder="example@domain.com"
+              component={renderConfig.FIELD}
+              validate={[required, email]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <br />
+    </Col>
+    {/* Incident Details */}
+    <Col span={24}>
+      <h4 id="incident-details">Incident Details</h4>
+      <Typography.Paragraph>
+        Enter more information regarding the reported incident. Some fields may be marked as
+        optional but help the ministry understand the nature of the incident, please consider
+        including them.
+      </Typography.Paragraph>
+      <Row gutter={[16]}>
+        <Col span={24}>
+          <Form.Item label="* Incident type(s)">
+            <Field
+              id="categories"
+              name="categories"
+              placeholder="Select incident type(s)..."
+              component={renderConfig.MULTI_SELECT}
+              validate={[requiredList]}
+              data={incidentCategoryCodeOptions}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="* Incident date">
+            <Field
+              id="incident_date"
+              name="incident_date"
+              placeholder="Please select date..."
+              component={renderConfig.DATE}
+              validate={[required, dateNotInFuture]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="* Incident time">
+            <Field
+              id="incident_time"
+              name="incident_time"
+              placeholder="Please select time..."
+              component={renderConfig.TIME}
+              validate={[required]}
+              disabled={!isEditMode}
+              fullWidth
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Proponent incident number (optional)">
+            <Field
+              id="proponent_incident_no"
+              name="proponent_incident_no"
+              component={renderConfig.FIELD}
+              validate={[maxLength(20)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Number of injuries (optional)">
+            <Field
+              id="number_of_injuries"
+              name="number_of_injuries"
+              component={renderConfig.FIELD}
+              validate={[wholeNumber, maxLength(10)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Number of fatalities (optional)">
+            <Field
+              id="number_of_fatalities"
+              name="number_of_fatalities"
+              component={renderConfig.FIELD}
+              validate={[wholeNumber, maxLength(10)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Were emergency services called? (optional)">
+            <Field
+              id="emergency_services_called"
+              name="emergency_services_called"
+              placeholder="Please choose one..."
+              component={renderConfig.RADIO}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Form.Item label="* Description of incident">
+            <Field
+              id="incident_description"
+              name="incident_description"
+              placeholder="Provide a detailed description of the incident..."
+              component={renderConfig.SCROLL_FIELD}
+              validate={[required, maxLength(4000)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Form.Item label="Immediate measures taken (optional)">
+            <Field
+              id="immediate_measures_taken"
+              name="immediate_measures_taken"
+              placeholder="Provide a detailed description of any immediate measures taken..."
+              component={renderConfig.SCROLL_FIELD}
+              validate={[maxLength(4000)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Form.Item label="If any injuries, please describe (optional)">
+            <Field
+              id="injuries_description"
+              name="injuries_description"
+              placeholder="Provide a detailed description of any injuries..."
+              component={renderConfig.SCROLL_FIELD}
+              validate={[maxLength(4000)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Divider />
+        <Col md={12} xs={24}>
+          <Form.Item label="JOHSC/Worker Rep Name (optional)">
+            <Field
+              id="johsc_worker_rep_name"
+              name="johsc_worker_rep_name"
+              component={renderConfig.FIELD}
+              placeholder="Enter name of representative..."
+              validate={[maxLength(100)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Was this person contacted? (optional)">
+            <Field
+              id="johsc_worker_rep_contacted"
+              name="johsc_worker_rep_contacted"
+              component={renderConfig.RADIO}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="JOHSC/Management Rep Name (optional)">
+            <Field
+              id="johsc_management_rep_name"
+              name="johsc_management_rep_name"
+              component={renderConfig.FIELD}
+              placeholder="Enter name of representative..."
+              validate={[maxLength(100)]}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item label="Was this person contacted? (optional)">
+            <Field
+              id="johsc_management_rep_contacted"
+              name="johsc_management_rep_contacted"
+              component={renderConfig.RADIO}
+              disabled={!isEditMode}
+            />
+          </Form.Item>
+          <br />
+        </Col>
+      </Row>
+      <br />
+    </Col>
+  </Row>
+);
 
 const renderDocumentation = (props, isEditMode, handlers, parentHandlers) => {
   const initialIncidentDocuments = props.documents.filter(
@@ -496,7 +381,6 @@ const renderDocumentation = (props, isEditMode, handlers, parentHandlers) => {
   const finalReportDocuments = props.documents.filter(
     (doc) => doc.mine_incident_document_type_code === "FIN"
   );
-  const isDangerousOccurence = props.incident?.mine_determination_type_code === "DO";
 
   return (
     <Row>
@@ -597,7 +481,7 @@ const renderDocumentation = (props, isEditMode, handlers, parentHandlers) => {
         />
         <br />
       </Col>
-      {!isEditMode && isDangerousOccurence && finalReportDocuments?.length === 0 && (
+      {!isEditMode && finalReportDocuments?.length === 0 && (
         <Col span={24}>
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
