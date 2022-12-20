@@ -78,6 +78,7 @@ class IncidentsResource(Resource, UserMixin):
             "incident_timestamp": 'MineIncident',
             "determination": 'MineIncident',
             "incident_status": 'MineIncident',
+            "mine_name": 'Mine',
             'first_name': 'Party',
             'party_name': 'Party',
         }
