@@ -131,6 +131,21 @@ const validateDoSubparagraphs = (value) =>
 const formatDocumentRecords = (documents) =>
   documents?.map((doc) => ({ ...doc, key: doc.mine_document_guid }));
 
+const retrieveInitialReportDynamicValidation = (props) => {
+    const inspectorSet = props.formValues?.reported_to_inspector_party_guid;
+    const workerRepSet = props.formValues?.johsc_worker_rep_name;
+    const managementRepSet = props.formValues?.johsc_management_rep_name;
+  
+    return {
+      inspectorContactedValidation: inspectorSet ? { validate: [requiredRadioButton] } : {},
+      inspectorContacted: props.formValues?.reported_to_inspector_contacted,
+      workerRepContactedValidation: workerRepSet ? { validate: [requiredRadioButton] } : {},
+      workerRepContacted: props.formValues?.johsc_worker_rep_contacted,
+      managementRepContactedValidation: managementRepSet ? { validate: [requiredRadioButton] } : {},
+      managementRepContacted: props.formValues?.johsc_management_rep_contacted,
+    };
+};
+
 const renderInitialReport = ({ incidentCategoryCodeOptions }, isEditMode) => (
   <Row>
     {/* Reporter Details */}
@@ -485,7 +500,7 @@ const renderDocumentation = (props, isEditMode, handlers, parentHandlers) => {
         <Col span={24}>
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
+            description={(
               <div className="center">
                 <Typography.Paragraph strong>
                   This incident requires a final investigation report.
@@ -498,7 +513,7 @@ const renderDocumentation = (props, isEditMode, handlers, parentHandlers) => {
                   Add Final Report
                 </Button>
               </div>
-            }
+            )}
           />
         </Col>
       )}
@@ -723,19 +738,21 @@ const renderInternalDocumentsComments = (props, isEditMode, handlers, parentHand
     <Row>
       <Col span={24}>
         <Typography.Title level={3} id="internal-documents">
-          <LockOutlined className="violet" /> Internal Documents and Comments (Ministry Visible
+          <LockOutlined className="violet" />
+          {' '}
+Internal Documents and Comments (Ministry Visible
           Only)
         </Typography.Title>
         <Divider />
         {!incidentCreated ? (
           <div className="center">
             <Empty
-              description={
+              description={(
                 <Typography.Paragraph strong className="center padding-md--top">
                   The internal ministry documentation section will be displayed after this incident
                   is created.
                 </Typography.Paragraph>
-              }
+              )}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           </div>
@@ -816,7 +833,7 @@ const updateIncidentStatus = (props, isNewIncident) => {
     <Col span={24}>
       <Alert
         message={props.incidentStatusCodeHash[props.incident?.status_code] || "Undefined Status"}
-        description={
+        description={(
           <Row>
             <Col xs={24} md={18}>
               <p>
@@ -857,7 +874,7 @@ const updateIncidentStatus = (props, isNewIncident) => {
               )}
             </Col>
           </Row>
-        }
+        )}
         type={!isClosed ? "warning" : "info"}
         showIcon
         style={{
