@@ -80,6 +80,7 @@ const defaultParams = {
   incident_status: [],
   codes: [],
   determination: [],
+  responsible_inspector_party: [],
 };
 
 export class IncidentsHomePage extends Component {
@@ -135,7 +136,11 @@ export class IncidentsHomePage extends Component {
   handleIncidentSearch = (params) => {
     this.setState(
       {
-        params,
+        params: {
+          ...params,
+          page: defaultParams.page,
+          responsible_inspector_party: params.responsible_inspector_party ?? [],
+        },
       },
       () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
     );
