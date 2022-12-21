@@ -1140,11 +1140,11 @@ class ProjectSummaryFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     project_summary_guid = GUID
     status_code = 'SUB'
+    project_summary_description = factory.Faker('paragraph', nb_sentences=5, variable_nb_sentences=True, ext_word_list=None)
     documents = []
     authorizations = []
     deleted_ind = False
 
-    project_summary_description = None
     expected_draft_irt_submission_date = None
     expected_permit_application_date = None
     expected_permit_receipt_date = None

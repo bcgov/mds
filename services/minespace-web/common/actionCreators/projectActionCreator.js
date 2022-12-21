@@ -65,17 +65,20 @@ export const updateProjectSummary = (
 export const updateProject = (
   { projectGuid },
   payload,
-  message = "Successfully updated project."
+  message = "Successfully updated project.",
+  showSuccessMessage = true
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
+      if (showSuccessMessage) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_PROJECT));
       return response;
     })

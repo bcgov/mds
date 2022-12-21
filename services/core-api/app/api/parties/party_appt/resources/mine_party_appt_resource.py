@@ -23,6 +23,9 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
+
+from app.api.services.email_service import EmailService
+from app.api.services.css_sso_service import CSSService
 from app.config import Config
 from app.api.activity.utils import trigger_notification
 
@@ -168,14 +171,15 @@ class MinePartyApptResource(Resource, UserMixin):
         elif mine_party_appt_type_code == 'EOR':
             mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
         
-        if end_current:
+        if end_current and not is_minespace_user():
             new_status = MinePartyAppointmentStatus.active
             MinePartyAppointment.end_current(
                 mine_guid=mine_guid,
                 mine_party_appt_type_code=mine_party_appt_type_code,
-                mine_tailings_storage_facility_guid=related_guid,
-                permit_id=permit.permit_id,
-                new_start_date=start_date
+                related_guid=related_guid,
+                permit=permit,
+                new_start_date=start_date,
+                fail_on_no_appointments=False,
             )
 
         new_mpa = MinePartyAppointment.create(
@@ -203,7 +207,12 @@ class MinePartyApptResource(Resource, UserMixin):
         if Config.ENVIRONMENT_NAME != 'prod':
             # TODO: Remove this once TSF functionality is ready to go live
             if mine_party_appt_type_code == "EOR":
+
                 trigger_notification(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', ActivityType.eor_created, mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
+
+                if is_minespace_user():
+                    new_mpa.send_party_assigned_email()
+                    
             if mine_party_appt_type_code == "TQP":
                 trigger_notification(f'A new Qualified Person for {mine.mine_name} has been assigned.', ActivityType.qfp_created, mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
 

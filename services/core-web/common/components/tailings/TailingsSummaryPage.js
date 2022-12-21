@@ -178,7 +178,7 @@ export const TailingsSummaryPage = (props) => {
               related_guid: tsfGuid,
               start_date: formValues[attr].start_date,
               end_date: formValues[attr].end_date,
-              end_current: !!formValues[attr].mine_party_appt_guid,
+              end_current: true,
             },
             successMessage
           );
@@ -234,7 +234,11 @@ export const TailingsSummaryPage = (props) => {
           <Col span={24}>
             <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "tailings")}>
               <ArrowLeftOutlined className="padding-sm--right" />
-              Back to: {mineName} Tailings
+              Back to: 
+              {' '}
+              {mineName}
+              {' '}
+Tailings
             </Link>
           </Col>
         </Row>
