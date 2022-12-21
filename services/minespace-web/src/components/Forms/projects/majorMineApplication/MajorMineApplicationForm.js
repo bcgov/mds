@@ -14,7 +14,7 @@ import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@common/constants/strings";
 import { resetForm } from "@common/utils/helpers";
-import { DOCUMENT, MODERN_EXCEL, UNIQUELY_SPATIAL } from "@common/constants/fileTypes";
+import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -50,7 +50,7 @@ export class MajorMineApplicationForm extends Component {
   };
 
   acceptedFileTypesMap = {
-    ...UNIQUELY_SPATIAL,
+    ...SPATIAL,
     ...DOCUMENT,
     ...MODERN_EXCEL,
   };
