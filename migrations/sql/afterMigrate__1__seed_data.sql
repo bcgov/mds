@@ -1588,13 +1588,6 @@ VALUES
     ('NOD', 'N/A (No Dam)', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-UPDATE consequence_classification_status SET display_order = 60 WHERE consequence_classification_status_code = 'SIG';
-UPDATE consequence_classification_status SET display_order = 50 WHERE consequence_classification_status_code = 'NOD';
-UPDATE consequence_classification_status SET display_order = 40 WHERE consequence_classification_status_code = 'LOW';
-UPDATE consequence_classification_status SET display_order = 30 WHERE consequence_classification_status_code = 'HIG';
-UPDATE consequence_classification_status SET display_order = 20 WHERE consequence_classification_status_code = 'VHIG';
-UPDATE consequence_classification_status SET display_order = 10 WHERE consequence_classification_status_code = 'EXT';
-
 INSERT INTO tsf_operating_status
     (
     tsf_operating_status_code,
