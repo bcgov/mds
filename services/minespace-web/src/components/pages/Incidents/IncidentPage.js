@@ -311,7 +311,7 @@ const StepForms = (
         )}
         <Popconfirm
           placement="topRight"
-          title="Are you sure you want to submit your final incident? No changes can be made after submitting."
+          title="Are you sure you want to submit your final incident? No changes can be made to the original information provided but you will be able to upload additional documentation."
           onConfirm={async (e) => {
             const status_code =
               props.incident?.documents?.filter(
