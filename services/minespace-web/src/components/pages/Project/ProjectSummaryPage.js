@@ -204,7 +204,9 @@ export class ProjectSummaryPage extends Component {
       .then(() => {
         this.props.updateProject(
           { projectGuid },
-          { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts }
+          { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
+          "Successfully updated project.",
+          false
         );
       })
       .then(() => {
