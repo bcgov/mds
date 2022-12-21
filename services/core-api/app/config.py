@@ -161,6 +161,13 @@ class Config(object):
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
 
+    # CSS Keycloak SSO
+    CSS_CLIENT_ID = os.environ.get('CSS_CLIENT_ID')
+    CSS_CLIENT_SECRET = os.environ.get('CSS_CLIENT_SECRET')
+    CSS_TOKEN_URL = os.environ.get('CSS_TOKEN_URL')
+    CSS_API_URL = os.environ.get('CSS_API_URL')
+    CSS_ENV = 'test' if ENVIRONMENT_NAME == 'local' else ENVIRONMENT_NAME
+
     #Templates
     TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', 'templates')
     TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/project/')

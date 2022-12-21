@@ -7,11 +7,17 @@ from sqlalchemy import and_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
-from app.extensions import db
+from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES, TIMEOUT_24_HOURS
+
+from app.api.services.email_service import EmailService
+from app.api.services.css_sso_service import CSSService
+from app.config import Config
+from app.api.utils.access_decorators import EDIT_TSF
+from app.api.utils.helpers import format_email_datetime_to_string
 
 
 class MinePartyAppointmentStatus(str, Enum):
@@ -309,13 +315,52 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 mine_party_appt_type_code=self.mine_party_appt_type_code,
                 new_start_date=self.start_date,
                 related_guid=self.mine_tailings_storage_facility_guid,
-                permit=self.permit_id,
+                permit=self.permit,
                 validate_new_start_date=True,
                 fail_on_no_appointments=False
             )
 
             if previous_mpa_ended:
                 self.status = MinePartyAppointmentStatus.active
+
+    def send_party_assigned_email(self):
+        """
+        Emails appropriate users when new party appointed
+            EoR: all users with core_edit_tsf role
+        """
+        party_title = 'Engineer of Record'
+        party_page = 'engineer-of-record'
+        email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()
+        
+        EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
+
+        recipients = cache.get(EDIT_TSF_EMAILS)
+        if not recipients:
+            recipients = CSSService.get_recipients_by_rolename(EDIT_TSF)
+            if recipients:
+                cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
+
+        button_link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
+        # change from UTC to PST
+        submitted_at = format_email_datetime_to_string(datetime.utcnow())
+        start_date = self.start_date.strftime('%b %d %Y') if self.start_date else 'No date provided',
+
+        email_context = {
+            "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
+            "start_date": start_date,
+            "party": {                
+                "first_name": self.party.first_name,
+                "last_name": self.party.party_name
+            },
+            "mine": {
+                "mine_name": self.mine.mine_name,
+                "mine_no": self.mine.mine_no
+            },
+            "core_appt_link": button_link,
+            "submitted_at": submitted_at
+        }
+        subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'        
+        EmailService.send_template_email(subject, recipients, email_body, email_context)
 
     @classmethod
     def end_current(cls, mine_guid, mine_party_appt_type_code, new_start_date, related_guid=None, permit=None, validate_new_start_date=False, fail_on_no_appointments=True):
