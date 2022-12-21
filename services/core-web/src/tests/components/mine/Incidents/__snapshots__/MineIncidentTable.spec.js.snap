@@ -77,12 +77,7 @@ exports[`MineIncidentTable renders properly 1`] = `
           "title": "Status",
         },
         Object {
-          "filters": Array [
-            Object {
-              "text": undefined,
-              "value": undefined,
-            },
-          ],
+          "filters": Array [],
           "key": "responsible_inspector_party",
           "onFilter": [Function],
           "render": [Function],
