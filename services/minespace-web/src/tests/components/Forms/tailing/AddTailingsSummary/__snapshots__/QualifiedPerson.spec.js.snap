@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QualifiedPerson renders properly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "children": <QualifiedPerson
+        change={[MockFunction]}
+        closeModal={[MockFunction]}
+        formValues={Object {}}
+        isCore={false}
+        loading={false}
+        openModal={[MockFunction]}
+      />,
+    }
+  }
+>
+  <QualifiedPerson
+    change={[MockFunction]}
+    closeModal={[MockFunction]}
+    formValues={Object {}}
+    isCore={false}
+    loading={false}
+    openModal={[MockFunction]}
+  />
+</ContextProvider>
+`;

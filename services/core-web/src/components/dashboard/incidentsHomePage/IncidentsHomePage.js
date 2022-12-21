@@ -27,6 +27,7 @@ import {
   deleteMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import * as Strings from "@common/constants/strings";
+import { PageTracker } from "@common/utils/trackers";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
 import * as router from "@/constants/routes";
@@ -34,7 +35,6 @@ import IncidentsSearch from "./IncidentsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
-import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -80,6 +80,7 @@ const defaultParams = {
   incident_status: [],
   codes: [],
   determination: [],
+  responsible_inspector_party: [],
 };
 
 export class IncidentsHomePage extends Component {
@@ -135,7 +136,11 @@ export class IncidentsHomePage extends Component {
   handleIncidentSearch = (params) => {
     this.setState(
       {
-        params,
+        params: {
+          ...params,
+          page: defaultParams.page,
+          responsible_inspector_party: params.responsible_inspector_party ?? [],
+        },
       },
       () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
     );
@@ -203,7 +208,7 @@ export class IncidentsHomePage extends Component {
       props: {
         newIncident,
         initialValues: {
-          status_code: "PRE",
+          status_code: "WNS",
           ...this.parseIncidentIntoFormData(existingIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String

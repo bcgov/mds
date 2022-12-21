@@ -21,7 +21,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";

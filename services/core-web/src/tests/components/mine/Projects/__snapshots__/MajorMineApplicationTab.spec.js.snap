@@ -226,6 +226,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={
@@ -265,6 +266,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={
@@ -304,6 +306,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={
@@ -343,6 +346,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={

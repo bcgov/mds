@@ -15,7 +15,8 @@ class TestPutMinePartyAppointmentDocument:
         document_count = len(mpa.documents)
         data = {
             'document_manager_guid': uuid.uuid4(),
-            'document_name': 'my_document.pdf'
+            'document_name': 'my_document.pdf',
+            'mine_tailings_storage_facility_guid': uuid.uuid4()
         }
 
         put_resp = test_client.put(

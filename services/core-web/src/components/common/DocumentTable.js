@@ -21,6 +21,7 @@ const propTypes = {
   ),
   // eslint-disable-next-line react/no-unused-prop-types
   documentParent: PropTypes.string,
+  documentColumns: PropTypes.arrayOf(PropTypes.object),
 };
 
 const defaultProps = {
@@ -29,6 +30,7 @@ const defaultProps = {
   removeDocument: () => {},
   excludedColumnKeys: [],
   additionalColumnProps: [],
+  documentColumns: null,
   documentParent: null,
 };
 
@@ -118,7 +120,7 @@ export const DocumentTable = (props) => {
     <Table
       align="left"
       pagination={false}
-      columns={columns}
+      columns={props?.documentColumns ?? columns}
       locale={{ emptyText: "No Data Yet" }}
       dataSource={props.documents}
     />

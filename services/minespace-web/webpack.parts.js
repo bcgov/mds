@@ -74,8 +74,9 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
           {
             loader: "sass-loader",
             options: {
+              implementation: require("sass"),
               sassOptions: {
-                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+                includePaths: [path.resolve(__dirname, "../../node_modules/@syncfusion")],
               },
             },
           },
@@ -193,8 +194,9 @@ exports.extractCSS = ({ include, exclude, filename } = {}) => ({
           {
             loader: "sass-loader",
             options: {
+              implementation: require("sass"),
               sassOptions: {
-                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+                includePaths: [path.resolve(__dirname, "../../node_modules/@syncfusion")],
               },
             },
           },

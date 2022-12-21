@@ -1,6 +1,6 @@
+import { ENVIRONMENT } from "@mds/common";
 import CustomAxios from "../customAxios";
 import { createRequestHeader } from "./RequestHeaders";
-import { ENVIRONMENT } from "../constants/environment";
 import {
   DOCUMENT_MANAGER_DOCUMENT,
   DOCUMENT_MANAGER_FILE_GET_URL,

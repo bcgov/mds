@@ -26,6 +26,7 @@ venv*
 
 act/
 
+# Terraform
 .terraform
 terragrunt.auto.tfvars
 credentials.tfrc.json
@@ -39,3 +40,17 @@ cypress.env.json
 debug
 /devops
 gitops/tenant-gitops-4c2ba9
+
+!.yarn/*
+!/.yarn/releases
+!/.yarn/plugins
+!/.yarn/sdks
+
+# Swap the comments on the following lines if you don't wish to use zero-installs
+# Documentation here: https://yarnpkg.com/features/zero-installs
+.yarn/cache
+.yarn/install-state.gz
+#/.pnp.*
+.yarn/yarn.build.json
+
+.yarn/.DS_Store

@@ -9,8 +9,8 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import tus from "tus-js-client";
-import { ENVIRONMENT } from "@common/constants/environment";
-import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
+import { ENVIRONMENT } from "@mds/common";
+import { APPLICATION_OCTET_STREAM } from "@common/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);

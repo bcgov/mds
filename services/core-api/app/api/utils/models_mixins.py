@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import FetchedValue
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from flask import has_request_context
 
 from app.extensions import db
 from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
@@ -39,18 +40,19 @@ def ensure_constrained(query):
 
     mzero = query._mapper_zero()
     if mzero is not None:
-        user_security = auth.get_current_user_security()
+        if has_request_context():
+            user_security = auth.get_current_user_security()
 
-        if user_security.is_restricted():
-            # use reflection to get current model
-            cls = mzero.class_
+            if user_security.is_restricted():
+                # use reflection to get current model
+                cls = mzero.class_
 
-            # if model includes mine_guid, apply filter on mine_guid.
-            mapper = inspect(cls)
+                # if model includes mine_guid, apply filter on mine_guid.
+                mapper = inspect(cls)
 
-            if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
-                query = query.enable_assertions(False).filter(
-                    cls.mine_guid.in_(user_security.mine_ids))
+                if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
+                    query = query.enable_assertions(False).filter(
+                        cls.mine_guid.in_(user_security.mine_ids))
 
     return query
 

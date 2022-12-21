@@ -30,6 +30,7 @@ exports[`VarianceDetails renders properly 1`] = `
   </Descriptions>
   <DocumentTable
     deletePayload={Object {}}
+    deletePermission={null}
     documentColumns={
       Array [
         Object {

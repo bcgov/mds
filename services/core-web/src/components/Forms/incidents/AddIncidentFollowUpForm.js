@@ -11,7 +11,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required, dateNotInFuture, validateSelectOptions } from "@common/utils/Validate";
-import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -143,7 +143,7 @@ export class AddIncidentFollowUpForm extends Component {
                       Strings.INCIDENT_DOCUMENT_TYPES.final
                     )
                   }
-                  uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+                  uploadUrl={MINE_INCIDENT_DOCUMENTS(this.props.mineGuid)}
                   component={FileUpload}
                 />
               </Form.Item>

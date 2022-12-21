@@ -1,76 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineTailingsTable renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "mine_tailings_storage_facility_name",
-        "render": [Function],
-        "title": "Name",
-      },
-      Object {
-        "dataIndex": "tsf_operating_status_code",
-        "render": [Function],
-        "title": "Operating Status",
-      },
-      Object {
-        "dataIndex": "consequence_classification_status_code",
-        "render": [Function],
-        "title": "Consequence Classification",
-      },
-      Object {
-        "dataIndex": "itrb_exemption_status_code",
-        "render": [Function],
-        "title": "Has Independent Tailings Review Board",
-      },
-      Object {
-        "dataIndex": "engineer_of_record",
-        "render": [Function],
-        "title": "Engineer of Record",
-      },
-      Object {
-        "dataIndex": "latitude",
-        "render": [Function],
-        "title": "Latitude",
-      },
-      Object {
-        "dataIndex": "longitude",
-        "render": [Function],
-        "title": "Longitude",
-      },
-      Object {
-        "dataIndex": "notes",
-        "render": [Function],
-        "title": "Notes",
-      },
-      Object {
-        "key": "operations",
-        "render": [Function],
-      },
-    ]
-  }
-  condition={true}
-  dataSource={
-    Array [
-      Object {
-        "consequence_classification_status_code": "LOW",
-        "itrb_exemption_status_code": "YES",
-        "key": "e2629897-053e-4218-9299-479375e47f78",
-        "latitude": null,
-        "longitude": null,
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-        "mine_tailings_storage_facility_name": "MockTSF",
-        "tsf_operating_status_code": "OPT",
-      },
-    ]
-  }
-  tableProps={
+<ContextProvider
+  value={
     Object {
-      "align": "center",
-      "pagination": false,
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
     }
   }
-/>
+>
+  <withRouter(Connect(MineTailingsTable))
+    TSFOperatingStatusCodeHash={Object {}}
+    consequenceClassificationStatusCodeHash={Object {}}
+    isLoaded={true}
+    partyRelationships={
+      Array [
+        Object {
+          "end_date": "2019-01-03",
+          "mine_guid": "db059bf5-14aa-4b98-af67-9c1e635a6120",
+          "mine_party_appt_guid": "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+          "mine_party_appt_type_code": "PMT",
+          "party": Object {
+            "effective_date": "2019-01-02",
+            "email": "test@test.test",
+            "expiry_date": null,
+            "name": "test company 2 ",
+            "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+            "party_name": "test company 2 ",
+            "party_type_code": "ORG",
+            "phone_ext": null,
+            "phone_no": "123-123-1234",
+          },
+          "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+          "related_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+          "start_date": "2019-01-01",
+        },
+        Object {
+          "end_date": "2019-01-03",
+          "mine_guid": "db059bf5-14aa-4b98-af67-9c1e635a6120",
+          "mine_party_appt_guid": "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+          "mine_party_appt_type_code": "EOR",
+          "party": Object {
+            "effective_date": "2019-01-02",
+            "email": "test@test.test",
+            "expiry_date": null,
+            "name": "test company 2 ",
+            "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+            "party_name": "test company 2 ",
+            "party_type_code": "ORG",
+            "phone_ext": null,
+            "phone_no": "123-123-1234",
+          },
+          "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+          "related_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+          "start_date": "2019-01-01",
+        },
+        Object {
+          "end_date": "2019-01-03",
+          "mine_guid": "db059bf5-14aa-4b98-af67-9c1e635a6120",
+          "mine_party_appt_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+          "mine_party_appt_type_code": "MMG",
+          "party": Object {
+            "effective_date": "2019-01-02",
+            "email": "test@test.test",
+            "expiry_date": null,
+            "name": "test dude 1 ",
+            "party_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+            "party_name": "test dude 1 ",
+            "party_type_code": "PER",
+            "phone_ext": null,
+            "phone_no": "123-123-1234",
+          },
+          "party_guid": "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+          "related_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
+          "start_date": "2019-01-01",
+        },
+      ]
+    }
+    tailings={
+      Array [
+        Object {
+          "consequence_classification_status_code": "LOW",
+          "itrb_exemption_status_code": "YES",
+          "latitude": null,
+          "longitude": null,
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+          "mine_tailings_storage_facility_name": "MockTSF",
+          "tsf_operating_status_code": "OPT",
+        },
+      ]
+    }
+  />
+</ContextProvider>
 `;

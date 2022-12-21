@@ -3,6 +3,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
@@ -13,9 +14,11 @@ import {
   getIncidentCategoryCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
+import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
+import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -27,6 +30,7 @@ const propTypes = {
   incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const IncidentDocuments = (props) =>
@@ -122,7 +126,26 @@ export const IncidentsTable = (props) => {
           type="primary"
           size="small"
           onClick={() => {
-            props.openModal({
+            // ENV FLAG FOR MINE INCIDENTS //
+            if (!IN_PROD()) {
+              if (record.status_code && record.status_code !== "DFT") {
+                return props.history.push({
+                  pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
+                    record.mine_guid,
+                    record.mine_incident_guid
+                  ),
+                  state: { current: 2 },
+                });
+              }
+              return props.history.push({
+                pathname: routes.EDIT_MINE_INCIDENT.dynamicRoute(
+                  record.mine_guid,
+                  record.mine_incident_guid
+                ),
+                state: { current: 1 },
+              });
+            }
+            return props.openModal({
               props: {
                 title: "View Incident Details",
                 incident: record,
@@ -168,4 +191,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(IncidentsTable);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IncidentsTable));

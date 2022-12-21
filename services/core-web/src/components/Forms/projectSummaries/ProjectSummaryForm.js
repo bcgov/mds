@@ -33,7 +33,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common";
 import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
 import { normalizePhone } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";

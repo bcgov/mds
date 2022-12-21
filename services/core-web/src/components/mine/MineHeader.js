@@ -25,8 +25,9 @@ import {
 import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
-import { EDIT_OUTLINE_VIOLET, EDIT } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -34,6 +35,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import MineAlert from "@/components/mine/MineAlert";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -55,6 +57,13 @@ const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   exemptionFeeStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   governmentAgencyHash: PropTypes.objectOf(PropTypes.string).isRequired,
+};
+
+const generateEmliInspectionMapperUrl = (lat, lng) => {
+  const formattedLat = parseFloat(lat);
+  const formattedLng = parseFloat(lng);
+  const coordinateString = encodeURIComponent(`${formattedLng},${formattedLat}`);
+  return `${String.EMLI_INSPECTION_MAPPER_BASE_URL}&center=${coordinateString}&level=10`;
 };
 
 export class MineHeader extends Component {
@@ -171,6 +180,12 @@ export class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
+          {!IN_PROD() && (
+            <>
+              <MineAlert mine={this.props.mine} />
+              <br />
+            </>
+          )}
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>
@@ -227,7 +242,7 @@ export class MineHeader extends Component {
             <p className="field-title">Tenure</p>
             <div>
               <p>
-                {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
+                {this.props.transformedMineTypes?.mine_tenure_type_code.length > 0
                   ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
                       .map((tenure) => this.props.mineTenureHash[tenure])
                       .join(", ")
@@ -324,6 +339,27 @@ export class MineHeader extends Component {
             <div>{this.props.mine.number_of_contractors || String.EMPTY_FIELD}</div>
             <CoreTooltip title="Approximate number of contractors on site" />
           </div>
+          {this.props.mine.mine_location?.latitude && this.props.mine.mine_location?.longitude && (
+            <div className="inline-flex padding-sm wrap">
+              <div className="field-title">View on the EMLI Inspection Mapper</div>
+              <div>
+                <a
+                  href={generateEmliInspectionMapperUrl(
+                    this.props.mine.mine_location?.latitude,
+                    this.props.mine.mine_location?.longitude
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    alt="Open link in new window"
+                    src={OPEN_NEW_TAB}
+                    style={{ width: "1.25em" }}
+                  />
+                </a>
+              </div>
+            </div>
+          )}
         </div>
         <div className="dashboard__header--card__map">
           <MineHeaderMapLeaflet mine={this.props.mine} />

@@ -144,6 +144,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
@@ -152,6 +153,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
@@ -160,6 +162,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             documentColumns={documentColumns}
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
+            deletePermission
           />
         </Col>
         {!applicationSubmitted && (
@@ -177,8 +180,8 @@ export const MajorMineApplicationReviewSubmit = (props) => {
                     />
                     &nbsp;&nbsp;
                   </span>
-                  I understand that this application and supporting files are submitted on behalf of
-                  the owner, agent or mine manager of this project.
+                  I confirm that any information provided is accurate and complete to the best of my
+                  knowledge.
                   <span style={{ color: "red" }}>*</span>
                 </p>
               </>

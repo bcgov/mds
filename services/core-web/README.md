@@ -1,6 +1,6 @@
 # Frontend application
 
-The project uses a [Node.js (v10)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
+The project uses a [Node.js (v14)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
 
 ## Module and Library dependencies
 
@@ -38,19 +38,19 @@ _If coverage is lower than before writing a new feature, the tests **need** to b
 1. To run the test suite without updating snapshots run:
 
 ```
-npm test
+yarn test
 ```
 
 2. To run the test suite while updating ALL snapshots run:
 
 ```
-npm run test:updateAll
+yarn test:updateAll
 ```
 
 3. To run the test suite while updating snapshots case by case Interactively run:
 
 ```
-npm run test:watch
+yarn test:watch
 ```
 
 Then choose option 'i' and go through the failing snapshots case by case
@@ -96,18 +96,18 @@ Follow the `.env-example` template to create an `.env` file with valid values be
 
 A. OS Level Installation
 
-- [Node.js 8](https://nodejs.org/en/download/)
+- [Node.js 14](https://nodejs.org/en/download/)
 
 1. Install package dependencies
 
 ```
-npm ci
+yarn install
 ```
 
 2. Run the application
 
 ```
-npm run serve
+yarn serve
 ```
 
 B. Using a docker container

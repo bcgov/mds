@@ -1,80 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TailingsTable renders properly 1`] = `
-<Table
-  columns={
-    Array [
-      Object {
-        "dataIndex": "mine_tailings_storage_facility_name",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Name",
-      },
-      Object {
-        "dataIndex": "tsf_operating_status_code",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Operating Status",
-      },
-      Object {
-        "dataIndex": "consequence_classification_status_code",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Consequence Classification",
-      },
-      Object {
-        "dataIndex": "itrb_exemption_status_code",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Has Independent Tailings Review Board",
-      },
-      Object {
-        "dataIndex": "engineer_of_record",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Engineer of Record",
-      },
-      Object {
-        "dataIndex": "latitude",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Latitude",
-      },
-      Object {
-        "dataIndex": "longitude",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Longitude",
-      },
-      Object {
-        "dataIndex": "notes",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Notes",
-      },
-      Object {
-        "dataIndex": "edit",
-        "render": [Function],
-        "title": "",
-      },
-    ]
-  }
-  dataSource={
-    Array [
-      Object {
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-        "mine_tailings_storage_facility_name": "MockTSF",
-      },
-    ]
-  }
-  locale={
+<Router
+  history={
     Object {
-      "emptyText": "This mine has no tailing storage facilities data.",
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
     }
   }
-  pagination={false}
-  rowKey={[Function]}
-  size="small"
-/>
+>
+  <TailingsTable
+    TSFOperatingStatusCodeHash={Object {}}
+    consequenceClassificationStatusCodeHash={Object {}}
+    editTailings={[MockFunction]}
+    handleEditTailings={[MockFunction]}
+    itrmExemptionStatusCodeHash={Object {}}
+    match={
+      Object {
+        "params": Object {
+          "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        },
+      }
+    }
+    openEditTailingsModal={[MockFunction]}
+    storeDam={[MockFunction]}
+    storeTsf={[MockFunction]}
+    tailings={
+      Array [
+        Object {
+          "dams": Array [
+            Object {
+              "consequence_classification": "low",
+              "current_dam_height": "123",
+              "current_elevation": "123",
+              "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "dam_name": "MockDam",
+              "dam_type": "dam",
+              "latitude": "123",
+              "longitude": "123",
+              "max_pond_elevation": "123",
+              "min_freeboard_required": "123",
+              "operating_status": "operation",
+              "permitted_dam_crest_elevation": "123",
+            },
+          ],
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+          "mine_tailings_storage_facility_name": "MockTSF",
+        },
+      ]
+    }
+  />
+</Router>
 `;

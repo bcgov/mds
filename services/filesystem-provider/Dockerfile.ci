@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:3.1
 
 USER 0
 
-COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
+COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/app
 
 COPY init.sh .
 
@@ -16,6 +16,16 @@ RUN apt-get update \
     supervisor \     
     procps     
 
-ENTRYPOINT [ "./init.sh" ]
+RUN cd ${APP_ROOT}/app && dotnet restore && dotnet build
+
+RUN chmod -R 777 ${APP_ROOT}/app
+RUN chown -R 1001:0 ${APP_ROOT}/app
+
+# Provide user permissions to temp dotnet workspace
+RUN mkdir /.dotnet
+RUN chmod -R 777 /.dotnet
+RUN chown -R 1001:0 /.dotnet
 
 USER 1001
+
+ENTRYPOINT [ "./init.sh" ]

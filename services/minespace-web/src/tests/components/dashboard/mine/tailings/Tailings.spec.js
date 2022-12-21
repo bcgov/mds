@@ -3,6 +3,13 @@ import { shallow } from "enzyme";
 import { Tailings } from "@/components/dashboard/mine/tailings/Tailings";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 const props = {};
 const dispatchProps = {};
 

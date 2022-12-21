@@ -49,6 +49,10 @@ import InformationRequirementsTableTab from "@/components/mine/Projects/Informat
 import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
+import MineIncident from "@/components/mine/Incidents/MineIncident";
+import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
+import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
+import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -243,6 +247,26 @@ export const MINE_NOW_APPLICATIONS = {
   component: MineApplications,
 };
 
+export const MINE_TAILINGS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/tailings",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
+  component: MineTailingsInfo,
+};
+
+export const MINE_TAILINGS_DETAILS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
+  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
+  component: MineTailingsDetailsPage,
+};
+
+export const EDIT_TAILINGS_STORAGE_FACILITY = {
+  route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
+  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
+  component: MineTailingsDetailsPage,
+};
+
 export const MINE_EXTERNAL_AUTHORIZATIONS = {
   route: "/mine-dashboard/:id/external-authorizations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/external-authorizations`,
@@ -253,6 +277,21 @@ export const MINE_INCIDENTS = {
   route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
   component: MineIncidents,
+};
+
+export const MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
+  dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
+  component: MineIncident,
+};
+
+export const CREATE_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/new-incident",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/new-incident`,
+  hashRoute: (mineGuid, link) => `/mines/${mineGuid}/new-incident${link}`,
+  component: MineIncident,
 };
 
 export const MINE_INSPECTIONS = {
@@ -276,10 +315,10 @@ export const MINE_PERMIT_REQUIRED_REPORTS = {
   component: PermitRequiredReports,
 };
 
-export const MINE_TAILINGS = {
-  route: "/mine-dashboard/:id/reports/tailings",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
-  component: MineTailingsInfo,
+export const MINE_TAILINGS_REPORTS = {
+  route: "/mine-dashboard/:id/reports/tailings-reports",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
+  component: MineReportTailingsInfo,
 };
 
 export const PARTY_PROFILE = {
@@ -431,3 +470,19 @@ const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
 export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
 export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
   `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;
+
+export const ADD_DAM = {
+  route:
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  component: DamsDetailsPage,
+};
+
+export const EDIT_DAM = {
+  route:
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  component: DamsDetailsPage,
+};

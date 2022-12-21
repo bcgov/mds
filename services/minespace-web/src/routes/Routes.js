@@ -1,7 +1,8 @@
-import React from "react";
+import { Button, Result, Typography } from "antd";
 import { Link, Route, Switch } from "react-router-dom";
+
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Result, Button, Typography } from "antd";
+import React from "react";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 
@@ -32,6 +33,31 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)}
     />
     <Route
+      exact
+      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.EDIT_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.EDIT_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
+      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
+    />
+    <Route
+      exact
+      path={routes.MINE_INCIDENT_SUCCESS.route}
+      component={AuthenticationGuard()(routes.MINE_INCIDENT_SUCCESS.component)}
+    />
+    <Route
+      exact
+      path={routes.REVIEW_MINE_INCIDENT.route}
+      component={AuthenticationGuard()(routes.REVIEW_MINE_INCIDENT.component)}
+    />
+    <Route
       path={routes.ADD_PROJECT_SUMMARY.route}
       component={AuthenticationGuard()(routes.ADD_PROJECT_SUMMARY.component)}
     />
@@ -56,14 +82,6 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.component)}
     />
     <Route
-      path={routes.ADD_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.ADD_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
-      path={routes.REVIEW_MAJOR_MINE_APPLICATION.route}
-      component={AuthenticationGuard()(routes.REVIEW_MAJOR_MINE_APPLICATION.component)}
-    />
-    <Route
       path={routes.EDIT_PROJECT.route}
       component={AuthenticationGuard()(routes.EDIT_PROJECT.component)}
     />
@@ -76,8 +94,20 @@ const Routes = () => (
       component={AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)}
     />
     <Route
+      path={routes.ADD_DAM.route}
+      component={AuthenticationGuard()(routes.ADD_DAM.component)}
+    />
+    <Route
+      path={routes.EDIT_DAM.route}
+      component={AuthenticationGuard()(routes.EDIT_DAM.component)}
+    />
+    <Route
       path={routes.ADD_MINE_INCIDENT.route}
       component={AuthenticationGuard()(routes.ADD_MINE_INCIDENT.component)}
+    />
+    <Route
+      path={routes.EDIT_MINE_INCIDENT.route}
+      component={AuthenticationGuard()(routes.EDIT_MINE_INCIDENT.component)}
     />
     {/* 404 - PAGE NOT FOUND */}
     <Route

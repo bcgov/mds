@@ -6,12 +6,12 @@ import { connect } from "react-redux";
 import { remove } from "lodash";
 import { Typography, Row, Col } from "antd";
 import { bindActionCreators } from "redux";
+import { DOCUMENT, EXCEL, IMAGE } from "@common/constants/fileTypes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
-import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,

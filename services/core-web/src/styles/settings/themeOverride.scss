@@ -6,9 +6,11 @@
     font-family: $default-font;
   }
 }
+
 .ant-tabs-ink-bar {
   height: 4px;
 }
+
 .ant-tabs {
   padding-top: 30px;
 }
@@ -18,19 +20,21 @@
   &.ant-tabs {
     padding-top: 0 !important;
   }
+
   &.ant-tabs .ant-tabs-ink-bar {
     background: transparent;
     height: 0;
     top: 0;
   }
+
   &.ant-tabs .ant-tabs-tab {
     color: #3D6DE7;
     font-weight: bold;
     background-color: white !important;
   }
 
-  &.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
-  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  &.ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
     border-bottom: none !important;
     border-right: 1px solid grey !important;
     height: 70vh;
@@ -48,10 +52,12 @@
       font-weight: bold !important;
     }
   }
+
   & .ant-tabs-tab:hover,
   .ant-tabs-tab-btn:hover {
     background-color: $violet !important;
     color: white !important;
+
     &.ant-tabs-tab-active.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
       color: white !important;
     }
@@ -61,18 +67,20 @@
     height: 70vh;
 
     &--actions {
+
       .ant-btn,
       a {
         margin-right: 5px;
       }
+
       position: absolute;
       width: 100%;
       bottom: 0;
     }
   }
 
-  &.ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane,
-  .ant-tabs-left > div > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+  &.ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane,
+  .ant-tabs-left>div>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
     overflow: scroll;
     margin-bottom: 50px;
   }
@@ -85,17 +93,20 @@
     height: 1px;
     background-color: $h-divider-color;
   }
+
   &.ant-divider-vertical {
     margin: 0 15px;
     height: 30px;
     width: 2px;
     background-color: $v-divider-color;
   }
+
   &.ant-divider-plain {
     height: 100%;
     background-color: $light-grey;
   }
 }
+
 .custom-large-divider {
   border: 2px solid $h-divider-color;
 }
@@ -118,6 +129,7 @@
   line-height: 1.5715;
   word-wrap: break-word;
 }
+
 // BUTTON
 .ant-btn,
 .ant-btn-sm,
@@ -138,26 +150,31 @@
   }
 }
 
+
 .ant-btn-danger {
   background-color: $danger-btn-color;
   color: white;
   border: 1px solid $danger-btn-color;
+
   &:hover {
     background-color: $danger-btn-color-hover;
     color: white;
     border: 1px solid $danger-btn-color-hover;
   }
+
   &:focus {
     background-color: $danger-btn-color-hover;
     color: white;
     border: 1px solid $danger-btn-color-hover;
   }
 }
+
 .ant-btn-link {
   &:focus {
     color: $pure-white;
   }
 }
+
 .btn-danger--icon {
   &:hover {
     color: $danger-btn-color-hover;
@@ -169,6 +186,7 @@
   color: $pure-white;
   border: 1px solid $tertiary-btn-color;
   background-color: $tertiary-btn-color;
+
   &:hover {
     color: $pure-white;
     background-color: $tertiary-btn-color-hover;
@@ -181,6 +199,7 @@
   & a {
     text-decoration: none !important;
   }
+
   &:hover {
     color: $pagination-item-hover;
     border: 1px solid $pagination-item-border-hover;
@@ -202,11 +221,13 @@
   font-weight: $light;
   color: $pure-white;
   background-color: $primary-btn-color;
+
   &:hover {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
     border: 1px solid $primary-btn-border-color-hover;
   }
+
   &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
@@ -215,7 +236,6 @@
 }
 
 .ant-popover {
-  position: fixed;
   width: 500px;
 }
 
@@ -232,14 +252,28 @@
 .ant-btn-background-ghost {
   border-style: none;
   box-shadow: none;
+
   &:hover {
     border-style: none !important;
     border: 0;
   }
+
   &:focus {
     border-style: none !important;
     border: 0;
   }
+}
+
+.ant-btn-alert-warning-ghost {
+  background: #FFF2F0 !important;
+  border-color: #000000 !important;
+  border-style: solid !important;
+}
+
+.ant-btn-alert-info-ghost {
+  background: #F4F0F0 !important;
+  border-color: #000000 !important;
+  border-style: solid !important;
 }
 
 // POPUP CONFIRM
@@ -282,6 +316,7 @@
     .ant-card-head {
       display: none;
     }
+
     padding-top: 20px;
   }
 
@@ -330,10 +365,11 @@
 }
 
 // RESULTS
-.ant-result-info .ant-result-icon > .anticon {
+.ant-result-info .ant-result-icon>.anticon {
   color: $primary-color;
 }
-.ant-result-success .ant-result-icon > .anticon {
+
+.ant-result-success .ant-result-icon>.anticon {
   color: $ok-green;
 }
 
@@ -343,21 +379,33 @@
     color: black !important;
     font-weight: 800;
   }
+
   .ant-alert-description {
     color: black !important;
     line-height: 2rem;
   }
+
   .ant-alert-icon {
     margin-top: 4px;
+  }
+  &.ant-alert-warning-custom-with-red-icon{
+    .ant-alert-icon {
+      background-color: #ff0000 !important;
+      color: #FFF2F0  !important;
+      border-radius: 50%;
+      top: 20px;
+     }
   }
 }
 
 .ant-alert-error {
   margin: 0;
+
   .ant-alert-message {
     color: black !important;
     font-weight: 800;
   }
+
   .ant-alert-description {
     color: black !important;
     line-height: 2rem;
@@ -366,10 +414,12 @@
 
 .ant-alert-info {
   background-color: #ecf6fd;
+
   .ant-alert-message {
     color: black !important;
     font-weight: 800;
   }
+
   .ant-alert-description {
     color: black !important;
     line-height: 2rem;
@@ -379,10 +429,27 @@
     background-color: #ecf6fd !important;
     color: #3d6de7 !important;
   }
+  &.ant-alert-info-custom-with-black-icon{
+    .ant-alert-icon {
+      background-color: #F4F0F0 !important;
+      color: black !important;
+      top: 20px;
+     }
+  }
+  &.ant-alert-info-custom-core-color-icon{
+    .ant-alert-icon {
+      background-color: #FFFFFF !important;
+      color: $primary-color !important;
+     }
+  }
 }
 
 .ant-alert-close-icon .anticon-close:hover {
   color: darken($pure-white, 20%);
+}
+
+.ant-alert+.ant-alert {
+  margin-top: 14px;
 }
 
 // FORMS
@@ -403,6 +470,7 @@
   width: 100%;
   padding: 4px 11px;
 }
+
 .ant-picker-today-btn {
   color: $a-color;
 
@@ -418,7 +486,7 @@
 }
 
 .light-background {
-  .ant-collapse-content > .ant-collapse-content-box {
+  .ant-collapse-content>.ant-collapse-content-box {
     background-color: #908e8e17;
   }
 }
@@ -446,6 +514,7 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   line-height: 22px;
+
   &:hover {
     background-color: $light-grey;
   }
@@ -457,7 +526,7 @@
   margin: 0 !important;
 }
 
-.ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title {
+.ant-menu-horizontal>.ant-menu-submenu>.ant-menu-submenu-title {
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -476,6 +545,7 @@
   color: $darkest-grey;
   background-color: $light-grey;
 }
+
 // -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: $violet;
@@ -501,6 +571,7 @@
   background: white;
   text-align: left;
 }
+
 .carousel-slider {
   padding: 2px;
 }
@@ -518,16 +589,20 @@
   background-color: $lightest-grey;
   margin-bottom: 20px;
 }
+
 .ant-anchor-link-active {
   border-left: 7px solid $violet;
 }
-.ant-anchor-link-active > .ant-anchor-link-title {
+
+.ant-anchor-link-active>.ant-anchor-link-title {
   font-weight: $bold;
   text-decoration: none;
 }
+
 .ant-anchor-link-title {
   text-decoration: none;
 }
+
 .ant-anchor-link {
   border-bottom: 1px solid $light-grey;
   padding: 7px;
@@ -666,14 +741,15 @@ select {
   .ant-tooltip-inner {
     background-color: $violet;
   }
+
   .ant-tooltip-arrow-content {
     background-color: $violet !important;
   }
 }
 
 //Legacy form fields
-.ant-radio-wrapper > span,
-.ant-legacy-form-item-label > label {
+.ant-radio-wrapper>span,
+.ant-legacy-form-item-label>label {
   font-size: 1rem;
 }
 
@@ -703,7 +779,7 @@ select {
   text-align: left;
 }
 
-.ant-timeline > li:last-child {
+.ant-timeline>li:last-child {
   .ant-timeline-item-tail {
     display: none;
   }
@@ -715,4 +791,44 @@ select {
 
 .ant-descriptions-item-label {
   font-weight: 600;
+}
+
+.ant-table-row-expand-icon {
+  background-color: $primary-color;
+  color: $white;
+  border: 2px solid $primary-color;
+  border-radius: 9px;
+  height: 18px;
+  width: 18px;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border: 2px solid $primary-color;
+  }
+
+  &:before {
+    top: 6.2px;
+    right: 3px;
+    left: 3.2px;
+    height: 2px;
+  }
+
+  &:after {
+    top: 3px;
+    bottom: 3px;
+    left: 6px;
+    width: 2px;
+  }
+}
+
+.ant-table-row-expand-icon-cell {
+  width: 25px;
+}
+
+.ant-table-row-expand-icon-cell>span {
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

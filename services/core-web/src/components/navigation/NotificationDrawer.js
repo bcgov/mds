@@ -11,9 +11,16 @@ import PropTypes from "prop-types";
 import { formatDateTime } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { NOTICE_OF_DEPARTURE } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
+import {
+  NOTICE_OF_DEPARTURE,
+  MINE_INCIDENT,
+  PRE_APPLICATIONS,
+  INFORMATION_REQUIREMENTS_TABLE,
+  PROJECTS,
+  MINE_TAILINGS_DETAILS,
+} from "@/constants/routes";
 
 const propTypes = {
   fetchActivities: PropTypes.func.isRequired,
@@ -95,6 +102,38 @@ const NotificationDrawer = (props) => {
           notification.notification_document.metadata.mine.mine_guid,
           notification.notification_document.metadata.entity_guid
         );
+      case "MineIncident":
+        return MINE_INCIDENT.dynamicRoute(
+          notification.notification_document.metadata.mine_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "ProjectSummary":
+        return PRE_APPLICATIONS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "InformationRequirementsTable":
+        return INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          notification.notification_document.metadata.entity_guid
+        );
+      case "MajorMineApplication":
+        return PROJECTS.dynamicRoute(
+          notification.notification_document.metadata.project.project_guid,
+          "final-app"
+        );
+      case "EngineerOfRecord":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "engineer-of-record"
+        );
+      case "QualifiedPerson":
+        return MINE_TAILINGS_DETAILS.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine.mine_guid,
+          "qualified-person"
+        );
       default:
         return null;
     }
@@ -164,17 +203,21 @@ const NotificationDrawer = (props) => {
                         {activity.notification_document?.metadata?.mine?.mine_name}
                       </Typography.Text>
                     </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
-                    <Col>
-                      <Typography.Text className="notification-info-text">
-                        {activity.notification_document?.metadata?.permit?.permit_no}
-                      </Typography.Text>
-                    </Col>
-                    <Col>
-                      <div className="notification-separator" />
-                    </Col>
+                    {activity.notification_document?.metadata?.permit && (
+                      <>
+                        <Col>
+                          <div className="notification-separator" />
+                        </Col>
+                        <Col>
+                          <Typography.Text className="notification-info-text">
+                            {activity.notification_document?.metadata?.permit?.permit_no}
+                          </Typography.Text>
+                        </Col>
+                        <Col>
+                          <div className="notification-separator" />
+                        </Col>
+                      </>
+                    )}
                     <Col>
                       <Typography.Text className="notification-info-text">
                         {formatDateTime(activity.create_timestamp)}

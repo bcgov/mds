@@ -1,7 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineTailingsTable } from "@/components/mine/Tailings/MineTailingsTable";
+import { Provider } from "react-redux";
+import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { store } from "@/App";
 
 const props = {};
 
@@ -19,7 +21,11 @@ beforeEach(() => {
 
 describe("MineTailingsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineTailingsTable {...props} />);
+    const component = shallow(
+      <Provider store={store}>
+        <MineTailingsTable {...props} />
+      </Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });

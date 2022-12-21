@@ -46,3 +46,4 @@ export { default as FLUSH_SOUND } from "../assets/downloads/flush.mp3";
 export { default as WATER_SOUND } from "../assets/downloads/water.mp3";
 export { default as MINESPACE_ICON } from "../assets/images/minespaceIcon.svg";
 export { default as CLOUD_CHECK_MARK } from "../assets/images/CloudCheck.png";
+export { default as OPEN_NEW_TAB } from "../assets/images/ArrowUpRightFromSquare.svg";

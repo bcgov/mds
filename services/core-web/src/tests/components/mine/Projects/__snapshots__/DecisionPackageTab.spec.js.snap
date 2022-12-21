@@ -154,6 +154,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={
@@ -201,6 +202,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={
@@ -292,6 +294,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
+        documentColumns={null}
         documentParent={null}
         documents={Array []}
         excludedColumnKeys={

@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DamsForm renders properly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <DamForm
+    dam={Object {}}
+    tsf={
+      Object {
+        "dams": Array [
+          Object {
+            "consequence_classification": "low",
+            "current_dam_height": "123",
+            "current_elevation": "123",
+            "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
+            "dam_name": "MockDam",
+            "dam_type": "dam",
+            "latitude": "123",
+            "longitude": "123",
+            "max_pond_elevation": "123",
+            "min_freeboard_required": "123",
+            "operating_status": "operation",
+            "permitted_dam_crest_elevation": "123",
+          },
+        ],
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+        "mine_tailings_storage_facility_name": "MockTSF",
+      }
+    }
+  />
+</ContextProvider>
+`;

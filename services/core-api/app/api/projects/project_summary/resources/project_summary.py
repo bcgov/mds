@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
+from app.api.activity.utils import trigger_notification
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
@@ -11,6 +12,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project.models.project import Project
+from app.api.activity.models.activity_notification import ActivityType
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -147,8 +149,11 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
-            project_summary.send_project_summary_email_to_ministry(mine)
-            project_summary.send_project_summary_email_to_proponent(mine)
+            project_summary.send_project_summary_email(mine)
+            # Trigger notification for newly submitted Project Summary
+            message = f'A Major Mine Description called ({project.project_title}) has been submitted for ({project.mine_name})'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
 
         # Update project.
         project.update(

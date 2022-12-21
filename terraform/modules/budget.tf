@@ -18,6 +18,14 @@ resource "aws_budgets_budget" "cost" {
   cost_filters = {
     TagKeyValue = "user:Project$MDS"
   }
+
+  lifecycle {
+    ignore_changes = [
+      time_period_start
+    ]
+  }
+
+
 }
 
 resource "aws_sns_topic" "billing_alert_topic" {

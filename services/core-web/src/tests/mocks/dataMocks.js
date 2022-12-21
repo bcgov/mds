@@ -1254,21 +1254,31 @@ export const DROPDOWN_PROVINCE_OPTIONS = [
   {
     value: "AB",
     label: "AB",
-    subType: null,
+    subType: "CAN",
     isActive: true,
   },
   {
     value: "BC",
     label: "BC",
-    subType: null,
+    subType: "CAN",
     isActive: true,
   },
 ];
 
 export const PROVINCE_OPTIONS = {
   records: [
-    { description: "British Columbia", display_order: 10, sub_division_code: "BC" },
-    { description: "Alberta", display_order: 10, sub_division_code: "AB" },
+    {
+      description: "British Columbia",
+      display_order: 10,
+      sub_division_code: "BC",
+      address_type_code: "CAN",
+    },
+    {
+      description: "Alberta",
+      display_order: 10,
+      sub_division_code: "AB",
+      address_type_code: "CAN",
+    },
   ],
 };
 
@@ -1737,7 +1747,7 @@ export const INCIDENT = {
   reported_timestamp: "2019-07-04 14:05",
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
-  status_code: "FIN",
+  status_code: "CLD",
 };
 
 export const INCIDENTS = {
@@ -2685,16 +2695,29 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
 };
 
 export const INCIDENT_STATUS_OPTIONS = [
-  { description: "Preliminary", mine_incident_status_code: "PRE" },
-  {
-    description: "Final",
-    mine_incident_status_code: "FIN",
-  },
+  { mine_incident_status_code: "WNS", description: "Written Notice Submitted" },
+  { mine_incident_status_code: "RRS", description: "Reviewing Severity Status" },
+  { mine_incident_status_code: "IMS", description: "Information Missing Status" },
+  { mine_incident_status_code: "AFR", description: "Awaiting final report" },
+  { mine_incident_status_code: "FRS", description: "Final report submitted" },
+  { mine_incident_status_code: "UNR", description: "Under review" },
+  { mine_incident_status_code: "INV", description: "Investigating" },
+  { mine_incident_status_code: "MIU", description: "MIU" },
+  { mine_incident_status_code: "CLD", description: "Closed" },
+  { mine_incident_status_code: "DFT", description: "Draft" },
 ];
 
 export const INCIDENT_STATUS_OPTIONS_HASH = {
-  PRE: "Preliminary",
-  FIN: "Final",
+  WNS: "Written Notice Submitted",
+  RRS: "Reviewing Severity Status",
+  IMS: "Information Missing Status",
+  AFR: "Awaiting final report",
+  FRS: "Final report submitted",
+  UNR: "Under review",
+  INV: "Investigating",
+  MIU: "MIU",
+  CLD: "Closed",
+  DFT: "Draft",
 };
 
 export const INCIDENT_CATEGORY_OPTIONS_HASH = {};
@@ -3315,15 +3338,26 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   incidentDeterminationOptions: [
     { mine_incident_determination_type_code: "PEN", description: "Pending determination" },
-    { mine_incident_determination_type_code: "DO", description: "This was a dangerous occurrence" },
+    {
+      mine_incident_determination_type_code: "DO",
+      description: "This was a dangerous occurrence",
+    },
     {
       mine_incident_determination_type_code: "NDO",
       description: "This was not a dangerous occurrence",
     },
   ],
   incidentStatusCodeOptions: [
-    { mine_incident_status_code: "PRE", description: "Preliminary" },
-    { mine_incident_status_code: "FIN", description: "Final" },
+    { mine_incident_status_code: "WNS", description: "Written Notice Submitted" },
+    { mine_incident_status_code: "RSS", description: "Reviewing Severity Status" },
+    { mine_incident_status_code: "IMS", description: "Information Missing Status" },
+    { mine_incident_status_code: "AFR", description: "Awaiting final report" },
+    { mine_incident_status_code: "FRS", description: "Final report submitted" },
+    { mine_incident_status_code: "UNR", description: "Under review" },
+    { mine_incident_status_code: "INV", description: "Investigating" },
+    { mine_incident_status_code: "MIU", description: "MIU" },
+    { mine_incident_status_code: "CLD", description: "Closed" },
+    { mine_incident_status_code: "DFT", description: "Draft" },
   ],
   incidentCategoryCodeOptions: [
     {
@@ -3353,12 +3387,19 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   exemptionFeeStatusOptions: [],
   provinceOptions: [
-    { sub_division_code: "AB", description: "Alberta", display_order: 10, active_ind: true },
+    {
+      sub_division_code: "AB",
+      description: "Alberta",
+      display_order: 10,
+      active_ind: true,
+      address_type_code: "CAN",
+    },
     {
       sub_division_code: "BC",
       description: "British Columbia",
       display_order: 20,
       active_ind: true,
+      address_type_code: "CAN",
     },
   ],
   complianceCodes: [
@@ -3395,13 +3436,21 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     { variance_application_status_code: "WIT", description: "Withdrawn", active_ind: true },
     { variance_application_status_code: "REV", description: "In Review", active_ind: true },
-    { variance_application_status_code: "NAP", description: "Not Applicable", active_ind: true },
+    {
+      variance_application_status_code: "NAP",
+      description: "Not Applicable",
+      active_ind: true,
+    },
     { variance_application_status_code: "APP", description: "Approved", active_ind: true },
     { variance_application_status_code: "DEN", description: "Denied", active_ind: true },
   ],
   varianceDocumentCategoryOptions: [
     { variance_document_category_code: "REQ", description: "Request", active_ind: true },
-    { variance_document_category_code: "REC", description: "Recommendation", active_ind: true },
+    {
+      variance_document_category_code: "REC",
+      description: "Recommendation",
+      active_ind: true,
+    },
     { variance_document_category_code: "DEC", description: "Decision", active_ind: true },
   ],
   projectSummaryStatusCodes: [
@@ -3815,7 +3864,12 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { activity_type_code: "water_supply", description: "Water Supply", active_ind: true },
   ],
   noticeOfWorkUnitTypeOptions: [
-    { short_description: "km", unit_type_code: "KMT", description: "Kilometer ", active_ind: true },
+    {
+      short_description: "km",
+      unit_type_code: "KMT",
+      description: "Kilometer ",
+      active_ind: true,
+    },
     {
       short_description: "t",
       unit_type_code: "MTN",
@@ -3828,15 +3882,30 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       description: "Meters cubed",
       active_ind: true,
     },
-    { short_description: "ha", unit_type_code: "HA", description: "Hectares", active_ind: true },
-    { short_description: "deg", unit_type_code: "DEG", description: "Degrees", active_ind: true },
+    {
+      short_description: "ha",
+      unit_type_code: "HA",
+      description: "Hectares",
+      active_ind: true,
+    },
+    {
+      short_description: "deg",
+      unit_type_code: "DEG",
+      description: "Degrees",
+      active_ind: true,
+    },
     {
       short_description: "%",
       unit_type_code: "PER",
       description: "Grade (Percent)",
       active_ind: true,
     },
-    { short_description: "m", unit_type_code: "MTR", description: "Meters", active_ind: true },
+    {
+      short_description: "m",
+      unit_type_code: "MTR",
+      description: "Meters",
+      active_ind: true,
+    },
   ],
   noticeOfWorkApplicationTypeOptions: [
     {
@@ -3857,11 +3926,23 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   noticeOfWorkApplicationStatusOptions: [
     { now_application_status_code: "SUB", description: "Submitted", active_ind: true },
     { now_application_status_code: "REF", description: "Referred", active_ind: true },
-    { now_application_status_code: "CDI", description: "Client Delay Info", active_ind: true },
-    { now_application_status_code: "CDB", description: "Client Delay Bond", active_ind: true },
+    {
+      now_application_status_code: "CDI",
+      description: "Client Delay Info",
+      active_ind: true,
+    },
+    {
+      now_application_status_code: "CDB",
+      description: "Client Delay Bond",
+      active_ind: true,
+    },
     { now_application_status_code: "GVD", description: "Govt Delay", active_ind: true },
     { now_application_status_code: "CON", description: "Consultation", active_ind: true },
-    { now_application_status_code: "AIA", description: "Active/Issued/Approved", active_ind: true },
+    {
+      now_application_status_code: "AIA",
+      description: "Active/Issued/Approved",
+      active_ind: true,
+    },
     { now_application_status_code: "WDN", description: "Withdrawn", active_ind: true },
     { now_application_status_code: "REJ", description: "Rejected", active_ind: true },
     { now_application_status_code: "CLO", description: "Closed", active_ind: true },
@@ -4986,7 +5067,11 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   noticeOfWorkUndergroundExplorationTypeOptions: [
     { underground_exploration_type_code: "NEW", description: "New", active_ind: true },
-    { underground_exploration_type_code: "RHB", description: "Rehabilitation", active_ind: true },
+    {
+      underground_exploration_type_code: "RHB",
+      description: "Rehabilitation",
+      active_ind: true,
+    },
     { underground_exploration_type_code: "SUR", description: "Surface", active_ind: true },
   ],
   noticeOfWorkApplicationProgressStatusCodeOptions: [
@@ -5001,8 +5086,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       description: "Multi-Year, Area-Based Permit",
       active_ind: true,
     },
-    { now_application_permit_type_code: "OYP", description: "One-Year Permit", active_ind: true },
-    { now_application_permit_type_code: "MYP", description: "Multi-Year Permit", active_ind: true },
+    {
+      now_application_permit_type_code: "OYP",
+      description: "One-Year Permit",
+      active_ind: true,
+    },
+    {
+      now_application_permit_type_code: "MYP",
+      description: "Multi-Year Permit",
+      active_ind: true,
+    },
   ],
   noticeOfWorkApplicationReviewOptions: [
     { now_application_review_type_code: "REF", description: "Referral" },
@@ -5029,8 +5122,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       description: "Scan of Reclamation Security Bond",
       active_ind: true,
     },
-    { bond_document_type_code: "RSF", description: "Release of Security Form", active_ind: true },
-    { bond_document_type_code: "RSL", description: "Release of Security Letter", active_ind: true },
+    {
+      bond_document_type_code: "RSF",
+      description: "Release of Security Form",
+      active_ind: true,
+    },
+    {
+      bond_document_type_code: "RSL",
+      description: "Release of Security Letter",
+      active_ind: true,
+    },
     {
       bond_document_type_code: "CSF",
       description: "Confiscation of Security Form",
@@ -5042,7 +5143,11 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     { bond_document_type_code: "REL", description: "Reminder Letter", active_ind: true },
-    { bond_document_type_code: "AKL", description: "Acknowledgement Letter", active_ind: true },
+    {
+      bond_document_type_code: "AKL",
+      description: "Acknowledgement Letter",
+      active_ind: true,
+    },
   ],
   permitConditionTypeOptions: [
     {
@@ -5768,6 +5873,19 @@ export const MINE_COMMENTS = {
       comment_user: "mockUser",
       mine_comment: "new comment again",
       comment_datetime: "2018-10-16",
+    },
+  ],
+};
+
+export const MINE_ALERTS = {
+  records: [
+    {
+      mine_alert_guid: "3a31287c-82a3-46f0-a973-7a8a399718ad",
+      start_date: "2022-10-27",
+      end_date: "2022-10-31",
+      contact_name: "mock name",
+      contact_phone: "337-588-3109",
+      message: "Mine under construction",
     },
   ],
 };

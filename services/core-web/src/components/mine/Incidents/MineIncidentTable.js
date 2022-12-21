@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Popconfirm, Drawer } from "antd";
 import { EyeOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -33,6 +34,7 @@ const propTypes = {
   openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   handleIncidentSearch: PropTypes.func,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
@@ -112,6 +114,7 @@ export class MineIncidentTable extends Component {
     incidents.map((incident) => {
       const values = {
         key: incident.mine_incident_guid,
+        mine_guid: incident.mine_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
         incident_timestamp: formatDate(incident.incident_timestamp),
         reported_timestamp: formatDate(incident.reported_timestamp),
@@ -218,11 +221,14 @@ export class MineIncidentTable extends Component {
         render: (text, record) => (
           <span title="Inspector Responsible">{record.incident.responsible_inspector_party}</span>
         ),
-        onFilter: (value, record) => record.incident.responsible_inspector_party === value,
+        onFilter: (value, record) => record.incident?.responsible_inspector_party === value,
         filters: _.reduce(
           this.props.incidents,
           (reporterList, incident) => {
-            if (!reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)) {
+            if (
+              incident?.responsible_inspector_party &&
+              !reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)
+            ) {
               reporterList.push({
                 value: incident.responsible_inspector_party,
                 text: incident.responsible_inspector_party,
@@ -327,12 +333,18 @@ export class MineIncidentTable extends Component {
                 size="small"
                 ghost
                 onClick={(event) =>
-                  record.openMineIncidentModal(
-                    event,
-                    record.handleEditMineIncident,
-                    false,
-                    record.incident
-                  )
+                  // ENV FLAG FOR MINE INCIDENTS //
+                  IN_PROD()
+                    ? record.openMineIncidentModal(
+                        event,
+                        record.handleEditMineIncident,
+                        false,
+                        record.incident
+                      )
+                    : this.props.history.push({
+                        pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
+                        state: { isEditMode: true },
+                      })
                 }
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
@@ -342,7 +354,15 @@ export class MineIncidentTable extends Component {
               type="primary"
               size="small"
               ghost
-              onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
+              onClick={(event) =>
+                // ENV FLAG FOR MINE INCIDENTS //
+                IN_PROD()
+                  ? record.openViewMineIncidentModal(event, record.incident)
+                  : this.props.history.push({
+                      pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
+                      state: { isEditMode: false },
+                    })
+              }
             >
               <EyeOutlined className="icon-lg icon-svg-filter" />
             </Button>
@@ -359,16 +379,19 @@ export class MineIncidentTable extends Component {
                 </Button>
               </Popconfirm>
             </AuthorizationWrapper>
-            <AuthorizationWrapper permission={Permission.ADMIN}>
-              <Button
-                type="primary"
-                size="small"
-                ghost
-                onClick={() => this.toggleDrawer(record.incident)}
-              >
-                <MessageOutlined className="padding-sm icon-sm" />
-              </Button>
-            </AuthorizationWrapper>
+            {// ENV FLAG FOR MINE INCIDENTS //
+            IN_PROD() && (
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  type="primary"
+                  size="small"
+                  ghost
+                  onClick={() => this.toggleDrawer(record.incident)}
+                >
+                  <MessageOutlined className="padding-sm icon-sm" />
+                </Button>
+              </AuthorizationWrapper>
+            )}
           </div>
         ),
       },
@@ -436,4 +459,4 @@ const mapStateToProps = (state) => ({
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
 });
 
-export default connect(mapStateToProps)(MineIncidentTable);
+export default withRouter(connect(mapStateToProps)(MineIncidentTable));

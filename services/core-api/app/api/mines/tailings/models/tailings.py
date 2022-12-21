@@ -10,6 +10,7 @@ from app.api.services.email_service import EmailService
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.config import Config
 from app.extensions import db
+from app.api.dams.models.dam import Dam
 
 
 class StorageLocation(Enum):
@@ -58,15 +59,40 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         'MinePartyAppointment',
         lazy='select',
         primaryjoin=
-        'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "EOR", MinePartyAppointment.deleted_ind == False)',
+        'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == '
+        'MineTailingsStorageFacility.mine_tailings_storage_facility_guid, '
+        'MinePartyAppointment.mine_party_appt_type_code == "EOR", MinePartyAppointment.deleted_ind == False)',
         order_by=
-        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+    )
+    dams = db.relationship(
+        'Dam',
+        lazy='select',
+        primaryjoin=
+        'and_(Dam.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, '
+        'Dam.deleted_ind == False)',
+        order_by=
+        'nullsfirst(desc(Dam.update_timestamp))'
+    )
+
+    qualified_persons = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin=
+        'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "TQP", MinePartyAppointment.deleted_ind == False)',
+        order_by=
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
     )
 
     @hybrid_property
     def engineer_of_record(self):
         if self.engineer_of_records:
             return self.engineer_of_records[0]
+
+    @hybrid_property
+    def qualified_person(self):
+        if self.qualified_persons:
+            return self.qualified_persons[0]
 
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid
@@ -140,6 +166,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         recipients = MINESPACE_TSF_UPDATE_EMAIL
         subject = f'TSF Information Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/tailings'
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/permits-and-approvals/tailings'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)

@@ -195,7 +195,9 @@ export const CORE_USER = "/users/core";
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
-export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
+export const MINE_INCIDENT_DOCUMENTS = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
+export const MINE_INCIDENT_DOCUMENT = (mineGuid, mineIncidentGuid, mineDocumentGuid) =>
+  `/mines/${mineGuid}/incidents/${mineIncidentGuid}/documents/${mineDocumentGuid}`;
 export const INCIDENTS = (params = {}) => `/incidents?${queryString.stringify(params)}`;
 
 export const INCIDENT_NOTE = (mineIncidentGuid, mineIncidentNoteGuid) =>
@@ -308,3 +310,7 @@ export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${crede
 // Activities
 export const ACTIVITIES = () => "/activities";
 export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";
+
+// Dams
+export const DAMS = () => `/dams`;
+export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");

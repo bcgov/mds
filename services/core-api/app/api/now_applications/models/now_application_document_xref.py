@@ -1,3 +1,4 @@
+from app.api.utils.models_mixins import SoftDeleteMixin
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -8,7 +9,7 @@ from app.extensions import db
 from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 
 
-class NOWApplicationDocumentXref(AuditMixin, Base):
+class NOWApplicationDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'now_application_document_xref'
 
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
@@ -46,7 +47,9 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     mine_document = db.relationship(
         'MineDocument',
         lazy='joined',
-        backref=backref('now_application_document_xref', uselist=False))
+        primaryjoin='and_(MineDocument.mine_document_guid == NOWApplicationDocumentXref.mine_document_guid, MineDocument.deleted_ind==False)',
+        backref=backref('now_application_document_xref', uselist=False)
+    )
 
     def __repr__(self):
         return '<ApplicationDocumentXref %r>' % self.now_application_document_xref_guid
@@ -54,3 +57,7 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     @classmethod
     def find_by_guid(cls, guid):
         return cls.query.filter_by(now_application_document_xref_guid=guid).one_or_none()
+
+    def delete(self, commit=True):
+        self.mine_document.delete(commit)
+        super(NOWApplicationDocumentXref, self).delete(commit)

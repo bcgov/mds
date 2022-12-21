@@ -54,7 +54,27 @@ const MineDashboardRoutes = () => (
       path={routes.MINE_PERMIT_REQUIRED_REPORTS.route}
       component={routes.MINE_PERMIT_REQUIRED_REPORTS.component}
     />
+    <Route
+      exact
+      path={routes.MINE_TAILINGS_REPORTS.route}
+      component={routes.MINE_TAILINGS_REPORTS.component}
+    />
     <Route exact path={routes.MINE_TAILINGS.route} component={routes.MINE_TAILINGS.component} />
+    <Route
+      exact
+      path={routes.MINE_TAILINGS_DETAILS.route}
+      component={routes.MINE_TAILINGS_DETAILS.component}
+    />
+    <Route
+      exact
+      path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
+      component={routes.MINE_TAILINGS_DETAILS.component}
+    />
+    <Route
+        exact
+        path={routes.EDIT_DAM.route}
+        component={routes.EDIT_DAM.component}
+    />
     <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
     <Route
       exact

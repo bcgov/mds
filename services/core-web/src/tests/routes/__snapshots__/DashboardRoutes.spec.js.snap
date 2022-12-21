@@ -37,22 +37,131 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/admin/dashboard"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authenticationGuard))",
+        "displayName": "Connect(withRouter(ProjectSummary))",
         "type": [Function],
       }
     }
     exact={true}
-    path="/"
+    path="/mines/:mineGuid/project-description/new"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(applicationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/administrative-amendment/app/:id/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/contact-management/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/minespace-emli-contact-management"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard/manage-minespace/users"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/permit-condition-management/:type"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard/mine-verification/:type"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ContactHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/contacts"
   />
   <Route
     component={[Function]}
     exact={true}
-    path="/home/"
+    path="/mines/:mineGuid/new-incident"
   />
   <Route
     component={
@@ -73,6 +182,86 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(Connect(authenticationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(PermitConditionManagement)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/reporting/executive-reporting"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/home/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(IncidentsHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/reporting/incidents"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(InformationRequirementsTableTab)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(Logout)",
         "type": [Function],
       }
@@ -81,17 +270,9 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/logout-confirmed/"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Dashboard)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    path="/dashboard/mines"
+    path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
   />
   <Route
     component={
@@ -99,25 +280,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(ContactHomePage)",
+        "displayName": "Connect(MajorProjectHomePage)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/dashboard/contacts"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineDashboard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/"
+    path="/dashboard/reporting/major-project"
   />
   <Route
     component={
@@ -138,6 +306,32 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(MineDocuments)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/mine-information/mms-archive"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ExternalAuthorizations)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/external-authorizations"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineSummary)",
         "type": [Function],
       }
@@ -151,12 +345,61 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(MineDocuments)",
+        "displayName": "Connect(Dashboard)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/mine-dashboard/:id/mine-information/mms-archive"
+    path="/dashboard/mines"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mines/:mineGuid/incidents/:mineIncidentGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/oversight/incidents-and-investigations"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineComplianceInfo)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/oversight/inspections-and-audits"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineNoticeOfDeparture)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineApplications)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/applications"
   />
   <Route
     component={
@@ -177,12 +420,79 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(PermitRequiredReports)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/reports/permit-required-reports"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineProject)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineReportInfo)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/reports/code-required-reports"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineSecurityInfo)",
         "type": [Function],
       }
     }
     exact={true}
     path="/mine-dashboard/:id/permits-and-approvals/securities"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineDashboard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/tailings"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/reports/tailings-reports"
   />
   <Route
     component={
@@ -216,12 +526,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(MineNoticeOfDeparture)",
+        "displayName": "Connect(Connect(applicationGuard))",
         "type": [Function],
       }
     }
     exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
+    path="/dashboard/notice-of-work/app/:id/:tab"
   />
   <Route
     component={
@@ -229,12 +539,18 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(MineProject)",
+        "displayName": "Connect(NoticeOfWorkHomePage)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
+    path="/dashboard/reporting/notice-of-work"
+  />
+  <Route
+    exact={true}
+  />
+  <Route
+    exact={true}
   />
   <Route
     component={
@@ -242,12 +558,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(withRouter(ProjectSummary))",
+        "displayName": "Connect(PartyProfile)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/mines/:mineGuid/project-description/new"
+    path="/dashboard/:id/profile"
   />
   <Route
     component={
@@ -278,16 +594,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="/pre-applications/:projectGuid/final-app"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="/pre-applications/:projectGuid/documents"
   />
   <Route
@@ -296,121 +602,9 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/pre-applications/:projectGuid/project-decision-package"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(InformationRequirementsTableTab)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    path="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineApplications)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/applications"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(ExternalAuthorizations)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/external-authorizations"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineIncidents)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/oversight/incidents-and-investigations"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineComplianceInfo)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/oversight/inspections-and-audits"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineReportInfo)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/reports/code-required-reports"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PermitRequiredReports)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/reports/permit-required-reports"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineTailingsInfo)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/reports/tailings"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PartyProfile)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/:id/profile"
+    path="/pre-applications/:projectGuid/final-app"
   />
   <Route
     component={
@@ -436,129 +630,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(VarianceHomePage)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/reporting/variance"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(IncidentsHomePage)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/reporting/incidents"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
         "displayName": "Connect(ReportsHomePage)",
         "type": [Function],
       }
     }
     exact={true}
     path="/dashboard/reporting/reports"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/reporting/executive-reporting"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/dashboard"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/permit-condition-management/:type"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/minespace-emli-contact-management"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/dashboard/mine-verification/:type"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/dashboard/manage-minespace/users"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/admin/contact-management/:tab"
   />
   <Route
     component={
@@ -579,51 +656,15 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(NoticeOfWorkHomePage)",
+        "displayName": "Connect(VarianceHomePage)",
         "type": [Function],
       }
     }
     exact={true}
-    path="/dashboard/reporting/notice-of-work"
+    path="/dashboard/reporting/variance"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
-        "type": [Function],
-      }
-    }
     exact={true}
-    path="/dashboard/notice-of-work/app/:id/:tab"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MajorProjectHomePage)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/reporting/major-project"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/administrative-amendment/app/:id/:tab"
   />
   <Route
     component={
@@ -637,28 +678,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/dashboard/view-notice-of-work/app/:id/:tab"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PermitConditionManagement)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
-  />
-  <Route
-    exact={true}
-  />
-  <Route
-    exact={true}
-  />
-  <Route
-    exact={true}
   />
   <Route
     component={[Function]}

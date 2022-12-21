@@ -116,45 +116,23 @@ export const PermitsTable = (props) => {
         title: "Amendment No.",
         dataIndex: "amendmentNumber",
         key: "amendmentNumber",
-        width: 180,
+        width: "30px",
       },
       { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
       {
         title: "Authorization End Date",
         dataIndex: "authorizationEndDate",
         key: "authorizationEndDate",
-        width: "250px",
+        width: "200px",
         render: (text) => <div title="Authorization End Date">{text}</div>,
       },
       { title: "Description", dataIndex: "description", key: "description" },
-      {
-        title: "Map Files",
-        dataIndex: "maps",
-        key: "maps",
-        render: (text) => (
-          <div className="cap-col-height" title="Map Files">
-            {(text &&
-              text.length > 0 &&
-              text.map((file) => (
-                <LinkButton
-                  key={file.mine_document.document_manager_guid}
-                  onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                  title={file.mine_document.document_name}
-                >
-                  {truncateFilename(file.mine_document.document_name)}
-                  <br />
-                </LinkButton>
-              ))) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
       {
         title: "Permit Package",
         dataIndex: "permitPackage",
         key: "permitPackage",
         render: (text) => (
-          <div className="cap-col-height" title="Permit Package">
+          <div title="Permit Package">
             {(text &&
               text.length > 0 &&
               text.map((file) => (
@@ -163,8 +141,9 @@ export const PermitsTable = (props) => {
                   onClick={() => downloadFileFromDocumentManager(file.mine_document)}
                   title={file.mine_document.document_name}
                 >
-                  {truncateFilename(file.mine_document.document_name)}
-                  <br />
+                  <p className="wrapped-text">
+                    {truncateFilename(file.mine_document.document_name)}
+                  </p>
                 </LinkButton>
               ))) ||
               Strings.EMPTY_FIELD}
@@ -176,7 +155,7 @@ export const PermitsTable = (props) => {
         dataIndex: "documents",
         key: "documents",
         render: (text) => (
-          <div className="cap-col-height" title="Permit Files">
+          <div title="Permit Files">
             {(text &&
               text.length > 0 &&
               text.map((file) => (
@@ -185,8 +164,7 @@ export const PermitsTable = (props) => {
                   onClick={() => downloadFileFromDocumentManager(file)}
                   title={file.document_name}
                 >
-                  {truncateFilename(file.document_name)}
-                  <br />
+                  <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
                 </LinkButton>
               ))) ||
               Strings.EMPTY_FIELD}

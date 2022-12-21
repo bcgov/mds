@@ -1,7 +1,7 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import queryString from "query-string";
-import { KEYCLOAK } from "@common/constants/environment";
+import { KEYCLOAK } from "@mds/common";
 import {
   getUserInfoFromToken,
   authenticateUser,

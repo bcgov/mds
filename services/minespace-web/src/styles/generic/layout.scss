@@ -63,6 +63,10 @@
   }
 }
 
+.full-width {
+  width: 100%;
+}
+
 .padding-sm {
   &--left {
     padding-left: $default-padding-sm;
@@ -146,6 +150,34 @@
 
 .margin-small {
   margin: $default-margin-sm;
+  &--top {
+    margin-top: $default-margin-sm;
+  }
+  &--bottom {
+    margin-bottom: $default-margin-sm;
+  }
+  &--right {
+    margin-right: $default-margin-sm;
+  }
+  &--left {
+    margin-left: $default-margin-sm;
+  }
+}
+
+.margin-medium {
+  margin: $default-margin-md;
+  &--top {
+    margin-top: $default-margin-md;
+  }
+  &--bottom {
+    margin-bottom: $default-margin-md;
+  }
+  &--right {
+    margin-right: $default-margin-md;
+  }
+  &--left {
+    margin-left: $default-margin-md;
+  }
 }
 
 .margin-large {
@@ -155,6 +187,12 @@
   }
   &--top {
     margin-top: $default-margin-lg;
+  }
+  &--right {
+    margin-right: $default-margin-lg;
+  }
+  &--left {
+    margin-left: $default-margin-lg;
   }
 }
 
@@ -202,5 +240,163 @@
   &--light-grey {
     background-color: $lightest-grey-alt;
     border-radius: 2px;
+  }
+}
+
+.gov-blue-title {
+  font-family: BCSans, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $gov-blue !important;
+  line-height: 2rem;
+}
+
+// Styling to support scrolling side menu(derived from NoW Core-Web)
+.view {
+  &--header {
+    &.fixed-scroll {
+      top: 80px;
+      position: fixed;
+      width: 75vw;
+      background-color: $pure-white;
+      z-index: 50;
+      box-shadow: $default-box-shadow;
+    }
+    &--content {
+      padding: 10px;
+
+      &--actions {
+        display: inline-flex;
+        padding-top: 10px;
+      }
+    }
+    &--sub {
+      font-size: $font-size-sm;
+      color: $non-textual-grey;
+    }
+  }
+
+  &--content {
+    // adding white space to bottom, so scroll-to will take the element to the top of the page always
+    margin-bottom: 900px;
+
+    &.with-fixed-top {
+      margin-top: 80px;
+    }
+  }
+}
+
+.side-menu {
+  width: 250px;
+  position: absolute;
+  left: 0;
+
+  @include tablet {
+    display: none;
+  }
+
+  &--fixed {
+    top: 260px;
+    position: fixed;
+    width: 240px;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &--timeline {
+    @extend .side-menu;
+    padding-left: 20px;
+    padding-top: 10px;
+
+    &.with-fixed-top {
+      position: fixed;
+      top: 80px;
+      margin-top: 80px;
+    }
+  }
+
+  &--content {
+    padding: 0 20px 20px;
+    position: relative;
+    padding-right: 20px;
+    // extra margin on the bottom to allow to scroll to end of side menu
+    margin-bottom: 900px;
+
+    &.with-fixed-top {
+      top: 50px;
+      margin-top: 20px;
+    }
+
+    @include tablet {
+      position: inherit;
+      width: 100%;
+    }
+  }
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.side-menu-container {
+  position: relative;
+  padding-right: 10px;
+  border-right: 1px solid #949494;
+}
+
+.side-menu,.side-menu--fixed {
+  .side-menu-item.ant-anchor-link {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .ant-anchor-ink {
+    display: none !important;
+  }
+  .ms-menu-link {
+    a:hover,
+    a:active {
+      text-decoration: none;
+      color: $gov-blue;
+    }
+  
+    &.ant-anchor-link {
+      line-height: 1.2;
+      border-bottom: none;
+      padding-right: 4px;
+      padding-left: 24px;
+    }
+    &.ant-anchor-link-active {
+      margin-left: -4px;
+      border-left: 4px solid $gov-blue;
+    }
+  }
+
+  .ms-menu-link.ant-anchor-link .ant-anchor-link {
+    line-height: 1;
+    & .ant-anchor-link-title {
+      font-weight: lighter;
+      padding-left: 5px;
+    }
+  }
+  
+  .side-menu-item {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    > a {
+      transition: all .1s ease-in-out;
+      text-decoration: none;
+      color: $gov-blue !important;
+      line-height: 40px !important;
+    }
+  }
+  
+  .side-menu-item:hover {
+    background-color: $gov-blue !important;
+    a {
+      color: $white !important;
+    }
   }
 }

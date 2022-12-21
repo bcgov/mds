@@ -1,5 +1,6 @@
 from app.extensions import jwt
 from jose import jwt as jwt_jose
+from flask import has_request_context
 
 VALID_REALM = ['idir']
 
@@ -30,7 +31,10 @@ class User:
         return raw_info.get('email')
 
     def get_user_username(self):
-        raw_info = self.get_user_raw_info()
-        realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
-        return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
-            'preferred_username']
+        if has_request_context():
+            raw_info = self.get_user_raw_info()
+            realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
+            return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
+                'preferred_username']
+        else:
+            return 'system'

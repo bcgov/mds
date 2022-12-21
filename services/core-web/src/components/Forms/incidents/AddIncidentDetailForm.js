@@ -11,7 +11,7 @@ import {
   dateNotInFuture,
   validateSelectOptions,
 } from "@common/utils/Validate";
-import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -211,7 +211,7 @@ class AddIncidentDetailForm extends Component {
                   )
                 }
                 component={FileUpload}
-                uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+                uploadUrl={MINE_INCIDENT_DOCUMENTS(this.props.mineGuid)}
               />
             </Form.Item>
 

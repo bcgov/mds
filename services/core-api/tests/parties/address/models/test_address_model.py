@@ -11,8 +11,9 @@ def test_party_model_validate_post_code():
             address_line_2='Bar',
             city='Baz',
             sub_division_code='AB',
-            post_code='0' * 7)
-    assert 'post_code must not exceed 6 characters' in str(e.value)
+            post_code='0' * 11,
+            address_type_code='CAN')
+    assert 'post_code must not exceed 10 characters' in str(e.value)
 
     with pytest.raises(AssertionError) as e:
         Address(
@@ -21,5 +22,6 @@ def test_party_model_validate_post_code():
             address_line_2='Bar',
             city='Baz',
             sub_division_code='AB',
-            post_code='0' * 6)
+            post_code='0' * 6,
+            address_type_code='CAN')
     assert 'Invalid post_code format' in str(e.value)

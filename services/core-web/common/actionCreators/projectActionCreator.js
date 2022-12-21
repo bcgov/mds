@@ -1,11 +1,11 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as Strings from "../constants/strings";
 import * as projectActions from "../actions/projectActions";
 import * as API from "../constants/API";
-import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
@@ -65,17 +65,20 @@ export const updateProjectSummary = (
 export const updateProject = (
   { projectGuid },
   payload,
-  message = "Successfully updated project."
+  message = "Successfully updated project.",
+  showSuccessMessage = true
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
+      if (showSuccessMessage) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_PROJECT));
       return response;
     })
@@ -383,7 +386,12 @@ export const createMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       return response;
     })
@@ -408,7 +416,12 @@ export const updateMajorMineApplication = (
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message, duration: 10 });
+      if (message) {
+        notification.success({
+          message,
+          duration: 10,
+        });
+      }
       dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       return response;
     })

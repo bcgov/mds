@@ -25,9 +25,9 @@ class TestGetIncidents:
     def test_get_incidents_status_filter(self, test_client, db_session, auth_headers):
         """Should respect incidents status query param"""
         batch_size = 5
-        status_pre = "PRE"
+        status_pre = "WNS"
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_pre)
-        status_fin = "FIN"
+        status_fin = "CLD"
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_fin)
         get_resp = test_client.get(
             f"/incidents?incident_status={status_pre}", headers=auth_headers['full_auth_header'])
@@ -204,9 +204,9 @@ class TestGetIncidents:
                                                            auth_headers):
         """Should respect incidents sort and filter by multiple fields"""
         batch_size = 5
-        status_pre = "PRE"
+        status_pre = "WNS"
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_pre)
-        status_fin = "FIN"
+        status_fin = "CLD"
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_fin)
         sort_field = "mine_name"
         sort_dir = "desc"

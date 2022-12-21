@@ -126,7 +126,7 @@ export class Projects extends Component {
           <Typography.Paragraph>
             <AuthorizationWrapper>
               <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.state.mine.mine_guid)}>
-                <Button type="primary">
+                <Button type="primary" disabled={!this.state.isLoaded}>
                   <PlusCircleFilled />
                   Create New Project
                 </Button>

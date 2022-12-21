@@ -20,6 +20,7 @@ const propTypes = {
   format: PropTypes.string,
   defaultOpenValue: PropTypes.string,
   fullWidth: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -29,9 +30,10 @@ const defaultProps = {
   format: "HH:mm",
   defaultOpenValue: "00:00",
   fullWidth: false,
+  disabled: false,
 };
 
-const RenderDate = (props) => (
+const RenderTime = (props) => (
   <Form.Item
     label={props.label}
     validateStatus={
@@ -44,6 +46,7 @@ const RenderDate = (props) => (
     }
   >
     <TimePicker
+      disabled={props.disabled}
       id={props.id}
       {...props.input}
       placeholder={props.placeholder}
@@ -57,7 +60,7 @@ const RenderDate = (props) => (
   </Form.Item>
 );
 
-RenderDate.propTypes = propTypes;
-RenderDate.defaultProps = defaultProps;
+RenderTime.propTypes = propTypes;
+RenderTime.defaultProps = defaultProps;
 
-export default RenderDate;
+export default RenderTime;

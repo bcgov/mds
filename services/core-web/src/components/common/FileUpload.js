@@ -10,7 +10,7 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import tus from "tus-js-client";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
@@ -25,6 +25,7 @@ const propTypes = {
   onRemoveFile: PropTypes.func,
   addFileStart: PropTypes.func,
   chunkSize: PropTypes.number,
+  labelIdle: PropTypes.string,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
   onProcessFiles: PropTypes.func,
@@ -42,6 +43,7 @@ const defaultProps = {
   allowMultiple: true,
   onProcessFiles: () => {},
   onAbort: () => {},
+  labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
 };
 
 class FileUpload extends React.Component {
@@ -138,6 +140,7 @@ class FileUpload extends React.Component {
           acceptedFileTypes={acceptedFileTypes}
           onprocessfiles={this.props.onProcessFiles}
           onprocessfileabort={this.props.onAbort}
+          labelIdle={this.props?.labelIdle}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {

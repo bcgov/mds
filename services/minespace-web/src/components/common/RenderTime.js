@@ -33,7 +33,7 @@ const defaultProps = {
   fullWidth: false,
 };
 
-const RenderDate = (props) => (
+const RenderTime = (props) => (
   <Form.Item
     label={props.label}
     validateStatus={
@@ -55,12 +55,12 @@ const RenderDate = (props) => (
       value={props.input.value ? moment(props.input.value, props.format) : null}
       defaultOpenValue={moment(props.defaultOpenValue, props.format)}
       format={props.format}
-      className={props.fullWidth && "full"}
+      className={props.fullWidth && "full-width"}
     />
   </Form.Item>
 );
 
-RenderDate.propTypes = propTypes;
-RenderDate.defaultProps = defaultProps;
+RenderTime.propTypes = propTypes;
+RenderTime.defaultProps = defaultProps;
 
-export default RenderDate;
+export default RenderTime;

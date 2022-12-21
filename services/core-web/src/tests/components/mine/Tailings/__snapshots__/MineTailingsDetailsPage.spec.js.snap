@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineTailingsDetailsPage renders properly 1`] = `
+<Connect(MineTailingsInfoTabs)
+  enabledTabs={
+    Array [
+      "tsfDetails",
+    ]
+  }
+/>
+`;

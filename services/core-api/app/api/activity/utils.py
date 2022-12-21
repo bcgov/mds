@@ -1,10 +1,22 @@
 
 from .models.activity_notification import ActivityNotification
 
-
-def trigger_notifcation(message, mine, entity_name, entity_guid, extra_data=None):
+def trigger_notification(message, activity_type, mine, entity_name, entity_guid, extra_data=None, idempotency_key=None, commit=True):
+    """
+    Triggers a notification for MS and Core users subscribed to the given mine
+    
+    :param message: A message describing the notification
+    :param activity_type: Type of the notification - ActivityType
+    :param mine: The mine the notification relates to
+    :param entity_name: Name of the entity the notification relates to, e.g. EngineerOfRecord
+    :param entity_guid: GUID of the entity the notification relates to
+    :param extra_data: Additional data that should be included in the notification e.g. to enable the frontend to route the user on click
+    :param idempotency_key: String that should determine whether or not a user has already received the given notifciation. If triggering a notification for the same user with the same idempotency_key, the second notification will not be sent.
+    :param commit: Whether or not to commit the transaction on success, or leave it up to the caller
+    """
     document = {
         'message': message,
+        'activity_type': activity_type,
         'metadata': {
             'mine': {
                 'mine_guid': str(mine.mine_guid),
@@ -17,4 +29,10 @@ def trigger_notifcation(message, mine, entity_name, entity_guid, extra_data=None
         }
     }
 
-    ActivityNotification.create_many(mine.mine_guid, document)
+    return ActivityNotification.create_many(
+        mine.mine_guid,
+        activity_type,
+        document,
+        idempotency_key,
+        commit=commit
+    )

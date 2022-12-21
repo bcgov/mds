@@ -1,4 +1,4 @@
-import { PropTypes, shape, arrayOf } from "prop-types";
+import { PropTypes, shape, arrayOf, oneOfType } from "prop-types";
 
 export const dropdownListItem = shape({
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -11,4 +11,9 @@ export const formMeta = shape({
   touched: PropTypes.bool,
   error: PropTypes.string,
   warning: PropTypes.string,
+});
+
+export const groupedDropdownList = shape({
+  groupName: oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  opt: arrayOf(dropdownListItem),
 });

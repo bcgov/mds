@@ -80,3 +80,21 @@ def register_commands(app):
     def run_address_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_address_etl()
+
+    @app.cli.command()
+    def notify_expiring_party_appointments():
+        from app.api.parties.party_appt import notify_expiring_party_appointments
+        from app import auth
+        auth.apply_security = False
+
+        with current_app.app_context():
+            notify_expiring_party_appointments()
+
+    @app.cli.command()
+    def notify_and_update_expired_party_appointments():
+        from app.api.parties.party_appt import notify_and_update_expired_party_appointments
+        from app import auth
+        auth.apply_security = False
+
+        with current_app.app_context():
+            notify_and_update_expired_party_appointments()

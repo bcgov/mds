@@ -136,6 +136,22 @@ export const MINES = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
+          dams: [
+            {
+              dam_guid: "e2629897-053e-4218-9299-479375e47f78",
+              dam_name: "MockDam",
+              dam_type: "dam",
+              latitude: "123",
+              longitude: "123",
+              operating_status: "operation",
+              consequence_classification: "low",
+              permitted_dam_crest_elevation: "123",
+              current_dam_height: "123",
+              current_elevation: "123",
+              max_pond_elevation: "123",
+              min_freeboard_required: "123",
+            },
+          ],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -581,6 +597,25 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   {
     value: "CG",
     label: "Construction Aggregate",
+  },
+];
+
+export const INCIDENT_CATEGORY_CODE_OPTIONS = [
+  {
+    value: "H&S",
+    label: "Health and Safety",
+  },
+  {
+    value: "GTC",
+    label: "Geotechnical",
+  },
+  {
+    value: "ENV",
+    label: "Environmental",
+  },
+  {
+    value: "SPI",
+    label: "Spill",
   },
 ];
 
@@ -1044,6 +1079,7 @@ export const INCIDENT = {
   mine_incident_id_year: 2019,
   mine_incident_no: null,
   mine_incident_report_no: "2019-48",
+  mine_name: "Ponderosa",
   mms_inspector_initials: null,
   number_of_fatalities: 0,
   number_of_injuries: 0,
@@ -1056,7 +1092,7 @@ export const INCIDENT = {
   reported_timestamp: "2019-07-04 14:05",
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
-  status_code: "FIN",
+  status_code: "CLD",
 };
 
 export const INCIDENTS = {

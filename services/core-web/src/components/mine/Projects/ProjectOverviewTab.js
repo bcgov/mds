@@ -7,20 +7,22 @@ import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
+  getMajorMinesApplicationStatusCodesHash,
 } from "@common/selectors/staticContentSelectors";
+import { getProjectLeads } from "@common/selectors/partiesSelectors";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { getProject } from "@common/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
 import ProjectStagesTable from "./ProjectStagesTable";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   projectSummaryStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  majorMineApplicationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
+  projectLeads: CustomPropTypes.projectContact.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -30,8 +32,11 @@ export class ProjectOverviewTab extends Component {
         {contacts.map((c) => {
           const isPrimary = c.is_primary;
           const hasJobTitle = c.job_title;
+          const isProjectLeadContact = c.is_project_lead_contact;
           let title;
-          if (isPrimary) {
+          if (isProjectLeadContact) {
+            title = "EMLI Project Lead";
+          } else if (isPrimary) {
             title = "Primary Contact";
           } else if (hasJobTitle) {
             title = c.job_title;
@@ -44,13 +49,21 @@ export class ProjectOverviewTab extends Component {
                 </Typography.Text>
               )}
               <br />
-              <Typography.Text>{c.name}</Typography.Text>
-              <br />
-              <Typography.Text>{c.phone_number}</Typography.Text>
-              <br />
-              <Typography.Text>
-                <a href={`mailto:${c.email}`}>{c.email}</a>
-              </Typography.Text>
+              {c.is_project_lead_contact && !c.name ? (
+                <Typography.Text>Project Lead has not been assigned</Typography.Text>
+              ) : (
+                <>
+                  <Typography.Text>{c.name}</Typography.Text>
+                  <br />
+                  <Typography.Text>{c.phone_no || c.phone_number}</Typography.Text>
+                  <br />
+                  {c.email && (
+                    <Typography.Text>
+                      <a href={`mailto:${c.email}`}>{c.email}</a>
+                    </Typography.Text>
+                  )}
+                </>
+              )}
             </Typography.Paragraph>
           );
         })}
@@ -69,12 +82,24 @@ export class ProjectOverviewTab extends Component {
       project_summary_id,
       project_summary_guid,
       status_code,
-      documents,
     } = this.props.project.project_summary;
 
     const hasInformationRequirementsTable = Boolean(
       this.props.project.information_requirements_table?.irt_guid
     );
+
+    const project_lead_contact =
+      this.props.projectLeads?.filter((lead) =>
+        lead.party_guid.includes(this.props.project.project_lead_party_guid)
+      ) ?? [];
+    if (project_lead_contact?.length > 0) {
+      project_lead_contact[0].is_project_lead_contact = true;
+    } else {
+      project_lead_contact.push({ is_project_lead_contact: true });
+    }
+
+    const contactsAndProjectLead = [...this.props.project.contacts];
+    contactsAndProjectLead.push(project_lead_contact[0]);
 
     const requiredProjectStages = [
       {
@@ -95,20 +120,36 @@ export class ProjectOverviewTab extends Component {
       },
     ];
 
-    requiredProjectStages.push({
-      title: "Project description",
-      key: `ps-${project_summary_id}`,
-      status: status_code,
-      payload: this.props.project.project_summary,
-      statusHash: this.props.projectSummaryStatusCodesHash,
-      link: (
-        <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
-          <Button className="full-mobile margin-small" type="secondary">
-            View
-          </Button>
-        </Link>
-      ),
-    });
+    requiredProjectStages.push(
+      {
+        title: "Project description",
+        key: `ps-${project_summary_id}`,
+        status: status_code,
+        payload: this.props.project.project_summary,
+        statusHash: this.props.projectSummaryStatusCodesHash,
+        link: (
+          <Link to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
+            <Button className="full-mobile margin-small" type="secondary">
+              View
+            </Button>
+          </Link>
+        ),
+      },
+      {
+        title: "Final Application",
+        key: `ps-${this.props.project.major_mine_application.major_mine_application_id}`,
+        status: this.props.project.major_mine_application.status_code,
+        payload: this.props.project.major_mine_application,
+        statusHash: this.props.majorMineApplicationStatusCodeHash,
+        link: (
+          <Link to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}>
+            <Button className="full-mobile margin-small" type="secondary">
+              View
+            </Button>
+          </Link>
+        ),
+      }
+    );
 
     const irt = {
       title: "Final IRT",
@@ -194,34 +235,10 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
-          <Typography.Title level={4}>Project Documents</Typography.Title>
-          <DocumentTable
-            documents={documents?.reduce(
-              (docs, doc) => [
-                {
-                  key: doc.mine_document_guid,
-                  mine_document_guid: doc.mine_document_guid,
-                  document_manager_guid: doc.document_manager_guid,
-                  name: doc.document_name,
-                  category: this.props.projectSummaryDocumentTypesHash[
-                    doc.project_summary_document_type_code
-                  ],
-                  uploaded: doc.upload_date,
-                },
-                ...docs,
-              ],
-              []
-            )}
-            documentCategoryOptionsHash={this.props.projectSummaryDocumentTypesHash}
-            documentParent="project summary"
-            categoryDataIndex="project_summary_document_type_code"
-            uploadDateIndex="upload_date"
-            isViewOnly
-          />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>
-            <Col span={24}>{this.renderProjectContactsCard(this.props.project.contacts)}</Col>
+            <Col span={24}>{this.renderProjectContactsCard(contactsAndProjectLead)}</Col>
           </Row>
         </Col>
       </Row>
@@ -233,9 +250,11 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryStatusCodesHash: getProjectSummaryStatusCodesHash(state),
+  majorMineApplicationStatusCodeHash: getMajorMinesApplicationStatusCodesHash(state),
   informationRequirementsTableStatusCodesHash: getInformationRequirementsTableStatusCodesHash(
     state
   ),
+  projectLeads: getProjectLeads(state),
 });
 
 ProjectOverviewTab.propTypes = propTypes;

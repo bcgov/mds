@@ -5,10 +5,12 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.activity.utils import trigger_notification
 
 from app.api.projects.response_models import MAJOR_MINE_APPLICATION_MODEL
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
 from app.api.projects.project.models.project import Project
+from app.api.activity.models.activity_notification import ActivityType
 
 
 class MajorMineApplicationResource(Resource, UserMixin):
@@ -61,13 +63,18 @@ class MajorMineApplicationResource(Resource, UserMixin):
         if project is None:
             raise NotFound('Project is not found')
 
+        current_status_code = major_mine_application.status_code
         new_status_code = data.get('status_code')
         major_mine_application.update(project,
                                       new_status_code,
                                       data.get('documents', []))
 
         major_mine_application.save()
-        if new_status_code == "SUB":
+        if current_status_code != "SUB" and new_status_code == "SUB":
             major_mine_application.send_mma_submit_email()
+            # Trigger notification for newly submitted MMA
+            message = f'A Major Mine Application for ({project.project_title}) has been submitted for ({project.mine_name})'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_app_submitted, project.mine, 'MajorMineApplication', major_mine_application.major_mine_application_guid, extra_data)
 
         return major_mine_application

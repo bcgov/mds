@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineTailingsInfoTabs renders properly 1`] = `
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Tailings Storage Facilities
+    </h2>
+    <Divider />
+  </div>
+  <Tabs
+    style={
+      Object {
+        "textAlign": "left !important",
+      }
+    }
+    type="card"
+  >
+    <TabPane
+      key="tsf"
+      tab="Tailings Storage Facilities (1)"
+    >
+      <div>
+        <br />
+        <div
+          className="inline-flex between"
+        >
+          <h4
+            className="uppercase"
+          >
+            Tailings Storage Facilities
+          </h4>
+          <Connect(AuthorizationWrapper)
+            permission="role_edit_tsf"
+          >
+            <AddButton
+              onClick={[Function]}
+            >
+              Add TSF
+            </AddButton>
+          </Connect(AuthorizationWrapper)>
+        </div>
+        <withRouter(Connect(MineTailingsTable))
+          handleEditTailings={[Function]}
+          isLoaded={false}
+          openEditTailingsModal={[Function]}
+          tailings={
+            Array [
+              Object {
+                "consequence_classification_status_code": "LOW",
+                "itrb_exemption_status_code": "YES",
+                "latitude": null,
+                "longitude": null,
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                "mine_tailings_storage_facility_name": "MockTSF",
+                "tsf_operating_status_code": "OPT",
+              },
+            ]
+          }
+        />
+      </div>
+    </TabPane>
+    <TabPane
+      key="reports"
+      tab="Tailings Reports"
+    >
+      <div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Reports
+        </h4>
+        <br />
+        <Connect(MineReportTable)
+          handleEditReport={[Function]}
+          handleRemoveReport={[Function]}
+          handleTableChange={[Function]}
+          isLoaded={false}
+          mineReportType="CRR"
+          mineReports={Array []}
+          openEditReportModal={[Function]}
+          sortDir="desc"
+          sortField="received_date"
+        />
+      </div>
+    </TabPane>
+    <TabPane
+      key="map"
+      tab="Map"
+    >
+      <div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Map
+        </h4>
+        <div
+          className="inline-flex"
+        >
+          <p>
+            <img
+              alt="Mine Pin"
+              className="icon-sm--img"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+              style={
+                Object {
+                  "marginTop": "10px",
+                }
+              }
+            />
+            Location of Mine Site
+          </p>
+          <p>
+            <img
+              alt="TSF Pin"
+              className="icon-sm--img"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+              style={
+                Object {
+                  "marginTop": "10px",
+                }
+              }
+            />
+            Location of TSF
+          </p>
+        </div>
+        <LoadingWrapper
+          condition={false}
+        >
+          <ScriptLoader
+            TSFOperatingStatusCodeHash={Object {}}
+            consequenceClassificationStatusCodeHash={Object {}}
+            mine={
+              Object {
+                "major_mine_ind": true,
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit_numbers": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": null,
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "consequence_classification_status_code": "LOW",
+                    "itrb_exemption_status_code": "YES",
+                    "latitude": null,
+                    "longitude": null,
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                    "tsf_operating_status_code": "OPT",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                    "mine_type_detail": Array [],
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                    "mine_type_detail": Array [],
+                  },
+                ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
+              }
+            }
+            onScriptLoaded={[Function]}
+            tailings={
+              Array [
+                Object {
+                  "consequence_classification_status_code": "LOW",
+                  "itrb_exemption_status_code": "YES",
+                  "latitude": null,
+                  "longitude": null,
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                  "mine_tailings_storage_facility_name": "MockTSF",
+                  "tsf_operating_status_code": "OPT",
+                },
+              ]
+            }
+          />
+        </LoadingWrapper>
+      </div>
+    </TabPane>
+  </Tabs>
+</div>
+`;

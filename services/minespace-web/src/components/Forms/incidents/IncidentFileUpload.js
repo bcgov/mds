@@ -3,15 +3,19 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
+import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import FileUpload from "@/components/common/FileUpload";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  allowMultiple: PropTypes.bool.isRequired,
+  labelIdle: PropTypes.string,
+};
+
+const defaultProps = {
+  labelIdle: undefined,
 };
 
 export const IncidentFileUpload = (props) => (
@@ -20,16 +24,18 @@ export const IncidentFileUpload = (props) => (
       id="fileUpload"
       name="fileUpload"
       component={FileUpload}
-      uploadUrl={MINE_INCIDENT_DOCUMENT(props.mineGuid)}
-      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+      uploadUrl={MINE_INCIDENT_DOCUMENTS(props.mineGuid)}
+      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}
       allowRevert
-      allowMultiple={props.allowMultiple}
+      allowMultiple
+      labelIdle={props.labelIdle}
     />
   </Form.Item>
 );
 
 IncidentFileUpload.propTypes = propTypes;
+IncidentFileUpload.defaultProps = defaultProps;
 
 export default IncidentFileUpload;

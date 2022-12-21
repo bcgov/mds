@@ -1,7 +1,30 @@
 import React from "react";
 import moment from "moment";
-import { dateSorter, formatDate, formatDateTime } from "@common/utils/helpers";
+import {
+  dateSorter,
+  formatDate,
+  formatDateTime,
+  nullableStringSorter,
+} from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
+import DocumentLink from "@/components/common/DocumentLink";
+
+export const documentNameColumn = (documentNameColumnIndex, title = "Name") => {
+  return {
+    title,
+    dataIndex: documentNameColumnIndex,
+    sorter: nullableStringSorter(documentNameColumnIndex),
+    render: (text, record) => (
+      <div key={record.key} title={title}>
+        <DocumentLink
+          documentManagerGuid={record.document_manager_guid}
+          documentName={record?.[documentNameColumnIndex]}
+          truncateDocumentName={false}
+        />
+      </div>
+    ),
+  };
+};
 
 export const categoryColumn = (categoryDataIndex, documentCategoryOptionsHash) => {
   return {
@@ -29,12 +52,10 @@ export const uploadDateTimeColumn = (uploadDateIndex) => {
   };
 };
 
-export const importedByColumn = (importedByIndex) => {
+export const uploadedByColumn = (uploadedByIndex, title = "Uploaded") => {
   return {
-    title: "Imported By",
-    dataIndex: importedByIndex,
+    title,
+    dataIndex: uploadedByIndex,
     render: (text) => (text ? <div title="User">{text}</div> : null),
   };
 };
-
-export default uploadDateColumn;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@common/constants/environment";
+import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";

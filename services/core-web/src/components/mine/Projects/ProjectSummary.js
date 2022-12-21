@@ -26,6 +26,7 @@ import {
   fetchProjectById,
   updateProjectSummary,
   removeDocumentFromProjectSummary,
+  updateProject,
 } from "@common/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
@@ -59,6 +60,7 @@ const propTypes = {
   fetchProjectById: PropTypes.func.isRequired,
   projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   clearProjectSummary: PropTypes.func.isRequired,
   createProjectSummary: PropTypes.func.isRequired,
@@ -208,17 +210,29 @@ export class ProjectSummary extends Component {
   };
 
   handleUpdate = (message) => {
-    const mineGuid = this.props.project.mine_guid;
     const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
-    const projectGuid = this.props.formValues.project_guid;
-    this.props
+    const {
+      project_guid: projectGuid,
+      mrc_review_required,
+      contacts,
+      project_lead_party_guid,
+    } = this.props.formValues;
+    return this.props
       .updateProjectSummary(
         { projectGuid, projectSummaryGuid },
         this.handleTransformPayload({ ...this.props.formValues }),
         message
       )
+      .then(() =>
+        this.props.updateProject(
+          { projectGuid },
+          { mrc_review_required, contacts, project_lead_party_guid },
+          "Successfully updated project.",
+          false
+        )
+      )
       .then(() => {
-        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.handleFetchData(this.props.match.params);
         this.setState((prevState) => ({
           isEditMode: !prevState.isEditMode,
         }));
@@ -423,6 +437,7 @@ const mapDispatchToProps = (dispatch) =>
       removeDocumentFromProjectSummary,
       clearProjectSummary,
       fetchMineRecordById,
+      updateProject,
       submit,
       touch,
       reset,

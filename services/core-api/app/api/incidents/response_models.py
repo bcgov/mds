@@ -6,7 +6,9 @@ MINE_INCIDENT_CATEGORY_MODEL = api.model(
         'mine_incident_category_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'is_historic': fields.Boolean,
+        'parent_mine_incident_category_code': fields.String,
     })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
@@ -73,6 +75,8 @@ MINE_INCIDENT_MODEL = api.model(
         'number_of_fatalities': fields.Integer,
         'reported_to_inspector_party_guid': fields.String,
         'reported_to_inspector_party': fields.String,
+        'reported_to_inspector_contacted': fields.Boolean,
+        'reported_to_inspector_contact_method': fields.String,
         'responsible_inspector_party_guid': fields.String,
         'responsible_inspector_party': fields.String,
         'determination_type_code': fields.String,
@@ -89,7 +93,17 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
+        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL)),
+        'immediate_measures_taken': fields.String,
+        'injuries_description': fields.String,
+        'johsc_worker_rep_name': fields.String,
+        'johsc_worker_rep_contacted': fields.Boolean,
+        'johsc_worker_rep_contact_method': fields.String,
+        'johsc_worker_rep_contact_timestamp': fields.DateTime,
+        'johsc_management_rep_name': fields.String,
+        'johsc_management_rep_contacted': fields.Boolean,
+        'johsc_management_rep_contact_method': fields.String,
+        'johsc_management_rep_contact_timestamp': fields.DateTime,
     })
 
 MINE_INCIDENT_NOTE_MODEL = api.model(
