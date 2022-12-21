@@ -226,8 +226,8 @@ export class MineIncidentTable extends Component {
           this.props.incidents,
           (reporterList, incident) => {
             if (
-              !reporterList.map((x) => x.value).includes(incident.responsible_inspector_party) &&
-              incident?.responsible_inspector_party !== null
+              incident?.responsible_inspector_party &&
+              !reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)
             ) {
               reporterList.push({
                 value: incident.responsible_inspector_party,
