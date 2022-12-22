@@ -17,7 +17,7 @@ const CustomAxios = (errorToastMessage) => {
     (error) => {
       const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
-        window.location.reload(false);
+        // window.location.reload(false);
       } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
         notification.error({
           message: error?.response?.data?.message ?? Strings.ERROR,

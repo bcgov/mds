@@ -1,12 +1,11 @@
 import axios from "axios";
 import { notification } from "antd";
 import jwt from "jsonwebtoken";
-import queryString from "query-string";
-import * as COMMON_ENV from "@mds/common";
+import { ENVIRONMENT ,USER_INFO} from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-import * as MINESPACE_ENV from "@/constants/environment";
+
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
@@ -29,7 +28,7 @@ export const getUserRoles = (token) => (dispatch) => {
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
-    .get(COMMON_ENV.KEYCLOAK.userInfoURL, {
+    .get(`${ENVIRONMENT.apiUrl + USER_INFO}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
