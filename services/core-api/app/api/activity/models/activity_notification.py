@@ -96,6 +96,8 @@ class ActivityType(str, Enum):
     mine = 'mine'
     eor_expiring_60_days = 'eor_expiring_60_days'
     tsf_eor_expired = 'tsf_eor_expired'
+    qp_expiring_60_days = 'qp_expiring_60_days'
+    tsf_qp_expired = 'tsf_qp_expired'
     incident_report_submitted = 'incident_report_submitted'
     mine_incident_created = 'mine_incident_created'
     nod_status_changed = 'nod_status_changed'
