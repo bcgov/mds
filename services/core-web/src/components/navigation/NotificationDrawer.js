@@ -124,13 +124,15 @@ const NotificationDrawer = (props) => {
         );
       case "EngineerOfRecord":
         return MINE_TAILINGS_DETAILS.dynamicRoute(
-          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine_tailings_storage_facility
+            .mine_tailings_storage_facility_guid,
           notification.notification_document.metadata.mine.mine_guid,
           "engineer-of-record"
         );
       case "QualifiedPerson":
         return MINE_TAILINGS_DETAILS.dynamicRoute(
-          notification.notification_document.metadata.entity_guid,
+          notification.notification_document.metadata.mine_tailings_storage_facility
+            .mine_tailings_storage_facility_guid,
           notification.notification_document.metadata.mine.mine_guid,
           "qualified-person"
         );
@@ -161,14 +163,14 @@ const NotificationDrawer = (props) => {
         onClick={handleCollapse}
         type="text"
         className={`notification-button ${open ? "notification-button-open" : ""}`}
-        icon={
+        icon={(
           <Badge
             className="notification-badge"
             count={props.activities?.filter((act) => !act?.notification_read).length || 0}
           >
             <BellOutlined className="notification-icon" />
           </Badge>
-        }
+        )}
       />
       <div className={`notification-drawer ${open ? "notification-drawer-open" : ""}`}>
         <Tabs
