@@ -1,21 +1,23 @@
-from app.api.activity.models.activity_notification import ActivityType
+from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.activity.utils import trigger_notification
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment, MinePartyAppointmentStatus
 from app.extensions import db
 from app.tasks.celery import celery
+from flask import current_app
 
 
 
 @celery.task()
 def notify_expiring_party_appointments():
+    #minespace only, not on core
     expiring_eors = MinePartyAppointment.find_expiring_appointments('EOR', 60)
     expiring_qps = MinePartyAppointment.find_expiring_appointments('TQP', 60)
     
     eor_message = lambda party: f'60 days notice Engineer of Record expiry for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
     qp_message = lambda party: f'60 days notice Qualified Person expiry for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
-    eor_notifications = list(_notify_party_appointments(expiring_eors, eor_message, ActivityType.eor_expiring_60_days))
-    qp_notifications = list(_notify_party_appointments(expiring_qps, qp_message, ActivityType.qp_expiring_60_days))
+    eor_notifications = list(_notify_party_appointments(expiring_eors, eor_message, ActivityType.eor_expiring_60_days, ActivityRecipients.minespace_users))
+    qp_notifications = list(_notify_party_appointments(expiring_qps, qp_message, ActivityType.qp_expiring_60_days, ActivityRecipients.minespace_users))
     notifications = eor_notifications + qp_notifications
 
     db.session.commit()
@@ -34,8 +36,8 @@ def notify_and_update_expired_party_appointments():
         commit=False
     )
 
-    eor_message = lambda party: f'Engineer of Record expired on {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}.'
-    qp_message = lambda party: f'The term date has elapsed with the Qualified Person for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}.'
+    eor_message = lambda party: f'Engineer of Record expired on {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
+    qp_message = lambda party: f'The term date has elapsed with the Qualified Person for {party.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {party.mine.mine_name}'
 
     eor_notifications = list(_notify_party_appointments(expired_eors, eor_message, ActivityType.tsf_eor_expired))
     qp_notifications = list(_notify_party_appointments(expired_qps, qp_message, ActivityType.tsf_qp_expired))
@@ -46,7 +48,7 @@ def notify_and_update_expired_party_appointments():
 
     return list(notifications)
 
-def _notify_party_appointments(parties, message, activity_type):
+def _notify_party_appointments(parties, message, activity_type, recipients=ActivityRecipients.all_users):
     created_notifications = [] 
     for party in parties:
         idempotency_key = f'{activity_type}_{party.mine_party_appt_guid}_{party.end_date.strftime("%Y-%m-%d")}'
@@ -61,7 +63,8 @@ def _notify_party_appointments(parties, message, activity_type):
                 }
             },
             idempotency_key=idempotency_key,
-            commit=False
+            recipients=recipients,
+            commit=False            
         )
 
         created_notifications.extend(nots)

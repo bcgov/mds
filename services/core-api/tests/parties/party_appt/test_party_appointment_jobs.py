@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from app.api.parties.party_appt.tasks import notify_expiring_party_appointments, notify_and_update_expired_party_appointments
 
-from app.api.activity.models.activity_notification import ActivityType
-from tests.factories import SubscriptionFactory
+from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
+from tests.factories import SubscriptionFactory, MinespaceSubscriptionFactory
 from app.api.activity.models.activity_notification import ActivityNotification
 from tests.factories import MineTailingsStorageFacilityFactory
 from tests.factories import MineFactory
@@ -33,7 +33,15 @@ def setup_info(db_session):
         end_date = datetime.utcnow() + timedelta(days=20)
     )
 
-    yield dict(eor=eor, mine=mine, tsf=tsf)
+    qp = MinePartyAppointmentFactory(
+        status=MinePartyAppointmentStatus.active,
+        mine=mine,
+        mine_party_appt_type_code='TQP',
+        mine_tailings_storage_facility=tsf,
+        end_date = datetime.utcnow() + timedelta(days=20)
+    )
+
+    yield dict(eor=eor, qp=qp, mine=mine, tsf=tsf)
 
 @pytest.fixture(scope="function")
 def expired_eor_info(setup_info):
@@ -55,27 +63,48 @@ class TestExpiringPartyAppointment():
     def test_notify_expiring_party_appointments_triggers_notification_when_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
             with  mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
-                expiring_appointment_mock.side_effect = [[setup_info['eor']]]
+                # the side_effect is called n times where n > len(side_effect)
+                expiring_appointment_mock.side_effect = [[setup_info['eor']], [setup_info['qp']]]
                 
                 notify_expiring_party_appointments()
 
-                idempotency_key = f'eor_expiring_60_days_{setup_info["eor"].mine_party_appt_guid}_{setup_info["eor"].end_date.strftime("%Y-%m-%d")}'
-        
-                trigger_mock.assert_called_once_with('60 days notice Engineer of Record expiry for TestFacility at TestMine', ActivityType.eor_expiring_60_days, setup_info['mine'], 'EngineerOfRecord', setup_info['eor'].mine_party_appt_guid, {
-                    'mine_tailings_storage_facility': {
-                        'mine_tailings_storage_facility_guid': str(setup_info['tsf'].mine_tailings_storage_facility_guid)
+                eor_idempotency_key = f'eor_expiring_60_days_{setup_info["eor"].mine_party_appt_guid}_{setup_info["eor"].end_date.strftime("%Y-%m-%d")}'
+                qp_idempotency_key = f'qp_expiring_60_days_{setup_info["qp"].mine_party_appt_guid}_{setup_info["qp"].end_date.strftime("%Y-%m-%d")}'
+
+                assert(trigger_mock.call_count == 2)
+
+                eor_call = mock.call(
+                    '60 days notice Engineer of Record expiry for TestFacility at TestMine', ActivityType.eor_expiring_60_days, setup_info['mine'], 'EngineerOfRecord', setup_info['eor'].mine_party_appt_guid, {
+                        'mine_tailings_storage_facility': {
+                            'mine_tailings_storage_facility_guid': str(setup_info['tsf'].mine_tailings_storage_facility_guid)
+                        },
+                        'permit': {
+                            'permit_no': '123abc'
+                        }
                     },
-                    'permit': {
-                        'permit_no': '123abc'
-                    }
-                },
-                commit=False,
-                idempotency_key=idempotency_key)
+                    commit=False,
+                    recipients=ActivityRecipients.minespace_users,
+                    idempotency_key=eor_idempotency_key)
+
+                qp_call = mock.call(
+                    '60 days notice Qualified Person expiry for TestFacility at TestMine', ActivityType.qp_expiring_60_days, setup_info['mine'], 'QualifiedPerson', setup_info['qp'].mine_party_appt_guid, {
+                        'mine_tailings_storage_facility': {
+                            'mine_tailings_storage_facility_guid': str(setup_info['tsf'].mine_tailings_storage_facility_guid)
+                        },
+                        'permit': {
+                            'permit_no': '123abc'
+                        }
+                    },
+                    commit=False,
+                    recipients=ActivityRecipients.minespace_users,
+                    idempotency_key=qp_idempotency_key)
+
+                trigger_mock.assert_has_calls([eor_call, qp_call], any_order=True)
 
     def test_notify_expiring_party_appointments_does_not_trigger_when_not_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
             with mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
-                expiring_appointment_mock.side_effect = [[], []]
+                expiring_appointment_mock.side_effect = [[], [], [], []]
                 notify_expiring_party_appointments()
 
                 notify_expiring_party_appointments()
@@ -87,18 +116,24 @@ class TestExpiringPartyAppointment():
 
         assert(ActivityNotification.count() == 0)
 
-    def test_notify_expiring_should_trigger_for_subscriber(self, setup_info):
+    def test_notify_expiring_should_trigger_for_minespace_subscriber(self, setup_info):
+        MinespaceSubscriptionFactory(mine=setup_info['mine'])
+        notify_expiring_party_appointments()
+
+        assert(ActivityNotification.count() == 2)
+
+    def test_notify_expiring_should_not_trigger_for_core_subscriber(self, setup_info):
         SubscriptionFactory(mine=setup_info['mine'])
         notify_expiring_party_appointments()
 
-        assert(ActivityNotification.count() == 1)
+        assert(ActivityNotification.count() == 0)
 
     def test_notify_expiring_should_trigger_for_subscriber_doesnt_duplicate(self, setup_info):
-        SubscriptionFactory(mine=setup_info['mine'])
+        MinespaceSubscriptionFactory(mine=setup_info['mine'])
         notify_expiring_party_appointments()
         notify_expiring_party_appointments()
 
-        assert(ActivityNotification.count() == 1)
+        assert(ActivityNotification.count() == 2)
 
 
 class TestExpiredEor():
