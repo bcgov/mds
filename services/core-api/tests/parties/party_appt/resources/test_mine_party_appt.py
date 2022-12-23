@@ -73,7 +73,7 @@ def test_find_expiring_appointments_includes_tomorrow(setup_info):
 def test_find_expiring_appointments_includes_last_day(setup_info):
     eor = setup_info['eor']
 
-    eor.end_date = datetime.utcnow() + timedelta(days=60)
+    eor.end_date = datetime.utcnow() + timedelta(days=59)
     eor.save()
 
     appts = MinePartyAppointment.find_expiring_appointments('EOR', 60)

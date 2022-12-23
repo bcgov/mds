@@ -206,7 +206,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_expiring_appointments(cls, mine_party_appt_type_code, expiring_before_days):
-        expiring_delta = datetime.utcnow() + timedelta(days=expiring_before_days)
+        """
+        Find appointments of the given type that expires within the next expiring_before_days number
+        of days.
+        """
+        expiring_delta = datetime.utcnow() + timedelta(days=expiring_before_days - 1)
         now = datetime.utcnow()
 
         qs = cls.query.filter_by(
@@ -220,7 +224,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_expired_appointments(cls, mine_party_appt_type_code):
-        now = datetime.utcnow()
+        """
+        Find appointments of the given type that have expired (end date before today)
+        """
+        now = datetime.utcnow() \
+            .replace(hour=0, minute=0, second=0, microsecond=0)
 
         qs = cls.query.filter_by(
             mine_party_appt_type_code=mine_party_appt_type_code,
