@@ -12,16 +12,21 @@ import {
 import {
   authenticateUser,
   storeKeycloakData,
-  storeUserAccessData,
+  storeUserAccessData
 } from "@common/actions/authenticationActions";
 import { KEYCLOAK, USER_ROLES } from "@mds/common";
+import {
+  getUserInfo,
+} from "@common/actionCreators/mineActionCreator";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
+
 
 const propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   storeUserAccessData: PropTypes.func.isRequired,
   storeKeycloakData: PropTypes.func.isRequired,
+  getUserInfo: PropTypes.func.isRequired,
   keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   userAccessData: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -58,10 +63,12 @@ export const AuthenticationGuard = (WrappedComponent) => {
           pkceMethod: KEYCLOAK.pkceMethod,
           idpHint: KEYCLOAK.idir_idpHint,
         })
-        .success(() => {
-          keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
+        .then(async () => {
+          const userInfo = await this.props.getUserInfo(keycloak.token)
+          this.props.authenticateUser(userInfo);
+
           localStorage.setItem("jwt", keycloak.token);
-          this.props.storeUserAccessData(keycloak.userInfo?.client_roles || []);
+          this.props.storeUserAccessData(userInfo?.client_roles || []);
           this.props.storeKeycloakData(keycloak);
         });
     }
@@ -100,6 +107,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
         authenticateUser,
         storeUserAccessData,
         storeKeycloakData,
+        getUserInfo,
       },
       dispatch
     );

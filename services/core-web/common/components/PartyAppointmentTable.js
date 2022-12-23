@@ -8,7 +8,9 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
+
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
+
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
 
@@ -102,7 +104,11 @@ const PartyAppointmentTable = (props) => {
       dataIndex: "dates",
       render: (text, record) => (
         <div title="Dates">
-          {record.startDate} - {record.endDate}
+          {record.startDate}
+          {' '}
+-
+          {' '}
+          {record.endDate}
         </div>
       ),
     },
@@ -204,6 +210,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       updatePartyRelationship,
       fetchPartyRelationships,
+      getUserInfo,
       change,
     },
     dispatch

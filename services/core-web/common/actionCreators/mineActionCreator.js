@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT, USER_INFO} from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineActions from "../actions/mineActions";
@@ -353,5 +353,32 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
     .catch((err) => {
       dispatch(error(reducerTypes.DELETE_MINE_COMMENT));
       throw new Error(err);
+    });
+};
+
+
+export const getUserInfo = (token, errorMessage) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_USER_INFO));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + USER_INFO}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_USER_INFO));
+
+      return response.data;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_USER_INFO));
+      if (errorMessage) {
+        notification.error({
+          message: errorMessage,
+          duration: 10,
+        });
+      } else {
+        throw new Error(err);
+      }
     });
 };
