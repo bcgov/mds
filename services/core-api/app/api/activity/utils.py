@@ -1,7 +1,7 @@
 
-from .models.activity_notification import ActivityNotification
+from .models.activity_notification import ActivityNotification, ActivityRecipients
 
-def trigger_notification(message, activity_type, mine, entity_name, entity_guid, extra_data=None, idempotency_key=None, commit=True):
+def trigger_notification(message, activity_type, mine, entity_name, entity_guid, extra_data=None, idempotency_key=None, recipients=ActivityRecipients.all_users, commit=True):
     """
     Triggers a notification for MS and Core users subscribed to the given mine
     
@@ -12,6 +12,7 @@ def trigger_notification(message, activity_type, mine, entity_name, entity_guid,
     :param entity_guid: GUID of the entity the notification relates to
     :param extra_data: Additional data that should be included in the notification e.g. to enable the frontend to route the user on click
     :param idempotency_key: String that should determine whether or not a user has already received the given notifciation. If triggering a notification for the same user with the same idempotency_key, the second notification will not be sent.
+    :param recipients: Send notification to all user types, or only recipients on Minespace or Core - ActivityRecipients
     :param commit: Whether or not to commit the transaction on success, or leave it up to the caller
     """
     document = {
@@ -34,5 +35,6 @@ def trigger_notification(message, activity_type, mine, entity_name, entity_guid,
         activity_type,
         document,
         idempotency_key,
-        commit=commit
+        commit=commit,
+        recipients=recipients
     )
