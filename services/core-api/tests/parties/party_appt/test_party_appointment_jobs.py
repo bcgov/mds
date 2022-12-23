@@ -12,6 +12,7 @@ from tests.factories import MineFactory
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from tests.factories import MinePartyAppointmentFactory
+from app.api.users.minespace.models.minespace_user import MinespaceUser
 
 @pytest.fixture(scope="function")
 def setup_info(db_session):
@@ -51,6 +52,13 @@ def expired_eor_info(setup_info):
     yield setup_info
 
 @pytest.fixture(scope="function")
+def expired_qp_info(setup_info):
+    qp = setup_info['qp']
+    qp.end_date = datetime.utcnow() - timedelta(days=1)
+    qp.save()
+    yield setup_info
+
+@pytest.fixture(scope="function")
 def db_session(db_session):
     # Fixes a Instance is not bound to a "Instance is not bound to a session" error that pops up
     # with the celery/pytest/flask combination
@@ -63,7 +71,6 @@ class TestExpiringPartyAppointment():
     def test_notify_expiring_party_appointments_triggers_notification_when_expiring(self, setup_info):
         with mock.patch('app.api.parties.party_appt.models.mine_party_appt.MinePartyAppointment.find_expiring_appointments') as expiring_appointment_mock:
             with  mock.patch('app.api.parties.party_appt.tasks.trigger_notification') as trigger_mock:
-                # the side_effect is called n times where n > len(side_effect)
                 expiring_appointment_mock.side_effect = [[setup_info['eor']], [setup_info['qp']]]
                 
                 notify_expiring_party_appointments()
@@ -135,6 +142,61 @@ class TestExpiringPartyAppointment():
 
         assert(ActivityNotification.count() == 2)
 
+class TestExpiredQP():
+    def test_notify_expired_notifies_when_qp_expired_core(self, expired_qp_info):
+        SubscriptionFactory(mine=expired_qp_info['mine'])
+        notify_and_update_expired_party_appointments()
+
+        assert(ActivityNotification.count() == 1)
+
+    def test_notify_expired_notifies_when_qp_expired_minespace(self, expired_qp_info):
+        MinespaceSubscriptionFactory(mine=expired_qp_info['mine'])
+        notify_and_update_expired_party_appointments()
+
+        assert(ActivityNotification.count() == 1)
+
+    def test_notify_expired_qp_triggers_correct_notification_data(self, expired_qp_info):
+        sub = MinespaceSubscriptionFactory(mine=expired_qp_info['mine'])
+
+        appts = list(notify_and_update_expired_party_appointments())
+
+        assert(len(appts) == 1)
+
+        qp = expired_qp_info['qp']
+        notification = ActivityNotification.find_by_guid(appts[0].notification_guid)
+
+        idempotency_key = f'tsf_qp_expired_{qp.mine_party_appt_guid}_{qp.end_date.strftime("%Y-%m-%d")}'
+
+        user_name = MinespaceUser.find_by_id(sub.user_id).email_or_username
+
+        assert notification.idempotency_key == idempotency_key
+        assert notification.activity_type == ActivityType.tsf_qp_expired
+        assert notification.notification_recipient == user_name
+
+        mine = expired_qp_info['mine']
+
+        tst = TestCase()
+        tst.maxDiff = None
+
+        tst.assertDictEqual(notification.notification_document, {
+            'message': 'The term date has elapsed with the Qualified Person for TestFacility at TestMine',
+            'activity_type': str(ActivityType.tsf_qp_expired),
+            'metadata': {
+                'mine': {
+                    'mine_guid': str(mine.mine_guid),
+                    'mine_no': mine.mine_no,
+                    'mine_name': mine.mine_name
+                },
+                'entity': 'QualifiedPerson',
+                'entity_guid': str(qp.mine_party_appt_guid),
+                'permit': {
+                    'permit_no': '123abc'
+                },
+                'mine_tailings_storage_facility': {
+                    'mine_tailings_storage_facility_guid': str(expired_qp_info['tsf'].mine_tailings_storage_facility_guid)
+                }
+            }
+        })
 
 class TestExpiredEor():
     def test_notify_expired_notifies_when_expired(self, expired_eor_info):

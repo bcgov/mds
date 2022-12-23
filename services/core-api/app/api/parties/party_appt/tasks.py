@@ -3,13 +3,11 @@ from app.api.activity.utils import trigger_notification
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment, MinePartyAppointmentStatus
 from app.extensions import db
 from app.tasks.celery import celery
-from flask import current_app
 
 
 
 @celery.task()
 def notify_expiring_party_appointments():
-    #minespace only, not on core
     expiring_eors = MinePartyAppointment.find_expiring_appointments('EOR', 60)
     expiring_qps = MinePartyAppointment.find_expiring_appointments('TQP', 60)
     
