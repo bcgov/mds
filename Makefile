@@ -117,5 +117,15 @@ clean: stop |
 	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres_data -f
 
+# initial project setup for local/codespaces development
+init:
+	@./bin/setup_codespaces.sh
+
+# builds BE & serves up FE in background
+# CODESPACES NOTE: Currently in codespaces, if the containers are running
+# but the CS has been paused, must run `make stop` before `make be` or `make restart`
+restart:
+	@./bin/restart_codespaces.sh
+
 help:
 	@./bin/help.sh

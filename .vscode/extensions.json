@@ -5,13 +5,13 @@
   "recommendations": [
     "aaron-bond.better-comments",
     "editorconfig.editorconfig",
-    "coenraads.bracket-pair-colorizer",
     "eamodio.gitlens",
     "ms-vsliveshare.vsliveshare",
     "christian-kohler.path-intellisense",
     "ms-python.python",
     "ms-vscode-remote.remote-containers",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "ms-azuretools.vscode-docker"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
