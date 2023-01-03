@@ -143,7 +143,8 @@ const NotificationDrawer = (props) => {
       case "EngineerOfRecord":
         return {
           route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine_tailings_storage_facility
+              .mine_tailings_storage_facility_guid,
             notification.notification_document.metadata.mine.mine_guid,
             "engineer-of-record"
           ),
@@ -152,7 +153,8 @@ const NotificationDrawer = (props) => {
       case "QualifiedPerson":
         return {
           route: EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-            notification.notification_document.metadata.entity_guid,
+            notification.notification_document.metadata.mine_tailings_storage_facility
+              .mine_tailings_storage_facility_guid,
             notification.notification_document.metadata.mine.mine_guid,
             "qualified-person"
           ),
@@ -186,14 +188,14 @@ const NotificationDrawer = (props) => {
         onClick={handleCollapse}
         type="text"
         className={`notification-button ${open ? "notification-button-open" : ""}`}
-        icon={
+        icon={(
           <Badge
             className="notification-badge"
             count={props.activities?.filter((act) => !act?.notification_read).length || 0}
           >
             <BellOutlined className="notification-icon" />
           </Badge>
-        }
+        )}
       />
       <div className={`notification-drawer ${open ? "notification-drawer-open" : ""}`}>
         <Tabs
@@ -203,11 +205,11 @@ const NotificationDrawer = (props) => {
         >
           <Tabs.TabPane
             className="notification-tab-pane"
-            tab={
+            tab={(
               <Typography.Title level={5} className="notification-tab-header">
                 Mine Activity
               </Typography.Title>
-            }
+            )}
             key="1"
           >
             <div className="notification-button-all-container">

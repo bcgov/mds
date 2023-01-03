@@ -96,6 +96,8 @@ class ActivityType(str, Enum):
     mine = 'mine'
     eor_expiring_60_days = 'eor_expiring_60_days'
     tsf_eor_expired = 'tsf_eor_expired'
+    qp_expiring_60_days = 'qp_expiring_60_days'
+    tsf_qp_expired = 'tsf_qp_expired'
     incident_report_submitted = 'incident_report_submitted'
     mine_incident_created = 'mine_incident_created'
     nod_status_changed = 'nod_status_changed'
@@ -109,6 +111,13 @@ class ActivityType(str, Enum):
     def __str__(self):
         return self.value
 
+class ActivityRecipients(str, Enum):
+    minespace_users = 'minespace_users'
+    core_users = 'core_users'
+    all_users = 'all_users'
+
+    def __str__(self):
+        return self.value
 
 class ActivityNotification(AuditMixin, Base):
     __tablename__ = 'activity_notification'
@@ -128,17 +137,22 @@ class ActivityNotification(AuditMixin, Base):
         return new_activity.save(commit)
 
     @classmethod
-    def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True):
+    def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True, recipients=ActivityRecipients.all_users):
         MinespaceUserMineTable = table(MinespaceUserMine.__tablename__, column('mine_guid'), column('user_id'))
         MinespaceUserTable = table(MinespaceUser.__tablename__, column('email_or_username'), column('user_id'))
         SubscriptionTable = table(Subscription.__tablename__, column('mine_guid'), column('user_name'))
 
-        users = [x[0] for x in (db.session.query(MinespaceUserTable, MinespaceUserMineTable).filter(
-            MinespaceUserMineTable.c.user_id == MinespaceUserTable.c.user_id,
-            MinespaceUserMineTable.c.mine_guid == mine_guid
-        ).all())]
+        users = []
+        if recipients == ActivityRecipients.all_users or recipients == ActivityRecipients.minespace_users:
+            minespace_users = [x[0] for x in (db.session.query(MinespaceUserTable, MinespaceUserMineTable).filter(
+                MinespaceUserMineTable.c.user_id == MinespaceUserTable.c.user_id,
+                MinespaceUserMineTable.c.mine_guid == mine_guid
+            ).all())]
+            users.extend(minespace_users)
 
-        core_users = [x[1] for x in (db.session.query(SubscriptionTable).filter(SubscriptionTable.c.mine_guid == mine_guid).all())]
+        if recipients == ActivityRecipients.all_users or recipients == ActivityRecipients.core_users:
+            core_users = [x[1] for x in (db.session.query(SubscriptionTable).filter(SubscriptionTable.c.mine_guid == mine_guid).all())]
+            users.extend(core_users)
 
         # Look up users that already recieved a notification with the given idempotency key
         # so they will not receive the notification again
@@ -146,8 +160,7 @@ class ActivityNotification(AuditMixin, Base):
             .with_entities(cls.notification_recipient) \
             .filter_by(idempotency_key=idempotency_key) \
             .all()] if idempotency_key else []
-
-        users.extend(core_users)
+        
         notifications = []
 
         for user in users:
