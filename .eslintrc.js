@@ -30,6 +30,7 @@ module.exports = {
     "import/no-named-as-default": 0,
     // TODO: fix unresolved imports for eslint with @common aliases
     "import/no-unresolved": 0,
+    "import/extensions": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": "off",
     camelcase: 0,

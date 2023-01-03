@@ -35,6 +35,7 @@ from app.api.securities.models.bond import Bond
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
@@ -674,7 +675,7 @@ class MinespaceUserFactory(BaseFactory):
     keycloak_guid = GUID
     email_or_username = factory.Faker('email')
 
-
+# Core subscriptions
 class SubscriptionFactory(BaseFactory):
     class Meta:
         model = Subscription
@@ -685,6 +686,17 @@ class SubscriptionFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
 
+# Minespace subscriptions/access
+class MinespaceSubscriptionFactory(BaseFactory):
+    class Meta:
+        model = MinespaceUserMine
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        minespace_user = factory.SubFactory(MinespaceUserFactory)
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    user_id = factory.SelfAttribute('minespace_user.user_id')
 
 class MineFactory(BaseFactory):
     class Meta:
