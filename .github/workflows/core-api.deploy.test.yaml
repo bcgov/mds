@@ -39,7 +39,7 @@ jobs:
     needs: promote-image-to-test
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Git Ops Push
         run: ./gitops/commit.sh core-api dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Install oc
