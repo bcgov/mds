@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Login
         run: |
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
@@ -37,7 +37,7 @@ jobs:
     needs: [build-nris]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Git Ops Push
         run: ./gitops/commit.sh nris dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Install oc
