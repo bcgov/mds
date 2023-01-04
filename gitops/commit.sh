@@ -13,6 +13,7 @@ REPO_LOCATION=$(git rev-parse --show-toplevel)
 TIMESTAMP=$(date +"%y-%m-%d-%H-%M-%S")
 
 git config --global user.name $ACTOR_NAME
+git config --global user.email "dev@mds.gov.bc.ca"
 
 function commit() {
     git add -A
