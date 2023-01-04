@@ -33,7 +33,7 @@ jobs:
     needs: promote-image
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Git Ops Push
         run: ./gitops/commit.sh tusd test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Install oc

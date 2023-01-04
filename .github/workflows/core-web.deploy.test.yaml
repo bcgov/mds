@@ -33,11 +33,11 @@ jobs:
     needs: promote-image-to-test
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Git Ops Push
         run: ./gitops/commit.sh core-web dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
