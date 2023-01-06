@@ -5213,13 +5213,18 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     {
+      consequence_classification_status_code: "VHIG",
+      description: "Very High",
+      active_ind: true,
+    },
+    {
       consequence_classification_status_code: "EXT",
       description: "Extreme",
       active_ind: true,
     },
     {
-      consequence_classification_status_code: "NOD",
-      description: "N/A (No Dam)",
+      consequence_classification_status_code: "NRT",
+      description: "Not Rated",
       active_ind: true,
     },
   ],
@@ -5926,8 +5931,7 @@ export const ORGBOOK_CREDENTIAL = {
       name: "BC Corporate Registry",
       abbreviation: "BCReg",
       email: "bcregistries@gov.bc.ca",
-      url:
-        "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+      url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
       endpoint: null,
     },
     has_logo: true,
@@ -5936,8 +5940,7 @@ export const ORGBOOK_CREDENTIAL = {
     description: "Registration",
     credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
     last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-    url:
-      "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+    url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
     schema: {
       id: 1,
       create_timestamp: "2019-06-25T14:52:20.397843-07:00",
@@ -6117,8 +6120,7 @@ export const ORGBOOK_CREDENTIAL = {
             name: "BC Corporate Registry",
             abbreviation: "BCReg",
             email: "bcregistries@gov.bc.ca",
-            url:
-              "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+            url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
             endpoint: null,
           },
           has_logo: true,
@@ -6127,8 +6129,7 @@ export const ORGBOOK_CREDENTIAL = {
           description: "Registration",
           credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
           last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-          url:
-            "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+          url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
           schema: {
             id: 1,
             create_timestamp: "2019-06-25T14:52:20.397843-07:00",
@@ -6300,8 +6301,9 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_DROPDOWN_OPTIONS = [
   { value: "LOW", label: "Low", subType: null, isActive: true },
   { value: "SIG", label: "Significant", subType: null, isActive: true },
   { value: "HIG", label: "High", subType: null, isActive: true },
+  { value: "VHIG", label: "Very High", subType: null, isActive: true },
   { value: "EXT", label: "Extreme", subType: null, isActive: true },
-  { value: "NOD", label: "N/A (No Dam)", subType: null, isActive: true },
+  { value: "NRT", label: "Not Rated", subType: null, isActive: true },
 ];
 
 export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
@@ -6312,10 +6314,11 @@ export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
   EXT: "Extreme",
+  VHIG: "Very High",
   HIG: "High",
-  LOW: "Low",
-  NOD: "N/A (No Dam)",
   SIG: "Significant",
+  LOW: "Low",
+  NRT: "Not Rated",
 };
 
 export const ITRB_EXEMPTION_STATUS_HASH = {

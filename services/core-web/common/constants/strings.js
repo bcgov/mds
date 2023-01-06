@@ -221,8 +221,8 @@ export const TSF_OPERATING_STATUS_CODE = [
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
   { value: "LOW", label: "Low" },
-  { value: "HIG", label: "High" },
   { value: "SIG", label: "Significant" },
+  { value: "HIG", label: "High" },
   { value: "VHIG", label: "Very High" },
   { value: "EXT", label: "Extreme" },
   { value: "NRT", label: "Not Rated" },
@@ -230,8 +230,8 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_CODE = [
 
 export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
   LOW: "Low",
-  HIG: "High",
   SIG: "Significant",
+  HIG: "High",
   VHIG: "Very High",
   EXT: "Extreme",
   NRT: "Not Rated",
@@ -240,8 +240,8 @@ export const CONSEQUENCE_CLASSIFICATION_CODE_HASH = {
 export const CONSEQUENCE_CLASSIFICATION_RANK_HASH = {
   NRT: 0,
   LOW: 1,
-  HIG: 2,
-  SIG: 3,
+  SIG: 2,
+  HIG: 3,
   VHIG: 4,
   EXT: 5,
 };

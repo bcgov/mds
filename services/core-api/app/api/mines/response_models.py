@@ -765,7 +765,8 @@ CONSEQUENCE_CLASSIFICATION_STATUS_MODEL = api.model(
     'ConsequenceClassificationStatusCode', {
         'consequence_classification_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer
     })
 
 ITRB_EXEMPTION_STATUS_MODEL = api.model(
