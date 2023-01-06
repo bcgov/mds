@@ -175,7 +175,7 @@ exports[`BasicInformation renders properly 1`] = `
         Object {
           "label": "High",
           "value": "HIG",
-        },        
+        },
         Object {
           "label": "Very High",
           "value": "VHIG",
