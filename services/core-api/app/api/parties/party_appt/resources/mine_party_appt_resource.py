@@ -206,15 +206,34 @@ class MinePartyApptResource(Resource, UserMixin):
 
         if Config.ENVIRONMENT_NAME != 'prod':
             # TODO: Remove this once TSF functionality is ready to go live
+            extra_data = {
+                'mine_tailings_storage_facility': {
+                    'mine_tailings_storage_facility_guid': str(tsf.mine_tailings_storage_facility_guid),
+                }}
+            
             if mine_party_appt_type_code == "EOR":
 
-                trigger_notification(f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', ActivityType.eor_created, mine, "EngineerOfRecord", tsf.mine_tailings_storage_facility_guid)
+                trigger_notification(
+                    f'A new Engineer of Record for {mine.mine_name} has been assigned and requires Ministry Acknowledgement to allow for the mine\'s compliance.', 
+                    ActivityType.eor_created, 
+                    mine, 
+                    "EngineerOfRecord", 
+                    new_mpa.mine_party_appt_guid, 
+                    extra_data
+                )
 
                 if is_minespace_user():
                     new_mpa.send_party_assigned_email()
                     
             if mine_party_appt_type_code == "TQP":
-                trigger_notification(f'A new Qualified Person for {mine.mine_name} has been assigned.', ActivityType.qfp_created, mine, "QualifiedPerson", tsf.mine_tailings_storage_facility_guid)
+                trigger_notification(
+                    f'A new Qualified Person for {mine.mine_name} has been assigned.', 
+                    ActivityType.qfp_created, 
+                    mine, 
+                    "QualifiedPerson", 
+                    new_mpa.mine_party_appt_guid, 
+                    extra_data
+                )
 
         return new_mpa.json()
 
