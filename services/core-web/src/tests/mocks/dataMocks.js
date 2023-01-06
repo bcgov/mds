@@ -5213,6 +5213,11 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     {
+      consequence_classification_status_code: "VHIG",
+      description: "Very High",
+      active_ind: true,
+    },
+    {
       consequence_classification_status_code: "EXT",
       description: "Extreme",
       active_ind: true,
@@ -6311,8 +6316,8 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
   EXT: "Extreme",
   VHIG: "Very High",
   HIG: "High",
-  LOW: "Low",
   SIG: "Significant",
+  LOW: "Low",
   NRT: "Not Rated",
 };
 
