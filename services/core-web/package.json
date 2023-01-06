@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "React.js frontend for MDS application",
   "private": true,
-  "type": "module",
   "homepage": "${BASE_PATH}/",
   "dependencies": {
     "@ant-design/compatible": "1.0.5",
