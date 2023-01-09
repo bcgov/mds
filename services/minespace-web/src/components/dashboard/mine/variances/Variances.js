@@ -138,6 +138,10 @@ export class Variances extends Component {
     });
   };
 
+  currentComplianceCodes = this.props.complianceCodes.filter(
+      (code) => !code.label.includes('Repealed')
+  );
+
   openCreateVarianceModal(event) {
     event.preventDefault();
     this.props.openModal({
@@ -145,7 +149,7 @@ export class Variances extends Component {
         onSubmit: this.handleCreateVariances,
         title: "Apply for a Variance",
         mineGuid: this.state.mine.mine_guid,
-        complianceCodes: this.props.complianceCodes,
+        complianceCodes: this.currentComplianceCodes,
       },
       content: modalConfig.ADD_VARIANCE,
     });

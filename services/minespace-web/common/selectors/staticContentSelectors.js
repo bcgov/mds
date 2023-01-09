@@ -96,10 +96,15 @@ export const getIncidentFollowupActionOptions = (state, isShowActiveOnly) =>
     isShowActiveOnly
   );
 
-// removes all expired compliance codes from the array
-export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) =>
-  codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
-);
+// marks all expired compliance codes as 'Repealed'
+export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) => {
+  return codes.map((code) => {
+    if (new Date(code?.expiry_date) < new Date()) {
+      code.description = `${code.description} (Repealed)`;
+    }
+    return code;
+  });
+});
 
 export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
   getMineTenureTypeOptions,
