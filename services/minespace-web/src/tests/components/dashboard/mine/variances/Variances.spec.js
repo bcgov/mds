@@ -12,6 +12,7 @@ const setupProps = () => {
   props.approvedVariances = MOCK.VARIANCES.records;
   props.varianceApplications = MOCK.VARIANCES.records;
   props.complianceCodesHash = MOCK.HSRCM_HASH;
+  props.complianceCodes = [];
   props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
   props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
 };
