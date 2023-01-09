@@ -206,11 +206,7 @@ class MinePartyApptResource(Resource, UserMixin):
 
         if Config.ENVIRONMENT_NAME != 'prod':
             # TODO: Remove this once TSF functionality is ready to go live
-            extra_data = {
-                'mine_tailings_storage_facility': {
-                    'mine_tailings_storage_facility_guid': str(tsf.mine_tailings_storage_facility_guid),
-                }}
-            
+            current_app.logger.info('hi tara!!!')
             if mine_party_appt_type_code == "EOR":
 
                 trigger_notification(
@@ -219,7 +215,9 @@ class MinePartyApptResource(Resource, UserMixin):
                     mine, 
                     "EngineerOfRecord", 
                     new_mpa.mine_party_appt_guid, 
-                    extra_data
+                    {'mine_tailings_storage_facility': {
+                        'mine_tailings_storage_facility_guid': str(tsf.mine_tailings_storage_facility_guid),
+                    }}
                 )
 
                 if is_minespace_user():
@@ -232,7 +230,9 @@ class MinePartyApptResource(Resource, UserMixin):
                     mine, 
                     "QualifiedPerson", 
                     new_mpa.mine_party_appt_guid, 
-                    extra_data
+                    {'mine_tailings_storage_facility': {
+                        'mine_tailings_storage_facility_guid': str(tsf.mine_tailings_storage_facility_guid),
+                    }}
                 )
 
         return new_mpa.json()
