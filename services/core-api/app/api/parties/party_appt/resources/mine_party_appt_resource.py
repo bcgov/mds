@@ -206,7 +206,6 @@ class MinePartyApptResource(Resource, UserMixin):
 
         if Config.ENVIRONMENT_NAME != 'prod':
             # TODO: Remove this once TSF functionality is ready to go live
-            current_app.logger.info('hi tara!!!')
             if mine_party_appt_type_code == "EOR":
 
                 trigger_notification(
