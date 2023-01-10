@@ -433,8 +433,6 @@ export class IncidentPage extends Component {
       updatedFormValues.status_code = "DFT";
     } else if (formValues?.status_code === "AFR" && formValues.final_report_documents?.length > 0) {
       updatedFormValues.status_code = "FRS";
-    } else {
-      updatedFormValues.status_code = updatedFormValues.status_code;
     }
 
     if (!fromModal) {
@@ -486,7 +484,7 @@ export class IncidentPage extends Component {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: updatedDocuments,
-      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
+      incident_timestamp: values.incident_timestamp,
       reported_timestamp: reportedToInspectorDateSet
         ? this.formatTimestamp(
             values?.reported_to_inspector_contact_date,
