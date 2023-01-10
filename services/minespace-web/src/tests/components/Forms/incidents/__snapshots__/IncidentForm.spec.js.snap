@@ -535,7 +535,6 @@ exports[`IncidentForm renders properly 1`] = `
         </Col>
       </Row>
       <br />
-      <br />
       <Row>
         <Col
           span={24}
