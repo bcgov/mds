@@ -64,6 +64,9 @@ exports[`IncidentSuccessPage renders properly 1`] = `
           </Title>
           Your submission will soon be reviewed by the ministry.
         </Paragraph>
+        <Paragraph>
+          This record will now move to the awaiting final investigation stage and requires you to visit this record again and upload your investigation documentation.
+        </Paragraph>
         <div>
           <p>
             <Link

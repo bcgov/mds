@@ -24,6 +24,7 @@ import {
   removeDocumentFromMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
+import * as Strings from "@common/constants/strings";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
@@ -125,6 +126,27 @@ export class MineIncident extends Component {
   handleSaveData = () => {
     const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
     const errors = Object.keys(flattenObject(this.props.formErrors));
+
+    const isFinalReport =
+      this.props.formValues.final_report_documents.length > 0 ||
+      (
+        this.props.formValues.documents?.filter(
+          (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+        ) ?? []
+      ).length > 0;
+
+    if (!this.props.formValues.status_code) {
+      if (isFinalReport) {
+        this.props.formValues.status_code = "FRS";
+      } else {
+        this.props.formValues.status_code = "AFR";
+      }
+    } else if (this.props.formValues.status_code === "AFR" && isFinalReport) {
+      this.props.formValues.status_code = "FRS";
+    } else {
+      this.props.formValues.status_code = this.props.formValues.status_code;
+    }
+
     if (errors.length === 0) {
       if (!incidentExists) {
         return this.handleCreateMineIncident(this.formatPayload(this.props.formValues));
@@ -155,10 +177,6 @@ export class MineIncident extends Component {
   };
 
   formatPayload = (values) => {
-    let mineDeterminationTypeCode = null;
-    if (typeof values?.mine_determination_type_code === "boolean") {
-      mineDeterminationTypeCode = values?.mine_determination_type_code ? "DO" : "NDO";
-    }
     const documents = [
       ...values?.initial_incident_documents,
       ...values?.final_report_documents,
@@ -168,16 +186,15 @@ export class MineIncident extends Component {
     return {
       ...values,
       updated_documents: documents,
-      mine_determination_type_code: mineDeterminationTypeCode,
+      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
     };
   };
 
   formatInitialValues = (incident) => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    mine_determination_type_code: incident?.mine_determination_type_code
-      ? incident.mine_determination_type_code === "DO"
-      : null,
+    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
+    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     initial_incident_documents: [],
     final_report_documents: [],
     internal_ministry_documents: [],

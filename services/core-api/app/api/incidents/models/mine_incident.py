@@ -261,7 +261,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     def send_incidents_email(self):
         emli_recipients = [INCIDENTS_EMAIL]
-        cc = [MDS_EMAIL]
+        cc = None
         minespace_recipients = [self.reported_by_email]
         duration = self.reported_timestamp - self.incident_timestamp
         duration_in_s = duration.total_seconds()
@@ -308,7 +308,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         PROP_EMAIL = self.reported_by_email
         recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
 
-        subject = f'[CORE] An {", ".join(element.description for element in self.categories)}, {self.determination_type.description} ({self.mine_incident_report_no}) has been reported at {self.mine_name} ({self.mine_table.mine_no}) on {format_incident_date(self.incident_timestamp)}'
+        subject = f'[CORE] An {", ".join(element.description for element in self.categories)}, {self.determination_type.description if self.determination_type else None} ({self.mine_incident_report_no}) has been reported at {self.mine_name} ({self.mine_table.mine_no}) on {format_incident_date(self.incident_timestamp)}'
 
         body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
         body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'

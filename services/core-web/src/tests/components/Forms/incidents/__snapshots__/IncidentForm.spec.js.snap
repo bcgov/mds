@@ -202,22 +202,45 @@ exports[`IncidentForm renders properly 1`] = `
               </FormItem>
             </Col>
             <Col
-              span={24}
+              md={12}
+              xs={24}
             >
               <FormItem
                 hasFeedback={false}
-                label="* Incident date and time"
+                label="* Incident date"
               >
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id="incident_timestamp"
-                  name="incident_timestamp"
-                  placeholder="Please select date and time"
-                  showTime={true}
+                  id="incident_date"
+                  name="incident_date"
+                  placeholder="Please select date..."
                   validate={
                     Array [
                       [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <FormItem
+                hasFeedback={false}
+                label="* Incident time"
+              >
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  fullWidth={true}
+                  id="incident_time"
+                  name="incident_time"
+                  placeholder="Please select time..."
+                  validate={
+                    Array [
                       [Function],
                     ]
                   }
@@ -446,54 +469,7 @@ exports[`IncidentForm renders properly 1`] = `
                   name="johsc_management_rep_contacted"
                 />
               </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <h4>
-                Mine Dangerous Occurrence Determination
-              </h4>
-              <Paragraph>
-                If you determine that this incident was a dangerous occurance will be required to submit your investigation report.
-              </Paragraph>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was this a dangerous occurrence? (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="mine_determination_type_code"
-                  name="mine_determination_type_code"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Mine representative who made determination (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="mine_determination_representative"
-                  name="mine_determination_representative"
-                  placeholder="Enter name of representative..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+              <br />
             </Col>
           </Row>
           <br />
@@ -633,6 +609,36 @@ exports[`IncidentForm renders properly 1`] = `
             removeDocument={false}
           />
           <br />
+        </Col>
+        <Col
+          span={24}
+        >
+          <Empty
+            description={
+              <div
+                className="center"
+              >
+                <Paragraph
+                  strong={true}
+                >
+                  This incident requires a final investigation report.
+                </Paragraph>
+                <Paragraph>
+                  You determined that this incident was a dangerous occurence. Please add your final report documentation by clicking below.
+                </Paragraph>
+                <ForwardRef(InternalButton)
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  Add Final Report
+                </ForwardRef(InternalButton)>
+              </div>
+            }
+            image={<Simple />}
+          />
         </Col>
       </Row>
       <br />
@@ -829,7 +835,8 @@ exports[`IncidentForm renders properly 1`] = `
             <ForwardRef(LockOutlined)
               className="violet"
             />
-             Internal Documents and Comments (Ministry Visible Only)
+             
+            Internal Documents and Comments (Ministry Visible Only)
           </Title>
           <Divider />
           <div

@@ -17,7 +17,7 @@ const propTypes = {
 export const IncidentSuccessPage = (props) => {
   const renderContent = () => {
     const incident = props.location.state?.incident || {};
-    const { mine_incident_guid, mine_guid, mine_determination_type_code } = incident;
+    const { mine_incident_guid, mine_guid } = incident;
     return (
       <div style={{ textAlign: "center" }}>
         <>
@@ -33,12 +33,10 @@ export const IncidentSuccessPage = (props) => {
             </Typography.Title>
             Your submission will soon be reviewed by the ministry.
           </Typography.Paragraph>
-          {mine_determination_type_code && (
             <Typography.Paragraph>
               This record will now move to the awaiting final investigation stage and requires you
               to visit this record again and upload your investigation documentation.
             </Typography.Paragraph>
-          )}
           <div>
             <p>
               <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine_guid, "incidents")}>

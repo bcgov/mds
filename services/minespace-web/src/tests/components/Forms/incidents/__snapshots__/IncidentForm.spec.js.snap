@@ -535,63 +535,6 @@ exports[`IncidentForm renders properly 1`] = `
         </Col>
       </Row>
       <br />
-      <Row
-        gutter={
-          Array [
-            16,
-          ]
-        }
-      >
-        <Col
-          span={24}
-        >
-          <Title
-            level={4}
-          >
-            Dangerous Occurrence Determination
-          </Title>
-          <Paragraph>
-            You will be required to submit a final investigation report if this incident is determined to be a dangerous occurrence.
-          </Paragraph>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <FormItem
-            hasFeedback={false}
-            label="Was this a dangerous occurrence? (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              id="mine_determination_type_code"
-              name="mine_determination_type_code"
-            />
-          </FormItem>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <FormItem
-            hasFeedback={false}
-            label="Mine representative who made determination (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              id="mine_determination_representative"
-              name="mine_determination_representative"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-      </Row>
       <br />
       <Row>
         <Col
@@ -666,7 +609,45 @@ exports[`IncidentForm renders properly 1`] = `
             }
             handleDeleteDocument={[MockFunction]}
           />
-          <br />
+          <Row>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <Title
+                level={4}
+              >
+                Final Report Documents
+              </Title>
+            </Col>
+          </Row>
+          <DocumentTable
+            deletePayload={
+              Object {
+                "mineGuid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                "mineIncidentGuid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+              }
+            }
+            deletePermission={true}
+            documentColumns={
+              Array [
+                Object {
+                  "dataIndex": "update_user",
+                  "render": [Function],
+                  "title": "Uploader",
+                },
+                Object {
+                  "dataIndex": "upload_date",
+                  "render": [Function],
+                  "sorter": [Function],
+                  "title": "Upload Date",
+                },
+              ]
+            }
+            documentParent="Mine Incident"
+            documents={Array []}
+            handleDeleteDocument={[MockFunction]}
+          />
         </Col>
       </Row>
     </Col>
