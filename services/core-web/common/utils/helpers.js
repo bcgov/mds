@@ -188,7 +188,7 @@ export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
 
 export const upperCase = (value) => value && value.toUpperCase();
 
-export const truncateFilename = (filename, max = 40) => {
+export const truncateFilename = (filename = "", max = 40) => {
   if (filename.length <= max) {
     return filename;
   }
