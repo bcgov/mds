@@ -319,9 +319,6 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         return jwks
 
     def _fetch_jwks_from_url(self):
-        print("---")
-        print(self.jwks_uri)
-        print("---")
         jsonurl = urlopen(self.jwks_uri)
         return json.loads(jsonurl.read().decode('utf-8'))
 
