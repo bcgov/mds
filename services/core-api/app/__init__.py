@@ -6,7 +6,7 @@ from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
-from flask_jwt_oidc.exceptions import AuthError
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 import traceback
 
@@ -103,6 +103,7 @@ def register_extensions(app):
 
     try:
         jwt.init_app(app)
+        # jwtv1.init_app(app)
     except Exception as error:
         app.logger.error("Failed to initialize JWT library: " + str(error))
 

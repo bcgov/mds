@@ -1,6 +1,9 @@
+
 from functools import wraps
+
 from app.extensions import jwt
-from flask_jwt_oidc.exceptions import AuthError
+from app.api.utils.include.user_info import User
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 
 VIEW_ALL = "core_view_all"
@@ -137,6 +140,12 @@ def requires_any_of(roles):
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
+        # token_data = User().get_user_raw_info()
+        
+        # User().is_user_sa_in_mds_realm(token_data)
+
+        # TODO - Implement jwt manager switcher here? or better elsewhere
+        # TODO - Review if User class is used for anything else on getting more than jwt debug stuff and other checks
         return jwt.requires_roles([role])(func)(*args, **kwds)
 
     wrapper.required_roles = _combine_role_flags(func, [role])

@@ -2100,7 +2100,7 @@ __metadata:
     jest-localstorage-mock: 2.4.0
     jest-sonar-reporter: 2.0.0
     jsonwebtoken: 8.5.1
-    keycloak-js: ^20.0.1
+    keycloak-js: 20.0.1
     leaflet: 1.5.1
     leaflet.markercluster: 1.4.1
     less: 3.5.0
@@ -12732,7 +12732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keycloak-js@npm:20.0.1, keycloak-js@npm:^20.0.1":
+"keycloak-js@npm:20.0.1":
   version: 20.0.1
   resolution: "keycloak-js@npm:20.0.1"
   dependencies:
