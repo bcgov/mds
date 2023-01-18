@@ -30,7 +30,7 @@ def getJwtManager():
     gold_sso = 'loginproxy.gov.bc.ca'
     kc_realms = 'oidc.gov.bc.ca'
     
-    auth_header = jwtv2.get_token_auth_header()
+    auth_header = jwt.get_token_auth_header()
     token = jwt_jose.get_unverified_claims(auth_header)
 
     iss = token.get('iss')
@@ -43,12 +43,7 @@ def getJwtManager():
         return jwtv2
 
     # Old SSO Service Accounts should have SA role.
-    roles = token.get('realm_access').get('roles')
-
-    print('---DEBUG---')
-    print(iss)
-    print(roles)
-
+    # roles = token.get('realm_access').get('roles')
 
     if kc_realms in iss: # and sa_role in roles:
         print("\n **Service Account from oidc.gov.bc.ca Detected \n")
@@ -56,7 +51,7 @@ def getJwtManager():
         print(jwtv1.well_known_config)
         return jwtv1
 
-    return jwtEmpty
+    return jwt
     # TODO: default return and throw error if none of iss is found in tokens 
 
 
