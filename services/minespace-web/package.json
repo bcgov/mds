@@ -144,7 +144,8 @@
     "test": "jest --env=jsdom --runInBand",
     "test:coverage": "jest --env=jsdom --runInBand src -- --testResultsProcessor=jest-junit --coverage",
     "test:updateAll": "jest --env=jsdom --runInBand -u --",
-    "test:watch": "jest --env=jsdom --runInBand -- src --watch"
+    "test:watch": "jest --env=jsdom --runInBand -- src --watch",
+    "test:only": "jest"
   },
   "jest": {
     "verbose": true,

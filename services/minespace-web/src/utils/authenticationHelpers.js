@@ -7,7 +7,7 @@ import keycloak from "../keycloak";
 
 export const signOutFromSSO = () => {
   keycloak.logout({
-    redirectUri: KEYCLOAK_LOGOUT_REDIRECT_URI
+    redirectUri: KEYCLOAK_LOGOUT_REDIRECT_URI,
   });
 };
 

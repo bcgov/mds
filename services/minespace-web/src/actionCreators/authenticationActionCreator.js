@@ -1,11 +1,10 @@
 import axios from "axios";
 import { notification } from "antd";
 import jwt from "jsonwebtoken";
-import { ENVIRONMENT ,USER_INFO} from "@mds/common";
+import { ENVIRONMENT, USER_INFO } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
