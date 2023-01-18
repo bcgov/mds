@@ -19,16 +19,18 @@ def JWT_ROLE_CALLBACK_V1(jwt_dict):
 db = SQLAlchemy()
 
 # Gold SSO
-jwt = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK)
+jwtv2 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK)
 # Existing Keycloak for integration clients
 jwtv1 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_V1'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_V1'), None, None, False, False, None, JWT_ROLE_CALLBACK_V1)
+
+jwt = JwtManager()
 
 def getJwtManager():
     sa_role = 'service_account'
     gold_sso = 'loginproxy.gov.bc.ca'
     kc_realms = 'oidc.gov.bc.ca'
     
-    auth_header = jwt.get_token_auth_header()
+    auth_header = jwtv2.get_token_auth_header()
     token = jwt_jose.get_unverified_claims(auth_header)
 
     iss = token.get('iss')
@@ -36,9 +38,9 @@ def getJwtManager():
 
     # Skip if Gold SSS
     if gold_sso in iss:
-        print(jwt.audience)
-        print(jwt.well_known_config)
-        return jwt
+        print(jwtv2.audience)
+        print(jwtv2.well_known_config)
+        return jwtv2
 
     # Old SSO Service Accounts should have SA role.
     roles = token.get('realm_access').get('roles')
@@ -54,6 +56,7 @@ def getJwtManager():
         print(jwtv1.well_known_config)
         return jwtv1
 
+    return jwtEmpty
     # TODO: default return and throw error if none of iss is found in tokens 
 
 

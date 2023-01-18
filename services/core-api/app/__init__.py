@@ -35,7 +35,7 @@ from app.api.dams.namespace import api as dams_api
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
-from app.extensions import db, jwt, jwtv1, api as root_api_namespace, cache
+from app.extensions import db, jwtv2, jwtv1, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
@@ -102,7 +102,7 @@ def register_extensions(app):
     root_api_namespace.init_app(app)
 
     try:
-        jwt.init_app(app)
+        jwtv2.init_app(app)
         jwtv1.init_app(app)
     except Exception as error:
         app.logger.error("Failed to initialize JWT library: " + str(error))
