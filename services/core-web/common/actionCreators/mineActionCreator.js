@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, USER_INFO} from "@mds/common";
+import { ENVIRONMENT, USER_INFO } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineActions from "../actions/mineActions";
@@ -181,18 +181,20 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNameList = (params = {}) => (dispatch) => {
-  dispatch(showLoading());
-  dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
-  return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
-      dispatch(mineActions.storeMineNameList(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_NAME_LIST)))
-    .finally(() => dispatch(hideLoading()));
-};
+export const fetchMineNameList =
+  (params = {}) =>
+  (dispatch) => {
+    dispatch(showLoading());
+    dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
+    return CustomAxios()
+      .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
+      .then((response) => {
+        dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
+        dispatch(mineActions.storeMineNameList(response.data));
+      })
+      .catch(() => dispatch(error(reducerTypes.GET_MINE_NAME_LIST)))
+      .finally(() => dispatch(hideLoading()));
+  };
 
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
@@ -355,7 +357,6 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
       throw new Error(err);
     });
 };
-
 
 export const getUserInfo = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));

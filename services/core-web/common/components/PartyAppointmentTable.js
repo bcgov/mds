@@ -8,8 +8,8 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
-
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -32,9 +32,9 @@ const PartyAppointmentTable = (props) => {
 
   const [loadingField, setLoadingField] = useState({});
 
-  const ministryAcknowledgedColumns = Object.entries(
-    MINISTRY_ACKNOWLEDGED_STATUS
-  ).map(([value, label]) => ({ value, label }));
+  const ministryAcknowledgedColumns = Object.entries(MINISTRY_ACKNOWLEDGED_STATUS).map(
+    ([value, label]) => ({ value, label })
+  );
   const statusColumns = Object.entries(PARTY_APPOINTMENT_STATUS).map(([value, label]) => ({
     value,
     label,
@@ -107,7 +107,6 @@ const PartyAppointmentTable = (props) => {
           {record.startDate}
           {' '}
 -
-          {' '}
           {record.endDate}
         </div>
       ),
@@ -141,8 +140,7 @@ const PartyAppointmentTable = (props) => {
               record.key,
               "mine_party_acknowledgement_status",
               val
-            )
-          }
+            )}
         />
       ),
     },
