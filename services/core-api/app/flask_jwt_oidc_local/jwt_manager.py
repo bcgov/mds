@@ -34,7 +34,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
 
     ALGORITHMS = 'RS256'
 
-    def __init__(self, app=None, well_known_config=None, well_known_obj_cache=None, algorithms='RS256', jwks_uri=None, issuer=None, audience=None, client_secret=None, cache=None, caching_enabled=False, jwt_oidc_test_mode=False, jwt_oidc_test_keys=None, jwt_role_callback=None):
+    def __init__(self, app=None, well_known_config=None, well_known_obj_cache=None, algorithms='RS256', jwks_uri=None, issuer=None, audience=None, client_secret=None, cache=None, caching_enabled=False, jwt_oidc_test_mode=False, jwt_oidc_test_keys=None, jwt_role_callback=None, jwt_oidc_test_private_key_pem=None):
         """Initialize the JWTManager instance."""
         
         self.app = app
@@ -50,7 +50,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
 
         self.jwt_oidc_test_mode = jwt_oidc_test_mode
         self.jwt_oidc_test_keys = jwt_oidc_test_keys
-
+        self.jwt_oidc_test_private_key_pem = jwt_oidc_test_private_key_pem
         self.jwt_role_callback = jwt_role_callback
 
         print("Running constructor")

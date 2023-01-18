@@ -5,7 +5,7 @@ from flask_caching import Cache
 from flask import Flask
 from app.flask_jwt_oidc_local import JwtManager
 from flask_sqlalchemy import SQLAlchemy
-
+from app.config import TestConfig
 from jose import jwt as jwt_jose
 from .config import Config
 from .helper import Api
@@ -18,12 +18,14 @@ def JWT_ROLE_CALLBACK_V1(jwt_dict):
 
 db = SQLAlchemy()
 
-# Gold SSO
-jwtv2 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK)
-# Existing Keycloak for integration clients
-jwtv1 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_V1'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_V1'), None, None, False, False, None, JWT_ROLE_CALLBACK_V1)
+test_config = TestConfig()
 
-jwt = JwtManager()
+# Gold SSO
+jwtv2 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+# Existing Keycloak for integration clients
+jwtv1 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_V1'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_V1'), None, None, False, False, None, JWT_ROLE_CALLBACK_V1, None)
+
+jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
 
 def getJwtManager():
     sa_role = 'service_account'
