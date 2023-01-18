@@ -1,14 +1,11 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import queryString from "query-string";
-import { KEYCLOAK } from "@mds/common";
 import {
   getUserInfoFromToken,
   authenticateUser,
   unAuthenticateUser,
 } from "@/actionCreators/authenticationActionCreator";
 import * as genericActions from "@/actions/genericActions";
-import { BCEID_LOGIN_REDIRECT_URI } from "@/constants/environment";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
@@ -26,7 +23,7 @@ beforeEach(() => {
 });
 
 describe("`getUserInfoFromToken` action creator", () => {
-  const url = KEYCLOAK.userInfoURL;
+  const url = `<API_URL>/users/me`;
   const token = "2434";
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
@@ -52,13 +49,12 @@ describe("`getUserInfoFromToken` action creator", () => {
 });
 
 describe("`authenticateUser` action creator", () => {
-  const accessToken = 'abc123';
+  const accessToken = "abc123";
   it("Request successful, dispatches `success` with correct response", () => {
-
     return authenticateUser(accessToken)(dispatch).then(() => {
       expect(dispatch).toHaveBeenCalledTimes(2);
-      const jwt = localStorage.getItem('jwt');
-      expect(jwt).toEqual('abc123');
+      const jwt = localStorage.getItem("jwt");
+      expect(jwt).toEqual("abc123");
     });
   });
 });
