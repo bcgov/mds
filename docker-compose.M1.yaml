@@ -64,8 +64,8 @@ services:
     depends_on:
       - flyway
       - redis
-      # - nris_backend
-      # - document_manager_backend
+      - nris_backend
+      - document_manager_backend
       - tusd
       - filesystem_provider
     healthcheck:
