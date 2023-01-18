@@ -3,6 +3,7 @@ import os
 
 from flask_caching import Cache
 from flask import Flask
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from app.flask_jwt_oidc_local import JwtManager
 from flask_sqlalchemy import SQLAlchemy
 from app.config import TestConfig
@@ -35,6 +36,9 @@ def getJwtManager():
 
     iss = token.get('iss')
 
+    if iss in test_config.JWT_OIDC_TEST_ISSUER:
+        return jwt
+    
     if gold_sso in iss:
         return jwtv2
 
@@ -42,10 +46,9 @@ def getJwtManager():
         print("\n **Client from oidc.gov.bc.ca Detected \n")
         return jwtv1
 
-    # TODO: default return and throw error if none of iss is found in tokens without affecting TEST config
-    return jwt
-
-
+    raise AuthError({'code': 'auth_fail',
+                             'description': 'Unable to select JWT Manager: Unknown Issuer'}, 401)
+    
 cache = Cache()
 api = Api(
     prefix='{}'.format(Config.BASE_PATH),
