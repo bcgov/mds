@@ -29,7 +29,7 @@ export const KEYCLOAK = {
   pkceMethod: "S256",
 
   idir_idpHint: "idir",
-  bceid_idpHint: "bceid",
+  bceid_idpHint: "bceidboth",
   vcauthn_idpHint: "ms-verifiable-credential",
 
   url: "<URL>",
