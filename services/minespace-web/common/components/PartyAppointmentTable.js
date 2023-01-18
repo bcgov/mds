@@ -9,7 +9,7 @@ import {
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+// import { getUserInfo } from "@/selectors/authenticationSelectors";
 
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -208,7 +208,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       updatePartyRelationship,
       fetchPartyRelationships,
-      getUserInfo,
+      // getUserInfo,
       change,
     },
     dispatch
