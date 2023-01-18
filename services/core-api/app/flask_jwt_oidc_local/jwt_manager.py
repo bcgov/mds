@@ -95,7 +95,6 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         app.logger.debug('ISSUER: {}'.format(self.issuer))
         app.logger.debug('ALGORITHMS: {}'.format(self.algorithms))
         app.logger.debug('AUDIENCE: {}'.format(self.audience))
-        app.logger.debug('CLIENT_SECRET: {}'.format(self.client_secret))
         app.logger.debug('JWT_OIDC_TEST_MODE: {}'.format(self.jwt_oidc_test_mode))
         app.logger.debug('JWT_OIDC_TEST_KEYS: {}'.format(self.jwt_oidc_test_keys))
 
@@ -110,8 +109,6 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
 
         This is a flask extension lifecycle hook.
         """
-        # ctx = _app_ctx_stack.top
-        # if hasattr(ctx, 'cached object'):
 
     @staticmethod
     def handle_auth_error(ex):
