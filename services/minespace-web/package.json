@@ -186,12 +186,6 @@
   "browserslist": [
     "> 0.1%"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "lint-prepush && cd ../core-web && lint-prepush"
-    }
-  },
   "lint-staged": {
     "*.{js,css,json,md}": [
       "yarn format:write",
