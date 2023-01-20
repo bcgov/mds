@@ -3,9 +3,12 @@ import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,
   SITEMINDER_LOGOUT_REDIRECT_URI,
 } from "@/constants/environment";
+import keycloak from "../keycloak";
 
 export const signOutFromSSO = () => {
-  window.open(`${KEYCLOAK.keycloakLogoutURL}${KEYCLOAK_LOGOUT_REDIRECT_URI}`, "_self");
+  keycloak.logout({
+    redirectUri: KEYCLOAK_LOGOUT_REDIRECT_URI,
+  });
 };
 
 export const signOutFromSiteMinder = () => {

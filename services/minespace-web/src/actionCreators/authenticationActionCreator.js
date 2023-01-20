@@ -1,12 +1,10 @@
 import axios from "axios";
 import { notification } from "antd";
 import jwt from "jsonwebtoken";
-import queryString from "query-string";
-import * as COMMON_ENV from "@mds/common";
+import { ENVIRONMENT, USER_INFO } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-import * as MINESPACE_ENV from "@/constants/environment";
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
@@ -21,14 +19,15 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
 
 export const getUserRoles = (token) => (dispatch) => {
   const decodedToken = jwt.decode(token);
-  const isProponent = decodedToken.realm_access.roles.includes("minespace-proponent");
+  const roles = decodedToken.client_roles || [];
+  const isProponent = roles.includes("minespace-proponent");
   dispatch(authenticationActions.storeIsProponent(isProponent));
 };
 
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
-    .get(COMMON_ENV.KEYCLOAK.userInfoURL, {
+    .get(`${ENVIRONMENT.apiUrl + USER_INFO}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,30 +53,8 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
     });
 };
 
-export const authenticateUser = (code, redirectUrl = "") => (dispatch) => {
-  const redirect_uri = redirectUrl ? redirectUrl : MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI;
-  const data = {
-    code,
-    grant_type: "authorization_code",
-    redirect_uri,
-    client_id: COMMON_ENV.KEYCLOAK.clientId,
-  };
-  dispatch(request(reducerTypes.AUTHENTICATE_USER));
-  return axios
-    .post(COMMON_ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
-    .then((response) => {
-      dispatch(success(reducerTypes.AUTHENTICATE_USER));
-      localStorage.setItem("jwt", response.data.access_token);
-      dispatch(getUserInfoFromToken(response.data.access_token));
-      return response;
-    })
-    .catch((err) => {
-      notification.error({
-        message: "Unexpected error occurred, please try again",
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.AUTHENTICATE_USER));
-      dispatch(unAuthenticateUser());
-      throw new Error(err);
-    });
+export const authenticateUser = (accessToken) => async (dispatch) => {
+  dispatch(success(reducerTypes.AUTHENTICATE_USER));
+  localStorage.setItem("jwt", accessToken);
+  dispatch(getUserInfoFromToken(accessToken));
 };

@@ -105,14 +105,14 @@ namespace EJ2FileManagerService
         {
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
 
-            // Flatten realm_access because Microsoft identity model doesn't support nested claims
-            if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "realm_access"))
+            // Flatten client_roles because Microsoft identity model doesn't support nested claims
+            if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "client_roles"))
             {
-                var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "realm_access");
-                var realmAccessAsDict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(realmAccessClaim.Value);
-                if (realmAccessAsDict["roles"] != null)
+                var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "client_roles");
+                var realmAccessAsList = JsonConvert.DeserializeObject<List<string>>(realmAccessClaim.Value);
+                if (realmAccessAsList != null)
                 {
-                    foreach (var role in realmAccessAsDict["roles"])
+                    foreach (var role in realmAccessAsList)
                     {
                         claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
                     }

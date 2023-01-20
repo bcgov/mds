@@ -6,7 +6,7 @@ from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
-from flask_jwt_oidc.exceptions import AuthError
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 import traceback
 
@@ -35,7 +35,7 @@ from app.api.dams.namespace import api as dams_api
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
-from app.extensions import db, jwt, api as root_api_namespace, cache
+from app.extensions import db, jwtv2, jwtv1, jwt, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
@@ -54,7 +54,7 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_object(test_config)
 
-    register_extensions(app)
+    register_extensions(app, test_config)
     register_routes(app)
     register_commands(app)
 
@@ -92,7 +92,7 @@ def make_celery(app):
 
     return celery
 
-def register_extensions(app):
+def register_extensions(app, test_config=None):
 
     root_api_namespace.app = app
 
@@ -102,7 +102,12 @@ def register_extensions(app):
     root_api_namespace.init_app(app)
 
     try:
-        jwt.init_app(app)
+
+        if test_config is None:
+            jwtv2.init_app(app)
+            jwtv1.init_app(app)
+        else:
+            jwt.init(app)
     except Exception as error:
         app.logger.error("Failed to initialize JWT library: " + str(error))
 

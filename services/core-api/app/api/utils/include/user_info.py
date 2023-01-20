@@ -11,9 +11,7 @@ DUMMY_AUTH_CLAIMS = {
     "preferred_username": "mds",
     "email": "test-email",
     "given_name": "test-given-name",
-    "realm_access": {
-        "roles": []
-    }
+    "client_roles": []
 }
 
 
@@ -30,11 +28,21 @@ class User:
         raw_info = self.get_user_raw_info()
         return raw_info.get('email')
 
+    def _extract_idp_username(self, raw_info):
+        if raw_info.get('bceid_username'):
+            return raw_info['bceid_username'] + '@bceid'
+        elif raw_info.get('idir_username'):
+            return raw_info['idir_username']
+        else:
+            return raw_info['preferred_username']
+
     def get_user_username(self):
         if has_request_context():
+
             raw_info = self.get_user_raw_info()
-            realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
-            return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
-                'preferred_username']
+            realms = list(set(VALID_REALM) & set(raw_info.get('client_roles') or []))
+
+            idp_username = self._extract_idp_username(raw_info)
+            return realms[0] + '\\' + idp_username if realms else idp_username
         else:
             return 'system'

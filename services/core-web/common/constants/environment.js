@@ -8,10 +8,10 @@ export const DEFAULT_ENVIRONMENT = {
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
-  keycloak_resource: "mines-application-local",
-  keycloak_clientId: "mines-application-local",
+  keycloak_resource: "mines-digital-services-mds-public-client-4414",
+  keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
-  keycloak_url: "https://test.oidc.gov.bc.ca/auth",
+  keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
 };
 
 export const ENVIRONMENT = {

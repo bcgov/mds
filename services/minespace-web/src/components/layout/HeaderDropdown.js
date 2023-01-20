@@ -8,10 +8,11 @@ import PropTypes from "prop-types";
 import * as COMMON_ENV from "@mds/common";
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
-import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
+import { signOutFromSSO } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
 import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
+import LoginButton from "../common/LoginButton";
 
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
@@ -30,7 +31,7 @@ const defaultProps = {
 
 export class HeaderDropdown extends Component {
   handleLogout = () => {
-    signOutFromSiteMinder();
+    signOutFromSSO();
   };
 
   setActiveLink = (pathname) => {
@@ -68,13 +69,7 @@ export class HeaderDropdown extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <div>
-          <Button className="login-btn" style={{ marginRight: "10px" }}>
-            <a
-              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.bceid_idpHint}`}
-            >
-              Log in with BCeID
-            </a>
-          </Button>
+          <LoginButton className="login-btn" />
           <AuthorizationWrapper inTesting>
             {/* TODO BEFORE PROD: 
               1) Reach out to Wade Barnes (or, Emiliano Sune) and configure Production Keycloak Realm to use the vc-authn service as an Identity Provider

@@ -37,26 +37,9 @@ exports[`LandingPage renders properly 1`] = `
         Manage applications, see inspection histories, submit reports, and more.
       </Paragraph>
       <div>
-        <Button
-          block={false}
+        <LoginButton
           className="login"
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          size="large"
-          style={
-            Object {
-              "margin-right": "10px",
-            }
-          }
-          type="primary"
-        >
-          <a
-            href="<URL>http://localhostundefined/return-page?type=login&kc_idp_hint=bceid"
-          >
-            Log in with BCeID
-          </a>
-        </Button>
+        />
         <AuthorizationWrapper
           inTesting={true}
         >

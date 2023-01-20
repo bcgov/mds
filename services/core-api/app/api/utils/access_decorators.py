@@ -1,6 +1,9 @@
+
 from functools import wraps
-from app.extensions import jwt
-from flask_jwt_oidc.exceptions import AuthError
+
+from app.extensions import getJwtManager
+from app.api.utils.include.user_info import User
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 
 VIEW_ALL = "core_view_all"
@@ -32,15 +35,15 @@ EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 
 
 def is_minespace_user():
-    return jwt.validate_roles([MINESPACE_PROPONENT])
+    return getJwtManager().validate_roles([MINESPACE_PROPONENT])
 
 
 def can_edit_now_dates():
-    return jwt.validate_roles([EDIT_NOW_DATES])
+    return getJwtManager().validate_roles([EDIT_NOW_DATES])
 
 
 def can_edit_mines():
-    return jwt.validate_roles([MINE_EDIT])
+    return getJwtManager().validate_roles([MINE_EDIT])
 
 
 def requires_role_edit_emli_contacts(func):
@@ -124,7 +127,7 @@ def requires_any_of(roles):
         @wraps(func)
         def wrapper(*args, **kwds):
             try:
-                return jwt.has_one_of_roles(roles)(func)(*args, **kwds)
+                return getJwtManager().has_one_of_roles(roles)(func)(*args, **kwds)
             except AuthError as e:
                 raise Forbidden(e.error['description'])
 
@@ -137,7 +140,7 @@ def requires_any_of(roles):
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
-        return jwt.requires_roles([role])(func)(*args, **kwds)
+        return getJwtManager().requires_roles([role])(func)(*args, **kwds)
 
     wrapper.required_roles = _combine_role_flags(func, [role])
     return wrapper

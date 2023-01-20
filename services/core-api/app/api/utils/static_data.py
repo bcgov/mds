@@ -45,4 +45,3 @@ def setup_static_data(Base):
                 current_app.logger.error(class_.__name__)
                 current_app.logger.error(str(e))
                 raise e
-    current_app.logger.debug(STATIC_DATA)

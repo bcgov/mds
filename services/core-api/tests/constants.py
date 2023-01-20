@@ -11,9 +11,7 @@ BASE_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "preferred_username": "test-user",
-    "realm_access": {
-        "roles": ["idir"]
-    }
+    "client_roles": ["idir"]
 }
 
 FULL_AUTH_CLAIMS = {
@@ -28,18 +26,16 @@ FULL_AUTH_CLAIMS = {
     "preferred_username": "test-user",
     "email": "test-email",
     "given_name": "test-given-name",
-    "realm_access": {
-        "roles": [
-            "core_view_all", "core_edit_mines", "core_admin", "core_abandoned_mines",
-            "core_close_permits", "core_edit_all", "core_edit_do", "core_edit_investigations",
-            "core_edit_parties", "core_edit_permits", "core_edit_reports", "core_edit_securities",
-            "core_edit_variances", "core_environmental_reports", "core_geospatial", "idir",
-            "core_edit_submissions", "core_edit_explosives_permits",
-            "core_edit_template_conditions", "mds_administrative_users", "core_edit_now_dates",
-            "core_edit_emli_contacts", "core_edit_tsf", "core_edit_information_requirements_table",
-            "core_edit_requirements"
-        ]
-    }
+    "client_roles": [
+        "core_view_all", "core_edit_mines", "core_admin", "core_abandoned_mines",
+        "core_close_permits", "core_edit_all", "core_edit_do", "core_edit_investigations",
+        "core_edit_parties", "core_edit_permits", "core_edit_reports", "core_edit_securities",
+        "core_edit_variances", "core_environmental_reports", "core_geospatial", "idir",
+        "core_edit_submissions", "core_edit_explosives_permits",
+        "core_edit_template_conditions", "mds_administrative_users", "core_edit_now_dates",
+        "core_edit_emli_contacts", "core_edit_tsf", "core_edit_information_requirements_table",
+        "core_edit_requirements"
+    ]
 }
 
 VIEW_ONLY_AUTH_CLAIMS = {
@@ -53,9 +49,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "username": "test-user",
     "preferred_username": "test-user",
     "email": "test-email",
-    "realm_access": {
-        "roles": ["core_view_all", "idir"]
-    }
+    "client_roles": ["core_view_all", "idir"]
 }
 
 CREATE_ONLY_AUTH_CLAIMS = {
@@ -68,9 +62,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "preferred_username": "test-user",
-    "realm_access": {
-        "roles": ["core_edit_mines", "idir"]
-    }
+    "client_roles": ["core_edit_mines", "idir"]
 }
 
 ADMIN_ONLY_AUTH_CLAIMS = {
@@ -83,9 +75,7 @@ ADMIN_ONLY_AUTH_CLAIMS = {
     "typ": "Bearer",
     "preferred_username": "test-user",
     "username": "test-user",
-    "realm_access": {
-        "roles": ["core_admin", "idir"]
-    }
+    "client_roles": ["core_admin", "idir"]
 }
 
 PROPONENT_ONLY_AUTH_CLAIMS = {
@@ -99,9 +89,7 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
     "preferred_username": "test-proponent",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
-    "realm_access": {
-        "roles": ["mds_minespace_proponents"]
-    }
+    "client_roles": ["mds_minespace_proponents"]
 }
 
 NROS_VFCBC_AUTH_CLAIMS = {
@@ -115,9 +103,7 @@ NROS_VFCBC_AUTH_CLAIMS = {
     "preferred_username": "test-user",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
-    "realm_access": {
-        "roles": ["core_edit_submissions"]
-    }
+    "client_roles": ["core_edit_submissions"]
 }
 
 CORE_EDIT_PARTIES_AUTH_CLAIMS = {
@@ -131,7 +117,5 @@ CORE_EDIT_PARTIES_AUTH_CLAIMS = {
     "preferred_username": "test-user",
     "username": "test-edit-parties",
     "email": "test-proponent-email@minespace.ca",
-    "realm_access": {
-        "roles": ["core_edit_parties"]
-    }
+    "client_roles": ["core_edit_parties"]
 }

@@ -80,7 +80,7 @@ class Config(object):
     FLOWER_USER_PASSWORD = os.environ.get('FLOWER_USER_PASSWORD', '')
 
     def JWT_ROLE_CALLBACK(jwt_dict):
-        return (jwt_dict['realm_access']['roles'])
+        return (jwt_dict.get('client_roles') or [])
 
 
 class TestConfig(Config):

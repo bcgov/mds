@@ -1,6 +1,6 @@
 import uuid, pytest, decimal, math, datetime
 
-from app.extensions import jwt, api
+from app.extensions import api
 from app.api.utils.models_mixins import DictLoadingError
 from app.api.now_applications.models.activity_detail.camp_detail import CampDetail
 from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER

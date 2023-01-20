@@ -1454,6 +1454,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.9.0":
+  version: 7.20.6
+  resolution: "@babel/runtime@npm:7.20.6"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 42a8504db21031b1859fbc0f52d698a3d2f5ada9519eb76c6f96a7e657d8d555732a18fe71ef428a67cc9fc81ca0d3562fb7afdc70549c5fec343190cbaa9b03
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.14.5, @babel/template@npm:^7.18.10, @babel/template@npm:^7.4.0":
   version: 7.18.10
   resolution: "@babel/template@npm:7.18.10"
@@ -1940,7 +1949,7 @@ __metadata:
     jest-junit: 6.4.0
     jest-localstorage-mock: 2.4.0
     jest-sonar-reporter: 2.0.0
-    keycloak-js: 6.0.1
+    keycloak-js: 20.0.1
     leaflet: 1.5.1
     leaflet.markercluster: 1.4.1
     leaflet.wms: 0.2.0
@@ -2027,6 +2036,7 @@ __metadata:
     "@datapunt/matomo-tracker-react": 0.1.5
     "@hot-loader/react-dom": 16.13.0
     "@mds/common": 0.1.0
+    "@react-keycloak/web": ^3.4.0
     "@syncfusion/ej2-base": 19.1.57
     "@syncfusion/ej2-buttons": 19.1.54
     "@syncfusion/ej2-data": 19.1.56
@@ -2090,6 +2100,7 @@ __metadata:
     jest-localstorage-mock: 2.4.0
     jest-sonar-reporter: 2.0.0
     jsonwebtoken: 8.5.1
+    keycloak-js: 20.0.1
     leaflet: 1.5.1
     leaflet.markercluster: 1.4.1
     less: 3.5.0
@@ -2305,6 +2316,36 @@ __metadata:
   dependencies:
     debug: ^4.3.1
   checksum: 663438d9154db3c11bc7d41a4838162542db9cb4cf989fe8936e9bd9e5b99e3a58d73c8888afa1180a8cb93375c1d165bb397939de8a5ab8507d13d2aed2a086
+  languageName: node
+  linkType: hard
+
+"@react-keycloak/core@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@react-keycloak/core@npm:3.2.0"
+  dependencies:
+    react-fast-compare: ^3.2.0
+  peerDependencies:
+    react: ">=16"
+  checksum: d83aa89c0a6047b1ae197ea49665a026fd3366cd978b7a7c224e600ded3d431251e7c5eb5232e95de0c83c98be9787b8ce48c98c1ad68a5a639ee1b7473c7cc8
+  languageName: node
+  linkType: hard
+
+"@react-keycloak/web@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@react-keycloak/web@npm:3.4.0"
+  dependencies:
+    "@babel/runtime": ^7.9.0
+    "@react-keycloak/core": ^3.2.0
+    hoist-non-react-statics: ^3.3.2
+  peerDependencies:
+    keycloak-js: ">=9.0.2"
+    react: ">=16.8"
+    react-dom: ">=16.8"
+    typescript: ">=3.8"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 60eb281fe23e842b50b8b41a87ac8ca52e4cf64c41004123957b5f4cc46ab4a11e4c3452e608814486e06c41e9afe099642c9e999d08840be69ae261176ddfd3
   languageName: node
   linkType: hard
 
@@ -4954,7 +4995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1":
+"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -12393,6 +12434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-sha256@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "js-sha256@npm:0.9.0"
+  checksum: ffad54b3373f81581e245866abfda50a62c483803a28176dd5c28fd2d313e0bdf830e77dac7ff8afd193c53031618920f3d98daf21cbbe80082753ab639c0365
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -12684,10 +12732,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keycloak-js@npm:6.0.1":
-  version: 6.0.1
-  resolution: "keycloak-js@npm:6.0.1"
-  checksum: b636851984abf5fdff37385219c3a2f01c3a38b7746a562e6bdd7f65ab8d84a5319ae2870b8c1a3ee3af47cb32032b8c8ac58c2634d46289ec2260363d885872
+"keycloak-js@npm:20.0.1":
+  version: 20.0.1
+  resolution: "keycloak-js@npm:20.0.1"
+  dependencies:
+    base64-js: ^1.5.1
+    js-sha256: ^0.9.0
+  checksum: 55e33240eafff3ec695d79099dea6f2a4913e6dde223281229a9223695b079bc5e078940863f899436e7a3bcbb7d56773b73a2eba47113b45f4917cfac2cc22f
   languageName: node
   linkType: hard
 
@@ -17231,6 +17282,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-fast-compare@npm:3.2.0"
+  checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
+  languageName: node
+  linkType: hard
+
 "react-filepond@npm:7.1.0":
   version: 7.1.0
   resolution: "react-filepond@npm:7.1.0"
@@ -17756,6 +17814,13 @@ __metadata:
   version: 0.13.10
   resolution: "regenerator-runtime@npm:0.13.10"
   checksum: 09893f5a9e82932642d9a999716b6c626dc53ef2a01307c952ebbf8e011802360163a37c304c18a6c358548be5a72b448e37209954a18696f21e438c81cbb4b9
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "regenerator-runtime@npm:0.13.11"
+  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
   languageName: node
   linkType: hard
 

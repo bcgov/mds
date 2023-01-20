@@ -12,9 +12,7 @@ BASE_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
-    "realm_access": {
-        "roles": ["idir"]
-    }
+    "client_roles": ["idir"]
 }
 
 FULL_AUTH_CLAIMS = {
@@ -29,9 +27,7 @@ FULL_AUTH_CLAIMS = {
     "preferred_username": "test-user",
     "email": "test-email",
     "given_name": "test-given-name",
-    "realm_access": {
-        "roles": [NRIS_VIEW, "idir"]
-    }
+    "client_roles": [NRIS_VIEW, "idir"]
 }
 
 NRIS_VIEW_ONLY_AUTH_CLAIMS = {
@@ -44,7 +40,5 @@ NRIS_VIEW_ONLY_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "email": "test-email",
-    "realm_access": {
-        "roles": [NRIS_VIEW, "idir"]
-    }
+    "client_roles": [NRIS_VIEW, "idir"]
 }

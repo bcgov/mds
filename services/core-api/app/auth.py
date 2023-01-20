@@ -56,7 +56,7 @@ def get_user_is_proponent():
     # The flask-jwt-oidc library throws an exception if a token does not exist.
     token_data = User().get_user_raw_info()
     try:
-        is_proponent = MINESPACE_PROPONENT in token_data["realm_access"]["roles"]
+        is_proponent = MINESPACE_PROPONENT in (token_data.get("client_roles") or [])
     except:
         raise Exception("A JWT token exists, but no roles are defined.")
     return is_proponent
@@ -65,7 +65,7 @@ def get_user_is_proponent():
 def get_user_is_admin():
     token_data = User().get_user_raw_info()
     try:
-        is_admin = MINE_ADMIN in token_data["realm_access"]["roles"]
+        is_admin = MINE_ADMIN in (token_data.get("client_roles") or [])
     except:
         raise Exception("A JWT token exists, but no roles are defined.")
     return is_admin

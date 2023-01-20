@@ -190,6 +190,7 @@ export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
 
 // Users
 export const CORE_USER = "/users/core";
+export const USER_INFO = "/users/me";
 
 // Incidents
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;

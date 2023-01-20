@@ -3,7 +3,7 @@ from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
-from app.extensions import api, jwt, db
+from app.extensions import api
 from app.api.mines.response_models import STANDARD_PERMIT_CONDITION_MODEL
 from app.api.mines.permits.permit_conditions.models import StandardPermitConditions
 from app.api.utils.access_decorators import requires_role_edit_standard_permit_conditions

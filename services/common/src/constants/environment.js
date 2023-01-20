@@ -7,10 +7,10 @@ export const DEFAULT_ENVIRONMENT = {
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
-  keycloak_resource: "mines-application-local",
-  keycloak_clientId: "mines-application-local",
+  keycloak_resource: "mines-digital-services-mds-public-client-4414",
+  keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
-  keycloak_url: "https://test.oidc.gov.bc.ca/auth",
+  keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
 };
 
 export const ENVIRONMENT = {
@@ -22,14 +22,14 @@ export const ENVIRONMENT = {
 };
 
 export const KEYCLOAK = {
-  realm: "mds",
-
+  realm: "standard",
   "ssl-required": "external",
   "public-client": true,
   "confidential-port": 0,
+  pkceMethod: "S256",
 
   idir_idpHint: "idir",
-  bceid_idpHint: "bceid",
+  bceid_idpHint: "bceidboth",
   vcauthn_idpHint: "ms-verifiable-credential",
 
   url: "<URL>",
@@ -116,10 +116,10 @@ export function setupKeycloak(
   KEYCLOAK.bceid_idpHint = bceidHint;
   KEYCLOAK.vcauthn_idpHint = vcauthnHint;
 
-  KEYCLOAK.keycloakLogoutURL = `${url}/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
-  KEYCLOAK.loginURL = `${url}/realms/mds/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${vcauthnPresReqConfId}&client_id=${clientId}&redirect_uri=`;
-  KEYCLOAK.tokenURL = `${url}/realms/mds/protocol/openid-connect/token`;
-  KEYCLOAK.userInfoURL = `${url}/realms/mds/protocol/openid-connect/userinfo`;
+  KEYCLOAK.keycloakLogoutURL = `${url}/realms/standard/protocol/openid-connect/logout?redirect_uri=`;
+  KEYCLOAK.loginURL = `${url}/realms/standard/protocol/openid-connect/auth?response_type=code&pres_req_conf_id=${vcauthnPresReqConfId}&client_id=${clientId}&redirect_uri=`;
+  KEYCLOAK.tokenURL = `${url}/realms/standard/protocol/openid-connect/token`;
+  KEYCLOAK.userInfoURL = `${url}/realms/standard/protocol/openid-connect/userinfo`;
 
   KEYCLOAK.siteMinderLogoutURL = `${siteMinderURL}/clp-cgi/logoff.cgi?returl=`;
 }
