@@ -87,7 +87,8 @@ def make_celery(app):
         # Register beat schedule (for triggering scheduled tasks)
         beat_schedule = Config.CELERY_BEAT_SCHEDULE,
         beat_scheduler = 'redbeat.RedBeatScheduler',
-        redbeat_redis_url = Config.CELERY_READBEAT_BROKER_URL
+        redbeat_redis_url = Config.CELERY_READBEAT_BROKER_URL,
+        redbeat_lock_key = 'core-api'
     )
 
     return celery
