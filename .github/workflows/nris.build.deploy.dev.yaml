@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - .github/workflows/nris.build.deploy.dev.yaml
+      - services/nris-api/backend/**
 
 env:
   INITIAL_TAG: latest
