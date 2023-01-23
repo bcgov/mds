@@ -81,7 +81,7 @@ def register_commands(app):
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_address_etl()
 
-    @app.cli.command()
+    @app.cli.command('notify_expiring_party_appointments')
     def notify_expiring_party_appointments():
         from app.api.parties.party_appt import notify_expiring_party_appointments
         from app import auth
@@ -90,7 +90,7 @@ def register_commands(app):
         with current_app.app_context():
             notify_expiring_party_appointments()
 
-    @app.cli.command()
+    @app.cli.command('notify_and_update_expired_party_appointments')
     def notify_and_update_expired_party_appointments():
         from app.api.parties.party_appt import notify_and_update_expired_party_appointments
         from app import auth
