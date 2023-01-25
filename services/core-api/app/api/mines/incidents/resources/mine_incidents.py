@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin, is_minespace_user, requires_any_of, EDIT_DO, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, is_minespace_user, requires_any_of, EDIT_DO, MINESPACE_PROPONENT
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
@@ -316,7 +316,7 @@ class MineIncidentResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
-    @requires_role_edit_do
+    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident or str(incident.mine_guid) != mine_guid:
