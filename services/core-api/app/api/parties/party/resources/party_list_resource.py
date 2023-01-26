@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_
 
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_PARTY, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import GET_ALL_INSPECTORS_KEY, GET_ALL_PROJECT_LEADS_KEY, TIMEOUT_12_HOURS
@@ -162,7 +162,7 @@ class PartyListResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description='Create a party.')
-    @requires_role_edit_party
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     @api.marshal_with(PARTY, code=200)
     def post(self):
         data = PartyListResource.parser.parse_args()

@@ -19,7 +19,7 @@ from app.api.mines.response_models import MINE_INCIDENT_MODEL
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import requires_role_edit_do
+from app.api.utils.access_decorators import EDIT_DO, MINESPACE_PROPONENT, requires_any_of
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.services.document_manager_service import DocumentManagerService
@@ -29,7 +29,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_role_edit_do
+    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
 
@@ -43,7 +43,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
 class MineIncidentDocumentResource(Resource, UserMixin):
     @api.doc(description='Adds a Document to an already existing Mine incident.')
     @api.marshal_with(MINE_INCIDENT_MODEL, 201)
-    @requires_role_edit_do
+    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_incident_guid, mine_document_guid):
         parser = CustomReqparser()
         parser.add_argument('filename', type=str, required=True)
@@ -83,7 +83,7 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         return mine_incident
 
     @api.doc(description='Dissociate a document from a Mine Incident.')
-    @requires_role_edit_do
+    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
         if not mine_document_guid:
             raise BadRequest('must provide document_guid to be unlinked')
