@@ -32,6 +32,11 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     const [authComplete, setAuthComplete] = useState();
     const { keycloak, initialized } = useKeycloak();
 
+    keycloak.onTokenExpired(() => {
+      // TODO: there is no check here that the user is active
+      keycloak.updateToken();
+    })
+
     const authenticate = async () => {      
       const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
       const token = localStorage.getItem("jwt");
@@ -75,6 +80,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       const redirectUrl = `${ENV.WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
 
       // all routing from core includes 'redirectingFromCore=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
+      console.log(keycloak) 
       if (redirectingFromCore && !token) {
         keycloak.login({
           redirectUri: redirectUrl,
