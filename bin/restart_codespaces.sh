@@ -1,5 +1,6 @@
 #!/bin/bash
 
+nvm use
 make be &
 cd services/common && yarn watch &
 cd services/core-web && yarn serve &

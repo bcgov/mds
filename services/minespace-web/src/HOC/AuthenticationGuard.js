@@ -1,4 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
+/* eslint react/prop-types: 0 */
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -25,44 +26,44 @@ const propTypes = {
   getUserInfoFromToken: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
+  authenticateUser: PropTypes.func.isRequired,
 };
 
 export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   const authenticationGuard = (props) => {
     const [authComplete, setAuthComplete] = useState();
-    const { keycloak, initialized } = useKeycloak();
+    const { keycloak } = useKeycloak();
 
-    keycloak.onTokenExpired(() => {
-      // TODO: there is no check here that the user is active
-      keycloak.updateToken();
-    })
-
-    const authenticate = async () => {      
+    const authenticate = async () => {
       const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
       const token = localStorage.getItem("jwt");
       const { type } = queryString.parse(window.location.search);
 
-      if(keycloak.authenticated && !authenticatingFromCoreFlag && !type) {
+      if (keycloak.authenticated && !authenticatingFromCoreFlag && !type) {
         localStorage.setItem("authenticatingFromCoreFlag", true);
-        await props.authenticateUser(keycloak.token)
+        await props
+          .authenticateUser(keycloak.token)
           .then(() => {
             setAuthComplete(true);
           })
           .catch(() => {
             localStorage.removeItem("authenticatingFromCoreFlag");
-          })
+          });
       }
 
       // standard Authentication flow on initial load,
       // if token exists, authenticate user.
-      if (token && !props.isAuthenticated) {
-        await props
-          .getUserInfoFromToken(token)
-          .then(() => setAuthComplete(true));
+      if (token) {
+        if (!props.isAuthenticated) {
+          await props.getUserInfoFromToken(token).then(() => setAuthComplete(true));
+        } else {
+          setAuthComplete(true);
+        }
       } else {
-        setAuthComplete(true);
+        // if we get to this point: there was an error accessing the token
+        keycloak.clearToken();
       }
-    }
+    };
 
     useEffect(() => {
       authenticate();
@@ -70,22 +71,19 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
 
     useEffect(() => {
       // get guid from pathname - props.location is not available at this level thus cannot directly access props.match.params.id
-      const guid = window.location.pathname
-        .split("/mines/")
-        .pop()
-        .split("/")[0];
+      const guid = window.location.pathname.split("/mines/").pop().split("/")[0];
 
       const token = localStorage.getItem("jwt");
       const { redirectingFromCore } = queryString.parse(window.location.search);
       const redirectUrl = `${ENV.WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
 
+      // redirectingFromCore check is necessary so that user can stop on the info page before redirected
       // all routing from core includes 'redirectingFromCore=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
-      console.log(keycloak) 
       if (redirectingFromCore && !token) {
         keycloak.login({
           redirectUri: redirectUrl,
           idpHint: KEYCLOAK.bceid_idpHint,
-        })
+        });
       }
     }, []);
 
@@ -100,7 +98,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       return <UnauthenticatedNotice />;
     }
     return <Loading />;
-  }
+  };
 
   hoistNonReactStatics(authenticationGuard, WrappedComponent);
 
@@ -116,7 +114,6 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       },
       dispatch
     );
-
 
   return connect(mapStateToProps, mapDispatchToProps)(authenticationGuard);
 };

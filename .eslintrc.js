@@ -33,6 +33,7 @@ module.exports = {
     "import/extensions": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": "off",
+    "react/jsx-props-no-spreading": 0,
     camelcase: 0,
     "jsx-a11y/label-has-for": 0, // deprecated rule
     "import/no-cycle": 0,

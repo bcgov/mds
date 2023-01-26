@@ -26,6 +26,11 @@ export const getUserRoles = (token) => (dispatch) => {
 
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
+
+  const handleUnauthorizedUser = () => {
+    dispatch(error(reducerTypes.GET_USER_INFO));
+    dispatch(unAuthenticateUser());
+  };
   return axios
     .get(`${ENVIRONMENT.apiUrl + USER_INFO}`, {
       headers: {
@@ -33,15 +38,20 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
-      dispatch(getUserRoles(token));
-      dispatch(success(reducerTypes.GET_USER_INFO));
-      dispatch(authenticationActions.authenticateUser(response.data));
-      // core User has successfully logged in, remove flag from localStorage
-      localStorage.removeItem("authenticatingFromCoreFlag");
+      const tokenExpiryDate = new Date(response.data.exp * 1000);
+      console.log("tokenExpiryDate", tokenExpiryDate);
+      if (tokenExpiryDate < new Date()) {
+        handleUnauthorizedUser();
+      } else {
+        dispatch(getUserRoles(token));
+        dispatch(success(reducerTypes.GET_USER_INFO));
+        dispatch(authenticationActions.authenticateUser(response.data));
+        // core User has successfully logged in, remove flag from localStorage
+        localStorage.removeItem("authenticatingFromCoreFlag");
+      }
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GET_USER_INFO));
-      dispatch(unAuthenticateUser());
+      handleUnauthorizedUser();
       if (errorMessage) {
         notification.error({
           message: errorMessage,
