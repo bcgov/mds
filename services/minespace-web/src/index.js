@@ -1,12 +1,10 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
-import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import { ENVIRONMENT } from "@mds/common";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import App from "./App";
 import "antd/dist/antd.less";
@@ -14,49 +12,97 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import configureStore from "./store/configureStore";
 import keycloak, { keycloakInitConfig } from "./keycloak";
+import { useIdleTimer } from 'react-idle-timer';
 
 export const store = configureStore();
 
-let instance = {};
+const idleTimeout = 60_000; // 1 minute?
 
-export class Index extends Component {
-  constructor() {
-    super();
-    this.state = { environment: false };
-    fetchEnv().then(() => {
-      if (ENVIRONMENT.matomoUrl) {
-        instance = createInstance({
-          urlBase: ENVIRONMENT.matomoUrl,
-          enableLinkTracking: false,
-          siteId: 2,
-        });
+const Index = () => {
+  const [environment, setEnvironment] = useState(false);
+  const [idleState, setIdleState] = useState(false);
+  const [tokenExpiryTime, setTokenExpiryTime] = useState(null)
+
+  fetchEnv().then(() => {
+    setEnvironment(true);
+  });
+  
+  const onIdle = () => {
+    setIdleState(true);
+  };
+
+  const onActive = () => {
+    setIdleState(false);
+  };
+
+  const {getRemainingTime, activate} = useIdleTimer({
+    onIdle,
+    onActive,
+    onPrompt,
+    timeout: idleTimeout,
+    promptBeforeIdle,
+    throttle: 500,
+    crossTab: true,
+    syncTimers: 1000, // the value of this property is the duration of the throttle on the sync operation
+    events: [
+      'mousemove',
+      'keydown',
+      'wheel',
+      'DOMMouseScroll',
+      'mousewheel',
+      'mousedown',
+      'touchstart',
+      'touchmove',
+      'MSPointerDown',
+      'MSPointerMove',
+      'visibilitychange',
+      'focus'
+    ]
+  });
+
+  useEffect(() => {
+    if (tokenExpiryTime) {
+      const bufferSeconds = 10;
+      const timeToLive = tokenExpiryTime - Date.now() - (bufferSeconds * 1000);
+
+      const updateTimeout = setTimeout(() => {
+        if (!idleState) {
+          keycloak.updateToken(bufferSeconds)
+        }        
+      }, timeToLive)
+
+      return () => {
+        clearTimeout(updateTimeout)
       }
-      this.setState({ environment: true });
-    });
-  }
+    }
+    
+  }, [tokenExpiryTime])
 
-  render() {
-    console.log(keycloakInitConfig, "jjjj");
-    if (this.state.environment) {
-      return (
-        <ReactKeycloakProvider
+  return environment ? (
+    <ReactKeycloakProvider
           authClient={keycloak}
           initOptions={keycloakInitConfig}
           onTokens={(token) => {
-            console.log(token, "token");
-            localStorage.setItem("token", token);
+            // initially we receive empty values
+            console.log("on token!");
+            if (token && keycloak.authenticated) {
+              localStorage.setItem("id_token", token.idToken);
+              localStorage.setItem("refresh_token", token.refreshToken);
+              localStorage.setItem("token", token.token);
+              localStorage.setItem("refresh_token_expiry", keycloak.refreshTokenParsed.exp * 1000);
+              localStorage.setItem("access_token_expiry", keycloak.tokenParsed.exp * 1000);
+
+              setTokenExpiryTime(keycloak.tokenParsed.exp * 1000);
+            }   
           }}
+          onEvent={(event, err="") => {console.log('keycloak event!'); console.log(event, err); console.log(keycloak);}}
+          onTokenExpired={(val) => console.log("token expired", val)}
         >
           <Provider store={store}>
-            <MatomoProvider value={instance}>
-              <App />
-            </MatomoProvider>
+            <App />
           </Provider>
         </ReactKeycloakProvider>
-      );
-    }
-    return <div />;
-  }
-}
+  ) : (<div />);
+};
 
 render(<Index />, document.getElementById("root"));

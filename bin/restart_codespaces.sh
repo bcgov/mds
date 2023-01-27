@@ -1,6 +1,9 @@
 #!/bin/bash
+. ~/nvm/nvm.sh
 
-nvm use
+echo "+\n++ Assign Node Version ...\n+"
+nvm use 
+node -v
 make be &
 cd services/common && yarn watch &
 cd services/core-web && yarn serve &

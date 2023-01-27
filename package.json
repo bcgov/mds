@@ -45,5 +45,8 @@
         "jest --env=jsdom --runInBand --findRelatedTests"
       ]
     }
+  },
+  "dependencies": {
+    "react-idle-timer": "^5.5.2"
   }
 }

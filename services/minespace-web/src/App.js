@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -21,7 +21,6 @@ import { detectIE } from "@/utils/environmentUtils";
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
 import { MatomoLinkTracing } from "../common/utils/trackers";
-import { useKeycloak } from "@react-keycloak/web";
 
 export const store = configureStore();
 
@@ -41,7 +40,6 @@ const defaultProps = {
 const App = (props) => {
   const [isIE, setIsIE] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
-  const { keycloak, initialized } = useKeycloak();
 
   const { loadBulkStaticContent, isAuthenticated, staticContentLoadingIsComplete } = props;
 
@@ -58,21 +56,6 @@ const App = (props) => {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    if (keycloak && initialized) {
-      const refreshToken = keycloak.refreshTokenParsed;
-      console.log("keycloak", refreshToken);
-      keycloak.onTokenExpired = () => {
-        console.log("token expired");
-        //
-        keycloak.updateToken(600);
-      };
-    }
-    return () => {
-      if (keycloak) keycloak.onTokenExpired = () => {};
-    };
-  }, [initialized, keycloak]);
-
   const handleMobileWarningClose = () => {
     setIsMobile(false);
   };
@@ -87,7 +70,7 @@ const App = (props) => {
   const xxl = 18;
   return (
     <BrowserRouter basename={process.env.BASE_PATH}>
-      <Fragment>
+      <>
         <MatomoLinkTracing />
         <Layout>
           <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
@@ -109,7 +92,7 @@ const App = (props) => {
           </Layout>
           <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
         </Layout>
-      </Fragment>
+      </>
     </BrowserRouter>
   );
 };

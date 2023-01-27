@@ -13728,6 +13728,7 @@ __metadata:
     lint-prepush: 2.2.1
     lint-staged: 10.0.0
     prettier: 2.8.0
+    react-idle-timer: ^5.5.2
   languageName: unknown
   linkType: soft
 
@@ -17350,6 +17351,16 @@ __metadata:
     "@types/react":
       optional: true
   checksum: b91f16c50e39ac7a80861724eaee97540151eeddc1c719eadd9ee6d52251dd3f91fbdf7401efb826527747e78a7d84037870441c1588300fc241c9ec56e2ba31
+  languageName: node
+  linkType: hard
+
+"react-idle-timer@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "react-idle-timer@npm:5.5.2"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 1c8cd281e4e5b0910451a01dc95c6f056c37e6ea9374ceb301ff37bb3f0f7dfbb48c72ea5aeb0b10f771d58ab97d3abc56c9ea56f8c6e27573dfd8065c3fe445
   languageName: node
   linkType: hard
 
