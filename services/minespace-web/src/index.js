@@ -20,27 +20,14 @@ const idleTimeout = 60_000; // 1 minute?
 
 const Index = () => {
   const [environment, setEnvironment] = useState(false);
-  const [idleState, setIdleState] = useState(false);
   const [tokenExpiryTime, setTokenExpiryTime] = useState(null)
 
   fetchEnv().then(() => {
     setEnvironment(true);
   });
-  
-  const onIdle = () => {
-    setIdleState(true);
-  };
-
-  const onActive = () => {
-    setIdleState(false);
-  };
 
   const {getRemainingTime, activate} = useIdleTimer({
-    onIdle,
-    onActive,
-    onPrompt,
     timeout: idleTimeout,
-    promptBeforeIdle,
     throttle: 500,
     crossTab: true,
     syncTimers: 1000, // the value of this property is the duration of the throttle on the sync operation
@@ -64,9 +51,13 @@ const Index = () => {
     if (tokenExpiryTime) {
       const bufferSeconds = 10;
       const timeToLive = tokenExpiryTime - Date.now() - (bufferSeconds * 1000);
+      const isActive = getRemainingTime() > 0;
+
+      console.log('timeToLive', timeToLive)
 
       const updateTimeout = setTimeout(() => {
-        if (!idleState) {
+        if (isActive) {
+          console.log('is active! Update token')
           keycloak.updateToken(bufferSeconds)
         }        
       }, timeToLive)
@@ -84,7 +75,6 @@ const Index = () => {
           initOptions={keycloakInitConfig}
           onTokens={(token) => {
             // initially we receive empty values
-            console.log("on token!");
             if (token && keycloak.authenticated) {
               localStorage.setItem("id_token", token.idToken);
               localStorage.setItem("refresh_token", token.refreshToken);
