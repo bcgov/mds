@@ -1,14 +1,13 @@
 import axios from "axios";
 import { notification } from "antd";
-import jwt from "jsonwebtoken";
 import { ENVIRONMENT, USER_INFO } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
+import keycloak from "@/keycloak";
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
-  localStorage.removeItem("jwt");
   if (toastMessage) {
     notification.success({
       message: toastMessage,
@@ -17,13 +16,13 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   }
 };
 
-export const getUserRoles = (token) => (dispatch) => {
-  const decodedToken = jwt.decode(token);
-  const roles = decodedToken.client_roles || [];
+export const getUserRoles = () => (dispatch) => {
+  const roles = keycloak.tokenParsed.client_roles || [];
   const isProponent = roles.includes("minespace-proponent");
   dispatch(authenticationActions.storeIsProponent(isProponent));
 };
 
+//TODO: as far as I can tell, 'errorMessage' is only supplied in tests.
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
 
@@ -38,17 +37,11 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
-      const tokenExpiryDate = new Date(response.data.exp * 1000);
-      console.log("tokenExpiryDate", tokenExpiryDate);
-      if (tokenExpiryDate < new Date()) {
-        handleUnauthorizedUser();
-      } else {
-        dispatch(getUserRoles(token));
-        dispatch(success(reducerTypes.GET_USER_INFO));
-        dispatch(authenticationActions.authenticateUser(response.data));
-        // core User has successfully logged in, remove flag from localStorage
-        localStorage.removeItem("authenticatingFromCoreFlag");
-      }
+      dispatch(getUserRoles(token));
+      dispatch(success(reducerTypes.GET_USER_INFO));
+      dispatch(authenticationActions.authenticateUser(response.data));
+      // core User has successfully logged in, remove flag from localStorage
+      localStorage.removeItem("authenticatingFromCoreFlag");
     })
     .catch((err) => {
       handleUnauthorizedUser();
@@ -65,6 +58,5 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
 
 export const authenticateUser = (accessToken) => async (dispatch) => {
   dispatch(success(reducerTypes.AUTHENTICATE_USER));
-  localStorage.setItem("jwt", accessToken);
   dispatch(getUserInfoFromToken(accessToken));
 };

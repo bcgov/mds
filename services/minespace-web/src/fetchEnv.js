@@ -33,7 +33,5 @@ export default function fetchEnv() {
         env.vcauthn_pres_req_conf_id,
         env.siteminder_url
       );
-
-      console.log("MS", ENVIRONMENT, KEYCLOAK);
     });
 }

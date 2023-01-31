@@ -36,7 +36,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
 
     const authenticate = async () => {
       const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
-      const token = localStorage.getItem("jwt");
+      const token = keycloak.token ?? null;
       const { type } = queryString.parse(window.location.search);
 
       if (keycloak.authenticated && !authenticatingFromCoreFlag && !type) {
@@ -73,7 +73,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       // get guid from pathname - props.location is not available at this level thus cannot directly access props.match.params.id
       const guid = window.location.pathname.split("/mines/").pop().split("/")[0];
 
-      const token = localStorage.getItem("jwt");
+      const token = keycloak.token ?? null;
       const { redirectingFromCore } = queryString.parse(window.location.search);
       const redirectUrl = `${ENV.WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
 
