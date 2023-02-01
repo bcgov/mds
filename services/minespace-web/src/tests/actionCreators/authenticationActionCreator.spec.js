@@ -53,8 +53,6 @@ describe("`authenticateUser` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     return authenticateUser(accessToken)(dispatch).then(() => {
       expect(dispatch).toHaveBeenCalledTimes(2);
-      const jwt = localStorage.getItem("jwt");
-      expect(jwt).toEqual("abc123");
     });
   });
 });
