@@ -22,7 +22,7 @@ export const getUserRoles = () => (dispatch) => {
   dispatch(authenticationActions.storeIsProponent(isProponent));
 };
 
-//TODO: as far as I can tell, 'errorMessage' is only supplied in tests.
+// TODO: as far as I can tell, 'errorMessage' is only supplied in tests.
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
 
@@ -41,7 +41,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
       // core User has successfully logged in, remove flag from localStorage
-      localStorage.removeItem("authenticatingFromCoreFlag");
+      localStorage.removeItem("authenticationInProgressFlag");
     })
     .catch((err) => {
       handleUnauthorizedUser();
