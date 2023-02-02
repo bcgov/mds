@@ -1,10 +1,8 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
-import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 
 /**
  * @class Incidents Table
@@ -16,14 +14,14 @@ const propTypes = {
   handleEditMineIncident: PropTypes.func.isRequired,
   handleDeleteMineIncident: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
-  handlePageChange: PropTypes.func.isRequired,
   handleIncidentSearch: PropTypes.func.isRequired,
+  handleSortPaginate: PropTypes.func.isRequired,
+  followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
+  incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
   pageData: CustomPropTypes.incidentPageData,
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
 };
 
@@ -35,8 +33,6 @@ const defaultProps = {
     total: 0,
     total_pages: 1,
   },
-  sortField: null,
-  sortDir: null,
 };
 
 export const IncidentsTable = (props) => {
@@ -55,17 +51,9 @@ export const IncidentsTable = (props) => {
         handleIncidentSearch={props.handleIncidentSearch}
         isApplication
         isDashboardView
-        sortField={props.sortField}
-        sortDir={props.sortDir}
+        pageData={props.pageData}
+        handleUpdate={props.handleSortPaginate}
       />
-      <div className="center">
-        <ResponsivePagination
-          onPageChange={props.handlePageChange}
-          currentPage={Number(props.pageData.current_page)}
-          pageTotal={props.pageData.total}
-          itemsPerPage={Number(props.pageData.items_per_page)}
-        />
-      </div>
     </div>
   );
 };

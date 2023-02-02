@@ -9,40 +9,38 @@ import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createMineIncident = (
-  mine_guid,
-  payload,
-  message = "Successfully created incident."
-) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
-    .then((response) => {
-      if (message) {
-        notification.success({
-          message,
-          duration: 10,
-        });
-      }
-      dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.CREATE_MINE_INCIDENT));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const createMineIncident =
+  (mine_guid, payload, message = "Successfully created incident.") =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
+      .then((response) => {
+        if (message) {
+          notification.success({
+            message,
+            duration: 10,
+          });
+        }
+        dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.CREATE_MINE_INCIDENT));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
-export const fetchMineIncidents = (mine_guid) => (dispatch) => {
+export const fetchMineIncidents = (params) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.INCIDENTS(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
-      dispatch(incidentActions.storeMineIncidents(response.data));
+      dispatch(incidentActions.storeIncidents(response.data));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENTS)))
@@ -66,61 +64,58 @@ export const fetchMineIncident = (mine_guid, mine_incident_guid) => (dispatch) =
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineIncident = (
-  mineGuid,
-  mineIncidentGuid,
-  payload,
-  message = "Successfully updated incident."
-) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      if (message) {
+export const updateMineIncident =
+  (mineGuid, mineIncidentGuid, payload, message = "Successfully updated incident.") =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .put(
+        `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
+        payload,
+        createRequestHeader()
+      )
+      .then((response) => {
+        if (message) {
+          notification.success({
+            message,
+            duration: 10,
+          });
+        }
+        dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
+
+export const removeDocumentFromMineIncident =
+  (mineGuid, mineIncidentGuid, mineDocumentGuid) => (dispatch) => {
+    dispatch(showLoading());
+    dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+    return CustomAxios()
+      .delete(
+        ENVIRONMENT.apiUrl +
+          API.MINE_INCIDENT_DOCUMENT(mineGuid, mineIncidentGuid, mineDocumentGuid),
+        createRequestHeader()
+      )
+      .then((response) => {
         notification.success({
-          message,
+          message: "Successfully deleted mine incident document.",
           duration: 10,
         });
-      }
-      dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
-
-export const removeDocumentFromMineIncident = (mineGuid, mineIncidentGuid, mineDocumentGuid) => (
-  dispatch
-) => {
-  dispatch(showLoading());
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
-  return CustomAxios()
-    .delete(
-      ENVIRONMENT.apiUrl + API.MINE_INCIDENT_DOCUMENT(mineGuid, mineIncidentGuid, mineDocumentGuid),
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully deleted mine incident document.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading()));
-};
+        dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading()));
+  };
 
 export const fetchIncidents = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.GET_INCIDENTS));

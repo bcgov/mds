@@ -81,6 +81,8 @@ class IncidentsResource(Resource, UserMixin):
             "mine_name": 'Mine',
             'first_name': 'Party',
             'party_name': 'Party',
+            'determination_type_code': 'MineIncident',
+            'status_code': 'MineIncident'
         }
 
         sort_field = {
@@ -90,6 +92,8 @@ class IncidentsResource(Resource, UserMixin):
             "incident_status": 'status_code',
             "mine_name": 'mine_name',
             "responsible_inspector_party": "responsible_inspector_party",
+            "determination_type_code": "determination_type_code",
+            "status_code": "status_code"
         }
 
         query = MineIncident.query.filter_by(deleted_ind=False).join(Mine)
