@@ -62,13 +62,19 @@ describe("`createMineIncident` action creator", () => {
 });
 
 describe("`fetchMineIncidents` action creator", () => {
-  const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mineGuid)}`;
+  const params = {
+    page: 1,
+    per_page: 10,
+    sort_dir: "desc",
+    sort_field: "mine_incident_report_no",
+    mine_guid: "12345-6789",
+  };
+  const url = `${ENVIRONMENT.apiUrl}${API.INCIDENTS(params)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineIncidents(mineGuid)(dispatch).then(() => {
+    return fetchMineIncidents(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -77,7 +83,7 @@ describe("`fetchMineIncidents` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchMineIncidents(mineGuid)(dispatch).then(() => {
+    return fetchMineIncidents(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
