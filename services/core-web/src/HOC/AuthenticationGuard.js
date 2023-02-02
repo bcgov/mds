@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Keycloak from "keycloak-js";
+import { useKeycloak } from "@react-keycloak/web";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import {
   isAuthenticated,
@@ -12,15 +12,11 @@ import {
 import {
   authenticateUser,
   storeKeycloakData,
-  storeUserAccessData
+  storeUserAccessData,
 } from "@common/actions/authenticationActions";
-import { KEYCLOAK, USER_ROLES } from "@mds/common";
-import {
-  getUserInfo,
-} from "@common/actionCreators/mineActionCreator";
-import Loading from "@/components/common/Loading";
+import { USER_ROLES } from "@mds/common";
+import { getUserInfo } from "@common/actionCreators/mineActionCreator";
 import NullScreen from "@/components/common/NullScreen";
-
 
 const propTypes = {
   authenticateUser: PropTypes.func.isRequired,
@@ -35,7 +31,6 @@ const propTypes = {
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
-
 export const AuthenticationGuard = (WrappedComponent) => {
   /**
    * Initializes the KeyCloak client and enables
@@ -46,51 +41,35 @@ export const AuthenticationGuard = (WrappedComponent) => {
    * and changing state.
    *
    */
+  const authenticationGuard = (props) => {
+    console.log("authentication guard constructor");
+    const { keycloak, initialized } = useKeycloak();
 
-  class authenticationGuard extends Component {
-    componentDidMount() {
-      this.keycloakInit();
-    }
-
-    async keycloakInit() {
-      // Initialize client
-      const keycloak = new Keycloak(KEYCLOAK);
-
-      await keycloak
-        .init({
-          checkLoginIframe: false,
-          onLoad: "login-required",
-          pkceMethod: KEYCLOAK.pkceMethod,
-          idpHint: KEYCLOAK.idir_idpHint,
-        })
-        .then(async () => {
-          const userInfo = await this.props.getUserInfo(keycloak.token)
-          this.props.authenticateUser(userInfo);
-
-          localStorage.setItem("jwt", keycloak.token);
-          this.props.storeUserAccessData(userInfo?.client_roles || []);
-          this.props.storeKeycloakData(keycloak);
-        });
-    }
-
-    renderCorrectView = () => {
-      if (
-        !this.props.userAccessData.includes(USER_ROLES.role_view) ||
-        this.props.userAccessData.includes(USER_ROLES.role_minespace_proponent)
-      ) {
-        return <NullScreen type="unauthorized" />;
+    const checkLogin = () => {
+      if (!keycloak.authenticated) {
+        keycloak.login();
       }
-      return <WrappedComponent {...this.props} />;
+      if (initialized && keycloak.authenticated && !props.isAuthenticated) {
+        props.authenticateUser(keycloak.tokenParsed);
+        const clientRoles = keycloak.tokenParsed.client_roles || []; // might want idir_username instead of preferred_username
+        props.storeUserAccessData(clientRoles);
+        props.storeKeycloakData(keycloak);
+      }
     };
 
-    render() {
-      if (this.props.keycloak) {
-        return this.props.isAuthenticated ? this.renderCorrectView() : <Loading />;
-      }
-      return <Loading />;
-    }
-  }
+    checkLogin();
 
+    useEffect(() => {
+      console.log("auth guard use effect called!");
+      checkLogin();
+    }, [initialized, keycloak.authenticated]);
+
+    const isAuthorized =
+      props.userAccessData.includes(USER_ROLES.role_view) &&
+      !props.userAccessData.includes(USER_ROLES.role_minespace_proponent);
+
+    return isAuthorized ? <WrappedComponent {...props} /> : <NullScreen type="unauthorized" />;
+  };
   authenticationGuard.propTypes = propTypes;
 
   hoistNonReactStatics(authenticationGuard, WrappedComponent);

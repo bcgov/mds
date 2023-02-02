@@ -12,6 +12,7 @@
     "@datapunt/matomo-tracker-react": "0.1.5",
     "@hot-loader/react-dom": "16.13.0",
     "@mds/common": "0.1.0",
+    "@react-keycloak/web": "^3.4.0",
     "@syncfusion/ej2-base": "19.1.57",
     "@syncfusion/ej2-buttons": "19.1.54",
     "@syncfusion/ej2-data": "19.1.56",

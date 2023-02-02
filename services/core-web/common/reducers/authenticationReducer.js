@@ -35,7 +35,6 @@ export const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         userInfo: {},
-        keycloak: {},
       };
     default:
       return state;

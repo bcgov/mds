@@ -1,45 +1,47 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
+import keycloak, { keycloakInitConfig } from "./keycloak";
+import Loading from "@/components/common/Loading";
 
-import { ENVIRONMENT } from "@mds/common";
-import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 
-let instance = {};
+const Index = () => {
+  const [environment, setEnvironment] = useState(false);
 
-class Index extends Component {
-  constructor() {
-    super();
-    this.state = { environment: false };
-    fetchEnv().then(() => {
-      instance = createInstance({
-        urlBase: ENVIRONMENT.matomoUrl,
-        enableLinkTracking: false,
-        siteId: 1,
-      });
-      this.setState({ environment: true });
-    });
-  }
+  fetchEnv().then(() => {
+    setEnvironment(true);
+  });
 
-  render() {
-    if (this.state.environment) {
-      return (
-        <Provider store={store}>
-          <MatomoProvider value={instance}>
-            <App />
-          </MatomoProvider>
-        </Provider>
-      );
-    }
-    return <div />;
-  }
-}
+  return environment ? (
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={keycloakInitConfig}
+      onEvent={(event, err = "") => {
+        console.log(event, err);
+        console.log(keycloak);
+      }}
+      onTokenExpired={keycloak.updateToken}
+      onTokens={(token) => console.log("yay tokens", token)}
+      LoadingComponent={<Loading />}
+      onReady={(authenticated) => {
+        console.log("we are ready", authenticated);
+      }}
+    >
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ReactKeycloakProvider>
+  ) : (
+    <div />
+  );
+};
 
 render(<Index />, document.getElementById("root"));
