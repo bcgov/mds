@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineIncidentTable } from "@/components/mine/Incidents/MineIncidentTable";
+import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
