@@ -89,7 +89,8 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
     "preferred_username": "test-proponent",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
-    "client_roles": ["mds_minespace_proponents"]
+    "client_roles": ["mds_minespace_proponents"],
+    "bceid_username": "test-proponent"
 }
 
 NROS_VFCBC_AUTH_CLAIMS = {

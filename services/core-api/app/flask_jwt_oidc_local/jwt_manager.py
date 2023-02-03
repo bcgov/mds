@@ -166,6 +166,12 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
             return True
         return False
 
+    def get_bceid_user_name(self):
+        """Get the bceid_username from the token."""
+        token = self.get_token_auth_header()
+        unverified_claims = jwt.get_unverified_claims(token)
+        return unverified_claims['bceid_username']
+
     def has_one_of_roles(self, roles):
         """Check that at least one of the roles are in the token using the registered callback.
 

@@ -90,7 +90,7 @@ from app.api.projects.project_decision_package.resources.project_decision_packag
      (MineVarianceResource, "put", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
      (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
-     (PartyResource, "put", [EDIT_PARTY]), (PartyResource, "delete", [MINE_ADMIN]),
+     (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "delete", [MINE_ADMIN]),
      (PermitResource, "get", [VIEW_ALL]), (PermitListResource, "post", [EDIT_PERMIT]),
      (PermitResource, "put", [EDIT_SECURITIES]),
      (PermitAmendmentListResource, "post", [EDIT_PERMIT]),

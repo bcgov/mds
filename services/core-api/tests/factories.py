@@ -554,6 +554,7 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('last_name'),
             email=factory.LazyAttribute(lambda o: f'{o.first_name}.{o.party_name}@example.com'),
             party_type_code='PER',
+            create_user='test-proponent'
         )
 
         company = factory.Trait(

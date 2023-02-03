@@ -1,11 +1,12 @@
 import json, uuid, pytest
 
-from tests.factories import MineFactory, PartyFactory, MinePartyAppointmentFactory
+from tests.factories import MineFactory, PartyFactory, MinePartyAppointmentFactory, MineTailingsStorageFacilityFactory
 
 
 @pytest.fixture(scope="function")
 def setup_info(db_session):
     mine = MineFactory()
+    mine_b = MineFactory()
     eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
     mine_manager = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='MMG')
     qp = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='TQP')
@@ -17,7 +18,8 @@ def setup_info(db_session):
         mine_manager_appt_guid=str(mine_manager.mine_party_appt_guid),
         mine_manager_guid=str(mine_manager.party.party_guid),
         qp_guid=str(qp.party.party_guid),
-        tsf_guid=str(mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid))
+        tsf_guid=str(mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid),
+        unrelated_tsf_guid=str(mine_b.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid),)
 
 
 # GET
@@ -222,7 +224,7 @@ def test_post_mine_party_appt_EOR_as_ms_user_not_associated_with_mine_fail(test_
         'mine_guid': setup_info['mine_guid'],
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'EOR',
-        'related_guid': setup_info['tsf_guid'],
+        'related_guid': setup_info['unrelated_tsf_guid'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
@@ -236,7 +238,7 @@ def test_post_mine_party_appt_TQP_as_ms_user_not_associated_with_mine_fail(test_
         'mine_guid': setup_info['mine_guid'],
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'TQP',
-        'related_guid': setup_info['tsf_guid'],
+        'related_guid': setup_info['unrelated_tsf_guid'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])

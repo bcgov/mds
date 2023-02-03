@@ -1,23 +1,23 @@
-from flask import request, current_app
-from flask_restplus import Resource
-from sqlalchemy import or_, exc as alch_exceptions
-from sqlalchemy_filters import apply_pagination
-from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
 
-from app.extensions import api, jwt, cache
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
-from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import MINE_ADMIN
-from app.api.constants import GET_ALL_INSPECTORS_KEY, GET_ALL_PROJECT_LEADS_KEY
+from flask import current_app
+from flask_restplus import Resource
+from sqlalchemy import exc as alch_exceptions
+from werkzeug.exceptions import NotFound, BadRequest
 
-from app.api.parties.party.models.party import Party
+from app.api.constants import GET_ALL_INSPECTORS_KEY, GET_ALL_PROJECT_LEADS_KEY
 from app.api.parties.party.models.address import Address
-from app.api.parties.response_models import PARTY
+from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
+from app.api.parties.response_models import PARTY
+from app.api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.utils.access_decorators import MINE_ADMIN
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, \
+    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username
+from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api, jwt, cache
 
 
 class PartyResource(Resource, UserMixin):
@@ -205,9 +205,23 @@ class PartyResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(
         description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
-    @requires_role_edit_party
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
+        if is_minespace_user():
+            user = bceid_username()
+            minespace_user = MinespaceUser.find_by_email(user + "@bceid")
+            if not minespace_user:
+                raise BadRequest('User not found.')
+
+            party_appointments = MinePartyAppointment.find_by_party_guid(party_guid)
+
+            if not party_appointments:
+                raise BadRequest('User does not have access to this party.')
+            if not next((appointment for appointment in party_appointments if
+                         appointment.mine.mine_guid in minespace_user.mines), None):
+                raise BadRequest('User does not have access to this party.')
+
         data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
         if not existing_party:
@@ -216,7 +230,7 @@ class PartyResource(Resource, UserMixin):
         current_app.logger.info(f'Updating {existing_party} with {data}')
         for key, value in data.items():
             if key in ['party_type_code', 'signature']:
-                continue     # non-editable fields from put
+                continue  # non-editable fields from put
             setattr(existing_party, key, value)
 
         Party.validate_phone_no(existing_party.phone_no)
