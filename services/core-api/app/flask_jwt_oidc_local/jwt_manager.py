@@ -166,7 +166,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
             return True
         return False
 
-    def get_user_name(self):
+    def get_bceid_user_name(self):
         """Get the bceid_username from the token."""
         token = self.get_token_auth_header()
         unverified_claims = jwt.get_unverified_claims(token)

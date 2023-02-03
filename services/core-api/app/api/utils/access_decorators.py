@@ -44,8 +44,8 @@ def can_edit_mines():
     return getJwtManager().validate_roles([MINE_EDIT])
 
 
-def username():
-    return getJwtManager().get_user_name()
+def bceid_username():
+    return getJwtManager().get_bceid_user_name()
 
 
 def requires_role_edit_emli_contacts(func):

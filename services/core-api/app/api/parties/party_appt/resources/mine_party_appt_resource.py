@@ -7,7 +7,7 @@ from sqlalchemy import and_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, can_edit_mines, username
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, can_edit_mines, bceid_username
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -149,7 +149,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 if not tsf or mine.mine_guid != tsf.mine_guid:
                     raise Forbidden("TSF is not associated with the given mine")
 
-                preferred_username = username()
+                preferred_username = bceid_username()
                 if preferred_username not in party.create_user:
                     # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine
                     if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):

@@ -14,7 +14,7 @@ from app.api.parties.response_models import PARTY
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINE_ADMIN
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, \
-    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, username
+    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api, jwt, cache
@@ -209,7 +209,7 @@ class PartyResource(Resource, UserMixin):
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         if is_minespace_user():
-            user = username()
+            user = bceid_username()
             minespace_user = MinespaceUser.find_by_email(user + "@bceid")
             if not minespace_user:
                 raise BadRequest('User not found.')
