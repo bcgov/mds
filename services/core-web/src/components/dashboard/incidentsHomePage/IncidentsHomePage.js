@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
@@ -83,80 +83,70 @@ const defaultParams = {
   responsible_inspector_party: [],
 };
 
-export class IncidentsHomePage extends Component {
-  state = {
-    incidentsLoaded: false,
-    params: defaultParams,
+const IncidentsHomePage = (props) => {
+  const [incidentsLoaded, setIncidentsLoaded] = useState(false);
+  const [params, setParams] = useState({});
+
+  const {
+    history,
+    location,
+    followupActionsOptions,
+    incidentDeterminationOptionsActiveOnly,
+    incidentStatusCodeOptionsActiveOnly,
+    incidentCategoryCodeOptions,
+    doSubparagraphOptions,
+    inspectors,
+    mineRegionOptions,
+    incidentStatusCodeOptions,
+    incidentDeterminationOptions,
+    followupActions,
+    incidents,
+    incidentPageData,
+  } = props;
+
+  useEffect(() => {
+    const searchParams = queryString.parse(props.location.search);
+    setParams(searchParams);
+  }, []);
+
+  const renderDataFromURL = async (newParams) => {
+    const parsedParams = queryString.parse(newParams);
+    await props.fetchIncidents(parsedParams);
+    setIncidentsLoaded(true);
   };
 
-  componentDidMount() {
-    const params = queryString.parse(this.props.location.search);
-    this.setState(
-      (prevState) => ({
-        params: {
-          ...prevState.params,
-          ...params,
-        },
-      }),
-      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
-    );
-  }
+  useEffect(() => {
+    setIncidentsLoaded(false);
+    renderDataFromURL(location.search);
+  }, [location]);
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.setState({ incidentsLoaded: false }, () =>
-        this.renderDataFromURL(nextProps.location.search)
-      );
+  useEffect(() => {
+    if (params) {
+      history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(params));
     }
-  }
+  }, [params]);
 
-  renderDataFromURL = (params) => {
-    const parsedParams = queryString.parse(params);
-    this.props.fetchIncidents(parsedParams).then(() => {
-      this.setState({ incidentsLoaded: true });
+  const clearParams = () => {
+    setParams({
+      ...defaultParams,
+      per_page: params.per_page || defaultParams.per_page,
+      sort_field: params?.sort_field,
+      sort_dir: params?.sort_dir,
     });
   };
 
-  clearParams = () => {
-    this.setState(
-      (prevState) => ({
-        params: {
-          ...defaultParams,
-          per_page: prevState.params.per_page || defaultParams.per_page,
-          sort_field: prevState.params.sort_field,
-          sort_dir: prevState.params.sort_dir,
-        },
-      }),
-      () => {
-        this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params));
-      }
-    );
+  const handleIncidentSearch = (newParams) => {
+    setParams({
+      ...newParams,
+      page: defaultParams.page,
+      responsible_inspector_party: newParams.responsible_inspector_party ?? [],
+    });
   };
 
-  handleIncidentSearch = (params) => {
-    this.setState(
-      {
-        params: {
-          ...params,
-          page: defaultParams.page,
-          responsible_inspector_party: params.responsible_inspector_party ?? [],
-        },
-      },
-      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
-    );
-  };
-
-  onPageChange = (page, per_page) => {
-    this.setState(
-      (prevState) => ({ params: { ...prevState.params, page, per_page } }),
-      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
-    );
-  };
-
-  openViewMineIncidentModal = (event, incident) => {
+  const openViewMineIncidentModal = (event, incident) => {
     event.preventDefault();
     const title = `${incident.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
-    this.props.openModal({
+    props.openModal({
       props: {
         title,
         incident,
@@ -167,26 +157,24 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  handleEditMineIncident = (values) => {
-    this.props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values).then(() => {
-      this.props.closeModal();
-    });
+  const handleEditMineIncident = async (values) => {
+    await props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values);
+    props.closeModal();
   };
 
-  handleDeleteMineIncident = (values) => {
-    this.props.deleteMineIncident(values.mine_guid, values.mine_incident_guid).then(() => {
-      this.setState({ incidentsLoaded: false });
-      this.props.fetchIncidents(this.state.params).then(() => {
-        this.setState({ incidentsLoaded: true });
-      });
-    });
+  const handleDeleteMineIncident = async (values) => {
+    await props.deleteMineIncident(values.mine_guid, values.mine_incident_guid);
+    setIncidentsLoaded(false);
+
+    await props.fetchIncidents(params);
+    setIncidentsLoaded(true);
   };
 
-  handleCancelMineIncident = () => {
-    this.props.destroy(FORM.MINE_INCIDENT);
+  const handleCancelMineIncident = () => {
+    props.destroy(FORM.MINE_INCIDENT);
   };
 
-  parseIncidentIntoFormData = (existingIncident) => ({
+  const parseIncidentIntoFormData = (existingIncident) => ({
     ...existingIncident,
     reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
     reported_time: moment(existingIncident.reported_timestamp),
@@ -194,7 +182,7 @@ export class IncidentsHomePage extends Component {
     incident_time: moment(existingIncident.incident_timestamp),
   });
 
-  openMineIncidentModal = (
+  const openMineIncidentModal = (
     event,
     onSubmit,
     newIncident,
@@ -204,15 +192,14 @@ export class IncidentsHomePage extends Component {
     const title = newIncident
       ? ModalContent.ADD_INCIDENT(existingIncident.mine_name)
       : ModalContent.EDIT_INCIDENT(existingIncident.mine_name);
-    this.props.openModal({
+    props.openModal({
       props: {
         newIncident,
         initialValues: {
           status_code: "WNS",
-          ...this.parseIncidentIntoFormData(existingIncident),
-          dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
-            String
-          ),
+          ...parseIncidentIntoFormData(existingIncident),
+          dangerous_occurrence_subparagraph_ids:
+            existingIncident.dangerous_occurrence_subparagraph_ids.map(String),
           categories: existingIncident.categories
             ? existingIncident.categories
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
@@ -220,15 +207,15 @@ export class IncidentsHomePage extends Component {
             : [],
         },
         onSubmit,
-        afterClose: this.handleCancelMineIncident,
+        afterClose: handleCancelMineIncident,
         title,
         mineGuid: existingIncident.mine_guid,
-        followupActionOptions: this.props.followupActionsOptions,
-        incidentDeterminationOptions: this.props.incidentDeterminationOptionsActiveOnly,
-        incidentStatusCodeOptions: this.props.incidentStatusCodeOptionsActiveOnly,
-        incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
-        doSubparagraphOptions: this.props.doSubparagraphOptions,
-        inspectors: this.props.inspectors,
+        followupActionOptions: followupActionsOptions,
+        incidentDeterminationOptions: incidentDeterminationOptionsActiveOnly,
+        incidentStatusCodeOptions: incidentStatusCodeOptionsActiveOnly,
+        incidentCategoryCodeOptions,
+        doSubparagraphOptions,
+        inspectors,
         clearOnSubmit: true,
       },
       width: "50vw",
@@ -236,66 +223,63 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  handleFilterChange = () => {
-    this.setState({ incidentsLoaded: false });
-    const params = {
-      ...this.state.params,
+  const handleFilterChange = async () => {
+    setIncidentsLoaded(false);
+    const searchParams = {
+      ...params,
       page: 1,
     };
-    return this.props.fetchIncidents(params).then(() => {
-      this.setState({
-        incidentsLoaded: true,
-        params,
-      });
+    setParams(searchParams);
+    setIncidentsLoaded(true);
+  };
+
+  const handleSortPaginate = (newParams) => {
+    setParams({
+      ...params,
+      ...newParams,
     });
   };
 
-  render() {
-    return (
-      <div className="landing-page">
-        <PageTracker title="Incidents Page" />
-        <div className="landing-page__header">
-          <div>
-            <h1>Browse Incidents</h1>
-          </div>
+  return (
+    <div className="landing-page">
+      <PageTracker title="Incidents Page" />
+      <div className="landing-page__header">
+        <div>
+          <h1>Browse Incidents</h1>
         </div>
-        <div className="landing-page__content">
-          <div className="page__content">
-            <IncidentsSearch
-              handleReset={this.clearParams}
-              handleNameFieldReset={this.handleNameFieldReset}
-              initialValues={this.state.params}
-              handleIncidentSearch={this.handleIncidentSearch}
-              mineRegionOptions={this.props.mineRegionOptions}
-              incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
-              incidentDeterminationOptions={this.props.incidentDeterminationOptions}
-              doSubparagraphOptions={this.props.doSubparagraphOptions}
+      </div>
+      <div className="landing-page__content">
+        <div className="page__content">
+          <IncidentsSearch
+            handleReset={clearParams}
+            initialValues={params}
+            handleIncidentSearch={handleIncidentSearch}
+            mineRegionOptions={mineRegionOptions}
+            incidentStatusCodeOptions={incidentStatusCodeOptions}
+            incidentDeterminationOptions={incidentDeterminationOptions}
+            doSubparagraphOptions={doSubparagraphOptions}
+          />
+          <div>
+            <IncidentsTable
+              isLoaded={incidentsLoaded}
+              incidents={incidents}
+              handleFilterChange={handleFilterChange}
+              pageData={incidentPageData}
+              handleIncidentSearch={handleIncidentSearch}
+              params={params}
+              followupActions={followupActions}
+              openMineIncidentModal={openMineIncidentModal}
+              handleEditMineIncident={handleEditMineIncident}
+              openViewMineIncidentModal={openViewMineIncidentModal}
+              handleDeleteMineIncident={handleDeleteMineIncident}
+              handleSortPaginate={handleSortPaginate}
             />
-            <div>
-              <IncidentsTable
-                isLoaded={this.state.incidentsLoaded}
-                incidents={this.props.incidents}
-                isApplication={this.state.isApplication}
-                handleFilterChange={this.handleFilterChange}
-                pageData={this.props.incidentPageData}
-                handlePageChange={this.onPageChange}
-                handleIncidentSearch={this.handleIncidentSearch}
-                params={this.state.params}
-                sortField={this.state.params.sort_field}
-                sortDir={this.state.params.sort_dir}
-                followupActions={this.props.followupActions}
-                openMineIncidentModal={this.openMineIncidentModal}
-                handleEditMineIncident={this.handleEditMineIncident}
-                openViewMineIncidentModal={this.openViewMineIncidentModal}
-                handleDeleteMineIncident={this.handleDeleteMineIncident}
-              />
-            </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 IncidentsHomePage.propTypes = propTypes;
 IncidentsHomePage.defaultProps = defaultProps;

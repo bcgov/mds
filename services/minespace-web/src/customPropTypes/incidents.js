@@ -16,4 +16,12 @@ export const incident = shape({
   mms_inspector_initials: PropTypes.string,
 });
 
+export const incidentPageData = shape({
+  records: PropTypes.arrayOf(incident),
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
+});
+
 export default incident;

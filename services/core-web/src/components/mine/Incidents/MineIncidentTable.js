@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -15,6 +15,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, dateSorter, optionsFilterLabelAndValue } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
+import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -35,51 +36,24 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  handleIncidentSearch: PropTypes.func,
-  params: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
-  ).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
   incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string),
   isDashboardView: PropTypes.bool,
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
-  isPaginated: PropTypes.bool,
+  handleUpdate: PropTypes.func.isRequired,
+  pageData: CustomPropTypes.incidentPageData.isRequired,
 };
 
 const defaultProps = {
-  handleIncidentSearch: () => {},
   incidentDeterminationHash: {},
   complianceCodesHash: {},
   incidentStatusCodeHash: {},
   incidentCategoryCodeHash: {},
   isDashboardView: false,
-  sortField: undefined,
-  sortDir: undefined,
-  isPaginated: false,
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
-
-const applySortIndicator = (_columns, field, dir) =>
-  _columns.map((column) => ({
-    ...column,
-    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
-  }));
-
-const handleTableChange = (updateIncidentList, tableFilters) => (pagination, filters, sorter) => {
-  const params = {
-    results: pagination.pageSize,
-    page: pagination.current,
-    ...tableFilters,
-    sort_field: sorter.order ? sorter.field : undefined,
-    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
-    ...filters,
-  };
-  updateIncidentList(params);
-};
 
 const renderDownloadLinks = (files, mine_incident_document_type_code) => {
   const links = files
@@ -95,14 +69,26 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
   return links && links.length > 0 ? links : false;
 };
 
-export class MineIncidentTable extends Component {
-  state = {
-    isDrawerVisible: false,
-    mineIncident: {},
-  };
+const MineIncidentTable = (props) => {
+  const [isDrawerVisible, setIsDrawerVisible] = useState();
+  const [mineIncident, setMineIncident] = useState();
+  const [paginationOptions, setPaginationOptions] = useState();
 
-  transformRowData = (
+  const {
+    isDashboardView,
+    incidentStatusCodeOptions,
+    incidentCategoryCodeHash,
+    incidentStatusCodeHash,
     incidents,
+    complianceCodesHash,
+    followupActions,
+    isLoaded,
+    handleUpdate,
+    pageData,
+  } = props;
+
+  const transformRowData = (
+    rawIncidents,
     actions,
     handleEditMineIncident,
     handleDeleteMineIncident,
@@ -111,8 +97,8 @@ export class MineIncidentTable extends Component {
     determinationHash,
     statusHash
   ) =>
-    incidents.map((incident) => {
-      const values = {
+    rawIncidents.map((incident) => {
+      return {
         key: incident.mine_incident_guid,
         mine_guid: incident.mine_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
@@ -132,7 +118,7 @@ export class MineIncidentTable extends Component {
         incident_types:
           incident.categories && incident.categories.length > 0
             ? incident.categories.map(
-                (type) => this.props.incidentCategoryCodeHash[type.mine_incident_category_code]
+                (type) => incidentCategoryCodeHash[type.mine_incident_category_code]
               )
             : [],
         handleEditMineIncident,
@@ -141,215 +127,184 @@ export class MineIncidentTable extends Component {
         openViewMineIncidentModal,
         incident,
       };
-
-      return values;
     });
 
-  sortIncidentNumber = (a, b) =>
+  const sortIncidentNumber = (a, b) =>
     a.incident.mine_incident_id_year - b.incident.mine_incident_id_year ||
     a.incident.mine_incident_id - b.incident.mine_incident_id;
 
-  toggleDrawer = (mineIncident) => {
-    this.setState((prevState) => ({
-      isDrawerVisible: !prevState.isDrawerVisible,
-      mineIncident,
-    }));
+  const toggleDrawer = (drawerMineIncident) => {
+    setIsDrawerVisible(!isDrawerVisible);
+    setMineIncident(drawerMineIncident);
   };
 
-  render() {
-    const columns = [
-      {
-        title: "Number",
-        key: "mine_incident_report_no",
-        dataIndex: "mine_incident_report_no",
-        sortField: "mine_incident_report_no",
-        sorter: this.props.isDashboardView || this.sortIncidentNumber,
-        render: (text) => <div title="Number">{text}</div>,
-      },
-      {
-        title: "Incident Date",
-        key: "incident_timestamp",
-        dataIndex: "incident_timestamp",
-        sortField: "incident_timestamp",
-        sorter: this.props.isDashboardView || dateSorter("incident_timestamp"),
-        defaultSortOrder: "descend",
-        render: (text) => <span title="Incident Date">{text}</span>,
-      },
-      {
-        title: "Mine",
-        key: "mine_name",
-        dataIndex: "mine_name",
-        sortField: "mine_name",
-        sorter: this.props.isDashboardView,
-        className: hideColumn(!this.props.isDashboardView),
-        render: (text, record) => (
-          <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
-          </div>
-        ),
-      },
-      {
-        title: "Incident Type(s)",
-        key: "incident_types",
-        dataIndex: "incident_types",
-        render: (text) => (
-          <div title="Incident Type(s)">
-            {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "Status",
-        key: "incident_status",
-        dataIndex: "incident_status",
-        sortField: "incident_status",
-        sorter:
-          this.props.isDashboardView ||
-          ((a, b) => a.incident_status.localeCompare(b.incident_status)),
-        filtered: !this.props.isDashboardView,
-        onFilter: (value, record) => record.incident.status_code === value,
-        filters:
-          !this.props.isDashboardView &&
-          (this.props.incidentStatusCodeOptions
-            ? optionsFilterLabelAndValue(this.props.incidentStatusCodeOptions)
-            : []),
-        render: (text) => <span title="Status">{text}</span>,
-      },
-      {
-        title: "Inspector Responsible",
-        key: "responsible_inspector_party",
-        render: (text, record) => (
-          <span title="Inspector Responsible">{record.incident.responsible_inspector_party}</span>
-        ),
-        onFilter: (value, record) => record.incident?.responsible_inspector_party === value,
-        filters: _.reduce(
-          this.props.incidents,
-          (reporterList, incident) => {
-            if (
-              incident?.responsible_inspector_party &&
-              !reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)
-            ) {
-              reporterList.push({
-                value: incident.responsible_inspector_party,
-                text: incident.responsible_inspector_party,
-              });
-            }
-            return reporterList;
-          },
-          []
-        ),
-      },
-      {
-        title: "Determination",
-        key: "determination",
-        dataIndex: "determination",
-        sortField: "determination",
-        sorter: this.props.isDashboardView,
-        className: hideColumn(!this.props.isDashboardView),
-        render: (text) => (
-          <span title="Determination" className={hideColumn(!this.props.isDashboardView)}>
-            {text}
-          </span>
-        ),
-      },
-      {
-        title: "Code",
-        key: "code",
-        dataIndex: "code",
-        className: hideColumn(!this.props.isDashboardView),
-        render: (text) => (
-          <span title="Incident Codes" className={hideColumn(!this.props.isDashboardView)}>
-            {text.length === 0 ? (
-              <span>{Strings.EMPTY_FIELD}</span>
-            ) : (
-              <span>
-                {text.map((code) => (
-                  <div key={code}>{this.props.complianceCodesHash[code]}</div>
-                ))}
-              </span>
-            )}
-          </span>
-        ),
-      },
-      {
-        title: "EMLI Action",
-        key: "followup_action",
-        dataIndex: "followup_action",
-        className: hideColumn(true),
-        render: (action, record) => (
-          <div title="EMLI Action" className={hideColumn(true)}>
-            {action ? action.description : record.incident.followup_type_code}
-          </div>
-        ),
-        onFilter: (value, record) => record.incident.followup_investigation_type_code === value,
-        filters: this.props.followupActions.map((action) => ({
-          value: action.mine_incident_followup_investigation_type_code,
-          text: action.mine_incident_followup_investigation_type_code,
-        })),
-      },
-      {
-        title: "Initial Report Documents",
-        key: "initialDocuments",
-        dataIndex: "initialDocuments",
-        className: hideColumn(this.props.isDashboardView),
-        render: (text, record) => (
-          <div
-            title="Initial Report Documents"
-            className={`${hideColumn(this.props.isDashboardView)} cap-col-height`}
-          >
-            {(record.docs &&
-              record.docs.length > 0 &&
-              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "Final Report Documents",
-        key: "finalDocuments",
-        dataIndex: "finalDocuments",
-        className: hideColumn(this.props.isDashboardView),
-        render: (text, record) => (
-          <div
-            title="Final Report Documents"
-            className={`${hideColumn(this.props.isDashboardView)} cap-col-height`}
-          >
-            {(record.docs &&
-              record.docs.length > 0 &&
-              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "",
-        key: "handleEditModal",
-        dataIndex: "handleEditModal",
-        render: (text, record) => (
-          <div align="right" className="btn--middle flex">
-            <AuthorizationWrapper permission={Permission.EDIT_DO}>
-              <Button
-                type="primary"
-                size="small"
-                ghost
-                onClick={(event) =>
-                  // ENV FLAG FOR MINE INCIDENTS //
-                  IN_PROD()
-                    ? record.openMineIncidentModal(
-                        event,
-                        record.handleEditMineIncident,
-                        false,
-                        record.incident
-                      )
-                    : this.props.history.push({
-                        pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                        state: { isEditMode: true },
-                      })
-                }
-              >
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
-              </Button>
-            </AuthorizationWrapper>
+  const columns = [
+    {
+      title: "Number",
+      key: "mine_incident_report_no",
+      dataIndex: "mine_incident_report_no",
+      sortField: "mine_incident_report_no",
+      sorter: isDashboardView || sortIncidentNumber,
+      render: (text) => <div title="Number">{text}</div>,
+    },
+    {
+      title: "Incident Date",
+      key: "incident_timestamp",
+      dataIndex: "incident_timestamp",
+      sortField: "incident_timestamp",
+      sorter: isDashboardView || dateSorter("incident_timestamp"),
+      defaultSortOrder: "descend",
+      render: (text) => <span title="Incident Date">{text}</span>,
+    },
+    {
+      title: "Mine",
+      key: "mine_name",
+      dataIndex: "mine_name",
+      sortField: "mine_name",
+      sorter: isDashboardView,
+      className: hideColumn(!isDashboardView),
+      render: (text, record) => (
+        <div title="Mine" className={hideColumn(!isDashboardView)}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
+        </div>
+      ),
+    },
+    {
+      title: "Incident Type(s)",
+      key: "incident_types",
+      dataIndex: "incident_types",
+      render: (text) => (
+        <div title="Incident Type(s)">
+          {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "Status",
+      key: "incident_status",
+      dataIndex: "incident_status",
+      sortField: "incident_status",
+      sorter: isDashboardView || ((a, b) => a.incident_status.localeCompare(b.incident_status)),
+      filtered: !isDashboardView,
+      onFilter: (value, record) => record.incident.status_code === value,
+      filters:
+        !isDashboardView &&
+        (incidentStatusCodeOptions ? optionsFilterLabelAndValue(incidentStatusCodeOptions) : []),
+      render: (text) => <span title="Status">{text}</span>,
+    },
+    {
+      title: "Inspector Responsible",
+      key: "responsible_inspector_party",
+      render: (text, record) => (
+        <span title="Inspector Responsible">{record.incident.responsible_inspector_party}</span>
+      ),
+      onFilter: (value, record) => record.incident?.responsible_inspector_party === value,
+      filters: _.reduce(
+        incidents,
+        (reporterList, incident) => {
+          if (
+            incident?.responsible_inspector_party &&
+            !reporterList.map((x) => x.value).includes(incident.responsible_inspector_party)
+          ) {
+            reporterList.push({
+              value: incident.responsible_inspector_party,
+              text: incident.responsible_inspector_party,
+            });
+          }
+          return reporterList;
+        },
+        []
+      ),
+    },
+    {
+      title: "Determination",
+      key: "determination",
+      dataIndex: "determination",
+      sortField: "determination",
+      sorter: isDashboardView,
+      className: hideColumn(!isDashboardView),
+      render: (text) => (
+        <span title="Determination" className={hideColumn(!isDashboardView)}>
+          {text}
+        </span>
+      ),
+    },
+    {
+      title: "Code",
+      key: "code",
+      dataIndex: "code",
+      className: hideColumn(!isDashboardView),
+      render: (text) => (
+        <span title="Incident Codes" className={hideColumn(!isDashboardView)}>
+          {text.length === 0 ? (
+            <span>{Strings.EMPTY_FIELD}</span>
+          ) : (
+            <span>
+              {text.map((code) => (
+                <div key={code}>{complianceCodesHash[code]}</div>
+              ))}
+            </span>
+          )}
+        </span>
+      ),
+    },
+    {
+      title: "EMLI Action",
+      key: "followup_action",
+      dataIndex: "followup_action",
+      className: hideColumn(true),
+      render: (action, record) => (
+        <div title="EMLI Action" className={hideColumn(true)}>
+          {action ? action.description : record.incident.followup_type_code}
+        </div>
+      ),
+      onFilter: (value, record) => record.incident.followup_investigation_type_code === value,
+      filters: followupActions.map((action) => ({
+        value: action.mine_incident_followup_investigation_type_code,
+        text: action.mine_incident_followup_investigation_type_code,
+      })),
+    },
+    {
+      title: "Initial Report Documents",
+      key: "initialDocuments",
+      dataIndex: "initialDocuments",
+      className: hideColumn(isDashboardView),
+      render: (text, record) => (
+        <div
+          title="Initial Report Documents"
+          className={`${hideColumn(isDashboardView)} cap-col-height`}
+        >
+          {(record.docs &&
+            record.docs.length > 0 &&
+            renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)) ||
+            Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "Final Report Documents",
+      key: "finalDocuments",
+      dataIndex: "finalDocuments",
+      className: hideColumn(isDashboardView),
+      render: (text, record) => (
+        <div
+          title="Final Report Documents"
+          className={`${hideColumn(isDashboardView)} cap-col-height`}
+        >
+          {(record.docs &&
+            record.docs.length > 0 &&
+            renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)) ||
+            Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "",
+      key: "handleEditModal",
+      dataIndex: "handleEditModal",
+      render: (text, record) => (
+        <div align="right" className="btn--middle flex">
+          <AuthorizationWrapper permission={Permission.EDIT_DO}>
             <Button
               type="primary"
               size="small"
@@ -357,96 +312,121 @@ export class MineIncidentTable extends Component {
               onClick={(event) =>
                 // ENV FLAG FOR MINE INCIDENTS //
                 IN_PROD()
-                  ? record.openViewMineIncidentModal(event, record.incident)
-                  : this.props.history.push({
+                  ? record.openMineIncidentModal(
+                      event,
+                      record.handleEditMineIncident,
+                      false,
+                      record.incident
+                    )
+                  : props.history.push({
                       pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                      state: { isEditMode: false },
-                    })
-              }
+                      state: { isEditMode: true },
+                    })}
             >
-              <EyeOutlined className="icon-lg icon-svg-filter" />
+              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
             </Button>
-            <AuthorizationWrapper permission={Permission.ADMIN}>
-              <Popconfirm
-                placement="topLeft"
-                title="Are you sure you want to delete this incident?"
-                onConfirm={() => record.handleDeleteMineIncident(record.incident)}
-                okText="Delete"
-                cancelText="Cancel"
-              >
-                <Button ghost size="small" type="primary">
-                  <img name="remove" src={TRASHCAN} alt="Remove Incident" />
-                </Button>
-              </Popconfirm>
-            </AuthorizationWrapper>
-            {// ENV FLAG FOR MINE INCIDENTS //
+          </AuthorizationWrapper>
+          <Button
+            type="primary"
+            size="small"
+            ghost
+            onClick={(event) =>
+              // ENV FLAG FOR MINE INCIDENTS //
+              IN_PROD()
+                ? record.openViewMineIncidentModal(event, record.incident)
+                : props.history.push({
+                    pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
+                    state: { isEditMode: false },
+                  })}
+          >
+            <EyeOutlined className="icon-lg icon-svg-filter" />
+          </Button>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this incident?"
+              onConfirm={() => record.handleDeleteMineIncident(record.incident)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button ghost size="small" type="primary">
+                <img name="remove" src={TRASHCAN} alt="Remove Incident" />
+              </Button>
+            </Popconfirm>
+          </AuthorizationWrapper>
+          {
+            // ENV FLAG FOR MINE INCIDENTS //
             IN_PROD() && (
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   type="primary"
                   size="small"
                   ghost
-                  onClick={() => this.toggleDrawer(record.incident)}
+                  onClick={() => toggleDrawer(record.incident)}
                 >
                   <MessageOutlined className="padding-sm icon-sm" />
                 </Button>
               </AuthorizationWrapper>
-            )}
-          </div>
-        ),
-      },
-    ];
+            )
+          }
+        </div>
+      ),
+    },
+  ];
 
-    return (
-      <div>
-        <Drawer
-          title={
-            <>
-              Internal Communication for Mine Incident{" "}
-              {this.state.mineIncident?.mine_incident_report_no}
-              <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
-            </>
-          }
-          placement="right"
-          closable={false}
-          onClose={this.toggleDrawer}
-          visible={this.state.isDrawerVisible}
-        >
-          <Button ghost className="modal__close" onClick={this.toggleDrawer}>
-            <CloseOutlined />
-          </Button>
-          <MineIncidentNotes mineIncidentGuid={this.state.mineIncident.mine_incident_guid} />
-        </Drawer>
-        <CoreTable
-          condition={this.props.isLoaded}
-          columns={
-            this.props.isDashboardView
-              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
-              : columns
-          }
-          dataSource={this.transformRowData(
-            this.props.incidents,
-            this.props.followupActions,
-            this.props.handleEditMineIncident,
-            this.props.handleDeleteMineIncident,
-            this.props.openMineIncidentModal,
-            this.props.openViewMineIncidentModal,
-            this.props.incidentDeterminationHash,
-            this.props.incidentStatusCodeHash,
-            this.props.incidentCategoryCodeHash
-          )}
-          tableProps={{
-            onChange: this.props.isDashboardView
-              ? handleTableChange(this.props.handleIncidentSearch, this.props.params)
-              : null,
-            align: "left",
-            pagination: this.props.isPaginated,
-          }}
-        />
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    setPaginationOptions(serverSidePaginationOptions(pageData));
+  }, [pageData]);
+
+  const handleTableUpdate = (pagination, filters, sorter) => {
+    const searchOptions = parseServerSideSearchOptions(pagination, filters, sorter);
+    handleUpdate(searchOptions);
+  };
+
+  return (
+    <div>
+      <Drawer
+        title={(
+          <>
+            Internal Communication for Mine Incident 
+            {' '}
+            {mineIncident?.mine_incident_report_no}
+            <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
+          </>
+        )}
+        placement="right"
+        closable={false}
+        onClose={toggleDrawer}
+        visible={isDrawerVisible}
+      >
+        <Button ghost className="modal__close" onClick={toggleDrawer}>
+          <CloseOutlined />
+        </Button>
+        <MineIncidentNotes mineIncidentGuid={mineIncident?.mine_incident_guid} />
+      </Drawer>
+      <CoreTable
+        condition={isLoaded}
+        columns={columns}
+        dataSource={transformRowData(
+          incidents,
+          followupActions,
+          props.handleEditMineIncident,
+          props.handleDeleteMineIncident,
+          props.openMineIncidentModal,
+          props.openViewMineIncidentModal,
+          props.incidentDeterminationHash,
+          incidentStatusCodeHash,
+          incidentCategoryCodeHash
+        )}
+        tableProps={{
+          onChange: handleTableUpdate,
+          align: "left",
+          pagination: paginationOptions,
+        }}
+      />
+    </div>
+  );
+};
 
 MineIncidentTable.propTypes = propTypes;
 MineIncidentTable.defaultProps = defaultProps;

@@ -192,7 +192,8 @@ export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
 export const CORE_USER = "/users/core";
 
 // Incidents
-export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENTS = (mine_guid, params) =>
+  `/mines/${mine_guid}/incidents?${queryString.stringify(params)}`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENTS = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
