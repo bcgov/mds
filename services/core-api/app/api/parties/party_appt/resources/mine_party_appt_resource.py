@@ -146,18 +146,19 @@ class MinePartyApptResource(Resource, UserMixin):
 
             if not can_edit_mines():
                 # if this party was not created by the current user, check if they have the correct role
+                if not tsf or mine.mine_guid != tsf.mine_guid:
+                    raise Forbidden("TSF is not associated with the given mine")
+
                 preferred_username = username()
                 if preferred_username not in party.create_user:
                     # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine
-                    if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
-                        raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
-
-                    if not tsf or mine.mine_guid != tsf.mine_guid:
-                        raise Forbidden("TSF is not associated with the given mine")
-
                     if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
                         raise Forbidden("Party is not associated with the given mine")
 
+        if not can_edit_mines():
+            # if this party was not created by the current user, check if they have the correct role
+            if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
+                raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
         new_status = None
         mine_party_acknowledgement_status = None
 
