@@ -1,17 +1,13 @@
 from datetime import datetime, timedelta
-import json
-import uuid
-
-from flask import request, current_app
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
+from flask import request
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
 from flask_restplus import Resource
-from sqlalchemy import and_, or_, exc as alch_exceptions
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, Forbidden
+from sqlalchemy import and_, exc as alch_exceptions
+from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, can_edit_mines
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, can_edit_mines, username
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -24,8 +20,6 @@ from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppo
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 
-from app.api.services.email_service import EmailService
-from app.api.services.css_sso_service import CSSService
 from app.config import Config
 from app.api.activity.utils import trigger_notification
 
@@ -150,16 +144,19 @@ class MinePartyApptResource(Resource, UserMixin):
             if tsf is None:
                 raise NotFound('TSF not found')
 
-        if not can_edit_mines():
-            # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine
-            if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
-                raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
+        preferred_username = username()
+        # if this party was not created by the current user, check if they have the correct role
+        if preferred_username not in party.create_user:
+            if not can_edit_mines():
+                # Make sure Minespace users can only assign EORs, associate pre-existing parties for the mine
+                if mine_party_appt_type_code not in TSF_ALLOWED_CONTACT_TYPES:
+                    raise Forbidden("Minespace user can only appoint EORs and Qualified Persons")
 
-            if not tsf or mine.mine_guid != tsf.mine_guid:
-                raise Forbidden("TSF is not associated with the given mine")
+                if not tsf or mine.mine_guid != tsf.mine_guid:
+                    raise Forbidden("TSF is not associated with the given mine")
 
-            if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
-                raise Forbidden("Party is not associated with the given mine")
+                if not next((mem for mem in mine.mine_party_appt if party.party_guid == mem.party_guid), None):
+                    raise Forbidden("Party is not associated with the given mine")
 
         new_status = None
         mine_party_acknowledgement_status = None

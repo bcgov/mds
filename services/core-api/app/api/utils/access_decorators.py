@@ -1,8 +1,6 @@
-
 from functools import wraps
 
 from app.extensions import getJwtManager
-from app.api.utils.include.user_info import User
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 
@@ -44,6 +42,10 @@ def can_edit_now_dates():
 
 def can_edit_mines():
     return getJwtManager().validate_roles([MINE_EDIT])
+
+
+def username():
+    return getJwtManager().get_user_name()
 
 
 def requires_role_edit_emli_contacts(func):
