@@ -4,9 +4,17 @@ import { Logout } from "@/components/common/Logout";
 
 const props = {};
 
+jest.mock('@react-keycloak/web', () => ({
+  useKeycloak: () => ({
+    keycloak: {
+      authenticated: false,
+    },
+    initialized: true,
+  })
+}));
+
 const setupProps = () => {
   props.logoutUser = jest.fn();
-  props.keycloak = {};
 };
 
 beforeEach(() => {

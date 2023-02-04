@@ -9,7 +9,6 @@ const initialState = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {},
-  keycloak: {},
 };
 
 export const authenticationReducer = (state = initialState, action) => {
@@ -19,11 +18,6 @@ export const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         userInfo: action.payload.userInfo,
-      };
-    case ActionTypes.STORE_KEYCLOAK_DATA:
-      return {
-        ...state,
-        keycloak: action.payload.data,
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
       return {
@@ -48,6 +42,5 @@ const authenticationReducerObject = {
 export const isAuthenticated = (state) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state) => state[AUTHENTICATION].userInfo;
-export const getKeycloak = (state) => state[AUTHENTICATION].keycloak;
 
 export default authenticationReducerObject;

@@ -14,7 +14,6 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.userRoles = Mock.USER_ACCESS_DATA;
-  reducerProps.keycloak = {};
 };
 
 beforeEach(() => {

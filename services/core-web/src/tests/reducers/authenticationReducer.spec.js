@@ -2,7 +2,6 @@ import { authenticationReducer } from "@common/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,
-  storeKeycloakData,
   storeUserAccessData,
 } from "@common/actions/authenticationActions";
 
@@ -10,7 +9,6 @@ const baseExpectedValue = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {},
-  keycloak: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -26,13 +24,6 @@ describe("authReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.isAuthenticated = true;
     const result = authenticationReducer(undefined, authenticateUser({}));
-    expect(result).toEqual(expectedValue);
-  });
-
-  it("receives STORE_KEYCLOAK_DATA", () => {
-    const expectedValue = getBaseExpectedValue();
-    expectedValue.keycloak = { test: "test" };
-    const result = authenticationReducer(undefined, storeKeycloakData({ test: "test" }));
     expect(result).toEqual(expectedValue);
   });
 

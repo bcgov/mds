@@ -6,24 +6,18 @@ import { useKeycloak } from "@react-keycloak/web";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import {
   isAuthenticated,
-  getKeycloak,
   getUserAccessData,
 } from "@common/selectors/authenticationSelectors";
 import {
   authenticateUser,
-  storeKeycloakData,
   storeUserAccessData,
 } from "@common/actions/authenticationActions";
 import { USER_ROLES } from "@mds/common";
-import { getUserInfo } from "@common/actionCreators/mineActionCreator";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   storeUserAccessData: PropTypes.func.isRequired,
-  storeKeycloakData: PropTypes.func.isRequired,
-  getUserInfo: PropTypes.func.isRequired,
-  keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   userAccessData: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
@@ -53,7 +47,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
         props.authenticateUser(keycloak.tokenParsed);
         const clientRoles = keycloak.tokenParsed.client_roles || []; // might want idir_username instead of preferred_username
         props.storeUserAccessData(clientRoles);
-        props.storeKeycloakData(keycloak);
       }
     };
 
@@ -77,7 +70,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
     userAccessData: getUserAccessData(state),
-    keycloak: getKeycloak(state),
   });
 
   const mapDispatchToProps = (dispatch) =>
@@ -85,8 +77,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
       {
         authenticateUser,
         storeUserAccessData,
-        storeKeycloakData,
-        getUserInfo,
       },
       dispatch
     );

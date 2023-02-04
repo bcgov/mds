@@ -25,7 +25,6 @@ import * as ENV from "@/constants/environment";
 const propTypes = {
   getUserInfoFromToken: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
   authenticateUser: PropTypes.func.isRequired,
 };
 
@@ -41,7 +40,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
 
     // redirectingFromCore check is necessary so that user can stop on the info page if they're not coming from core
     // all routing from core includes 'redirectingFromCore=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
-    if (redirectingFromCore && !keycloak.authenticated) {
+    if (redirectingFromCore && !keycloak.authenticated && keycloak.initialized) {
       keycloak.login({
         redirectUri: redirectUrl,
         idpHint: KEYCLOAK.bceid_idpHint,
