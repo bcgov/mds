@@ -3,7 +3,7 @@
 exports[`RedirectRoute  renders properly 1`] = `
 <Route
   path="/"
-  redirectTo="/dashboard/mines/?page=1&per_page=25"
+  redirectTo="/dashboard/mines/?page=1&per_page=10"
   render={[Function]}
 />
 `;

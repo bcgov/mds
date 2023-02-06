@@ -381,7 +381,7 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <Paragraph>
-            Please enter the details of any inspectors, OHSC, local union, or worker representatives that you have contacted
+            Please enter the details of those who have been contacted
           </Paragraph>
         </Col>
         <Col
@@ -390,7 +390,7 @@ exports[`IncidentForm renders properly 1`] = `
           <Title
             level={5}
           >
-            Inspector Information
+            Verbal Notification
           </Title>
         </Col>
         <Col
@@ -399,30 +399,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Inspector Name (optional)"
-          >
-            <Field
-              component={[Function]}
-              data={Array []}
-              disabled={false}
-              id="reported_to_inspector_party_guid"
-              name="reported_to_inspector_party_guid"
-              placeholder="Enter name"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <FormItem
-            hasFeedback={false}
-            label="Has this person already been informed of the incident?"
+            label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)"
           >
             <Field
               component={[Function]}

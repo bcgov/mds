@@ -76,7 +76,7 @@ exports[`Dashboard renders properly 1`] = `
                 "push": [MockFunction] {
                   "calls": Array [
                     Array [
-                      "/dashboard/mines/?page=1&per_page=25",
+                      "/dashboard/mines/?page=1&per_page=10",
                     ],
                   ],
                   "results": Array [
@@ -93,7 +93,7 @@ exports[`Dashboard renders properly 1`] = `
                 "commodity": Array [],
                 "major": undefined,
                 "page": "1",
-                "per_page": "25",
+                "per_page": "10",
                 "region": Array [],
                 "search": undefined,
                 "sort_dir": undefined,
@@ -633,7 +633,7 @@ exports[`Dashboard renders properly 1`] = `
                     "commodity": Array [],
                     "major": undefined,
                     "page": "1",
-                    "per_page": "25",
+                    "per_page": "10",
                     "region": Array [],
                     "search": undefined,
                     "sort_dir": undefined,
@@ -784,7 +784,7 @@ exports[`Dashboard renders properly 1`] = `
             >
               <ResponsivePagination
                 currentPage={1}
-                itemsPerPage={25}
+                itemsPerPage={10}
                 onPageChange={[Function]}
                 pageTotal={9000}
               />
@@ -916,7 +916,7 @@ exports[`Dashboard renders properly 1`] = `
                       "push": [MockFunction] {
                         "calls": Array [
                           Array [
-                            "/dashboard/mines/?page=1&per_page=25",
+                            "/dashboard/mines/?page=1&per_page=10",
                           ],
                         ],
                         "results": Array [
