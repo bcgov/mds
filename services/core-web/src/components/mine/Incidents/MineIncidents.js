@@ -70,7 +70,7 @@ const defaultProps = {
 
 const MineIncidents = (props) => {
   const { mineIncidents, mineGuid, mines, incidentPageData } = props;
-  const [isLoaded, setIsLoaded] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const handleFetchIncidents = (params) => {
     const fetchParams = params || {

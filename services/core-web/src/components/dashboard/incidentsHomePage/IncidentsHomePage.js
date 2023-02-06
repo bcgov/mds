@@ -85,7 +85,8 @@ const defaultParams = {
 
 const IncidentsHomePage = (props) => {
   const [incidentsLoaded, setIncidentsLoaded] = useState(false);
-  const [params, setParams] = useState({});
+  const [params, setParams] = useState();
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   const {
     history,
@@ -105,8 +106,9 @@ const IncidentsHomePage = (props) => {
   } = props;
 
   useEffect(() => {
-    const searchParams = queryString.parse(props.location.search);
+    const searchParams = queryString.parse(location.search);
     setParams(searchParams);
+    setInitialLoadComplete(true);
   }, []);
 
   const renderDataFromURL = async (newParams) => {
@@ -117,7 +119,9 @@ const IncidentsHomePage = (props) => {
 
   useEffect(() => {
     setIncidentsLoaded(false);
-    renderDataFromURL(location.search);
+    if (params && initialLoadComplete) {
+      renderDataFromURL(location.search);
+    }
   }, [location]);
 
   useEffect(() => {
