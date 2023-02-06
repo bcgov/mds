@@ -96,8 +96,11 @@ class IncidentsResource(Resource, UserMixin):
             "status_code": "status_code"
         }
 
-        query = MineIncident.query.filter_by(deleted_ind=False).join(Mine)
+        query = MineIncident.query.filter_by(deleted_ind=False)
         conditions = []
+
+        if args["major"] or args["region"] or args["search_terms"] is not None:
+            query = query.join(Mine)
         if args["mine_guid"] is not None:
             conditions.append(
                 self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))

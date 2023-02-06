@@ -422,6 +422,7 @@ const MineIncidentTable = (props) => {
           onChange: handleTableUpdate,
           align: "left",
           pagination: paginationOptions,
+          condition: isLoaded,
         }}
       />
     </div>
