@@ -16,7 +16,7 @@ from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentD
 from app.api.incidents.response_models import PAGINATED_INCIDENT_LIST
 
 PAGE_DEFAULT = 1
-PER_PAGE_DEFAULT = 25
+PER_PAGE_DEFAULT = 10
 
 
 class IncidentsResource(Resource, UserMixin):
