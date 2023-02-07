@@ -64,10 +64,10 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     }, [keycloak.authenticated]);
 
     const authenticationInProgressFlag = localStorage.getItem("authenticationInProgressFlag");
-    const authenticated = props.isAuthenticated || isPublic || keycloak.authenticated;
+    const authorizedToView = props.isAuthenticated || isPublic || keycloak.authenticated;
     const authInProgress = authenticationInProgressFlag || !initialized;
 
-    if (authenticated) {
+    if (authorizedToView) {
       return <WrappedComponent {...props} />;
     }
     if (authInProgress) {

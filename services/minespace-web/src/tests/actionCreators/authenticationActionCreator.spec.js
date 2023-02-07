@@ -22,25 +22,20 @@ beforeEach(() => {
 });
 
 describe("`getUserInfoFromToken` action creator", () => {
-  const url = `<API_URL>/users/me`;
   const token = "2434";
   it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return getUserInfoFromToken(token)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
+    getUserInfoFromToken(token)(dispatch);
+    expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(successSpy).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledTimes(4);
   });
 });
 
 describe("`authenticateUser` action creator", () => {
   const accessToken = "abc123";
   it("Request successful, dispatches `success` with correct response", () => {
-    return authenticateUser(accessToken)(dispatch).then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
+    authenticateUser(accessToken)(dispatch);
+    expect(dispatch).toHaveBeenCalledTimes(2);
   });
 });
 

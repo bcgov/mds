@@ -20,7 +20,6 @@ import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
@@ -71,7 +70,6 @@ const App = (props) => {
   return (
     <BrowserRouter basename={process.env.BASE_PATH}>
       <>
-        <MatomoLinkTracing />
         <Layout>
           <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
           <Layout>

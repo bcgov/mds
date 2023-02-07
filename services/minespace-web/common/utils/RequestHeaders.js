@@ -1,5 +1,4 @@
 import keycloak from "@/keycloak";
-
 /**
  * Utility class for various request Headers.
  */

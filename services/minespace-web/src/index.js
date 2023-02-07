@@ -18,8 +18,8 @@ import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore();
 
-// 60 seconds before user is inactive- across tabs
-const idleTimeout = 60_000;
+// 5 minutees before user is inactive- across tabs
+const idleTimeout = 5 * 60_000;
 // seconds before expiry to request new access token
 const refreshTokenBufferSeconds = 60;
 

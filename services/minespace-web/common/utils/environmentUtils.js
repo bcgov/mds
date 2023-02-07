@@ -40,3 +40,4 @@ export const detectIE = () => {
 export const detectTestEnvironment = () => ENVIRONMENT.environment === "test";
 export const detectProdEnvironment = () => ENVIRONMENT.environment === "production";
 export const detectDevelopmentEnvironment = () => ENVIRONMENT.environment === "development";
+export const getEnvironment = () => ENVIRONMENT.environment;

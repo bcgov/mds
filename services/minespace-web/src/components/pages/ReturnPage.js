@@ -19,7 +19,7 @@ const propTypes = {
 };
 
 /**
- * @class ReturnPage - handles all re-routing while following the standard login/logout paths by clicking buttons on the UI
+ * @component ReturnPage - handles all re-routing while following the standard login/logout paths by clicking buttons on the UI
  * CORE/IDIR users bypass this page and authenticate through the AuthenticationGuard.js without any user input
  */
 

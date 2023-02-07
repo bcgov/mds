@@ -15,7 +15,7 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import { logoutUser } from "@common/actions/authenticationActions";
 
-const idleTimeout = 60_000;
+const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
 
 export const Index = () => {
