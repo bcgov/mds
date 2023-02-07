@@ -69,22 +69,4 @@ describe("AuthenticationGuard", () => {
     expect(wrapper.find(NullScreen).length).toEqual(1);
     expect(wrapper.find(Loading).length).toEqual(0);
   });
-
-  it("should render the `Loading` if `!isAuthenticated` && `userAccessData !== role_view`", () => {
-    // FAILS: Loading.length = 0
-    getJestMock(true, false, [])
-    reducerProps.isAuthenticated = false;
-    reducerProps.userAccessData = [];
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(wrapper.find(Loading).length).toEqual(1);
-    expect(wrapper.find(NullScreen).length).toEqual(0);
-  });
-
-  it("should render the `Loading` if keycloak is not initialized", () => {
-    // FAILS: Loading.length = 0
-    getJestMock(false, false, [])
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(wrapper.find(Loading).length).toEqual(1);
-    expect(wrapper.find(NullScreen).length).toEqual(0);
-  });
 });

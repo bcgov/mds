@@ -20,6 +20,8 @@ export const store = configureStore();
 
 // 60 seconds before user is inactive- across tabs
 const idleTimeout = 60_000;
+// seconds before expiry to request new access token
+const refreshTokenBufferSeconds = 60;
 
 const Index = () => {
   const [environment, setEnvironment] = useState(false);
@@ -55,20 +57,19 @@ const Index = () => {
       store.dispatch(unAuthenticateUser());
       keycloak.clearToken();
     } else {
-      console.log("user offline");
+      console.log("User offline");
     }
   };
 
   const handleUpdateToken = () => {
-    if (keycloak.authenticated) {
-      const tokenExpiryTime = keycloak.tokenParsed.exp * 1000 ?? null;
-      const bufferSeconds = 60;
-      const timeToLive = tokenExpiryTime - Date.now() - bufferSeconds * 1000;
+    if (keycloak.authenticated && keycloak.tokenParsed) {
+      const tokenExpiryTime = keycloak.tokenParsed.exp * 1000;
+      const timeToLive = tokenExpiryTime - Date.now() - (refreshTokenBufferSeconds * 1000);
 
       const updateInterval = setInterval(() => {
         if (!isIdle()) {
           keycloak.updateToken(-1).catch((err = "") => {
-            console.log("failed to refresh token", err);
+            console.log("Failed to refresh token", err);
             handleAuthErrors();
           });
         }
@@ -88,21 +89,18 @@ const Index = () => {
       onTokens={() => {
         handleUpdateToken();
       }}
-      onReady={() => {
-        handleUpdateToken();
-      }}
-      onEvent={(event, err = "") => {
-        console.log(event, err);
-      }}
-      onAuthLogout={(err = "") => handleAuthErrors(err)}
-      onAuthError={(err = "") => handleAuthErrors(err)}
-      onAuthRefreshError={(err = "") => handleAuthErrors(err)}
-      onInitError={(err = "") => handleAuthErrors(err)}
       onTokenExpired={() => {
         if (!isIdle()) {
           keycloak.updateToken();
         }
       }}
+      onReady={() => {
+        handleUpdateToken();
+      }}
+      onAuthLogout={(err = "") => handleAuthErrors(err)}
+      onAuthError={(err = "") => handleAuthErrors(err)}
+      onAuthRefreshError={(err = "") => handleAuthErrors(err)}
+      onInitError={(err = "") => handleAuthErrors(err)}      
     >
       <Provider store={store}>
         <App />

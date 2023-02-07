@@ -64,6 +64,7 @@
     "react-filepond": "7.1.0",
     "react-highlighter": "0.4.3",
     "react-hot-loader": "4.12.21",
+    "react-idle-timer": "^5.5.2",
     "react-iframe-resizer-super": "0.2.2",
     "react-lottie": "1.2.3",
     "react-redux": "7.1.3",
@@ -185,7 +186,7 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@common/(.*)$": "<rootDir>/common/$1",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js",
+      "\\.(css|less|scss)$": "<rootDir>/src/assetsTransformer.js",
       "^vendor/(.*)$": "<rootDir>/vendor/$1"
     },
     "snapshotSerializers": [
