@@ -11,12 +11,22 @@ const initialState = {
   userInfo: {},
 };
 
+const getUserName = (tokenParsed) => {
+  const {bceid_username} = tokenParsed;
+  if (bceid_username && bceid_username.length > 0) {
+    return `${bceid_username  }@bceid`;
+  }
+  if (tokenParsed.idir_username) {
+    return tokenParsed.idir_username;
+  }
+  return tokenParsed.preferred_username;
+};
+
 export const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATE_USER:
       const tokenParsed = action.payload.userInfo;
-      const preferred_username =
-        tokenParsed.idir_username ?? tokenParsed.bceid_username ?? tokenParsed.preferred_username;
+      const preferred_username = getUserName(tokenParsed);
       return {
         ...state,
         isAuthenticated: true,
