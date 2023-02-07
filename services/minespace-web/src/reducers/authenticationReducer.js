@@ -15,10 +15,16 @@ const initialState = {
 const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATE_USER:
+      const tokenParsed = action.payload.userInfo;
+      const preferred_username =
+        tokenParsed.idir_username ?? tokenParsed.bceid_username ?? tokenParsed.preferred_username;
       return {
         ...state,
         isAuthenticated: true,
-        userInfo: action.payload.userInfo,
+        userInfo: {
+          ...action.payload.userInfo,
+          preferred_username,
+        },
         redirect: route.MINES.route,
       };
     case ActionTypes.LOGOUT:

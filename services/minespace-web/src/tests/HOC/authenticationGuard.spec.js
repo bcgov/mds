@@ -2,7 +2,6 @@ import React from "react";
 import { shallow } from "enzyme";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
-import Loading from "@/components/common/Loading";
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),

@@ -9,21 +9,21 @@ const initialState = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {},
-  keycloak: {},
 };
 
 export const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATE_USER:
+      const tokenParsed = action.payload.userInfo;
+      const preferred_username =
+        tokenParsed.idir_username ?? tokenParsed.bceid_username ?? tokenParsed.preferred_username;
       return {
         ...state,
         isAuthenticated: true,
-        userInfo: action.payload.userInfo,
-      };
-    case ActionTypes.STORE_KEYCLOAK_DATA:
-      return {
-        ...state,
-        keycloak: action.payload.data,
+        userInfo: {
+          ...action.payload.userInfo,
+          preferred_username,
+        },
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
       return {
@@ -35,7 +35,6 @@ export const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         userInfo: {},
-        keycloak: {},
       };
     default:
       return state;
@@ -49,6 +48,5 @@ const authenticationReducerObject = {
 export const isAuthenticated = (state) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state) => state[AUTHENTICATION].userInfo;
-export const getKeycloak = (state) => state[AUTHENTICATION].keycloak;
 
 export default authenticationReducerObject;

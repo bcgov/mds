@@ -1,3 +1,4 @@
+import keycloak from "@/keycloak";
 /**
  * Utility class for various request Headers.
  */
@@ -7,7 +8,7 @@
 export const createRequestHeader = (customHeaders = {}) => ({
   headers: {
     "Access-Control-Allow-Origin": "*",
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    Authorization: `Bearer ${keycloak.token}`,
     ...customHeaders,
   },
 });

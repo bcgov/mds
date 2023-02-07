@@ -1,6 +1,5 @@
 import {
   isAuthenticated,
-  getKeycloak,
   getUserAccessData,
   getUserInfo,
 } from "@common/selectors/authenticationSelectors";
@@ -8,7 +7,6 @@ import { authenticationReducer } from "@common/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,
-  storeKeycloakData,
   storeUserAccessData,
 } from "@common/actions/authenticationActions";
 import { AUTHENTICATION } from "@common/constants/reducerTypes";
@@ -16,7 +14,6 @@ import { AUTHENTICATION } from "@common/constants/reducerTypes";
 const mockData = {
   userAccessData: ["role1"],
   userInfo: { name: "test" },
-  keycloak: { access: "granted" },
 };
 
 describe("authSelectors", () => {
@@ -29,16 +26,6 @@ describe("authSelectors", () => {
 
     expect(isAuthenticated(mockState)).toEqual(true);
     expect(getUserInfo(mockState)).toEqual(mockData.userInfo);
-  });
-
-  it("`getKeycloak` calls `authReducer.getKeycloak`", () => {
-    const keycloakAction = storeKeycloakData(mockData.keycloak);
-    const keycloakState = authenticationReducer({}, keycloakAction);
-    const mockState = {
-      [AUTHENTICATION]: keycloakState,
-    };
-
-    expect(getKeycloak(mockState)).toEqual(mockData.keycloak);
   });
 
   it("`getUserAccessData` calls `authReducer.getUserAccessData`", () => {

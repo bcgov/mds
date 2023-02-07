@@ -6,7 +6,6 @@ import {
   unAuthenticateUser,
 } from "@/actionCreators/authenticationActionCreator";
 import * as genericActions from "@/actions/genericActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -23,39 +22,20 @@ beforeEach(() => {
 });
 
 describe("`getUserInfoFromToken` action creator", () => {
-  const url = `<API_URL>/users/me`;
   const token = "2434";
   it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return getUserInfoFromToken(token)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return getUserInfoFromToken(
-      "A Token",
-      "An Error Message"
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
+    getUserInfoFromToken(token)(dispatch);
+    expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(successSpy).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledTimes(4);
   });
 });
 
 describe("`authenticateUser` action creator", () => {
   const accessToken = "abc123";
   it("Request successful, dispatches `success` with correct response", () => {
-    return authenticateUser(accessToken)(dispatch).then(() => {
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      const jwt = localStorage.getItem("jwt");
-      expect(jwt).toEqual("abc123");
-    });
+    authenticateUser(accessToken)(dispatch);
+    expect(dispatch).toHaveBeenCalledTimes(2);
   });
 });
 

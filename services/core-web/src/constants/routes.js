@@ -53,6 +53,7 @@ import MineIncident from "@/components/mine/Incidents/MineIncident";
 import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
 import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
 import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
+import { getEnvironment } from "@common/utils/environmentUtils";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -462,9 +463,16 @@ export const EDIT_PERMIT_CONDITIONS = {
   component: PermitConditionManagement,
 };
 
-const MINESPACE_URL = "https://minespace.gov.bc.ca/";
-export const VIEW_MINESPACE = (mineGuid) =>
-  `${MINESPACE_URL}/mines/${mineGuid}/overview?redirectingFromCore=true`;
+const MINESPACE_URLS = {
+  'production': "https://minespace.gov.bc.ca/",
+  'development': "https://minespace-dev.apps.silver.devops.gov.bc.ca/",
+  'test': "https://minespace-test.apps.silver.devops.gov.bc.ca/",
+};
+
+export const VIEW_MINESPACE = (mineGuid) => {
+  const MINESPACE_URL = MINESPACE_URLS[getEnvironment() ?? 'production'];
+  return `${MINESPACE_URL}mines/${mineGuid}/overview?redirectingFromCore=true`;
+};
 
 const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
 export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;

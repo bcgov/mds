@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { useEffect, useState } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -20,7 +20,6 @@ import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
@@ -37,74 +36,64 @@ const defaultProps = {
   staticContentLoadingIsComplete: false,
 };
 
-class App extends Component {
-  state = { isIE: true, isMobile: true };
+const App = (props) => {
+  const [isIE, setIsIE] = useState(true);
+  const [isMobile, setIsMobile] = useState(true);
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.loadBulkStaticContent();
+  const { loadBulkStaticContent, isAuthenticated, staticContentLoadingIsComplete } = props;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadBulkStaticContent();
     }
-    this.setState({ isIE: detectIE() });
-  }
+    setIsIE(detectIE());
+  }, []);
 
-  componentDidUpdate(nextProps) {
-    const authChanged =
-      nextProps.isAuthenticated !== this.props.isAuthenticated || nextProps.isAuthenticated;
-    if (authChanged && !nextProps.staticContentLoadingIsComplete) {
-      this.props.loadBulkStaticContent();
+  useEffect(() => {
+    if (isAuthenticated && !staticContentLoadingIsComplete) {
+      loadBulkStaticContent();
     }
-  }
+  }, [isAuthenticated]);
 
-  handleMobileWarningClose = () => {
-    this.setState({ isMobile: false });
+  const handleMobileWarningClose = () => {
+    setIsMobile(false);
   };
 
-  handleBannerClose = () => {
-    this.setState({ isIE: false });
+  const handleBannerClose = () => {
+    setIsIE(false);
   };
 
-  render() {
-    const xs = 24;
-    const lg = 22;
-    const xl = 20;
-    const xxl = 18;
-    return (
-      <BrowserRouter basename={process.env.BASE_PATH}>
-        <Fragment>
-          <MatomoLinkTracing />
+  const xs = 24;
+  const lg = 22;
+  const xl = 20;
+  const xxl = 18;
+  return (
+    <BrowserRouter basename={process.env.BASE_PATH}>
+      <>
+        <Layout>
+          <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
           <Layout>
-            <Header
-              xs={xs}
-              lg={lg}
-              xl={xl}
-              xxl={xxl}
-              isAuthenticated={this.props.isAuthenticated}
-            />
-            <Layout>
-              <Layout.Content>
-                {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
-                <MediaQuery maxWidth={500}>
-                  {this.state.isMobile && (
-                    <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
-                  )}
-                </MediaQuery>
-                <Row type="flex" justify="center" align="top">
-                  <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
-                    <Routes />
-                  </Col>
-                </Row>
-                <ModalWrapper />
-                <DocumentViewer />
-                <BackTop />
-              </Layout.Content>
-            </Layout>
-            <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
+            <Layout.Content>
+              {isIE && <WarningBanner type="IE" onClose={handleBannerClose} />}
+              <MediaQuery maxWidth={500}>
+                {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
+              </MediaQuery>
+              <Row type="flex" justify="center" align="top">
+                <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
+                  <Routes />
+                </Col>
+              </Row>
+              <ModalWrapper />
+              <DocumentViewer />
+              <BackTop />
+            </Layout.Content>
           </Layout>
-        </Fragment>
-      </BrowserRouter>
-    );
-  }
-}
+          <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
+        </Layout>
+      </>
+    </BrowserRouter>
+  );
+};
 
 const mapStateToProps = (state) => ({
   isAuthenticated: isAuthenticated(state),

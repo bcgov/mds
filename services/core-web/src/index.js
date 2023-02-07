@@ -1,45 +1,103 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { useIdleTimer } from "react-idle-timer";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
+import keycloak, { keycloakInitConfig } from "./keycloak";
+import Loading from "@/components/common/Loading";
 
-import { ENVIRONMENT } from "@mds/common";
-import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
+import { logoutUser } from "@common/actions/authenticationActions";
 
-let instance = {};
+const idleTimeout = 5 * 60_000;
+const refreshTokenBufferSeconds = 60;
 
-class Index extends Component {
-  constructor() {
-    super();
-    this.state = { environment: false };
-    fetchEnv().then(() => {
-      instance = createInstance({
-        urlBase: ENVIRONMENT.matomoUrl,
-        enableLinkTracking: false,
-        siteId: 1,
-      });
-      this.setState({ environment: true });
-    });
-  }
+export const Index = () => {
+  const [environment, setEnvironment] = useState(false);
 
-  render() {
-    if (this.state.environment) {
-      return (
-        <Provider store={store}>
-          <MatomoProvider value={instance}>
-            <App />
-          </MatomoProvider>
-        </Provider>
-      );
+  fetchEnv().then(() => {
+    setEnvironment(true);
+  });
+
+  const { isIdle } = useIdleTimer({
+    timeout: idleTimeout,
+    throttle: 500,
+    crossTab: true,
+    syncTimers: 1000,
+    events: [
+      "mousemove",
+      "keydown",
+      "wheel",
+      "DOMMouseScroll",
+      "mousewheel",
+      "mousedown",
+      "touchstart",
+      "touchmove",
+      "MSPointerDown",
+      "MSPointerMove",
+      "visibilitychange",
+      "focus",
+    ],
+  });
+
+  const handleAuthErrors = (err = "") => {
+    console.log("Authentication error", err);
+    if (!keycloak.authenticated || keycloak.isTokenExpired()) {
+      store.dispatch(logoutUser());
+      keycloak.clearToken();
+    } else {
+      console.log("User offline")
     }
-    return <div />;
-  }
-}
+  };
+
+  const handleUpdateToken = () => {
+    if (keycloak.authenticated && keycloak.tokenParsed) {
+      const tokenExpiryTime = keycloak.tokenParsed.exp * 1000;
+      const timeToLive = tokenExpiryTime - Date.now() - (refreshTokenBufferSeconds * 1000);
+
+      const updateInterval = setInterval(() => {
+        if (!isIdle()) {
+          keycloak.updateToken(-1).catch((err="") => {
+            console.log("Failed to refresh token", err);
+            handleAuthErrors();
+          });
+        }
+      }, timeToLive);
+
+      return () => {
+        clearInterval(updateInterval);
+      };
+    }
+    return false;
+  };
+
+  return environment ? (
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={keycloakInitConfig}
+      onTokens={() => {handleUpdateToken();}}
+      onTokenExpired={() => {
+        if (!isIdle()) {
+          keycloak.updateToken();
+        }
+      }}      
+      LoadingComponent={<Loading />}
+      isLoadingCheck={(kc) => !kc || !environment}
+
+    >
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ReactKeycloakProvider>
+  ) : (
+    <Loading />
+  );
+};
 
 render(<Index />, document.getElementById("root"));

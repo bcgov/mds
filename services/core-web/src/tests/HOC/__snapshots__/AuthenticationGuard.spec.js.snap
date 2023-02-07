@@ -4,8 +4,6 @@ exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthe
 <Component
   authenticateUser={[MockFunction]}
   isAuthenticated={true}
-  keycloak={true}
-  storeKeycloakData={[MockFunction]}
   storeUserAccessData={[MockFunction]}
   userAccessData={
     Array [

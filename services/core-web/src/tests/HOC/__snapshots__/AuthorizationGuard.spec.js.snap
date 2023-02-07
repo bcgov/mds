@@ -2,7 +2,6 @@
 
 exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_edit_mines || role_admin\` 1`] = `
 <Component
-  keycloak={Object {}}
   logoutUser={[MockFunction]}
   mapStateToProps={[MockFunction]}
   userRoles={

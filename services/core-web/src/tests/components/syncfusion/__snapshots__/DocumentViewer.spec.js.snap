@@ -23,7 +23,7 @@ exports[`DocumentViewer renders properly 1`] = `
           },
           Object {
             "headerName": "Authorization",
-            "headerValue": "Bearer null",
+            "headerValue": "Bearer undefined",
           },
         ],
         "withCredentials": false,

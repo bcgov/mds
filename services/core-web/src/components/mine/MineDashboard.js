@@ -36,7 +36,6 @@ import { storeVariances } from "@common/actions/varianceActions";
 import { storePermits } from "@common/actions/permitActions";
 import { storeMine } from "@common/actions/mineActions";
 import * as Strings from "@common/constants/strings";
-import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
@@ -305,8 +304,7 @@ export class MineDashboard extends Component {
             </div>
           )}
         </AuthorizationWrapper>
-        {/* this is an external link to mineSpace, only available to users in production as its a prod URL, not using the AuthWrapper since the admin role overrides the wrapper. */}
-        {detectProdEnvironment() && (
+        {/* this is an external link to mineSpace, not using the AuthWrapper since the admin role overrides the wrapper. */}        
           <div className="custom-menu-item no_link_styling">
             <a
               href={router.VIEW_MINESPACE(mine.mine_guid)}
@@ -323,7 +321,6 @@ export class MineDashboard extends Component {
               View on MineSpace
             </a>
           </div>
-        )}
       </Menu>
     );
 
