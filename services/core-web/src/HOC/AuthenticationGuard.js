@@ -36,7 +36,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
    *
    */
   const authenticationGuard = (props) => {
-    console.log("authentication guard constructor");
     const { keycloak, initialized } = useKeycloak();
 
     const checkLogin = () => {
@@ -45,7 +44,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
       }
       if (initialized && keycloak.authenticated && !props.isAuthenticated) {
         props.authenticateUser(keycloak.tokenParsed);
-        const clientRoles = keycloak.tokenParsed.client_roles || []; // might want idir_username instead of preferred_username
+        const clientRoles = keycloak.tokenParsed.client_roles || [];
         props.storeUserAccessData(clientRoles);
       }
     };
@@ -53,7 +52,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
     checkLogin();
 
     useEffect(() => {
-      console.log("auth guard use effect called!");
       checkLogin();
     }, [initialized, keycloak.authenticated]);
 

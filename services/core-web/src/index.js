@@ -13,7 +13,7 @@ import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
-import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
+import { logoutUser } from "@common/actions/authenticationActions";
 
 const idleTimeout = 60_000;
 const refreshTokenBufferSeconds = 60;
@@ -49,7 +49,7 @@ export const Index = () => {
   const handleAuthErrors = (err = "") => {
     console.log("Authentication error", err);
     if (!keycloak.authenticated || keycloak.isTokenExpired()) {
-      store.dispatch(unAuthenticateUser());
+      store.dispatch(logoutUser());
       keycloak.clearToken();
     } else {
       console.log("User offline")
