@@ -4,14 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useKeycloak } from "@react-keycloak/web";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import {
-  isAuthenticated,
-  getUserAccessData,
-} from "@common/selectors/authenticationSelectors";
-import {
-  authenticateUser,
-  storeUserAccessData,
-} from "@common/actions/authenticationActions";
+import { isAuthenticated, getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { authenticateUser, storeUserAccessData } from "@common/actions/authenticationActions";
 import { USER_ROLES } from "@mds/common";
 import NullScreen from "@/components/common/NullScreen";
 
@@ -38,7 +32,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
   const authenticationGuard = (props) => {
     const { keycloak, initialized } = useKeycloak();
 
-    const checkLogin = () => {
+    const authenticate = () => {
       if (!keycloak.authenticated) {
         keycloak.login();
       }
@@ -49,10 +43,10 @@ export const AuthenticationGuard = (WrappedComponent) => {
       }
     };
 
-    checkLogin();
+    authenticate();
 
     useEffect(() => {
-      checkLogin();
+      authenticate();
     }, [initialized, keycloak.authenticated]);
 
     const isAuthorized =

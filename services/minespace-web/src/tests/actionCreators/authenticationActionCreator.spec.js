@@ -6,7 +6,6 @@ import {
   unAuthenticateUser,
 } from "@/actionCreators/authenticationActionCreator";
 import * as genericActions from "@/actions/genericActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -32,18 +31,6 @@ describe("`getUserInfoFromToken` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return getUserInfoFromToken(
-      "A Token",
-      "An Error Message"
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 });

@@ -8,10 +8,7 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 import { useKeycloak } from "@react-keycloak/web";
 import { KEYCLOAK } from "@mds/common";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
-import {
-  authenticateUser,
-  getUserInfoFromToken,
-} from "@/actionCreators/authenticationActionCreator";
+import { authenticateUser } from "@/actionCreators/authenticationActionCreator";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
 import * as route from "@/constants/routes";
@@ -23,7 +20,6 @@ import * as ENV from "@/constants/environment";
  */
 
 const propTypes = {
-  getUserInfoFromToken: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   authenticateUser: PropTypes.func.isRequired,
 };
@@ -47,21 +43,19 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       });
     }
 
-    const authenticate = async () => {
+    const authenticate = () => {
       const authenticationInProgressFlag = localStorage.getItem("authenticationInProgressFlag");
-      const token = keycloak.token ?? null;
+      const token = keycloak.tokenParsed ?? null;
       const { type } = queryString.parse(window.location.search);
 
       if (keycloak.authenticated && !authenticationInProgressFlag && !type) {
         localStorage.setItem("authenticationInProgressFlag", true);
-        await props.authenticateUser(token).catch(() => {
-          localStorage.removeItem("authenticationInProgressFlag");
-        });
+        props.authenticateUser(token);
       }
       // standard Authentication flow on initial load,
       // if token exists, authenticate user.
       if (token && !props.isAuthenticated) {
-        await props.getUserInfoFromToken(token);
+        props.authenticateUser(token);
       }
     };
 
@@ -78,9 +72,8 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     }
     if (authInProgress) {
       return <Loading />;
-    } 
-      return <UnauthenticatedNotice />;
-    
+    }
+    return <UnauthenticatedNotice />;
   };
 
   hoistNonReactStatics(authenticationGuard, WrappedComponent);
@@ -92,7 +85,6 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
       {
-        getUserInfoFromToken,
         authenticateUser,
       },
       dispatch

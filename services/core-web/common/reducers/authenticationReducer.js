@@ -15,13 +15,14 @@ export const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATE_USER:
       const tokenParsed = action.payload.userInfo;
-      const preferred_username = tokenParsed.idir_username ?? tokenParsed.preferred_username;
+      const preferred_username =
+        tokenParsed.idir_username ?? tokenParsed.bceid_username ?? tokenParsed.preferred_username;
       return {
         ...state,
         isAuthenticated: true,
         userInfo: {
-          ...action.payload.userInfo, 
-          preferred_username
+          ...action.payload.userInfo,
+          preferred_username,
         },
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
