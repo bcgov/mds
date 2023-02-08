@@ -81,6 +81,9 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
     parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('verbal_notification_provided', type=inputs.boolean, location='json')
+    parser.add_argument('verbal_notification_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -153,6 +156,8 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.johsc_management_rep_contact_timestamp = data.get('johsc_management_rep_contact_timestamp')
         incident.reported_to_inspector_contacted = data.get('reported_to_inspector_contacted')
         incident.reported_to_inspector_contact_method = data.get('reported_to_inspector_contact_method')
+        incident.verbal_notification_provided = data.get('verbal_notification_provided')
+        incident.verbal_notification_timestamp = data.get('verbal_notification_timestamp')
 
         incident.status_code = data.get('status_code')
 
@@ -295,6 +300,8 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
     parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('verbal_notification_provided', type=inputs.boolean, location='json')
+    parser.add_argument('verbal_notification_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all

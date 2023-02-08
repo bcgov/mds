@@ -104,6 +104,8 @@ MINE_INCIDENT_MODEL = api.model(
         'johsc_management_rep_contacted': fields.Boolean,
         'johsc_management_rep_contact_method': fields.String,
         'johsc_management_rep_contact_timestamp': fields.DateTime,
+        'verbal_confirmation_provided': fields.Boolean,
+        'verbal_confirmation_timestamp': fields.DateTime,
     })
 
 MINE_INCIDENT_NOTE_MODEL = api.model(
