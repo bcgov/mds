@@ -134,7 +134,7 @@ const Incidents = (props) => {
           >
             Click here
           </a>
-          for more information on mining incidents and dangerous occurrences in British Columbia.
+          for more information on reportable incidents.
         </Typography.Paragraph>
         <IncidentsTable
           isLoaded={isLoaded}
