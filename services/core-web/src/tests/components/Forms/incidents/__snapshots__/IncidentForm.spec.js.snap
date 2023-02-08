@@ -683,6 +683,54 @@ exports[`IncidentForm renders properly 1`] = `
               span={24}
             >
               <h4>
+                Verbal Notification
+              </h4>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <FormItem
+                hasFeedback={false}
+                label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)"
+              >
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id="verbal_notification_provided"
+                  name="verbal_notification_provided"
+                />
+              </FormItem>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <FormItem
+                hasFeedback={false}
+                label="Date and time"
+              >
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id="verbal_notification_timestamp"
+                  name="verbal_notification_timestamp"
+                  placeholder="Please select date"
+                  showTime={true}
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              span={24}
+            >
+              <h4>
                 Follow-Up Information
               </h4>
             </Col>

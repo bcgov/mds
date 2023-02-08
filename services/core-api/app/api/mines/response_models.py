@@ -489,7 +489,9 @@ MINE_INCIDENT_MODEL = api.model(
         'update_user': fields.String,
         'update_timestamp': fields.Date,
         'create_user': fields.String,
-        'create_timestamp': fields.DateTime
+        'create_timestamp': fields.DateTime,
+        'verbal_notification_provided': fields.Boolean,
+        'verbal_notification_timestamp': DateTime,
     })
 
 MINE_ALERT_MODEL = api.model(
