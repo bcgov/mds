@@ -232,7 +232,8 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            incident.send_incidents_email()
+            if incident.status_code != 'DFT':
+                incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
@@ -353,10 +354,12 @@ class MineIncidentResource(Resource, UserMixin):
                     # Need to send an email to the proponent and OIC with mostly same content just slightly different.
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
+                    current_app.logger.info(f'Awaiting Final Report email sent for ({incident.mine_incident_report_no}) on ({incident.mine_name})')
                     trigger_notification(f'A new Mine Incident has been created for ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 if value == 'FRS':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
+                    current_app.logger.info(f'Final Report Received email sent for ({incident.mine_incident_report_no}) on ({incident.mine_name})')
                     trigger_notification(f'A final report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 setattr(incident, key, value)
             else:
