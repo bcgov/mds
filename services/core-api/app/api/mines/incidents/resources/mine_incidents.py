@@ -232,7 +232,8 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            incident.send_incidents_email()
+            if incident.status_code != 'DFT':
+                incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
