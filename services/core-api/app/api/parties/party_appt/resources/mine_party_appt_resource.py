@@ -169,7 +169,7 @@ class MinePartyApptResource(Resource, UserMixin):
         elif mine_party_appt_type_code == 'EOR':
             mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
         
-        if end_current and not is_minespace_user():
+        if end_current and (not is_minespace_user() or mine_party_appt_type_code == 'TQP'):
             new_status = MinePartyAppointmentStatus.active
             MinePartyAppointment.end_current(
                 mine_guid=mine_guid,
