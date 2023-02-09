@@ -883,7 +883,8 @@ exports[`IncidentForm renders properly 1`] = `
             <ForwardRef(LockOutlined)
               className="violet"
             />
-             Internal Documents and Comments (Ministry Visible Only)
+             
+            Internal Documents and Comments (Ministry Visible Only)
           </Title>
           <Divider />
           <div
