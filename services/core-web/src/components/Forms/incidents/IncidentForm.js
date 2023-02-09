@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Field, FieldArray, reduxForm, change, getFormValues, formValueSelector } from "redux-form";
 import { LockOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
@@ -546,6 +546,8 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
   const { inspectorContactedValidation, inspectorContacted } =
     retrieveInitialReportDynamicValidation(childProps);
 
+  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
+
   return (
     <Row>
       <Col span={24}>
@@ -567,8 +569,8 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
               />
             </Form.Item>
           </Col>
-          {childProps.formValues?.determination_type_code &&
-            childProps.formValues?.determination_type_code !==
+          {formValues?.determination_type_code &&
+            formValues?.determination_type_code !==
               Strings.INCIDENT_DETERMINATION_TYPES.pending && (
               <Col xs={24} md={12}>
                 <Form.Item label="* Inspector who made the determination">
@@ -583,7 +585,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                 </Form.Item>
               </Col>
             )}
-          {childProps.formValues?.determination_type_code ===
+          {formValues?.determination_type_code ===
             Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
             <Col xs={24} md={12}>
               <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
@@ -612,23 +614,24 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
               />
             </Form.Item>
           </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Date and time">
-              <Field
-                id="verbal_notification_timestamp"
-                name="verbal_notification_timestamp"
-                component={renderConfig.DATE}
-                showTime
-                disabled={!isEditMode}
-                placeholder="Please select date"
-                validate={[
-                  required,
-                  dateNotInFuture,
-                  dateNotBeforeStrictOther(childProps.formValues.incident_timestamp),
-                ]}
-              />
-            </Form.Item>
-          </Col>
+          {formValues.verbal_notification_provided && (
+            <Col md={12} xs={24}>
+              <Form.Item label="Date and time">
+                <Field
+                  id="verbal_notification_timestamp"
+                  name="verbal_notification_timestamp"
+                  component={renderConfig.DATE}
+                  showTime
+                  disabled={!isEditMode}
+                  placeholder="Please select date"
+                  validate={[
+                    dateNotInFuture,
+                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col span={24}>
             <h4>Follow-Up Information</h4>
           </Col>
@@ -670,7 +673,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                     validate={[
                       required,
                       dateNotInFuture,
-                      dateNotBeforeStrictOther(childProps.formValues.incident_timestamp),
+                      dateNotBeforeStrictOther(formValues.incident_timestamp),
                     ]}
                   />
                 </Form.Item>
@@ -721,7 +724,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                 component={renderConfig.DATE}
                 validate={[
                   dateNotInFuture,
-                  dateNotBeforeStrictOther(childProps.formValues.incident_timestamp),
+                  dateNotBeforeStrictOther(formValues.incident_timestamp),
                 ]}
                 disabled={!isEditMode}
               />

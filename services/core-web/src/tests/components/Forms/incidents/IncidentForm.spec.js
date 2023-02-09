@@ -1,7 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
+import { Provider } from "react-redux";
 import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { store } from "@/App";
 
 const dispatchProps = {};
 const props = {};
@@ -46,7 +48,11 @@ beforeEach(() => {
 
 describe("IncidentForm", () => {
   it("renders properly", () => {
-    const component = shallow(<IncidentForm {...dispatchProps} {...props} />);
+    const component = shallow(
+      <Provider store={store}>
+        <IncidentForm {...dispatchProps} {...props} />
+      </Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });
