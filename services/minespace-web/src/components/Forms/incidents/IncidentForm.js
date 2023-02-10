@@ -157,6 +157,20 @@ const incidentStatusCalloutContent = (statusCode) => {
         title: "This Incident Has been closed",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
+    case "RSS":
+      return {
+        message:
+          "The severity of this incident's status is currently under review by ministry staff. You will be notified if further information is required.",
+        title: "This Incident's Severity Status is being Reviewed",
+        severity: Strings.CALLOUT_SEVERITY.warning,
+      };
+    case "IMS":
+      return {
+        message:
+          "This incident is missing critical information, please refer to your communications with ministry staff and resubmit with additional information.",
+        title: "This Incident is missing information",
+        severity: Strings.CALLOUT_SEVERITY.warning,
+      };
     default:
       return {
         message: null,
@@ -857,7 +871,7 @@ export const IncidentForm = (props) => {
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
         <Col {...parentColumnProps}>
-          {props.isFinalReviewStage && renderIncidentStatusCallout(props)}
+          {renderIncidentStatusCallout(props)}
           {renderInitialReport(props, formDisabled)}
           <br />
           {renderReporterDetails(props, formDisabled)}
