@@ -23,7 +23,7 @@ exports[`IncidentForm renders properly 1`] = `
                 }
               }
             >
-              This Incident Has been closed
+              This Incident Has Been Closed
             </h4>
             <p>
               This incident has been reviewed and has been closed.
