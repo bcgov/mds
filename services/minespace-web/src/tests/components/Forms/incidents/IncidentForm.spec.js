@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
+import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
