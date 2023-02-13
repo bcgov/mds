@@ -103,18 +103,18 @@ The MDS document generator service makes use of the Common Services team's [Docu
 
 **I want to transfer all documents that exist on the filesystem to the object store**
 
-1.  Get a list of untransferred files:<br/>
+1.  Get a list of untransferred files:
     `flask untransferred-files`
-2.  Transfer those files to the object store:<br/>
-    `flask transfer-files`<br/>
+2.  Transfer those files to the object store:
+    `flask transfer-files`
     You can view the output of the task in the celery logfile.
 3.  Check the result of the transfer in the logfile or in the result backend. Act accordingly depending on the status of the job.
-4.  Get a list of untransferred files:<br/>
-    `flask untransferred-files`<br/>
+4.  Get a list of untransferred files:
+    `flask untransferred-files`
     If the previous transfer task was successful, this list should be empty. If it contains documents, you should see the reason why in the job results.
-5.  Double-check that the transfer task was successful and that all locally-stored files match their corresponding files on the object store:<br/>
-    `flask verify-files`<br/>
-    If you want, log into Cyberduck or another tool to view the files that were transferred to the object store.<br/>
+5.  Double-check that the transfer task was successful and that all locally-stored files match their corresponding files on the object store:
+    `flask verify-files`
+    If you want, log into Cyberduck or another tool to view the files that were transferred to the object store.
 
 See [here](https://github.com/bcgov/mds/pull/1380/) for a more detailed instructional workflow.
 
@@ -144,7 +144,7 @@ The project then moved on to shared keycloack instance (silver SSO) hosted by th
 
 Benefits:
 
-- Not having to maintain the keycloack instance (the plfrom team does it for us)
+- Not having to maintain the keycloack instance (the platform team does it for us)
 - Having a full realm with admin access, the team could configure and control the parameters as required
 
 There were several issues with this approach for the platform team (it was great for teams that had full realms though!)
@@ -155,7 +155,7 @@ Cons:
 - Most teams required the same features (IDIR, BCeID login) but had different implementations.
 - Some teams required specalized features that needed instance level changes (hard coupling)
 
-Since most projects need the standard setup anyways, it was deicede to move to an offering that does the basic things very well and specialized requirements will be handled by the teams themselves, with custom keycloak implementations.
+Since most projects need the standard setup anyways, it was decided to move to an offering that does the basic things very well and specialized requirements will be handled by the teams themselves, with custom keycloak implementations.
 
 [Read More about standard service here](https://github.com/bcgov/sso-keycloak/wiki#standard-service)
 
