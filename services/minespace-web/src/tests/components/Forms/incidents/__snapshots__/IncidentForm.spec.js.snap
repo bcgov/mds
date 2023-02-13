@@ -12,6 +12,27 @@ exports[`IncidentForm renders properly 1`] = `
       offset={4}
       span={16}
     >
+      <Callout
+        message={
+          <div>
+            <h4
+              style={
+                Object {
+                  "color": "#313132",
+                  "fontWeight": 700,
+                }
+              }
+            >
+              This Incident Has been closed
+            </h4>
+            <p>
+              This incident has been reviewed and has been closed.
+            </p>
+          </div>
+        }
+        severity="warning"
+        style={Object {}}
+      />
       <Row>
         <Col
           span={24}
