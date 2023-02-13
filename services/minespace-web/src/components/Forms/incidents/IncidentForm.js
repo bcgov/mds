@@ -126,7 +126,7 @@ const incidentStatusCalloutContent = (statusCode) => {
     case "FRS":
       return {
         message:
-          "This incident has not yet been reviewed by ministry staff. You will be notified if further clarification is required.",
+          "This incident has not yet been reviewed by Ministry staff. You will be notified if further clarification is required.",
         title: "This Incident is Pending Ministry Review",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
@@ -134,41 +134,41 @@ const incidentStatusCalloutContent = (statusCode) => {
       return {
         message:
           "This incident has been reviewed and is currently under investigation. You will be notified if further clarification is required.",
-        title: "This Incident is under investigation",
+        title: "This Incident is Under Investigation",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     case "UNR":
       return {
         message:
           "This incident has been reviewed and is currently under investigation. You will be notified if further clarification is required.",
-        title: "This Incident is under investigation",
+        title: "This Incident is Under Investigation",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     case "MIU":
       return {
         message:
           "This incident has been reviewed and is currently under investigation. You will be notified if further clarification is required.",
-        title: "This Incident is under investigation",
+        title: "This Incident is Under Investigation",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     case "CLD":
       return {
         message: "This incident has been reviewed and has been closed.",
-        title: "This Incident Has been closed",
+        title: "This Incident Has Been Closed",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     case "RSS":
       return {
         message:
-          "The severity of this incident's status is currently under review by ministry staff. You will be notified if further information is required.",
+          "The severity of this incident's status is currently under review by Ministry staff. You will be notified if further information is required.",
         title: "This Incident's Severity Status is being Reviewed",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     case "IMS":
       return {
         message:
-          "This incident is missing critical information, please refer to your communications with ministry staff and resubmit with additional information.",
-        title: "This Incident is missing information",
+          "This incident is missing critical information, please refer to your communications with Ministry staff and resubmit with additional information.",
+        title: "This Incident is Missing Information",
         severity: Strings.CALLOUT_SEVERITY.warning,
       };
     default:
