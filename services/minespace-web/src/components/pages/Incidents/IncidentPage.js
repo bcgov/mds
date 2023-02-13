@@ -85,7 +85,7 @@ export const sideMenuOptions = [
   { href: "ministry-follow-up", title: "Ministry Follow Up" },
 ];
 
-const IncidentPage = (props) => {
+export const IncidentPage = (props) => {
   const { match, location, incident, formErrors, formIsDirty } = props;
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
