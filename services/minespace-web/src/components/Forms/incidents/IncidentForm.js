@@ -860,7 +860,7 @@ const renderMinistryFollowUp = (childProps, formDisabled) => {
   );
 };
 
-const IncidentForm = (props) => {
+export const IncidentForm = (props) => {
   const {
     setConfirmedSubmission,
     confirmedSubmission,

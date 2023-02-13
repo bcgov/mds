@@ -1,7 +1,656 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IncidentForm renders properly 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <Row>
+    <Col
+      offset={4}
+      span={16}
+    >
+      <Callout
+        message={
+          <div>
+            <h4
+              id="initial-report"
+              style={
+                Object {
+                  "color": "#313132",
+                  "fontWeight": 700,
+                }
+              }
+            >
+              This Incident Has Been Closed
+            </h4>
+            <p>
+              This incident has been reviewed and has been closed.
+            </p>
+          </div>
+        }
+        severity="warning"
+        style={Object {}}
+      />
+      <Row>
+        <Col
+          span={24}
+        >
+          <Title
+            level={3}
+          >
+            Initial Report
+          </Title>
+          <Paragraph>
+            Select one or more incident types for this submission.
+          </Paragraph>
+          <FormItem
+            hasFeedback={false}
+            label="Incident type(s)"
+          >
+            <Field
+              component={[Function]}
+              data={
+                Array [
+                  Object {
+                    "label": "Health and Safety",
+                    "value": "H&S",
+                  },
+                  Object {
+                    "label": "Geotechnical",
+                    "value": "GTC",
+                  },
+                  Object {
+                    "label": "Environmental",
+                    "value": "ENV",
+                  },
+                  Object {
+                    "label": "Spill",
+                    "value": "SPI",
+                  },
+                ]
+              }
+              disabled={false}
+              id="categories"
+              name="categories"
+              placeholder="Select incident type(s)"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+      </Row>
+      <br />
+      <Row
+        gutter={
+          Array [
+            16,
+          ]
+        }
+      >
+        <Col
+          span={24}
+        >
+          <Title
+            level={4}
+          >
+            Reporter Details
+          </Title>
+          <Paragraph>
+            Enter all available details about the reporter of this incident.
+          </Paragraph>
+        </Col>
+        <Col
+          md={10}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Reported by"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="reported_by_name"
+              name="reported_by_name"
+              placeholder="Enter name of reporter"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={10}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Phone number"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="reported_by_phone_no"
+              name="reported_by_phone_no"
+              normalize={[Function]}
+              placeholder="xxx-xxx-xxxx"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={4}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Ext. (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="reported_by_phone_ext"
+              name="reported_by_phone_ext"
+              placeholder="xxxxxx"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={10}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Email"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="reported_by_email"
+              name="reported_by_email"
+              placeholder="example@domain.com"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+      </Row>
+      <br />
+      <Row
+        gutter={
+          Array [
+            16,
+          ]
+        }
+      >
+        <Col
+          span={24}
+        >
+          <Title
+            id="incident-details"
+            level={4}
+          >
+            Incident Details
+          </Title>
+          <Paragraph>
+            Enter more information regarding the reported incident. Some fields may be marked as optional but help the ministry understand the nature of the incident, please consider including them.
+          </Paragraph>
+        </Col>
+        <Col
+          span={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Incident date and time"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="incident_timestamp"
+              name="incident_timestamp"
+              placeholder="Please select date and time"
+              showTime={true}
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Proponent incident number (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="proponent_incident_no"
+              name="proponent_incident_no"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Number of injuries (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="number_of_injuries"
+              name="number_of_injuries"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Number of fatalities (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="number_of_fatalities"
+              name="number_of_fatalities"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Were emergency services called? (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="emergency_services_called"
+              name="emergency_services_called"
+              placeholder="Please choose one"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Description of incident"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="incident_description"
+              name="incident_description"
+              placeholder="Provide a detailed description of the incident"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Immediate measures taken (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="immediate_measures_taken"
+              name="immediate_measures_taken"
+              placeholder="Provide a detailed description of any immediate measures taken"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="If any injuries, please describe (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="injuries_description"
+              name="injuries_description"
+              placeholder="Provide a detailed description of any injuries"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Divider />
+        <Col
+          span={24}
+        >
+          <Title
+            level={4}
+          >
+            Inspectors, OHSC, Local Union or Worker Representatives
+          </Title>
+        </Col>
+        <Col
+          span={24}
+        >
+          <Paragraph>
+            Please enter the details of those who have been contacted
+          </Paragraph>
+        </Col>
+        <Col
+          span={24}
+        >
+          <Title
+            level={5}
+          >
+            Verbal Notification
+          </Title>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="verbal_notification_provided"
+              name="verbal_notification_provided"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <hr />
+          <Title
+            level={5}
+          >
+            OHSC Worker Representative
+          </Title>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="OHSC Worker Rep Name (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="johsc_worker_rep_name"
+              name="johsc_worker_rep_name"
+              placeholder="Enter name"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Has this person already been informed of the incident?"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="johsc_worker_rep_contacted"
+              name="johsc_worker_rep_contacted"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <hr />
+          <Title
+            level={5}
+          >
+            OHSC Management Representative
+          </Title>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="OHSC Management Rep Name (optional)"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="johsc_management_rep_name"
+              name="johsc_management_rep_name"
+              placeholder="Enter name"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Has this person already been informed of the incident?"
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              id="johsc_management_rep_contacted"
+              name="johsc_management_rep_contacted"
+            />
+          </FormItem>
+        </Col>
+      </Row>
+      <br />
+      <br />
+      <Row>
+        <Col
+          span={24}
+        >
+          <Row>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <Title
+                level={4}
+              >
+                Initial Notification Documents
+              </Title>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <div
+                className="right center-mobile"
+              >
+                <Button
+                  block={false}
+                  className="full-mobile violet violet-border"
+                  ghost={false}
+                  htmlType="button"
+                  id="mine-incident-add-documentation"
+                  loading={false}
+                  onClick={[Function]}
+                  type="secondary"
+                >
+                  + Add Documentation
+                </Button>
+              </div>
+            </Col>
+          </Row>
+          <DocumentTable
+            deletePayload={
+              Object {
+                "mineGuid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                "mineIncidentGuid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+              }
+            }
+            deletePermission={true}
+            documentColumns={
+              Array [
+                Object {
+                  "dataIndex": "update_user",
+                  "render": [Function],
+                  "title": "Uploader",
+                },
+                Object {
+                  "dataIndex": "upload_date",
+                  "render": [Function],
+                  "sorter": [Function],
+                  "title": "Upload Date",
+                },
+              ]
+            }
+            documentParent="Mine Incident"
+            documents={
+              Array [
+                Object {
+                  "document_manager_guid": "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+                  "document_name": "Amazing_PDF.pdf",
+                  "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+                  "mine_incident_document_type_code": "INI",
+                },
+              ]
+            }
+            handleDeleteDocument={[Function]}
+          />
+          <Row>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <Title
+                id="final-report"
+                level={4}
+              >
+                Final Report Documents
+              </Title>
+            </Col>
+          </Row>
+          <DocumentTable
+            deletePayload={
+              Object {
+                "mineGuid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                "mineIncidentGuid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+              }
+            }
+            deletePermission={true}
+            documentColumns={
+              Array [
+                Object {
+                  "dataIndex": "update_user",
+                  "render": [Function],
+                  "title": "Uploader",
+                },
+                Object {
+                  "dataIndex": "upload_date",
+                  "render": [Function],
+                  "sorter": [Function],
+                  "title": "Upload Date",
+                },
+              ]
+            }
+            documentParent="Mine Incident"
+            documents={Array []}
+            handleDeleteDocument={[Function]}
+          />
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+</Form>
 `;
