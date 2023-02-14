@@ -1,938 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IncidentForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[Function]}
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <Col
-    span={24}
+  <IncidentForm
+    change={[MockFunction]}
+    documents={
+      Array [
+        Object {
+          "mine_incident_document_type_code": "INI",
+        },
+      ]
+    }
+    formValues={
+      Object {
+        "final_report_documents": Array [],
+        "initial_incident_documents": Array [],
+        "internal_ministry_documents": Array [],
+      }
+    }
+    handleSubmit={[MockFunction]}
+    handlers={
+      Object {
+        "deleteDocument": [MockFunction],
+      }
+    }
+    incident={
+      Object {
+        "dangerous_occurrence_subparagraph_ids": Array [
+          1747,
+        ],
+        "determination_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+        "determination_type_code": "DO",
+        "documents": Array [
+          Object {
+            "document_manager_guid": "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+            "document_name": "Amazing_PDF.pdf",
+            "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+            "mine_incident_document_type_code": "INI",
+          },
+        ],
+        "emergency_services_called": false,
+        "followup_inspection": false,
+        "followup_inspection_date": null,
+        "followup_investigation_type_code": "NO",
+        "incident_description": "sHDJGFJAS",
+        "incident_timestamp": "2019-07-04 14:05",
+        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+        "mine_incident_guid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+        "mine_incident_id_year": 2019,
+        "mine_incident_no": null,
+        "mine_incident_report_no": "2019-48",
+        "mms_inspector_initials": null,
+        "number_of_fatalities": 0,
+        "number_of_injuries": 0,
+        "proponent_incident_no": "",
+        "recommendations": Array [],
+        "reported_by_email": "jake.doe@gmail.com",
+        "reported_by_name": "Jake Doe",
+        "reported_by_phone_ext": null,
+        "reported_by_phone_no": "250-360-9494",
+        "reported_timestamp": "2019-07-04 14:05",
+        "reported_to_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+        "responsible_inspector_party_guid": "eda69201-b283-44ed-92b9-bcbcb5b83e69",
+        "status_code": "CLD",
+      }
+    }
+    incidentCategoryCodeOptions={Array []}
+    incidentFollowUpActionOptions={
+      Array [
+        Object {
+          "mine_incident_followup_investigation_type": "TEST",
+        },
+      ]
+    }
+    isEditMode={false}
+    match={
+      Object {
+        "mineGuid": "448014a5-981f-47b8-8687-4963666776b8",
+        "mineIncidentGuid": "668014a5-981f-47b8-8687-4963666776b9",
+      }
+    }
   />
-  <Row>
-    <Col
-      span={24}
-    >
-      <div
-        className="right center-mobile violet"
-      >
-        <Button
-          block={false}
-          className="full-mobile violet violet-border"
-          ghost={false}
-          htmlType="button"
-          id="mine-incident-edit"
-          loading={false}
-          type="secondary"
-        >
-          <img
-            alt="pencil"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-           Edit Incident
-        </Button>
-      </div>
-    </Col>
-    <Col
-      offset={4}
-      span={16}
-    >
-      <Row>
-        <Col
-          span={24}
-        >
-          <Title
-            id="initial-report"
-            level={3}
-          >
-            Initial Report
-          </Title>
-          <h4>
-            Reporter Details
-          </h4>
-          <Paragraph>
-            Enter all available details about the reporter of this incident.
-          </Paragraph>
-          <Row
-            gutter={
-              Array [
-                16,
-              ]
-            }
-          >
-            <Col
-              md={10}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Reported by"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="reported_by_name"
-                  name="reported_by_name"
-                  placeholder="Enter name of reporter..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={10}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Phone number"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="reported_by_phone_no"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={4}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Ext."
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="reported_by_phone_ext"
-                  name="reported_by_phone_ext"
-                  placeholder="xxxxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={10}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Email"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="reported_by_email"
-                  name="reported_by_email"
-                  placeholder="example@domain.com"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-          </Row>
-          <br />
-        </Col>
-        <Col
-          span={24}
-        >
-          <h4
-            id="incident-details"
-          >
-            Incident Details
-          </h4>
-          <Paragraph>
-            Enter more information regarding the reported incident. Some fields may be marked as optional but help the ministry understand the nature of the incident, please consider including them.
-          </Paragraph>
-          <Row
-            gutter={
-              Array [
-                16,
-              ]
-            }
-          >
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Incident type(s)"
-              >
-                <Field
-                  component={[Function]}
-                  data={Array []}
-                  disabled={true}
-                  id="categories"
-                  name="categories"
-                  placeholder="Select incident type(s)..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Incident date"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="incident_date"
-                  name="incident_date"
-                  placeholder="Please select date..."
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Incident time"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  fullWidth={true}
-                  id="incident_time"
-                  name="incident_time"
-                  placeholder="Please select time..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Proponent incident number (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="proponent_incident_no"
-                  name="proponent_incident_no"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Number of injuries (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="number_of_injuries"
-                  name="number_of_injuries"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Number of fatalities (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="number_of_fatalities"
-                  name="number_of_fatalities"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Were emergency services called? (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="emergency_services_called"
-                  name="emergency_services_called"
-                  placeholder="Please choose one..."
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="* Description of incident"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="incident_description"
-                  name="incident_description"
-                  placeholder="Provide a detailed description of the incident..."
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Immediate measures taken (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="immediate_measures_taken"
-                  name="immediate_measures_taken"
-                  placeholder="Provide a detailed description of any immediate measures taken..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="If any injuries, please describe (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="injuries_description"
-                  name="injuries_description"
-                  placeholder="Provide a detailed description of any injuries..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Divider />
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="JOHSC/Worker Rep Name (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="johsc_worker_rep_name"
-                  name="johsc_worker_rep_name"
-                  placeholder="Enter name of representative..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was this person contacted? (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="johsc_worker_rep_contacted"
-                  name="johsc_worker_rep_contacted"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="JOHSC/Management Rep Name (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="johsc_management_rep_name"
-                  name="johsc_management_rep_name"
-                  placeholder="Enter name of representative..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was this person contacted? (optional)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="johsc_management_rep_contacted"
-                  name="johsc_management_rep_contacted"
-                />
-              </FormItem>
-              <br />
-            </Col>
-          </Row>
-          <br />
-        </Col>
-      </Row>
-      <br />
-      <Row>
-        <Col
-          span={24}
-        >
-          <Title
-            id="documentation"
-            level={3}
-          >
-            Documentation
-          </Title>
-          <Row>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <h4>
-                Upload Initial Notification Documents
-              </h4>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <div
-                className="right center-mobile"
-              >
-                <Button
-                  block={false}
-                  className="full-mobile violet violet-border"
-                  ghost={false}
-                  htmlType="button"
-                  id="mine-incident-add-documentation"
-                  loading={false}
-                  type="secondary"
-                >
-                  + Add Documentation
-                </Button>
-              </div>
-            </Col>
-          </Row>
-          <br />
-          <h4>
-            Incident Documents
-          </h4>
-          <br />
-          <Paragraph>
-            Please upload any initial notifications that will provide context with this incident report.
-          </Paragraph>
-        </Col>
-        <Col
-          span={24}
-        >
-          <DocumentTable
-            additionalColumnProps={Array []}
-            documentColumns={
-              Array [
-                Object {
-                  "dataIndex": "document_name",
-                  "render": [Function],
-                  "sorter": [Function],
-                  "title": "Name",
-                },
-                Object {
-                  "dataIndex": "update_user",
-                  "render": [Function],
-                  "title": "Uploaded",
-                },
-                Object {
-                  "dataIndex": "upload_date",
-                  "render": [Function],
-                  "sorter": [Function],
-                  "title": "Upload Date",
-                },
-              ]
-            }
-            documentParent="Mine Incident"
-            documents={
-              Array [
-                Object {
-                  "key": undefined,
-                  "mine_incident_document_type_code": "INI",
-                },
-              ]
-            }
-            excludedColumnKeys={Array []}
-            isViewOnly={false}
-            removeDocument={false}
-          />
-          <br />
-        </Col>
-        <Col
-          span={24}
-        >
-          <h4
-            id="final-report"
-          >
-            Final Report
-          </h4>
-          <br />
-        </Col>
-        <Col
-          span={24}
-        >
-          <DocumentTable
-            additionalColumnProps={Array []}
-            documentColumns={
-              Array [
-                Object {
-                  "dataIndex": "document_name",
-                  "render": [Function],
-                  "sorter": [Function],
-                  "title": "Name",
-                },
-                Object {
-                  "dataIndex": "update_user",
-                  "render": [Function],
-                  "title": "Uploaded",
-                },
-                Object {
-                  "dataIndex": "upload_date",
-                  "render": [Function],
-                  "sorter": [Function],
-                  "title": "Upload Date",
-                },
-              ]
-            }
-            documentParent="Mine Incident"
-            documents={Array []}
-            excludedColumnKeys={Array []}
-            isViewOnly={false}
-            removeDocument={false}
-          />
-          <br />
-        </Col>
-        <Col
-          span={24}
-        >
-          <Empty
-            description={
-              <div
-                className="center"
-              >
-                <Paragraph
-                  strong={true}
-                >
-                  This incident requires a final investigation report.
-                </Paragraph>
-                <Paragraph>
-                  Pursuant to section 1.7.2 of the HSRC, an investigation report must be submitted within 60 days of the reportable incident. Please add the final report documentation by clicking below
-                </Paragraph>
-                <ForwardRef(InternalButton)
-                  block={false}
-                  ghost={false}
-                  htmlType="button"
-                  loading={false}
-                  type="primary"
-                >
-                  Add Final Report
-                </ForwardRef(InternalButton)>
-              </div>
-            }
-            image={<Simple />}
-          />
-        </Col>
-      </Row>
-      <br />
-      <Row>
-        <Col
-          span={24}
-        >
-          <Title
-            id="ministry-follow-up"
-            level={3}
-          >
-            Ministry Follow Up
-          </Title>
-          <h4>
-            Dangerous Occurence Determination
-          </h4>
-          <Row
-            gutter={16}
-          >
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Inspector's Determination"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="determination_type_code"
-                  name="determination_type_code"
-                  placeholder="Select determination..."
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <h4>
-                Verbal Notification
-              </h4>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="verbal_notification_provided"
-                  name="verbal_notification_provided"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Date and time"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="verbal_notification_timestamp"
-                  name="verbal_notification_timestamp"
-                  placeholder="Please select date"
-                  showTime={true}
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <h4>
-                Follow-Up Information
-              </h4>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Incident reported to"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  format={null}
-                  id="reported_to_inspector_party_guid"
-                  name="reported_to_inspector_party_guid"
-                  placeholder="Search for inspector..."
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was this person contacted?"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="reported_to_inspector_contacted"
-                  name="reported_to_inspector_contacted"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Inspector responsible"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  format={null}
-                  id="responsible_inspector_party_guid"
-                  name="responsible_inspector_party_guid"
-                  placeholder="Search for responsible inspector..."
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was there a follow-up inspection?"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="followup_inspection"
-                  name="followup_inspection"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Follow-up inspection date"
-              >
-                <Field
-                  component={[Function]}
-                  disabled={true}
-                  id="followup_inspection_date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date..."
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Was it escalated to EMLI investigation?"
-              >
-                <Field
-                  component={[Function]}
-                  customOptions={
-                    Array [
-                      Object {
-                        "mine_incident_followup_investigation_type": "TEST",
-                      },
-                    ]
-                  }
-                  disabled={true}
-                  id="followup_investigation_type_code"
-                  name="followup_investigation_type_code"
-                  validate={[Function]}
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={24}
-            >
-              <FormItem
-                hasFeedback={false}
-                label="Mine manager's recommendations"
-              >
-                <FieldArray
-                  component={[Function]}
-                  handlers={
-                    Object {
-                      "deleteDocument": [MockFunction],
-                    }
-                  }
-                  id="recommendations"
-                  isEditMode={false}
-                  name="recommendations"
-                />
-              </FormItem>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <br />
-      <Row>
-        <Col
-          span={24}
-        >
-          <Title
-            id="internal-documents"
-            level={3}
-          >
-            <ForwardRef(LockOutlined)
-              className="violet"
-            />
-             
-            Internal Documents and Comments (Ministry Visible Only)
-          </Title>
-          <Divider />
-          <div
-            className="center"
-          >
-            <Empty
-              description={
-                <Paragraph
-                  className="center padding-md--top"
-                  strong={true}
-                >
-                  The internal ministry documentation section will be displayed after this incident is created.
-                </Paragraph>
-              }
-              image={<Simple />}
-            />
-          </div>
-        </Col>
-      </Row>
-    </Col>
-    <Col
-      span={24}
-    >
-      <br />
-      <div
-        className="right center-mobile violet"
-      >
-        <Button
-          block={false}
-          className="full-mobile violet violet-border"
-          ghost={false}
-          htmlType="button"
-          id="mine-incident-edit"
-          loading={false}
-          type="secondary"
-        >
-          <img
-            alt="pencil"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-           Edit Incident
-        </Button>
-      </div>
-    </Col>
-  </Row>
-</Form>
+</ContextProvider>
 `;
