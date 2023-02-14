@@ -22,6 +22,8 @@ const setupProps = () => {
   props.history = { push: jest.fn(), replace: jest.fn() };
   props.formValues = {};
   props.formIsDirty = false;
+  props.closeModal = jest.fn();
+  props.openModal = jest.fn();
 };
 
 const setupDispatchProps = () => {
@@ -35,6 +37,7 @@ const setupDispatchProps = () => {
   dispatchProps.touch = jest.fn(() => Promise.resolve());
   dispatchProps.change = jest.fn(() => Promise.resolve());
   dispatchProps.destroy = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
@@ -46,7 +49,7 @@ describe("IncidentPage", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>
-        <IncidentPage {...props} {...dispatchProps} />
+        <IncidentPage {...dispatchProps} {...props} />
       </Provider>
     );
     expect(component).toMatchSnapshot();

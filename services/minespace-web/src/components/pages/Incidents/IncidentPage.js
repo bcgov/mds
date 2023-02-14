@@ -350,7 +350,7 @@ export const IncidentPage = (props) => {
           </Row>
           <Row>
             <Col span={24}>
-              <Link to={routes.MINE_DASHBOARD.dynamicRoute(match.params?.mineGuid, "incidents")}>
+              <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "incidents")}>
                 <ArrowLeftOutlined className="padding-sm--right" />
                 Back to All Incidents
               </Link>
