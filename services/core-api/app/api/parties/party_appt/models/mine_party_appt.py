@@ -31,6 +31,7 @@ class MinePartyAppointmentStatus(str, Enum):
 class MinePartyAcknowledgedStatus(str, Enum):
     acknowledged = 'acknowledged'
     not_acknowledged = 'not_acknowledged'
+    not_required = 'not_required'
 
     def __str__(self):
         return self.value

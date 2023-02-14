@@ -13,6 +13,6 @@ class CustomReqparser():
     def parse_args(self):
         try:
             data = self.parser.parse_args()
-        except BadRequest:
-            raise BadRequest(DEFAULT_MISSING_REQUIRED)
+        except BadRequest as e:
+            raise BadRequest(f'{DEFAULT_MISSING_REQUIRED} {e.data}')
         return data

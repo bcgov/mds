@@ -205,6 +205,8 @@ export class ViewPartyRelationships extends Component {
     payload.end_date = values.end_date;
     payload.union_rep_company = values.union_rep_company;
     payload.related_guid = values.related_guid || payload.related_guid;
+    payload.mine_party_acknowledgement_status = payload.mine_party_acknowledgement_status ?? 'not_required';
+    payload.status = payload.status ?? 'active';
 
     return this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
