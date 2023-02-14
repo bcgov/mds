@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { Provider } from "react-redux";
-import { IncidentPage } from "@/components/pages/Incidents/IncidentPage";
+import StepForms from "@/components/pages/Incidents/IncidentStepForms";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { store } from "@/App";
 
@@ -9,21 +9,22 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.incident = MOCK.INCIDENT;
+  props.formIsDirty = false;
   props.match = {
     params: {
       mineGuid: "5c654fe9-bce5-4ee4-891c-806c46266d54",
       mineIncidentGuid: "4d654fe9-bce5-4ee4-891c-806c46266d55",
     },
   };
-  props.location = {
-    state: { current: 0, mine: MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"] },
-  };
-  props.history = { push: jest.fn(), replace: jest.fn() };
-  props.formValues = {};
-  props.formIsDirty = false;
-  props.closeModal = jest.fn();
-  props.openModal = jest.fn();
+  props.incident = MOCK.INCIDENT;
+  props.isEditMode = false;
+  props.confirmedSubmission = false;
+  props.navigation = { next: jest.fn(), previous: jest.fn() };
+  props.handlers = { save: jest.fn(), deleteDocument: jest.fn(), openModal: jest.fn() };
+  props.formatInitialValues = jest.fn();
+  props.setConfirmedSubmission = jest.fn();
+  props.disabledButton = false;
+  props.isFinalReviewStage = false;
 };
 
 const setupDispatchProps = () => {
@@ -37,7 +38,6 @@ const setupDispatchProps = () => {
   dispatchProps.touch = jest.fn(() => Promise.resolve());
   dispatchProps.change = jest.fn(() => Promise.resolve());
   dispatchProps.destroy = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
@@ -45,11 +45,11 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("IncidentPage", () => {
+describe("IncidentStepForm", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>
-        <IncidentPage {...dispatchProps} {...props} />
+        <StepForms {...props} {...dispatchProps} />
       </Provider>
     );
     expect(component).toMatchSnapshot();

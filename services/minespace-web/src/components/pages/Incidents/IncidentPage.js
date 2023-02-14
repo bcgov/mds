@@ -1,19 +1,19 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import { Link, useParams, withRouter } from "react-router-dom";
 import {
   change,
-  submit,
+  destroy,
   getFormSyncErrors,
   getFormValues,
-  reset,
-  touch,
   isDirty,
-  destroy,
+  reset,
+  submit,
+  touch,
 } from "redux-form";
-import { Button, Row, Col, Steps, Typography, Popconfirm } from "antd";
+import { Col, Row, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -21,8 +21,8 @@ import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
   createMineIncident,
   fetchMineIncident,
-  updateMineIncident,
   removeDocumentFromMineIncident,
+  updateMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { fetchInspectors } from "@common/actionCreators/staticContentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
@@ -30,20 +30,17 @@ import { closeModal, openModal } from "@common/actions/modalActions";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
-import LinkButton from "@/components/common/LinkButton";
 import Loading from "@/components/common/Loading";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import customPropTypes from "@/customPropTypes";
-import { IncidentGetStarted } from "@/components/pages/Incidents/IncidentGetStarted";
-import IncidentForm, {
-  INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD,
+import {
   FINAL_REPORT_DOCUMENTS_FORM_FIELD,
+  INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD,
 } from "@/components/Forms/incidents/IncidentForm";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
+import StepForms from "@/components/pages/Incidents/IncidentStepForms";
 
 const propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
   incident: customPropTypes.incident.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   fetchMineIncident: PropTypes.func.isRequired,
@@ -70,10 +67,8 @@ const propTypes = {
     hash: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
-  // eslint-disable-next-line react/no-unused-prop-types
   formIsDirty: PropTypes.bool.isRequired,
 };
 
@@ -82,7 +77,7 @@ const defaultProps = {
 };
 
 export const POST_SUBMISSION_INCIDENT_STATUSES = ["WNS", "AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
-const sideMenuOptions = [
+export const sideMenuOptions = [
   { href: "initial-report", title: "Initial Report" },
   { href: "incident-details", title: "Incident Details" },
   { href: "documentation", title: "Documentation" },
@@ -90,380 +85,107 @@ const sideMenuOptions = [
   { href: "ministry-follow-up", title: "Ministry Follow Up" },
 ];
 
-const renderReviewSubmitStep = (props, state) => {
-  if (!props.isFinalReviewStage) {
-    return (
-      <IncidentForm
-        setConfirmedSubmission={props.setConfirmedSubmission}
-        confirmedSubmission={props.confirmedSubmission}
-        initialValues={props.initialValues}
-        isReviewSubmitStage
-        isFinalReviewStage={false}
-        applicationSubmitted={false}
-        incident={props?.incident}
-        handlers={{
-          deleteDocument: props.handlers?.handleDeleteDocument,
-          save: props.handlers?.save,
-          openUploadIncidentDocumentsModal: props.handlers?.openModal,
-        }}
-      />
-    );
-  }
-  return (
-    <Row>
-      <Col span={6} className="side-menu-container">
-        <div className={state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <ScrollSideMenu
-            menuOptions={sideMenuOptions}
-            featureUrlRoute={routes.REVIEW_MINE_INCIDENT.hashRoute}
-            featureUrlRouteArguments={[props.incident.mine_guid, props.incident.mine_incident_guid]}
-          />
-        </div>
-      </Col>
-      <Col span={18}>
-        <div
-          className={state.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"}
-        >
-          <IncidentForm
-            setConfirmedSubmission={props.setConfirmedSubmission}
-            confirmedSubmission={props.confirmedSubmission}
-            initialValues={props.initialValues}
-            isReviewSubmitStage={false}
-            isFinalReviewStage={props.isFinalReviewStage}
-            applicationSubmitted
-            incident={props?.incident}
-            handlers={{
-              deleteDocument: props.handlers?.handleDeleteDocument,
-              save: props.handlers?.save,
-              openUploadIncidentDocumentsModal: props.handlers?.openModal,
-            }}
-          />
-        </div>
-      </Col>
-    </Row>
-  );
-};
+export const IncidentPage = (props) => {
+  const { match, location, incident, formErrors, formIsDirty } = props;
 
-const StepForms = (
-  props,
-  state,
-  navigation,
-  handlers,
-  formatInitialValues,
-  setConfirmedSubmission,
-  disabledButton,
-  isFinalReviewStage
-) => [
-  {
-    title: "Get Started",
-    content: <IncidentGetStarted />,
-    buttons: [
-      <React.Fragment key="step-1-buttons">
-        {props.formIsDirty && (
-          <LinkButton
-            style={{ marginRight: "15px" }}
-            onClick={(e) => handlers?.save(e, props.formValues, true)}
-            title="Save Draft"
-          >
-            Save Draft
-          </LinkButton>
-        )}
-        {props.formIsDirty ? (
-          <Popconfirm
-            placement="topRight"
-            title="You have unsaved work, are you sure you want to navigate away from this page?"
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button
-              id="step-1-cancel"
-              type="secondary"
-              style={{ marginRight: "15px" }}
-              onClick={() =>
-                props.history.push(
-                  routes.MINE_DASHBOARD.dynamicRoute(props.match.params?.mineGuid, "incidents")
-                )
-              }
-            >
-              Cancel
-            </Button>
-          </Popconfirm>
-        ) : (
-          <Button
-            id="step-1-cancel"
-            type="secondary"
-            style={{ marginRight: "15px" }}
-            onClick={() =>
-              props.history.push(
-                routes.MINE_DASHBOARD.dynamicRoute(props.match.params?.mineGuid, "incidents")
-              )
-            }
-          >
-            Cancel
-          </Button>
-        )}
-        <Button id="step-1-next" type="primary" onClick={() => navigation?.next()}>
-          Create Record
-        </Button>
-      </React.Fragment>,
-    ],
-  },
-  {
-    title: "Create Record",
-    content: (
-      <IncidentForm
-        initialValues={state.isEditMode ? formatInitialValues(props?.incident) : {}}
-        handlers={{
-          deleteDocument: handlers?.deleteDocument,
-          openUploadIncidentDocumentsModal: handlers?.openModal,
-        }}
-        onSubmit={handlers?.save}
-      />
-    ),
-    buttons: [
-      <React.Fragment key="step-2-buttons">
-        {props.formIsDirty && (
-          <LinkButton
-            style={{ marginRight: "15px" }}
-            onClick={async (e) => {
-              const response = await handlers?.save(e, props.formValues, true);
-              if (response) {
-                const incidentGuid =
-                  props.incident?.mine_incident_guid || response?.mine_incident_guid;
-                const mineGuid = props.incident?.mine_guid || response?.mine_guid;
-                return props.history.push({
-                  pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
-                  state: { current: 1 },
-                });
-              }
-              return null;
-            }}
-            title="Save Draft"
-          >
-            Save Draft
-          </LinkButton>
-        )}
-        <Button
-          id="step-2-cancel"
-          type="secondary"
-          style={{ marginRight: "15px" }}
-          onClick={() => navigation.prev()}
-        >
-          Back
-        </Button>
-        <Button
-          id="step-2-next"
-          type="primary"
-          disabled={disabledButton}
-          onClick={async (e) => {
-            const response = await handlers?.save(e, props.formValues);
-            const incidentGuid = props.incident?.mine_incident_guid || response?.mine_incident_guid;
-            const mineGuid = props.incident?.mine_guid || response?.mine_guid;
-            if (incidentGuid && mineGuid) {
-              return props.history.push({
-                pathname: `${routes.REVIEW_MINE_INCIDENT.dynamicRoute(mineGuid, incidentGuid)}`,
-                state: { current: 2 },
-              });
-            }
-            return null;
-          }}
-        >
-          Review & Submit
-        </Button>
-      </React.Fragment>,
-    ],
-  },
-  {
-    title: "Review & Submit",
-    content: renderReviewSubmitStep(
-      {
-        setConfirmedSubmission,
-        confirmedSubmission: state.confirmedSubmission,
-        initialValues: formatInitialValues(props?.incident),
-        isReviewSubmitStage: state.isReviewSubmitStage,
-        isFinalReviewStage,
-        applicationSubmitted: false,
-        incident: props?.incident,
-        handlers,
-      },
-      state
-    ),
-    buttons: [
-      <React.Fragment key="step-3-buttons">
-        {props.incident.status_code === "DFT" && (
-          <Button
-            id="step-back3"
-            type="tertiary"
-            className="full-mobile"
-            style={{ marginRight: "24px" }}
-            onClick={() => {
-              props.history.push({
-                pathname: `${routes.EDIT_MINE_INCIDENT.dynamicRoute(
-                  props.incident?.mine_guid,
-                  props.incident?.mine_incident_guid
-                )}`,
-                state: { current: 1 },
-              });
-            }}
-          >
-            Back
-          </Button>
-        )}
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to submit your final incident? No changes can be made to the original information provided but you will be able to upload additional documentation."
-          onConfirm={async (e) => {
-            const status_code =
-              props.incident?.documents?.filter(
-                (doc) => doc.mine_incident_document_type_code === "FIN"
-              )?.length > 0
-                ? "FRS"
-                : "AFR";
-            await handlers?.save(e, {
-              ...props.incident,
-              status_code,
-            });
-            const url = routes.MINE_INCIDENT_SUCCESS.dynamicRoute(
-              props.incident?.mine_guid,
-              props.incident?.mine_incident_guid
-            );
-            const urlState = { state: { incident: props.incident } };
+  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
-            return props.history.push({ pathname: url, ...urlState });
-          }}
-          okText="Yes"
-          cancelText="No"
-        >
-          {props.incident.status_code === "DFT" && (
-            <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
-              Submit Now
-            </Button>
-          )}
-        </Popconfirm>
-      </React.Fragment>,
-    ],
-  },
-];
+  const [current, setCurrent] = useState(0);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [confirmedSubmission, setConfirmedSubmission] = useState(false);
+  const [isFinalReviewStage, setIsFinalReviewStage] = useState(false);
 
-export class IncidentPage extends Component {
-  state = {
-    current: 0,
-    isEditMode: false,
-    isLoaded: false,
-    confirmedSubmission: false,
-    fixedTop: false,
-  };
+  const mineName = formValues?.mine_name ?? location.state?.mine?.mine_name ?? "";
+  const title = `Record a Mine Incident - ${mineName}`;
+  const subTitle = isEditMode ? "Edit Mine Incident" : "New Notice of a Reportable Incident";
+  const errors = Object.keys(flattenObject(formErrors));
+  const disabledButton = errors.length > 0;
+  const { mineIncidentGuid, mineGuid } = useParams();
 
-  componentDidMount() {
-    const isFinalReviewStage = sideMenuOptions.find(
-      (opt) => `#${opt.href}` === this.props.location.hash
-    );
-    const currentStep = isFinalReviewStage ? 2 : this.props.location?.state?.current;
-    this.handleFetchData().then(() => {
-      this.setState((prevState) => ({
-        current: currentStep || prevState.current,
-        isLoaded: true,
-        isEditMode: Boolean(this.props.match.params?.mineIncidentGuid),
-      }));
-      this.props.fetchInspectors();
-    });
-    window.addEventListener("scroll", this.handleScroll);
-    this.handleScroll();
+  let headerDivProps = {};
+  if (isFinalReviewStage) {
+    headerDivProps = { className: "padding-lg--left view--header sticky-header" };
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-    this.props.clearMineIncident();
-    this.props.destroy(FORM.ADD_EDIT_INCIDENT);
-  }
-
-  handleScroll = () => {
-    if (window.pageYOffset > 170 && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
-    }
-  };
-
-  handleFetchData = () => {
-    const { mineGuid, mineIncidentGuid } = this.props.match.params;
+  const handleFetchData = () => {
     if (mineGuid && mineIncidentGuid) {
-      return this.props.fetchMineIncident(mineGuid, mineIncidentGuid);
+      return props.fetchMineIncident(mineGuid, mineIncidentGuid);
     }
     return Promise.resolve();
   };
 
-  handleCreateMineIncident = (values, isDraft) => {
-    this.setState({ isLoaded: false });
+  useEffect(() => {
+    handleFetchData().then(() => {
+      setIsLoaded(true);
+      setIsEditMode(Boolean(match.params?.mineIncidentGuid));
+      props.fetchInspectors();
+    });
+
+    return () => {
+      props.clearMineIncident();
+      props.destroy(FORM.ADD_EDIT_INCIDENT);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded && !location.state?.current) {
+      if (incident && incident?.status_code === "DFT") {
+        setCurrent(1);
+      } else {
+        setCurrent(mineIncidentGuid ? 2 : 0);
+      }
+    }
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (location.state?.current) {
+      setCurrent(location.state.current);
+    }
+  }, [location.state?.current]);
+
+  useEffect(() => {
+    if (incident.status_code) {
+      setIsFinalReviewStage(POST_SUBMISSION_INCIDENT_STATUSES.includes(incident.status_code));
+    }
+  }, [incident]);
+
+  const handleCreateMineIncident = (values, isDraft) => {
+    setIsLoaded(false);
     const message = isDraft ? "Successfully created a draft incident." : null;
-    return this.props
-      .createMineIncident(this.props.match.params?.mineGuid, values, message)
-      .then((response) => {
-        return response?.data;
-      });
+    return props.createMineIncident(match.params?.mineGuid, values, message).then((response) => {
+      return response?.data;
+    });
   };
 
-  handleUpdateMineIncident = (values, isDraft) => {
-    const { mineGuid, mineIncidentGuid } = this.props.match.params;
-    this.setState({ isLoaded: false });
-    const isFinalReviewStage = POST_SUBMISSION_INCIDENT_STATUSES.includes(
-      this.props.incident.status_code
-    );
+  const handleUpdateMineIncident = (values, isDraft) => {
+    setIsLoaded(false);
 
     let message;
     if (isDraft) {
       message = "Successfully updated draft incident.";
     } else if (isFinalReviewStage) {
       message = "Successfully updated incident.";
-    } else if (this.props.location?.state?.current === 2 && values.status_code !== "DFT") {
+    } else if (location?.state?.current === 2 && values.status_code !== "DFT") {
       message = "Successfully submitted a new incident.";
     } else {
       message = null;
     }
 
-    return this.props.updateMineIncident(mineGuid, mineIncidentGuid, values, message).then(() => {
-      this.handleFetchData();
-      this.setState({ isLoaded: true });
+    return props.updateMineIncident(mineGuid, mineIncidentGuid, values, message).then(() => {
+      handleFetchData();
+      setIsLoaded(true);
     });
   };
 
-  handleSaveData = (e, formValues, isDraft = false, fromModal = false) => {
-    const updatedFormValues = { ...formValues };
-    if (isDraft || !formValues?.status_code) {
-      updatedFormValues.status_code = "DFT";
-    } else if (formValues?.status_code === "AFR" && formValues.final_report_documents?.length > 0) {
-      updatedFormValues.status_code = "FRS";
-    }
-
-    if (!fromModal) {
-      e.preventDefault();
-      this.props.submit(FORM.ADD_EDIT_INCIDENT);
-      this.props.touch(FORM.ADD_EDIT_INCIDENT);
-    }
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    if (errors.length === 0 || fromModal) {
-      const incidentExists = Boolean(formValues?.mine_incident_guid);
-      if (!incidentExists) {
-        return this.handleCreateMineIncident(this.formatPayload(updatedFormValues), isDraft);
-      }
-      return this.handleUpdateMineIncident(this.formatPayload(updatedFormValues), isDraft);
-    }
-    return null;
-  };
-
-  handleDeleteDocument = ({ mineGuid, mineIncidentGuid, mineDocumentGuid }) =>
-    this.props
-      .removeDocumentFromMineIncident(mineGuid, mineIncidentGuid, mineDocumentGuid)
-      .then(() => this.handleFetchData());
-
-  formatTimestamp = (dateString, time) => {
+  const formatTimestamp = (dateString, time) => {
     if (!moment.isMoment(time)) {
       return dateString && time && `${dateString} ${time}`;
     }
     return dateString && time && `${dateString} ${time.format("HH:mm")}`;
   };
 
-  formatPayload = (values) => {
+  const formatPayload = (values) => {
     const reportedToInspectorDateSet =
       values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
     const johscWorkerRepDateSet =
@@ -486,19 +208,19 @@ export class IncidentPage extends Component {
       updated_documents: updatedDocuments,
       incident_timestamp: values.incident_timestamp,
       reported_timestamp: reportedToInspectorDateSet
-        ? this.formatTimestamp(
+        ? formatTimestamp(
             values?.reported_to_inspector_contact_date,
             values?.reported_to_inspector_contact_time
           )
         : values?.reported_timestamp,
       johsc_worker_rep_contact_timestamp: johscWorkerRepDateSet
-        ? this.formatTimestamp(
+        ? formatTimestamp(
             values?.johsc_worker_rep_contact_date,
             values?.johsc_worker_rep_contact_time
           )
         : values?.johsc_worker_rep_contact_timestamp,
       johsc_management_rep_contact_timestamp: johscManagementRepDateSet
-        ? this.formatTimestamp(
+        ? formatTimestamp(
             values?.johsc_management_rep_contact_date,
             values?.johsc_management_rep_contact_time
           )
@@ -506,7 +228,39 @@ export class IncidentPage extends Component {
     };
   };
 
-  formatInitialValues = (incident) => ({
+  const handleSaveData = (e, newFormValues, isDraft = false, fromModal = false) => {
+    const updatedFormValues = { ...newFormValues };
+    if (isDraft || !newFormValues?.status_code) {
+      updatedFormValues.status_code = "DFT";
+    } else if (
+      newFormValues?.status_code === "AFR" &&
+      newFormValues.final_report_documents?.length > 0
+    ) {
+      updatedFormValues.status_code = "FRS";
+    }
+
+    if (!fromModal) {
+      e.preventDefault();
+      props.submit(FORM.ADD_EDIT_INCIDENT);
+      props.touch(FORM.ADD_EDIT_INCIDENT);
+    }
+
+    if (errors.length === 0 || fromModal) {
+      const incidentExists = Boolean(newFormValues?.mine_incident_guid);
+      if (!incidentExists) {
+        return handleCreateMineIncident(formatPayload(updatedFormValues), isDraft);
+      }
+      return handleUpdateMineIncident(formatPayload(updatedFormValues), isDraft);
+    }
+    return null;
+  };
+
+  const handleDeleteDocument = ({ mineDocumentGuid }) =>
+    props
+      .removeDocumentFromMineIncident(mineGuid, mineIncidentGuid, mineDocumentGuid)
+      .then(() => handleFetchData());
+
+  const formatInitialValues = () => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
     incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
@@ -533,31 +287,30 @@ export class IncidentPage extends Component {
     [FINAL_REPORT_DOCUMENTS_FORM_FIELD]: [],
   });
 
-  next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
+  const next = () => setCurrent(current + 1);
 
-  prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
+  const prev = () => setCurrent(current - 1);
 
-  setConfirmedSubmission = () =>
-    this.setState((prevState) => ({ confirmedSubmission: !prevState.confirmedSubmission }));
+  const handleSetConfirmedSubmission = () => setConfirmedSubmission(!confirmedSubmission);
 
-  openUploadIncidentDocumentsModal = (event, documentTypeCode) => {
+  const openUploadIncidentDocumentsModal = (event, documentTypeCode) => {
     event.preventDefault();
-    const title =
+    const modalTitle =
       documentTypeCode === "FIN"
         ? "Upload Final Report"
         : "Upload Supporting Notification Documentation";
-    const subTitle =
+    const modalSubTitle =
       documentTypeCode === "FIN"
         ? "Upload Final Incident Report"
         : "Upload Supporting Notification Documentation";
 
-    return this.props.openModal({
+    return props.openModal({
       props: {
-        onSubmit: this.handleSaveData,
-        onCancel: this.props.closeModal,
-        mineGuid: this.props?.incident?.mine_guid,
-        title,
-        subTitle,
+        onSubmit: handleSaveData,
+        onCancel: props.closeModal,
+        mineGuid: incident?.mine_guid,
+        title: modalTitle,
+        subTitle: modalSubTitle,
         description:
           "Please upload any documents that support this written incident notification. You may return later to upload additional documents as needed.",
         documentTypeCode,
@@ -566,105 +319,81 @@ export class IncidentPage extends Component {
     });
   };
 
-  render() {
-    const mineName =
-      this.props.formValues?.mine_name ?? this.props.location.state?.mine?.mine_name ?? "";
-    const isFinalReviewStage = POST_SUBMISSION_INCIDENT_STATUSES.includes(
-      this.props.incident.status_code
-    );
-    const title = `Record a Mine Incident - ${mineName}`;
-    const subTitle = this.state.isEditMode
-      ? "Edit Mine Incident"
-      : "New Notice of a Reportable Incident";
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    const disabledButton = errors.length > 0;
+  const Forms = StepForms({
+    formIsDirty,
+    match,
+    incident,
+    isEditMode,
+    current,
+    setCurrent,
+    confirmedSubmission,
+    isFinalReviewStage,
+    navigation: { next, prev },
+    handlers: {
+      save: handleSaveData,
+      deleteDocument: handleDeleteDocument,
+      openModal: openUploadIncidentDocumentsModal,
+    },
+    formatInitialValues,
+    setConfirmedSubmission: handleSetConfirmedSubmission,
+    disabledButton,
+  });
 
-    const Forms = StepForms(
-      this.props,
-      this.state,
-      { next: this.next, prev: this.prev },
-      {
-        save: this.handleSaveData,
-        deleteDocument: this.handleDeleteDocument,
-        openModal: this.openUploadIncidentDocumentsModal,
-      },
-      this.formatInitialValues,
-      this.setConfirmedSubmission,
-      disabledButton,
-      isFinalReviewStage
-    );
-
-    let headerDivProps = {};
-    if (isFinalReviewStage) {
-      headerDivProps = this.state.fixedTop
-        ? { className: "padding-lg view--header fixed-scroll" }
-        : { className: "view--header" };
-    }
-
-    return (
-      (this.state.isLoaded && (
-        <>
-          <div {...headerDivProps}>
-            <Row>
-              <Col span={24}>
-                <Typography.Title>{title}</Typography.Title>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Link
-                  to={routes.MINE_DASHBOARD.dynamicRoute(
-                    this.props.match.params?.mineGuid,
-                    "incidents"
-                  )}
-                >
-                  <ArrowLeftOutlined className="padding-sm--right" />
-                  Back to All Incidents
-                </Link>
-              </Col>
-            </Row>
-          </div>
-          <br />
-          <hr />
-          {!isFinalReviewStage && (
-            <>
-              <Row>
-                <Col span={15}>
-                  <Typography.Title level={2}>{subTitle}</Typography.Title>
-                </Col>
-                <Col span={9}>
-                  <div style={{ display: "inline", float: "right" }}>
-                    <p>{Forms[this.state.current].buttons}</p>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Steps current={this.state.current} style={{ marginLeft: "8%", marginRight: "8%" }}>
-                  {Forms.map((step) => (
-                    <Steps.Step key={step.title} title={step.title} />
-                  ))}
-                </Steps>
-              </Row>
-              <br />
-            </>
-          )}
+  return (
+    (isLoaded && (
+      <div className="relative margin-large--bottom">
+        <div {...headerDivProps}>
           <Row>
             <Col span={24}>
-              <div>{Forms[this.state.current].content}</div>
+              <Typography.Title className="">{title}</Typography.Title>
             </Col>
           </Row>
           <Row>
             <Col span={24}>
-              <div style={{ display: "inline", float: "right" }}>
-                <p>{Forms[this.state.current].buttons}</p>
-              </div>
+              <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "incidents")}>
+                <ArrowLeftOutlined className="padding-sm--right" />
+                Back to All Incidents
+              </Link>
             </Col>
           </Row>
-        </>
-      )) || <Loading />
-    );
-  }
-}
+        </div>
+        {!isFinalReviewStage && (
+          <>
+            <Row className="margin-large--bottom">
+              <Col span={15}>
+                <Typography.Title level={2}>{subTitle}</Typography.Title>
+              </Col>
+              <Col span={9}>
+                <div style={{ display: "inline", float: "right" }}>
+                  <p>{Forms[current].buttons}</p>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Steps current={current} style={{ marginLeft: "8%", marginRight: "8%" }}>
+                {Forms.map((step) => (
+                  <Steps.Step key={step.title} title={step.title} />
+                ))}
+              </Steps>
+            </Row>
+          </>
+        )}
+        <Row>
+          <Col span={24}>
+            <div>{Forms[current].content}</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <div style={{ display: "inline", float: "right" }}>
+              <p>{Forms[current].buttons}</p>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    )) || <Loading />
+  );
+};
 
 IncidentPage.propTypes = propTypes;
 IncidentPage.defaultProps = defaultProps;

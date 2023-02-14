@@ -1,0 +1,20 @@
+.sticky-header {
+  position: sticky;
+  top: 80px;
+  background-color: white;
+  width: 100vw;
+  margin-left: -42px;
+  z-index: 50;
+  border-bottom: rgb(194, 194,194) 2px solid;
+  padding-bottom: 10px;
+}
+
+.sticky-header h1 {
+  margin-bottom: 5px !important;
+}
+
+.sticky-side-menu {
+  top: 220px;
+  position: sticky;
+  width: 240px;
+}

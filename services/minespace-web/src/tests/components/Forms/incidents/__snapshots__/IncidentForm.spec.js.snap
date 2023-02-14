@@ -16,6 +16,7 @@ exports[`IncidentForm renders properly 1`] = `
         message={
           <div>
             <h4
+              id="initial-report"
               style={
                 Object {
                   "color": "#313132",
@@ -38,7 +39,6 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <Title
-            id="initial-report"
             level={3}
           >
             Initial Report
@@ -211,6 +211,7 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <Title
+            id="incident-details"
             level={4}
           >
             Incident Details
@@ -605,7 +606,7 @@ exports[`IncidentForm renders properly 1`] = `
                 },
               ]
             }
-            handleDeleteDocument={[MockFunction]}
+            handleDeleteDocument={[Function]}
           />
           <Row>
             <Col
@@ -613,6 +614,7 @@ exports[`IncidentForm renders properly 1`] = `
               xs={24}
             >
               <Title
+                id="final-report"
                 level={4}
               >
                 Final Report Documents
@@ -644,7 +646,7 @@ exports[`IncidentForm renders properly 1`] = `
             }
             documentParent="Mine Incident"
             documents={Array []}
-            handleDeleteDocument={[MockFunction]}
+            handleDeleteDocument={[Function]}
           />
         </Col>
       </Row>
