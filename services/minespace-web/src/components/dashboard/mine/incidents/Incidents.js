@@ -38,7 +38,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-const Incidents = (props) => {
+export const Incidents = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const {
@@ -122,7 +122,7 @@ const Incidents = (props) => {
         <Typography.Paragraph>
           This table shows your mine&apos;s history of&nbsp;
           <Typography.Text className="color-primary" strong>
-            reported incidents
+            reported incidents.
           </Typography.Text>
           .
         </Typography.Paragraph>
@@ -134,7 +134,7 @@ const Incidents = (props) => {
           >
             Click here
           </a>
-          for more information on reportable incidents
+          for more information on reportable incidents.
         </Typography.Paragraph>
         <IncidentsTable
           isLoaded={isLoaded}
