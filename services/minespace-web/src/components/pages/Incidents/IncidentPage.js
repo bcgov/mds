@@ -76,7 +76,6 @@ const defaultProps = {
   formErrors: {},
 };
 
-export const POST_SUBMISSION_INCIDENT_STATUSES = ["WNS", "AFR", "FRS", "UNR", "INV", "MIU", "CLD"];
 export const sideMenuOptions = [
   { href: "initial-report", title: "Initial Report" },
   { href: "incident-details", title: "Incident Details" },
@@ -146,7 +145,7 @@ export const IncidentPage = (props) => {
 
   useEffect(() => {
     if (incident.status_code) {
-      setIsFinalReviewStage(POST_SUBMISSION_INCIDENT_STATUSES.includes(incident.status_code));
+      setIsFinalReviewStage(incident.status_code !== "DFT");
     }
   }, [incident]);
 
