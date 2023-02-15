@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import request
+from flask import request, current_app
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
 from flask_restplus import Resource
@@ -56,13 +56,15 @@ class MinePartyApptResource(Resource, UserMixin):
     parser.add_argument(
         'mine_party_acknowledgement_status',
         type=MinePartyAcknowledgedStatus,
-        choices=list(MinePartyAcknowledgedStatus),
-        help='Indicator of Ministry acknowledgement of the appointment.',
+        choices=list(MinePartyAcknowledgedStatus) + list([None]),
+        help='Indicator of status of acknowledgement.',
+        default=MinePartyAcknowledgedStatus.not_acknowledged,
+        location='json',
         store_missing=False)
     parser.add_argument(
         'status',
         type=MinePartyAppointmentStatus,
-        choices=list(MinePartyAppointmentStatus),
+        choices=list(MinePartyAppointmentStatus) + list([None]),
         help='Indicator of status of acknowledgement.',
         store_missing=False)
 
