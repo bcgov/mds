@@ -510,7 +510,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                 <Typography.Paragraph>
                   Pursuant to section 1.7.2 of the HSRC, an investigation report must be submitted
                   within 60 days of the reportable incident. Please add the final report
-                  documentation by clicking below
+                  documentation by clicking below.
                 </Typography.Paragraph>
                 <Button type="primary" onClick={parentHandlers.toggleEditMode}>
                   Add Final Report
