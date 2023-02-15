@@ -33,7 +33,6 @@ of the incident occurrence. (HSRC
           <a href="tel:1-888-348-0299">
             <b>1-888-348-0299</b>
           </a>
-          {" "}
           . This line is monitored 24/7 by an On-call Inspector.
         </Typography.Paragraph>
         <Typography.Title level={4}>
@@ -41,8 +40,7 @@ of the incident occurrence. (HSRC
         </Typography.Title>
         <Typography.Paragraph>
           All reportable incidents must be
-          {" "}
-          <b>reported in writing to the Ministry within 16 hours</b>
+          <b> reported in writing to the Ministry within 16 hours</b>
           {' '}
 of the incident occurrence.
           This includes a reportable incident that caused, or had the potential to cause, serious
