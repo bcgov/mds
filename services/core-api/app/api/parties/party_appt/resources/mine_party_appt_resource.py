@@ -56,7 +56,7 @@ class MinePartyApptResource(Resource, UserMixin):
     parser.add_argument(
         'mine_party_acknowledgement_status',
         type=MinePartyAcknowledgedStatus,
-        choices=list(MinePartyAcknowledgedStatus) + list([None]),
+        choices=list(MinePartyAcknowledgedStatus),
         help='Indicator of status of acknowledgement.',
         default=MinePartyAcknowledgedStatus.not_acknowledged,
         location='json',
@@ -64,7 +64,7 @@ class MinePartyApptResource(Resource, UserMixin):
     parser.add_argument(
         'status',
         type=MinePartyAppointmentStatus,
-        choices=list(MinePartyAppointmentStatus) + list([None]),
+        choices=list(MinePartyAppointmentStatus),
         help='Indicator of status of acknowledgement.',
         store_missing=False)
 
