@@ -8,10 +8,7 @@ exports[`IncidentForm renders properly 1`] = `
   onSubmit={[Function]}
 >
   <Row>
-    <Col
-      offset={4}
-      span={16}
-    >
+    <Col>
       <Callout
         message={
           <div>
@@ -72,7 +69,7 @@ exports[`IncidentForm renders properly 1`] = `
                   },
                 ]
               }
-              disabled={false}
+              disabled={true}
               id="categories"
               name="categories"
               placeholder="Select incident type(s)"
@@ -115,7 +112,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="reported_by_name"
               name="reported_by_name"
               placeholder="Enter name of reporter"
@@ -137,7 +134,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="reported_by_phone_no"
               name="reported_by_phone_no"
               normalize={[Function]}
@@ -162,7 +159,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="reported_by_phone_ext"
               name="reported_by_phone_ext"
               placeholder="xxxxxx"
@@ -185,7 +182,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="reported_by_email"
               name="reported_by_email"
               placeholder="example@domain.com"
@@ -229,7 +226,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="incident_timestamp"
               name="incident_timestamp"
               placeholder="Please select date and time"
@@ -253,7 +250,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="proponent_incident_no"
               name="proponent_incident_no"
               validate={
@@ -274,7 +271,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="number_of_injuries"
               name="number_of_injuries"
               validate={
@@ -296,7 +293,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="number_of_fatalities"
               name="number_of_fatalities"
               validate={
@@ -318,7 +315,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="emergency_services_called"
               name="emergency_services_called"
               placeholder="Please choose one"
@@ -334,7 +331,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="incident_description"
               name="incident_description"
               placeholder="Provide a detailed description of the incident"
@@ -356,7 +353,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="immediate_measures_taken"
               name="immediate_measures_taken"
               placeholder="Provide a detailed description of any immediate measures taken"
@@ -377,7 +374,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="injuries_description"
               name="injuries_description"
               placeholder="Provide a detailed description of any injuries"
@@ -425,7 +422,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="verbal_notification_provided"
               name="verbal_notification_provided"
               validate={
@@ -456,7 +453,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="johsc_worker_rep_name"
               name="johsc_worker_rep_name"
               placeholder="Enter name"
@@ -478,7 +475,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="johsc_worker_rep_contacted"
               name="johsc_worker_rep_contacted"
             />
@@ -504,7 +501,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="johsc_management_rep_name"
               name="johsc_management_rep_name"
               placeholder="Enter name"
@@ -526,7 +523,7 @@ exports[`IncidentForm renders properly 1`] = `
           >
             <Field
               component={[Function]}
-              disabled={false}
+              disabled={true}
               id="johsc_management_rep_contacted"
               name="johsc_management_rep_contacted"
             />
@@ -536,6 +533,15 @@ exports[`IncidentForm renders properly 1`] = `
       <br />
       <br />
       <Row>
+        <div>
+          <Title
+            id="documentation"
+            level={3}
+          >
+            Documentation
+          </Title>
+          <Paragraph />
+        </div>
         <Col
           span={24}
         >
@@ -547,7 +553,7 @@ exports[`IncidentForm renders properly 1`] = `
               <Title
                 level={4}
               >
-                Initial Notification Documents
+                Incident Documents
               </Title>
             </Col>
             <Col
@@ -573,13 +579,8 @@ exports[`IncidentForm renders properly 1`] = `
             </Col>
           </Row>
           <DocumentTable
-            deletePayload={
-              Object {
-                "mineGuid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                "mineIncidentGuid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
-              }
-            }
-            deletePermission={true}
+            deletePayload={Object {}}
+            deletePermission={null}
             documentColumns={
               Array [
                 Object {
@@ -620,15 +621,30 @@ exports[`IncidentForm renders properly 1`] = `
                 Final Report Documents
               </Title>
             </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <div
+                className="right center-mobile"
+              >
+                <Button
+                  block={false}
+                  className="full-mobile violet violet-border"
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  onClick={[Function]}
+                  type="primary"
+                >
+                  + Add Final Report
+                </Button>
+              </div>
+            </Col>
           </Row>
           <DocumentTable
-            deletePayload={
-              Object {
-                "mineGuid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                "mineIncidentGuid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
-              }
-            }
-            deletePermission={true}
+            deletePayload={Object {}}
+            deletePermission={null}
             documentColumns={
               Array [
                 Object {
@@ -648,6 +664,109 @@ exports[`IncidentForm renders properly 1`] = `
             documents={Array []}
             handleDeleteDocument={[Function]}
           />
+        </Col>
+      </Row>
+      <br />
+      <Row
+        gutter={
+          Array [
+            16,
+          ]
+        }
+      >
+        <Col
+          span={24}
+        >
+          <Title
+            id="ministry-follow-up"
+            level={3}
+          >
+            Ministry Follow Up
+          </Title>
+          <Title
+            level={4}
+          >
+            Follow-Up Information
+          </Title>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Was there a follow-up inspection?"
+          >
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="followup_inspection"
+              name="followup_inspection"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Follow-up inspection date"
+          >
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="followup_inspection_date"
+              name="followup_inspection_date"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Was it escalated to EMLI investigation?"
+          >
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="followup_investigation_type_code"
+              name="followup_investigation_type_code"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Incident Status"
+          >
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="status_code"
+              name="status_code"
+            />
+          </FormItem>
+        </Col>
+        <Col
+          span={24}
+        >
+          <FormItem
+            hasFeedback={false}
+            label="Mine manager's recommendations"
+          >
+            <FieldArray
+              component={[Function]}
+              disabled={true}
+              id="recommendations"
+              name="recommendations"
+            />
+          </FormItem>
         </Col>
       </Row>
     </Col>

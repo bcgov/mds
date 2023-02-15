@@ -8,6 +8,7 @@ const props = {};
 
 const setupProps = () => {
   props.incident = MOCK.INCIDENT;
+  props.isFinalReviewStage = true;
   props.incidentCategoryCodeOptions = MOCK.INCIDENT_CATEGORY_CODE_OPTIONS;
   props.formValues = { ...MOCK.INCIDENT };
   props.handlers = { deleteDocument: jest.fn(() => Promise.resolve()) };
