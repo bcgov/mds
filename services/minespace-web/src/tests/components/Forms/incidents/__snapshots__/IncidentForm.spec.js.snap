@@ -533,15 +533,12 @@ exports[`IncidentForm renders properly 1`] = `
       <br />
       <br />
       <Row>
-        <div>
-          <Title
-            id="documentation"
-            level={3}
-          >
-            Documentation
-          </Title>
-          <Paragraph />
-        </div>
+        <Title
+          id="documentation"
+          level={3}
+        >
+          Documentation
+        </Title>
         <Col
           span={24}
         >
