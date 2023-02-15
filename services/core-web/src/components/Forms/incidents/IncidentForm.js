@@ -508,8 +508,9 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   This incident requires a final investigation report.
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                  You determined that this incident was a dangerous occurence. Please add your final
-                  report documentation by clicking below.
+                  Pursuant to section 1.7.2 of the HSRC, an investigation report must be submitted
+                  within 60 days of the reportable incident. Please add the final report
+                  documentation by clicking below.
                 </Typography.Paragraph>
                 <Button type="primary" onClick={parentHandlers.toggleEditMode}>
                   Add Final Report
