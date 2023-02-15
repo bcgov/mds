@@ -1,6 +1,5 @@
 from app.api.activity.models.activity_notification import ActivityType
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -12,7 +11,6 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.incidents.models.mine_incident_category import MineIncidentCategory
@@ -350,15 +348,15 @@ class MineIncidentResource(Resource, UserMixin):
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
                     setattr(incident, key, value)
             if key in ['status_code']:
-                if value == 'AFR':
+                if value == 'AFR' and incident.status_code != 'AFR':
                     # Need to send an email to the proponent and OIC with mostly same content just slightly different.
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
-                    trigger_notification(f'A new Mine Incident has been created for ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
-                if value == 'FRS':
+                    trigger_notification(f'A new reportable incident has been submitted for ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                if value == 'FRS' and incident.status_code != 'FRS':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
-                    trigger_notification(f'A final report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    trigger_notification(f'A final incident report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
