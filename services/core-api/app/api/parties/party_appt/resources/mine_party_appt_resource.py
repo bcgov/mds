@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import request, current_app
+from flask import request
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
 from flask_restplus import Resource
