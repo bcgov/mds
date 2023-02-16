@@ -161,4 +161,5 @@ export default compose(
       resetForm(ADD_EDIT_DAM);
     },
   })
+  // FEATURE FLAG: TSF
 )(withRouter(AuthorizationGuard(Permission.IN_TESTING)(DamsPage)));

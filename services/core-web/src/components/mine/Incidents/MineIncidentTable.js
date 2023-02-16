@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Popconfirm, Drawer } from "antd";
-import { EyeOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { EyeOutlined, CloseOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -31,8 +30,6 @@ const propTypes = {
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
   handleDeleteMineIncident: PropTypes.func.isRequired,
-  openMineIncidentModal: PropTypes.func.isRequired,
-  openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -92,8 +89,6 @@ const MineIncidentTable = (props) => {
     actions,
     handleEditMineIncident,
     handleDeleteMineIncident,
-    openMineIncidentModal,
-    openViewMineIncidentModal,
     determinationHash,
     statusHash
   ) =>
@@ -123,8 +118,6 @@ const MineIncidentTable = (props) => {
             : [],
         handleEditMineIncident,
         handleDeleteMineIncident,
-        openMineIncidentModal,
-        openViewMineIncidentModal,
         incident,
       };
     });
@@ -309,16 +302,8 @@ const MineIncidentTable = (props) => {
               type="primary"
               size="small"
               ghost
-              onClick={(event) =>
-                // ENV FLAG FOR MINE INCIDENTS //
-                IN_PROD()
-                  ? record.openMineIncidentModal(
-                      event,
-                      record.handleEditMineIncident,
-                      false,
-                      record.incident
-                    )
-                  : props.history.push({
+              onClick={() =>
+                props.history.push({
                       pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
                       state: { isEditMode: true },
                     })}
@@ -330,11 +315,8 @@ const MineIncidentTable = (props) => {
             type="primary"
             size="small"
             ghost
-            onClick={(event) =>
-              // ENV FLAG FOR MINE INCIDENTS //
-              IN_PROD()
-                ? record.openViewMineIncidentModal(event, record.incident)
-                : props.history.push({
+            onClick={() =>
+              props.history.push({
                     pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
                     state: { isEditMode: false },
                   })}
@@ -354,21 +336,6 @@ const MineIncidentTable = (props) => {
               </Button>
             </Popconfirm>
           </AuthorizationWrapper>
-          {
-            // ENV FLAG FOR MINE INCIDENTS //
-            IN_PROD() && (
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={() => toggleDrawer(record.incident)}
-                >
-                  <MessageOutlined className="padding-sm icon-sm" />
-                </Button>
-              </AuthorizationWrapper>
-            )
-          }
         </div>
       ),
     },
@@ -412,8 +379,6 @@ const MineIncidentTable = (props) => {
           followupActions,
           props.handleEditMineIncident,
           props.handleDeleteMineIncident,
-          props.openMineIncidentModal,
-          props.openViewMineIncidentModal,
           props.incidentDeterminationHash,
           incidentStatusCodeHash,
           incidentCategoryCodeHash

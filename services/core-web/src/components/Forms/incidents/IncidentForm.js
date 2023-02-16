@@ -34,9 +34,7 @@ import {
   getIncidentStatusCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import DocumentTable from "@/components/common/DocumentTable";
 import {
   documentNameColumn,
@@ -1050,4 +1048,4 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
   })
-)(AuthorizationGuard(Permission.IN_TESTING)(IncidentForm));
+)(IncidentForm);

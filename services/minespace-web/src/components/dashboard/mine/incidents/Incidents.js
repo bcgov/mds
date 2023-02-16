@@ -14,10 +14,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getIncidentPageData, getIncidents } from "@common/selectors/incidentSelectors";
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "@mds/common";
-import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
-import * as FORM from "@/constants/forms";
 import * as routes from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
@@ -68,36 +65,6 @@ export const Incidents = (props) => {
     handleFetchIncidents();
   }, []);
 
-  const handleCreateIncident = async (values) => {
-    setIsLoaded(false);
-    await props.createMineIncident(mine.mine_guid, values);
-    props.closeModal();
-    handleFetchIncidents();
-  };
-
-  const handleCancelMineIncident = () => {
-    props.destroy(FORM.ADD_INCIDENT);
-  };
-
-  const openCreateIncidentModal = (event) => {
-    event.preventDefault();
-    props.openModal({
-      props: {
-        initialValues: {
-          status_code: "WNS",
-          determination_type_code: "PEN",
-        },
-        onSubmit: handleCreateIncident,
-        afterClose: handleCancelMineIncident,
-        title: "Record a Mine Incident",
-        mineGuid: mine.mine_guid,
-        incidentDeterminationOptions,
-        incidentCategoryCodeOptions,
-      },
-      content: modalConfig.ADD_INCIDENT,
-    });
-  };
-
   return (
     <Row>
       <Col span={24}>
@@ -106,10 +73,7 @@ export const Incidents = (props) => {
             style={{ display: "inline", float: "right" }}
             type="primary"
             onClick={(event) =>
-              // ENV FLAG FOR MINE INCIDENTS //
-              IN_PROD()
-                ? openCreateIncidentModal(event)
-                : history.push({
+              history.push({
                     pathname: routes.ADD_MINE_INCIDENT.dynamicRoute(mine?.mine_guid),
                     state: { mine },
                   })}

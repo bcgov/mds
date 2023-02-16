@@ -182,6 +182,7 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
+          {/* FEATURE FLAG: PROJECTS */}
           {!IN_PROD() && (
             <>
               <Tabs.TabPane tab="Decision Package" key="decision-package">

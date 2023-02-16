@@ -25,9 +25,7 @@ import {
 } from "@common/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
 import * as Strings from "@common/constants/strings";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
@@ -325,9 +323,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-// ENV FLAG FOR MINE INCIDENTS //
 export default withRouter(
-  AuthorizationGuard(Permission.IN_TESTING)(
     connect(mapStateToProps, mapDispatchToProps)(MineIncident)
-  )
 );

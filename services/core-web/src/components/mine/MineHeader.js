@@ -180,6 +180,7 @@ export class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
+          {/* FEATURE FLAG: MINE ALERT */}
           {!IN_PROD() && (
             <>
               <MineAlert mine={this.props.mine} />
