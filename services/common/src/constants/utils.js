@@ -24,3 +24,8 @@ export const parseServerSideSearchOptions = (pagination, filters, sorter) => {
     ...filters,
   };
 };
+
+export const removeNullValues = (obj) => {
+  Object.keys(obj).forEach((key) => obj[key] === null && delete obj[key]);
+  return obj;
+};
