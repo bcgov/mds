@@ -627,40 +627,38 @@ const renderUploadInitialNotificationDocuments = (
           {title}
         </Typography.Title>
       )}
-      {notInitialDocumentsInForm &&
-        (!formValues.status_code || formValues.status_code === "DFT") &&
-        !isFinalReviewStage && (
-          <>
-            <Col span={24}>
-              <Typography.Title level={4}>
-                Upload Supporting Notification Documentation
-              </Typography.Title>
-              <Typography.Paragraph>
-                Please upload any documents that support this written incident notification. You may
-                return later to upload additional documents as needed.
-              </Typography.Paragraph>
-            </Col>
-            <Col span={24}>
-              <Form.Item>
-                <Field
-                  id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-                  name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-                  onFileLoad={(document_name, document_manager_guid) =>
-                    handlers.onFileLoad(
-                      document_name,
-                      document_manager_guid,
-                      Strings.INCIDENT_DOCUMENT_TYPES.initial,
-                      INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                    )}
-                  onRemoveFile={parentHandlers?.deleteDocument}
-                  mineGuid={match.params?.mineGuid}
-                  component={IncidentFileUpload}
-                  labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
-                />
-              </Form.Item>
-            </Col>
-          </>
-        )}
+      {notInitialDocumentsInForm && !isFinalReviewStage && (
+        <>
+          <Col span={24}>
+            <Typography.Title level={4}>
+              Upload Supporting Notification Documentation
+            </Typography.Title>
+            <Typography.Paragraph>
+              Please upload any documents that support this written incident notification. You may
+              return later to upload additional documents as needed.
+            </Typography.Paragraph>
+          </Col>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+                name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handlers.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial,
+                    INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
+                  )}
+                onRemoveFile={parentHandlers?.deleteDocument}
+                mineGuid={match.params?.mineGuid}
+                component={IncidentFileUpload}
+                labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+              />
+            </Form.Item>
+          </Col>
+        </>
+      )}
 
       <Col span={24}>
         <Row>
@@ -704,38 +702,36 @@ const renderUploadInitialNotificationDocuments = (
           />
         )}
 
-        {notFinalReportInForm &&
-          (!formValues.status_code || formValues.status_code === "DFT") &&
-          !isFinalReviewStage && (
-            <>
-              <Col span={24}>
-                <Typography.Title level={4}>Upload Final Report</Typography.Title>
-                <Typography.Paragraph>
-                  Please upload the final report that support this written incident notification.
-                  You may return later to upload additional documents as needed.
-                </Typography.Paragraph>
-              </Col>
-              <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-                    name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-                    onFileLoad={(document_name, document_manager_guid) =>
-                      handlers.onFileLoad(
-                        document_name,
-                        document_manager_guid,
-                        Strings.INCIDENT_DOCUMENT_TYPES.final,
-                        FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                      )}
-                    onRemoveFile={parentHandlers?.deleteDocument}
-                    mineGuid={match.params?.mineGuid}
-                    component={IncidentFileUpload}
-                    labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
-                  />
-                </Form.Item>
-              </Col>
-            </>
-          )}
+        {notFinalReportInForm && !isFinalReviewStage && (
+          <>
+            <Col span={24}>
+              <Typography.Title level={4}>Upload Final Report</Typography.Title>
+              <Typography.Paragraph>
+                Please upload the final report that support this written incident notification. You
+                may return later to upload additional documents as needed.
+              </Typography.Paragraph>
+            </Col>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                  name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                  onFileLoad={(document_name, document_manager_guid) =>
+                    handlers.onFileLoad(
+                      document_name,
+                      document_manager_guid,
+                      Strings.INCIDENT_DOCUMENT_TYPES.final,
+                      FINAL_REPORT_DOCUMENTS_FORM_FIELD
+                    )}
+                  onRemoveFile={parentHandlers?.deleteDocument}
+                  mineGuid={match.params?.mineGuid}
+                  component={IncidentFileUpload}
+                  labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                />
+              </Form.Item>
+            </Col>
+          </>
+        )}
         <Row>
           <Col xs={24} md={12}>
             <Typography.Title level={4} id="final-report">
