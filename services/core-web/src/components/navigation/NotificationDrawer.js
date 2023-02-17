@@ -104,7 +104,7 @@ const NotificationDrawer = (props) => {
         );
       case "MineIncident":
         return MINE_INCIDENT.dynamicRoute(
-          notification.notification_document.metadata.mine_guid,
+          notification.notification_document.metadata.mine.mine_guid,
           notification.notification_document.metadata.entity_guid
         );
       case "ProjectSummary":
