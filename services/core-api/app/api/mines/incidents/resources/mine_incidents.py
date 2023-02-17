@@ -352,7 +352,7 @@ class MineIncidentResource(Resource, UserMixin):
                     # Need to send an email to the proponent and OIC with mostly same content just slightly different.
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
-                    trigger_notification(f'A new reportable incident has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 if value == 'FRS' and incident.status_code != 'FRS':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
