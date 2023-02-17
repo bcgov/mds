@@ -64,7 +64,9 @@ const propTypes = {
 };
 
 export const MineIncident = (props) => {
-  const { formValues = {} } = props;
+  const { formValues, formErrors, match, incident, location } = props;
+  const mineGuid = match?.params?.mineGuid;
+  const mineIncidentGuid = match?.params?.mineIncidentGuid;
   const [isEditMode, setIsEditMode] = useState(false);
   const [isNewIncident, setIsNewIncident] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -79,7 +81,6 @@ export const MineIncident = (props) => {
   };
 
   const handleFetchData = () => {
-    const { mineGuid, mineIncidentGuid } = props.match.params;
     if (mineGuid && mineIncidentGuid) {
       setIsNewIncident(false);
       return props.fetchMineIncident(mineGuid, mineIncidentGuid);
@@ -90,7 +91,7 @@ export const MineIncident = (props) => {
   const handleCreateMineIncident = (formattedValues) => {
     setIsLoaded(false);
     return props
-      .createMineIncident(props.match.params?.mineGuid, formattedValues)
+      .createMineIncident(mineGuid, formattedValues)
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
         props.history.replace(routes.MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
@@ -99,7 +100,6 @@ export const MineIncident = (props) => {
   };
 
   const handleUpdateMineIncident = (formattedValues) => {
-    const { mineGuid, mineIncidentGuid } = props.match.params;
     setIsLoaded(false);
     return props
       .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
@@ -130,7 +130,7 @@ export const MineIncident = (props) => {
 
   const handleSaveData = () => {
     const incidentExists = Boolean(formValues.mine_incident_guid);
-    const errors = Object.keys(flattenObject(props.formErrors));
+    const errors = Object.keys(flattenObject(formErrors));
 
     const { final_report_documents, documents = [] } = formValues;
     const isFinalReport =
@@ -167,15 +167,24 @@ export const MineIncident = (props) => {
     return null;
   };
 
-  const formatInitialValues = (incident) => ({
-    ...incident,
-    categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
-    initial_incident_documents: [],
-    final_report_documents: [],
-    internal_ministry_documents: [],
-  });
+  const formatInitialValues = () => {
+    if (!isNewIncident) {
+      return {
+        ...incident,
+        categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
+        incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
+        incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
+        initial_incident_documents: [],
+        final_report_documents: [],
+        internal_ministry_documents: [],
+      };
+    }
+    return {
+      initial_incident_documents: [],
+      final_report_documents: [],
+      internal_ministry_documents: [],
+    };
+  };
 
   const toggleEditMode = () => setIsEditMode(!isEditMode);
 
@@ -192,7 +201,7 @@ export const MineIncident = (props) => {
   useEffect(() => {
     handleFetchData().then(() => {
       setIsLoaded(true);
-      setIsEditMode(props.location.state?.isEditMode);
+      setIsEditMode(location.state?.isEditMode);
 
       return () => {
         window.removeEventListener("scroll", handleScroll);
@@ -200,9 +209,9 @@ export const MineIncident = (props) => {
       };
     });
     handleScroll();
-  }, [props.location]);
+  }, [location]);
 
-  const mineName = props.incident?.mine_name || props.location?.state?.mineName;
+  const mineName = incident.mine_name || location?.state?.mineName;
 
   return isLoaded ? (
     <>
@@ -212,13 +221,13 @@ export const MineIncident = (props) => {
           style={{ paddingBottom: 0 }}
         >
           <h1>
-            {props.incident.mine_incident_guid ? "Mine Incident" : "Create New Incident"}
+            {incident.mine_incident_guid ? "Mine Incident" : "Create New Incident"}
             &nbsp;
             <span>
               <Tag title={`Mine: ${mineName}`}>
                 <Link
                   style={{ textDecoration: "none" }}
-                  to={routes.MINE_GENERAL.dynamicRoute(props.match?.params?.mineGuid)}
+                  to={routes.MINE_GENERAL.dynamicRoute(mineGuid)}
                 >
                   <EnvironmentOutlined className="padding-sm--right" />
                   {mineName}
@@ -226,7 +235,7 @@ export const MineIncident = (props) => {
               </Tag>
             </span>
           </h1>
-          <Link to={routes.MINE_INCIDENTS.dynamicRoute(props.match?.params?.mineGuid)}>
+          <Link to={routes.MINE_INCIDENTS.dynamicRoute(mineGuid)}>
             <ArrowLeftOutlined className="padding-sm--right" />
             Back to All Incidents
           </Link>
@@ -244,28 +253,17 @@ export const MineIncident = (props) => {
               { href: "internal-ministry-comments", title: "Comments" },
             ]}
             featureUrlRoute={routes.MINE_INCIDENT.hashRoute}
-            featureUrlRouteArguments={[
-              props.match.params?.mineGuid,
-              props.match.params?.mineIncidentGuid,
-            ]}
+            featureUrlRouteArguments={[mineGuid, mineIncidentGuid]}
           />
         </div>
         <div
           className={fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"}
         >
           <IncidentForm
-            initialValues={
-              !isNewIncident
-                ? formatInitialValues(props.incident)
-                : {
-                    initial_incident_documents: [],
-                    final_report_documents: [],
-                    internal_ministry_documents: [],
-                  }
-            }
+            initialValues={formatInitialValues()}
             isEditMode={isEditMode}
             isNewIncident={isNewIncident}
-            incident={props.incident}
+            incident={incident}
             handlers={{
               deleteDocument: handleDeleteDocument,
               toggleEditMode,
