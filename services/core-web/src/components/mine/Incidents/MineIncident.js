@@ -70,6 +70,14 @@ export const MineIncident = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
 
+  const handleScroll = () => {
+    if (window.pageYOffset > 170 && !fixedTop) {
+      setIsFixedTop(true);
+    } else if (window.pageYOffset <= 170 && fixedTop) {
+      setIsFixedTop(false);
+    }
+  };
+
   const handleFetchData = () => {
     const { mineGuid, mineIncidentGuid } = props.match.params;
     if (mineGuid && mineIncidentGuid) {
@@ -79,14 +87,6 @@ export const MineIncident = (props) => {
     return null;
   };
 
-  const handleScroll = () => {
-    if (window.pageYOffset > 170 && !fixedTop) {
-      setIsFixedTop(true);
-    } else if (window.pageYOffset <= 170 && fixedTop) {
-      setIsFixedTop(false);
-    }
-  };
-
   const handleCreateMineIncident = (formattedValues) => {
     setIsLoaded(false);
     return props
@@ -94,6 +94,15 @@ export const MineIncident = (props) => {
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
         props.history.replace(routes.MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
+      .then(() => handleFetchData())
+      .then(() => setIsLoaded(true));
+  };
+
+  const handleUpdateMineIncident = (formattedValues) => {
+    const { mineGuid, mineIncidentGuid } = props.match.params;
+    setIsLoaded(false);
+    return props
+      .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
       .then(() => handleFetchData())
       .then(() => setIsLoaded(true));
   };
@@ -119,28 +128,6 @@ export const MineIncident = (props) => {
     };
   };
 
-  const handleUpdateMineIncident = (formattedValues) => {
-    const { mineGuid, mineIncidentGuid } = props.match.params;
-    setIsLoaded(false);
-    return props
-      .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
-      .then(() => handleFetchData())
-      .then(() => setIsLoaded(true));
-  };
-
-  const handleDeleteDocument = (params) => {
-    if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
-      return props
-        .removeDocumentFromMineIncident(
-          params?.mineGuid,
-          params?.mineIncidentGuid,
-          params?.mineDocumentGuid
-        )
-        .then(() => handleFetchData());
-    }
-    return null;
-  };
-
   const handleSaveData = () => {
     const incidentExists = Boolean(formValues.mine_incident_guid);
     const errors = Object.keys(flattenObject(props.formErrors));
@@ -163,6 +150,19 @@ export const MineIncident = (props) => {
         return handleCreateMineIncident(formatPayload(formValues));
       }
       return handleUpdateMineIncident(formatPayload(formValues));
+    }
+    return null;
+  };
+
+  const handleDeleteDocument = (params) => {
+    if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
+      return props
+        .removeDocumentFromMineIncident(
+          params?.mineGuid,
+          params?.mineIncidentGuid,
+          params?.mineDocumentGuid
+        )
+        .then(() => handleFetchData());
     }
     return null;
   };
