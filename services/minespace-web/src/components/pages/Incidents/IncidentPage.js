@@ -125,7 +125,7 @@ export const IncidentPage = (props) => {
       props.clearMineIncident();
       props.destroy(FORM.ADD_EDIT_INCIDENT);
     };
-  }, []);
+  }, [props.location]);
 
   useEffect(() => {
     if (isLoaded && !location.state?.current) {
