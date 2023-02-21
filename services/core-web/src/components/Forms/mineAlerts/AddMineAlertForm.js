@@ -22,6 +22,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -29,14 +30,16 @@ const defaultProps = {
 };
 
 export const AddMineAlertForm = (props) => {
+  const { title, text } = props;
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Typography.Paragraph>
-          <Typography.Text>
-            Creating a new staff alert will overwrite any previous alerts. Please use the edit alert
-            option if you need to update an existing alert.
-          </Typography.Text>
+          <Typography.Text>{text}</Typography.Text>
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Anything written in internal staff alerts may be requested under FOIPPA. Keep it
+          professional and concise.
         </Typography.Paragraph>
         <Row gutter={16}>
           <Col md={12} xs={24}>
@@ -46,7 +49,7 @@ export const AddMineAlertForm = (props) => {
                 name="contact_name"
                 label="Contact Name"
                 component={renderConfig.FIELD}
-                validate={[required,maxLength(200)]}
+                validate={[required, maxLength(200)]}
               />
             </Form.Item>
           </Col>
@@ -111,7 +114,7 @@ export const AddMineAlertForm = (props) => {
             htmlType="submit"
             loading={props.submitting}
           >
-            {props.title}
+            {title}
           </Button>
           <Popconfirm
             placement="topRight"
