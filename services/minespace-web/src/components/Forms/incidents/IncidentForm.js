@@ -218,7 +218,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, formDisabled) => (
     <Col span={24}>
       <Typography.Title level={3}>Initial Report</Typography.Title>
       <Typography.Paragraph>
-        Select one or more incident types for this submission.
+        <Typography.Text>Select one or more incident types for this submission.</Typography.Text>
       </Typography.Paragraph>
       <Form.Item label="Incident type(s)">
         <Field
@@ -757,10 +757,10 @@ const renderUploadInitialNotificationDocuments = (
           )}
         </Row>
         <Row>
-          <Typography.Title level={5}>
+          <Typography.Paragraph>
             A final report must be submitted within 60 days of the reportable incident. Please add
             the final report documentation below.
-          </Typography.Title>
+          </Typography.Paragraph>
         </Row>
         {formDisabled && (
           <DocumentTable
