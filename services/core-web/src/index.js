@@ -6,6 +6,7 @@ import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { useIdleTimer } from "react-idle-timer";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
+import { logoutUser } from "@common/actions/authenticationActions";
 import keycloak, { keycloakInitConfig } from "./keycloak";
 import Loading from "@/components/common/Loading";
 
@@ -13,11 +14,11 @@ import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
-import { logoutUser } from "@common/actions/authenticationActions";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
 
+// eslint-disable-next-line import/prefer-default-export
 export const Index = () => {
   const [environment, setEnvironment] = useState(false);
 
@@ -52,18 +53,18 @@ export const Index = () => {
       store.dispatch(logoutUser());
       keycloak.clearToken();
     } else {
-      console.log("User offline")
+      console.log("User offline");
     }
   };
 
   const handleUpdateToken = () => {
     if (keycloak.authenticated && keycloak.tokenParsed) {
       const tokenExpiryTime = keycloak.tokenParsed.exp * 1000;
-      const timeToLive = tokenExpiryTime - Date.now() - (refreshTokenBufferSeconds * 1000);
+      const timeToLive = tokenExpiryTime - Date.now() - refreshTokenBufferSeconds * 1000;
 
       const updateInterval = setInterval(() => {
         if (!isIdle()) {
-          keycloak.updateToken(-1).catch((err="") => {
+          keycloak.updateToken(refreshTokenBufferSeconds - 1).catch((err = "") => {
             console.log("Failed to refresh token", err);
             handleAuthErrors();
           });
@@ -81,15 +82,16 @@ export const Index = () => {
     <ReactKeycloakProvider
       authClient={keycloak}
       initOptions={keycloakInitConfig}
-      onTokens={() => {handleUpdateToken();}}
+      onTokens={() => {
+        handleUpdateToken();
+      }}
       onTokenExpired={() => {
         if (!isIdle()) {
           keycloak.updateToken();
         }
-      }}      
+      }}
       LoadingComponent={<Loading />}
       isLoadingCheck={(kc) => !kc || !environment}
-
     >
       <Provider store={store}>
         <App />
