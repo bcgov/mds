@@ -41,7 +41,9 @@ exports[`IncidentForm renders properly 1`] = `
             Initial Report
           </Title>
           <Paragraph>
-            Select one or more incident types for this submission.
+            <Text>
+              Select one or more incident types for this submission.
+            </Text>
           </Paragraph>
           <FormItem
             hasFeedback={false}
@@ -638,6 +640,11 @@ exports[`IncidentForm renders properly 1`] = `
                 </Button>
               </div>
             </Col>
+          </Row>
+          <Row>
+            <Paragraph>
+              A final report must be submitted within 60 days of the reportable incident. Please add the final report documentation below.
+            </Paragraph>
           </Row>
           <DocumentTable
             deletePayload={Object {}}

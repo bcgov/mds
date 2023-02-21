@@ -124,7 +124,6 @@ export const Incidents = (props) => {
           <Typography.Text className="color-primary" strong>
             reported incidents.
           </Typography.Text>
-          .
         </Typography.Paragraph>
         <Typography.Paragraph>
           <a
@@ -134,6 +133,7 @@ export const Incidents = (props) => {
           >
             Click here
           </a>
+          {" "}
           for more information on reportable incidents.
         </Typography.Paragraph>
         <IncidentsTable
