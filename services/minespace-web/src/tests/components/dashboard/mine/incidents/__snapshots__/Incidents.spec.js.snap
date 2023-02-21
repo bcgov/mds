@@ -37,7 +37,6 @@ exports[`MineIncidents renders properly 1`] = `
       >
         reported incidents.
       </Text>
-      .
     </Paragraph>
     <Paragraph>
       <a
@@ -47,6 +46,7 @@ exports[`MineIncidents renders properly 1`] = `
       >
         Click here
       </a>
+       
       for more information on reportable incidents.
     </Paragraph>
     <withRouter(Connect(IncidentsTable))

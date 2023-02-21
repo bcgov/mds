@@ -639,6 +639,13 @@ exports[`IncidentForm renders properly 1`] = `
               </div>
             </Col>
           </Row>
+          <Row>
+            <Title
+              level={5}
+            >
+              A final report must be submitted within 60 days of the reportable incident. Please add the final report documentation below.
+            </Title>
+          </Row>
           <DocumentTable
             deletePayload={Object {}}
             deletePermission={null}

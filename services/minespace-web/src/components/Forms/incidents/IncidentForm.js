@@ -756,6 +756,12 @@ const renderUploadInitialNotificationDocuments = (
             </Col>
           )}
         </Row>
+        <Row>
+          <Typography.Title level={5}>
+            A final report must be submitted within 60 days of the reportable incident. Please add
+            the final report documentation below.
+          </Typography.Title>
+        </Row>
         {formDisabled && (
           <DocumentTable
             documents={finalReportDocuments}
