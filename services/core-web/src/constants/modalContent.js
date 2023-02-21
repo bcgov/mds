@@ -33,5 +33,10 @@ export const ADD_REPORT = "Add a Report";
 export const ADD_NOW_REVIEW = "Add a Notice of Work Review";
 
 export const CREATE_MINE_ALERT_RECORD = "Create Staff Alert";
-export const EDIT_MINE_ALERT_RECORD = "Edit Staff Alert";
+export const EDIT_MINE_ALERT_RECORD = "Update Staff Alert";
 export const PAST_MINE_ALERT_RECORD = "Past Alerts";
+
+export const CREATE_MINE_ALERT_TEXT =
+  "Creating a new staff alert will overwrite any previous alerts. Please use the edit alert option if you need to update an existing alert.";
+export const EDIT_MINE_ALERT_TEXT =
+  "You are updating an existing alert.  Please use the create new alert option if you need to create a new alert.";
