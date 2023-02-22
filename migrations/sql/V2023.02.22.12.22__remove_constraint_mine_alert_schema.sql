@@ -1,0 +1,2 @@
+ALTER table mine_alert
+DROP CONSTRAINT mine_guid_date_range_uniq;

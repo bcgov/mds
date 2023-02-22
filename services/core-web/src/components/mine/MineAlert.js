@@ -92,7 +92,7 @@ export class MineAlert extends Component {
     return null;
   };
 
-  openCreateMineAlertModal = () => {
+  openCreateMineAlertModal = (activeMineAlert, mineAlerts) => {
     return this.props.openModal({
       props: {
         title: ModalContent.CREATE_MINE_ALERT_RECORD,
@@ -100,12 +100,14 @@ export class MineAlert extends Component {
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
         onSubmit: this.submitCreateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        activeMineAlert,
+        mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
     });
   };
 
-  openUpdateMineAlertModal = () => {
+  openUpdateMineAlertModal = (activeMineAlert, mineAlerts) => {
     return this.props.openModal({
       props: {
         title: ModalContent.EDIT_MINE_ALERT_RECORD,
@@ -114,6 +116,8 @@ export class MineAlert extends Component {
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
         onSubmit: this.submitUpdateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        activeMineAlert,
+        mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
     });
@@ -149,7 +153,8 @@ export class MineAlert extends Component {
           <button
             type="button"
             className="full add-permit-dropdown-button"
-            onClick={() => this.openCreateMineAlertModal()}
+            onClick={() =>
+              this.openCreateMineAlertModal(this.state.activeMineAlert, this.props.mineAlerts)}
           >
             Create New Alert
           </button>
@@ -159,7 +164,8 @@ export class MineAlert extends Component {
             <button
               type="button"
               className="full add-permit-dropdown-button"
-              onClick={() => this.openUpdateMineAlertModal()}
+              onClick={() =>
+                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.props.mineAlerts)}
             >
               Edit Active Alert
             </button>
@@ -238,19 +244,12 @@ export class MineAlert extends Component {
                   <p>
                     {this.state.activeMineAlert.end_date ? (
                       <b>
-                        Active Alert: 
-                        {' '}
-                        {formatDate(this.state.activeMineAlert.start_date)}
-                        {' '}
--
-                        {" "}
-                        {formatDate(this.state.activeMineAlert.end_date)}
+                        {`Active Alert: ${formatDate(
+                          this.state.activeMineAlert.start_date
+                        )} - ${formatDate(this.state.activeMineAlert.end_date)}`}
                       </b>
                     ) : (
-                      <b>
-Active Alert:
-                        {formatDate(this.state.activeMineAlert.start_date)}
-                      </b>
+                      <b>{`Active Alert: ${formatDate(this.state.activeMineAlert.start_date)}`}</b>
                     )}
                   </p>
                   <p>
