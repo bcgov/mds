@@ -168,10 +168,12 @@ export const alertStartDateNotBeforeHistoric = memoize((mineAlerts) => (value) =
     : undefined;
 });
 
-export const alertNotInFutureIfCurrentActive = (value) =>
-  value && new Date(value) >= new Date()
-    ? "Start date cannot be in the future if there is a current active alert.  Please update or remove current alert first"
-    : undefined;
+export const alertNotInFutureIfCurrentActive = memoize(
+  (mineAlert) => (value) =>
+    value && mineAlert.start_date && new Date(value) >= new Date()
+      ? "Start date cannot be in the future if there is a current active alert.  Please update or remove current alert first"
+      : undefined
+);
 
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
