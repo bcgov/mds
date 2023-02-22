@@ -1,7 +1,6 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import timedelta, datetime as dt, timezone
-from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import api
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -111,7 +110,7 @@ class MineAlertResource(Resource, UserMixin):
         alert = MineAlert.find_by_guid(mine_alert_guid)
         data = self.parser.parse_args()
         all_mine_alerts = MineAlert.find_by_mine_guid(mine_guid)
-        historic_alerts = [_alert for _alert in all_mine_alerts if (str(_alert.mine_alert_guid) != mine_alert_guid and data.get('start_date') >= _alert.start_date)]
+        historic_alerts = [_alert for _alert in all_mine_alerts if _alert.start_date >= data.get('start_date') and str(_alert.mine_alert_guid) != mine_alert_guid]
 
         if not alert:
             raise NotFound('Mine alert with guid "{mine_alert_guid}" not found.')
@@ -135,6 +134,7 @@ class MineAlertResource(Resource, UserMixin):
             raise NotFound('Mine alert with guid "{mine_alert_guid}" not found.')
 
         alert.deleted_ind = True
+        alert.is_active = False
         alert.save()
 
         return ('', 204)

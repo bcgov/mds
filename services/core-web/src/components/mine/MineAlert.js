@@ -154,7 +154,7 @@ export class MineAlert extends Component {
             type="button"
             className="full add-permit-dropdown-button"
             onClick={() =>
-              this.openCreateMineAlertModal(this.state.activeMineAlert, this.props.mineAlerts)}
+              this.openCreateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
           >
             Create New Alert
           </button>
@@ -165,7 +165,7 @@ export class MineAlert extends Component {
               type="button"
               className="full add-permit-dropdown-button"
               onClick={() =>
-                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.props.mineAlerts)}
+                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
             >
               Edit Active Alert
             </button>

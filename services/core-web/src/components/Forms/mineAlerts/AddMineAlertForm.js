@@ -37,7 +37,23 @@ const defaultProps = {
 };
 
 export const AddMineAlertForm = (props) => {
-  const { title, text, activeMineAlert, mineAlerts } = props;
+  const { title, text, activeMineAlert, mineAlerts, formValues } = props;
+
+  const startDateValidation = () => {
+    return formValues?.mine_alert_guid
+      ? [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+        ]
+      : [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+          dateNotBeforeOther(activeMineAlert.start_date),
+          alertNotInFutureIfCurrentActive(activeMineAlert),
+        ];
+  };
 
   return (
     <div>
@@ -96,13 +112,7 @@ export const AddMineAlertForm = (props) => {
                 label="Start Date"
                 placeholder="Select Date"
                 component={renderConfig.DATE}
-                validate={[
-                  required,
-                  dateNotAfterOther(props.formValues.stop_date),
-                  alertStartDateNotBeforeHistoric(mineAlerts),
-                  dateNotBeforeOther(activeMineAlert.start_date),
-                  activeMineAlert?.start_date ? alertNotInFutureIfCurrentActive : null,
-                ]}
+                validate={startDateValidation()}
                 format={null}
               />
             </Form.Item>
