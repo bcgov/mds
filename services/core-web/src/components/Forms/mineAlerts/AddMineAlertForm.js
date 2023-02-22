@@ -11,10 +11,13 @@ import {
   dateNotAfterOther,
   maxLength,
   phoneNumber,
+  alertStartDateNotBeforeHistoric,
+  alertNotInFutureIfCurrentActive,
 } from "@common/utils/Validate";
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -23,14 +26,35 @@ const propTypes = {
   formValues: PropTypes.objectOf(PropTypes.any),
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  activeMineAlert: CustomPropTypes.mineAlert,
+  mineAlerts: PropTypes.arrayOf(CustomPropTypes.mineAlert),
 };
 
 const defaultProps = {
   formValues: {},
+  activeMineAlert: {},
+  mineAlerts: [],
 };
 
 export const AddMineAlertForm = (props) => {
-  const { title, text } = props;
+  const { title, text, activeMineAlert, mineAlerts, formValues } = props;
+
+  const startDateValidation = () => {
+    return formValues?.mine_alert_guid
+      ? [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+        ]
+      : [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+          dateNotBeforeOther(activeMineAlert.start_date),
+          alertNotInFutureIfCurrentActive(activeMineAlert),
+        ];
+  };
+
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -88,7 +112,7 @@ export const AddMineAlertForm = (props) => {
                 label="Start Date"
                 placeholder="Select Date"
                 component={renderConfig.DATE}
-                validate={[required, dateNotAfterOther(props.formValues.stop_date)]}
+                validate={startDateValidation()}
                 format={null}
               />
             </Form.Item>

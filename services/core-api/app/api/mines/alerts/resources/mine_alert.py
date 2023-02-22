@@ -1,7 +1,6 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import timedelta, datetime as dt, timezone
-from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import api
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -12,9 +11,6 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
 from app.api.mines.response_models import MINE_ALERT_MODEL
-
-EXCLUSION_CONSTRAINT_MINE_GUID_DATE_RANGE_MESSAGE = 'violates exclusion constraint "mine_guid_date_range_uniq"'
-
 
 class MineAlertListResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -62,30 +58,25 @@ class MineAlertListResource(Resource, UserMixin):
         if active_alert and data.get('start_date') >= dt.now(tz=timezone.utc):
             raise BadRequest('Cannot create an alert with a start date in the future with an existing active alert.')
 
-        try:
-            if active_alert_indefinite:
-                active_alert.end_date = start_date - timedelta(seconds=1)
-            
-            if active_alert:
-                active_alert.is_active = False
-                active_alert.save()
+        if active_alert_indefinite:
+            active_alert.end_date = start_date - timedelta(seconds=1)
 
-            mine_alert = MineAlert.create(
-                mine=mine,
-                start_date=data.get('start_date'),
-                end_date=data.get('end_date'),
-                contact_name=data.get('contact_name'),
-                contact_phone=data.get('contact_phone'),
-                message=data.get('message')
-            )
+        if active_alert:
+            active_alert.is_active = False
+            active_alert.save()
 
-            mine_alert.save()
+        mine_alert = MineAlert.create(
+            mine=mine,
+            start_date=data.get('start_date'),
+            end_date=data.get('end_date'),
+            contact_name=data.get('contact_name'),
+            contact_phone=data.get('contact_phone'),
+            message=data.get('message')
+        )
 
-            return mine_alert, 201
-        except SQLAlchemyError as ex:
-            if EXCLUSION_CONSTRAINT_MINE_GUID_DATE_RANGE_MESSAGE in str(ex):
-                raise BadRequest('Start/end date cannot overlap with an existing alert on this mine. Please check history for more details.')
-            raise ex
+        mine_alert.save()
+
+        return mine_alert, 201
 
 
 class MineAlertResource(Resource, UserMixin):
@@ -119,7 +110,7 @@ class MineAlertResource(Resource, UserMixin):
         alert = MineAlert.find_by_guid(mine_alert_guid)
         data = self.parser.parse_args()
         all_mine_alerts = MineAlert.find_by_mine_guid(mine_guid)
-        historic_alerts = [_alert for _alert in all_mine_alerts if (str(_alert.mine_alert_guid) != mine_alert_guid and data.get('start_date') >= _alert.start_date)]
+        historic_alerts = [_alert for _alert in all_mine_alerts if _alert.start_date >= data.get('start_date') and str(_alert.mine_alert_guid) != mine_alert_guid]
 
         if not alert:
             raise NotFound('Mine alert with guid "{mine_alert_guid}" not found.')
@@ -128,15 +119,10 @@ class MineAlertResource(Resource, UserMixin):
         if len(historic_alerts) > 0:
             raise BadRequest('Start date cannot come before a historic alert. Please check history for more details.')
 
-        try:
-            alert.update(data.get('start_date'), data.get('end_date'), data.get('contact_name'), data.get('contact_phone'), data.get('message'))
-            alert.save()
+        alert.update(data.get('start_date'), data.get('end_date'), data.get('contact_name'), data.get('contact_phone'), data.get('message'))
+        alert.save()
 
-            return alert, 200
-        except SQLAlchemyError as ex:
-            if EXCLUSION_CONSTRAINT_MINE_GUID_DATE_RANGE_MESSAGE in str(ex):
-                raise BadRequest('Start/end date cannot overlap with an existing alert on this mine. Please check history for more details.')
-            raise ex
+        return alert, 200
 
     @ api.doc(
         description='Delete a mine alert by guid',
@@ -148,6 +134,7 @@ class MineAlertResource(Resource, UserMixin):
             raise NotFound('Mine alert with guid "{mine_alert_guid}" not found.')
 
         alert.deleted_ind = True
+        alert.is_active = False
         alert.save()
 
         return ('', 204)

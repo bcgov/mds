@@ -161,6 +161,20 @@ export const validateStartDate = memoize(
       : undefined
 );
 
+export const alertStartDateNotBeforeHistoric = memoize((mineAlerts) => (value) => {
+  const isBefore = mineAlerts.some((alert) => new Date(value) < new Date(alert.start_date));
+  return isBefore
+    ? `Start date cannot come before a historic alert. Please check history for more details.`
+    : undefined;
+});
+
+export const alertNotInFutureIfCurrentActive = memoize(
+  (mineAlert) => (value) =>
+    value && mineAlert.start_date && new Date(value) >= new Date()
+      ? "Start date cannot be in the future if there is a current active alert.  Please update or remove current alert first"
+      : undefined
+);
+
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
 
@@ -170,7 +184,7 @@ export const dateInFuture = (value) =>
 export const dateNotBeforeOther = memoize(
   (other) => (value) =>
     value && other && new Date(value) <= new Date(other)
-      ? `Date cannot be on or before ${other}`
+      ? `Date cannot be on or before ${new Date(other).toDateString()}`
       : undefined
 );
 
@@ -196,7 +210,7 @@ export const timeNotBeforeOther = memoize(
 export const dateNotAfterOther = memoize(
   (other) => (value) =>
     value && other && new Date(value) >= new Date(other)
-      ? `Date cannot be on or after ${other}`
+      ? `Date cannot be on or after ${new Date(other).toDateString()}`
       : undefined
 );
 
