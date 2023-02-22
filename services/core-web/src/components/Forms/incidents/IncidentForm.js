@@ -942,7 +942,7 @@ const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
         <Popconfirm
           placement="topLeft"
           title="Are you sure you want to cancel this submission? All unsaved changes will be lost."
-          onConfirm={() => childProps.handlers.handleCancelEdit(isNewIncident)}
+          onConfirm={() => childProps.handlers.handleCancelEdit()}
           okText="Yes"
           cancelText="No"
         >
