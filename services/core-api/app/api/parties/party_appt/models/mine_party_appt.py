@@ -2,15 +2,12 @@ from datetime import datetime, timedelta
 from enum import Enum
 from http.client import BAD_REQUEST
 
-from flask import current_app
 from sqlalchemy import and_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
 from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.parties.party.models.party import Party
-from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES, TIMEOUT_24_HOURS
 
 from app.api.services.email_service import EmailService

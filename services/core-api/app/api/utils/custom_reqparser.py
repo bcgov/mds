@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_restplus import reqparse
 from werkzeug.exceptions import BadRequest
 
@@ -13,6 +14,7 @@ class CustomReqparser():
     def parse_args(self):
         try:
             data = self.parser.parse_args()
-        except BadRequest:
-            raise BadRequest(DEFAULT_MISSING_REQUIRED)
+        except BadRequest as e:
+            current_app.logger.error(e.data)
+            raise BadRequest(f'{DEFAULT_MISSING_REQUIRED} {e.data}')
         return data

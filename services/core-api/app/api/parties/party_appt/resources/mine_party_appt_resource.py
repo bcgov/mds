@@ -63,7 +63,7 @@ class MinePartyApptResource(Resource, UserMixin):
         'mine_party_acknowledgement_status',
         type=MinePartyAcknowledgedStatus,
         choices=list(MinePartyAcknowledgedStatus),
-        help='Indicator of Ministry acknowledgement of the appointment.',
+        help='Indicator of status of acknowledgement.',
         store_missing=False)
     parser.add_argument(
         'status',

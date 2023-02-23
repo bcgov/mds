@@ -10,6 +10,11 @@ import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
+const removeNullValues = (obj) => {
+  Object.keys(obj).forEach((key) => obj[key] === null && delete obj[key]);
+  return obj;
+};
+
 export const createParty = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PARTY));
   dispatch(showLoading("modal"));
@@ -56,18 +61,20 @@ export const updateParty = (payload, partyGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchParties = (params = {}) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PARTIES));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(params), createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_PARTIES));
-      dispatch(partyActions.storeParties(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_PARTIES)))
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const fetchParties =
+  (params = {}) =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.GET_PARTIES));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .get(ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(params), createRequestHeader())
+      .then((response) => {
+        dispatch(success(reducerTypes.GET_PARTIES));
+        dispatch(partyActions.storeParties(response.data));
+      })
+      .catch(() => dispatch(error(reducerTypes.GET_PARTIES)))
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const fetchPartyById = (id) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY));
@@ -85,49 +92,54 @@ export const fetchPartyById = (id) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addPartyRelationship = (payload, successMessage = null) => (dispatch) => {
-  dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({
-        message: successMessage || `Successfully updated contact information`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const addPartyRelationship =
+  (payload, successMessage = null) =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
+      .then((response) => {
+        notification.success({
+          message: successMessage || `Successfully updated contact information`,
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
-export const updatePartyRelationship = (payload, successMessage = null) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${payload.mine_party_appt_guid}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: successMessage || `Successfully updated contact information`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const updatePartyRelationship =
+  (payload, successMessage = null) =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+    dispatch(showLoading("modal"));
+    const sanitizedPayload = removeNullValues(payload);
+    return CustomAxios()
+      .put(
+        `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${payload.mine_party_appt_guid}`,
+        sanitizedPayload,
+        createRequestHeader()
+      )
+      .then((response) => {
+        notification.success({
+          message: successMessage || `Successfully updated contact information`,
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const fetchPartyRelationships = (params) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
@@ -215,27 +227,27 @@ export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
   return addPartyFormState;
 };
 
-export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, payload) => (
-  dispatch
-) => {
-  dispatch(showLoading("modal"));
-  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
-  return CustomAxios()
-    .put(
-      ENVIRONMENT.apiUrl + API.MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid, minePartyApptGuid),
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const addDocumentToRelationship =
+  ({ mineGuid, minePartyApptGuid }, payload) =>
+  (dispatch) => {
+    dispatch(showLoading("modal"));
+    dispatch(request(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+    return CustomAxios()
+      .put(
+        ENVIRONMENT.apiUrl + API.MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid, minePartyApptGuid),
+        payload,
+        createRequestHeader()
+      )
+      .then((response) => {
+        dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.PARTY_ORGBOOK_ENTITY));
