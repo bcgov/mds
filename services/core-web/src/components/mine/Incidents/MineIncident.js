@@ -85,7 +85,7 @@ export const MineIncident = (props) => {
       setIsNewIncident(false);
       return props.fetchMineIncident(mineGuid, mineIncidentGuid);
     }
-    return null;
+    return Promise.resolve();
   };
 
   const handleCreateMineIncident = (formattedValues) => {
