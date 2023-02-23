@@ -3,7 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from app.extensions import api, db
+from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, is_minespace_user, requires_any_of, EDIT_DO, MINESPACE_PROPONENT
 
@@ -406,14 +406,6 @@ class MineIncidentResource(Resource, UserMixin):
 
                     incident.documents.append(mine_incident_doc)
                     mine_incident_doc.save()
-
-            for doc in incident.documents:
-                if not any(
-                        updated_document['document_manager_guid'] == str(doc.document_manager_guid)
-                        for updated_document in updated_documents):
-                    incident.documents.remove(doc)
-                    db.session.delete(doc)
-                    db.session.commit()
 
         incident.save()
         return incident
