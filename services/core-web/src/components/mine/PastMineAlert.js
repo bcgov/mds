@@ -15,28 +15,36 @@ export const PastMineAlert = (props) => {
   return (
     <div>
       <Alert
-        description={
+        description={(
           <Row>
             <Col xs={24} md={18}>
               <>
                 <p>
                   {props.end_date ? (
                     <b>
-                      Active Alert: {formatDate(props.start_date)} - {formatDate(props.end_date)}
+                      {`Active Alert: ${formatDate(props.start_date)} - ${formatDate(
+                        props.end_date
+                      )}`}
                     </b>
                   ) : (
-                    <b>Active Alert: {formatDate(props.start_date)}</b>
+                    <b>{`Active Alert: ${formatDate(props.start_date)}`}</b>
                   )}
                 </p>
                 <p>
                   {props.message}
                   <br />
-                  For more information contact: {props.contact_name} - {props.contact_phone}
+                  For more information contact: 
+                  {' '}
+                  {props.contact_name}
+                  {' '}
+- 
+                  {' '}
+                  {props.contact_phone}
                 </p>
               </>
             </Col>
           </Row>
-        }
+        )}
         type="warning"
         showIcon
         style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}
