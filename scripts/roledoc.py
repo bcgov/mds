@@ -3,6 +3,16 @@ import os
 import sys
 
 def find_decorated_functions(folder_path, decorator_names):
+    """
+    Recursively searches for Python files under the given folder path and identifies functions or methods decorated with the
+    specified decorators. Returns a dictionary where the keys are the names of the classes containing decorated functions
+    and the values are lists of tuples representing the decorated functions. Each tuple contains the name of the function,
+    the file path, and a list of the parameters passed into the decorator.
+
+    :param folder_path: The path to the folder to search for Python files.
+    :param decorators: A list of strings representing the names of the decorators to search for.
+    :return: A dictionary where the keys are class names and the values are lists of tuples representing decorated functions.
+    """
     results = []
     for root, dirs, files in os.walk(folder_path):
         for file in files:
