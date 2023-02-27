@@ -1,27 +1,18 @@
-from sre_constants import IN
-import uuid
 import datetime
+import uuid
 
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
-
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
 
-from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
-from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
-from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.incidents.models.mine_incident_note import MineIncidentNote
-from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.services.email_service import EmailService
+from app.api.constants import INCIDENTS_EMAIL
 from app.api.parties.party.models.party import Party
+from app.api.services.email_service import EmailService
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.config import Config
-from app.api.constants import INCIDENTS_EMAIL, MDS_EMAIL
+from app.extensions import db
 
 
 def getYear():
@@ -344,3 +335,24 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             body += f'<p>View the report in Core: <a href="{link}" target="_blank">{link}</a></p>'
 
         EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)
+
+    def send_incident_update_email(self, is_prop):
+        OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
+        PROP_EMAIL = self.reported_by_email
+        recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
+
+        subject = f'{self.mine_name} A notice of reportable incident has been updated'
+
+        body = f'<p>A notice of a reportable incident has been updated.</p>'
+        body += f'<p>You can view this incident and see its current status by visiting {"Minespace" if is_prop else "Core"}.</p>'
+        body += '<br>'
+        body += f'<p>Incident number: {self.mine_incident_report_no}'
+        body += f'<p>Mine name: {self.mine_name}'
+        body += f'<p>Mine number: {self.mine_table.mine_no}'
+        body += '<br><br>'
+
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+        body += f'<p>View the incident in {"Minespace" if is_prop else "Core"}: <a href="{link}" target="_blank">{link}</a></p>'
+
+        EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)
+

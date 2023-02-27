@@ -2,7 +2,6 @@ from datetime import datetime
 import json
 from enum import Enum
 
-from sqlalchemy import func
 from flask import has_request_context
 from cerberus import Validator
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -100,6 +99,7 @@ class ActivityType(str, Enum):
     tsf_qp_expired = 'tsf_qp_expired'
     incident_report_submitted = 'incident_report_submitted'
     mine_incident_created = 'mine_incident_created'
+    mine_incident_updated = 'mine_incident_updated'
     nod_status_changed = 'nod_status_changed'
     eor_created = 'eor_created'
     qfp_created = 'qfp_created'
