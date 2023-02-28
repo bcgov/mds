@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -16,65 +16,69 @@ const propTypes = {
   createMineIncidentNote: PropTypes.func.isRequired,
   fetchMineIncidentNotes: PropTypes.func.isRequired,
   mineIncidentGuid: PropTypes.string,
+  isEditMode: PropTypes.bool,
+  createPermission: PropTypes.string,
 };
 
 const defaultProps = {
   mineIncidentGuid: null,
+  isEditMode: true,
+  createPermission: Permission.EDIT_INCIDENTS,
 };
 
-export class MinistryInternalComments extends Component {
-  state = { loading: true };
+export const MinistryInternalComments = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const { createPermission, isEditMode, mineIncidentGuid } = props;
 
-  componentDidMount() {
-    this.fetchNotes();
-  }
+  const fetchNotes = () => {
+    setIsLoading(true);
+    props.fetchMineIncidentNotes(mineIncidentGuid).then(() => setIsLoading(false));
+  };
 
-  handleAddComment = (values) => {
+  const handleAddComment = (values) => {
     const formValues = {
       content: values.comment,
     };
-    return this.props.createMineIncidentNote(this.props.mineIncidentGuid, formValues).then(() => {
-      this.fetchNotes();
+    return props.createMineIncidentNote(mineIncidentGuid, formValues).then(() => {
+      fetchNotes();
     });
   };
 
-  fetchNotes() {
-    this.setState({ loading: true });
-    this.props
-      .fetchMineIncidentNotes(this.props.mineIncidentGuid)
-      .then(() => this.setState({ loading: false }));
-  }
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h4 id="internal-ministry-comments">Internal Ministry Comments</h4>
-        <br />
-        <p>
-          <strong>
-            These comments are for interal staff only and will not be shown to proponents.
-          </strong>{" "}
-          Add comments to this incident for future reference. Anything written in these comments may
-          be requested under FOIPPA. Keep it professional and concise.
-        </p>
-        <br />
-        <MinistryCommentPanel
-          renderEditor
-          onSubmit={this.handleAddComment}
-          loading={this.state.loading}
-          comments={this.props.notes?.map((note) => ({
-            key: note.mine_incident_note_guid,
-            author: note.update_user,
-            content: note.content,
-            actions: null,
-            datetime: note.update_timestamp,
-          }))}
-          createPermission={Permission.EDIT_INCIDENTS}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h4 id="internal-ministry-comments">Internal Ministry Comments</h4>
+      {isEditMode && (
+        <div className="margin-large--top margin-large--bottom">
+          <p>
+            <strong>
+              These comments are for interal staff only and will not be shown to proponents.
+            </strong>
+            {" "}
+            Add comments to this incident for future reference. Anything written in these comments
+            may be requested under FOIPPA. Keep it professional and concise.
+          </p>
+        </div>
+      )}
+      <MinistryCommentPanel
+        renderEditor={isEditMode}
+        onSubmit={handleAddComment}
+        loading={isLoading}
+        comments={props.notes?.map((note) => ({
+          key: note.mine_incident_note_guid,
+          author: note.update_user,
+          content: note.content,
+          actions: null,
+          datetime: note.update_timestamp,
+        }))}
+        createPermission={createPermission}
+      />
+    </div>
+  );
+};
 
 MinistryInternalComments.propTypes = propTypes;
 MinistryInternalComments.defaultProps = defaultProps;

@@ -30,13 +30,14 @@ const defaultProps = {
 };
 
 export const CommentPanel = (props) => {
-  const createPermission = props.userRoles.includes(USER_ROLES[props?.createPermission])
-    ? props.createPermission
-    : null;
+  const { comments, createPermission, renderEditor, loading } = props;
+  const hasCreatePermission = createPermission
+    ? props.userRoles.includes(USER_ROLES[createPermission])
+    : true;
 
   return (
-    <React.Fragment>
-      {props.renderEditor && (
+    <>
+      {renderEditor && hasCreatePermission && (
         <Row>
           <Col span={2}>
             <Avatar size="small" icon={<UserOutlined />} />
@@ -51,12 +52,11 @@ export const CommentPanel = (props) => {
           </Col>
         </Row>
       )}
-
-      {!props.loading ? (
+      {!loading ? (
         <List
           className="comment-list"
           itemLayout="horizontal"
-          dataSource={props.comments}
+          dataSource={comments}
           renderItem={(item) => {
             return (
               <li key={item.key}>
@@ -90,7 +90,7 @@ export const CommentPanel = (props) => {
           />
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
