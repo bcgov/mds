@@ -65,9 +65,11 @@ const propTypes = {
 
 export const MineIncident = (props) => {
   const { formValues, formErrors, match, incident, location } = props;
+  // eslint-disable-next-line react/prop-types
+  const isEditPage = props.location.pathname.endsWith("/edit");
   const mineGuid = match?.params?.mineGuid;
   const mineIncidentGuid = match?.params?.mineIncidentGuid;
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(isEditPage);
   const [isNewIncident, setIsNewIncident] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
@@ -93,7 +95,7 @@ export const MineIncident = (props) => {
     return props
       .createMineIncident(mineGuid, formattedValues)
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
-        props.history.replace(routes.MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
+        props.history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
       .then(() => handleFetchData())
       .then(() => setIsLoaded(true));
@@ -201,7 +203,6 @@ export const MineIncident = (props) => {
   useEffect(() => {
     handleFetchData().then(() => {
       setIsLoaded(true);
-      setIsEditMode(location.state?.isEditMode);
 
       return () => {
         window.removeEventListener("scroll", handleScroll);
@@ -252,7 +253,7 @@ export const MineIncident = (props) => {
               { href: "internal-documents", title: "Internal Documents" },
               { href: "internal-ministry-comments", title: "Comments" },
             ]}
-            featureUrlRoute={routes.MINE_INCIDENT.hashRoute}
+            featureUrlRoute={routes.VIEW_MINE_INCIDENT.hashRoute}
             featureUrlRouteArguments={[mineGuid, mineIncidentGuid]}
           />
         </div>

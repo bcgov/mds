@@ -1,6 +1,7 @@
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
 import { isEmpty } from "lodash";
+import { getEnvironment } from "@common/utils/environmentUtils";
 import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
@@ -53,7 +54,6 @@ import MineIncident from "@/components/mine/Incidents/MineIncident";
 import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
 import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
 import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
-import { getEnvironment } from "@common/utils/environmentUtils";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -280,7 +280,16 @@ export const MINE_INCIDENTS = {
   component: MineIncidents,
 };
 
-export const MINE_INCIDENT = {
+export const EDIT_MINE_INCIDENT = {
+  route: "/mines/:mineGuid/incidents/:mineIncidentGuid/edit",
+  dynamicRoute: (mineGuid, mineIncidentGuid) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/edit`,
+  hashRoute: (mineGuid, mineIncidentGuid, link) =>
+    `/mines/${mineGuid}/incidents/${mineIncidentGuid}/edit${link}`,
+  component: MineIncident,
+};
+
+export const VIEW_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
   dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
@@ -464,13 +473,13 @@ export const EDIT_PERMIT_CONDITIONS = {
 };
 
 const MINESPACE_URLS = {
-  'production': "https://minespace.gov.bc.ca/",
-  'development': "https://minespace-dev.apps.silver.devops.gov.bc.ca/",
-  'test': "https://minespace-test.apps.silver.devops.gov.bc.ca/",
+  production: "https://minespace.gov.bc.ca/",
+  development: "https://minespace-dev.apps.silver.devops.gov.bc.ca/",
+  test: "https://minespace-test.apps.silver.devops.gov.bc.ca/",
 };
 
 export const VIEW_MINESPACE = (mineGuid) => {
-  const MINESPACE_URL = MINESPACE_URLS[getEnvironment() ?? 'production'];
+  const MINESPACE_URL = MINESPACE_URLS[getEnvironment() ?? "production"];
   return `${MINESPACE_URL}mines/${mineGuid}/overview?redirectingFromCore=true`;
 };
 

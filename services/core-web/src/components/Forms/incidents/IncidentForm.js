@@ -33,7 +33,6 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentStatusCodeHash,
 } from "@common/selectors/staticContentSelectors";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
@@ -411,20 +410,6 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
           <Col xs={24} md={12}>
             <h4>Upload Initial Notification Documents</h4>
           </Col>
-          <Col xs={24} md={12}>
-            {!isEditMode && (
-              <div className="right center-mobile">
-                <Button
-                  id="mine-incident-add-documentation"
-                  type="secondary"
-                  onClick={parentHandlers.toggleEditMode}
-                  className="full-mobile violet violet-border"
-                >
-                  + Add Documentation
-                </Button>
-              </div>
-            )}
-          </Col>
         </Row>
         <br />
         <h4>Incident Documents</h4>
@@ -512,9 +497,6 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   within 60 days of the reportable incident. Please add the final report
                   documentation by clicking below.
                 </Typography.Paragraph>
-                <Button type="primary" onClick={parentHandlers.toggleEditMode}>
-                  Add Final Report
-                </Button>
               </div>
             )}
           />
@@ -524,7 +506,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
   );
 };
 
-const renderRecommendations = ({ fields, isEditMode, handlers }) => [
+const renderRecommendations = ({ fields, isEditMode }) => [
   fields.map((recommendation) => (
     <Field
       name={`${recommendation}.recommendation`}
@@ -533,10 +515,12 @@ const renderRecommendations = ({ fields, isEditMode, handlers }) => [
       disabled={!isEditMode}
     />
   )),
-  <Button type="primary" onClick={() => (isEditMode ? fields.push({}) : handlers.toggleEditMode())}>
-    <PlusOutlined />
-    Add Recommendation
-  </Button>,
+  isEditMode ? (
+    <Button type="primary" onClick={() => fields.push({})}>
+      <PlusOutlined />
+      Add Recommendation
+    </Button>
+  ) : null,
 ];
 
 const renderMinistryFollowUp = (childProps, isEditMode) => {
@@ -797,20 +781,6 @@ Internal Documents and Comments (Ministry Visible
                 <Col xs={24} md={12}>
                   <h4>Internal Ministry Documentation</h4>
                 </Col>
-                <Col xs={24} md={12}>
-                  {!isEditMode && (
-                    <div className="right center-mobile">
-                      <Button
-                        id="mine-incident-add-documents"
-                        type="primary"
-                        onClick={parentHandlers.toggleEditMode}
-                        className="full-mobile"
-                      >
-                        + Add Documents
-                      </Button>
-                    </div>
-                  )}
-                </Col>
               </Row>
               <br />
               <Typography.Paragraph strong>
@@ -851,6 +821,7 @@ Internal Documents and Comments (Ministry Visible
               <br />
               <MinistryInternalComments
                 mineIncidentGuid={childProps.incident?.mine_incident_guid}
+                isEditMode={isEditMode}
               />
             </Col>
           </Row>
@@ -926,17 +897,6 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
 
 const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
   <div className="right center-mobile violet">
-    {!isEditMode && (
-      <Button
-        id="mine-incident-edit"
-        className="full-mobile violet violet-border"
-        type="secondary"
-        onClick={childProps.handlers.toggleEditMode}
-      >
-        <img alt="pencil" src={EDIT_OUTLINE_VIOLET} />
-        &nbsp;Edit Incident
-      </Button>
-    )}
     {isEditMode && (
       <>
         <Popconfirm
