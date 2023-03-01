@@ -56,7 +56,7 @@ export const MineIncident = (props) => {
     ? new URLSearchParams(search).get("mine_name")
     : incident.mine_name;
 
-  const isEditMode = isEditPage || !mineIncidentGuid;
+  const isEditMode = isEditPage || isNewIncident;
 
   const sideBarRoute = (() => {
     if (isNewIncident) {
