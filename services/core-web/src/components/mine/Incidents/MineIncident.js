@@ -3,15 +3,7 @@ import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import {
-  change,
-  submit,
-  getFormSyncErrors,
-  getFormValues,
-  reset,
-  touch,
-  isDirty,
-} from "redux-form";
+import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -49,13 +41,12 @@ const propTypes = {
     }),
   }).isRequired,
   location: PropTypes.shape({
+    pathname: PropTypes.string,
     state: PropTypes.shape({
-      isEditMode: PropTypes.bool,
       mineName: customPropTypes.mine,
     }),
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
-  reset: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -65,14 +56,22 @@ const propTypes = {
 
 export const MineIncident = (props) => {
   const { formValues, formErrors, match, incident, location } = props;
-  // eslint-disable-next-line react/prop-types
   const isEditPage = props.location.pathname.endsWith("/edit");
   const mineGuid = match?.params?.mineGuid;
   const mineIncidentGuid = match?.params?.mineIncidentGuid;
-  const [isEditMode, setIsEditMode] = useState(isEditPage);
-  const [isNewIncident, setIsNewIncident] = useState(true);
+
+  const [isNewIncident, setIsNewIncident] = useState(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
+  const [mineName] = useState(incident.mine_name || location?.state?.mineName);
+
+  const isEditMode = isEditPage || !mineIncidentGuid;
+
+  const sideBarUrl = (() => {
+    if (isNewIncident) return routes.CREATE_MINE_INCIDENT;
+    if (!isEditMode) return routes.VIEW_MINE_INCIDENT;
+    return routes.EDIT_MINE_INCIDENT;
+  })();
 
   const handleScroll = () => {
     if (window.pageYOffset > 170 && !fixedTop) {
@@ -188,16 +187,6 @@ export const MineIncident = (props) => {
     };
   };
 
-  const toggleEditMode = () => setIsEditMode(!isEditMode);
-
-  const handleCancelEdit = () => {
-    props.reset(FORM.ADD_EDIT_INCIDENT);
-    if (!isNewIncident) {
-      return toggleEditMode();
-    }
-    return null;
-  };
-
   window.addEventListener("scroll", handleScroll);
 
   useEffect(() => {
@@ -211,8 +200,6 @@ export const MineIncident = (props) => {
     });
     handleScroll();
   }, [location]);
-
-  const mineName = incident.mine_name || location?.state?.mineName;
 
   return isLoaded ? (
     <>
@@ -253,7 +240,7 @@ export const MineIncident = (props) => {
               { href: "internal-documents", title: "Internal Documents" },
               { href: "internal-ministry-comments", title: "Comments" },
             ]}
-            featureUrlRoute={routes.VIEW_MINE_INCIDENT.hashRoute}
+            featureUrlRoute={sideBarUrl.hashRoute}
             featureUrlRouteArguments={[mineGuid, mineIncidentGuid]}
           />
         </div>
@@ -267,9 +254,7 @@ export const MineIncident = (props) => {
             incident={incident}
             handlers={{
               deleteDocument: handleDeleteDocument,
-              toggleEditMode,
               handleSaveData,
-              handleCancelEdit,
             }}
           />
         </div>
@@ -298,7 +283,6 @@ const mapDispatchToProps = (dispatch) =>
       updateMineIncident,
       removeDocumentFromMineIncident,
       submit,
-      reset,
       touch,
       change,
     },

@@ -10,6 +10,7 @@ import {
 import MinistryCommentPanel from "@/components/common/comments/MinistryCommentPanel";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,
@@ -52,16 +53,18 @@ export const MinistryInternalComments = (props) => {
     <div>
       <h4 id="internal-ministry-comments">Internal Ministry Comments</h4>
       {isEditMode && (
-        <div className="margin-large--top margin-large--bottom">
-          <p>
-            <strong>
-              These comments are for interal staff only and will not be shown to proponents.
-            </strong>
-            {" "}
-            Add comments to this incident for future reference. Anything written in these comments
-            may be requested under FOIPPA. Keep it professional and concise.
-          </p>
-        </div>
+        <AuthorizationWrapper permission={createPermission}>
+          <div className="margin-large--top margin-large--bottom">
+            <p>
+              <strong>
+                These comments are for interal staff only and will not be shown to proponents.
+              </strong>
+              {" "}
+              Add comments to this incident for future reference. Anything written in these comments
+              may be requested under FOIPPA. Keep it professional and concise.
+            </p>
+          </div>
+        </AuthorizationWrapper>
       )}
       <MinistryCommentPanel
         renderEditor={isEditMode}
