@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useParams, useLocation } from "react-router-dom";
 import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
@@ -34,18 +34,6 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      mineGuid: PropTypes.string,
-      mineIncidentGuid: PropTypes.string,
-    }),
-  }).isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    state: PropTypes.shape({
-      mineName: customPropTypes.mine,
-    }),
-  }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -55,22 +43,29 @@ const propTypes = {
 };
 
 export const MineIncident = (props) => {
-  const { formValues, formErrors, match, incident, location } = props;
-  const isEditPage = props.location.pathname.endsWith("/edit");
-  const mineGuid = match?.params?.mineGuid;
-  const mineIncidentGuid = match?.params?.mineIncidentGuid;
+  const { formValues, formErrors, incident } = props;
+  const { mineGuid, mineIncidentGuid = null } = useParams();
+  const { pathname, search = null } = useLocation();
 
   const [isNewIncident, setIsNewIncident] = useState(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
-  const [mineName] = useState(incident.mine_name || location?.state?.mineName);
+
+  const isEditPage = pathname.endsWith("/edit");
+  const mineName = isNewIncident
+    ? new URLSearchParams(search).get("mine_name")
+    : incident.mine_name;
 
   const isEditMode = isEditPage || !mineIncidentGuid;
 
-  const sideBarUrl = (() => {
-    if (isNewIncident) return routes.CREATE_MINE_INCIDENT;
-    if (!isEditMode) return routes.VIEW_MINE_INCIDENT;
-    return routes.EDIT_MINE_INCIDENT;
+  const sideBarRoute = (() => {
+    if (isNewIncident) {
+      return { url: routes.CREATE_MINE_INCIDENT, params: [mineGuid, mineName] };
+    }
+    if (isEditMode) {
+      return { url: routes.EDIT_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
+    }
+    return { url: routes.VIEW_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
   })();
 
   const handleScroll = () => {
@@ -199,7 +194,7 @@ export const MineIncident = (props) => {
       };
     });
     handleScroll();
-  }, [location]);
+  }, [pathname]);
 
   return isLoaded ? (
     <>
@@ -240,8 +235,8 @@ export const MineIncident = (props) => {
               { href: "internal-documents", title: "Internal Documents" },
               { href: "internal-ministry-comments", title: "Comments" },
             ]}
-            featureUrlRoute={sideBarUrl.hashRoute}
-            featureUrlRouteArguments={[mineGuid, mineIncidentGuid]}
+            featureUrlRoute={sideBarRoute.url.hashRoute}
+            featureUrlRouteArguments={sideBarRoute.params}
           />
         </div>
         <div

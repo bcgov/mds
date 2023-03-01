@@ -819,7 +819,6 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
               <br />
               <MinistryInternalComments
                 mineIncidentGuid={childProps.incident?.mine_incident_guid}
-                isEditMode={isEditMode}
               />
             </Col>
           </Row>

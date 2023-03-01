@@ -206,10 +206,7 @@ const MineIncidents = (props) => {
                 ? openMineIncidentModal(event, handleAddMineIncident, true)
                 : props.history.push({
                     pathname: ROUTES.CREATE_MINE_INCIDENT.dynamicRoute(mineGuid),
-                    state: {
-                      mineName: mines[mineGuid]?.mine_name,
-                      isEditMode: true,
-                    },
+                    search: `mine_name=${mines[mineGuid]?.mine_name}`,
                   })}
           >
             Record a Mine Incident
