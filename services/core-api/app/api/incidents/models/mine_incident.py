@@ -343,27 +343,3 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         }
 
         EmailService.send_template_email(subject, recipients, body, context, cc=cc)
-
-    def send_incident_update_email(self, is_prop):
-        OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
-        PROP_EMAIL = self.reported_by_email
-        recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
-        cc = None
-
-        subject = f'{self.mine_name} A notice of reportable incident has been updated'
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-        body = open("app/templates/email/incident/minespace_incident_update_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_incident_update_email.html", "r").read()
-
-        context = {
-            "incident": {
-                "mine_incident_report_no": self.mine_incident_report_no,
-            },
-            "mine": {
-                "mine_name": self.mine_table.mine_name,
-                "mine_no": self.mine_table.mine_no,
-            },
-            "incident_link": link,
-        }
-
-        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
-

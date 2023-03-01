@@ -428,8 +428,6 @@ class MineIncidentResource(Resource, UserMixin):
         status_code = data.get('status_code')
         if documents_added and not notification_sent and status_code != 'DFT':
             trigger_notification(f'A notice of a reportable incident ({incident.mine_incident_report_no}) has been updated for ({incident.mine_name})', ActivityType.mine_incident_updated, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
-            incident.send_incident_update_email(True)
-            incident.send_incident_update_email(False)
 
         incident.save()
         return incident
