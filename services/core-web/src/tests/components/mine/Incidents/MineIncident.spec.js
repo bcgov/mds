@@ -14,6 +14,10 @@ function mockFunction() {
       mineGuid: "448014a5-981f-47b8-8687-4963666776b8",
       mineIncidentGuid: "668014a5-981f-47b8-8687-4963666776b9",
     }),
+    useLocation: jest.fn().mockReturnValue({
+      pathname:
+        "/mines/448014a5-981f-47b8-8687-4963666776b8/incidents/668014a5-981f-47b8-8687-4963666776b9",
+    }),
   };
 }
 
@@ -28,10 +32,6 @@ const setupProps = () => {
     internal_ministry_documents: [],
   };
   props.formIsDirty = false;
-  props.location = {
-    pathname:
-      "/mines/448014a5-981f-47b8-8687-4963666776b8/incidents/668014a5-981f-47b8-8687-4963666776b9",
-  };
   props.history = {
     push: jest.fn(),
     replace: jest.fn(),
