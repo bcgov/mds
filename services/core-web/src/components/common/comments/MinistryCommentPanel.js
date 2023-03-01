@@ -1,21 +1,18 @@
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Avatar, Divider, Row, Col, Spin, List } from "antd";
 
-import { USER_ROLES } from "@mds/common";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import MinistryComment from "@/components/common/comments/MinistryComment";
 import * as Style from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "../wrappers/AuthorizationWrapper";
 
 const propTypes = {
   loading: PropTypes.bool,
   renderEditor: PropTypes.bool,
   comments: PropTypes.arrayOf(CustomPropTypes.mineComment).isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   createPermission: PropTypes.string,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
@@ -24,39 +21,37 @@ const propTypes = {
 const defaultProps = {
   renderEditor: false,
   loading: false,
-  createPermission: null,
+  createPermission: undefined,
   onChange: () => {},
   onSubmit: () => {},
 };
 
-export const CommentPanel = (props) => {
-  const createPermission = props.userRoles.includes(USER_ROLES[props?.createPermission])
-    ? props.createPermission
-    : null;
-
+export const MinistryCommentPanel = (props) => {
+  const { comments, createPermission, renderEditor, loading } = props;
   return (
-    <React.Fragment>
-      {props.renderEditor && (
-        <Row>
-          <Col span={2}>
-            <Avatar size="small" icon={<UserOutlined />} />
-          </Col>
-          <Col span={22}>
-            <CommentEditor
-              addCommentPermission={createPermission}
-              onChange={props.onChange}
-              onSubmit={props.onSubmit}
-            />
-            <Divider />
-          </Col>
-        </Row>
+    <>
+      {renderEditor && (
+        <AuthorizationWrapper permission={createPermission}>
+          <Row>
+            <Col span={2}>
+              <Avatar size="small" icon={<UserOutlined />} />
+            </Col>
+            <Col span={22}>
+              <CommentEditor
+                addCommentPermission={createPermission}
+                onChange={props.onChange}
+                onSubmit={props.onSubmit}
+              />
+              <Divider />
+            </Col>
+          </Row>
+        </AuthorizationWrapper>
       )}
-
-      {!props.loading ? (
+      {!loading ? (
         <List
           className="comment-list"
           itemLayout="horizontal"
-          dataSource={props.comments}
+          dataSource={comments}
           renderItem={(item) => {
             return (
               <li key={item.key}>
@@ -90,15 +85,11 @@ export const CommentPanel = (props) => {
           />
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
-const mapStateToProps = (state) => ({
-  userRoles: getUserAccessData(state),
-});
+MinistryCommentPanel.defaultProps = defaultProps;
+MinistryCommentPanel.propTypes = propTypes;
 
-CommentPanel.defaultProps = defaultProps;
-CommentPanel.propTypes = propTypes;
-
-export default connect(mapStateToProps)(CommentPanel);
+export default MinistryCommentPanel;

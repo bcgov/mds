@@ -7,7 +7,7 @@ import { Field, FieldArray, reduxForm, change, getFormValues, formValueSelector 
 import { LockOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Typography, Divider, Empty, Button, Popconfirm, Alert } from "antd";
+import { Col, Row, Typography, Divider, Empty, Button, Alert } from "antd";
 import {
   required,
   requiredList,
@@ -33,7 +33,6 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentStatusCodeHash,
 } from "@common/selectors/staticContentSelectors";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
@@ -79,7 +78,7 @@ const documentColumns = [
   uploadDateColumn("upload_date"),
 ];
 
-const alertText = (status, updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
+const alertText = (updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
   let text = "";
 
   if (selectedStatusCode === "UNR" && !responsibleInspector) {
@@ -411,20 +410,6 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
           <Col xs={24} md={12}>
             <h4>Upload Initial Notification Documents</h4>
           </Col>
-          <Col xs={24} md={12}>
-            {!isEditMode && (
-              <div className="right center-mobile">
-                <Button
-                  id="mine-incident-add-documentation"
-                  type="secondary"
-                  onClick={parentHandlers.toggleEditMode}
-                  className="full-mobile violet violet-border"
-                >
-                  + Add Documentation
-                </Button>
-              </div>
-            )}
-          </Col>
         </Row>
         <br />
         <h4>Incident Documents</h4>
@@ -512,9 +497,6 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   within 60 days of the reportable incident. Please add the final report
                   documentation by clicking below.
                 </Typography.Paragraph>
-                <Button type="primary" onClick={parentHandlers.toggleEditMode}>
-                  Add Final Report
-                </Button>
               </div>
             )}
           />
@@ -524,7 +506,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
   );
 };
 
-const renderRecommendations = ({ fields, isEditMode, handlers }) => [
+const renderRecommendations = ({ fields, isEditMode }) => [
   fields.map((recommendation) => (
     <Field
       name={`${recommendation}.recommendation`}
@@ -533,10 +515,12 @@ const renderRecommendations = ({ fields, isEditMode, handlers }) => [
       disabled={!isEditMode}
     />
   )),
-  <Button type="primary" onClick={() => (isEditMode ? fields.push({}) : handlers.toggleEditMode())}>
-    <PlusOutlined />
-    Add Recommendation
-  </Button>,
+  isEditMode ? (
+    <Button type="primary" onClick={() => fields.push({})}>
+      <PlusOutlined />
+      Add Recommendation
+    </Button>
+  ) : null,
 ];
 
 const renderMinistryFollowUp = (childProps, isEditMode) => {
@@ -773,9 +757,7 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
       <Col span={24}>
         <Typography.Title level={3} id="internal-documents">
           <LockOutlined className="violet" />
-          {' '}
-Internal Documents and Comments (Ministry Visible
-          Only)
+          Internal Documents and Comments (Ministry Visible Only)
         </Typography.Title>
         <Divider />
         {!incidentCreated ? (
@@ -796,20 +778,6 @@ Internal Documents and Comments (Ministry Visible
               <Row>
                 <Col xs={24} md={12}>
                   <h4>Internal Ministry Documentation</h4>
-                </Col>
-                <Col xs={24} md={12}>
-                  {!isEditMode && (
-                    <div className="right center-mobile">
-                      <Button
-                        id="mine-incident-add-documents"
-                        type="primary"
-                        onClick={parentHandlers.toggleEditMode}
-                        className="full-mobile"
-                      >
-                        + Add Documents
-                      </Button>
-                    </div>
-                  )}
                 </Col>
               </Row>
               <br />
@@ -875,7 +843,6 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
             <Col xs={24} md={18}>
               <p>
                 {alertText(
-                  childProps.incident?.status_code,
                   childProps.incident?.update_user,
                   childProps.incident?.update_timestamp,
                   responsibleInspector,
@@ -926,41 +893,17 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
 
 const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
   <div className="right center-mobile violet">
-    {!isEditMode && (
-      <Button
-        id="mine-incident-edit"
-        className="full-mobile violet violet-border"
-        type="secondary"
-        onClick={childProps.handlers.toggleEditMode}
-      >
-        <img alt="pencil" src={EDIT_OUTLINE_VIOLET} />
-        &nbsp;Edit Incident
-      </Button>
-    )}
     {isEditMode && (
-      <>
-        <Popconfirm
-          placement="topLeft"
-          title="Are you sure you want to cancel this submission? All unsaved changes will be lost."
-          onConfirm={() => childProps.handlers.handleCancelEdit()}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button className="full-mobile right violet violet-border" type="secondary">
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button
-          id="mine-incident-submit"
-          className="full-mobile right"
-          type="primary"
-          htmlType="submit"
-          loading={childProps.submitting}
-          disabled={childProps.submitting}
-        >
-          {isNewIncident ? "Create Incident" : "Save Changes"}
-        </Button>
-      </>
+      <Button
+        id="mine-incident-submit"
+        className="full-mobile right"
+        type="primary"
+        htmlType="submit"
+        loading={childProps.submitting}
+        disabled={childProps.submitting}
+      >
+        {isNewIncident ? "Create Incident" : "Save Changes"}
+      </Button>
     )}
   </div>
 );

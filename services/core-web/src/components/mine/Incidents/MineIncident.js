@@ -2,16 +2,8 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import {
-  change,
-  submit,
-  getFormSyncErrors,
-  getFormValues,
-  reset,
-  touch,
-  isDirty,
-} from "redux-form";
+import { Link, withRouter, useParams, useLocation } from "react-router-dom";
+import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -42,20 +34,7 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      mineGuid: PropTypes.string,
-      mineIncidentGuid: PropTypes.string,
-    }),
-  }).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      isEditMode: PropTypes.bool,
-      mineName: customPropTypes.mine,
-    }),
-  }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
-  reset: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -64,13 +43,30 @@ const propTypes = {
 };
 
 export const MineIncident = (props) => {
-  const { formValues, formErrors, match, incident, location } = props;
-  const mineGuid = match?.params?.mineGuid;
-  const mineIncidentGuid = match?.params?.mineIncidentGuid;
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isNewIncident, setIsNewIncident] = useState(true);
+  const { formValues, formErrors, incident } = props;
+  const { mineGuid, mineIncidentGuid = null } = useParams();
+  const { pathname, search = null } = useLocation();
+
+  const [isNewIncident, setIsNewIncident] = useState(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
+
+  const isEditPage = pathname.endsWith("/edit");
+  const mineName = isNewIncident
+    ? new URLSearchParams(search).get("mine_name")
+    : incident.mine_name;
+
+  const isEditMode = isEditPage || isNewIncident;
+
+  const sideBarRoute = (() => {
+    if (isNewIncident) {
+      return { url: routes.CREATE_MINE_INCIDENT, params: [mineGuid, mineName] };
+    }
+    if (isEditMode) {
+      return { url: routes.EDIT_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
+    }
+    return { url: routes.VIEW_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
+  })();
 
   const handleScroll = () => {
     if (window.pageYOffset > 170 && !fixedTop) {
@@ -93,7 +89,7 @@ export const MineIncident = (props) => {
     return props
       .createMineIncident(mineGuid, formattedValues)
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
-        props.history.replace(routes.MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
+        props.history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
       .then(() => handleFetchData())
       .then(() => setIsLoaded(true));
@@ -186,22 +182,11 @@ export const MineIncident = (props) => {
     };
   };
 
-  const toggleEditMode = () => setIsEditMode(!isEditMode);
-
-  const handleCancelEdit = () => {
-    props.reset(FORM.ADD_EDIT_INCIDENT);
-    if (!isNewIncident) {
-      return toggleEditMode();
-    }
-    return null;
-  };
-
   window.addEventListener("scroll", handleScroll);
 
   useEffect(() => {
     handleFetchData().then(() => {
       setIsLoaded(true);
-      setIsEditMode(location.state?.isEditMode);
 
       return () => {
         window.removeEventListener("scroll", handleScroll);
@@ -209,9 +194,7 @@ export const MineIncident = (props) => {
       };
     });
     handleScroll();
-  }, [location]);
-
-  const mineName = incident.mine_name || location?.state?.mineName;
+  }, [pathname]);
 
   return isLoaded ? (
     <>
@@ -252,8 +235,8 @@ export const MineIncident = (props) => {
               { href: "internal-documents", title: "Internal Documents" },
               { href: "internal-ministry-comments", title: "Comments" },
             ]}
-            featureUrlRoute={routes.MINE_INCIDENT.hashRoute}
-            featureUrlRouteArguments={[mineGuid, mineIncidentGuid]}
+            featureUrlRoute={sideBarRoute.url.hashRoute}
+            featureUrlRouteArguments={sideBarRoute.params}
           />
         </div>
         <div
@@ -266,9 +249,7 @@ export const MineIncident = (props) => {
             incident={incident}
             handlers={{
               deleteDocument: handleDeleteDocument,
-              toggleEditMode,
               handleSaveData,
-              handleCancelEdit,
             }}
           />
         </div>
@@ -297,7 +278,6 @@ const mapDispatchToProps = (dispatch) =>
       updateMineIncident,
       removeDocumentFromMineIncident,
       submit,
-      reset,
       touch,
       change,
     },
