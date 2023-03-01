@@ -349,13 +349,24 @@ class MineIncidentResource(Resource, UserMixin):
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
                     setattr(incident, key, value)
             if key in ['status_code']:
-                if value == 'AFR' and incident.status_code != 'AFR':
-                    # Need to send an email to the proponent and OIC with mostly same content just slightly different.
+                # If the status is being changed to AFR or FRS from draft, send the initial incident email (these are
+                # the only two statuses available when moving from draft)
+                if (value == 'AFR' or value == 'FRS') and incident.status_code == 'DFT':
+                    incident.send_incidents_email()
+                    trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
+
+                # If the status is being changed to AFR from any status other than draft, send the awaiting final
+                # report email
+                if value == 'AFR' and incident.status_code != 'AFR' and incident.status_code != 'DFT':
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
                     trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                     notification_sent = True
-                if value == 'FRS' and incident.status_code != 'FRS':
+
+                # If the status is being changed to FRS from any status other than draft, send the final report
+                # received email
+                if value == 'FRS' and incident.status_code != 'FRS' and incident.status_code != 'DFT':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
                     trigger_notification(f'A final incident report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
