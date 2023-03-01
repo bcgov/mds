@@ -337,6 +337,7 @@ class MineIncidentResource(Resource, UserMixin):
                 raise BadRequest(
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
+        notification_sent = False
         for key, value in data.items():
             if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations', 'categories']:
                 continue
@@ -348,15 +349,28 @@ class MineIncidentResource(Resource, UserMixin):
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
                     setattr(incident, key, value)
             if key in ['status_code']:
-                if value == 'AFR' and incident.status_code != 'AFR':
-                    # Need to send an email to the proponent and OIC with mostly same content just slightly different.
+                # If the status is being changed to AFR or FRS from draft, send the initial incident email (these are
+                # the only two statuses available when moving from draft)
+                if (value == 'AFR' or value == 'FRS') and incident.status_code == 'DFT':
+                    incident.send_incidents_email()
+                    trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
+
+                # If the status is being changed to AFR from any status other than draft, send the awaiting final
+                # report email
+                if value == 'AFR' and incident.status_code != 'AFR' and incident.status_code != 'DFT':
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
                     trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
-                if value == 'FRS' and incident.status_code != 'FRS':
+                    notification_sent = True
+
+                # If the status is being changed to FRS from any status other than draft, send the final report
+                # received email
+                if value == 'FRS' and incident.status_code != 'FRS' and incident.status_code != 'DFT':
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
                     trigger_notification(f'A final incident report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
                 setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
@@ -382,6 +396,7 @@ class MineIncidentResource(Resource, UserMixin):
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
+        documents_added = False
         updated_documents = data.get('updated_documents')
         if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
@@ -395,7 +410,6 @@ class MineIncidentResource(Resource, UserMixin):
 
                     if not mine_doc:
                         raise BadRequest('Unable to register uploaded file as document')
-
                     mine_doc.save()
                     mine_incident_doc = MineIncidentDocumentXref(
                         mine_document_guid=mine_doc.mine_document_guid,
@@ -405,7 +419,17 @@ class MineIncidentResource(Resource, UserMixin):
                         if updated_document['mine_incident_document_type_code'] else 'INI')
 
                     incident.documents.append(mine_incident_doc)
+
+                    if mine_incident_doc.mine_incident_document_type_code != 'INM':
+                        documents_added = True
+
                     mine_incident_doc.save()
+
+        status_code = data.get('status_code')
+        if documents_added and not notification_sent and status_code != 'DFT':
+            trigger_notification(f'A notice of a reportable incident ({incident.mine_incident_report_no}) has been updated for ({incident.mine_name})', ActivityType.mine_incident_updated, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+            incident.send_incident_update_email(True)
+            incident.send_incident_update_email(False)
 
         incident.save()
         return incident

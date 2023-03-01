@@ -1,27 +1,18 @@
-from sre_constants import IN
-import uuid
 import datetime
+import uuid
 
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
-
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
 
-from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
-from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
-from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.incidents.models.mine_incident_note import MineIncidentNote
-from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.services.email_service import EmailService
+from app.api.constants import INCIDENTS_EMAIL
 from app.api.parties.party.models.party import Party
+from app.api.services.email_service import EmailService
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.config import Config
-from app.api.constants import INCIDENTS_EMAIL, MDS_EMAIL
+from app.extensions import db
 
 
 def getYear():
@@ -309,38 +300,70 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
         PROP_EMAIL = self.reported_by_email
         recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
+        cc = None
 
         subject = f'[CORE] An {", ".join(element.description for element in self.categories)}, {self.determination_type.description if self.determination_type else None} ({self.mine_incident_report_no}) has been reported at {self.mine_name} ({self.mine_table.mine_no}) on {format_incident_date(self.incident_timestamp)}'
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+        body = open("app/templates/email/incident/minespace_awaiting_incident_final_report_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_awaiting_incident_final_report_email.html", "r").read()
 
-        body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
-        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
-        body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
-        link = ''
-        if is_prop:
-            link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review'
-            body += f'<p>View updates in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
-        else:
-            link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-            body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        context = {
+            "incident": {
+                "mine_incident_report_no": self.mine_incident_report_no,
+            },
+            "mine": {
+                "mine_name": self.mine_table.mine_name,
+                "mine_no": self.mine_table.mine_no,
+            },
+            "incident_link": link,
+        }
 
-        EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)
+        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
 
     def send_final_report_received_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
         PROP_EMAIL = self.reported_by_email
         recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
+        cc = None
 
-        subject = f'[CORE] A final report has been submitted by {self.mine_name} ({self.mine_table.mine_no}) for the incident ({self.mine_incident_report_no}) on {format_incident_date(self.incident_timestamp)}'
+        body = open("app/templates/email/incident/minespace_final_report_received_incident_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_final_report_received_incident_email.html", "r").read()
+        subject = f'[CORE] An {", ".join(element.description for element in self.categories)}, {self.determination_type.description if self.determination_type else None} ({self.mine_incident_report_no}) has been reported at {self.mine_name} ({self.mine_table.mine_no}) on {format_incident_date(self.incident_timestamp)}'
+        categories = ", ".join(element.description for element in self.categories)
+        context = {
+            "incident": {
+                "categories": categories,
+                "mine_incident_report_no": self.mine_incident_report_no,
+                "reported_by_name": self.reported_by_name,
+                "incident_description": self.incident_description,
+            },
+            "mine": {
+                "mine_name": self.mine_table.mine_name,
+                "mine_no": self.mine_table.mine_no,
+            },
+            "incident_link": f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+        }
 
-        body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has had a final report submitted for the incident ({self.mine_incident_report_no}).</p>'
-        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
-        body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
-        link = ''
-        if is_prop:
-            link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review'
-            body += f'<p>View the report in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
-        else:
-            link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-            body += f'<p>View the report in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
 
-        EmailService.send_email(subject, recipients, body, send_to_proponent=is_prop)
+    def send_incident_update_email(self, is_prop):
+        OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
+        PROP_EMAIL = self.reported_by_email
+        recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
+        cc = None
+
+        subject = f'{self.mine_name} A notice of reportable incident has been updated'
+        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+        body = open("app/templates/email/incident/minespace_incident_update_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_incident_update_email.html", "r").read()
+
+        context = {
+            "incident": {
+                "mine_incident_report_no": self.mine_incident_report_no,
+            },
+            "mine": {
+                "mine_name": self.mine_table.mine_name,
+                "mine_no": self.mine_table.mine_no,
+            },
+            "incident_link": link,
+        }
+
+        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
+
