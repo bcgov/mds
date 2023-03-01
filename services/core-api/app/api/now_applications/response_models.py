@@ -720,6 +720,12 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'mine_region':
         fields.String,
+        'mine_latitude':
+        fields.Fixed(decimals=7),
+        'mine_longitude':
+        fields.Fixed(decimals=7),
+        'contacts':
+        fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
         'now_number':
         fields.String,
         'permit_guid':
