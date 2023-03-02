@@ -12,7 +12,6 @@ from app.api.utils.access_decorators import requires_role_view_all
 from app.api.services import NRIS_API_service
 from app.api.mines.response_models import MINE_COMPLIANCE_RESPONSE_MODEL
 from app.api.mines.mine.models.mine import Mine
-from app.config import Config
 
 
 class MineComplianceSummaryResource(Resource, UserMixin):
@@ -24,7 +23,7 @@ class MineComplianceSummaryResource(Resource, UserMixin):
             raise NotFound("No mine record in CORE.")
 
         result = cache.get(NRIS_COMPLIANCE_DATA(mine.mine_no))
-        if result is None and Config.ENVIRONMENT_NAME == 'prod':
+        if result is None:
             try:
                 raw_data = NRIS_API_service._get_NRIS_data_by_mine(
                     request.headers.get('Authorization'), mine.mine_no)
