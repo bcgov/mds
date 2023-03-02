@@ -851,7 +851,7 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
               </p>
             </Col>
             <Col xs={24} md={6}>
-              {!isClosed && (
+              {!isClosed && childProps.isEditMode && (
                 <Form.Item>
                   <Field
                     id="status_code"

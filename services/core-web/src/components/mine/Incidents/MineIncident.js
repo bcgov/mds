@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
-import { Link, withRouter, useParams, useLocation } from "react-router-dom";
+import { Link, withRouter, useParams, useLocation, matchPath } from "react-router-dom";
 import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
@@ -51,7 +51,7 @@ export const MineIncident = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [fixedTop, setIsFixedTop] = useState(false);
 
-  const isEditPage = pathname.endsWith("/edit");
+  const isEditPage = Boolean(matchPath(pathname, routes.EDIT_MINE_INCIDENT.route));
   const mineName = isNewIncident
     ? new URLSearchParams(search).get("mine_name")
     : incident.mine_name;
