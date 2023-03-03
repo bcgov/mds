@@ -49,6 +49,7 @@ The product is anticipated to include:
 
 ## Tests
 
+// ISSUE WITH TESTING: tests running in sub-directories frequently use wrong node version (I think) and fail to run
 // re-examine this
 [Testing Strategy](docs/testing/test_strategy.md)
 // Do we do this?
