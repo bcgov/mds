@@ -41,13 +41,13 @@ _If coverage is lower than before writing a new feature, the tests **need** to b
 yarn test
 ```
 
-2. To run the test suite while updating ALL snapshots run:
+2. To run the test suite while updating ALL snapshots run within the core-web directory:
 
 ```
 yarn test:updateAll
 ```
 
-3. To run the test suite while updating snapshots case by case Interactively run:
+3. To run the test suite while updating snapshots case by case Interactively run within the core-web directory:
 
 ```
 yarn test:watch
@@ -121,6 +121,7 @@ cd ../
 ```
 
 2. Issue the makefile command that runs the frontend
+   // this command doesn't exist anymore and I have never followed this process
 
 ```
 make frontend
@@ -135,6 +136,7 @@ The linting rules are built on the Airbnb configuration. Contributors should
 ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
 See the usage guide below for more information on the linting CLI options.
+// Generally we rely on the husky hooks to lint files at commit/push. Running npm run lint in core-web produces an error about import/no-cycle rule
 
 Lint all files
 
@@ -208,6 +210,7 @@ npm run format:check-all
 ```
 
 Format all files
+// I had never run this before and recommend that we create a PR just for it
 
 ```
 npm run format:write-all
