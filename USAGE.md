@@ -19,17 +19,17 @@ This file describes how to run the project and develop against it.
   - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
   - Drive sharing is disabled by default, make sure to share your local drive in docker settings
 
-
 ### Developing with M1 Mac
 
-To develop with M1 Mac, there are no additional requirements. 
+To develop with M1 Mac, there are no additional requirements.
 
-The make file supports context switching based on the CPU architecture of the machine host. 
+The make file supports context switching based on the CPU architecture of the machine host.
 
 If you require to run additional docker-compose commands, use `docker-compose` with `-f` flag pointing to `docker-compose.M1.yaml`
 
 ### Setting up local development
 
+// all of these are wrong
 If you are developing without an IDIR, or if remote Keycloak is down, you'll
 need to run a local Keycloak instance. The local development environment is
 based on `.env-dev-local-keycloak`. You can make a copy of this file as `.env`
@@ -51,6 +51,7 @@ commands.
 
 ### Troubleshooting
 
+// also wrong
 Should anything go awry with the above commands, you may wish to isolate the
 failure by running individual commands. A common setup for contributors is to
 run the frontend on the host machine and everything else in Docker. To do so,
@@ -66,6 +67,7 @@ $ make generate-rand100
 
 The backend is now running and seeded with random data. Run the following
 commands from within the `/frontend` directory to initialize the frontend:
+// there is no /frontend directory, this info is duplicated in monorepo.md but better
 
 ```
 $ yarn
@@ -78,9 +80,11 @@ There are two approaches to having test data in your system. If you are a
 public contributor, choose "Using Flask". View the Makefile for more
 information on what these commands are doing. This is useful for
 troubleshooting if anything fails to work as expected.
-### Seeding data 
+
+### Seeding data
 
 Use the following make command to seed test data locally.
+
 ```
 make seeddb
 ```
@@ -111,10 +115,10 @@ If you are on a windows machine ensure that you open powershell in administrator
 
 This will add an entry for the document manager backend if it does not currently exist.
 
-On a mac or linux run the following:
+On a mac or linux run the following in the bin directory:
 
 ```
-./AddHosts.sh add 127.0.0.1 document_manager_backend
+sudo ./AddHosts.sh add 127.0.0.1 document_manager_backend
 ```
 
 you will be prompted for your sudo password if the entry does not already exist.
