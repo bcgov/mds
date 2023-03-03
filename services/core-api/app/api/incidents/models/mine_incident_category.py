@@ -19,8 +19,7 @@ class MineIncidentCategory(AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        # TODO - Remove is_historic filter when frontend Incident Category Code dropdowns are updated
-        return cls.query.order_by(cls.display_order).filter_by(is_historic=True)
+        return cls.query.order_by(cls.display_order)
 
     @classmethod
     def find_by_code(cls, code):
