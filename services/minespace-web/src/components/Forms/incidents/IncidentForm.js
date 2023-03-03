@@ -787,11 +787,17 @@ const renderUploadInitialNotificationDocuments = (
 
 const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
-    return [<Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />];
+    return [
+      <Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />,
+    ];
   }
   return [
     fields.map((recommendation) => (
-      <Field name={`${recommendation}.recommendation`} component={renderConfig.AUTO_SIZE_FIELD} />
+      <Field
+        name={`${recommendation}.recommendation`}
+        component={renderConfig.AUTO_SIZE_FIELD}
+        disabled
+      />
     )),
   ];
 };
