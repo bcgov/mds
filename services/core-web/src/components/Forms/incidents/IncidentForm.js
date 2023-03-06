@@ -146,8 +146,7 @@ const retrieveInitialReportDynamicValidation = (childProps) => {
   };
 };
 
-const renderInitialReport = (childProps, isEditMode) => {
-  const { incidentCategoryCodeOptions } = childProps;
+const renderInitialReport = (incidentCategoryCodeOptions, isEditMode) => {
   return (
     <Row>
       {/* Reporter Details */}
@@ -222,12 +221,11 @@ const renderInitialReport = (childProps, isEditMode) => {
         </Typography.Paragraph>
         <Row gutter={[16]}>
           <Col span={24}>
-            <Form.Item label="* Incident type(s)">
+            <Form.Item label="* Incident Category and Subcategory">
               <Field
                 id="categories"
                 name="categories"
-                placeholder="Select incident type(s)..."
-                component={renderConfig.MULTI_SELECT}
+                component={renderConfig.PARENT_GROUP_CHECK_BOX}
                 validate={[requiredList]}
                 data={incidentCategoryCodeOptions}
                 disabled={!isEditMode}
@@ -910,6 +908,10 @@ const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
 
 export const IncidentForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  // 2nd parameter in getDropdownIncidentCategoryCodeOptions controls inclusion of historic categories
+  const incidentCategoryCodeOptions = useSelector((state) =>
+    getDropdownIncidentCategoryCodeOptions(state, false)
+  );
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
     const updatedUploadedFiles = [
@@ -943,7 +945,7 @@ export const IncidentForm = (props) => {
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
-          {renderInitialReport(props, isEditMode)}
+          {renderInitialReport(incidentCategoryCodeOptions, isEditMode)}
           <br />
           {renderDocumentation(props, isEditMode, localHandlers, parentHandlers)}
           <br />
@@ -965,7 +967,6 @@ IncidentForm.propTypes = propTypes;
 const selector = formValueSelector(FORM.ADD_EDIT_INCIDENT);
 
 const mapStateToProps = (state) => ({
-  incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
   dangerousOccurenceSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),

@@ -1,5 +1,6 @@
 import RenderCheckbox from "./RenderCheckbox";
 import RenderGroupCheckbox from "./RenderGroupCheckbox";
+import RenderParentGroupCheckbox from "./RenderParentGroupCheckbox";
 import RenderAutocomplete from "./RenderAutoComplete";
 import RenderAutoSizeField from "./RenderAutoSizeField";
 import RenderCascader from "./RenderCascader";
@@ -17,12 +18,12 @@ import RenderMineSelect from "./RenderMineSelect";
 import RenderLabel from "./RenderLabel";
 import RenderFileUpload from "./RenderFileUpload";
 
-
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
   GROUP_CHECK_BOX: RenderGroupCheckbox,
+  PARENT_GROUP_CHECK_BOX: RenderParentGroupCheckbox,
   AUTOCOMPLETE: RenderAutocomplete,
   AUTO_SIZE_FIELD: RenderAutoSizeField,
   CASCADER: RenderCascader,
