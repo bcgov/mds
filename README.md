@@ -23,39 +23,30 @@ The product is anticipated to include:
 
 ## Services
 
-// suggestion: simple description of each, perhaps organize into categories. Sub-files can either by easier to discover at top level README or more concise by linking within
-[Common: empty file, suggest delete or add content](services/common/README.md)
-[Core Web (Ministry Frontend)](services/core-web/README.md)
-[Minespace Web (Proponent Frontend)](services/minespace-web/README.md)
-[Core API (Shared Backend)](services/core-api/README.md)
-
-- [Core API JWT](services/core-api/app/flask_jwt_oidc_local/README.md)
-  [Database](services/database/README.md)
-- [Database Migrations](migrations/README.md)
-  [Document Manager](services/document-manager/backend/README.md)
-  - [Document Manager Migrations: suggest deleting empty file](services/document-manager/backend/migrations/README.md)
-    [Fider](services/fider/README.md)
-    [Filesystem Provider](services/filesystem-provider/ej2-amazon-s3-aspcore-file-provider/README.md)
-
-## Integrations
-
-[NRIS](services/nris-api/backend/README.md)
+- [Common](services/common/README.md) (Frontend Shared Code)
+- [Core Web](services/core-web/README.md) (Ministry Frontend)
+- [Minespace Web](services/minespace-web/README.md) (Proponent Frontend)
+- [Core API](services/core-api/README.md) (Shared Backend)
+  - [Core API JWT](services/core-api/app/flask_jwt_oidc_local/README.md) (SSO)
+  - Celery (Scheduled CRON jobs)
+- [Database](services/database/README.md)
+  - [Flyway](migrations/README.md) (Database Migrations)
+- [Document Manager](services/document-manager/backend/README.md)
+  - [Document Manager Migrations](services/document-manager/backend/migrations/README.md)
+- [Fider](services/fider/README.md)
+- [Filesystem Provider](services/filesystem-provider/ej2-amazon-s3-aspcore-file-provider/README.md)
+- [NRIS](services/nris-api/backend/README.md)
 
 ## Operations
 
-[Azure](operations/azure/README.md)
-
-- [Azure Setup](operations/azure/setup/README.md)
+- [Azure](operations/azure/README.md)
+  - [Azure Setup](operations/azure/setup/README.md)
 
 ## Tests
 
-// ISSUE WITH TESTING: tests running in sub-directories frequently use wrong node version (I think) and fail to run
-// re-examine this
-[Testing Strategy](docs/testing/test_strategy.md)
-// Do we do this?
-[Functional Tests](tests/functional-tests/README.md)
-// Or this?
-[Load Testing](tests/load-testing/README.md)
+- [Testing Strategy](docs/testing/test_strategy.md)
+- [Functional Tests](tests/functional-tests/README.md)
+- [Load Testing](tests/load-testing/README.md)
 
 ## How to Contribute
 
@@ -63,18 +54,15 @@ Please read the [How to Contribute guide](CONTRIBUTING.md) and the [Code of Cond
 
 ## How to Develop
 
-Please read the [How to develop](USAGE.md).
-// There is overlapping/related content in the following files: suggest combining all 3 and adding updates
-[Getting Started](docs/devops/getting_started.md)
-[Monorepo setup](docs/frontend/monorepo.md)
+Please read the [How to develop](USAGE.md) for project setup instructions and [Getting Started](docs/devops/getting_started.md) for DevOps information.
 
 ### OpenShift Deployment
 
 [OpenShift Debugging Guide](docs/openshift/debugging_guide.md)
 [OpenShift Caveats](docs/openshift/Openshift%20Caveats.md)
 [Terraform](terraform/README.md)
-[OpenShift Database: suggest deletion](docs/openshift/database.md)
-[OpenShift PG upgrade: suggest deletion](docs/openshift/PG_9_to_13_upgrade.md)
+[OpenShift Database](docs/openshift/database.md)
+[OpenShift PG upgrade](docs/openshift/PG_9_to_13_upgrade.md)
 
 ## License
 

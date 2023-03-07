@@ -110,33 +110,16 @@ yarn install
 yarn serve
 ```
 
-B. Using a docker container
-
-- [Docker](https://www.docker.com/)
-
-1. Switch current directory to the project root
-
-```
-cd ../
-```
-
-2. Issue the makefile command that runs the frontend
-   // this command doesn't exist anymore and I have never followed this process
-
-```
-make frontend
-```
-
 ## Code Contribution Standards
 
 Contributors to this codebase are expected to follow the formatting and style
-standards, as enforced by the Prettier and ESLint rules.
+standards, as enforced by the Prettier and ESLint rules. The provided git hooks will
+automatically lint and format on-commit.
 
 The linting rules are built on the Airbnb configuration. Contributors should
 ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
 See the usage guide below for more information on the linting CLI options.
-// Generally we rely on the husky hooks to lint files at commit/push. Running npm run lint in core-web produces an error about import/no-cycle rule
 
 Lint all files
 
@@ -173,9 +156,7 @@ up formatting on-save:
 
 Any developer who is unable or unwilling to apply the formatting on-save is
 asked to either use the provided npm scripts to format their code before each
-commit or to ensure that the git hooks are running. The provided git hooks will
-automatically lint and format on-commit. They will also run the relevant tests
-on-push.
+commit or to ensure that the git hooks are running.
 
 See the usage guide below for more information on manual formatting.
 
@@ -210,7 +191,6 @@ npm run format:check-all
 ```
 
 Format all files
-// I had never run this before and recommend that we create a PR just for it
 
 ```
 npm run format:write-all

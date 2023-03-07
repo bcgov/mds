@@ -67,10 +67,6 @@ Only on windows:
     gradlew.bat edgeTest -DedgeTest.single=CustomJUnitSpecRunner
     gradlew.bat ieTest -DieTest.single=CustomJUnitSpecRunner
 
-### Run with make
-
-The firefox (non headless) tests can also be run from the projects root using the command 'make test'
-
 ### Test Report
 
 Report can be found under `/functional-tests/build/reports/tests`
@@ -87,10 +83,10 @@ be modified to delete dependancies before proceeding.
 ### The login test fails locally
 
 If you've never managed to run the functional tests locally before, confirm
-that your .env file matches the .env example.  You will need to get the
+that your .env file matches the .env example. You will need to get the
 password from openshift secrets.
 
 ### Data clean up error: role "mds" does not exist
 
 You may be running postgres locally for a different project. You should
-stop that process and then run `make database` in the project root.
+stop that process and then run `make db` in the project root.

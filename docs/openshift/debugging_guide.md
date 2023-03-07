@@ -17,11 +17,13 @@ Github has excellent [docs](https://docs.github.com/en/actions/learn-github-acti
 
 The majority of Core's services are still using DeploymentConfigs and these follow a hiearchal pattern where child objects (not every object is a child) inherit configuration from the parent object, that hierchary could be described as follows:
 
+```
 |-HorizontalPodAutoscaler
 |+DeploymentConfig
-|+ReplicationController
-|+Pod(s)
-|+Container(s)
+ |+ReplicationController
+  |+Pod(s)
+   |+Container(s)
+```
 
 You can see above that Pods will inherit their configuration from the DeploymentConfig, so if you wish to make changes to pods, you need to edit it at top-level parent object to be sure (the DeploymentConfig in this case). We also see that HPA (HorizontalPodAutoscaler) is adjacent to the DeploymentConfig, so it does not inherit configuration from it, BUT it does modify the configuration of other resources (the pod # of the ReplicationController for scaling purposes). Always remember that Openshift is a real time system with resources constantly changing eachother - do not expect anything to be static.
 
@@ -29,7 +31,8 @@ You can see above that Pods will inherit their configuration from the Deployment
 
 ### Liveness/Readiness probe fail
 
-// mention that this frequently occurs during a working deployment?
+`Note`: a Liveness/Readiness probe fail frequently occurs during a working deployment as the pods are replaced.
+
 `Symptoms`: constant pod restarts and probe failures in the `Events` tab of the pod
 
 `Cause`: Double check your liveness/readiness probe configuration in the manifests, it could be too short and your deployment is taking longer than expected, or the path is no longer current if the application was updated.
@@ -44,21 +47,11 @@ You can see above that Pods will inherit their configuration from the Deployment
 
 `Fix`: adjust resource usage of this deployment or others. You can potentially request more quota from platform services but it needs to be backed up with a sysdig dashboard report
 
-### Pre/post Hooks failing
-
-// which hooks are these? Can we be more specific? Where are they defined?
-`Symptoms`: Your new revision or deployment fails to spin up any new pods and reverts to an old revision without any logs/events telling you why, just silence - do not pass go, collect 2 cards and question your sanity.
-
-`Cause`: Something has changed in the build and the hook is now out of date, so it will need to be tested and updated
-
-`Fix`: You can usually notice this occuring by looking at the events tab and the hook command will be one of the last events displayed. To Start playing with a fix you can spin up a debug of that revision (you may need to run debug against the replicationcontroller itself since the failing pods would've been deleted) this will put you in a pod running the build that failed, then just manually run the hook command yourself and go from there. Typically it's just a changed directory path.
-
 ### Entry point issue
 
-// add: migration errors can also cause this
 `Symptoms`: Pod fails immediately
 
-`Cause`: The entrypoint command is incorrect, potentially after a source code change or version update
+`Cause`: The entrypoint command is incorrect, potentially after a source code change, migration failure, or version update
 
 `Fix`: run `oc debug` on the DeploymentConfig (parent resource) because the pod likely won't exist, then run the entrypoint command manually yourself, adjust until it works correctly. This was likely caused by a fundamental change like a different base image.
 

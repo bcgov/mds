@@ -82,26 +82,10 @@ A. OS Level Installation
 yarn
 ```
 
-2. Run the application
+2. Run the application from the `services/minespace-web` directory
 
 ```
 yarn serve
-```
-
-B. Using a docker container
-
-- [Docker](https://www.docker.com/)
-
-1. Switch current directory to the project root
-
-```
-cd ../
-```
-
-2. Issue the makefile command that runs the frontend
-
-```
-make frontend
 ```
 
 ## Authentication

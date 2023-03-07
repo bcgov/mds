@@ -81,7 +81,7 @@ cd ../
 2. Issue the makefile command that runs the backend
 
 ```
-make backend
+make be
 ```
 
 ## Flask Click commands
@@ -136,15 +136,15 @@ coverage run --branch --source=app -m pytest
 
 V1:
 
-MDS was originally working with custom keycloack instance (hosted on openshift?) and a local keycloack container for development. This was hard to work with locally and maintain (patching, upgrades etc..)
+MDS was originally working with a custom keycloak instance (hosted on openshift?) and a local keycloak container for development. This was hard to work with locally and maintain (patching, upgrades etc..)
 
 V2:
 
-The project then moved on to shared keycloack instance (silver SSO) hosted by the platform team and the shared instance had multiple realms provisioned for each ministry division / program.
+The project then moved on to shared keycloak instance (silver SSO) hosted by the platform team and the shared instance had multiple realms provisioned for each ministry division / program.
 
 Benefits:
 
-- Not having to maintain the keycloack instance (the platform team does it for us)
+- Not having to maintain the keycloak instance (the platform team does it for us)
 - Having a full realm with admin access, the team could configure and control the parameters as required
 
 There were several issues with this approach for the platform team (it was great for teams that had full realms though!)
