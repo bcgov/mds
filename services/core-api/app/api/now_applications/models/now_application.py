@@ -42,6 +42,8 @@ class NOWApplication(Base, AuditMixin):
     application_type_code = association_proxy('now_application_identity', 'application_type_code')
     source_permit_amendment_id = association_proxy('now_application_identity',
                                                    'source_permit_amendment_id')
+    mine_latitude = association_proxy('now_application_identity', 'mine.latitude')
+    mine_longitude = association_proxy('now_application_identity', 'mine.longitude')
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship(
         'Party',

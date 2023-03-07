@@ -626,7 +626,13 @@ NOW_APPLICATION_MODEL = api.model(
         'site_property':
         fields.Nested(MINE_TYPE_MODEL),
         'equipment':
-        fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
+        fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT)),
+        'mine_latitude':
+        fields.Fixed(decimals=7),
+        'mine_longitude':
+        fields.Fixed(decimals=7),
+        'permittee':
+        fields.Nested(PARTY, skip_none=True)
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
