@@ -123,7 +123,7 @@ This will add an entry for the document manager backend if it does not currently
 On a mac or linux run the following:
 
 ```
-./AddHosts.sh add 127.0.0.1 document_manager_backend
+sudo ./AddHosts.sh add 127.0.0.1 document_manager_backend
 ```
 
 you will be prompted for your sudo password if the entry does not already exist.
