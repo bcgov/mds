@@ -76,7 +76,7 @@ cd ../
 2. Issue the makefile command that runs the backend
 
 ```
-make backend
+make be
 ```
 
 ## Flask Click commands

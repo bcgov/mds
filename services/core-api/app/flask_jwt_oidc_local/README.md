@@ -4,7 +4,7 @@
 
 `core-api` uses `flask_jwt_oidc` for it's jwt parsing, validation and role checking. This is a fiarly opinionated library and works only on flask and depends on the `config` of the flask app.
 
-specifically, with support for the following variables in the config file:
+Specifically, with support for the following variables in the config file:
 
 ```
 class Config(object):
@@ -18,11 +18,11 @@ as mentioned [here](https://github.com/thorwolpert/flask-jwt-oidc#configuration)
 
 Github: [flask_jwt_oidc](https://github.com/thorwolpert/flask-jwt-oidc/tree/main/flask_jwt_oidc)
 
-This works well as long as we have only a single oidc client integration for one flask app.
+This works well as long as we have only a single OIDC client integration for one flask app.
 
 ### The problem:
 
-As part of the OCIO mandate to migrate gov apps to [Gold SSO](https://bcgov.github.io/sso-requests) we now have to support multiple oidc integration clients/audience due to the architecture pattern of Gold SSO.
+As part of the OCIO mandate to migrate gov apps to [Gold SSO](https://bcgov.github.io/sso-requests) we now have to support multiple OIDC integration clients/audience due to the architecture pattern of Gold SSO.
 
 Earlier in our own keycloak realm of `mds` all the integration clients - webapps and service accounts on each environment had ONE audience viz.
 
@@ -60,7 +60,7 @@ The upgraded jwt manager does the follwing:
 Fork for mds here: [flask-jwt-oidc](https://github.com/bcgov/flask-jwt-oidc)
 Published to PyPi here: [flask-jwt-oidc-mds](https://pypi.org/project/flask-jwt-oidc-mds)
 
-scope for improvement:
+Scope for improvement:
 
 - Move the implementation to the fork
 - Write multi jwt manager test cases in the fork
