@@ -139,7 +139,7 @@ export const USER_ROLES = {
   role_edit_variances: "core_edit_variances",
   role_close_permits: "core_close_permits",
   role_executive_view: "core_executive_view",
-  role_minespace_proponent: "minespace-proponent",
+  role_minespace_proponent: "minespace-mds_minespace_proponents",
   role_edit_securities: "core_edit_securities",
   role_edit_historical_amendments: "core_edit_historical_amendments",
   role_mds_administrative_users: "mds_administrative_users",
