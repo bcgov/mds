@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -16,6 +16,8 @@ const propTypes = {
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
   minRows: PropTypes.number,
+  displayMaximumCharacters: PropTypes.bool,
+  maximumCharacters: PropTypes.number,
 };
 
 const defaultProps = {
@@ -23,30 +25,53 @@ const defaultProps = {
   label: "",
   disabled: false,
   minRows: 3,
+  displayMaximumCharacters: false,
+  maximumCharacters: 300,
 };
 
-const RenderAutoSizeField = (props) => (
-  <Form.Item
-    label={props.label}
-    placeholder={props.placeholder}
-    validateStatus={
-      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-    }
-    help={
-      props.meta.touched &&
-      ((props.meta.error && <span>{props.meta.error}</span>) ||
-        (props.meta.warning && <span>{props.meta.warning}</span>))
-    }
-  >
-    <Input.TextArea
-      disabled={props.disabled}
-      id={props.id}
-      {...props.input}
-      autoSize={{ minRows: props.minRows }}
+const RenderAutoSizeField = (props) => {
+  const [remainingChars, setRemainingChars] = useState(props.maximumCharacters);
+  const [value, setValue] = useState("");
+
+  const handleTextAreaChange = (event) => {
+    setValue(event.target.value);
+
+    const input = event.target.value;
+    const remaining = props.maximumCharacters - input.length;
+    setRemainingChars(remaining);
+  };
+
+  return (
+    <Form.Item
+      label={props.label}
       placeholder={props.placeholder}
-    />
-  </Form.Item>
-);
+      validateStatus={
+        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+      }
+      help={
+        props.meta.touched &&
+        ((props.meta.error && <span>{props.meta.error}</span>) ||
+          (props.meta.warning && <span>{props.meta.warning}</span>))
+      }
+    >
+      <Input.TextArea
+        disabled={props.disabled}
+        id={props.id}
+        {...props.input}
+        autoSize={{ minRows: props.minRows }}
+        placeholder={props.placeholder}
+        onChange={handleTextAreaChange}
+        value={value}
+      />
+      {props.maximumCharacters > 0 && (
+        <div className="flex between">
+          <span>{`Maximum ${props.maximumCharacters} characters`}</span>
+          <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
+        </div>
+      )}
+    </Form.Item>
+  );
+};
 
 RenderAutoSizeField.propTypes = propTypes;
 RenderAutoSizeField.defaultProps = defaultProps;
