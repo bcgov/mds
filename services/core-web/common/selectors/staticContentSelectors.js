@@ -277,8 +277,8 @@ export const getDropdownIncidentCategoryCodeOptions = createSelectorWrapper(
   (options) => {
     return options.map((item) => {
       return {
-        key: item.mine_incident_category_code,
-        title: item.description,
+        value: item.mine_incident_category_code,
+        label: item.description,
         isActive: !item.is_historic,
         subType: item.parent_mine_incident_category_code ?? null,
       };

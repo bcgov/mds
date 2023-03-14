@@ -46,6 +46,7 @@ import { renderConfig } from "@/components/common/config";
 import customPropTypes from "@/customPropTypes";
 import MinistryInternalComments from "@/components/mine/Incidents/MinistryInternalComments";
 import IncidentFileUpload from "./IncidentFileUpload";
+import IncidentCategorySelect from "./IncidentCategorySelect";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -225,7 +226,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, isEditMode) => {
               <Field
                 id="categories"
                 name="categories"
-                component={renderConfig.PARENT_GROUP_CHECK_BOX}
+                component={IncidentCategorySelect}
                 validate={[requiredList]}
                 data={incidentCategoryCodeOptions}
                 disabled={!isEditMode}
