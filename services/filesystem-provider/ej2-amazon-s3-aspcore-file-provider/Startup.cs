@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
+using System;
+using System.Linq;
 
 namespace EJ2FileManagerService
 {
@@ -61,6 +65,7 @@ namespace EJ2FileManagerService
 
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();
+            IdentityModelEventSource.ShowPII = true;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,20 +106,25 @@ namespace EJ2FileManagerService
 
     public class ClaimsTransformer : IClaimsTransformation
     {
-        public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
-        {
-            ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
+        private readonly ILogger<ClaimsTransformer> _logger;
 
+        public ClaimsTransformer(ILogger<ClaimsTransformer> logger)
+        {
+            _logger = logger;
+        }
+
+        public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+        {            
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
             // Flatten client_roles because Microsoft identity model doesn't support nested claims
             if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "client_roles"))
-            {
-                var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "client_roles");
-                var realmAccessAsList = JsonConvert.DeserializeObject<List<string>>(realmAccessClaim.Value);
-                if (realmAccessAsList != null)
+            {     
+            foreach (var claim in principal.Claims.ToList())
                 {
-                    foreach (var role in realmAccessAsList)
+                    // Console.WriteLine("Claim Type: {0}, Value: {1}", claim.Type, claim.Value);
+                    if (claim.Type == "client_roles")
                     {
-                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, claim.Value));
                     }
                 }
             }
