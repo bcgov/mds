@@ -16,7 +16,6 @@ const propTypes = {
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
   minRows: PropTypes.number,
-  displayMaximumCharacters: PropTypes.bool,
   maximumCharacters: PropTypes.number,
 };
 
@@ -25,7 +24,6 @@ const defaultProps = {
   label: "",
   disabled: false,
   minRows: 3,
-  displayMaximumCharacters: false,
   maximumCharacters: 300,
 };
 
