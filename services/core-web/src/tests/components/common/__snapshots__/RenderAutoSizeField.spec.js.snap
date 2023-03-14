@@ -16,7 +16,21 @@ exports[`RenderAutoSizeField renders properly 1`] = `
     }
     disabled={false}
     id={1}
+    onChange={[Function]}
     placeholder=""
+    value=""
   />
+  <div
+    className="flex between"
+  >
+    <span>
+      Maximum 300 characters
+    </span>
+    <span
+      className="flex-end"
+    >
+      300 / 300
+    </span>
+  </div>
 </FormItem>
 `;

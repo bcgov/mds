@@ -99,6 +99,7 @@ export const AddMineAlertForm = (props) => {
                 label="Message"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[required, maxLength(300)]}
+                maximumCharacters={300}
               />
             </Form.Item>
           </Col>

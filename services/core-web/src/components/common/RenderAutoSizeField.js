@@ -24,7 +24,7 @@ const defaultProps = {
   label: "",
   disabled: false,
   minRows: 3,
-  maximumCharacters: 300,
+  maximumCharacters: 0,
 };
 
 const RenderAutoSizeField = (props) => {
@@ -33,10 +33,11 @@ const RenderAutoSizeField = (props) => {
 
   const handleTextAreaChange = (event) => {
     setValue(event.target.value);
-
-    const input = event.target.value;
-    const remaining = props.maximumCharacters - input.length;
-    setRemainingChars(remaining);
+    if (props.maximumCharacters > 0) {
+      const input = event.target.value;
+      const remaining = props.maximumCharacters - input.length;
+      setRemainingChars(remaining);
+    }
   };
 
   return (
@@ -61,11 +62,12 @@ const RenderAutoSizeField = (props) => {
         onChange={handleTextAreaChange}
         value={value}
       />
-
-      <div className="flex between">
-        <span>{`Maximum ${props.maximumCharacters} characters`}</span>
-        <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
-      </div>
+      {props.maximumCharacters > 0 && (
+        <div className="flex between">
+          <span>{`Maximum ${props.maximumCharacters} characters`}</span>
+          <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
+        </div>
+      )}
     </Form.Item>
   );
 };
