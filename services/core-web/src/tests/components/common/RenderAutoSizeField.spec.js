@@ -15,7 +15,7 @@ const setupProps = () => {
       error: false,
       warning: false,
     },
-    maximumCharacters: 0,
+    maximumCharacters: 300,
   };
 };
 

@@ -61,12 +61,11 @@ const RenderAutoSizeField = (props) => {
         onChange={handleTextAreaChange}
         value={value}
       />
-      {props.maximumCharacters > 0 && (
-        <div className="flex between">
-          <span>{`Maximum ${props.maximumCharacters} characters`}</span>
-          <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
-        </div>
-      )}
+
+      <div className="flex between">
+        <span>{`Maximum ${props.maximumCharacters} characters`}</span>
+        <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
+      </div>
     </Form.Item>
   );
 };
