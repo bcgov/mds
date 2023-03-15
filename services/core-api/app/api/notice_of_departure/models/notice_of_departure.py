@@ -7,7 +7,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.sql import text, select, table, column, literal_column
 from sqlalchemy.sql.functions import func
 from app.api.services.email_service import EmailService
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.constants import NOD_NOTFICATION_EMAILS
 from enum import Enum
 from app.api.notice_of_departure.models.notice_of_departure_contact import NoticeOfDepartureContact
 from app.api.utils.include.user_info import User
@@ -227,7 +227,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         super(NoticeOfDeparture, self).delete()
 
     def nod_submission_email(self):
-        recipients = [MAJOR_MINES_OFFICE_EMAIL]
+        recipients = NOD_NOTFICATION_EMAILS
 
         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
