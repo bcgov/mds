@@ -12,7 +12,7 @@ env:
   INITIAL_TAG: latest
   TAG: latest
   NAME: subot
-  CONTEXT: operations/bots/su
+  CONTEXT: operations/bots/su/
 
 jobs:
   build:
