@@ -25,7 +25,7 @@ jobs:
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
       - name: Build n Tag
         run: |
-          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} . -f ${{ env.CONTEXT }}Dockerfile.ci
+          docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} -f ${{ env.CONTEXT }}Dockerfile.ci ./operations/bots/su
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
           docker tag ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
       - name: Push
