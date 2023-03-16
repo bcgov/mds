@@ -27,5 +27,5 @@ RUN chmod -R 777 /.dotnet
 RUN chown -R 1001:0 /.dotnet
 
 USER 1001
-
+EXPOSE 62870
 ENTRYPOINT [ "./init.sh" ]
