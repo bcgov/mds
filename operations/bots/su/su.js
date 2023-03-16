@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import Discord from "discord.js";
 import { Configuration, OpenAIApi } from "openai";
-dotenv.config();
+
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
