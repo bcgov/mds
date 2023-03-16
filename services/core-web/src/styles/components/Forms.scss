@@ -10,3 +10,21 @@
     background-color: $pure-white;
   }
 }
+// copied corresponding styles from .has-error .ant-input, added border details
+.has-error .ant-checkbox-group,
+.has-error .ant-checkbox-group:hover {
+  background-color: #fff;
+  border: 1px solid #ff4d4f;
+  border-radius: 5px;
+}
+
+.has-error .ant-checkbox-group:focus {
+  border-color: #ff7875;
+  border-right-width: 1px !important;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+.has-error .ant-checkbox-group:not([disabled]):hover {
+  border-color: #ff4d4f;
+}

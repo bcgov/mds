@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography, Alert, Checkbox, Row, Col } from "antd";
 import CustomPropTypes from "@/customPropTypes";
@@ -9,6 +10,8 @@ const propTypes = {
   data: CustomPropTypes.options,
   meta: PropTypes.shape({
     initial: PropTypes.array,
+    touched: PropTypes.bool,
+    error: PropTypes.string,
   }).isRequired,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
@@ -24,9 +27,12 @@ const defaultProps = {
 // an item is considered a child of another item when its subType matches the parent's value
 const IncidentCategorySelect = (props) => {
   const { data, disabled, input, meta } = props;
-  const initialValues = meta?.initial ?? [];
+  const { touched, error = "", initial = [] } = meta;
+
+  const [isTouched, setIsTouched] = useState(touched);
+  const showError = isTouched && error;
   const historicalCategories = data.filter(
-    (item) => !item.isActive && initialValues.includes(item.value)
+    (item) => !item.isActive && initial.includes(item.value)
   );
   const parentCategories = data.filter((item) => item.subType === null && item.isActive);
 
@@ -39,14 +45,15 @@ const IncidentCategorySelect = (props) => {
   });
 
   const onChange = (checkedValues) => {
+    setIsTouched(true);
     input.onChange(checkedValues);
   };
 
   return (
-    <>
+    <Form.Item validateStatus={showError && "error"} help={showError && <span>{error}</span>}>
       <Checkbox.Group
         onChange={onChange}
-        defaultValue={initialValues}
+        defaultValue={initial}
         value={input.value}
         disabled={disabled}
       >
@@ -112,7 +119,7 @@ const IncidentCategorySelect = (props) => {
           })}
         </div>
       </Checkbox.Group>
-    </>
+    </Form.Item>
   );
 };
 
