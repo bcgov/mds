@@ -55,27 +55,25 @@ client.on("ready", async () => {
 });
 
 client.on("messageCreate", async (message) => {
-  if (message.author.bot || !message.content.startsWith(PREFIX)) return;
+  if (!message.content.startsWith(PREFIX)) return;
 
   const [command, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
 
   if (command === "summarize") {
+    console.log("====================================");
     const now = new Date();
     const morning = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-
+    console.log(`Run time: ${morning}`);
     const messages = await message.channel.messages.fetch({ after: morning.getTime() });
     const scrumMessages = messages.map((msg) => ({
       author: msg.author.username,
       content: msg.content,
     }));
-    console.log(messages);
     const text = messagesToText(scrumMessages);
-    console.log("=====================TEXT=====================");
     console.log(text);
     const summary = await generateSummary(text);
-    console.log("=====================SUMMARY=====================");
-    console.log(summary);
     await message.reply(summary);
+    console.log("====================================");
   }
 });
 
