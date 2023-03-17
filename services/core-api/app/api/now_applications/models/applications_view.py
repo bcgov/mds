@@ -27,6 +27,7 @@ class ApplicationsView(Base):
         UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_id'))
 
     source_permit_amendment_issue_date = db.Column(db.Date)
+    status_reason = db.Column(db.String)
 
     now_number = db.Column(db.String)
 
@@ -44,6 +45,7 @@ class ApplicationsView(Base):
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
     application_type_code = db.Column(db.String)
+    application_type_description = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
     decision_date = db.Column(db.DateTime)
     source_permit_no = db.Column(db.String)
@@ -116,6 +118,17 @@ class ApplicationsView(Base):
     @hybrid_property
     def permit_amendment(self):
         return self.permit_amendments[0] if self.permit_amendments else None
+
+    @hybrid_property
+    def permit_no(self):
+        return self.permit_amendment.permit.permit_no if self.permit_amendment else None
+
+    @hybrid_property
+    def party(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'AGT'
+        ]
+        return permittees[0] if permittees else None
 
     @hybrid_property
     def application_documents(self):
