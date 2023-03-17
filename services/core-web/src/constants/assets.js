@@ -41,7 +41,7 @@ export { default as YELLOW_HAZARD } from "../assets/images/Hazard.svg";
 export { default as BACKGROUND } from "../assets/images/Background.svg";
 export { default as TRASHCAN } from "../assets/images/TrashCan.svg";
 export { default as HSRC_PDF } from "../assets/downloads/health_safety_and_reclamation_code_nov2022.pdf";
-export { default as MEMP_PDF } from "../assets/downloads/Mine_Emergency_Management_Plan_Final_20210420.pdf";
+export { default as MEMP_PDF } from "../assets/downloads/7810_Mine_Emergency_Management_Plan_V4_DJ edits_20221031.pdf";
 export { default as FLUSH_SOUND } from "../assets/downloads/flush.mp3";
 export { default as WATER_SOUND } from "../assets/downloads/water.mp3";
 export { default as MINESPACE_ICON } from "../assets/images/minespaceIcon.svg";
