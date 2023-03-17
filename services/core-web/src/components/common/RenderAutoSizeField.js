@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -29,7 +29,7 @@ const defaultProps = {
 
 const RenderAutoSizeField = (props) => {
   const [remainingChars, setRemainingChars] = useState(props.maximumCharacters);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(props.input?.value ?? "");
 
   const handleTextAreaChange = (event) => {
     setValue(event.target.value);
@@ -39,6 +39,14 @@ const RenderAutoSizeField = (props) => {
       setRemainingChars(remaining);
     }
   };
+
+  useEffect(() => {
+    if (props.input) {
+      const input = props.input.value;
+      const remaining = props.maximumCharacters - input.length;
+      setRemainingChars(remaining);
+    }
+  }, []);
 
   return (
     <Form.Item
