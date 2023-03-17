@@ -46,7 +46,7 @@ const calloutContent = (nodStatus) => {
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.determined_substantial:
       return {
         message:
-          "This Notice of Departure has been reviewed and determined to be substantial. Before you can proceed with the described work a permit amendment will be required. Ministry staff will be in touch with further details.",
+          "This Notice of Departure has been reviewed and determined to be substantial. This project must not commence until written authorization is received. This project may be referred to the permit amendment process. Ministry staff will be in touch with further details.",
         title: "Ministry-Determined Substantial",
         severity: CALLOUT_SEVERITY.danger,
       };
@@ -72,12 +72,12 @@ const NoticeOfDepartureCallout = (props) => {
   return (
     <Callout
       style={{ marginTop: 0 }}
-      message={
+      message={(
         <div className="nod-callout">
           <h4>{title}</h4>
           <p>{message}</p>
         </div>
-      }
+      )}
       severity={severity}
     />
   );
