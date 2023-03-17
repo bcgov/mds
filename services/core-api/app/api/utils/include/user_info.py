@@ -30,11 +30,11 @@ class User:
 
     def _extract_idp_username(self, raw_info):
         if raw_info.get('bceid_username'):
-            return raw_info['bceid_username'] + '@bceid'
+            return raw_info['bceid_username'].lower() + '@bceid'
         elif raw_info.get('idir_username'):
-            return raw_info['idir_username']
+            return raw_info['idir_username'].lower()
         else:
-            return raw_info['preferred_username']
+            return raw_info['preferred_username'].lower()
 
     def get_user_username(self):
         if has_request_context():

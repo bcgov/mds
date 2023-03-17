@@ -1,17 +1,9 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import {
-  change,
-  submit,
-  getFormSyncErrors,
-  getFormValues,
-  reset,
-  touch,
-  isDirty,
-} from "redux-form";
+import { Link, withRouter, useParams, useLocation, matchPath } from "react-router-dom";
+import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -40,20 +32,7 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   clearMineIncident: PropTypes.func.isRequired,
   removeDocumentFromMineIncident: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      mineGuid: PropTypes.string,
-      mineIncidentGuid: PropTypes.string,
-    }),
-  }).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      isEditMode: PropTypes.bool,
-      mineName: customPropTypes.mine,
-    }),
-  }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
-  reset: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -61,120 +40,75 @@ const propTypes = {
   formErrors: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class MineIncident extends Component {
-  state = {
-    isEditMode: false,
-    isNewIncident: true,
-    isLoaded: false,
-    fixedTop: false,
-  };
+export const MineIncident = (props) => {
+  const { formValues, formErrors, incident } = props;
+  const { mineGuid, mineIncidentGuid = null } = useParams();
+  const { pathname, search = null } = useLocation();
 
-  componentDidMount() {
-    this.handleFetchData().then(() => {
-      this.setState({ isLoaded: true, isEditMode: this.props.location.state?.isEditMode });
-    });
-    window.addEventListener("scroll", this.handleScroll);
-    this.handleScroll();
-  }
+  const [isNewIncident, setIsNewIncident] = useState(!mineIncidentGuid);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [fixedTop, setIsFixedTop] = useState(false);
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-    this.props.clearMineIncident();
-  }
+  const isEditPage = Boolean(matchPath(pathname, routes.EDIT_MINE_INCIDENT.route));
+  const mineName = isNewIncident
+    ? new URLSearchParams(search).get("mine_name")
+    : incident.mine_name;
 
-  handleScroll = () => {
-    if (window.pageYOffset > 170 && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
+  const isEditMode = isEditPage || isNewIncident;
+
+  const sideBarRoute = (() => {
+    if (isNewIncident) {
+      return { url: routes.CREATE_MINE_INCIDENT, params: [mineGuid, mineName] };
+    }
+    if (isEditMode) {
+      return { url: routes.EDIT_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
+    }
+    return { url: routes.VIEW_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
+  })();
+
+  const handleScroll = () => {
+    if (window.pageYOffset > 170 && !fixedTop) {
+      setIsFixedTop(true);
+    } else if (window.pageYOffset <= 170 && fixedTop) {
+      setIsFixedTop(false);
     }
   };
 
-  handleFetchData = () => {
-    const { mineGuid, mineIncidentGuid } = this.props.match.params;
+  const handleFetchData = () => {
     if (mineGuid && mineIncidentGuid) {
-      this.setState({ isNewIncident: false });
-      return this.props.fetchMineIncident(mineGuid, mineIncidentGuid);
+      setIsNewIncident(false);
+      return props.fetchMineIncident(mineGuid, mineIncidentGuid);
     }
     return Promise.resolve();
   };
 
-  handleCreateMineIncident = (formattedValues) => {
-    this.setState({ isLoaded: false });
-    return this.props
-      .createMineIncident(this.props.match.params?.mineGuid, formattedValues)
+  const handleCreateMineIncident = (formattedValues) => {
+    setIsLoaded(false);
+    return props
+      .createMineIncident(mineGuid, formattedValues)
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
-        this.props.history.replace(routes.MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
+        props.history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
-      .then(() => this.handleFetchData())
-      .then(() => this.setState({ isLoaded: true }));
+      .then(() => handleFetchData())
+      .then(() => setIsLoaded(true));
   };
 
-  handleCancel = () => this.props.reset(FORM.ADD_EDIT_INCIDENT);
-
-  handleUpdateMineIncident = (formattedValues) => {
-    const { mineGuid, mineIncidentGuid } = this.props.match.params;
-    this.setState({ isLoaded: false });
-    return this.props
+  const handleUpdateMineIncident = (formattedValues) => {
+    setIsLoaded(false);
+    return props
       .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
-      .then(() => this.handleFetchData())
-      .then(() => this.setState({ isLoaded: true }));
+      .then(() => handleFetchData())
+      .then(() => setIsLoaded(true));
   };
 
-  handleSaveData = () => {
-    const incidentExists = Boolean(this.props.formValues?.mine_incident_guid);
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-
-    const isFinalReport =
-      this.props.formValues.final_report_documents.length > 0 ||
-      (
-        this.props.formValues.documents?.filter(
-          (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
-        ) ?? []
-      ).length > 0;
-
-    if (!this.props.formValues.status_code) {
-      if (isFinalReport) {
-        this.props.formValues.status_code = "FRS";
-      } else {
-        this.props.formValues.status_code = "AFR";
-      }
-    } else if (this.props.formValues.status_code === "AFR" && isFinalReport) {
-      this.props.formValues.status_code = "FRS";
-    } else {
-      this.props.formValues.status_code = this.props.formValues.status_code;
-    }
-
-    if (errors.length === 0) {
-      if (!incidentExists) {
-        return this.handleCreateMineIncident(this.formatPayload(this.props.formValues));
-      }
-      return this.handleUpdateMineIncident(this.formatPayload(this.props.formValues));
-    }
-    return null;
-  };
-
-  handleDeleteDocument = (params) => {
-    if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
-      return this.props
-        .removeDocumentFromMineIncident(
-          params?.mineGuid,
-          params?.mineIncidentGuid,
-          params?.mineDocumentGuid
-        )
-        .then(() => this.handleFetchData());
-    }
-    return null;
-  };
-
-  formatTimestamp = (dateString, time) => {
+  const formatTimestamp = (dateString, time) => {
     if (!moment.isMoment(time)) {
       return dateString && time && `${dateString} ${time}`;
     }
     return dateString && time && `${dateString} ${time.format("HH:mm")}`;
   };
 
-  formatPayload = (values) => {
+  const formatPayload = (values) => {
     const documents = [
       ...values?.initial_incident_documents,
       ...values?.final_report_documents,
@@ -184,119 +118,145 @@ export class MineIncident extends Component {
     return {
       ...values,
       updated_documents: documents,
-      incident_timestamp: this.formatTimestamp(values?.incident_date, values?.incident_time),
+      incident_timestamp: formatTimestamp(values?.incident_date, values?.incident_time),
     };
   };
 
-  formatInitialValues = (incident) => ({
-    ...incident,
-    categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
-    initial_incident_documents: [],
-    final_report_documents: [],
-    internal_ministry_documents: [],
-  });
+  const handleSaveData = () => {
+    const incidentExists = Boolean(formValues.mine_incident_guid);
+    const errors = Object.keys(flattenObject(formErrors));
 
-  toggleEditMode = () => this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
+    const { final_report_documents, documents = [] } = formValues;
+    const isFinalReport =
+      final_report_documents.length > 0 ||
+      documents.filter(
+        (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+      ).length > 0;
 
-  handleCancelEdit = (isNewIncident) => {
-    this.props.reset(FORM.ADD_EDIT_INCIDENT);
-    if (!isNewIncident) {
-      return this.toggleEditMode();
+    if (!formValues.status_code) {
+      formValues.status_code = isFinalReport ? "FRS" : "AFR";
+    } else if (formValues.status_code === "AFR" && isFinalReport) {
+      formValues.status_code = "FRS";
+    }
+
+    if (errors.length === 0) {
+      if (!incidentExists) {
+        return handleCreateMineIncident(formatPayload(formValues));
+      }
+      return handleUpdateMineIncident(formatPayload(formValues));
     }
     return null;
   };
 
-  render() {
-    const mineName = this.props.incident?.mine_name || this.props.location?.state?.mineName;
-    const { isNewIncident } = this.state;
+  const handleDeleteDocument = (params) => {
+    if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
+      return props
+        .removeDocumentFromMineIncident(
+          params?.mineGuid,
+          params?.mineIncidentGuid,
+          params?.mineDocumentGuid
+        )
+        .then(() => handleFetchData());
+    }
+    return null;
+  };
 
-    return (
-      (this.state.isLoaded && (
-        <>
-          <div className="page">
-            <div
-              className={
-                this.state.fixedTop
-                  ? "padding-lg view--header fixed-scroll"
-                  : " padding-lg view--header"
-              }
-              style={{ paddingBottom: 0 }}
-            >
-              <h1>
-                {this.props.incident.mine_incident_guid ? "Mine Incident" : "Create New Incident"}
-                &nbsp;
-                <span>
-                  <Tag title={`Mine: ${mineName}`}>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      to={routes.MINE_GENERAL.dynamicRoute(this.props.match?.params?.mineGuid)}
-                    >
-                      <EnvironmentOutlined className="padding-sm--right" />
-                      {mineName}
-                    </Link>
-                  </Tag>
-                </span>
-              </h1>
-              <Link to={routes.MINE_INCIDENTS.dynamicRoute(this.props.match?.params?.mineGuid)}>
-                <ArrowLeftOutlined className="padding-sm--right" />
-                Back to All Incidents
-              </Link>
-              <hr />
-            </div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              <ScrollSideMenu
-                menuOptions={[
-                  { href: "initial-report", title: "Initial Report" },
-                  { href: "incident-details", title: "Incident Details" },
-                  { href: "documentation", title: "Documentation" },
-                  { href: "final-report", title: "Final Report" },
-                  { href: "ministry-follow-up", title: "Ministry Follow Up" },
-                  { href: "internal-documents", title: "Internal Documents" },
-                  { href: "internal-ministry-comments", title: "Comments" },
-                ]}
-                featureUrlRoute={routes.MINE_INCIDENT.hashRoute}
-                featureUrlRouteArguments={[
-                  this.props.match.params?.mineGuid,
-                  this.props.match.params?.mineIncidentGuid,
-                ]}
-              />
-            </div>
-            <div
-              className={
-                this.state.fixedTop
-                  ? "side-menu--content with-fixed-top top-125"
-                  : "side-menu--content"
-              }
-            >
-              <IncidentForm
-                initialValues={
-                  !isNewIncident
-                    ? this.formatInitialValues(this.props.incident)
-                    : {
-                        initial_incident_documents: [],
-                        final_report_documents: [],
-                        internal_ministry_documents: [],
-                      }
-                }
-                isEditMode={this.state.isEditMode}
-                isNewIncident={isNewIncident}
-                incident={this.props.incident}
-                handlers={{
-                  deleteDocument: this.handleDeleteDocument,
-                  toggleEditMode: this.toggleEditMode,
-                  handleSaveData: this.handleSaveData,
-                  handleCancelEdit: this.handleCancelEdit,
-                }}
-              />
-            </div>
-          </div>
-        </>
-      )) || <Loading />
-    );
-  }
-}
+  const formatInitialValues = () => {
+    if (!isNewIncident) {
+      return {
+        ...incident,
+        categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
+        incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
+        incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
+        initial_incident_documents: [],
+        final_report_documents: [],
+        internal_ministry_documents: [],
+      };
+    }
+    return {
+      initial_incident_documents: [],
+      final_report_documents: [],
+      internal_ministry_documents: [],
+    };
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  useEffect(() => {
+    handleFetchData().then(() => {
+      setIsLoaded(true);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        props.clearMineIncident();
+      };
+    });
+    handleScroll();
+  }, [pathname]);
+
+  return isLoaded ? (
+    <>
+      <div className="page">
+        <div
+          className={fixedTop ? "padding-lg view--header fixed-scroll" : " padding-lg view--header"}
+          style={{ paddingBottom: 0 }}
+        >
+          <h1>
+            {incident.mine_incident_guid ? "Mine Incident" : "Create New Incident"}
+            &nbsp;
+            <span>
+              <Tag title={`Mine: ${mineName}`}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={routes.MINE_GENERAL.dynamicRoute(mineGuid)}
+                >
+                  <EnvironmentOutlined className="padding-sm--right" />
+                  {mineName}
+                </Link>
+              </Tag>
+            </span>
+          </h1>
+          <Link to={routes.MINE_INCIDENTS.dynamicRoute(mineGuid)}>
+            <ArrowLeftOutlined className="padding-sm--right" />
+            Back to All Incidents
+          </Link>
+          <hr />
+        </div>
+        <div className={fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <ScrollSideMenu
+            menuOptions={[
+              { href: "initial-report", title: "Initial Report" },
+              { href: "incident-details", title: "Incident Details" },
+              { href: "documentation", title: "Documentation" },
+              { href: "final-report", title: "Final Report" },
+              { href: "ministry-follow-up", title: "Ministry Follow Up" },
+              { href: "internal-documents", title: "Internal Documents" },
+              { href: "internal-ministry-comments", title: "Comments" },
+            ]}
+            featureUrlRoute={sideBarRoute.url.hashRoute}
+            featureUrlRouteArguments={sideBarRoute.params}
+          />
+        </div>
+        <div
+          className={fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"}
+        >
+          <IncidentForm
+            initialValues={formatInitialValues()}
+            isEditMode={isEditMode}
+            isNewIncident={isNewIncident}
+            incident={incident}
+            handlers={{
+              deleteDocument: handleDeleteDocument,
+              handleSaveData,
+            }}
+          />
+        </div>
+      </div>
+    </>
+  ) : (
+    <Loading />
+  );
+};
 
 MineIncident.propTypes = propTypes;
 
@@ -316,7 +276,6 @@ const mapDispatchToProps = (dispatch) =>
       updateMineIncident,
       removeDocumentFromMineIncident,
       submit,
-      reset,
       touch,
       change,
     },

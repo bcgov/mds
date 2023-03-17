@@ -41,13 +41,13 @@ _If coverage is lower than before writing a new feature, the tests **need** to b
 yarn test
 ```
 
-2. To run the test suite while updating ALL snapshots run:
+2. To run the test suite while updating ALL snapshots run within the core-web directory:
 
 ```
 yarn test:updateAll
 ```
 
-3. To run the test suite while updating snapshots case by case Interactively run:
+3. To run the test suite while updating snapshots case by case Interactively run within the core-web directory:
 
 ```
 yarn test:watch
@@ -110,26 +110,11 @@ yarn install
 yarn serve
 ```
 
-B. Using a docker container
-
-- [Docker](https://www.docker.com/)
-
-1. Switch current directory to the project root
-
-```
-cd ../
-```
-
-2. Issue the makefile command that runs the frontend
-
-```
-make frontend
-```
-
 ## Code Contribution Standards
 
 Contributors to this codebase are expected to follow the formatting and style
-standards, as enforced by the Prettier and ESLint rules.
+standards, as enforced by the Prettier and ESLint rules. The provided git hooks will
+automatically lint and format on-commit.
 
 The linting rules are built on the Airbnb configuration. Contributors should
 ensure that they are not introducing linting errors into the codebase with
@@ -171,9 +156,7 @@ up formatting on-save:
 
 Any developer who is unable or unwilling to apply the formatting on-save is
 asked to either use the provided npm scripts to format their code before each
-commit or to ensure that the git hooks are running. The provided git hooks will
-automatically lint and format on-commit. They will also run the relevant tests
-on-push.
+commit or to ensure that the git hooks are running.
 
 See the usage guide below for more information on manual formatting.
 

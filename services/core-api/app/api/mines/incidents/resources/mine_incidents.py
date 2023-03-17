@@ -3,7 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from app.extensions import api, db
+from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, is_minespace_user, requires_any_of, EDIT_DO, MINESPACE_PROPONENT
 
@@ -231,6 +231,7 @@ class MineIncidentListResource(Resource, UserMixin):
         try:
             incident.save()
             if incident.status_code != 'DFT':
+                trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
                 incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
@@ -325,6 +326,7 @@ class MineIncidentResource(Resource, UserMixin):
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
+        prev_status_code = incident.status_code
         if not incident or str(incident.mine_guid) != mine_guid:
             raise NotFound("Mine Incident not found")
 
@@ -337,6 +339,7 @@ class MineIncidentResource(Resource, UserMixin):
                 raise BadRequest(
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
+        notification_sent = False
         for key, value in data.items():
             if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations', 'categories']:
                 continue
@@ -348,15 +351,28 @@ class MineIncidentResource(Resource, UserMixin):
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
                     setattr(incident, key, value)
             if key in ['status_code']:
-                if value == 'AFR' and incident.status_code != 'AFR':
-                    # Need to send an email to the proponent and OIC with mostly same content just slightly different.
+                # If the status is being changed to AFR or FRS from draft, send the initial incident email (these are
+                # the only two statuses available when moving from draft)
+                if (value == 'AFR' or value == 'FRS') and prev_status_code == 'DFT':
+                    incident.send_incidents_email()
+                    trigger_notification(f'A new reportable incident ({incident.mine_incident_report_no}) has been submitted on ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
+
+                # If the status is being changed to AFR from any status other than draft, send the awaiting final
+                # report email
+                if value == 'AFR' and prev_status_code != 'AFR' and prev_status_code != 'DFT':
                     incident.send_awaiting_final_report_email(True)
                     incident.send_awaiting_final_report_email(False)
-                    trigger_notification(f'A new reportable incident has been submitted for ({incident.mine_name})', ActivityType.mine_incident_created, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
-                if value == 'FRS' and incident.status_code != 'FRS':
+                    trigger_notification(f'The status of Incident - ({incident.mine_incident_report_no}) has changed to "Awaiting Final Report"', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
+
+                # If the status is being changed to FRS from any status other than draft and the current incident
+                # does not have a final report, send the final report received email
+                if value == 'FRS' and prev_status_code != 'FRS' and prev_status_code != 'DFT' and not any(doc.mine_incident_document_type_code == 'FIN' for doc in incident.documents):
                     incident.send_final_report_received_email(True)
                     incident.send_final_report_received_email(False)
                     trigger_notification(f'A final incident report has been submitted for ({incident.mine_incident_report_no}) on ({incident.mine_name})', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+                    notification_sent = True
                 setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
@@ -382,6 +398,7 @@ class MineIncidentResource(Resource, UserMixin):
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
+        documents_added = False
         updated_documents = data.get('updated_documents')
         if updated_documents is not None and len(updated_documents) > 0:
             for updated_document in updated_documents:
@@ -395,7 +412,6 @@ class MineIncidentResource(Resource, UserMixin):
 
                     if not mine_doc:
                         raise BadRequest('Unable to register uploaded file as document')
-
                     mine_doc.save()
                     mine_incident_doc = MineIncidentDocumentXref(
                         mine_document_guid=mine_doc.mine_document_guid,
@@ -405,15 +421,19 @@ class MineIncidentResource(Resource, UserMixin):
                         if updated_document['mine_incident_document_type_code'] else 'INI')
 
                     incident.documents.append(mine_incident_doc)
+
+                    if mine_incident_doc.mine_incident_document_type_code != 'INM':
+                        documents_added = True
+
                     mine_incident_doc.save()
 
-            for doc in incident.documents:
-                if not any(
-                        updated_document['document_manager_guid'] == str(doc.document_manager_guid)
-                        for updated_document in updated_documents):
-                    incident.documents.remove(doc)
-                    db.session.delete(doc)
-                    db.session.commit()
+        status_code = data.get('status_code')
+        if status_code != 'DFT':
+            if documents_added and not notification_sent:
+                trigger_notification(f'Documents have been added to reportable incident ({incident.mine_incident_report_no}) for {incident.mine_name}', ActivityType.mine_incident_updated, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
+
+            if status_code != prev_status_code and not notification_sent:
+                trigger_notification(f'The status of a reportable incident ({incident.mine_incident_report_no}) has been updated for {incident.mine_name}', ActivityType.incident_report_submitted, incident.mine_table, 'MineIncident', incident.mine_incident_guid, {})
 
         incident.save()
         return incident

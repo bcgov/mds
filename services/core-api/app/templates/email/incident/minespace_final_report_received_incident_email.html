@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+@media only screen and (max-width: 620px) {
+
+  table.body .wrapper,s
+table.body .article {
+    padding: 10px !important;
+  }
+
+  table.body .content {
+    padding: 0 !important;
+  }
+
+  table.body .container {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  table.body .main {
+    border-left-width: 0 !important;
+    border-radius: 0 !important;
+    border-right-width: 0 !important;
+  }
+
+  table.body .btn table {
+    width: 100% !important;
+  }
+
+  table.body .btn a {
+    width: 100% !important;
+  }
+
+  table.body .img-responsive {
+    height: auto !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
+}
+
+</style>
+  </head>
+  <body style="background-color: #ffffff; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+    <table role="presentation" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; width: 100%;" width="100%">
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+        <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 580px; padding: 10px; width: 580px; margin: 0 auto;" width="580" valign="top">
+          <div class="content" style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
+            <div class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 36px; padding-top: 10px; font-size: 12px; text-align: center;" valign="top">
+              <img src="{{minespace_logo}}" width="60%" style="object-fit: contain;">
+            </div>
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main" style=" border-width:1px; border-style:solid; border-color:#DED9D9; border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border-radius: 3px; width: 100%;" width="100%">
+              
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="vertical-align: top; box-sizing: border-box; padding: 20px;" valign="top">
+                  <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
+                    <tr>
+                      <td style="vertical-align: top; text-align: center; font-family: sans-serif; font-size: 24px; font-weight: 700; line-height: 30px; color: #003366;  padding: 10px 0px 16px;" valign="top">
+                        A final incident report has been submitted
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="vertical-align: top; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #6B6363; margin: 0; margin-bottom: 15px;" valign="top">
+                        <p style="text-align: center; margin-top: 16px;">
+                          {{mine.mine_name}} (Mine no: {{mine.mine_no}}) has had a final report submitted for the incident ({{incident.mine_incident_report_no}}).
+                        </p>
+                        <p style="text-align: center; margin-top: 16px;">
+                          <b>Incident type(s):</b> {{ incident.categories }}<br>
+                          <b>Incident information:</b> {{ incident.incident_description }}<br>
+                        </p>
+                      </td>
+                     </tr>
+                      <tr>
+                        <td>
+                          <div style="text-align:center; padding-top: 16px;">
+                            <a href ="{{ minespace_incident_link }}" type="button" style="border: solid 1px #003366; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: #003366; border-color: #003366; color: #ffffff;">
+                              View Incident
+                            </a> 
+                          </div>
+                        </td>   
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- END CENTERED WHITE CONTAINER -->
+
+            <!-- START FOOTER -->
+            <div class="footer" style="clear: both; margin-top: 10px; text-align: center; width: 100%;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
+                <tr>
+                  <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 16px; font-size: 12px; text-align: center;" valign="top">
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; font-weight: 400; line-height: 20px;">Please note: This e-mail was sent from a notification-only address that cannot accept incoming e-mail. Please do not reply to this message.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; text-align: center;" valign="top">
+              </tr>
+            </td>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+          </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>

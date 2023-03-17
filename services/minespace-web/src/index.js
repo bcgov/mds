@@ -18,7 +18,7 @@ import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore();
 
-// 5 minutees before user is inactive- across tabs
+// 5 minutes before user is inactive- across tabs
 const idleTimeout = 5 * 60_000;
 // seconds before expiry to request new access token
 const refreshTokenBufferSeconds = 60;
@@ -64,11 +64,11 @@ const Index = () => {
   const handleUpdateToken = () => {
     if (keycloak.authenticated && keycloak.tokenParsed) {
       const tokenExpiryTime = keycloak.tokenParsed.exp * 1000;
-      const timeToLive = tokenExpiryTime - Date.now() - (refreshTokenBufferSeconds * 1000);
+      const timeToLive = tokenExpiryTime - Date.now() - refreshTokenBufferSeconds * 1000;
 
       const updateInterval = setInterval(() => {
         if (!isIdle()) {
-          keycloak.updateToken(-1).catch((err = "") => {
+          keycloak.updateToken(refreshTokenBufferSeconds - 1).catch((err = "") => {
             console.log("Failed to refresh token", err);
             handleAuthErrors();
           });
@@ -100,7 +100,7 @@ const Index = () => {
       onAuthLogout={(err = "") => handleAuthErrors(err)}
       onAuthError={(err = "") => handleAuthErrors(err)}
       onAuthRefreshError={(err = "") => handleAuthErrors(err)}
-      onInitError={(err = "") => handleAuthErrors(err)}      
+      onInitError={(err = "") => handleAuthErrors(err)}
     >
       <Provider store={store}>
         <App />

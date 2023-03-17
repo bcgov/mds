@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "pre-push lint"
+#echo "pre-push lint"
 yarn lint-prepush

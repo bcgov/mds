@@ -304,9 +304,11 @@ const MineIncidentTable = (props) => {
               ghost
               onClick={() =>
                 props.history.push({
-                      pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                      state: { isEditMode: true },
-                    })}
+                  pathname: router.EDIT_MINE_INCIDENT.dynamicRoute(
+                    record.mine_guid,
+                    record.key
+                  ),
+                })}
             >
               <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
             </Button>
@@ -317,8 +319,7 @@ const MineIncidentTable = (props) => {
             ghost
             onClick={() =>
               props.history.push({
-                    pathname: router.MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                    state: { isEditMode: false },
+                pathname: router.VIEW_MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
                   })}
           >
             <EyeOutlined className="icon-lg icon-svg-filter" />

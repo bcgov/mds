@@ -11,10 +11,13 @@ import {
   dateNotAfterOther,
   maxLength,
   phoneNumber,
+  alertStartDateNotBeforeHistoric,
+  alertNotInFutureIfCurrentActive,
 } from "@common/utils/Validate";
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -22,21 +25,45 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  activeMineAlert: CustomPropTypes.mineAlert,
+  mineAlerts: PropTypes.arrayOf(CustomPropTypes.mineAlert),
 };
 
 const defaultProps = {
   formValues: {},
+  activeMineAlert: {},
+  mineAlerts: [],
 };
 
 export const AddMineAlertForm = (props) => {
+  const { title, text, activeMineAlert, mineAlerts, formValues } = props;
+
+  const startDateValidation = () => {
+    return formValues?.mine_alert_guid
+      ? [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+        ]
+      : [
+          required,
+          dateNotAfterOther(props.formValues.stop_date),
+          alertStartDateNotBeforeHistoric(mineAlerts),
+          dateNotBeforeOther(activeMineAlert.start_date),
+          alertNotInFutureIfCurrentActive(activeMineAlert),
+        ];
+  };
+
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Typography.Paragraph>
-          <Typography.Text>
-            Creating a new staff alert will overwrite any previous alerts. Please use the edit alert
-            option if you need to update an existing alert.
-          </Typography.Text>
+          <Typography.Text>{text}</Typography.Text>
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Anything written in internal staff alerts may be requested under FOIPPA. Keep it
+          professional and concise.
         </Typography.Paragraph>
         <Row gutter={16}>
           <Col md={12} xs={24}>
@@ -46,7 +73,7 @@ export const AddMineAlertForm = (props) => {
                 name="contact_name"
                 label="Contact Name"
                 component={renderConfig.FIELD}
-                validate={[required,maxLength(200)]}
+                validate={[required, maxLength(200)]}
               />
             </Form.Item>
           </Col>
@@ -72,6 +99,7 @@ export const AddMineAlertForm = (props) => {
                 label="Message"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[required, maxLength(300)]}
+                maximumCharacters={300}
               />
             </Form.Item>
           </Col>
@@ -85,7 +113,7 @@ export const AddMineAlertForm = (props) => {
                 label="Start Date"
                 placeholder="Select Date"
                 component={renderConfig.DATE}
-                validate={[required, dateNotAfterOther(props.formValues.stop_date)]}
+                validate={startDateValidation()}
                 format={null}
               />
             </Form.Item>
@@ -111,7 +139,7 @@ export const AddMineAlertForm = (props) => {
             htmlType="submit"
             loading={props.submitting}
           >
-            {props.title}
+            {title}
           </Button>
           <Popconfirm
             placement="topRight"

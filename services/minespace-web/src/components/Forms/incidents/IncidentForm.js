@@ -216,7 +216,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, formDisabled) => (
     <Col span={24}>
       <Typography.Title level={3}>Initial Report</Typography.Title>
       <Typography.Paragraph>
-        Select one or more incident types for this submission.
+        <Typography.Text>Select one or more incident types for this submission.</Typography.Text>
       </Typography.Paragraph>
       <Form.Item label="Incident type(s)">
         <Field
@@ -754,6 +754,12 @@ const renderUploadInitialNotificationDocuments = (
             </Col>
           )}
         </Row>
+        <Row>
+          <Typography.Paragraph>
+            A final report must be submitted within 60 days of the reportable incident. Please add
+            the final report documentation below.
+          </Typography.Paragraph>
+        </Row>
         {formDisabled && (
           <DocumentTable
             documents={finalReportDocuments}
@@ -779,11 +785,17 @@ const renderUploadInitialNotificationDocuments = (
 
 const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
-    return [<Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />];
+    return [
+      <Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />,
+    ];
   }
   return [
     fields.map((recommendation) => (
-      <Field name={`${recommendation}.recommendation`} component={renderConfig.AUTO_SIZE_FIELD} />
+      <Field
+        name={`${recommendation}.recommendation`}
+        component={renderConfig.AUTO_SIZE_FIELD}
+        disabled
+      />
     )),
   ];
 };

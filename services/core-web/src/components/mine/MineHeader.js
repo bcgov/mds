@@ -25,7 +25,6 @@ import {
 import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";
@@ -38,7 +37,7 @@ import { CoreTooltip } from "@/components/common/CoreTooltip";
 import MineAlert from "@/components/mine/MineAlert";
 
 /**
- * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
+ * @class MineHeader contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -158,8 +157,7 @@ export class MineHeader extends Component {
                 this.handleDeleteMineType,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
-              )
-            }
+              )}
           >
             <img alt="pencil" className="padding-sm" src={EDIT_OUTLINE_VIOLET} />
             {ModalContent.UPDATE_MINE_RECORD}
@@ -180,13 +178,8 @@ export class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
-          {/* FEATURE FLAG: MINE ALERT */}
-          {!IN_PROD() && (
-            <>
-              <MineAlert mine={this.props.mine} />
-              <br />
-            </>
-          )}
+          <MineAlert mine={this.props.mine} />
+          <br />
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>
@@ -294,7 +287,9 @@ export class MineHeader extends Component {
                   trigger="click"
                 >
                   <Button ghost style={{ padding: 0, margin: 0, height: 0 }}>
-                    View Notes <CoreTooltip />
+                    View Notes 
+                    {' '}
+                    <CoreTooltip />
                   </Button>
                 </Popover>
               ) : (

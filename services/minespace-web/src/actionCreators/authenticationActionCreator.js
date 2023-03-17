@@ -1,4 +1,5 @@
 import { notification } from "antd";
+import { USER_ROLES } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
@@ -16,7 +17,7 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
 
 export const getUserRoles = () => (dispatch) => {
   const roles = keycloak.tokenParsed.client_roles || [];
-  const isProponent = roles.includes("minespace-proponent");
+  const isProponent = roles.includes(USER_ROLES.role_minespace_proponent);
   dispatch(authenticationActions.storeIsProponent(isProponent));
 };
 

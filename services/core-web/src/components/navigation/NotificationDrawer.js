@@ -15,7 +15,7 @@ import { useHistory } from "react-router-dom";
 import { storeActivities } from "@common/actions/activityActions";
 import {
   NOTICE_OF_DEPARTURE,
-  MINE_INCIDENT,
+  VIEW_MINE_INCIDENT,
   PRE_APPLICATIONS,
   INFORMATION_REQUIREMENTS_TABLE,
   PROJECTS,
@@ -103,8 +103,8 @@ const NotificationDrawer = (props) => {
           notification.notification_document.metadata.entity_guid
         );
       case "MineIncident":
-        return MINE_INCIDENT.dynamicRoute(
-          notification.notification_document.metadata.mine_guid,
+        return VIEW_MINE_INCIDENT.dynamicRoute(
+          notification.notification_document.metadata.mine.mine_guid,
           notification.notification_document.metadata.entity_guid
         );
       case "ProjectSummary":

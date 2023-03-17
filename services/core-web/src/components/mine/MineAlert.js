@@ -9,15 +9,16 @@ import { formatDate } from "@common/utils/helpers";
 import { DownOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { getMineAlerts } from "@/selectors/mineAlertSelectors";
-import { createMineAlert,
+import {
+  createMineAlert,
   updateMineAlert,
   fetchMineAlertsByMine,
-  deleteMineAlert } from "@/actionCreators/mineAlertActionCreator";
+  deleteMineAlert,
+} from "@/actionCreators/mineAlertActionCreator";
 import * as FORM from "@/constants/forms";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -31,11 +32,14 @@ const propTypes = {
 };
 
 export class MineAlert extends Component {
-  state = {
-    loaded: false,
-    activeMineAlert: {},
-    pastMineAlerts: [],
-  };
+  constructor() {
+    super();
+    this.state = {
+      loaded: false,
+      activeMineAlert: {},
+      pastMineAlerts: [],
+    };
+  }
 
   componentDidMount() {
     this.fetchAlerts();
@@ -88,26 +92,32 @@ export class MineAlert extends Component {
     return null;
   };
 
-  openCreateMineAlertModal = () => {
+  openCreateMineAlertModal = (activeMineAlert, mineAlerts) => {
     return this.props.openModal({
       props: {
         title: ModalContent.CREATE_MINE_ALERT_RECORD,
+        text: ModalContent.CREATE_MINE_ALERT_TEXT,
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
         onSubmit: this.submitCreateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        activeMineAlert,
+        mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
     });
   };
 
-  openUpdateMineAlertModal = () => {
+  openUpdateMineAlertModal = (activeMineAlert, mineAlerts) => {
     return this.props.openModal({
       props: {
         title: ModalContent.EDIT_MINE_ALERT_RECORD,
+        text: ModalContent.EDIT_MINE_ALERT_TEXT,
         initialValues: this.state.activeMineAlert,
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
         onSubmit: this.submitUpdateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        activeMineAlert,
+        mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
     });
@@ -143,7 +153,8 @@ export class MineAlert extends Component {
           <button
             type="button"
             className="full add-permit-dropdown-button"
-            onClick={() => this.openCreateMineAlertModal()}
+            onClick={() =>
+              this.openCreateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
           >
             Create New Alert
           </button>
@@ -153,7 +164,8 @@ export class MineAlert extends Component {
             <button
               type="button"
               className="full add-permit-dropdown-button"
-              onClick={() => this.openUpdateMineAlertModal()}
+              onClick={() =>
+                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
             >
               Edit Active Alert
             </button>
@@ -199,7 +211,7 @@ export class MineAlert extends Component {
       <div>
         {this.state.loaded && !this.state.activeMineAlert && (
           <Alert
-            description={
+            description={(
               <Row>
                 <Col xs={24} md={18}>
                   <p>
@@ -217,7 +229,7 @@ export class MineAlert extends Component {
                   </div>
                 </Col>
               </Row>
-            }
+            )}
             type="info"
             showIcon
             style={{ backgroundColor: "#F4F0F0", border: "1.5px solid #525252" }}
@@ -226,23 +238,29 @@ export class MineAlert extends Component {
         )}
         {this.state.loaded && this.state.activeMineAlert && (
           <Alert
-            description={
+            description={(
               <Row>
                 <Col xs={24} md={18}>
                   <p>
                     {this.state.activeMineAlert.end_date ? (
                       <b>
-                        Active Alert: {formatDate(this.state.activeMineAlert.start_date)} -{" "}
-                        {formatDate(this.state.activeMineAlert.end_date)}
+                        {`Active Alert: ${formatDate(
+                          this.state.activeMineAlert.start_date
+                        )} - ${formatDate(this.state.activeMineAlert.end_date)}`}
                       </b>
                     ) : (
-                      <b>Active Alert: {formatDate(this.state.activeMineAlert.start_date)}</b>
+                      <b>{`Active Alert: ${formatDate(this.state.activeMineAlert.start_date)}`}</b>
                     )}
                   </p>
                   <p>
                     {this.state.activeMineAlert.message}
                     <br />
-                    For more information contact: {this.state.activeMineAlert.contact_name} -{" "}
+                    For more information contact: 
+                    {' '}
+                    {this.state.activeMineAlert.contact_name}
+                    {' '}
+-
+                    {" "}
                     {this.state.activeMineAlert.contact_phone}
                   </p>
                 </Col>
@@ -261,7 +279,7 @@ export class MineAlert extends Component {
                   </div>
                 </Col>
               </Row>
-            }
+            )}
             type="warning"
             showIcon
             style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}

@@ -2,7 +2,6 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from flask import current_app
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
@@ -20,6 +19,8 @@ class ApplicationsView(Base):
     mine_no = db.Column(db.String)
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+    mine_latitude = association_proxy('mine', 'latitude')
+    mine_longitude = association_proxy('mine', 'longitude')
     source_permit_amendment_id = db.Column(db.Integer,
                                            db.ForeignKey('permit_amendment.permit_amendment_id'))
     source_permit_amendment_guid = db.Column(

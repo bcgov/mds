@@ -1,0 +1,14 @@
+FROM node:19.3.0
+
+# Create working directory
+RUN mkdir /app
+WORKDIR /app
+
+# Install app dependencies
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+COPY . .
+
+CMD [ "node", "su.js"]
