@@ -1,5 +1,3 @@
-DROP SEQUENCE IF EXISTS explosives_permit_number_sequence;
-
 CREATE SEQUENCE IF NOT EXISTS explosives_permit_number_sequence
 OWNED BY explosives_permit.permit_number;
 
