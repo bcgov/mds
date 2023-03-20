@@ -1,20 +1,19 @@
-from flask_restplus import Resource, inputs
 from flask import request
+from flask_restplus import Resource, inputs
+from sqlalchemy import func, or_, and_
 from sqlalchemy_filters import apply_pagination, apply_sort
-from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest
-from datetime import datetime
 
-from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.now_applications.models.applications_view import ApplicationsView
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application import NOWApplication
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
 from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
-from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -48,6 +47,9 @@ class NOWApplicationListResource(Resource, UserMixin):
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'mine_name': 'Substring to match against a mine name',
             'mine_guid': 'filter by a given mine guid',
+            'permit_no': 'filter by a given permit number',
+            'party': 'filter by a given party name',
+            'permit_guid': 'filter by a given permit guid',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
             'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
             'lead_inspector_name': 'Substring to match against a lead inspector\'s name',
@@ -84,7 +86,10 @@ class NOWApplicationListResource(Resource, UserMixin):
             update_timestamp_since=request.args.get(
                 'update_timestamp_since',
                 type=lambda x: inputs.datetime_from_iso8601(x) if x else None),
-            application_type=request.args.get('application_type', type=str))
+            application_type=request.args.get('application_type', type=str),
+            permit_no=request.args.get('permit_no', type=str),
+            party=request.args.get('party', type=str),
+        )
 
         data = records.all()
 
@@ -114,7 +119,9 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       submissions_only=None,
                                       import_timestamp_since=None,
                                       update_timestamp_since=None,
-                                      application_type=None):
+                                      application_type=None,
+                                      permit_no=None,
+                                      party=None):
 
         filters = []
         base_query = ApplicationsView.query
@@ -166,6 +173,12 @@ class NOWApplicationListResource(Resource, UserMixin):
                     func.lower(Mine.mine_name).contains(func.lower(mine_search)),
                     func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
+        if permit_no:
+            filters.append(func.lower(ApplicationsView.permit_no).contains(func.lower(str(permit_no))))
+
+        if party:
+            filters.append(func.lower(ApplicationsView.party).contains(func.lower(str(party))))
+
         if now_application_status_description:
             filters.append(
                 ApplicationsView.now_application_status_description.in_(
@@ -176,7 +189,6 @@ class NOWApplicationListResource(Resource, UserMixin):
 
         if update_timestamp_since:
             filters.append(ApplicationsView.update_timestamp >= update_timestamp_since)
-
         base_query = base_query.filter(*filters)
 
         if sort_field and sort_dir:
