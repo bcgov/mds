@@ -1,13 +1,10 @@
-import uuid
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.parties.party.models.party import Party
 from app.api.constants import *
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.extensions import db
 
 
 class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
@@ -32,3 +29,5 @@ class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     now_application = db.relationship('NOWApplication', lazy='selectin')
 
     mine_party_appt_type_code_description = association_proxy('mine_party_appt_type', 'description')
+    party_name = association_proxy('party', 'party_name')
+    first_name = association_proxy('party', 'first_name')

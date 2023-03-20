@@ -1,11 +1,17 @@
 from datetime import datetime
+
+from sqlalchemy import select, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
+from .now_party_appointment import NOWPartyAppointment
 from .now_application import NOWApplication
+from ...mines.permits.permit.models.permit import Permit
+from ...mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from ...parties.party.models.party import Party
 
 
 class ApplicationsView(Base):
@@ -27,6 +33,7 @@ class ApplicationsView(Base):
         UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_id'))
 
     source_permit_amendment_issue_date = db.Column(db.Date)
+    status_reason = db.Column(db.String)
 
     now_number = db.Column(db.String)
 
@@ -44,6 +51,7 @@ class ApplicationsView(Base):
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
     application_type_code = db.Column(db.String)
+    application_type_description = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
     decision_date = db.Column(db.DateTime)
     source_permit_no = db.Column(db.String)
@@ -116,6 +124,33 @@ class ApplicationsView(Base):
     @hybrid_property
     def permit_amendment(self):
         return self.permit_amendments[0] if self.permit_amendments else None
+
+    @hybrid_property
+    def permit_no(self):
+        return self.permit_amendment.permit.permit_no if self.permit_amendment else None
+
+    @permit_no.expression
+    def permit_no(self):
+        return select([Permit.permit_no]).where(
+            Permit.permit_id == PermitAmendment.permit_id).where(
+            PermitAmendment.permit_amendment_id == self.source_permit_amendment_id).label(
+            'permit_no')
+
+    @hybrid_property
+    def party(self):
+        # get the contact.party.name of the self.contacts that is an agent and not deleted
+        agents = [
+            contact.party.name for contact in self.contacts if contact.mine_party_appt_type_code == 'AGT'
+        ]
+        return agents[0] if agents else None
+
+    @party.expression
+    def party(self):
+        return select([func.concat(Party.first_name, ' ', Party.party_name)]).where(
+            Party.party_guid == NOWPartyAppointment.party_guid).where(
+            NOWPartyAppointment.now_application_id == self.now_application_id).where(
+            NOWPartyAppointment.mine_party_appt_type_code == 'AGT').where(
+            NOWPartyAppointment.deleted_ind == False).label('party')
 
     @hybrid_property
     def application_documents(self):

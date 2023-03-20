@@ -734,10 +734,10 @@ NOW_VIEW_MODEL = api.model(
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
         'now_number':
         fields.String,
-        'permit_guid':
-        fields.String(attribute='permit.permit_guid'),
         'permit_no':
-        fields.String(attribute='permit.permit_no'),
+        fields.String,
+        'party':
+        fields.String,
         'lead_inspector_party_guid':
         fields.String,
         'lead_inspector_name':
