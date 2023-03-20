@@ -35,6 +35,7 @@ The following steps should only need to be completed **once**. Run the following
 
 - `make valid` on the host machine to make sure you have YARN and Node in the right versions.
 - `make env` to update the environment variables.
+- Create .env files for the services that have .env-sample and copy the .env-sample file contents into the respective .env file
 - `yarn install` (or `yarn`) This will use the monorepo `yarn.lock` to install dependencies. It will hoist `node_modules` to the root of the repo with very few dependencies inside of the services folders. Any new dependencies you want to add use yarn workspaces command.
 - `make be` to spin up all backend dependencies.
 - `make seeddb` to seed the database with factory data.
