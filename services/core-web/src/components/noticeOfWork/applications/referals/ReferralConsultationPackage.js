@@ -226,7 +226,8 @@ export class ReferralConsultationPackage extends Component {
 
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
-    const complete = !isEmpty(this.props.progress[this.props.type]) &&
+    const complete =
+      !isEmpty(this.props.progress[this.props.type]) &&
       !isNil(this.props.progress[this.props.type].end_date);
 
     const disabled = complete;

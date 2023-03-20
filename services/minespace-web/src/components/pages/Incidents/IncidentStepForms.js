@@ -145,7 +145,8 @@ const StepForms = (props) => {
                 onClick={() =>
                   history.push(
                     routes.MINE_DASHBOARD.dynamicRoute(match.params?.mineGuid, "incidents")
-                  )}
+                  )
+                }
               >
                 Cancel
               </Button>
@@ -158,7 +159,8 @@ const StepForms = (props) => {
               onClick={() =>
                 history.push(
                   routes.MINE_DASHBOARD.dynamicRoute(match.params?.mineGuid, "incidents")
-                )}
+                )
+              }
             >
               Cancel
             </Button>

@@ -323,7 +323,8 @@ const MineIncidentTable = (props) => {
                         record.mine_guid,
                         record.key
                       ),
-                    })}
+                    })
+              }
             >
               <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
             </Button>
@@ -338,7 +339,8 @@ const MineIncidentTable = (props) => {
                 ? record.openViewMineIncidentModal(event, record.incident)
                 : props.history.push({
                     pathname: router.VIEW_MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                  })}
+                  })
+            }
           >
             <EyeOutlined className="icon-lg icon-svg-filter" />
           </Button>
@@ -355,21 +357,19 @@ const MineIncidentTable = (props) => {
               </Button>
             </Popconfirm>
           </AuthorizationWrapper>
-          {
-            // ENV FLAG FOR MINE INCIDENTS //
-            IN_PROD() && (
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={() => toggleDrawer(record.incident)}
-                >
-                  <MessageOutlined className="padding-sm icon-sm" />
-                </Button>
-              </AuthorizationWrapper>
-            )
-          }
+          {// ENV FLAG FOR MINE INCIDENTS //
+          IN_PROD() && (
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={() => toggleDrawer(record.incident)}
+              >
+                <MessageOutlined className="padding-sm icon-sm" />
+              </Button>
+            </AuthorizationWrapper>
+          )}
         </div>
       ),
     },
@@ -387,14 +387,12 @@ const MineIncidentTable = (props) => {
   return (
     <div>
       <Drawer
-        title={(
+        title={
           <>
-            Internal Communication for Mine Incident 
-            {' '}
-            {mineIncident?.mine_incident_report_no}
+            Internal Communication for Mine Incident {mineIncident?.mine_incident_report_no}
             <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
           </>
-        )}
+        }
         placement="right"
         closable={false}
         onClose={toggleDrawer}

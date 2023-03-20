@@ -58,8 +58,7 @@ export const MinistryInternalComments = (props) => {
             <p>
               <strong>
                 These comments are for interal staff only and will not be shown to proponents.
-              </strong>
-              {" "}
+              </strong>{" "}
               Add comments to this incident for future reference. Anything written in these comments
               may be requested under FOIPPA. Keep it professional and concise.
             </p>

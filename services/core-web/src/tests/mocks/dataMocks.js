@@ -5931,7 +5931,8 @@ export const ORGBOOK_CREDENTIAL = {
       name: "BC Corporate Registry",
       abbreviation: "BCReg",
       email: "bcregistries@gov.bc.ca",
-      url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+      url:
+        "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
       endpoint: null,
     },
     has_logo: true,
@@ -5940,7 +5941,8 @@ export const ORGBOOK_CREDENTIAL = {
     description: "Registration",
     credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
     last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-    url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+    url:
+      "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
     schema: {
       id: 1,
       create_timestamp: "2019-06-25T14:52:20.397843-07:00",
@@ -6120,7 +6122,8 @@ export const ORGBOOK_CREDENTIAL = {
             name: "BC Corporate Registry",
             abbreviation: "BCReg",
             email: "bcregistries@gov.bc.ca",
-            url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+            url:
+              "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
             endpoint: null,
           },
           has_logo: true,
@@ -6129,7 +6132,8 @@ export const ORGBOOK_CREDENTIAL = {
           description: "Registration",
           credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
           last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-          url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+          url:
+            "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
           schema: {
             id: 1,
             create_timestamp: "2019-06-25T14:52:20.397843-07:00",

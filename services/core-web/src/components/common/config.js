@@ -17,7 +17,6 @@ import RenderMineSelect from "./RenderMineSelect";
 import RenderLabel from "./RenderLabel";
 import RenderFileUpload from "./RenderFileUpload";
 
-
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {

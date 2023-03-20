@@ -70,11 +70,7 @@ const MineDashboardRoutes = () => (
       path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
       component={routes.MINE_TAILINGS_DETAILS.component}
     />
-    <Route
-        exact
-        path={routes.EDIT_DAM.route}
-        component={routes.EDIT_DAM.component}
-    />
+    <Route exact path={routes.EDIT_DAM.route} component={routes.EDIT_DAM.component} />
     <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
     <Route
       exact

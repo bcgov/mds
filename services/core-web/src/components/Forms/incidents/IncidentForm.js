@@ -432,7 +432,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   document_manager_guid,
                   Strings.INCIDENT_DOCUMENT_TYPES.initial,
                   INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                )}
+                )
+              }
               onRemoveFile={parentHandlers.deleteDocument}
               mineGuid={childProps.match.params?.mineGuid}
               component={IncidentFileUpload}
@@ -466,7 +467,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   document_manager_guid,
                   Strings.INCIDENT_DOCUMENT_TYPES.final,
                   FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                )}
+                )
+              }
               onRemoveFile={parentHandlers.deleteDocument}
               mineGuid={childProps.match.params?.mineGuid}
               component={IncidentFileUpload}
@@ -487,7 +489,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
         <Col span={24}>
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={(
+            description={
               <div className="center">
                 <Typography.Paragraph strong>
                   This incident requires a final investigation report.
@@ -498,7 +500,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   documentation by clicking below.
                 </Typography.Paragraph>
               </div>
-            )}
+            }
           />
         </Col>
       )}
@@ -528,8 +530,10 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const { inspectorContactedValidation, inspectorContacted } =
-    retrieveInitialReportDynamicValidation(childProps);
+  const {
+    inspectorContactedValidation,
+    inspectorContacted,
+  } = retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
@@ -763,12 +767,12 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
         {!incidentCreated ? (
           <div className="center">
             <Empty
-              description={(
+              description={
                 <Typography.Paragraph strong className="center padding-md--top">
                   The internal ministry documentation section will be displayed after this incident
                   is created.
                 </Typography.Paragraph>
-              )}
+              }
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           </div>
@@ -799,7 +803,8 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
                         document_manager_guid,
                         Strings.INCIDENT_DOCUMENT_TYPES.internalMinistry,
                         INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD
-                      )}
+                      )
+                    }
                     onRemoveFile={parentHandlers.deleteDocument}
                     mineGuid={childProps.match.params?.mineGuid}
                     component={IncidentFileUpload}
@@ -838,7 +843,7 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
         message={
           childProps.incidentStatusCodeHash[childProps.incident?.status_code] || "Undefined Status"
         }
-        description={(
+        description={
           <Row>
             <Col xs={24} md={18}>
               <p>
@@ -878,7 +883,7 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
               )}
             </Col>
           </Row>
-        )}
+        }
         type={!isClosed ? "warning" : "info"}
         showIcon
         style={{

@@ -182,10 +182,10 @@ export class PartySelectField extends Component {
 
   handleSelect = (value, option) => {
     this.setState({ selectedOption: option });
-    if(this.props.onSelect){
+    if (this.props.onSelect) {
       this.props.onSelect({
         ...option,
-        ...value.originalValue
+        ...value.originalValue,
       });
     }
   };

@@ -166,8 +166,9 @@ const MineIncidents = (props) => {
         initialValues: {
           status_code: "WNS",
           ...parseIncidentIntoFormData(existingIncident, newIncident),
-          dangerous_occurrence_subparagraph_ids:
-            existingIncident.dangerous_occurrence_subparagraph_ids.map(String),
+          dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
+            String
+          ),
           categories: existingIncident.categories
             ? existingIncident.categories
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
@@ -207,7 +208,8 @@ const MineIncidents = (props) => {
                 : props.history.push({
                     pathname: ROUTES.CREATE_MINE_INCIDENT.dynamicRoute(mineGuid),
                     search: `mine_name=${mines[mineGuid]?.mine_name}`,
-                  })}
+                  })
+            }
           >
             Record a Mine Incident
           </AddButton>

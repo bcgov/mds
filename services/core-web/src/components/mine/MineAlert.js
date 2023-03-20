@@ -154,7 +154,8 @@ export class MineAlert extends Component {
             type="button"
             className="full add-permit-dropdown-button"
             onClick={() =>
-              this.openCreateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
+              this.openCreateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)
+            }
           >
             Create New Alert
           </button>
@@ -165,7 +166,8 @@ export class MineAlert extends Component {
               type="button"
               className="full add-permit-dropdown-button"
               onClick={() =>
-                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)}
+                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)
+              }
             >
               Edit Active Alert
             </button>
@@ -211,7 +213,7 @@ export class MineAlert extends Component {
       <div>
         {this.state.loaded && !this.state.activeMineAlert && (
           <Alert
-            description={(
+            description={
               <Row>
                 <Col xs={24} md={18}>
                   <p>
@@ -229,7 +231,7 @@ export class MineAlert extends Component {
                   </div>
                 </Col>
               </Row>
-            )}
+            }
             type="info"
             showIcon
             style={{ backgroundColor: "#F4F0F0", border: "1.5px solid #525252" }}
@@ -238,7 +240,7 @@ export class MineAlert extends Component {
         )}
         {this.state.loaded && this.state.activeMineAlert && (
           <Alert
-            description={(
+            description={
               <Row>
                 <Col xs={24} md={18}>
                   <p>
@@ -255,12 +257,7 @@ export class MineAlert extends Component {
                   <p>
                     {this.state.activeMineAlert.message}
                     <br />
-                    For more information contact: 
-                    {' '}
-                    {this.state.activeMineAlert.contact_name}
-                    {' '}
--
-                    {" "}
+                    For more information contact: {this.state.activeMineAlert.contact_name} -{" "}
                     {this.state.activeMineAlert.contact_phone}
                   </p>
                 </Col>
@@ -279,7 +276,7 @@ export class MineAlert extends Component {
                   </div>
                 </Col>
               </Row>
-            )}
+            }
             type="warning"
             showIcon
             style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}

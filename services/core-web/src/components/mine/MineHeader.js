@@ -157,7 +157,8 @@ export class MineHeader extends Component {
                 this.handleDeleteMineType,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
-              )}
+              )
+            }
           >
             <img alt="pencil" className="padding-sm" src={EDIT_OUTLINE_VIOLET} />
             {ModalContent.UPDATE_MINE_RECORD}
@@ -287,9 +288,7 @@ export class MineHeader extends Component {
                   trigger="click"
                 >
                   <Button ghost style={{ padding: 0, margin: 0, height: 0 }}>
-                    View Notes 
-                    {' '}
-                    <CoreTooltip />
+                    View Notes <CoreTooltip />
                   </Button>
                 </Popover>
               ) : (

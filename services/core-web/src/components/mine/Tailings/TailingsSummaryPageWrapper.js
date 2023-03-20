@@ -10,7 +10,11 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import Loading from "@/components/common/Loading";
-import { MINE_TAILINGS, EDIT_TAILINGS_STORAGE_FACILITY, MINE_TAILINGS_DETAILS } from "@/constants/routes";
+import {
+  MINE_TAILINGS,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+  MINE_TAILINGS_DETAILS,
+} from "@/constants/routes";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -20,7 +24,7 @@ const propTypes = {
       tab: PropTypes.string,
     }),
   }).isRequired,
-}
+};
 
 export const TailingsSummaryPageWrapper = (props) => {
   const { match } = props;
@@ -28,7 +32,7 @@ export const TailingsSummaryPageWrapper = (props) => {
   const tsfComponents = {
     LinkButton,
     ContactDetails,
-    Loading
+    Loading,
   };
 
   const routes = {
@@ -46,7 +50,7 @@ export const TailingsSummaryPageWrapper = (props) => {
       tsfGuid={match.params.tailingsStorageFacilityGuid}
       showUpdateTimestamp
       routes={routes}
-      eorHistoryColumns={['name', 'status', 'dates', 'letters', 'ministryAcknowledged']}
+      eorHistoryColumns={["name", "status", "dates", "letters", "ministryAcknowledged"]}
       canAssignEor
       isCore
     >
@@ -54,7 +58,7 @@ export const TailingsSummaryPageWrapper = (props) => {
         form={FORM.ADD_STORAGE_FACILITY}
         mineGuid={match.params.id}
         tsfGuid={match.params.tailingsStorageFacilityGuid}
-        tab={match.params.tab}  
+        tab={match.params.tab}
       />
     </TailingsProvider>
   );

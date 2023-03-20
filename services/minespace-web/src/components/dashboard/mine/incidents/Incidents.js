@@ -112,7 +112,8 @@ export const Incidents = (props) => {
                 : history.push({
                     pathname: routes.ADD_MINE_INCIDENT.dynamicRoute(mine?.mine_guid),
                     state: { mine },
-                  })}
+                  })
+            }
           >
             <PlusCircleFilled />
             Record a mine incident
@@ -132,8 +133,7 @@ export const Incidents = (props) => {
             rel="noopener noreferrer"
           >
             Click here
-          </a>
-          {" "}
+          </a>{" "}
           for more information on reportable incidents.
         </Typography.Paragraph>
         <IncidentsTable
