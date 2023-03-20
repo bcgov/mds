@@ -4,9 +4,10 @@ from pytz import timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.schema import FetchedValue
+from sqlalchemy.schema import FetchedValue, Sequence
 from sqlalchemy.orm import validates
-from sqlalchemy import and_
+from sqlalchemy import and_, func
+from sqlalchemy.sql.functions import next_value
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
@@ -329,11 +330,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def get_next_permit_number(cls):
         prefix = 'BC-'
-        base = 10000
-        total = cls.query.filter(
-            and_(cls.originating_system.in_(['Core', 'MineSpace'])),
-            cls.application_status == 'APP').count()
-        return f'{prefix}{base + total}'
+        sequence = Sequence('explosives_permit_number_sequence')
+        next_value = sequence.next_value()
+        return func.concat(prefix, next_value)
 
     @classmethod
     def create(cls,
