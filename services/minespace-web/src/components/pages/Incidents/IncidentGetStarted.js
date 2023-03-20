@@ -11,25 +11,12 @@ export const IncidentGetStarted = () => {
           Verbal notice of a reportable incident, within 4 hours
         </Typography.Title>
         <Typography.Paragraph>
-          Reportable incidents that cause 
-          {' '}
-          <b>serious injury</b>
-          {' '}
-or 
-          {' '}
-          <b>loss of life</b>
-          {' '}
-must be
-          {" "}
-          <b>reported verbally to the Ministry within 4 hours</b>
-          {' '}
-of the incident occurrence. (HSRC
+          Reportable incidents that cause <b>serious injury</b> or <b>loss of life</b> must be{" "}
+          <b>reported verbally to the Ministry within 4 hours</b> of the incident occurrence. (HSRC
           1.7.2)
         </Typography.Paragraph>
         <Typography.Paragraph>
-          Call the 
-          {' '}
-          <b>Mine Incident Reporting Line at </b>
+          Call the <b>Mine Incident Reporting Line at </b>
           <a href="tel:1-888-348-0299">
             <b>1-888-348-0299</b>
           </a>
@@ -40,9 +27,7 @@ of the incident occurrence. (HSRC
         </Typography.Title>
         <Typography.Paragraph>
           All reportable incidents must be
-          <b> reported in writing to the Ministry within 16 hours</b>
-          {' '}
-of the incident occurrence.
+          <b> reported in writing to the Ministry within 16 hours</b> of the incident occurrence.
           This includes a reportable incident that caused, or had the potential to cause, serious
           injury or loss of life, or is classified as a dangerous occurrence. (HSRC 1.7.2)
         </Typography.Paragraph>
@@ -53,14 +38,14 @@ of the incident occurrence.
         </Typography.Paragraph>
         <Alert
           type="warning"
-          description={(
+          description={
             <>
               <Typography.Paragraph>
                 A written notice of a reportable incident received within 4-hours satisfies both the
                 requirement for the verbal report and the written report.
               </Typography.Paragraph>
             </>
-          )}
+          }
           showIcon
         />
         <br />
@@ -69,14 +54,8 @@ of the incident occurrence.
         </Typography.Title>
         <Typography.Paragraph>
           The scene of a reportable incident must not be disturbed (e.g., to return to regular
-          operations), except for the purpose of 
-          {' '}
-          <b>saving life</b>
-          {' '}
-or
-          {" "}
-          <b>relieving human suffering</b>
-. This is to preserve evidence for both the mine’s and the
+          operations), except for the purpose of <b>saving life</b> or{" "}
+          <b>relieving human suffering</b>. This is to preserve evidence for both the mine’s and the
           Ministry’s investigations. (HSRC, section 1.7.3)
         </Typography.Paragraph>
         <Typography.Paragraph>
@@ -86,10 +65,7 @@ or
           After you complete your submission in MineSpace
         </Typography.Title>
         <Typography.Paragraph>
-          Mines must investigate the reportable incident and prepare an 
-          {' '}
-          <b>investigation report</b>
-          {" "}
+          Mines must investigate the reportable incident and prepare an <b>investigation report</b>{" "}
           to be submitted to an Inspector of Mines (HSRC, sections 1.7.1(4) & 1.7.2).
         </Typography.Paragraph>
         <Typography.Paragraph>
