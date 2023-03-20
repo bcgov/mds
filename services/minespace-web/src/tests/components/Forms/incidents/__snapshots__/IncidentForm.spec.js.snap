@@ -31,59 +31,6 @@ exports[`IncidentForm renders properly 1`] = `
         severity="warning"
         style={Object {}}
       />
-      <Row>
-        <Col
-          span={24}
-        >
-          <Title
-            level={3}
-          >
-            Initial Report
-          </Title>
-          <Paragraph>
-            <Text>
-              Select one or more incident types for this submission.
-            </Text>
-          </Paragraph>
-          <FormItem
-            hasFeedback={false}
-            label="Incident type(s)"
-          >
-            <Field
-              component={[Function]}
-              data={
-                Array [
-                  Object {
-                    "label": "Health and Safety",
-                    "value": "H&S",
-                  },
-                  Object {
-                    "label": "Geotechnical",
-                    "value": "GTC",
-                  },
-                  Object {
-                    "label": "Environmental",
-                    "value": "ENV",
-                  },
-                  Object {
-                    "label": "Spill",
-                    "value": "SPI",
-                  },
-                ]
-              }
-              disabled={true}
-              id="categories"
-              name="categories"
-              placeholder="Select incident type(s)"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-      </Row>
       <br />
       <Row
         gutter={

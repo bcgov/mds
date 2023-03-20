@@ -9,7 +9,6 @@ import "@ant-design/compatible/assets/index.css";
 import { Card, Checkbox, Col, Row, Typography, Divider, Button } from "antd";
 import {
   required,
-  requiredList,
   maxLength,
   email,
   phoneNumber,
@@ -23,7 +22,6 @@ import { normalizePhone } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import {
-  getDropdownIncidentCategoryCodeOptions,
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentFollowupActionOptions,
 } from "@common/selectors/staticContentSelectors";
@@ -44,7 +42,6 @@ const propTypes = {
   inspectorOptions: customPropTypes.groupedDropdownList.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
-  incidentCategoryCodeOptions: customPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -212,28 +209,6 @@ const renderIncidentStatusCallout = (childProps) => {
     />
   );
 };
-
-const renderInitialReport = (incidentCategoryCodeOptions, formDisabled) => (
-  <Row>
-    <Col span={24}>
-      <Typography.Title level={3}>Initial Report</Typography.Title>
-      <Typography.Paragraph>
-        <Typography.Text>Select one or more incident types for this submission.</Typography.Text>
-      </Typography.Paragraph>
-      <Form.Item label="Incident type(s)">
-        <Field
-          id="categories"
-          name="categories"
-          placeholder="Select incident type(s)"
-          component={renderConfig.MULTI_SELECT}
-          validate={[requiredList]}
-          data={incidentCategoryCodeOptions}
-          disabled={formDisabled}
-        />
-      </Form.Item>
-    </Col>
-  </Row>
-);
 
 const renderReporterDetails = (formDisabled) => {
   return (
@@ -787,9 +762,7 @@ const renderUploadInitialNotificationDocuments = (
 
 const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
-    return [
-      <Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />,
-    ];
+    return [<Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />];
   }
   return [
     fields.map((recommendation) => (
@@ -875,7 +848,6 @@ export const IncidentForm = (props) => {
     applicationSubmitted,
     location,
     formValues,
-    incidentCategoryCodeOptions,
     incidentFollowupActionOptions,
     incidentStatusCodeOptions,
     isFinalReviewStage,
@@ -915,7 +887,6 @@ export const IncidentForm = (props) => {
       <Row>
         <Col {...parentColumnProps}>
           {renderIncidentStatusCallout({ incident })}
-          {renderInitialReport(incidentCategoryCodeOptions, formDisabled)}
           <br />
           {renderReporterDetails(formDisabled)}
           <br />
@@ -953,7 +924,6 @@ IncidentForm.propTypes = propTypes;
 IncidentForm.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
   inspectorOptions: getDropdownInspectors(state) || [],
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   incidentFollowupActionOptions: getDropdownIncidentFollowupActionOptions(state),

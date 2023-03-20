@@ -274,8 +274,22 @@ export const getDropdownIncidentStatusCodeOptions = createSelectorWrapper(
 
 export const getDropdownIncidentCategoryCodeOptions = createSelectorWrapper(
   getIncidentCategoryCodeOptions,
-  createDropDownList,
-  ["description", "mine_incident_category_code", "active_ind"]
+  (options) => {
+    return options.map((item) => {
+      return {
+        value: item.mine_incident_category_code,
+        label: item.description,
+        isActive: !item.is_historic,
+        subType: item.parent_mine_incident_category_code ?? null,
+      };
+    });
+  },
+  [
+    "description",
+    "mine_incident_category_code",
+    "is_historic",
+    "parent_mine_incident_category_code",
+  ]
 );
 
 export const getIncidentStatusCodeHash = createSelector(
