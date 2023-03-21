@@ -323,9 +323,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         now = datetime.now(timezone('US/Pacific'))
         month = now.strftime('%m')
         year = now.strftime('%Y')
-        base = 10000
-        total = cls.query.count()
-        return f'{base + total}-{year}-{month}'
+
+        sequence = Sequence('explosives_permit_application_number_sequence')
+        next_value = sequence.next_value()
+        return func.concat(next_value, f'-{year}-{month}')
 
     @classmethod
     def get_next_permit_number(cls):
