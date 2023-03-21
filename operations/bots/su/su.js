@@ -21,8 +21,6 @@ const client = new Discord.Client({
   ],
 });
 
-const PREFIX = "!";
-
 const messagesToText = (messages) => {
   return `${messages.map((message) => `${message.author}: ${message.content}`).join("\n")}`;
 };
@@ -55,29 +53,25 @@ client.on("ready", async () => {
 });
 
 client.on("messageCreate", async (message) => {
-  if (!message.content.startsWith(PREFIX)) return;
+  if (!message.content === "!summarize") return;
 
-  const [command, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
+  console.log("====================================");
+  // Fetch messages since the morning of the current day in PST
+  const now = new Date();
+  now.setHours(now.getHours() - 8); // Convert to PST by subtracting 8 hours
+  const fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const channel = await client.channels.fetch("1085636111377903748");
 
-  if (command === "summarize") {
-    console.log("====================================");
-    // Fetch messages since the morning of the current day in PST
-    const now = new Date();
-    now.setHours(now.getHours() - 8); // Convert to PST by subtracting 8 hours
-    const fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const channel = await client.channels.fetch("1085636111377903748");
-
-    try {
-      const scrumMessages = await fetchMessages(channel, fromDate);
-      const text = messagesToText(scrumMessages);
-      console.log(text);
-      const summary = await generateSummary(text);
-      console.log(summary);
-    } catch (error) {
-      console.error(error);
-    }
-    console.log("====================================");
+  try {
+    const scrumMessages = await fetchMessages(channel, fromDate);
+    const text = messagesToText(scrumMessages);
+    console.log(text);
+    const summary = await generateSummary(text);
+    console.log(summary);
+  } catch (error) {
+    console.error(error);
   }
+  console.log("====================================");
 });
 
 async function fetchMessages(channel, fromDate) {
