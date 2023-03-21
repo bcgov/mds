@@ -1,8 +1,6 @@
-CREATE SEQUENCE IF NOT EXISTS explosives_permit_number_sequence
-OWNED BY explosives_permit.permit_number;
+CREATE SEQUENCE IF NOT EXISTS explosives_permit_number_sequence;
 
-CREATE SEQUENCE IF NOT EXISTS explosives_permit_application_number_sequence
-OWNED BY explosives_permit.application_number;
+CREATE SEQUENCE IF NOT EXISTS explosives_permit_application_number_sequence;
 
 -- find the highest value matching BC-100XX and start the sequence at the next one, or 10000 if no results
 SELECT setval('explosives_permit_number_sequence', 
