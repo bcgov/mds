@@ -91,7 +91,7 @@ async function fetchMessages(channel, fromDate) {
     }
 
     messages.forEach((message) => {
-      if (message.createdAt > fromDate) {
+      if (message.createdAt > fromDate && message.author.username !== "su-bot") {
         scrumMessages.push({
           author: message.author.username,
           content: message.content,
