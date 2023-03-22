@@ -68,6 +68,7 @@ client.on("messageCreate", async (message) => {
     console.log(text);
     const summary = await generateSummary(text);
     console.log(summary);
+    await message.reply(summary);
   } catch (error) {
     console.error(error);
   }
