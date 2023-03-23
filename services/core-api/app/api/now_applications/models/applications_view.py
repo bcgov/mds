@@ -142,7 +142,7 @@ class ApplicationsView(Base):
         agents = [
             contact.party.name for contact in self.contacts if contact.mine_party_appt_type_code == 'AGT'
         ]
-        return agents[0] if agents else None
+        return (', ').join(agents) if agents else None
 
     @party.expression
     def party(self):
@@ -150,7 +150,7 @@ class ApplicationsView(Base):
             Party.party_guid == NOWPartyAppointment.party_guid).where(
             NOWPartyAppointment.now_application_id == self.now_application_id).where(
             NOWPartyAppointment.mine_party_appt_type_code == 'AGT').where(
-            NOWPartyAppointment.deleted_ind == False).label('party')
+            NOWPartyAppointment.deleted_ind == False).limit(1).label('party')
 
     @hybrid_property
     def application_documents(self):
