@@ -155,7 +155,7 @@ const MineTailingsTable = (props) => {
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
               </Button>
-
+{/* FEATURE FLAG: TSF */}
               {!IN_PROD() && (
                 <Button
                   type="primary"
@@ -247,6 +247,7 @@ const MineTailingsTable = (props) => {
         className: "tailings-table",
         align: "center",
         pagination: false,
+        // FEATURE FLAG: TSF
         expandable: IN_PROD() ? null : { expandedRowRender },
         expandRowByClick: true,
         onExpand: (expanded, record) => handleRowExpand(record),

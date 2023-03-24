@@ -27,9 +27,7 @@ import {
 import { fetchInspectors } from "@common/actionCreators/staticContentActionCreator";
 import { clearMineIncident } from "@common/actions/incidentActions";
 import { closeModal, openModal } from "@common/actions/modalActions";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
 import {
@@ -424,9 +422,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-// ENV FLAG FOR MINE INCIDENTS //
 export default withRouter(
-  AuthorizationGuard(Permission.IN_TESTING)(
     connect(mapStateToProps, mapDispatchToProps)(IncidentPage)
-  )
 );

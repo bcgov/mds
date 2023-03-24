@@ -208,6 +208,7 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Application" key="major-mine-application">
                   {majorMineApplicationTabContent}
                 </Tabs.TabPane>
+                {/* FEATURE FLAG: PROJECTS */}
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Documents" key="documents">
                     <DocumentsTab project={this.props.project} />

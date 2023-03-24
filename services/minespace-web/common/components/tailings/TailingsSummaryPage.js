@@ -334,4 +334,5 @@ export default compose(
     destroyOnUnmount: true,
     onSubmit: () => {},
   })
+  // FEATURE FLAG: TSF
 )(withRouter(AuthorizationGuard(Permission.IN_TESTING)(TailingsSummaryPage)));

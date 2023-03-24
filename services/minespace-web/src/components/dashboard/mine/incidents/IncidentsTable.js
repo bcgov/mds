@@ -14,11 +14,9 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
-import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as routes from "@/constants/routes";
-import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -122,9 +120,7 @@ export const IncidentsTable = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => {
-            // ENV FLAG FOR MINE INCIDENTS //
-            if (!IN_PROD()) {
+          onClick={() => {            
               if (record.status_code && record.status_code !== "DFT") {
                 return props.history.push({
                   pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
@@ -140,16 +136,7 @@ export const IncidentsTable = (props) => {
                   record.mine_incident_guid
                 ),
                 state: { current: 1 },
-              });
-            }
-            return props.openModal({
-              props: {
-                title: "View Incident Details",
-                incident: record,
-              },
-              width: "75vw",
-              content: modalConfig.VIEW_INCIDENT,
-            });
+              });            
           }}
         >
           Details

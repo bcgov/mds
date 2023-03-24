@@ -25,12 +25,12 @@ const defaultProps = {
 };
 
 // an item is considered a child of another item when its subType matches the parent's value
-const IncidentCategorySelect = (props) => {
+const IncidentCategoryCheckboxGroup = (props) => {
   const { data, disabled, input, meta } = props;
   const { touched, error = "", initial = [] } = meta;
 
   const [isTouched, setIsTouched] = useState(touched);
-  const showError = isTouched && error;
+  const showError = (isTouched || touched) && error;
   const historicalCategories = data.filter(
     (item) => !item.isActive && initial.includes(item.value)
   );
@@ -123,7 +123,7 @@ const IncidentCategorySelect = (props) => {
   );
 };
 
-IncidentCategorySelect.propTypes = propTypes;
-IncidentCategorySelect.defaultProps = defaultProps;
+IncidentCategoryCheckboxGroup.propTypes = propTypes;
+IncidentCategoryCheckboxGroup.defaultProps = defaultProps;
 
-export default IncidentCategorySelect;
+export default IncidentCategoryCheckboxGroup;

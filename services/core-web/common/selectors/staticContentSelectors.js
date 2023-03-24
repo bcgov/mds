@@ -283,13 +283,7 @@ export const getDropdownIncidentCategoryCodeOptions = createSelectorWrapper(
         subType: item.parent_mine_incident_category_code ?? null,
       };
     });
-  },
-  [
-    "description",
-    "mine_incident_category_code",
-    "is_historic",
-    "parent_mine_incident_category_code",
-  ]
+  }
 );
 
 export const getIncidentStatusCodeHash = createSelector(
