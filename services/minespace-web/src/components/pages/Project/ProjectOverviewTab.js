@@ -110,19 +110,6 @@ export class ProjectOverviewTab extends Component {
       },
     ];
 
-    // TODO: Add in ToC here
-    // if (!IN_PROD()) {
-    //   projectStages.push({
-    //     title: "TOC",
-    //     key: ,
-    //     status: ,
-    //     project_guid: projectGuid,
-    //     payload: ,
-    //     statusHash: ,
-    //     required: this.props.project.mrc_review_required,
-    //   });
-    // }
-
     return (
       <Row gutter={[0, 16]}>
         <Col lg={{ span: 14 }} xl={{ span: 16 }}>

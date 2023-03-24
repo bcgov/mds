@@ -10,10 +10,8 @@ import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 
 const propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
-  openMineIncidentModal: PropTypes.func.isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
   handleDeleteMineIncident: PropTypes.func.isRequired,
-  openViewMineIncidentModal: PropTypes.func.isRequired,
   handleIncidentSearch: PropTypes.func.isRequired,
   handleSortPaginate: PropTypes.func.isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
@@ -42,10 +40,8 @@ export const IncidentsTable = (props) => {
         isLoaded={props.isLoaded}
         incidents={props.incidents}
         followupActions={props.followupActions}
-        openMineIncidentModal={props.openMineIncidentModal}
         handleEditMineIncident={props.handleEditMineIncident}
         handleDeleteMineIncident={props.handleDeleteMineIncident}
-        openViewMineIncidentModal={props.openViewMineIncidentModal}
         params={props.params}
         handleFilterChange={props.handleFilterChange}
         handleIncidentSearch={props.handleIncidentSearch}

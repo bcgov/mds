@@ -8,9 +8,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "@/components/Forms/incidents/IncidentFileUpload";
 import {
@@ -135,7 +133,6 @@ const mapStateToProps = (state) => ({
   incidentFormValues: getFormValues(FORM.ADD_EDIT_INCIDENT)(state) || {},
 });
 
-// ENV FLAG FOR MINE INCIDENTS //
 export default compose(
   connect(mapStateToProps),
   reduxForm({
@@ -148,4 +145,4 @@ export default compose(
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
   })
-)(AuthorizationGuard(Permission.IN_TESTING)(UploadIncidentDocumentForm));
+)(UploadIncidentDocumentForm);

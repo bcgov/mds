@@ -27,9 +27,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import DocumentTable from "@/components/common/DocumentTable";
 import { uploadDateColumn, uploadedByColumn } from "@/components/common/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
@@ -940,7 +938,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-// ENV FLAG FOR MINE INCIDENTS //
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
@@ -950,4 +947,4 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
   })
-)(AuthorizationGuard(Permission.IN_TESTING)(IncidentForm));
+)(IncidentForm);

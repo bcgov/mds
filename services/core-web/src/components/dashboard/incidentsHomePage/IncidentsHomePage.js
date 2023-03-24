@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
-import moment from "moment";
 import queryString from "query-string";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -32,9 +31,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
 import * as router from "@/constants/routes";
 import IncidentsSearch from "./IncidentsSearch";
-import { modalConfig } from "@/components/modalContent/config";
-import * as ModalContent from "@/constants/modalContent";
-import * as FORM from "@/constants/forms";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -147,20 +143,6 @@ const IncidentsHomePage = (props) => {
     });
   };
 
-  const openViewMineIncidentModal = (event, incident) => {
-    event.preventDefault();
-    const title = `${incident.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
-    props.openModal({
-      props: {
-        title,
-        incident,
-      },
-      isViewOnly: true,
-      afterClose: () => {},
-      content: modalConfig.VIEW_MINE_INCIDENT,
-    });
-  };
-
   const handleEditMineIncident = async (values) => {
     await props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values);
     props.closeModal();
@@ -172,59 +154,6 @@ const IncidentsHomePage = (props) => {
 
     await props.fetchIncidents(params);
     setIncidentsLoaded(true);
-  };
-
-  const handleCancelMineIncident = () => {
-    props.destroy(FORM.MINE_INCIDENT);
-  };
-
-  const parseIncidentIntoFormData = (existingIncident) => ({
-    ...existingIncident,
-    reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
-    reported_time: moment(existingIncident.reported_timestamp),
-    incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(existingIncident.incident_timestamp),
-  });
-
-  const openMineIncidentModal = (
-    event,
-    onSubmit,
-    newIncident,
-    existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
-  ) => {
-    event.preventDefault();
-    const title = newIncident
-      ? ModalContent.ADD_INCIDENT(existingIncident.mine_name)
-      : ModalContent.EDIT_INCIDENT(existingIncident.mine_name);
-    props.openModal({
-      props: {
-        newIncident,
-        initialValues: {
-          status_code: "WNS",
-          ...parseIncidentIntoFormData(existingIncident),
-          dangerous_occurrence_subparagraph_ids:
-            existingIncident.dangerous_occurrence_subparagraph_ids.map(String),
-          categories: existingIncident.categories
-            ? existingIncident.categories
-                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                .map((c) => c.mine_incident_category_code)
-            : [],
-        },
-        onSubmit,
-        afterClose: handleCancelMineIncident,
-        title,
-        mineGuid: existingIncident.mine_guid,
-        followupActionOptions: followupActionsOptions,
-        incidentDeterminationOptions: incidentDeterminationOptionsActiveOnly,
-        incidentStatusCodeOptions: incidentStatusCodeOptionsActiveOnly,
-        incidentCategoryCodeOptions,
-        doSubparagraphOptions,
-        inspectors,
-        clearOnSubmit: true,
-      },
-      width: "50vw",
-      content: modalConfig.MINE_INCIDENT,
-    });
   };
 
   const handleFilterChange = async () => {
@@ -272,9 +201,7 @@ const IncidentsHomePage = (props) => {
               handleIncidentSearch={handleIncidentSearch}
               params={params}
               followupActions={followupActions}
-              openMineIncidentModal={openMineIncidentModal}
               handleEditMineIncident={handleEditMineIncident}
-              openViewMineIncidentModal={openViewMineIncidentModal}
               handleDeleteMineIncident={handleDeleteMineIncident}
               handleSortPaginate={handleSortPaginate}
             />

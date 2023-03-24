@@ -80,6 +80,7 @@ export const Tailings = (props) => {
   return (
     <Row>
       <Col span={24}>
+        {/* FEATURE FLAG: TSF */}
         <Row justify={!IN_PROD() ? "space-between" : "start"}>
           <Col>
             <Title level={4}>Tailings Storage Facilities</Title>
@@ -92,6 +93,7 @@ export const Tailings = (props) => {
             </Paragraph>
             <br />
           </Col>
+          {/* FEATURE FLAG: TSF */}
           {!IN_PROD() && (
             <Col>
               <Button type="primary" onClick={navigateToCreateTailings}>
