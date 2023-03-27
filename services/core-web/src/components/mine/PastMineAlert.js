@@ -15,7 +15,7 @@ export const PastMineAlert = (props) => {
   return (
     <div>
       <Alert
-        description={(
+        description={
           <Row>
             <Col xs={24} md={18}>
               <>
@@ -33,18 +33,12 @@ export const PastMineAlert = (props) => {
                 <p>
                   {props.message}
                   <br />
-                  For more information contact: 
-                  {' '}
-                  {props.contact_name}
-                  {' '}
-- 
-                  {' '}
-                  {props.contact_phone}
+                  For more information contact: {props.contact_name} - {props.contact_phone}
                 </p>
               </>
             </Col>
           </Row>
-        )}
+        }
         type="warning"
         showIcon
         style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}

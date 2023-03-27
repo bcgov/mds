@@ -122,7 +122,8 @@ const columns = (type) => {
                     record.handleDocumentDelete,
                     record.type,
                     record.categoriesToShow
-                  )}
+                  )
+                }
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
               </Button>

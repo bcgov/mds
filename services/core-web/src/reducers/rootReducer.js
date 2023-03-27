@@ -51,11 +51,11 @@ import {
   noticeOfDepartureReducer,
   activityReducer,
   tailingsReducer,
-  damReducer
+  damReducer,
 } from "@common/reducers";
 import * as reducerTypes from "@common/constants/reducerTypes";
 import { createReducer } from "@common/utils/helpers";
-import mineAlertReducer  from "./mineAlertReducer";
+import mineAlertReducer from "./mineAlertReducer";
 import networkReducer from "./networkReducer";
 import documentReducer from "./documentReducer";
 

@@ -124,9 +124,10 @@ const MineIncidents = (props) => {
           <AddButton
             onClick={() =>
               props.history.push({
-                    pathname: ROUTES.CREATE_MINE_INCIDENT.dynamicRoute(mineGuid),
-                    search: `mine_name=${mines[mineGuid]?.mine_name}`,
-                  })}
+                pathname: ROUTES.CREATE_MINE_INCIDENT.dynamicRoute(mineGuid),
+                search: `mine_name=${mines[mineGuid]?.mine_name}`,
+              })
+            }
           >
             Record a Mine Incident
           </AddButton>

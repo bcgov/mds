@@ -155,7 +155,7 @@ const MineTailingsTable = (props) => {
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
               </Button>
-{/* FEATURE FLAG: TSF */}
+              {/* FEATURE FLAG: TSF */}
               {!IN_PROD() && (
                 <Button
                   type="primary"
@@ -165,7 +165,7 @@ const MineTailingsTable = (props) => {
                     props.history.push(
                       MINE_TAILINGS_DETAILS.dynamicRoute(
                         record.mine_tailings_storage_facility_guid,
-                        record.mine_guid,
+                        record.mine_guid
                       )
                     )
                   }
