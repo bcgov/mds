@@ -334,6 +334,6 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": self.mine_table.mine_name,
                 "mine_no": self.mine_table.mine_no,
             },
-            "incident_link": f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+            "incident_link": f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
         EmailService.send_template_email(subject, recipients, body, context, cc=cc)
