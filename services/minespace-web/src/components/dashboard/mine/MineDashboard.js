@@ -66,24 +66,22 @@ export class MineDashboard extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { activeTab, id } = nextProps.match.params;
-    if (activeTab !== this.state.activeTab) {
-      this.setState({ activeTab: this.extractActiveTab(activeTab) });
+    const actualActiveTab = this.extractActualTab(activeTab);
+    if (activeTab !== this.state.activeTab || !this.state.isLoaded) {
+      this.setState({ activeTab: actualActiveTab });
     }
     if (!nextProps.staticContentLoadingIsComplete) {
       this.loadStaticContent();
     }
 
-    if (
-      nextProps.match.params.id !== this.props.match.params.id ||
-      (this.extractActiveTab(activeTab) === "nods" && !this.state.isLoaded)
-    ) {
-      this.loadMine(id, this.extractActiveTab(activeTab));
+    if (nextProps.match.params.id !== this.props.match.params.id || !this.state.isLoaded) {
+      this.loadMine(id, actualActiveTab);
     }
   }
 
-  extractActiveTab = (str) => {
-    const delimiterIndex = str.indexOf("?");
-    return delimiterIndex !== -1 ? str.substring(0, delimiterIndex) : str;
+  extractActualTab = (url) => {
+    const delimiterIndex = url.indexOf("?");
+    return delimiterIndex !== -1 ? url.substring(0, delimiterIndex) : url;
   };
 
   loadStaticContent = () => {

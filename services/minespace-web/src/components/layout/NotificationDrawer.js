@@ -168,7 +168,7 @@ const NotificationDrawer = (props) => {
   const activityClickHandler = async (notification) => {
     await handleMarkAsRead(notification.notification_guid);
     handleCollapse();
-    const routeSpecifics = await navigationHandler(notification);
+    const routeSpecifics = navigationHandler(notification);
     const route = { pathname: routeSpecifics?.route, state: { ...(routeSpecifics?.state ?? {}) } };
     history.push(route);
   };
