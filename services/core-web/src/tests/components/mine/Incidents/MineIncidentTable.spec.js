@@ -8,8 +8,6 @@ const dispatchProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleEditMineIncident = jest.fn();
-  dispatchProps.openMineIncidentModal = jest.fn();
-  dispatchProps.openViewMineIncidentModal = jest.fn();
   dispatchProps.handleDeleteMineIncident = jest.fn();
 };
 

@@ -152,6 +152,7 @@ export const TailingsTable = (props) => {
         return (
           <div title="" align="right">
             <AuthorizationWrapper>
+              {/* FEATURE FLAG: TSF */}
               {!IN_PROD() ? (
                 <Button type="link" onClick={(event) => editTailings(event, record)}>
                   <img src={EDIT_PENCIL} alt="Edit" />
@@ -229,6 +230,7 @@ export const TailingsTable = (props) => {
       size="small"
       pagination={false}
       columns={columns}
+      // FEATURE FLAG: TSF
       expandable={!IN_PROD() ? { expandedRowRender } : null}
       expandRowByClick
       onExpand={(expanded, record) => handleRowExpand(record)}
