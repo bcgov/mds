@@ -10,6 +10,7 @@ function mockFunction() {
   const original = require.requireActual("react-router-dom");
   return {
     ...original,
+    useParams: jest.fn().mockReturnValue({ id: "abcde1234567", activeTab: "nods?nod=xyz1234567" }),
     useLocation: jest.fn().mockReturnValue({
       pathname: "/mine/notice-of-departure",
       search: "",
