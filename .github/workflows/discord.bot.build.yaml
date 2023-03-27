@@ -6,7 +6,7 @@ on:
     branches:
       - develop
     paths:
-      - opertaions/bots/su/**
+      - operations/bots/su/**
 
 env:
   INITIAL_TAG: latest

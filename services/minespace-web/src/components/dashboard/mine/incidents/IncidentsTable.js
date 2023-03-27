@@ -11,14 +11,12 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
-  getIncidentCategoryCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
-import * as Strings from "@/constants/strings";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,7 +32,6 @@ const propTypes = {
   }).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string).isRequired,
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -80,19 +77,6 @@ export const IncidentsTable = (props) => {
       sortField: "mine_incident_report_no",
       sorter: true,
       render: (text) => <span title="Incident No.">{text}</span>,
-    },
-    {
-      title: "Incident Type",
-      dataIndex: "categories",
-      key: "categories",
-      sorter: false,
-      render: (categories) => (
-        <div title="Incident Type">
-          {(categories.length > 0 &&
-            categories.map((cat) => [<span>{cat.description}</span>, <br />])) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
     },
     {
       title: "Occurred On",
@@ -203,7 +187,6 @@ IncidentsTable.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   incidentDeterminationHash: getIncidentDeterminationHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
-  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

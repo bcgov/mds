@@ -21,8 +21,6 @@ const client = new Discord.Client({
   ],
 });
 
-const PREFIX = "!";
-
 const messagesToText = (messages) => {
   return `${messages.map((message) => `${message.author}: ${message.content}`).join("\n")}`;
 };
@@ -51,30 +49,62 @@ const generateSummary = async (text) => {
 };
 
 client.on("ready", async () => {
-  console.log(`${client.user.tag} has logged in.`);
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on("messageCreate", async (message) => {
-  if (!message.content.startsWith(PREFIX)) return;
+  if (!message.content === "!summarize") return;
 
-  const [command, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
+  console.log("====================================");
+  // Fetch messages since the morning of the current day in PST
+  const now = new Date();
+  now.setHours(now.getHours() - 8); // Convert to PST by subtracting 8 hours
+  const fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const channel = await client.channels.fetch("1085636111377903748");
 
-  if (command === "summarize") {
-    console.log("====================================");
-    const now = new Date();
-    const morning = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-    console.log(`Run time: ${morning}`);
-    const messages = await message.channel.messages.fetch({ after: morning.getTime() });
-    const scrumMessages = messages.map((msg) => ({
-      author: msg.author.username,
-      content: msg.content,
-    }));
+  try {
+    const scrumMessages = await fetchMessages(channel, fromDate);
     const text = messagesToText(scrumMessages);
     console.log(text);
     const summary = await generateSummary(text);
+    console.log(summary);
     await message.reply(summary);
-    console.log("====================================");
+  } catch (error) {
+    console.error(error);
   }
+  console.log("====================================");
 });
+
+async function fetchMessages(channel, fromDate) {
+  let shouldFetch = true;
+  let beforeMessage = undefined;
+  const scrumMessages = [];
+  while (shouldFetch) {
+    const options = { limit: 100 };
+    if (beforeMessage) {
+      options.before = beforeMessage;
+    }
+
+    const messages = await channel.messages.fetch(options);
+    if (!messages.size) {
+      shouldFetch = false;
+      break;
+    }
+
+    messages.forEach((message) => {
+      if (message.createdAt > fromDate && message.author.username !== "su-bot") {
+        scrumMessages.push({
+          author: message.author.username,
+          content: message.content,
+        });
+      } else {
+        shouldFetch = false;
+      }
+    });
+
+    beforeMessage = messages.last();
+  }
+  return scrumMessages;
+}
 
 client.login(process.env.DISCORD_TOKEN);

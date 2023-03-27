@@ -434,7 +434,7 @@ MineIncidentTable.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   incidentDeterminationHash: getIncidentDeterminationHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
-  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
+  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state, false),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
 });
