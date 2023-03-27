@@ -160,7 +160,7 @@ export const NoticeOfDeparture = (props) => {
   };
 
   useEffect(() => {
-    const nod = new URLSearchParams(location.search).get("nod");
+    const nod = new URLSearchParams(window.location.href.split("?")[1]).get("nod");
     if (nod) {
       (async () => {
         window.history.replaceState(

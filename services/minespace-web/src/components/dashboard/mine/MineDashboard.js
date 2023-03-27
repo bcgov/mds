@@ -48,7 +48,15 @@ const defaultProps = {
 const initialTab = "overview";
 
 export class MineDashboard extends Component {
-  state = { isLoaded: false, activeTab: initialTab, mineNotFound: false };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoaded: false,
+      activeTab: initialTab,
+      mineNotFound: false,
+    };
+  }
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
@@ -59,16 +67,24 @@ export class MineDashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const { activeTab, id } = nextProps.match.params;
     if (activeTab !== this.state.activeTab) {
-      this.setState({ activeTab });
+      this.setState({ activeTab: this.extractActiveTab(activeTab) });
     }
     if (!nextProps.staticContentLoadingIsComplete) {
       this.loadStaticContent();
     }
 
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.loadMine(id, activeTab);
+    if (
+      nextProps.match.params.id !== this.props.match.params.id ||
+      (this.extractActiveTab(activeTab) === "nods" && !this.state.isLoaded)
+    ) {
+      this.loadMine(id, this.extractActiveTab(activeTab));
     }
   }
+
+  extractActiveTab = (str) => {
+    const delimiterIndex = str.indexOf("?");
+    return delimiterIndex !== -1 ? str.substring(0, delimiterIndex) : str;
+  };
 
   loadStaticContent = () => {
     const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
@@ -130,7 +146,9 @@ export class MineDashboard extends Component {
                   {mine.mine_name || Strings.UNKNOWN}
                 </Typography.Title>
                 <Typography.Title level={4} style={{ margin: 0 }}>
-                  Mine Number: {mine.mine_no || Strings.UNKNOWN}
+                  Mine Number: 
+                  {' '}
+                  {mine.mine_no || Strings.UNKNOWN}
                 </Typography.Title>
               </Col>
             </Row>
