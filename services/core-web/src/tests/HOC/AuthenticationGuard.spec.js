@@ -6,30 +6,30 @@ import Loading from "@/components/common/Loading";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const getJestMock = (mockInitialized, mockAuthenticated, mockClient_roles) => {
-  jest.mock('@react-keycloak/web', () => ({
-  useKeycloak: () => ({
-    keycloak: {
-      authenticated: mockAuthenticated,
-      login: jest.fn(),
-      tokenParsed: {
-        client_roles: mockClient_roles
-      }
-    },
-    initialized: mockInitialized,
-  })
-}));
-}
-jest.mock('@react-keycloak/web', () => ({
+  jest.mock("@react-keycloak/web", () => ({
+    useKeycloak: () => ({
+      keycloak: {
+        authenticated: mockAuthenticated,
+        login: jest.fn(),
+        tokenParsed: {
+          client_roles: mockClient_roles,
+        },
+      },
+      initialized: mockInitialized,
+    }),
+  }));
+};
+jest.mock("@react-keycloak/web", () => ({
   useKeycloak: () => ({
     keycloak: {
       authenticated: true,
       login: jest.fn(),
       tokenParsed: {
-        client_roles: []
-      }
+        client_roles: [],
+      },
     },
     initialized: true,
-  })
+  }),
 }));
 
 const Component = AuthenticationGuard(() => <div>Test</div>);
@@ -54,7 +54,7 @@ beforeEach(() => {
 
 describe("AuthenticationGuard", () => {
   it("should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`", () => {
-    getJestMock(true, true, ['role_view'])
+    getJestMock(true, true, ["role_view"]);
     const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.html()).toEqual("<div>Test</div>");
@@ -63,7 +63,7 @@ describe("AuthenticationGuard", () => {
   });
 
   it("should render the `NullScreen` if `isAuthenticated` && `userAccessData !== role_view`", () => {
-    getJestMock(true, true, [])
+    getJestMock(true, true, []);
     reducerProps.userAccessData = [];
     const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(wrapper.find(NullScreen).length).toEqual(1);

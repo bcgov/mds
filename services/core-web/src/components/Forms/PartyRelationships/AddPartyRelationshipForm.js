@@ -211,7 +211,7 @@ export class AddPartyRelationshipForm extends Component {
     }
 
     const handleSubmit = (evt) => {
-      if(this.props.createPartyOnly) {
+      if (this.props.createPartyOnly) {
         // Override redux-form submit to allow submitting the selected party
         // instead of the form values
         evt.preventDefault();
@@ -220,7 +220,7 @@ export class AddPartyRelationshipForm extends Component {
         // Let redux-form handle submission
         this.props.handleSubmit(evt);
       }
-    }
+    };
 
     return (
       <Form layout="vertical" onSubmit={handleSubmit}>
@@ -231,80 +231,82 @@ export class AddPartyRelationshipForm extends Component {
                 id="party_guid"
                 name="party_guid"
                 validate={[required]}
-                onSelect={val => {
-                  this.setState({selectedParty: val.originalValue});
+                onSelect={(val) => {
+                  this.setState({ selectedParty: val.originalValue });
                 }}
                 allowAddingParties
               />
             </Form.Item>
           </Col>
         </Row>
-        
-        {!this.props.createPartyOnly && (<>
-        <Row gutter={16}>
-          <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="start_date"
-                name="start_date"
-                label="Start Date"
-                placeholder="yyyy-mm-dd"
-                component={renderConfig.DATE}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="end_date"
-                name="end_date"
-                label="End Date"
-                placeholder="yyyy-mm-dd"
-                component={renderConfig.DATE}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col md={12} xs={24}>
-            {this.state.skipDateValidation && (
-              <Form.Item>
-                <Field
-                  id="end_current"
-                  name="end_current"
-                  label={`Would you like to set the end date of ${
-                    this.state.currentAppointment?.party?.name
-                  } to ${moment(this.props.start_date)
-                    .subtract(1, "days")
-                    .format("MMMM Do YYYY")}`}
-                  type="checkbox"
-                  component={renderConfig.CHECKBOX}
-                />
-              </Form.Item>
-            )}
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={24}>
-            {options}
-            {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
-              <div>
-                <h4>Mine Manager Appointment Letter</h4>
+
+        {!this.props.createPartyOnly && (
+          <>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
                 <Form.Item>
                   <Field
-                    id="PartyRelationshipFileUpload"
-                    name="PartyRelationshipFileUpload"
-                    onFileLoad={this.props.onFileLoad}
-                    onRemoveFile={this.props.onRemoveFile}
-                    mineGuid={this.props.mine.mine_guid}
-                    component={PartyRelationshipFileUpload}
+                    id="start_date"
+                    name="start_date"
+                    label="Start Date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
                   />
                 </Form.Item>
-              </div>
-            )}
-          </Col>
-        </Row>
-        </>)}
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="end_date"
+                    name="end_date"
+                    label="End Date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                {this.state.skipDateValidation && (
+                  <Form.Item>
+                    <Field
+                      id="end_current"
+                      name="end_current"
+                      label={`Would you like to set the end date of ${
+                        this.state.currentAppointment?.party?.name
+                      } to ${moment(this.props.start_date)
+                        .subtract(1, "days")
+                        .format("MMMM Do YYYY")}`}
+                      type="checkbox"
+                      component={renderConfig.CHECKBOX}
+                    />
+                  </Form.Item>
+                )}
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                {options}
+                {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
+                  <div>
+                    <h4>Mine Manager Appointment Letter</h4>
+                    <Form.Item>
+                      <Field
+                        id="PartyRelationshipFileUpload"
+                        name="PartyRelationshipFileUpload"
+                        onFileLoad={this.props.onFileLoad}
+                        onRemoveFile={this.props.onRemoveFile}
+                        mineGuid={this.props.mine.mine_guid}
+                        component={PartyRelationshipFileUpload}
+                      />
+                    </Form.Item>
+                  </div>
+                )}
+              </Col>
+            </Row>
+          </>
+        )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

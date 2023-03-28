@@ -42,9 +42,9 @@ export const AddBondModal = (props) => {
       : props.onSubmit(values, props.permitGuid);
   const initialPartyValue = props.editBond
     ? {
-      value: props.bond.payer_party_guid,
-      label: props.bond.payer.name,
-    }
+        value: props.bond.payer_party_guid,
+        label: props.bond.payer.name,
+      }
     : "";
   const projectIdChanged = props.bond.project_id !== props.formValues.project_id;
   return (

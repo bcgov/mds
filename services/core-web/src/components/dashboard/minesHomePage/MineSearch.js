@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleReset: () => { },
+  handleReset: () => {},
   mineNameList: [],
   isMapView: false,
 };

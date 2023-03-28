@@ -139,7 +139,7 @@ export class Variances extends Component {
   };
 
   currentComplianceCodes = this.props.complianceCodes.filter(
-      (code) => !code.label.includes('Repealed')
+    (code) => !code.label.includes("Repealed")
   );
 
   openCreateVarianceModal(event) {

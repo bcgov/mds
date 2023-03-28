@@ -17,10 +17,9 @@ const setupDispatchProps = () => {
 const setupReducerProps = () => {
   reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.importNowSubmissionDocumentsJob = {};
-  reducerProps.progress = 'REV';
+  reducerProps.progress = "REV";
   reducerProps.type = "REF";
   reducerProps.isTableHeaderView = false;
-  
 };
 
 beforeEach(() => {

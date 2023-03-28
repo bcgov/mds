@@ -188,14 +188,14 @@ const NotificationDrawer = (props) => {
         onClick={handleCollapse}
         type="text"
         className={`notification-button ${open ? "notification-button-open" : ""}`}
-        icon={(
+        icon={
           <Badge
             className="notification-badge"
             count={props.activities?.filter((act) => !act?.notification_read).length || 0}
           >
             <BellOutlined className="notification-icon" />
           </Badge>
-        )}
+        }
       />
       <div className={`notification-drawer ${open ? "notification-drawer-open" : ""}`}>
         <Tabs
@@ -205,11 +205,11 @@ const NotificationDrawer = (props) => {
         >
           <Tabs.TabPane
             className="notification-tab-pane"
-            tab={(
+            tab={
               <Typography.Title level={5} className="notification-tab-header">
                 Mine Activity
               </Typography.Title>
-            )}
+            }
             key="1"
           >
             <div className="notification-button-all-container">

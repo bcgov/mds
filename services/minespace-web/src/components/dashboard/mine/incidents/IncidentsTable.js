@@ -120,23 +120,23 @@ export const IncidentsTable = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => {            
-              if (record.status_code && record.status_code !== "DFT") {
-                return props.history.push({
-                  pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
-                    record.mine_guid,
-                    record.mine_incident_guid
-                  ),
-                  state: { current: 2 },
-                });
-              }
+          onClick={() => {
+            if (record.status_code && record.status_code !== "DFT") {
               return props.history.push({
-                pathname: routes.EDIT_MINE_INCIDENT.dynamicRoute(
+                pathname: routes.REVIEW_MINE_INCIDENT.dynamicRoute(
                   record.mine_guid,
                   record.mine_incident_guid
                 ),
-                state: { current: 1 },
-              });            
+                state: { current: 2 },
+              });
+            }
+            return props.history.push({
+              pathname: routes.EDIT_MINE_INCIDENT.dynamicRoute(
+                record.mine_guid,
+                record.mine_incident_guid
+              ),
+              state: { current: 1 },
+            });
           }}
         >
           Details

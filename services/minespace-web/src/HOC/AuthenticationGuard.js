@@ -29,7 +29,10 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     const { keycloak, initialized } = useKeycloak();
 
     // get guid from pathname - props.location is not available at this level thus cannot directly access props.match.params.id
-    const guid = window.location.pathname.split("/mines/").pop().split("/")[0];
+    const guid = window.location.pathname
+      .split("/mines/")
+      .pop()
+      .split("/")[0];
 
     const { redirectingFromCore } = queryString.parse(window.location.search);
     const redirectUrl = `${ENV.WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
