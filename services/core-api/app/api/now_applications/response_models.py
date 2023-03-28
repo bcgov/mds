@@ -618,9 +618,9 @@ NOW_APPLICATION_MODEL = api.model(
         'other_information':
         fields.String,
         'unreclaimed_disturbance_previous_year':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'disturbance_planned_reclamation':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'original_start_date':
         Date,
         'site_property':
