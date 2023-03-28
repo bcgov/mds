@@ -72,12 +72,12 @@ const NoticeOfDepartureCallout = (props) => {
   return (
     <Callout
       style={{ marginTop: 0 }}
-      message={(
+      message={
         <div className="nod-callout">
           <h4>{title}</h4>
           <p>{message}</p>
         </div>
-      )}
+      }
       severity={severity}
     />
   );

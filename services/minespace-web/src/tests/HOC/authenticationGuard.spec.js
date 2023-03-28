@@ -3,20 +3,19 @@ import { shallow } from "enzyme";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useEffect: (cb) => cb() // Run useEffect hooks manually as they do not work with shallow enzyme rendering
+jest.mock("react", () => ({
+  ...jest.requireActual("react"),
+  useEffect: (cb) => cb(), // Run useEffect hooks manually as they do not work with shallow enzyme rendering
 }));
 
-jest.mock('@react-keycloak/web', () => ({
+jest.mock("@react-keycloak/web", () => ({
   useKeycloak: () => ({
     keycloak: {
-      authenticated: false
+      authenticated: false,
     },
     initialized: true,
-  })
+  }),
 }));
-
 
 const Component = AuthenticationGuard()(() => <div>Test</div>);
 const dispatchProps = {};
@@ -31,7 +30,6 @@ const setupprops = () => {
   props.isAuthenticated = true;
   props.fromCore = false;
 };
-
 
 beforeEach(() => {
   setupDispatchProps();

@@ -13,9 +13,9 @@ const initialState = {
 };
 
 const getUserName = (tokenParsed) => {
-  const {bceid_username} = tokenParsed;
+  const { bceid_username } = tokenParsed;
   if (bceid_username && bceid_username.length > 0) {
-    return `${bceid_username  }@bceid`;
+    return `${bceid_username}@bceid`;
   }
   if (tokenParsed.idir_username) {
     return tokenParsed.idir_username;
