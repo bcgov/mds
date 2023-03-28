@@ -92,13 +92,13 @@ services:
       - ./services/core-api:/app
       - core_api_logs:/var/log/core-api
     depends_on:
-      # - flyway
+      - flyway
+      - nris_backend
+      - document_manager_backend
+      - tusd
+      - filesystem_provider
       - postgres
       - redis
-      # - nris_backend
-      # - document_manager_backend
-      # - tusd
-      # - filesystem_provider
       - jaeger
       - otelcollector
     healthcheck:
