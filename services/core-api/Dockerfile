@@ -29,4 +29,5 @@ RUN mkdir -p /tmp/celery
 
 # Run the server
 EXPOSE 5000
-CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]
+
+CMD ["flask", "run"]

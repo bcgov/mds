@@ -8,11 +8,6 @@ processors:
   batch:
 
 exporters:
-  file:
-    path: ./traces.json
-
-  logging:
-    verbosity: detailed
   # Data sources: traces
   # https://github.com/open-telemetry/opentelemetry-collector/blob/main/config/configtls/README.md
   jaeger:

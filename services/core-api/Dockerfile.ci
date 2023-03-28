@@ -29,4 +29,5 @@ USER $USERNAME
 
 # Run the server
 EXPOSE 5000
-CMD [ "flask", "run"]
+# Works only with no reload. 
+CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]
