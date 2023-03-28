@@ -13,7 +13,7 @@ import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelect
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
@@ -46,6 +46,7 @@ export const NoticeOfDeparture = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const location = useLocation();
+  const url = useParams();
 
   const handleFetchPermits = async () => {
     await props.fetchPermits(mine.mine_guid);
@@ -160,7 +161,7 @@ export const NoticeOfDeparture = (props) => {
   };
 
   useEffect(() => {
-    const nod = new URLSearchParams(location.search).get("nod");
+    const nod = new URLSearchParams(url.activeTab.split("?")[1]).get("nod");
     if (nod) {
       (async () => {
         window.history.replaceState(
