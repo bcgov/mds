@@ -43,7 +43,7 @@ all:
 
 be:
 	@echo "+\n++ Building only backend ...\n+"
-	@docker-compose $(DC_FILE) build --force-rm --no-cache --parallel backend
+	# @docker-compose $(DC_FILE) build --force-rm --no-cache --parallel backend
 	@docker-compose $(DC_FILE) up -d --build backend
 
 testbe:

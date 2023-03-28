@@ -1,0 +1,46 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+exporters:
+  file:
+    path: ./traces.json
+
+  logging:
+    verbosity: detailed
+  # Data sources: traces
+  # https://github.com/open-telemetry/opentelemetry-collector/blob/main/config/configtls/README.md
+  jaeger:
+    endpoint: jaeger:14250
+    tls:
+      insecure: true
+
+extensions:
+  health_check:
+  pprof:
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+service:
+  telemetry:
+    logs:
+      level: "debug"
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [jaeger, logging]
+    # metrics:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [jaeger]
+    # logs:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [jaeger]

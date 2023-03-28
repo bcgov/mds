@@ -7,7 +7,7 @@ RUN apt-get update
 
 # Install the requirements
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . .
 
@@ -26,6 +26,7 @@ USER $USERNAME
 
 RUN mkdir -p /tmp/celery
 
+
 # Run the server
 EXPOSE 5000
-CMD [ "flask", "run"]
+CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]

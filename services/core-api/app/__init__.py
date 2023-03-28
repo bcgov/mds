@@ -39,9 +39,22 @@ from app.extensions import db, jwtv2, jwtv1, jwt, api as root_api_namespace, cac
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
+# from opentelemetry import trace
+# from opentelemetry.sdk.resources import Resource
+# from opentelemetry.sdk.trace import TracerProvider
+# from opentelemetry.sdk.trace.export import BatchSpanProcessor
+# from opentelemetry.sdk.trace.export import ConsoleSpanExporter
+
+
+# provider = TracerProvider()
+# processor = BatchSpanProcessor(ConsoleSpanExporter())
+# provider.add_span_processor(processor)
+# trace.set_tracer_provider(provider)
+# tracer = trace.get_tracer(__name__)
 
 
 def create_app(test_config=None):
+    
     """Create and configure an instance of the Flask application."""
     if test_config is None:
         dictConfig(Config.LOGGING_DICT_CONFIG)
