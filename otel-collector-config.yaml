@@ -8,12 +8,10 @@ processors:
   batch:
 
 exporters:
-  # Data sources: traces
-  # https://github.com/open-telemetry/opentelemetry-collector/blob/main/config/configtls/README.md
   jaeger:
     endpoint: jaeger:14250
     tls:
-      insecure: true
+      insecure: true # https://github.com/open-telemetry/opentelemetry-collector/blob/main/config/configtls/README.md
 
 extensions:
   health_check:
@@ -30,12 +28,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [jaeger, logging]
-    # metrics:
-    #   receivers: [otlp]
-    #   processors: [batch]
-    #   exporters: [jaeger]
-    # logs:
-    #   receivers: [otlp]
-    #   processors: [batch]
-    #   exporters: [jaeger]
+      exporters: [jaeger]
