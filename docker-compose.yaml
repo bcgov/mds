@@ -1,6 +1,35 @@
 version: "3"
 
 services:
+
+  ####################### Open Telemetry #######################
+  otelcollector:
+    image: otel/opentelemetry-collector
+    command: [--config=/etc/otel-collector-config.yaml]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - 1888:1888 # pprof extension
+      - 8888:8888 # Prometheus metrics exposed by the collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver
+      - 55679:55679 # zpages extension
+
+  ####################### Jaeger Tracing #######################
+
+  jaeger: 
+    image: "jaegertracing/all-in-one:latest"
+    container_name: mds_jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    # Port Details: https://www.jaegertracing.io/docs/1.43/getting-started/#all-in-one
+    # Ports : https://www.jaegertracing.io/docs/1.43/monitoring/#metrics
+    ports:
+      - 16686:16686
+      - 14250:14250
+
   ####################### Postgres Definition #######################
   postgres:
     restart: always
@@ -65,13 +94,14 @@ services:
       - core_api_logs:/var/log/core-api
     depends_on:
       - flyway
-      - redis
       - nris_backend
       - document_manager_backend
-      - core_api_celery
       - tusd
       - filesystem_provider
-      - docgen-api
+      - postgres
+      - redis
+      - jaeger
+      - otelcollector
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
