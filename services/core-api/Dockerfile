@@ -26,6 +26,7 @@ USER $USERNAME
 
 RUN mkdir -p /tmp/celery
 
+
 # Run the server
 EXPOSE 5000
-CMD [ "flask", "run"]
+CMD ["flask", "run"]
