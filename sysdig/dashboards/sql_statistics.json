@@ -1,0 +1,855 @@
+{
+  "dashboard": {
+    "teamId": 35635,
+    "description": "Statistics for production environment",
+    "eventDisplaySettings": {
+      "enabled": true,
+      "queryParams": {
+        "severities": [],
+        "alertStatuses": [],
+        "categories": [],
+        "filter": null,
+        "teamScope": false
+      }
+    },
+    "id": 391840,
+    "layout": [
+      {
+        "panelId": 5,
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 6,
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 7,
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 8,
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 9,
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 10,
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 11,
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 12,
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 4
+      }
+    ],
+    "name": "SQL Statistics",
+    "panels": [
+      {
+        "id": 5,
+        "type": "basicTimechart",
+        "name": "Number of Requests vs Errors",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_request_count",
+                "timeAggregation": "timeAvg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_error_count",
+                "timeAggregation": "timeAvg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "type": "basicTimechart",
+        "name": "Average and Max Request Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_request_time",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_request_time",
+                "timeAggregation": "max",
+                "groupAggregation": "max",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "ns",
+            "maxInputFormat": "ns",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": "advancedToplist",
+        "name": "Top Queries by Number of Requests",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_query_request_count{$__scope}[$__range])) by (net_sql_query))",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": null,
+              "timeSeriesDisplayNameTemplate": "{{net_sql_query}} ",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "type": "advancedToplist",
+        "name": "Top Tables by Number of Requests",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_table_request_count{$__scope}[$__range])) by (net_sql_table))",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": null,
+              "timeSeriesDisplayNameTemplate": "{{net_sql_table}} ",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "type": "basicToplist",
+        "name": "Slowest Queries by average request time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_query_request_time",
+                "timeAggregation": "avg",
+                "groupAggregation": "max",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "entireRange",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.sql.query",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.sql.query",
+                    "id": "net.sql.query",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "sql query",
+                    "description": "sql full query",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.sql.SqlQuery",
+                    "publicId": "net_sql_query",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": null,
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": false,
+        "applySegmentationToAll": false
+      },
+      {
+        "id": 10,
+        "type": "basicToplist",
+        "name": "Slowest Tables by average request time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_table_request_time",
+                "timeAggregation": "avg",
+                "groupAggregation": "max",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "entireRange",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.sql.table",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.sql.table",
+                    "id": "net.sql.table",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "sql table",
+                    "description": "sql query table",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.sql.SqlTable",
+                    "publicId": "net_sql_table",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": null,
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": false,
+        "applySegmentationToAll": false
+      },
+      {
+        "id": 11,
+        "type": "basicTimechart",
+        "name": "Request Types Over Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_sql_querytype_request_count",
+                "timeAggregation": "timeAvg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.sql.query.type",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.sql.query.type",
+                    "id": "net.sql.query.type",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "sql query type",
+                    "description": "sql query type (SELECT, INSERT?)",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.sql.SqlQueryType",
+                    "publicId": "net_sql_querytype",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": null,
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "type": "advancedToplist",
+        "name": "Slowest Queries by sum of all request times",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_query_request_time{$__scope}[$__range])) by (net_sql_query))",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": null,
+              "timeSeriesDisplayNameTemplate": "{{net_sql_query}} ",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ]
+      }
+    ],
+    "schema": 3,
+    "scopeExpressionList": [
+      {
+        "operand": "kubernetes.namespace.name",
+        "operator": "in",
+        "displayName": "",
+        "value": ["4c2ba9-prod"],
+        "descriptor": {
+          "documentId": "kubernetes.namespace.name",
+          "id": "kubernetes.namespace.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.namespace.name",
+          "description": "kubernetes.namespace.name",
+          "namespaces": ["kubernetes.namespace"],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_namespace_name",
+          "segment": false,
+          "documentTimestamp": 1680220716924,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      },
+      {
+        "operand": "kubernetes.workload.name",
+        "operator": "in",
+        "displayName": "",
+        "value": ["postgres13"],
+        "descriptor": {
+          "documentId": "kubernetes.workload.name",
+          "id": "kubernetes.workload.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.workload.name",
+          "description": "kubernetes.workload.name",
+          "namespaces": [
+            "cloudProvider",
+            "host.container",
+            "ecs",
+            "host.fs",
+            "host.file",
+            "host",
+            "kubernetes",
+            "kubernetes.cluster",
+            "kubernetes.daemonSet",
+            "kubernetes.deployment",
+            "kubernetes.job",
+            "kubernetes.namespace",
+            "kubernetes.node",
+            "kubernetes.pod",
+            "kubernetes.replicaSet",
+            "kubernetes.service",
+            "kubernetes.statefulSet",
+            "kubernetes.resourcequota",
+            "kubernetes.hpa",
+            "link",
+            "mesos",
+            "host.net",
+            "host.process",
+            "prometheus",
+            "swarm",
+            "prombeacon"
+          ],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_workload_name",
+          "segment": false,
+          "documentTimestamp": 1680220716924,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      }
+    ],
+    "version": 32,
+    "sharingSettings": [
+      {
+        "role": "ROLE_RESOURCE_EDIT",
+        "member": {
+          "type": "TEAM",
+          "id": 35635,
+          "name": "4c2ba9-team",
+          "teamTheme": "#73A1F7"
+        }
+      }
+    ]
+  }
+}
