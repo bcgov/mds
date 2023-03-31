@@ -1,0 +1,983 @@
+{
+  "dashboard": {
+    "id": 393141,
+    "teamId": 35635,
+    "name": "API Troubleshooting",
+    "panels": [
+      {
+        "id": 6,
+        "type": "basicTimechart",
+        "name": "Average and Max Request Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_request_time",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_request_time",
+                "timeAggregation": "max",
+                "groupAggregation": "max",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "ns",
+            "maxInputFormat": "ns",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "type": "basicTimechart",
+        "name": "Status Codes Over Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_statuscode_request_count",
+                "timeAggregation": "timeAvg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.http.statusCode",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.http.statusCode",
+                    "id": "net.http.statusCode",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "HTTP status code",
+                    "description": "HTTP response status code",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.http.HttpStatusCode",
+                    "publicId": "net_http_statuscode",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": null,
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "type": "basicTimechart",
+        "name": "Request Types Over Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_count",
+                "timeAggregation": "timeAvg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.http.method",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.http.method",
+                    "id": "net.http.method",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "Method",
+                    "description": "HTTP request method",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.http.HttpMethod",
+                    "publicId": "net_http_method",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": null,
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "type": "basicTable",
+        "name": "Slowest Endpoints by average request time",
+        "description": "Average request time, unlike total request time, is not biased towards endpoints without GUIDs. However, endpoints that are called infrequently may be listed higher.",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Avg Request Time",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_time",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "entireRange",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.http.url",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.http.url",
+                    "id": "net.http.url",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "URL",
+                    "description": "HTTP request URL",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.http.HttpUrl",
+                    "publicId": "net_http_url",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Request URL",
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Request Count",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_count",
+                "timeAggregation": "sum",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "latest",
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "type": "advancedTable",
+        "name": "Requests with \"null\" or \"undefined\" in them",
+        "description": "Bad requests that are generated by errors on the front-end.",
+        "nullValueDisplayText": "Hurray! No results!",
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "sum(sum_over_time(sysdig_container_net_http_url_request_count{$__scope,net_http_url=~\".*(undefined|null).*\"}[$__range])) by (net_http_url)",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Number of Requests Made",
+              "timeSeriesDisplayNameTemplate": "{{net_http_url}} ",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "type": "basicTable",
+        "name": "Endpoints that generate the most errors",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Errors Returned",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_error_count",
+                "timeAggregation": "sum",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "entireRange",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.http.url",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.http.url",
+                    "id": "net.http.url",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "URL",
+                    "description": "HTTP request URL",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.http.HttpUrl",
+                    "publicId": "net_http_url",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Request URL",
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Total Requests made",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_count",
+                "timeAggregation": "sum",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "latest",
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "type": "basicTable",
+        "name": "Slowest Endpoints by total request time",
+        "description": "Which endpoints take the most total time (ie: number of requests * average request time). Focusing on these endpoints should result in the most performance gains, but requests containing GUIDS will be listed separately by GUID.",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Total Request Time",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "relativeTime",
+              "inputFormat": "ns",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_time",
+                "timeAggregation": "sum",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "entireRange",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "net.http.url",
+                  "descriptor": {
+                    "segmentations": [],
+                    "documentId": "net.http.url",
+                    "id": "net.http.url",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 1.0,
+                    "name": "URL",
+                    "description": "HTTP request URL",
+                    "category": "network",
+                    "namespaces": ["host.net"],
+                    "scopes": ["host", "container"],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "createdAt": 1648212882000,
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": false,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.http.HttpUrl",
+                    "publicId": "net_http_url",
+                    "segment": false,
+                    "documentTimestamp": 1648212882000,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Request URL",
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Request Count",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_net_http_url_request_count",
+                "timeAggregation": "sum",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": "latest",
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ]
+      }
+    ],
+    "scopeExpressionList": [
+      {
+        "operand": "kubernetes.namespace.name",
+        "operator": "in",
+        "displayName": "",
+        "value": ["4c2ba9-prod"],
+        "descriptor": {
+          "documentId": "kubernetes.namespace.name",
+          "id": "kubernetes.namespace.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.namespace.name",
+          "description": "kubernetes.namespace.name",
+          "namespaces": ["kubernetes.namespace"],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_namespace_name",
+          "segment": false,
+          "documentTimestamp": 1680300699743,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      },
+      {
+        "operand": "kubernetes.workload.name",
+        "operator": "in",
+        "displayName": "",
+        "value": ["core-api"],
+        "descriptor": {
+          "documentId": "kubernetes.workload.name",
+          "id": "kubernetes.workload.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.workload.name",
+          "description": "kubernetes.workload.name",
+          "namespaces": [
+            "cloudProvider",
+            "host.container",
+            "ecs",
+            "host.fs",
+            "host.file",
+            "host",
+            "kubernetes",
+            "kubernetes.cluster",
+            "kubernetes.daemonSet",
+            "kubernetes.deployment",
+            "kubernetes.job",
+            "kubernetes.namespace",
+            "kubernetes.node",
+            "kubernetes.pod",
+            "kubernetes.replicaSet",
+            "kubernetes.service",
+            "kubernetes.statefulSet",
+            "kubernetes.resourcequota",
+            "kubernetes.hpa",
+            "link",
+            "mesos",
+            "host.net",
+            "host.process",
+            "prometheus",
+            "swarm",
+            "prombeacon"
+          ],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_workload_name",
+          "segment": false,
+          "documentTimestamp": 1680300699743,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      }
+    ],
+    "eventDisplaySettings": {
+      "enabled": true,
+      "queryParams": {
+        "severities": [],
+        "alertStatuses": [],
+        "categories": [],
+        "filter": null,
+        "teamScope": false
+      }
+    },
+    "version": 40,
+    "description": "Highlighting bad and slow requests",
+    "layout": [
+      {
+        "panelId": 9,
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 6,
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 11,
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 13,
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 12,
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 10,
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 14,
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      }
+    ],
+    "sharingSettings": [
+      {
+        "role": "ROLE_RESOURCE_EDIT",
+        "member": {
+          "type": "TEAM",
+          "id": 35635,
+          "name": "4c2ba9-team",
+          "teamTheme": "#73A1F7"
+        }
+      }
+    ],
+    "schema": 3
+  }
+}
