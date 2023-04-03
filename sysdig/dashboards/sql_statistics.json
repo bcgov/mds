@@ -1,76 +1,7 @@
 {
   "dashboard": {
-    "teamId": 35635,
-    "description": "Statistics for production environment",
-    "eventDisplaySettings": {
-      "enabled": true,
-      "queryParams": {
-        "severities": [],
-        "alertStatuses": [],
-        "categories": [],
-        "filter": null,
-        "teamScope": false
-      }
-    },
     "id": 391840,
-    "layout": [
-      {
-        "panelId": 5,
-        "x": 0,
-        "y": 0,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 6,
-        "x": 12,
-        "y": 0,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 7,
-        "x": 0,
-        "y": 4,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 8,
-        "x": 12,
-        "y": 4,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 9,
-        "x": 0,
-        "y": 8,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 10,
-        "x": 12,
-        "y": 8,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 11,
-        "x": 0,
-        "y": 12,
-        "w": 12,
-        "h": 4
-      },
-      {
-        "panelId": 12,
-        "x": 12,
-        "y": 12,
-        "w": 12,
-        "h": 4
-      }
-    ],
+    "teamId": 35635,
     "name": "SQL Statistics",
     "panels": [
       {
@@ -84,8 +15,8 @@
           {
             "enabled": true,
             "displayInfo": {
-              "displayName": "",
-              "timeSeriesDisplayNameTemplate": "",
+              "displayName": "Request Rate (req/s)",
+              "timeSeriesDisplayNameTemplate": "Request Rate",
               "type": "lines"
             },
             "format": {
@@ -125,8 +56,8 @@
           {
             "enabled": true,
             "displayInfo": {
-              "displayName": "",
-              "timeSeriesDisplayNameTemplate": "",
+              "displayName": "Error Rate (err/s)",
+              "timeSeriesDisplayNameTemplate": "Error Rate",
               "type": "lines"
             },
             "format": {
@@ -256,14 +187,14 @@
           {
             "enabled": true,
             "displayInfo": {
-              "displayName": "",
-              "timeSeriesDisplayNameTemplate": "",
+              "displayName": "Max Request Time",
+              "timeSeriesDisplayNameTemplate": "Max Request Time",
               "type": "lines"
             },
             "format": {
               "unit": "relativeTime",
               "inputFormat": "ns",
-              "displayFormat": "auto",
+              "displayFormat": "ms",
               "decimals": null,
               "yAxis": "auto",
               "nullValueDisplayMode": "nullGap",
@@ -337,17 +268,17 @@
       },
       {
         "id": 7,
-        "type": "advancedToplist",
+        "type": "advancedTable",
         "name": "Top Queries by Number of Requests",
         "description": "",
         "nullValueDisplayText": null,
         "links": null,
         "advancedQueries": [
           {
-            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_query_request_count{$__scope}[$__range])) by (net_sql_query))",
+            "query": "max(sum_over_time(sysdig_container_net_sql_query_request_count{$__scope}[$__range])) by (net_sql_query)",
             "enabled": true,
             "displayInfo": {
-              "displayName": null,
+              "displayName": "Number of Requests",
               "timeSeriesDisplayNameTemplate": "{{net_sql_query}} ",
               "type": "lines"
             },
@@ -370,17 +301,17 @@
       },
       {
         "id": 8,
-        "type": "advancedToplist",
+        "type": "advancedTable",
         "name": "Top Tables by Number of Requests",
         "description": "",
         "nullValueDisplayText": null,
         "links": null,
         "advancedQueries": [
           {
-            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_table_request_count{$__scope}[$__range])) by (net_sql_table))",
+            "query": "max(sum_over_time(sysdig_container_net_sql_table_request_count{$__scope}[$__range])) by (net_sql_table)",
             "enabled": true,
             "displayInfo": {
-              "displayName": null,
+              "displayName": "Number of Requests",
               "timeSeriesDisplayNameTemplate": "{{net_sql_table}} ",
               "type": "lines"
             },
@@ -403,7 +334,7 @@
       },
       {
         "id": 9,
-        "type": "basicToplist",
+        "type": "basicTable",
         "name": "Slowest Queries by average request time",
         "description": "",
         "nullValueDisplayText": null,
@@ -412,7 +343,7 @@
           {
             "enabled": true,
             "displayInfo": {
-              "displayName": "",
+              "displayName": "Average Request Time",
               "timeSeriesDisplayNameTemplate": "",
               "type": "lines"
             },
@@ -478,7 +409,7 @@
                     "heuristic": false,
                     "documentType": "metric"
                   },
-                  "displayName": null,
+                  "displayName": "Query",
                   "sorting": null
                 }
               ],
@@ -486,13 +417,11 @@
               "direction": "desc"
             }
           }
-        ],
-        "applyScopeToAll": false,
-        "applySegmentationToAll": false
+        ]
       },
       {
         "id": 10,
-        "type": "basicToplist",
+        "type": "basicTable",
         "name": "Slowest Tables by average request time",
         "description": "",
         "nullValueDisplayText": null,
@@ -501,7 +430,7 @@
           {
             "enabled": true,
             "displayInfo": {
-              "displayName": "",
+              "displayName": "Average Request Time",
               "timeSeriesDisplayNameTemplate": "",
               "type": "lines"
             },
@@ -567,7 +496,7 @@
                     "heuristic": false,
                     "documentType": "metric"
                   },
-                  "displayName": null,
+                  "displayName": "Table Name",
                   "sorting": null
                 }
               ],
@@ -575,9 +504,7 @@
               "direction": "desc"
             }
           }
-        ],
-        "applyScopeToAll": false,
-        "applySegmentationToAll": false
+        ]
       },
       {
         "id": 11,
@@ -707,17 +634,17 @@
       },
       {
         "id": 12,
-        "type": "advancedToplist",
+        "type": "advancedTable",
         "name": "Slowest Queries by sum of all request times",
         "description": "",
         "nullValueDisplayText": null,
         "links": null,
         "advancedQueries": [
           {
-            "query": "topk(10,max(sum_over_time(sysdig_container_net_sql_query_request_time{$__scope}[$__range])) by (net_sql_query))",
+            "query": "max(sum_over_time(sysdig_container_net_sql_query_request_time{$__scope}[$__range])) by (net_sql_query)",
             "enabled": true,
             "displayInfo": {
-              "displayName": null,
+              "displayName": "Sum of All Request Times",
               "timeSeriesDisplayNameTemplate": "{{net_sql_query}} ",
               "type": "lines"
             },
@@ -739,7 +666,6 @@
         ]
       }
     ],
-    "schema": 3,
     "scopeExpressionList": [
       {
         "operand": "kubernetes.namespace.name",
@@ -769,7 +695,7 @@
           "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
           "publicId": "kube_namespace_name",
           "segment": false,
-          "documentTimestamp": 1680220716924,
+          "documentTimestamp": 1680553247448,
           "heuristic": false,
           "documentType": "metric"
         },
@@ -831,7 +757,7 @@
           "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
           "publicId": "kube_workload_name",
           "segment": false,
-          "documentTimestamp": 1680220716924,
+          "documentTimestamp": 1680553247448,
           "heuristic": false,
           "documentType": "metric"
         },
@@ -839,7 +765,76 @@
         "isVariable": true
       }
     ],
-    "version": 32,
+    "eventDisplaySettings": {
+      "enabled": true,
+      "queryParams": {
+        "severities": [],
+        "alertStatuses": [],
+        "categories": [],
+        "filter": null,
+        "teamScope": false
+      }
+    },
+    "version": 43,
+    "description": "Statistics for production environment",
+    "layout": [
+      {
+        "panelId": 5,
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 6,
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 7,
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 8,
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 9,
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 10,
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 11,
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 4
+      },
+      {
+        "panelId": 12,
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 4
+      }
+    ],
     "sharingSettings": [
       {
         "role": "ROLE_RESOURCE_EDIT",
@@ -850,6 +845,7 @@
           "teamTheme": "#73A1F7"
         }
       }
-    ]
+    ],
+    "schema": 3
   }
 }

@@ -834,7 +834,7 @@
           "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
           "publicId": "kube_namespace_name",
           "segment": false,
-          "documentTimestamp": 1680300699743,
+          "documentTimestamp": 1680553268156,
           "heuristic": false,
           "documentType": "metric"
         },
@@ -896,7 +896,7 @@
           "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
           "publicId": "kube_workload_name",
           "segment": false,
-          "documentTimestamp": 1680300699743,
+          "documentTimestamp": 1680553268156,
           "heuristic": false,
           "documentType": "metric"
         },
@@ -914,7 +914,7 @@
         "teamScope": false
       }
     },
-    "version": 40,
+    "version": 45,
     "description": "Highlighting bad and slow requests",
     "layout": [
       {
@@ -939,9 +939,9 @@
         "h": 4
       },
       {
-        "panelId": 13,
+        "panelId": 14,
         "x": 12,
-        "y": 8,
+        "y": 4,
         "w": 12,
         "h": 4
       },
@@ -953,16 +953,16 @@
         "h": 4
       },
       {
-        "panelId": 10,
+        "panelId": 13,
         "x": 12,
-        "y": 12,
+        "y": 8,
         "w": 12,
         "h": 4
       },
       {
-        "panelId": 14,
+        "panelId": 10,
         "x": 12,
-        "y": 4,
+        "y": 12,
         "w": 12,
         "h": 4
       }
