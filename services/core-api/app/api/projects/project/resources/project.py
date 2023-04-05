@@ -100,18 +100,15 @@ class ProjectListDashboardResource(Resource, UserMixin):
         params={
             'page_number': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
-            'mine_guid': 'The GUID of the mine to get Projects for.',
-            'project_title': 'Title for the project',
-            'proponent_project_id': 'Project ID',
             'mrc_review_required': 'Filter by Mine Review Committee required (MRC)',
-            'project_stage': 'project stage (Project Summary, IRT, Final Application) to filter the project list on.',
             'status_code': 'Filter by status code.',
-            'contact': 'Primary contact for the project',
             'project_lead_name': 'EMLI project lead for the project',
             'mine_commodity_code': 'A specific commodity to filter the project list on.',
-            'update_timestamp': 'filter by projects by updated date',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
+            'search': 'Search by mine name or number',
+            'updated_date': 'Last updated date',
+            'application_stage': 'Application stage (InformationRequirementsTable, MajorMineApplication, ProjectSummary) to filter the project list on',
         })
     @api.marshal_with(PAGINATED_PROJECT_LIST, code=200)
     def get(self):
