@@ -1,6 +1,7 @@
 from flask import request
 from flask_restplus import Resource, inputs
 from sqlalchemy import func, or_, and_
+from app.decorators.profile_decorator import profile
 from sqlalchemy_filters import apply_pagination, apply_sort
 from werkzeug.exceptions import BadRequest
 
@@ -32,7 +33,8 @@ class NOWApplicationListResource(Resource, UserMixin):
     parser.add_argument('import_timestamp_since', type=str)
     parser.add_argument('update_timestamp_since', type=str)
     parser.add_argument('application_type', type=str)
-
+    
+    @profile(sort_by='cumulative', lines_to_print=10, strip_dirs=True)
     @api.doc(
         description='Get a list of Core Notice of Work applications. Order: received_date DESC',
         params={

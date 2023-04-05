@@ -1,5 +1,6 @@
 from flask_restplus import Resource
 from flask import request
+from app.decorators.profile_decorator import profile
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import func, or_
 
@@ -43,7 +44,7 @@ class MineApplicationResource(Resource, UserMixin ):
 
         return filtered_query.all()
 
-
+    @profile(output_file="apply_filter", sort_by='cumulative', lines_to_print=10, strip_dirs=True)
     def _apply_filters(self,
                        mine_guid,
                        sort_field=None,

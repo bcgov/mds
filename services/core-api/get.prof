@@ -1,0 +1,18 @@
+         544136 function calls (526541 primitive calls) in 18.397 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1306 to 10 due to restriction <10>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   18.406   18.406 access_decorators.py:129(wrapper)
+        1    0.028    0.028   18.405   18.405 jwt_manager.py:182(wrapper)
+        1    0.000    0.000   18.005   18.005 marshalling.py:134(wrapper)
+     91/1    0.004    0.000   16.533   16.533 marshalling.py:14(marshal)
+   1246/6    0.022    0.000   16.533    2.756 marshalling.py:70(<genexpr>)
+     61/1    0.001    0.000   16.533   16.533 fields.py:286(output)
+     41/1    0.001    0.000   16.533   16.533 fields.py:270(format)
+     41/1    0.000    0.000   16.533   16.533 fields.py:281(<listcomp>)
+    90/10    0.012    0.000   16.532    1.653 fields.py:213(output)
+     1165    0.016    0.000   16.365    0.014 fields.py:41(get_value)
+
+
