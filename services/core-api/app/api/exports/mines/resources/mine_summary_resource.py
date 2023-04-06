@@ -36,5 +36,3 @@ class MineSummaryResource(Resource):
         data = MineSummaryView.get_paginated_data(page, per_page)
 
         return data
-        
-        

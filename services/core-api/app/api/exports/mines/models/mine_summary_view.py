@@ -86,3 +86,4 @@ class MineSummaryView(Base):
             cache.set(cache_name, cache_data, timeout=TIMEOUT_60_MINUTES)
 
         return cache_data
+        
