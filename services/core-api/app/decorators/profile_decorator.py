@@ -9,10 +9,6 @@ random.seed(20)
 
 def profile(output_file=None, sort_by='cumulative', lines_to_print=None, strip_dirs=False):
     """A time profiler decorator.
-
-    Inspired by and modified the profile decorator of Giampaolo Rodola:
-    http://code.activestate.com/recipes/577817-profile-decorator/
-
     Args:
         output_file: str or None. Default is None
             Path of the output file. If only name of the file is given, it's
