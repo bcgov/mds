@@ -2,7 +2,9 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.inspection import inspect
 
 from app.api.utils.models_mixins import Base
-from app.extensions import db
+from app.extensions import db, cache
+
+from app.api.constants import MINE_DETAILS_JSON, TIMEOUT_60_MINUTES
 
 
 class MineSummaryView(Base):
@@ -73,3 +75,14 @@ class MineSummaryView(Base):
     def csv_row(self):
         model = inspect(self.__class__)
         return [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]
+
+    @staticmethod
+    def get_paginated_data(page, per_page):
+        cache_name = f'{MINE_DETAILS_JSON}:{page}:{per_page}'
+        cache_data = cache.get(cache_name)
+        if not cache_data:
+            records = MineSummaryView.query.paginate(page, per_page, error_out=False)
+            cache_data = dict([('total', records.total), ('current_page', records.page), ('per_page', records.per_page), ('mines', records.items)])
+            cache.set(cache_name, cache_data, timeout=TIMEOUT_60_MINUTES)
+
+        return cache_data

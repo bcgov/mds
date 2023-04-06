@@ -1,24 +1,40 @@
 import json
 
-from flask_restplus import Resource, marshal
+from flask import request
+from flask_restplus import Resource, marshal, reqparse
 from ..models.mine_summary_view import MineSummaryView
 
-from app.api.exports.response_models import MINE_SUMMARY_MODEL
+from app.api.exports.response_models import MINE_SUMMARY_MODEL_LIST
 from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.constants import MINE_DETAILS_JSON, TIMEOUT_60_MINUTES
 
 
+PAGE_DEFAULT = 1
+PER_PAGE_DEFAULT = 100
+
 class MineSummaryResource(Resource):
-    @api.doc(description='Returns a subset of mine data.')
-    @api.marshal_with(MINE_SUMMARY_MODEL, envelope='mines', code=200, as_list=True)
+    parser = reqparse.RequestParser()
+    parser.add_argument(
+        'page', type=int, help='page for pagination', location='args', store_missing=False
+    )
+    parser.add_argument(
+        'per_page', type=int, help='records per page', location='args', store_missing=False
+    )
+    @api.doc(
+        params={
+            'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
+            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
+        },
+        description='Returns a paginated summary of mine data.')
+    @api.marshal_with(MINE_SUMMARY_MODEL_LIST, envelope='data', code=200)
     @requires_role_view_all
     def get(self):
-        json_string = cache.get(MINE_DETAILS_JSON)
-        if not json_string:
-            records = MineSummaryView.query.all()
-            content_dict = marshal(records, MINE_SUMMARY_MODEL)
-            json_string = json.dumps(content_dict, separators=(',', ':'))
-            cache.set(MINE_DETAILS_JSON, json_string, timeout=TIMEOUT_60_MINUTES)
+        page = request.args.get('page', PAGE_DEFAULT, type=int)
+        per_page = request.args.get('per_page', PER_PAGE_DEFAULT, type=int)
 
-        return json.loads(json_string)
+        data = MineSummaryView.get_paginated_data(page, per_page)
+
+        return data
+        
+        
