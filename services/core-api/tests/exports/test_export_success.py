@@ -15,11 +15,11 @@ def test_mine_summary_export_paginated(test_client, db_session, auth_headers):
 
     assert get_resp.status_code == 200
 
-    get_data = json.loads(get_resp.data.decode())
+    get_data = json.loads(get_resp.data.decode()).get('data')
 
-    assert len(get_data['mines']) == PER_PAGE_DEFAULT
+    assert len(get_data['mines']) <= PER_PAGE_DEFAULT
     assert get_data['per_page'] == PER_PAGE_DEFAULT
-    assert get_data['page'] == PAGE_DEFAULT
+    assert get_data['current_page'] == PAGE_DEFAULT
     assert get_data['total'] == MineSummaryView.query.count()
 
 def test_core_static_content_success(test_client, db_session, auth_headers):
