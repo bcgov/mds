@@ -173,7 +173,6 @@ class ProjectListDashboardResource(Resource, UserMixin):
                         update_timestamp_filter_pass = True
                 else:
                     update_timestamp_filter_pass = True
-
                 if status_code_filter_pass and update_timestamp_filter_pass:
                     record = {
                         'stage': stage,
@@ -189,7 +188,8 @@ class ProjectListDashboardResource(Resource, UserMixin):
                         'project_lead_name': project.project_lead_name,
                         'update_timestamp': update_timestamp,
                         'mine': {
-                            'mine_name': project.mine.mine_name
+                            'mine_name': project.mine.mine_name,
+                            'mine_type': project.mine.mine_type
                         }
                     }
 
