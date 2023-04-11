@@ -188,7 +188,9 @@ class ProjectListDashboardResource(Resource, UserMixin):
                         'project_lead_party_guid': project.project_lead_party_guid,
                         'project_lead_name': project.project_lead_name,
                         'update_timestamp': update_timestamp,
-                        'mine': project.mine
+                        'mine': {
+                            'mine_name': project.mine.mine_name
+                        }
                     }
 
             if record:
