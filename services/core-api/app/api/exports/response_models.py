@@ -70,6 +70,13 @@ MINE_SUMMARY_MODEL = api.model(
         'permittee_address_prov': fields.String
     })
 
+MINE_SUMMARY_MODEL_LIST = api.model('MineSummaryList', {
+    'mines': fields.List(fields.Nested(MINE_SUMMARY_MODEL)),
+    'total': fields.Integer,
+    'current_page': fields.Integer,
+    'per_page': fields.Integer
+})
+
 STATIC_CONTENT_MODEL = api.model(
     'StaticContentModel', {
         'mineDisturbanceOptions':

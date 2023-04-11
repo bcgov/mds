@@ -1,0 +1,2127 @@
+{
+  "dashboard": {
+    "id": 391772,
+    "teamId": 35635,
+    "name": "Resource Allocation Dashboard",
+    "panels": [
+      {
+        "id": 1,
+        "type": "basicTimechart",
+        "name": "CPU Usage vs Request vs Limit",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_cpu_cores_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Max CPU Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_cpu_cores_used",
+                "timeAggregation": "max",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Request Quota Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_cpu_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Limit Quota Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_limits_cpu_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": "basicNumber",
+        "name": "Quota - CPU Limit",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "entireRange",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_limits_cpu_hard",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 3,
+        "type": "basicNumber",
+        "name": "CPU Used",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "entireRange",
+            "metrics": [
+              {
+                "id": "sysdig_container_cpu_cores_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 6,
+        "type": "basicTimechart",
+        "name": "Memory Usage vs. Requests vs Limits Over Time",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Usage",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_memory_used_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Max Memory Usage",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_memory_used_bytes",
+                "timeAggregation": "max",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Request Quota Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_memory_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Limit Quota Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_limits_memory_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ],
+        "applyScopeToAll": true,
+        "applySegmentationToAll": false,
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "B",
+            "maxInputFormat": "B",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": "",
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": "basicNumber",
+        "name": "Memory Usage",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "sysdig_container_memory_used_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 10,
+        "type": "advancedNumber",
+        "name": "Memory Used vs Requested",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "sum(last_over_time(sysdig_container_memory_used_bytes{kube_cluster_name=~$Cluster,kube_namespace_name=~$Namespace}[$__interval])) / (sum(last_over_time(kube_resourcequota_sysdig_requests_memory_used{kube_cluster_name=~$Cluster,kube_namespace_name=~$Namespace}[$__interval]))) * 100",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "%",
+              "inputFormat": "0-100",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ],
+        "numberThresholds": {
+          "values": [
+            {
+              "severity": "ok",
+              "value": 100.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            },
+            {
+              "severity": "low",
+              "value": 80.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            },
+            {
+              "severity": "medium",
+              "value": 50.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            }
+          ],
+          "base": {
+            "severity": "high",
+            "displayText": ""
+          }
+        }
+      },
+      {
+        "id": 11,
+        "type": "text",
+        "name": "CPU Title",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "markdownSource": "CPU Resource Allocation",
+        "transparentBackground": true,
+        "panelTitleVisible": false,
+        "textAutosized": true
+      },
+      {
+        "id": 12,
+        "type": "text",
+        "name": "Memory Title",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "markdownSource": "Memory Resource Allocation",
+        "transparentBackground": true,
+        "panelTitleVisible": false,
+        "textAutosized": true
+      },
+      {
+        "id": 13,
+        "type": "basicTable",
+        "name": "Resource Configuration and Utilization by Pod",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Cores Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_cpu_cores_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "kubernetes.pod.name",
+                  "descriptor": {
+                    "documentId": "kubernetes.pod.name",
+                    "id": "kubernetes.pod.name",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 0.0,
+                    "name": "kubernetes.pod.name",
+                    "description": "kubernetes.pod.name",
+                    "namespaces": [
+                      "cloudProvider",
+                      "host.container",
+                      "ecs",
+                      "host.fs",
+                      "host.file",
+                      "host",
+                      "kubernetes",
+                      "kubernetes.cluster",
+                      "kubernetes.daemonSet",
+                      "kubernetes.deployment",
+                      "kubernetes.job",
+                      "kubernetes.namespace",
+                      "kubernetes.node",
+                      "kubernetes.pod",
+                      "kubernetes.replicaSet",
+                      "kubernetes.service",
+                      "kubernetes.statefulSet",
+                      "kubernetes.resourcequota",
+                      "kubernetes.hpa",
+                      "link",
+                      "mesos",
+                      "host.net",
+                      "host.process",
+                      "prometheus",
+                      "swarm",
+                      "prombeacon"
+                    ],
+                    "scopes": [],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": true,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+                    "publicId": "kube_pod_name",
+                    "segment": false,
+                    "documentTimestamp": 1680305292774,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Pod Name",
+                  "sorting": null
+                },
+                {
+                  "id": "kubernetes.namespace.name",
+                  "descriptor": {
+                    "documentId": "kubernetes.namespace.name",
+                    "id": "kubernetes.namespace.name",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 0.0,
+                    "name": "kubernetes.namespace.name",
+                    "description": "kubernetes.namespace.name",
+                    "namespaces": ["kubernetes.namespace"],
+                    "scopes": [],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": true,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+                    "publicId": "kube_namespace_name",
+                    "segment": false,
+                    "documentTimestamp": 1680305292774,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Namespace",
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Requests",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kube_pod_sysdig_resource_requests_cpu_cores",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "CPU Limits",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kube_pod_sysdig_resource_limits_cpu_cores",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Used",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "sysdig_container_memory_used_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Request",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kube_pod_sysdig_resource_requests_memory_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Memory Limits",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kube_pod_sysdig_resource_limits_memory_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ],
+            "displayedValue": null,
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "type": "text",
+        "name": "Storage Title",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "markdownSource": "Storage Resource Allocation",
+        "transparentBackground": true,
+        "panelTitleVisible": false,
+        "textAutosized": true
+      },
+      {
+        "id": 16,
+        "type": "advancedNumber",
+        "name": "Storage Used Capacity",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "sum(kubelet_volume_stats_used_bytes{namespace=~$Namespace})",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          }
+        }
+      },
+      {
+        "id": 17,
+        "type": "basicNumber",
+        "name": "PVC Count - Quota",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": false
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_persistentvolumeclaims_hard",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": null
+        }
+      },
+      {
+        "id": 18,
+        "type": "advancedTimechart",
+        "name": "Persistent Volume Claims Utilization",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "avg(kubelet_volume_stats_used_bytes{namespace=~$Namespace} / kubelet_volume_stats_capacity_bytes{namespace=~$Namespace}) by (persistentvolumeclaim)",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "PVC Used Percentage",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "%",
+              "inputFormat": "0-1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ],
+        "legendConfiguration": {
+          "enabled": true,
+          "position": "right",
+          "layout": "table",
+          "showCurrent": true,
+          "width": null,
+          "height": null
+        },
+        "axesConfiguration": {
+          "bottom": {
+            "enabled": true
+          },
+          "left": {
+            "enabled": true,
+            "displayName": null,
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "0-100",
+            "maxInputFormat": "0-100",
+            "scale": "linear"
+          },
+          "right": {
+            "enabled": true,
+            "displayName": null,
+            "unit": "auto",
+            "displayFormat": "auto",
+            "decimals": null,
+            "minValue": 0.0,
+            "maxValue": null,
+            "minInputFormat": "1",
+            "maxInputFormat": "1",
+            "scale": "linear"
+          }
+        }
+      },
+      {
+        "id": 19,
+        "type": "basicTable",
+        "name": "Storage Utilization by PVC",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Total Capacity",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": false
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kubelet_volume_stats_capacity_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": {
+                  "documentId": "prometheus.kubelet_volume_stats_capacity_bytes",
+                  "id": "kubelet_volume_stats_capacity_bytes",
+                  "metricType": "gauge",
+                  "type": "byte",
+                  "scale": 1.0,
+                  "name": "kubelet_volume_stats_capacity_bytes",
+                  "description": "",
+                  "category": "prometheus",
+                  "namespaces": [
+                    "host",
+                    "host.process",
+                    "host.container",
+                    "cloudProvider",
+                    "mesos",
+                    "ecs",
+                    "kubernetes.cluster",
+                    "kubernetes.namespace",
+                    "kubernetes.deployment",
+                    "kubernetes.job",
+                    "kubernetes.daemonSet",
+                    "kubernetes.service",
+                    "kubernetes.node",
+                    "kubernetes.replicaSet",
+                    "kubernetes.statefulSet",
+                    "kubernetes.resourcequota",
+                    "kubernetes.persistentvolume",
+                    "kubernetes.persistentvolumeclaim",
+                    "kubernetes.pod"
+                  ],
+                  "scopes": [],
+                  "timeAggregations": ["avg", "min", "max"],
+                  "groupAggregations": ["avg", "sum", "min", "max"],
+                  "aggregationForGroup": "avg",
+                  "lastSeen": 1680304823000,
+                  "hidden": false,
+                  "experimental": false,
+                  "deferred": false,
+                  "identity": false,
+                  "canMonitor": false,
+                  "canGroupBy": false,
+                  "canFilter": false,
+                  "generatedFrom": "com.draios.model.metrics.custom.PrometheusRawMetric",
+                  "publicId": "kubelet_volume_stats_capacity_bytes",
+                  "legacyId": "kubelet_volume_stats_capacity_bytes",
+                  "segment": false,
+                  "documentTimestamp": 1680305292774,
+                  "heuristic": false,
+                  "documentType": "metric"
+                },
+                "sorting": null
+              }
+            ],
+            "displayedValue": "latest",
+            "segmentation": {
+              "labels": [
+                {
+                  "id": "persistentvolumeclaim",
+                  "descriptor": null,
+                  "displayName": "PVC Name",
+                  "sorting": null
+                },
+                {
+                  "id": "kubernetes.namespace.name",
+                  "descriptor": {
+                    "documentId": "kubernetes.namespace.name",
+                    "id": "kubernetes.namespace.name",
+                    "metricType": "tag",
+                    "type": "string",
+                    "scale": 0.0,
+                    "name": "kubernetes.namespace.name",
+                    "description": "kubernetes.namespace.name",
+                    "namespaces": ["kubernetes.namespace"],
+                    "scopes": [],
+                    "timeAggregations": ["concat", "distinct", "count"],
+                    "groupAggregations": ["concat", "distinct", "count"],
+                    "aggregationForGroup": "none",
+                    "hidden": false,
+                    "experimental": false,
+                    "deferred": false,
+                    "identity": false,
+                    "canMonitor": false,
+                    "canGroupBy": true,
+                    "canFilter": true,
+                    "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+                    "publicId": "kube_namespace_name",
+                    "segment": false,
+                    "documentTimestamp": 1680305292774,
+                    "heuristic": false,
+                    "documentType": "metric"
+                  },
+                  "displayName": "Namespace",
+                  "sorting": null
+                }
+              ],
+              "limit": 10,
+              "direction": "desc"
+            }
+          },
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "Used Capacity",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": false
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "metrics": [
+              {
+                "id": "kubelet_volume_stats_used_bytes",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": {
+                  "documentId": "prometheus.kubelet_volume_stats_used_bytes",
+                  "id": "kubelet_volume_stats_used_bytes",
+                  "metricType": "gauge",
+                  "type": "byte",
+                  "scale": 1.0,
+                  "name": "kubelet_volume_stats_used_bytes",
+                  "description": "",
+                  "category": "prometheus",
+                  "namespaces": [
+                    "host",
+                    "host.process",
+                    "host.container",
+                    "cloudProvider",
+                    "mesos",
+                    "ecs",
+                    "kubernetes.cluster",
+                    "kubernetes.namespace",
+                    "kubernetes.deployment",
+                    "kubernetes.job",
+                    "kubernetes.daemonSet",
+                    "kubernetes.service",
+                    "kubernetes.node",
+                    "kubernetes.replicaSet",
+                    "kubernetes.statefulSet",
+                    "kubernetes.resourcequota",
+                    "kubernetes.persistentvolume",
+                    "kubernetes.persistentvolumeclaim",
+                    "kubernetes.pod"
+                  ],
+                  "scopes": [],
+                  "timeAggregations": ["avg", "min", "max"],
+                  "groupAggregations": ["avg", "sum", "min", "max"],
+                  "aggregationForGroup": "avg",
+                  "lastSeen": 1680304823000,
+                  "hidden": false,
+                  "experimental": false,
+                  "deferred": false,
+                  "identity": false,
+                  "canMonitor": false,
+                  "canGroupBy": false,
+                  "canFilter": false,
+                  "generatedFrom": "com.draios.model.metrics.custom.PrometheusRawMetric",
+                  "publicId": "kubelet_volume_stats_used_bytes",
+                  "legacyId": "kubelet_volume_stats_used_bytes",
+                  "segment": false,
+                  "documentTimestamp": 1680305292774,
+                  "heuristic": false,
+                  "documentType": "metric"
+                },
+                "sorting": null
+              }
+            ],
+            "displayedValue": "latest",
+            "segmentation": {
+              "labels": [],
+              "limit": 10,
+              "direction": "desc"
+            }
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "type": "basicNumber",
+        "name": "Quota - CPU Request",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "entireRange",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_cpu_hard",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 21,
+        "type": "advancedNumber",
+        "name": "CPU Used vs Requested",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "sum(last_over_time(sysdig_container_cpu_cores_used{kube_cluster_name=~$Cluster,kube_namespace_name=~$Namespace}[$__interval])) / (sum(last_over_time(sysdig_container_cpu_shares_count{kube_cluster_name=~$Cluster,kube_namespace_name=~$Namespace}[$__interval])) / 1024) * 100",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "%",
+              "inputFormat": "0-100",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ],
+        "numberThresholds": {
+          "values": [
+            {
+              "severity": "ok",
+              "value": 100.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            },
+            {
+              "severity": "low",
+              "value": 80.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            },
+            {
+              "severity": "medium",
+              "value": 50.0,
+              "inputFormat": "0-100",
+              "displayText": ""
+            }
+          ],
+          "base": {
+            "severity": "high",
+            "displayText": ""
+          }
+        }
+      },
+      {
+        "id": 9,
+        "type": "basicNumber",
+        "name": "Quota - Memory Request",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_memory_hard",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 8,
+        "type": "basicNumber",
+        "name": "Quota - Memory Limit",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_limits_memory_hard",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 22,
+        "type": "text",
+        "name": "Resource Usage Overview Title",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "markdownSource": "Resource Usage List Overview",
+        "transparentBackground": true,
+        "panelTitleVisible": false,
+        "textAutosized": true
+      },
+      {
+        "id": 23,
+        "type": "basicNumber",
+        "name": "PVC Count - Used",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_persistentvolumeclaims_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "avg",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": null
+        }
+      },
+      {
+        "id": 24,
+        "type": "basicNumber",
+        "name": "CPU Requested",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "entireRange",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_cpu_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 25,
+        "type": "basicNumber",
+        "name": "Memory Requested",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "basicQueries": [
+          {
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "number",
+              "inputFormat": "1",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "scope": {
+              "expressions": [],
+              "extendsDashboardScope": true
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "hour"
+            },
+            "displayedValue": "latest",
+            "metrics": [
+              {
+                "id": "kube_resourcequota_sysdig_requests_memory_used",
+                "timeAggregation": "avg",
+                "groupAggregation": "sum",
+                "descriptor": null,
+                "sorting": null
+              }
+            ]
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          },
+          "useDefaults": true
+        }
+      },
+      {
+        "id": 28,
+        "type": "advancedNumber",
+        "name": "Storage Total Capacity",
+        "description": "",
+        "nullValueDisplayText": null,
+        "links": null,
+        "advancedQueries": [
+          {
+            "query": "sum(kubelet_volume_stats_capacity_bytes{namespace=~$Namespace})",
+            "enabled": true,
+            "displayInfo": {
+              "displayName": "",
+              "timeSeriesDisplayNameTemplate": "",
+              "type": "lines"
+            },
+            "format": {
+              "unit": "byte",
+              "inputFormat": "B",
+              "displayFormat": "auto",
+              "decimals": null,
+              "yAxis": "auto",
+              "nullValueDisplayMode": "nullGap",
+              "minInterval": null
+            },
+            "compareTo": {
+              "enabled": false,
+              "delta": 1,
+              "timeFormat": "day"
+            }
+          }
+        ],
+        "numberThresholds": {
+          "values": [],
+          "base": {
+            "severity": "none",
+            "displayText": ""
+          }
+        }
+      }
+    ],
+    "scopeExpressionList": [
+      {
+        "operand": "kubernetes.namespace.name",
+        "operator": "in",
+        "displayName": "Namespace",
+        "value": ["4c2ba9-prod"],
+        "descriptor": {
+          "documentId": "kubernetes.namespace.name",
+          "id": "kubernetes.namespace.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.namespace.name",
+          "description": "kubernetes.namespace.name",
+          "namespaces": ["kubernetes.namespace"],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_namespace_name",
+          "segment": false,
+          "documentTimestamp": 1680305292774,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      },
+      {
+        "operand": "kubernetes.cluster.name",
+        "operator": "in",
+        "displayName": "Cluster",
+        "value": ["silver"],
+        "descriptor": {
+          "documentId": "kubernetes.cluster.name",
+          "id": "kubernetes.cluster.name",
+          "metricType": "tag",
+          "type": "string",
+          "scale": 0.0,
+          "name": "kubernetes.cluster.name",
+          "description": "kubernetes.cluster.name",
+          "namespaces": ["kubernetes.cluster"],
+          "scopes": [],
+          "timeAggregations": ["concat", "distinct", "count"],
+          "groupAggregations": ["concat", "distinct", "count"],
+          "aggregationForGroup": "none",
+          "hidden": false,
+          "experimental": false,
+          "deferred": false,
+          "identity": false,
+          "canMonitor": false,
+          "canGroupBy": true,
+          "canFilter": true,
+          "generatedFrom": "com.draios.model.metrics.custom.CustomMetric$Tag",
+          "publicId": "kube_cluster_name",
+          "segment": false,
+          "documentTimestamp": 1680305292774,
+          "heuristic": false,
+          "documentType": "metric"
+        },
+        "variable": true,
+        "isVariable": true
+      }
+    ],
+    "eventDisplaySettings": {
+      "enabled": true,
+      "queryParams": {
+        "severities": [],
+        "alertStatuses": [],
+        "categories": [],
+        "filter": "",
+        "teamScope": false
+      }
+    },
+    "version": 3,
+    "description": "From the BCGov resource allocation template\nCompare requests and limits to quota set by BCGov to see where we can afford to give more resources or where we should scale back.",
+    "layout": [
+      {
+        "panelId": 11,
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 2
+      },
+      {
+        "panelId": 1,
+        "x": 0,
+        "y": 2,
+        "w": 12,
+        "h": 5
+      },
+      {
+        "panelId": 2,
+        "x": 12,
+        "y": 2,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 3,
+        "x": 16,
+        "y": 2,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 21,
+        "x": 20,
+        "y": 2,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "panelId": 20,
+        "x": 12,
+        "y": 4,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 24,
+        "x": 16,
+        "y": 4,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 12,
+        "x": 0,
+        "y": 7,
+        "w": 24,
+        "h": 2
+      },
+      {
+        "panelId": 6,
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 5
+      },
+      {
+        "panelId": 8,
+        "x": 12,
+        "y": 9,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 7,
+        "x": 16,
+        "y": 9,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 10,
+        "x": 20,
+        "y": 9,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "panelId": 9,
+        "x": 12,
+        "y": 11,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 25,
+        "x": 16,
+        "y": 11,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 15,
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 2
+      },
+      {
+        "panelId": 18,
+        "x": 0,
+        "y": 16,
+        "w": 16,
+        "h": 5
+      },
+      {
+        "panelId": 16,
+        "x": 16,
+        "y": 16,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 23,
+        "x": 20,
+        "y": 16,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 28,
+        "x": 16,
+        "y": 18,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 17,
+        "x": 20,
+        "y": 18,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "panelId": 22,
+        "x": 0,
+        "y": 21,
+        "w": 24,
+        "h": 2
+      },
+      {
+        "panelId": 13,
+        "x": 0,
+        "y": 23,
+        "w": 24,
+        "h": 6
+      },
+      {
+        "panelId": 19,
+        "x": 0,
+        "y": 29,
+        "w": 24,
+        "h": 6
+      }
+    ],
+    "sharingSettings": [
+      {
+        "role": "ROLE_RESOURCE_EDIT",
+        "member": {
+          "type": "TEAM",
+          "id": 35635,
+          "name": "4c2ba9-team",
+          "teamTheme": "#73A1F7"
+        }
+      }
+    ],
+    "schema": 3
+  }
+}
