@@ -44,12 +44,7 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
       </Col>
       <Col sm={1} xl={2} xxl={4} />
     </Row> */}
-    <Row
-      justify="center"
-      align="top"
-      className="landing-header"
-      // gutter={[{ sm: 0, xl: 64 }]}
-    >
+    <Row justify="center" align="top" className="landing-header" gutter={64}>
       <Col xl={{ span: 24 }} xxl={{ span: 20 }}>
         <Typography.Title>Welcome to MineSpace</Typography.Title>
         <Typography.Paragraph className="header-text">
@@ -71,12 +66,7 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
         )}
       </Col>
     </Row>
-    <Row
-      // gutter={[{ sm: 0, xl: 64 }]}
-      justify="center"
-      align="top"
-      className="landing-section"
-    >
+    <Row gutter={64} justify="center" align="top" className="landing-section">
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Typography.Title level={4}>What is MineSpace?</Typography.Title>
         <Typography.Paragraph>
@@ -156,12 +146,7 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
         </Row>
       </Col>
     </Row>
-    <Row
-      // gutter={[{ sm: 0, xl: 64 }]}
-      justify="center"
-      align="top"
-      className="landing-section"
-    >
+    <Row gutter={64} justify="center" align="top" className="landing-section">
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Card title="Questions?">
           <Row>
