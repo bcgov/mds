@@ -2,11 +2,14 @@ import React from "react";
 import { shallow } from "enzyme";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { NoticeOfDeparture } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
+// import * as original from "react-router-dom";
 
-const dispatchProps = {};
-const reducerProps = {};
+const dispatchProps: any = {};
+const reducerProps: any = {};
 
 function mockFunction() {
+
+  // @ts-ignore
   const original = require.requireActual("react-router-dom");
   return {
     ...original,

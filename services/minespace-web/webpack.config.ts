@@ -39,6 +39,8 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
+
+// @ts-ignore
 envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env) {
@@ -55,8 +57,19 @@ if (dotenv.parsed) {
 
 const commonConfig = merge([
   {
+    devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ["babel-loader", "ts-loader"],
+        },
+        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
+      ],
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
@@ -64,7 +77,7 @@ const commonConfig = merge([
         template: PATHS.template,
       }),
       // Adding timestamp to builds
-      function() {
+      function () {
         this.plugin("watch-run", (watching, callback) => {
           console.log(`Begin compile at ${new Date()}`);
           callback();
@@ -72,12 +85,14 @@ const commonConfig = merge([
       },
     ],
     resolve: {
+      extensions: [".tsx", ".ts", ".js"],
       alias: { ...PATH_ALIASES, "react-dom": "@hot-loader/react-dom" },
     },
   },
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
     include: [PATHS.src, PATHS.commonPackage],
+    exclude: [PATHS.node_modules],
   }),
   parts.loadFonts({
     include: path.join(PATHS.src, "assets", "fonts"),
@@ -108,6 +123,9 @@ const devConfig = merge([
   parts.loadCSS(),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
+    urlLoaderOptions: {},
+    fileLoaderOptions: {},
+    imageLoaderOptions: {},
   }),
 ]);
 
@@ -124,6 +142,7 @@ const prodConfig = merge([
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
+    include: {},
   }),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
@@ -140,7 +159,7 @@ const prodConfig = merge([
         quality: 40,
       },
       pngquant: {
-        quality: [0.50, 0.60],
+        quality: [0.5, 0.6],
         speed: 4,
       },
     },

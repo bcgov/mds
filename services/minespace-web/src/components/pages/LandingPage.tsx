@@ -15,7 +15,7 @@ const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-export const LandingPage = (props) => (
+export const LandingPage = (props: { isAuthenticated: boolean }) => (
   <div>
     {/* Use this instead and not the below Row when we want to display the image! */}
     {/* <Row
@@ -45,11 +45,10 @@ export const LandingPage = (props) => (
       <Col sm={1} xl={2} xxl={4} />
     </Row> */}
     <Row
-      type="flex"
       justify="center"
       align="top"
       className="landing-header"
-      gutter={[{ sm: 0, xl: 64 }]}
+      // gutter={[{ sm: 0, xl: 64 }]}
     >
       <Col xl={{ span: 24 }} xxl={{ span: 20 }}>
         <Typography.Title>Welcome to MineSpace</Typography.Title>
@@ -73,8 +72,7 @@ export const LandingPage = (props) => (
       </Col>
     </Row>
     <Row
-      gutter={[{ sm: 0, xl: 64 }]}
-      type="flex"
+      // gutter={[{ sm: 0, xl: 64 }]}
       justify="center"
       align="top"
       className="landing-section"
@@ -143,7 +141,7 @@ export const LandingPage = (props) => (
           Once you have your BCeID, you can add employees and delegates. You can request that anyone
           added to your Business BCeID account be given access to MineSpace.
         </Typography.Paragraph>
-        <Row type="flex" justify="center">
+        <Row justify="center">
           <Col span={24}>
             <a
               href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
@@ -159,8 +157,7 @@ export const LandingPage = (props) => (
       </Col>
     </Row>
     <Row
-      gutter={[{ sm: 0, xl: 64 }]}
-      type="flex"
+      // gutter={[{ sm: 0, xl: 64 }]}
       justify="center"
       align="top"
       className="landing-section"
