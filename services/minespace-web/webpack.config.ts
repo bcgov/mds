@@ -96,12 +96,14 @@ const commonConfig = merge([
   }),
   parts.loadFonts({
     include: path.join(PATHS.src, "assets", "fonts"),
+    exclude: undefined,
     options: {
       name: BUILD_FILE_NAMES.assets,
     },
   }),
   parts.loadFiles({
     include: path.join(PATHS.src, "assets", "downloads"),
+    exclude: undefined,
   }),
 ]);
 
@@ -123,9 +125,10 @@ const devConfig = merge([
   parts.loadCSS(),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
-    urlLoaderOptions: {},
-    fileLoaderOptions: {},
-    imageLoaderOptions: {},
+    urlLoaderOptions: undefined,
+    fileLoaderOptions: undefined,
+    imageLoaderOptions: undefined,
+    include: undefined,
   }),
 ]);
 
@@ -142,9 +145,11 @@ const prodConfig = merge([
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
-    include: {},
+    include: undefined,
+    exclude: undefined,
   }),
   parts.loadImages({
+    include: undefined,
     exclude: path.join(PATHS.src, "assets", "fonts"),
     urlLoaderOptions: {
       limit: 10 * 1024,

@@ -29,7 +29,7 @@
     "@syncfusion/ej2-react-filemanager": "19.1.54",
     "@syncfusion/ej2-react-pdfviewer": "19.4.55",
     "@syncfusion/ej2-splitbuttons": "19.1.54",
-    "@types/jest": "^29.1.0",
+    "@types/jest": "24.9.1",
     "@types/lodash": "^4.14.192",
     "antd": "4.6.2",
     "axios": "0.21.1",
