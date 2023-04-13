@@ -5,6 +5,7 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-header"
+    gutter={64}
     justify="center"
   >
     <Col
@@ -56,6 +57,7 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-section"
+    gutter={64}
     justify="center"
   >
     <Col
@@ -232,6 +234,7 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-section"
+    gutter={64}
     justify="center"
   >
     <Col
