@@ -24,7 +24,7 @@ def _compliance_article_is_do_subparagraph(ca):
     if ca is None:
         return False
 
-    return ca.article_act_code == 'HSRCM' and ca.section == '1' and ca.sub_section == '7' and ca.paragraph == '3' and ca.sub_paragraph is not None
+    return ca.article_act_code == 'HSRCM' and ca.section == '1' and ca.sub_section == '7' and ca.paragraph == '1' and ca.sub_paragraph is not None
 
 
 class MineIncidentListResource(Resource, UserMixin):
