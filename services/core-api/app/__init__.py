@@ -35,7 +35,7 @@ from app.api.dams.namespace import api as dams_api
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
-from app.extensions import db, jwtv2, jwtv1, jwt, api as root_api_namespace, cache
+from app.extensions import db, jwtv2, jwtv1, jwt,jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
@@ -107,6 +107,12 @@ def register_extensions(app, test_config=None):
         if test_config is None:
             jwtv2.init_app(app)
             jwtv1.init_app(app)
+            jwt_bcmi.init_app(app)
+            jwt_fncs.init_app(app)
+            jwt_gentax.init_app(app)
+            jwt_nris.init_app(app)
+            jwt_vfcbc.init_app(app)
+            jwt_bcgw.init_app(app)
         else:
             jwt.init(app)
     except Exception as error:

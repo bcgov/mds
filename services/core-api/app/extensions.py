@@ -23,6 +23,17 @@ db = SQLAlchemy()
 jwtv2 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 # Existing Keycloak for integration clients
 jwtv1 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_V1'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_V1'), None, None, False, False, None, JWT_ROLE_CALLBACK_V1, None)
+
+# Gold SSO - Register Config Per Integration Client: 
+
+jwt_bcmi = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_BCMI'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_BCMI'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_fncs = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_FNCS'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_FNCS'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_gentax = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_GENTAX'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_GENTAX'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_nris = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_NRIS'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_NRIS'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_vfcbc = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_VFCBC'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_VFCBC'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_bcgw = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_BCGW'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_BCGW'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+
+
 # Test JWT Config for integration tests
 test_config = TestConfig()
 jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
