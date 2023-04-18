@@ -61,14 +61,12 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     explosive_magazines = db.relationship(
         'ExplosivesPermitMagazine',
         lazy='select',
-        primaryjoin=
-        'and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)'
+        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)'
     )
     detonator_magazines = db.relationship(
         'ExplosivesPermitMagazine',
         lazy='select',
-        primaryjoin=
-        'and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)'
+        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)'
     )
 
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
@@ -76,8 +74,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='explosives_permit_document_xref',
-        secondaryjoin=
-        'and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
     mines_act_permit = db.relationship('Permit', lazy='select')
@@ -89,14 +86,12 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     mine_manager = db.relationship(
         'MinePartyAppointment',
         lazy='select',
-        primaryjoin=
-        'MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.mine_manager_mine_party_appt_id'
+        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.mine_manager_mine_party_appt_id'
     )
     permittee = db.relationship(
         'MinePartyAppointment',
         lazy='select',
-        primaryjoin=
-        'MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.permittee_mine_party_appt_id')
+        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.permittee_mine_party_appt_id')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
@@ -256,6 +251,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 def create_permit_enclosed_letter():
                     mine = self.mine
                     # TODO: Implement a method in the document type to automatically get all read-only context values.
+                    # TODO: letter_date and letter_body are undefined, consider fixing this bug- letter_date results in NoneType has no len() error
                     template_data = {
                         'letter_date': letter_date,
                         'letter_body': letter_body,

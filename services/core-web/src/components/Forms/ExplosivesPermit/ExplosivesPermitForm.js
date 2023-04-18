@@ -20,15 +20,15 @@ import {
   lonNegative,
 } from "@common/utils/Validate";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
-import CustomPropTypes from "@/customPropTypes";
-import { renderConfig } from "@/components/common/config";
 import {
   getPartyRelationships,
   getAllPartyRelationships,
 } from "@common/selectors/partiesSelectors";
+import { getPermits } from "@common/selectors/permitSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
-import { getPermits } from "@common/selectors/permitSelectors";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 import * as Permission from "@/constants/permissions";
@@ -109,8 +109,11 @@ export const ExplosivesPermitForm = (props) => {
   );
 
   const isHistoric = !props.initialValues?.explosives_permit_id && props.isPermitTab;
-  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
-  const disabled = props.isProcessed && !isAdmin;
+  const isESUP = props.userRoles.includes(USER_ROLES[Permission.EDIT_EXPLOSIVES_PERMITS]);
+  // eslint-disable-next-line no-unused-vars
+  const hasEditPermission = isESUP;
+  // TODO: BE fix required before enabling the form for anyone to edit
+  const disabled = props.isProcessed; // props.isProcessed && !hasEditPermission;
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {isHistoric && (
@@ -121,7 +124,7 @@ export const ExplosivesPermitForm = (props) => {
           showIcon
         />
       )}
-      {props.isProcessed && (
+      {disabled && (
         <Alert
           message="Editing Disabled"
           description="If details of this permit need to be cleaned up for data quality purposes, contact the MDS administrators at mds@gov.bc.ca"
