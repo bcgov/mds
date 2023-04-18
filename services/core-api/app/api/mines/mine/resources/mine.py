@@ -515,5 +515,5 @@ def _throw_error_if_mine_exists(mine_name):
         name_filter = Mine.mine_name.ilike(mine_name.strip())
         mines_name_query = Mine.query.filter(name_filter)
         mines_with_name = mines_name_query.all()
-        if len(mines_with_name) > 0:
+        if len(mines_with_name) > 0 and mines_with_name[0].deleted_ind == False:
             raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
