@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -8,11 +8,6 @@ import {
   updateExplosivesPermit,
   deleteExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
-import {
-  fetchExplosivesPermitDocumentContextTemplate,
-  generateExplosivesPermitDocument,
-} from "@/actionCreators/documentActionCreator";
-import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import {
@@ -22,6 +17,11 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
+import {
+  fetchExplosivesPermitDocumentContextTemplate,
+  generateExplosivesPermitDocument,
+} from "@/actionCreators/documentActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
@@ -54,95 +54,103 @@ const defaultProps = {
   isPermitTab: false,
 };
 
-export class ExplosivesPermit extends Component {
-  state = { expandedRowKeys: [] };
+export const ExplosivesPermit = (props) => {
+  const {
+    mineGuid,
+    mines,
+    inspectors,
+    isPermitTab,
+    explosivesPermits,
+    explosivesPermitDocumentTypeDropdownOptions,
+  } = props;
 
-  onExpand = (expanded, record) =>
-    this.setState((prevState) => {
-      const expandedRowKeys = expanded
-        ? prevState.expandedRowKeys.concat(record.key)
-        : prevState.expandedRowKeys.filter((key) => key !== record.key);
-      return { expandedRowKeys };
-    });
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
-  handleAddExplosivesPermit = (values) => {
+  const onExpand = (expanded, record) => {
+    const newExpandedRowKeys = expanded
+      ? expandedRowKeys.concat(record.key)
+      : expandedRowKeys.filter((key) => key !== record.key);
+    setExpandedRowKeys(newExpandedRowKeys);
+  };
+
+  const handleAddExplosivesPermit = (values) => {
     const system = values.permit_tab ? "MMS" : "Core";
     const payload = {
       originating_system: system,
       ...values,
     };
-    return this.props.createExplosivesPermit(this.props.mineGuid, payload).then(() => {
-      this.props.fetchExplosivesPermits(this.props.mineGuid);
-      this.props.closeModal();
+    return props.createExplosivesPermit(mineGuid, payload).then(() => {
+      props.fetchExplosivesPermits(mineGuid);
+      props.closeModal();
     });
   };
 
-  handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
-    const initialValues = record || { permit_tab: isPermitTab };
+  const handleUpdateExplosivesPermit = (values) => {
+    const payload = {
+      ...values,
+    };
+    return props
+      .updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
+      .then(() => {
+        props.fetchExplosivesPermits(mineGuid);
+        props.closeModal();
+      });
+  };
+
+  const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
+    const initialValues = record || { permit_tab: permitTab };
     const isProcessed = record && record?.application_status !== "REC";
     event.preventDefault();
-    this.props.openModal({
+    props.openModal({
       props: {
-        onSubmit: record ? this.handleUpdateExplosivesPermit : this.handleAddExplosivesPermit,
+        onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
         title: "Add Explosives Storage & Use Permit",
         initialValues,
-        mineGuid: this.props.mineGuid,
+        mineGuid,
         isProcessed,
-        documentTypeDropdownOptions: this.props.explosivesPermitDocumentTypeDropdownOptions,
-        isPermitTab,
-        inspectors: this.props.inspectors,
+        documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
+        isPermitTab: permitTab,
+        inspectors,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
     });
   };
 
-  handleUpdateExplosivesPermit = (values) => {
-    const payload = {
-      ...values,
-    };
-    return this.props
-      .updateExplosivesPermit(this.props.mineGuid, values.explosives_permit_guid, payload)
-      .then(() => {
-        this.props.fetchExplosivesPermits(this.props.mineGuid);
-        this.props.closeModal();
-      });
-  };
-
-  handleOpenExplosivesPermitStatusModal = (event, record = null) => {
+  const handleOpenExplosivesPermitStatusModal = (event, record = null) => {
     const initialValues = record || {};
     delete initialValues.application_status;
     event.preventDefault();
-    this.props.openModal({
+    props.openModal({
       props: {
-        onSubmit: this.handleUpdateExplosivesPermit,
+        onSubmit: handleUpdateExplosivesPermit,
         title: "Update Explosives Permit Status",
         initialValues,
-        mineGuid: this.props.mineGuid,
+        mineGuid,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_STATUS_MODAL,
     });
   };
 
-  handleOpenExplosivesPermitCloseModal = (event, record = null) => {
+  const handleOpenExplosivesPermitCloseModal = (event, record = null) => {
     const initialValues = record || {};
     event.preventDefault();
-    this.props.openModal({
+    props.openModal({
       props: {
-        onSubmit: this.handleUpdateExplosivesPermit,
+        onSubmit: handleUpdateExplosivesPermit,
         title: "Update Explosives Permit Status",
         initialValues,
-        mineGuid: this.props.mineGuid,
+        mineGuid,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_CLOSE_MODAL,
     });
   };
 
-  handleOpenViewMagazineModal = (event, record, type) => {
-    const mine = this.props.mines[this.props.mineGuid];
+  const handleOpenViewMagazineModal = (event, record, type) => {
+    const mine = mines[mineGuid];
     const title = type === "EXP" ? "Explosive Magazine" : "Detonator Magazine";
     event.preventDefault();
-    this.props.openModal({
+    props.openModal({
       props: {
         title,
         explosivesPermit: record,
@@ -154,31 +162,29 @@ export class ExplosivesPermit extends Component {
     });
   };
 
-  handleIssueExplosivesPermit = (values, record) => {
+  const handleIssueExplosivesPermit = (values, record) => {
     const payload = { ...record, ...values, application_status: "APP" };
-    return this.props
-      .updateExplosivesPermit(this.props.mineGuid, record.explosives_permit_guid, payload)
+    return props
+      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload)
       .then(() => {
-        this.props.fetchExplosivesPermits(this.props.mineGuid);
-        this.props.closeModal();
+        props.fetchExplosivesPermits(mineGuid);
+        props.closeModal();
       });
   };
 
-  handleDeleteExplosivesPermit = (event, record) => {
+  const handleDeleteExplosivesPermit = (event, record) => {
     event.preventDefault();
-    return this.props
-      .deleteExplosivesPermit(this.props.mineGuid, record.explosives_permit_guid)
-      .then(() => {
-        this.props.fetchExplosivesPermits(this.props.mineGuid);
-      });
+    return props.deleteExplosivesPermit(mineGuid, record.explosives_permit_guid).then(() => {
+      props.fetchExplosivesPermits(mineGuid);
+    });
   };
 
-  handleDocumentPreview = (documentTypeCode, values, record) => {
+  const handleDocumentPreview = (documentTypeCode, values, record) => {
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
     };
-    return this.props.generateExplosivesPermitDocument(
+    return props.generateExplosivesPermitDocument(
       documentTypeCode,
       payload,
       "Successfully generated preview of Explosives Permit document",
@@ -186,24 +192,24 @@ export class ExplosivesPermit extends Component {
     );
   };
 
-  handleOpenExplosivesPermitDecisionModal = (event, record) => {
+  const handleOpenExplosivesPermitDecisionModal = (event, record) => {
     event.preventDefault();
-    return this.props
+    return props
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
       .then(() => {
         const initialValues = {};
-        this.props.documentContextTemplate.document_template.form_spec.map(
-          // eslint-disable-next-line
+        props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line no-return-assign
           (item) => (initialValues[item.id] = item["context-value"])
         );
-        return this.props.openModal({
+        return props.openModal({
           props: {
             initialValues,
-            documentType: this.props.documentContextTemplate,
-            inspectors: this.props.inspectors,
-            onSubmit: (values) => this.handleIssueExplosivesPermit(values, record),
+            documentType: props.documentContextTemplate,
+            inspectors,
+            onSubmit: (values) => handleIssueExplosivesPermit(values, record),
             previewDocument: (documentTypeCode, values) =>
-              this.handleDocumentPreview(documentTypeCode, values, record),
+              handleDocumentPreview(documentTypeCode, values, record),
             title: "Issue Explosives Storage & Use Permit",
           },
           width: "75vw",
@@ -212,54 +218,45 @@ export class ExplosivesPermit extends Component {
       });
   };
 
-  render() {
-    const title = this.props.isPermitTab
-      ? "Explosives Storage & Use Permit"
-      : "Explosives Storage & Use Permit Applications";
-    const data = this.props.isPermitTab
-      ? this.props.explosivesPermits.filter(
-          ({ application_status }) => application_status === "APP"
-        )
-      : this.props.explosivesPermits;
-    return (
-      <div>
-        <br />
-        <div className="inline-flex between">
-          <h4 className="uppercase">{title}</h4>
-          <AuthorizationWrapper
-            permission={
-              this.props.isPermitTab ? Permission.ADMIN : Permission.EDIT_EXPLOSIVES_PERMITS
-            }
-          >
-            <AddButton
-              onClick={(e) => this.handleOpenAddExplosivesPermitModal(e, this.props.isPermitTab)}
-            >
-              Add {title}
-            </AddButton>
-          </AuthorizationWrapper>
-        </div>
-        <br />
-        <MineExplosivesPermitTable
-          onExpand={this.onExpand}
-          expandedRowKeys={this.state.expandedRowKeys}
-          isLoaded
-          data={data}
-          isPermitTab={this.props.isPermitTab}
-          handleOpenExplosivesPermitDecisionModal={this.handleOpenExplosivesPermitDecisionModal}
-          handleOpenAddExplosivesPermitModal={this.handleOpenAddExplosivesPermitModal}
-          handleOpenViewMagazineModal={this.handleOpenViewMagazineModal}
-          explosivesPermitStatusOptionsHash={this.props.explosivesPermitStatusOptionsHash}
-          explosivesPermitDocumentTypeOptionsHash={
-            this.props.explosivesPermitDocumentTypeOptionsHash
-          }
-          handleOpenExplosivesPermitStatusModal={this.handleOpenExplosivesPermitStatusModal}
-          handleDeleteExplosivesPermit={this.handleDeleteExplosivesPermit}
-          handleOpenExplosivesPermitCloseModal={this.handleOpenExplosivesPermitCloseModal}
-        />
+  const title = isPermitTab
+    ? "Explosives Storage & Use Permit"
+    : "Explosives Storage & Use Permit Applications";
+  const data = isPermitTab
+    ? explosivesPermits.filter(({ application_status }) => application_status === "APP")
+    : explosivesPermits;
+
+  return (
+    <div>
+      <br />
+      <div className="inline-flex between">
+        <h4 className="uppercase">{title}</h4>
+        <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
+          <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e, isPermitTab)}>
+            Add 
+            {' '}
+            {title}
+          </AddButton>
+        </AuthorizationWrapper>
       </div>
-    );
-  }
-}
+      <br />
+      <MineExplosivesPermitTable
+        onExpand={onExpand}
+        expandedRowKeys={expandedRowKeys}
+        isLoaded
+        data={data}
+        isPermitTab={isPermitTab}
+        handleOpenExplosivesPermitDecisionModal={handleOpenExplosivesPermitDecisionModal}
+        handleOpenAddExplosivesPermitModal={handleOpenAddExplosivesPermitModal}
+        handleOpenViewMagazineModal={handleOpenViewMagazineModal}
+        explosivesPermitStatusOptionsHash={props.explosivesPermitStatusOptionsHash}
+        explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
+        handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
+        handleDeleteExplosivesPermit={handleDeleteExplosivesPermit}
+        handleOpenExplosivesPermitCloseModal={handleOpenExplosivesPermitCloseModal}
+      />
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
@@ -268,9 +265,8 @@ const mapStateToProps = (state) => ({
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
   explosivesPermitDocumentTypeOptionsHash: getExplosivesPermitDocumentTypeOptionsHash(state),
-  explosivesPermitDocumentTypeDropdownOptions: getExplosivesPermitDocumentTypeDropdownOptions(
-    state
-  ),
+  explosivesPermitDocumentTypeDropdownOptions:
+    getExplosivesPermitDocumentTypeDropdownOptions(state),
   documentContextTemplate: getDocumentContextTemplate(state),
 });
 
