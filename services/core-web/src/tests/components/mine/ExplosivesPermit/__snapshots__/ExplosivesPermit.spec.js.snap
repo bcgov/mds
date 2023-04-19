@@ -18,6 +18,7 @@ exports[`ExplosivesPermit renders properly 1`] = `
         onClick={[Function]}
       >
         Add
+         
         Explosives Storage & Use Permit Applications
       </AddButton>
     </Connect(AuthorizationWrapper)>
