@@ -17,6 +17,23 @@ def JWT_ROLE_CALLBACK(jwt_dict):
 def JWT_ROLE_CALLBACK_V1(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 
+def get_jwt_by_audience(aud):
+    audience_jwt_map = {
+        'JWT_OIDC_AUDIENCE': jwtv2,
+        'JWT_OIDC_AUDIENCE_BCMI': jwt_bcmi,
+        'JWT_OIDC_AUDIENCE_FNCS': jwt_fncs,
+        'JWT_OIDC_AUDIENCE_GENTAX': jwt_gentax,
+        'JWT_OIDC_AUDIENCE_NRIS': jwt_nris,
+        'JWT_OIDC_AUDIENCE_VFCBC': jwt_vfcbc,
+        'JWT_OIDC_AUDIENCE_BCGW': jwt_bcgw,
+    }
+
+    for audience_env, jwt_value in audience_jwt_map.items():
+        if os.environ.get(audience_env) in aud:
+            return jwt_value
+
+    return None
+
 db = SQLAlchemy()
 
 # Gold SSO
@@ -39,25 +56,26 @@ test_config = TestConfig()
 jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
 
 def getJwtManager():
-    gold_sso = 'loginproxy.gov.bc.ca'
     kc_realms = 'oidc.gov.bc.ca'
-    
     auth_header = jwt.get_token_auth_header()
     token = jwt_jose.get_unverified_claims(auth_header)
 
     iss = token.get('iss')
-
-    if iss in test_config.JWT_OIDC_TEST_ISSUER:
-        return jwt
-    
-    if gold_sso in iss:
-        return jwtv2
+    aud = token.get('aud')
 
     if kc_realms in iss:
         print("\n **Client from oidc.gov.bc.ca Detected \n")
         return jwtv1
 
-    raise AuthError({'code': 'auth_fail',
+    if iss in test_config.JWT_OIDC_TEST_ISSUER:
+        jwt_result = jwt
+    else:
+        jwt_result = get_jwt_by_audience(aud)
+
+    if jwt_result is not None:
+        return jwt_result
+    else:
+        raise AuthError({'code': 'auth_fail',
                              'description': 'Unable to select JWT Manager: Unknown Issuer'}, 401)
     
 cache = Cache()

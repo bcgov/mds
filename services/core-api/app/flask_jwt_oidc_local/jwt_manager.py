@@ -204,6 +204,12 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
             return True
         return False
 
+    def get_all_roles(self):
+        """Get all roles from the token."""
+        token = self.get_token_auth_header()
+        unverified_claims = jwt.get_unverified_claims(token)
+        return self.jwt_role_callback(unverified_claims)
+
     def requires_roles(self, required_roles):
         """Check that the listed roles are in the token using the registered callback.
 

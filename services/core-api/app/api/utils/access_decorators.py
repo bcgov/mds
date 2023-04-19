@@ -131,6 +131,8 @@ def requires_any_of(roles):
             try:
                 return getJwtManager().has_one_of_roles(roles)(func)(*args, **kwds)
             except AuthError as e:
+                print("required: ", roles)
+                print("found: ", getJwtManager().get_all_roles())
                 raise Forbidden(e.error['description'])
 
         wrapper.required_roles = _combine_role_flags(func, roles)
@@ -142,7 +144,12 @@ def requires_any_of(roles):
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
-        return getJwtManager().requires_roles([role])(func)(*args, **kwds)
+            try:
+                return getJwtManager().requires_roles([role])(func)(*args, **kwds)
+            except AuthError as e:
+                print("required: ", role)
+                print("found: ", getJwtManager().get_all_roles())
+                raise Forbidden(e.error['description'])
 
     wrapper.required_roles = _combine_role_flags(func, [role])
     return wrapper
