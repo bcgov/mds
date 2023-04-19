@@ -1,4 +1,5 @@
 from decimal import Decimal
+from datetime import datetime
 from flask.globals import current_app
 
 from werkzeug.exceptions import NotFound
@@ -131,18 +132,6 @@ class ExplosivesPermitResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
-    parser.add_argument(
-        'letter_date',
-        type=str,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
-        'letter_body',
-        type=str,
-        store_missing=False,
-        required=False,
-    )
 
     @api.doc(
         description='Get an Explosives Permit.',
@@ -173,6 +162,10 @@ class ExplosivesPermitResource(Resource, UserMixin):
             raise NotFound('Explosives Permit not found')
 
         data = self.parser.parse_args()
+
+        letter_date = str(datetime.utcnow())
+        letter_body = ""
+
         explosives_permit.update(
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
@@ -180,9 +173,10 @@ class ExplosivesPermitResource(Resource, UserMixin):
             data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
             data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
-            data.get('description'), data.get('explosive_magazines', []),
-            data.get('detonator_magazines', []), data.get('documents', []), data.get('letter_date'),
-            data.get('letter_body'))
+            data.get('description'),
+            letter_date, letter_body,
+            data.get('explosive_magazines', []),
+            data.get('detonator_magazines', []), data.get('documents', []))
 
         explosives_permit.save()
         return explosives_permit

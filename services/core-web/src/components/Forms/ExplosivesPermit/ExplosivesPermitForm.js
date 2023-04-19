@@ -112,7 +112,7 @@ export const ExplosivesPermitForm = (props) => {
   const isESUP = props.userRoles.includes(USER_ROLES[Permission.EDIT_EXPLOSIVES_PERMITS]);
   // eslint-disable-next-line no-unused-vars
   const hasEditPermission = isESUP;
-  // TODO: BE fix required before enabling the form for anyone to edit
+  // TODO: See MDS-5201- editing currently disabled
   const disabled = props.isProcessed; // props.isProcessed && !hasEditPermission;
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>

@@ -153,11 +153,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                longitude,
                application_date,
                description,
+               letter_date,
+               letter_body,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
-               letter_date=None,
-               letter_body=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -251,7 +251,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 def create_permit_enclosed_letter():
                     mine = self.mine
                     # TODO: Implement a method in the document type to automatically get all read-only context values.
-                    # TODO: letter_date and letter_body are undefined, consider fixing this bug- letter_date results in NoneType has no len() error
                     template_data = {
                         'letter_date': letter_date,
                         'letter_body': letter_body,

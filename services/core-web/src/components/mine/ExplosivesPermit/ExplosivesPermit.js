@@ -62,7 +62,6 @@ export const ExplosivesPermit = (props) => {
     isPermitTab,
     explosivesPermits,
     explosivesPermitDocumentTypeDropdownOptions,
-    documentContextTemplate,
   } = props;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -98,8 +97,8 @@ export const ExplosivesPermit = (props) => {
       });
   };
 
-  const handleOpenAddExplosivesPermitModal = (event, record = null) => {
-    const initialValues = record || { permit_tab: isPermitTab };
+  const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
+    const initialValues = record || { permit_tab: permitTab };
     const isProcessed = record && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
@@ -110,7 +109,7 @@ export const ExplosivesPermit = (props) => {
         mineGuid,
         isProcessed,
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
-        isPermitTab,
+        isPermitTab: permitTab,
         inspectors,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
@@ -168,7 +167,7 @@ export const ExplosivesPermit = (props) => {
     return props
       .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload)
       .then(() => {
-        fetchExplosivesPermits(mineGuid);
+        props.fetchExplosivesPermits(mineGuid);
         props.closeModal();
       });
   };
@@ -199,14 +198,14 @@ export const ExplosivesPermit = (props) => {
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
       .then(() => {
         const initialValues = {};
-        documentContextTemplate.document_template.form_spec.map(
+        props.documentContextTemplate.document_template.form_spec.map(
           // eslint-disable-next-line no-return-assign
           (item) => (initialValues[item.id] = item["context-value"])
         );
         return props.openModal({
           props: {
             initialValues,
-            documentType: documentContextTemplate,
+            documentType: props.documentContextTemplate,
             inspectors,
             onSubmit: (values) => handleIssueExplosivesPermit(values, record),
             previewDocument: (documentTypeCode, values) =>
@@ -232,8 +231,9 @@ export const ExplosivesPermit = (props) => {
       <div className="inline-flex between">
         <h4 className="uppercase">{title}</h4>
         <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
-          <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e)}>
-Add
+          <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e, isPermitTab)}>
+            Add 
+            {' '}
             {title}
           </AddButton>
         </AuthorizationWrapper>
