@@ -128,7 +128,7 @@ export const renderContacts = (props, disabled = false) => {
 
 renderContacts.propTypes = renderContactsPropTypes;
 
-const ViewNoticeOfDepartureModal = (props) => {
+const NoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -450,7 +450,7 @@ const ViewNoticeOfDepartureModal = (props) => {
   );
 };
 
-ViewNoticeOfDepartureModal.propTypes = propTypes;
+NoticeOfDepartureModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
@@ -478,4 +478,4 @@ export default compose(
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
   })
-)(ViewNoticeOfDepartureModal);
+)(NoticeOfDepartureModal);

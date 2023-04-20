@@ -52,7 +52,7 @@ import UpdateNoWDateModal from "./UpdateNoWDateModal";
 import EMLIContactModal from "./EMLIContactModal";
 import UpdateMinespaceUserModal from "./UpdateMinespaceUserModal";
 import ManageDocumentsDownloadPackageModal from "./ManageDocumentsDownloadPackageModal";
-import ViewNoticeOfDepartureModal from "./ViewNoticeOfDepartureModal";
+import NoticeOfDepartureModal from "./NoticeOfDepartureModal";
 import UploadProjectDecisionPackageDocumentModal from "./UploadProjectDecisionPackageDocumentModal";
 import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPackageDocumentModal";
 import AddMineAlertModal from "./AddMineAlertModal";
@@ -113,7 +113,7 @@ export const modalConfig = {
   EMLI_CONTACT_MODAL: EMLIContactModal,
   UPDATE_MINESPACE_USERS: UpdateMinespaceUserModal,
   NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL: ManageDocumentsDownloadPackageModal,
-  VIEW_NOTICE_OF_DEPARTURE_MODAL: ViewNoticeOfDepartureModal,
+  NOTICE_OF_DEPARTURE_MODAL: NoticeOfDepartureModal,
   UPLOAD_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL: UploadProjectDecisionPackageDocumentModal,
   UPDATE_PROJECT_DECISION_PACKAGE_DOCUMENT_MODAL: UpdateProjectDecisionPackageDocumentModal,
   ADD_MINE_ALERT: AddMineAlertModal,

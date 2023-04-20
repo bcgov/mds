@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
+exports[`NoticeOfDepartureModal renders properly 1`] = `
 <ContextProvider
   value={
     Object {

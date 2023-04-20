@@ -12,9 +12,9 @@ import {
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { useLocation } from "react-router-dom";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import { useLocation } from "react-router-dom";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 
@@ -62,7 +62,7 @@ export const MineNoticeOfDeparture = (props) => {
         mine,
       },
       width: "50vw",
-      content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,
+      content: modalConfig.NOTICE_OF_DEPARTURE_MODAL,
     });
   };
 
