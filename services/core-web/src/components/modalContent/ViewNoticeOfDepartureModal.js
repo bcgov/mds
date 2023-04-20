@@ -5,18 +5,11 @@ import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import {
   EMPTY_FIELD,
-  NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
-import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
-import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
-import LinkButton from "@/components/common/buttons/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate, normalizePhone, resetForm } from "@common/utils/helpers";
 import {
@@ -28,7 +21,6 @@ import {
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { change, Field, FieldArray, reduxForm } from "redux-form";
-import { renderConfig } from "@/components/common/config";
 import {
   email,
   maxLength,
@@ -36,8 +28,18 @@ import {
   required,
   validateSelectOptions,
 } from "@common/utils/Validate";
+import { USER_ROLES } from "@mds/common";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
+import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
+import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
+import LinkButton from "@/components/common/buttons/LinkButton";
+import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -51,9 +53,14 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export const renderContacts = (props) => {
+const renderContactsPropTypes = {
+  fields: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export const renderContacts = (props, disabled = false) => {
   const { fields } = props;
 
   return (
@@ -72,6 +79,7 @@ export const renderContacts = (props) => {
                 placeholder="First Name"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(200)]}
+                disabled={disabled}
               />
             </Form.Item>
           </Col>
@@ -83,6 +91,7 @@ export const renderContacts = (props) => {
                 placeholder="Last Name"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(200)]}
+                disabled={disabled}
               />
             </Form.Item>
           </Col>
@@ -95,6 +104,7 @@ export const renderContacts = (props) => {
                 component={renderConfig.FIELD}
                 validate={[phoneNumber, maxLength(12), required]}
                 normalize={normalizePhone}
+                disabled={disabled}
               />
             </Form.Item>
           </Col>
@@ -106,6 +116,7 @@ export const renderContacts = (props) => {
                 component={renderConfig.FIELD}
                 placeholder="example@example.com"
                 validate={[email, required]}
+                disabled={disabled}
               />
             </Form.Item>
           </Col>
@@ -115,14 +126,19 @@ export const renderContacts = (props) => {
   );
 };
 
+renderContacts.propTypes = renderContactsPropTypes;
+
 const ViewNoticeOfDepartureModal = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const { noticeOfDeparture, mine, handleSubmit, pristine, formValues } = props;
+  const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
   const { nod_guid } = noticeOfDeparture;
+
+  const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
+  const disabled = !hasEditPermission;
 
   const checklist = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -246,30 +262,33 @@ const ViewNoticeOfDepartureModal = (props) => {
         sorter: isSortable ? (a, b) => a.create_timestamp.localeCompare(b.create_timestamp) : false,
         render: (text) => <div title="Type">{formatDate(text) || EMPTY_FIELD}</div>,
       },
-      {
-        dataIndex: "actions",
-        render: (text, record) => (
-          <div className="btn--middle flex">
-            <Popconfirm
-              placement="topRight"
-              title="Are you sure you want to delete this file?"
-              onConfirm={() =>
-                handleDeleteANoticeOfDepartureDocument({
-                  mine_guid: mine.mine_guid,
-                  nod_guid,
-                  ...record,
-                })
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <button type="button">
-                <img name="remove" src={TRASHCAN} alt="Remove Document" />
-              </button>
-            </Popconfirm>
-          </div>
-        ),
-      },
+      ...(disabled
+        ? []
+        : [
+            {
+              dataIndex: "actions",
+              render: (text, record) => (
+                <div className="btn--middle flex">
+                  <Popconfirm
+                    placement="topRight"
+                    title="Are you sure you want to delete this file?"
+                    onConfirm={() =>
+                      handleDeleteANoticeOfDepartureDocument({
+                        mine_guid: mine.mine_guid,
+                        nod_guid,
+                        ...record,
+                      })}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <button type="button">
+                      <img name="remove" src={TRASHCAN} alt="Remove Document" />
+                    </button>
+                  </Popconfirm>
+                </div>
+              ),
+            },
+          ]),
     ];
   };
 
@@ -309,7 +328,10 @@ const ViewNoticeOfDepartureModal = (props) => {
             <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
           </div>
         </div>
-        <FieldArray name="nod_contacts" component={renderContacts} />
+        <FieldArray
+          name="nod_contacts"
+          component={(componentProps) => renderContacts(componentProps, disabled)}
+        />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
         <CoreTable
           condition
@@ -337,33 +359,35 @@ const ViewNoticeOfDepartureModal = (props) => {
             />
           </div>
         )}
-        <Form.Item>
-          <div className="nod-modal-section-header padding-md--top">
-            <h4 className="nod-modal-section-header padding-md--top">
-              Upload Ministry Decision Documentation
-            </h4>
-            <Field
-              id="fileUpload"
-              name="fileUpload"
-              component={FileUpload}
-              addFileStart={() => setUploading(true)}
-              onAbort={() => setUploading(false)}
-              onProcessFiles={() => setUploading(false)}
-              uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
-              acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-              onFileLoad={(documentName, document_manager_guid) => {
-                onFileLoad(
-                  documentName,
-                  document_manager_guid,
-                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
-                );
-              }}
-              onRemoveFile={onRemoveFile}
-              allowRevert
-              allowMultiple
-            />
-          </div>
-        </Form.Item>
+        {!disabled && (
+          <Form.Item>
+            <div className="nod-modal-section-header padding-md--top">
+              <h4 className="nod-modal-section-header padding-md--top">
+                Upload Ministry Decision Documentation
+              </h4>
+              <Field
+                id="fileUpload"
+                name="fileUpload"
+                component={FileUpload}
+                addFileStart={() => setUploading(true)}
+                onAbort={() => setUploading(false)}
+                onProcessFiles={() => setUploading(false)}
+                uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
+                acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+                onFileLoad={(documentName, document_manager_guid) => {
+                  onFileLoad(
+                    documentName,
+                    document_manager_guid,
+                    NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+                  );
+                }}
+                onRemoveFile={onRemoveFile}
+                allowRevert
+                allowMultiple
+              />
+            </div>
+          </Form.Item>
+        )}
         <Row justify="space-between" className="padding-md--top" gutter={24}>
           <Col span={12}>
             <p className="field-title">Updated Date</p>
@@ -381,32 +405,45 @@ const ViewNoticeOfDepartureModal = (props) => {
                   validate={[validateSelectOptions(statusOptions)]}
                   component={renderConfig.SELECT}
                   data={statusOptions}
+                  disabled={disabled}
                 />
               </Form.Item>
             </div>
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Button
-            className="full-mobile nod-update-button"
-            type="primary"
-            htmlType="submit"
-            onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
-            disabled={(pristine && documentArray.length === 0) || uploading}
-          >
-            Update
-          </Button>
-          <Popconfirm
-            placement="top"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={props.closeModal}
-          >
-            <Button className="full-mobile nod-cancel-button" type="secondary">
-              Cancel
+          {disabled ? (
+            <Button
+              className="full-mobile nod-cancel-button"
+              type="primary"
+              onClick={props.closeModal}
+            >
+              Close
             </Button>
-          </Popconfirm>
+          ) : (
+            <>
+              <Button
+                className="full-mobile nod-update-button"
+                type="primary"
+                htmlType="submit"
+                onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
+                disabled={(pristine && documentArray.length === 0) || uploading}
+              >
+                Update
+              </Button>
+              <Popconfirm
+                placement="top"
+                title="Are you sure you want to cancel?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={props.closeModal}
+              >
+                <Button className="full-mobile nod-cancel-button" type="secondary">
+                  Cancel
+                </Button>
+              </Popconfirm>
+            </>
+          )}
         </div>
       </Form>
     </div>
@@ -418,6 +455,7 @@ ViewNoticeOfDepartureModal.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
   initialValues: getNoticeOfDeparture(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
