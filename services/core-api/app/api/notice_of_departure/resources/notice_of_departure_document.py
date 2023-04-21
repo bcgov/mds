@@ -5,8 +5,7 @@ from flask import request, current_app
 from flask_restplus import Resource
 
 from app.extensions import api
-from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
-                                             EDIT_DO)
+from app.api.utils.access_decorators import (requires_any_of, MINESPACE_PROPONENT, EDIT_PERMIT)
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -21,7 +20,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 class MineNoticeOfDepartureNewDocumentUploadResource(Resource, UserMixin):
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PERMIT, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -40,7 +39,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
             'GUID for the notice of departure to which the document should be associated'
         })
     @api.marshal_with(NOD_MODEL, code=200)
-    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PERMIT, MINESPACE_PROPONENT])
     def put(self, nod_guid):
         parser = CustomReqparser()
         # Arguments required by MineDocument
@@ -83,6 +82,7 @@ class MineNoticeOfDepartureDocumentUploadResource(Resource, UserMixin):
 
 class MineNoticeOfDepartureDocumentResource(Resource, UserMixin):
 
+    @requires_any_of([EDIT_PERMIT])
     def delete(self, nod_guid, docman_guid):
         doc = NoticeOfDepartureDocumentXref.find_by_docman_guid(docman_guid)
 

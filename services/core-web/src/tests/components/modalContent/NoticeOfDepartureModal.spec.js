@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
 // eslint-disable-next-line import/no-unresolved
-import ViewNoticeOfDepartureModal from "@/components/modalContent/ViewNoticeOfDepartureModal";
-import { MINE_RESPONSE, NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
 import { Provider } from "react-redux";
+import NoticeOfDepartureModal from "@/components/modalContent/NoticeOfDepartureModal";
+import { MINE_RESPONSE, NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
 import { store } from "@/App";
 
 const dispatchProps = {};
@@ -29,11 +29,11 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("ViewNoticeOfDepartureModal", () => {
+describe("NoticeOfDepartureModal", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>
-        <ViewNoticeOfDepartureModal {...dispatchProps} {...props} />
+        <NoticeOfDepartureModal {...dispatchProps} {...props} />
       </Provider>
     );
     expect(component).toMatchSnapshot();

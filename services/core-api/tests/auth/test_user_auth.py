@@ -52,7 +52,7 @@ def setup_info(db_session):
 # Test no role
 def test_get_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.get('/authtest', headers={})
-    assert resp.status_code == 403
+    assert resp.status_code == 401
 
 
 # Test view
@@ -70,7 +70,7 @@ def test_get_proponent_auth_applies_user(test_client, db_session, auth_headers, 
 # Test no role
 def test_put_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.put('/authtest', headers={})
-    assert resp.status_code == 403
+    assert resp.status_code == 401
 
 
 # Test view
@@ -88,7 +88,7 @@ def test_put_proponent_auth_applies_user(test_client, db_session, auth_headers, 
 # Test no role
 def test_post_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.post('/authtest', headers={})
-    assert resp.status_code == 403
+    assert resp.status_code == 401
 
 
 # Test view
@@ -106,7 +106,7 @@ def test_post_proponent_auth_applies_user(test_client, db_session, auth_headers,
 # Test no role
 def test_delete_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.delete('/authtest', headers={})
-    assert resp.status_code == 403
+    assert resp.status_code == 401
 
 
 # Test view

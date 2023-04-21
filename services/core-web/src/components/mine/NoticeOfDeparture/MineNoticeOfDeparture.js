@@ -12,11 +12,14 @@ import {
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { useLocation } from "react-router-dom";
+import { USER_ROLES } from "@mds/common";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import { useLocation } from "react-router-dom";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -26,6 +29,7 @@ const propTypes = {
   fetchPermits: PropTypes.func.isRequired,
   fetchNoticesOfDeparture: PropTypes.func.isRequired,
   fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export const MineNoticeOfDeparture = (props) => {
@@ -53,7 +57,9 @@ export const MineNoticeOfDeparture = (props) => {
     const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
       selectedNoticeOfDeparture.nod_guid
     );
-    const title = "View Notice of Departure";
+    const title = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS])
+      ? "Edit Notice of Departure"
+      : "View Notice of Departure";
     props.openModal({
       props: {
         noticeOfDeparture: detailedNoticeOfDeparture.data,
@@ -62,7 +68,7 @@ export const MineNoticeOfDeparture = (props) => {
         mine,
       },
       width: "50vw",
-      content: modalConfig.VIEW_NOTICE_OF_DEPARTURE_MODAL,
+      content: modalConfig.NOTICE_OF_DEPARTURE_MODAL,
     });
   };
 
@@ -113,6 +119,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
   nods: getNoticesOfDeparture(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

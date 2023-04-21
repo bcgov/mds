@@ -339,7 +339,7 @@ export const getDangerousOccurrenceSubparagraphOptions = createSelector(
           code.article_act_code === "HSRCM" &&
           code.section === "1" &&
           code.sub_section === "7" &&
-          code.paragraph === "3" &&
+          code.paragraph === "1" &&
           code.sub_paragraph !== null
       )
       .map((code) => {

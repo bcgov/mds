@@ -3,7 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.activity.utils import trigger_notification
-from app.api.utils.access_decorators import (requires_any_of, EDIT_DO, MINESPACE_PROPONENT)
+from app.api.utils.access_decorators import (requires_any_of, EDIT_PERMIT, VIEW_ALL, MINESPACE_PROPONENT)
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodStatus, NodType
 from app.api.notice_of_departure.dto import NOD_MODEL, UPDATE_NOD_MODEL
 from app.api.notice_of_departure.utils.validators import contact_validator
@@ -12,7 +12,7 @@ from app.api.notice_of_departure.utils.validators import contact_validator
 class NoticeOfDepartureResource(Resource, UserMixin):
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
-    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PERMIT, VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(NOD_MODEL, code=200)
     def get(self, nod_guid):
         nod = NoticeOfDeparture.find_one(
@@ -20,7 +20,7 @@ class NoticeOfDepartureResource(Resource, UserMixin):
         return nod
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
-    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PERMIT, MINESPACE_PROPONENT])
     @api.expect(UPDATE_NOD_MODEL)
     @api.marshal_with(NOD_MODEL, code=200)
     def patch(self, nod_guid):
@@ -88,7 +88,7 @@ class NoticeOfDepartureResource(Resource, UserMixin):
         return update_nod
 
     @api.doc(params={'nod_guid': 'Nod guid.'})
-    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PERMIT, MINESPACE_PROPONENT])
     def delete(self, nod_guid):
         nod = NoticeOfDeparture.find_one(nod_guid, True)
         nod.delete(nod_guid)

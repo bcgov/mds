@@ -171,7 +171,7 @@ def SampleDangerousOccurrenceSubparagraphs(num):
         db.session.query(ComplianceArticle).filter(ComplianceArticle.article_act_code == 'HSRCM',
                                                    ComplianceArticle.section == '1',
                                                    ComplianceArticle.sub_section == '7',
-                                                   ComplianceArticle.paragraph == '3',
+                                                   ComplianceArticle.paragraph == '1',
                                                    ComplianceArticle.sub_paragraph != None).all(),
         num)
 
