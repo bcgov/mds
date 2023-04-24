@@ -11,10 +11,13 @@
     ["@babel/preset-react"]
   ],
   "plugins": [
-    ["import", {
-      "libraryName": "antd",
-      "style": true
-    }],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ],
     [
       "@babel/transform-runtime",
       {
@@ -22,6 +25,23 @@
       }
     ],
     ["@babel/plugin-proposal-class-properties"],
-    ["react-hot-loader/babel"]
-  ]
+    ["react-hot-loader/babel"],
+    ["transform-class-properties"]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "entry",
+            "corejs": 3,
+            "targets": { "node": "current", "ie": "8" }
+          }
+        ],
+        ["@babel/preset-react"]
+      ],
+      "plugins": ["transform-class-properties"]
+    }
+  }
 }

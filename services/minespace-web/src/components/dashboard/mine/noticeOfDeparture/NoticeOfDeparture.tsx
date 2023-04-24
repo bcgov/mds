@@ -18,8 +18,8 @@ import { useLocation, useParams } from "react-router-dom";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
-  NOTICE_OF_DEPARTURE_TYPE_VALUES,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
+  NOTICE_OF_DEPARTURE_TYPE_VALUES,
 } from "@common/constants/strings";
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
