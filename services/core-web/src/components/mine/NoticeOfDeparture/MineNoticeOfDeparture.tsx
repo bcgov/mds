@@ -79,7 +79,7 @@ export const MineNoticeOfDeparture = (props) => {
         window.history.replaceState(
           {},
           document.title,
-          `${MINE_NOTICES_OF_DEPARTURE.dynamicRoute(mineGuid, "")}`
+          `${MINE_NOTICES_OF_DEPARTURE.dynamicRoute(mineGuid)}`
         );
         await openNoticeOfDepartureModal(null, { nod_guid: nod });
       })();

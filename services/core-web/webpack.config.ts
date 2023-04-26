@@ -40,6 +40,7 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
+// @ts-ignore
 envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env) {
@@ -56,8 +57,19 @@ if (dotenv.parsed) {
 
 const commonConfig = merge([
   {
+    devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ["babel-loader", "ts-loader"],
+        },
+        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
+      ],
     },
     plugins: [
       //new webpack.optimize.ModuleConcatenationPlugin(),
@@ -65,7 +77,7 @@ const commonConfig = merge([
         template: PATHS.template,
       }),
       // Adding timestamp to builds
-      function() {
+      function () {
         this.plugin("watch-run", (watching, callback) => {
           console.log(`Begin compile at ${new Date()}`);
           callback();
@@ -73,6 +85,7 @@ const commonConfig = merge([
       },
     ],
     resolve: {
+      extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
         "react-dom": "@hot-loader/react-dom", // patch react-dom import
@@ -147,7 +160,7 @@ const prodConfig = merge([
         quality: 40,
       },
       pngquant: {
-        quality: [0.50, 0.60],
+        quality: [0.5, 0.6],
         speed: 4,
       },
     },

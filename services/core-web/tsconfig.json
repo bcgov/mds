@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "jsx": "react",
+    "paths": {
+      "@common/*": ["common/*"],
+      "@mds/common/*": ["../common"],
+      "@/*": ["src/*"]
+    },
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "strict": false /* Enable all strict type-checking options. */,
+    "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src/**/*", "common/**/*"],
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+}
