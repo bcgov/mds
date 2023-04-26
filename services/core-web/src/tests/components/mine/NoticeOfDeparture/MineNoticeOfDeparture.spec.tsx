@@ -1,13 +1,15 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { MineNoticeOfDeparture } from "@/components/mine/NoticeOfDeparture/MineNoticeOfDeparture";
+import MineNoticeOfDeparture from "@/components/mine/NoticeOfDeparture/MineNoticeOfDeparture";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import matchMedia from "@/tests/mocks/matchMedia";
+import { renderWithProvider } from "@/tests/mocks/utils";
 
-const dispatchProps = {};
-const reducerProps = {};
+const dispatchProps: any = {};
+const reducerProps: any = {};
 
 function mockFunction() {
-  const original = require.requireActual("react-router-dom");
+  // @ts-ignore
+  const original = jest.requireActual("react-router-dom");
   return {
     ...original,
     useLocation: jest.fn().mockReturnValue({
@@ -41,9 +43,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+beforeAll(() => {
+  window.matchMedia = matchMedia;
+});
+
 describe("MineNoticeOfDeparture", () => {
   it("renders properly", () => {
-    const component = shallow(<MineNoticeOfDeparture {...dispatchProps} {...reducerProps} />);
-    expect(component).toMatchSnapshot();
+    const { container } = renderWithProvider(
+      <MineNoticeOfDeparture {...dispatchProps} {...reducerProps} />
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
