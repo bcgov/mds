@@ -10,9 +10,9 @@ DECLARE
 	explosives_permit_perm integer[];
 
 BEGIN
-    SELECT array_agg(mine_party_appt_id) INTO _party_appt_id
-    FROM mine_party_appt
-    WHERE mine_guid = _mine_guid AND mine_tailings_storage_facility_guid = _mine_tsf_guid;
+	SELECT array_agg(mine_party_appt_id) INTO _party_appt_id
+	FROM mine_party_appt
+	WHERE mine_guid = _mine_guid AND mine_tailings_storage_facility_guid = _mine_tsf_guid;
 
 	SELECT array_agg(mine_manager_mine_party_appt_id) INTO explosives_permit_mm
 	FROM explosives_permit
@@ -40,21 +40,21 @@ BEGIN
 
 	RAISE NOTICE 'Successfully deleted appointments associated with mine tailings storage facility %s', _mine_tsf_guid;
 
-    RAISE NOTICE 'Deleting dams';
+	RAISE NOTICE 'Deleting dams';
 
     -- Delete dams associated with the tailings storage facility.
     DELETE FROM dam
     WHERE mine_tailings_storage_facility_guid = _mine_tsf_guid;
 
-    RAISE NOTICE 'Successfully deleted dams associated with mine tailings storage facility %s', _mine_tsf_guid;
+	RAISE NOTICE 'Successfully deleted dams associated with mine tailings storage facility %s', _mine_tsf_guid;
 
-    RAISE NOTICE 'Deleting tailing storage facility';
+	RAISE NOTICE 'Deleting tailing storage facility';
 
     -- Delete TSF.
     DELETE FROM mine_tailings_storage_facility
     WHERE mine_guid = _mine_guid AND mine_tailings_storage_facility_guid = _mine_tsf_guid;
 
-    RAISE NOTICE 'Successfully deleted mine tailings storage facility %s', _mine_tsf_guid;
+	RAISE NOTICE 'Successfully deleted mine tailings storage facility %s', _mine_tsf_guid;
 
 END;
 
