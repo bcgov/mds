@@ -3,7 +3,7 @@ import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
-import { required } from "@common/utils/Validate";
+import { notnone } from "@common/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -16,7 +16,7 @@ const defaultProps = {
   mine: {},
 };
 
-export const EngineerOfRecordOptions = (props) => {
+export const TSFOptions = (props) => {
   const tsfDropdown = createDropDownList(
     props.mine.mine_tailings_storage_facilities,
     "mine_tailings_storage_facility_name",
@@ -35,7 +35,7 @@ export const EngineerOfRecordOptions = (props) => {
             doNotPinDropdown
             component={renderConfig.SELECT}
             data={tsfDropdown}
-            validate={[required]}
+            validate={[notnone]}
           />
         </Form.Item>
       </Col>
@@ -43,7 +43,7 @@ export const EngineerOfRecordOptions = (props) => {
   );
 };
 
-EngineerOfRecordOptions.propTypes = propTypes;
-EngineerOfRecordOptions.defaultProps = defaultProps;
+TSFOptions.propTypes = propTypes;
+TSFOptions.defaultProps = defaultProps;
 
-export default EngineerOfRecordOptions;
+export default TSFOptions;
