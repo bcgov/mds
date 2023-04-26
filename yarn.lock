@@ -1962,7 +1962,7 @@ __metadata:
     "@syncfusion/ej2-react-filemanager": 19.1.54
     "@syncfusion/ej2-react-pdfviewer": 19.4.55
     "@syncfusion/ej2-splitbuttons": 19.1.54
-    "@testing-library/react": 9.5
+    "@testing-library/react": 9.5.0
     "@types/jest": 29.5.1
     "@types/lodash": 4.14.194
     "@types/react": 18.2.0
@@ -3273,7 +3273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:9.5":
+"@testing-library/react@npm:9.5.0":
   version: 9.5.0
   resolution: "@testing-library/react@npm:9.5.0"
   dependencies:
