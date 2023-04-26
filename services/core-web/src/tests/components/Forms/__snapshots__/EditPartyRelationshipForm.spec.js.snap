@@ -43,7 +43,7 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
-  <EngineerOfRecordOptions
+  <TSFOptions
     mine={Object {}}
   />
   <div

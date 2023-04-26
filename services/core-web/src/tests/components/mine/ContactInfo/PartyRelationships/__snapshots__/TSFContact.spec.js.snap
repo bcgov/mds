@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EngineerOfRecord renders properly 1`] = `
+exports[`TSFContact renders properly 1`] = `
 <DefaultContact
   compact={false}
   editPermission="role_edit_parties"

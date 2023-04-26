@@ -16,7 +16,7 @@ const propTypes = {
   compact: PropTypes.bool.isRequired,
 };
 
-export const EngineerOfRecord = (props) => {
+export const TSFContact = (props) => {
   const tsf = props.mine.mine_tailings_storage_facilities.find(
     ({ mine_tailings_storage_facility_guid }) =>
       mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
@@ -40,6 +40,6 @@ export const EngineerOfRecord = (props) => {
   );
 };
 
-EngineerOfRecord.propTypes = propTypes;
+TSFContact.propTypes = propTypes;
 
-export default EngineerOfRecord;
+export default TSFContact;
