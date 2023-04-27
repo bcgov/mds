@@ -13,10 +13,11 @@ RUN yarn
 # Build Common Package
 RUN yarn workspace @mds/common build
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 # Build Core Web Only
 RUN yarn workspace @mds/core-web build
 
-ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 # Remove dependencies
 RUN rm -rf /app/node_modules
