@@ -252,9 +252,10 @@ export class AddPartyRelationshipForm extends Component {
                   <Field
                     id="start_date"
                     name="start_date"
-                    label="Start Date"
+                    label="* Start Date"
                     placeholder="yyyy-mm-dd"
                     component={renderConfig.DATE}
+                    validate={[required]}
                   />
                 </Form.Item>
               </Col>
