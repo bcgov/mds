@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from enum import Enum
-from http.client import BAD_REQUEST
+from werkzeug.exceptions import BadRequest
+
 
 from sqlalchemy import and_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
@@ -25,12 +26,14 @@ class MinePartyAppointmentStatus(str, Enum):
     def __str__(self):
         return self.value
 
+
 class MinePartyAcknowledgedStatus(str, Enum):
     acknowledged = 'acknowledged'
     not_acknowledged = 'not_acknowledged'
 
     def __str__(self):
         return self.value
+
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_party_appt'
@@ -264,7 +267,6 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         else:
             built_query = built_query.filter_by(mine_party_appt_type_code=mine_party_appt_type_code)
 
-                
         return built_query.all()
 
     @classmethod
@@ -290,7 +292,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             .all()
 
         if include_permit_contacts and mine_guid:
-            #avoid circular imports.
+            # avoid circular imports.
             from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_contacts = []
@@ -336,7 +338,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
         email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()
-        
+
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
 
         recipients = cache.get(EDIT_TSF_EMAILS)
@@ -353,7 +355,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
             "start_date": start_date,
-            "party": {                
+            "party": {
                 "first_name": self.party.first_name,
                 "last_name": self.party.party_name
             },
@@ -364,7 +366,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             "core_appt_link": button_link,
             "submitted_at": submitted_at
         }
-        subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'        
+        subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'
         EmailService.send_template_email(subject, recipients, email_body, email_context)
 
     @classmethod
@@ -393,7 +395,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             return True
 
         if len(current_mpa) != 1:
-            raise BAD_REQUEST('There is currently not exactly one active appointment.')
+            raise BadRequest('There is currently not exactly one active appointment.')
 
         if validate_new_start_date and current_mpa[0].start_date and new_start_date < current_mpa[0].start_date:
             return False

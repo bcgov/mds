@@ -66,13 +66,12 @@ export class ViewPartyRelationships extends Component {
   constructor(props) {
     super(props);
     this.RoleConfirmation = React.createRef();
+    this.state = {
+      selectedPartyRelationshipType: {},
+      selectedPartyRelationship: {},
+      uploadedFiles: [],
+    };
   }
-
-  state = {
-    selectedPartyRelationshipType: {},
-    selectedPartyRelationship: {},
-    uploadedFiles: [],
-  };
 
   onFileLoad = (documentName, document_manager_guid) => {
     this.setState((prevState) => ({
@@ -87,7 +86,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   onSubmitAddPartyRelationship = (values) => {
-    const payload = {
+    const payload = this.formatValuesEndCurrent({
       mine_guid: this.props.mine.mine_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
       party_guid: values.party_guid,
@@ -96,7 +95,7 @@ export class ViewPartyRelationships extends Component {
       end_date: values.end_date,
       end_current: values.end_current,
       union_rep_company: values.union_rep_company,
-    };
+    });
 
     return this.props
       .addPartyRelationship(payload)
@@ -198,13 +197,25 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  formatValuesEndCurrent = (values) => {
+    let end_current = values.end_current ?? true;
+    if (values.end_date) {
+      const endDate = new Date(values.end_date);
+      endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60000);
+      end_current = endDate >= new Date();
+    }
+    return { ...values, end_current };
+  };
+
   onSubmitEditPartyRelationship = (values) => {
-    const payload = this.state.selectedPartyRelationship;
+    let payload = this.state.selectedPartyRelationship;
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
     payload.union_rep_company = values.union_rep_company;
     payload.related_guid = values.related_guid || payload.related_guid;
+
+    payload = this.formatValuesEndCurrent(payload);
 
     return this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
@@ -458,6 +469,7 @@ export class ViewPartyRelationships extends Component {
               placement="topRight"
               {...this.confirmationProps(this.state.selectedPartyRelationshipType)}
             >
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 type="button"
                 ref={this.RoleConfirmation}
