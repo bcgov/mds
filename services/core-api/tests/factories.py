@@ -43,7 +43,7 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_contact.models.project_contact import ProjectContact
@@ -628,7 +628,7 @@ class MinePartyAppointmentFactory(BaseFactory):
                                       PERMIT_LINKED_CONTACT_TYPES else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
-        if o.mine_party_appt_type_code == 'EOR' else None)
+        if o.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES else None)
 
 
 class PartyOrgBookEntityFactory(BaseFactory):
