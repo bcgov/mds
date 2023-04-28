@@ -44,9 +44,14 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="start_date"
-          label="Start Date"
+          label="* Start Date"
           name="start_date"
           placeholder="yyyy-mm-dd"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
