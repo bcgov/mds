@@ -86,6 +86,9 @@ export const required = (value) => (value || value === 0 ? undefined : "This is 
 export const requiredRadioButton = (value) =>
   value !== null && value !== undefined ? undefined : "This is a required field";
 
+export const requiredNotUndefined = (value) =>
+  value !== undefined ? undefined : "This is a required field";
+
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
 

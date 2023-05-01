@@ -382,6 +382,7 @@ class MineIncidentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    incident_location = factory.fuzzy.FuzzyChoice(['surface', 'underground', None])
     reported_timestamp = factory.Faker('past_datetime')
     reported_by_name = factory.Faker('name')
     reported_by_phone_no = factory.Faker('numerify', text='###-###-####')

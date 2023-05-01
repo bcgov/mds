@@ -65,6 +65,7 @@ MINE_INCIDENT_MODEL = api.model(
         'major_mine_ind': fields.Boolean,
         'incident_timestamp': fields.DateTime,
         'incident_description': fields.String,
+        'incident_location': fields.String,
         'reported_timestamp': fields.DateTime,
         'reported_by_name': fields.String,
         'reported_by_email': fields.String,

@@ -44,6 +44,7 @@ class TestPostMineIncident:
             'incident_timestamp': '2019-01-01 00:00',
             'reported_timestamp': '2019-01-01 00:00',
             'incident_description': incident.incident_description,
+            'incident_location': 'surface'
         }
         post_resp = test_client.post(
             f'/mines/{mine.mine_guid}/incidents',
@@ -53,4 +54,5 @@ class TestPostMineIncident:
         assert post_resp.status_code == 201, post_resp.response
         assert post_data['incident_timestamp'] == test_incident_data['incident_timestamp']
         assert post_data['incident_description'] == test_incident_data['incident_description']
+        assert post_data['incident_location'] == test_incident_data['incident_location']
         assert post_data['reported_timestamp'] == str(test_incident_data['reported_timestamp'])
