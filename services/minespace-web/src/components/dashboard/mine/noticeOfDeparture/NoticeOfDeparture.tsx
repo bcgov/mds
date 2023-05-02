@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { closeModal, openModal } from "@common/actions/modalActions";
@@ -12,8 +12,8 @@ import {
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
 import { useLocation, useParams } from "react-router-dom";
+import { IMine, INoticeOfDeparture, IPermit } from "@mds/common";
 
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
@@ -23,32 +23,30 @@ import {
 } from "@common/constants/strings";
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
-import CustomPropTypes from "@/customPropTypes";
 import { MINE_DASHBOARD } from "@/constants/routes";
 
-const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  nods: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  createNoticeOfDeparture: PropTypes.func.isRequired,
-  updateNoticeOfDeparture: PropTypes.func.isRequired,
-  fetchNoticesOfDeparture: PropTypes.func.isRequired,
-  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
-  addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
-  fetchPermits: PropTypes.func.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-};
+interface NoticeOfDepartureProps {
+  mine: IMine;
+  nods: INoticeOfDeparture[];
+  permits: IPermit[];
+  openModal: typeof openModal;
+  closeModal: typeof closeModal;
+  createNoticeOfDeparture: typeof createNoticeOfDeparture;
+  updateNoticeOfDeparture: typeof updateNoticeOfDeparture;
+  fetchNoticesOfDeparture: typeof fetchNoticesOfDeparture;
+  fetchDetailedNoticeOfDeparture: typeof fetchDetailedNoticeOfDeparture;
+  addDocumentToNoticeOfDeparture: typeof addDocumentToNoticeOfDeparture;
+  fetchPermits: typeof fetchPermits;
+}
 
-const defaultProps = {};
-
-export const NoticeOfDeparture = (props) => {
+export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const location = useLocation();
   const url = useParams();
 
   const handleFetchPermits = async () => {
+    console.log(mine.mine_guid);
     await props.fetchPermits(mine.mine_guid);
     await setIsLoaded(true);
   };
@@ -66,7 +64,7 @@ export const NoticeOfDeparture = (props) => {
     Promise.all(
       documentArray.forEach((document) =>
         props.addDocumentToNoticeOfDeparture(
-          { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+          { noticeOfDepartureGuid },
           {
             document_type: document.document_type,
             document_name: document.document_name,
@@ -106,7 +104,7 @@ export const NoticeOfDeparture = (props) => {
 
     return props
       .updateNoticeOfDeparture(
-        { mineGuid: mine.mine_guid, nodGuid },
+        { nodGuid },
         { ...values, nod_status: nod_status || values.nod_status }
       )
       .then(async (response) => {
@@ -220,8 +218,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-NoticeOfDeparture.propTypes = propTypes;
-NoticeOfDeparture.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfDeparture);
