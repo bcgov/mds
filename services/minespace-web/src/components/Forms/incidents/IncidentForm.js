@@ -17,6 +17,7 @@ import {
   dateNotBeforeStrictOther,
   wholeNumber,
   requiredRadioButton,
+  requiredNotUndefined,
 } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -95,12 +96,8 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const {
-    applicationSubmitted,
-    location,
-    confirmedSubmission,
-    setConfirmedSubmission,
-  } = childProps;
+  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
+    childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -199,14 +196,14 @@ const renderIncidentStatusCallout = (childProps) => {
 
   return (
     <Callout
-      message={
+      message={(
         <div>
           <h4 id="initial-report" style={{ color: "#313132", fontWeight: 700 }}>
             {title}
           </h4>
           <p>{message}</p>
         </div>
-      }
+      )}
       severity={severity}
     />
   );
@@ -283,6 +280,13 @@ const renderIncidentDetails = (childProps, formDisabled) => {
     managementRepContacted,
   } = retrieveIncidentDetailsDynamicValidation({ formValues });
 
+  const showUnspecified = formDisabled && !formValues.incident_location;
+  const locationOptions = [
+    { label: "Surface", value: "surface" },
+    { label: "Underground", value: "underground" },
+    ...(showUnspecified ? [{ label: "Not Specified", value: "" }] : []),
+  ];
+
   return (
     <Row gutter={[16]}>
       <Col span={24}>
@@ -296,6 +300,16 @@ const renderIncidentDetails = (childProps, formDisabled) => {
         </Typography.Paragraph>
       </Col>
       <Col span={24}>
+        <Form.Item label="Incident Location">
+          <Field
+            id="incident_location"
+            name="incident_location"
+            disabled={formDisabled}
+            component={renderConfig.RADIO}
+            validate={[requiredRadioButton]}
+            customOptions={locationOptions}
+          />
+        </Form.Item>
         <Form.Item label="Incident date and time">
           <Field
             id="incident_timestamp"
@@ -409,7 +423,7 @@ const renderIncidentDetails = (childProps, formDisabled) => {
             name="verbal_notification_provided"
             component={renderConfig.RADIO}
             disabled={formDisabled}
-            validate={[requiredRadioButton]}
+            validate={[requiredNotUndefined]}
           />
         </Form.Item>
       </Col>
@@ -626,8 +640,7 @@ const renderUploadInitialNotificationDocuments = (
                     document_manager_guid,
                     Strings.INCIDENT_DOCUMENT_TYPES.initial,
                     INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                  )
-                }
+                  )}
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={match.params?.mineGuid}
                 component={IncidentFileUpload}
@@ -653,8 +666,7 @@ const renderUploadInitialNotificationDocuments = (
                     parentHandlers.openUploadIncidentDocumentsModal(
                       e,
                       Strings.INCIDENT_DOCUMENT_TYPES.initial
-                    )
-                  }
+                    )}
                   className="full-mobile violet violet-border"
                 >
                   + Add Documentation
@@ -701,8 +713,7 @@ const renderUploadInitialNotificationDocuments = (
                       document_manager_guid,
                       Strings.INCIDENT_DOCUMENT_TYPES.final,
                       FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                    )
-                  }
+                    )}
                   onRemoveFile={parentHandlers?.deleteDocument}
                   mineGuid={match.params?.mineGuid}
                   component={IncidentFileUpload}
@@ -727,8 +738,7 @@ const renderUploadInitialNotificationDocuments = (
                     parentHandlers.openUploadIncidentDocumentsModal(
                       e,
                       Strings.INCIDENT_DOCUMENT_TYPES.final
-                    )
-                  }
+                    )}
                   className="full-mobile violet violet-border"
                 >
                   + Add Final Report

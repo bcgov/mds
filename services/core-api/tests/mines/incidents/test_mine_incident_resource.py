@@ -43,6 +43,7 @@ class TestPutMineIncident:
             'incident_timestamp': '2019-01-01 00:00',
             'reported_timestamp': '2019-01-01 00:00',
             'incident_description': incident.incident_description,
+            'incident_location': incident.incident_location,
             'reported_by_name': incident.reported_by_name,
             'reported_by_email': incident.reported_by_email,
             'reported_by_phone_no': incident.reported_by_phone_no,
@@ -78,6 +79,7 @@ class TestPutMineIncident:
         assert put_data['incident_timestamp'] == data['incident_timestamp']
         assert put_data['reported_timestamp'] == data['reported_timestamp']
         assert put_data['incident_description'] == data['incident_description']
+        assert put_data['incident_location'] == data['incident_location']
         assert put_data['reported_by_name'] == data['reported_by_name']
         assert put_data['reported_by_email'] == data['reported_by_email']
         assert put_data['reported_by_phone_no'] == data['reported_by_phone_no']

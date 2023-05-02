@@ -40,6 +40,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
         'incident_timestamp': now_time_string,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
+        'incident_location': 'surface'
     }
 
     post_resp = test_client.post(
@@ -49,6 +50,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_guid'] == str(test_mine_guid)
     assert post_data['determination_type_code'] == data['determination_type_code']
+    assert post_data['incident_location'] == data['incident_location']
     assert post_data['incident_timestamp'] == now_time_string
 
     # datetime.fromisoformat is in python 3.7
@@ -66,6 +68,7 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
         'incident_timestamp': now_time_string,
         'reported_timestamp': now_time_string,
         'incident_description': 'Someone got a paper cut',
+        'incident_location': 'surface',
         'mine_determination_type_code': 'NDO',
         'mine_determination_representative': 'Billy'
     }
@@ -79,6 +82,7 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
     assert post_data['determination_type_code'] == data['determination_type_code']
     assert post_data['incident_timestamp'] == now_time_string
     assert post_data['incident_description'] == data['incident_description']
+    assert post_data['incident_location'] == data['incident_location']
     assert post_data['mine_determination_type_code'] == data['mine_determination_type_code']
     assert post_data['mine_determination_representative'] == data[
         'mine_determination_representative']
@@ -99,6 +103,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
         'incident_timestamp': now_time_string,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
+        'incident_location': 'underground',
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
@@ -111,6 +116,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
     assert post_data['determination_type_code'] == data['determination_type_code']
     assert post_data['incident_timestamp'] == now_time_string
     assert post_data['incident_description'] == data['incident_description']
+    assert post_data['incident_location'] == data['incident_location']
     assert set(post_data['dangerous_occurrence_subparagraph_ids']) == set(
         data['dangerous_occurrence_subparagraph_ids'])
 
@@ -123,6 +129,7 @@ def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_sessio
         'determination_type_code': 'DO',
         'incident_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
+        'incident_location': 'underground',
         'dangerous_occurrence_subparagraph_ids': []
     }
 
@@ -225,6 +232,7 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
         'incident_description': "Someone got a really bad paper cut",
+        'incident_location': 'underground',
         'dangerous_occurrence_subparagraph_ids': []
     }
 
