@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
-import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
+import { TSFContact } from "@/components/mine/ContactInfo/PartyRelationships/TSFContact";
 import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
 import { UnionRep } from "@/components/mine/ContactInfo/PartyRelationships/UnionRep";
 
@@ -43,8 +43,9 @@ export const Contact = (props) => {
   let component;
 
   switch (props.partyRelationship.mine_party_appt_type_code) {
+    case "TQP":
     case "EOR":
-      component = <EngineerOfRecord {...props} />;
+      component = <TSFContact {...props} />;
       break;
     case "URP":
       component = <UnionRep {...props} />;

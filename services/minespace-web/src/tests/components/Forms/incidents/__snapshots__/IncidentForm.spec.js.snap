@@ -171,6 +171,38 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
+            label="Incident Location"
+          >
+            <Field
+              component={[Function]}
+              customOptions={
+                Array [
+                  Object {
+                    "label": "Surface",
+                    "value": "surface",
+                  },
+                  Object {
+                    "label": "Underground",
+                    "value": "underground",
+                  },
+                  Object {
+                    "label": "Not Specified",
+                    "value": "",
+                  },
+                ]
+              }
+              disabled={true}
+              id="incident_location"
+              name="incident_location"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+          <FormItem
+            hasFeedback={false}
             label="Incident date and time"
           >
             <Field

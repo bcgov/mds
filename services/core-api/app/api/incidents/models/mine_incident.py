@@ -36,6 +36,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
     incident_timestamp = db.Column(db.DateTime, nullable=False)
     incident_description = db.Column(db.String, nullable=False)
+    incident_location = db.Column(db.String)
 
     reported_timestamp = db.Column(db.DateTime)
     reported_by_name = db.Column(db.String)
@@ -189,6 +190,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                mine,
                incident_timestamp,
                incident_description,
+               incident_location=None,
                determination_type_code=None,
                mine_determination_type_code=None,
                mine_determination_representative=None,
@@ -199,6 +201,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
             incident_description=incident_description,
+            incident_location=incident_location,
             reported_timestamp=reported_timestamp,
             reported_by_name=reported_by_name,
             determination_type_code=determination_type_code,

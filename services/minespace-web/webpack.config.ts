@@ -11,7 +11,7 @@ const parts = require("./webpack.parts");
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
 const HOST = process.env.HOST || "0.0.0.0";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3020;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
 
@@ -22,7 +22,6 @@ const PATHS = {
   template: path.join(__dirname, "public", "index.html"),
   build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
-  vendor: path.join(__dirname, "vendor"),
   commonPackage: path.join(__dirname, "common"),
 };
 
@@ -35,11 +34,13 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
-  vendor: PATHS.vendor,
   "@common": PATHS.commonPackage,
+  // Put your aliases here
 };
 
 const envFile = {};
+
+// @ts-ignore
 envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env) {
@@ -56,16 +57,27 @@ if (dotenv.parsed) {
 
 const commonConfig = merge([
   {
+    devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
     },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ["babel-loader", "ts-loader"],
+        },
+        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
+      ],
+    },
     plugins: [
-      //new webpack.optimize.ModuleConcatenationPlugin(),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
       // Adding timestamp to builds
-      function() {
+      function () {
         this.plugin("watch-run", (watching, callback) => {
           console.log(`Begin compile at ${new Date()}`);
           callback();
@@ -73,24 +85,25 @@ const commonConfig = merge([
       },
     ],
     resolve: {
-      alias: {
-        ...PATH_ALIASES,
-        "react-dom": "@hot-loader/react-dom", // patch react-dom import
-      },
+      extensions: [".tsx", ".ts", ".js"],
+      alias: { ...PATH_ALIASES, "react-dom": "@hot-loader/react-dom" },
     },
   },
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
     include: [PATHS.src, PATHS.commonPackage],
+    exclude: [PATHS.node_modules],
   }),
   parts.loadFonts({
-    exclude: path.join(PATHS.src, "assets", "images"),
+    include: path.join(PATHS.src, "assets", "fonts"),
+    exclude: undefined,
     options: {
       name: BUILD_FILE_NAMES.assets,
     },
   }),
   parts.loadFiles({
     include: path.join(PATHS.src, "assets", "downloads"),
+    exclude: undefined,
   }),
 ]);
 
@@ -109,11 +122,13 @@ const devConfig = merge([
     host: HOST,
     port: PORT,
   }),
-  parts.loadCSS({
-    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
-  }),
+  parts.loadCSS(),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
+    urlLoaderOptions: undefined,
+    fileLoaderOptions: undefined,
+    imageLoaderOptions: undefined,
+    include: undefined,
   }),
 ]);
 
@@ -130,9 +145,11 @@ const prodConfig = merge([
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
-    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
+    include: undefined,
+    exclude: undefined,
   }),
   parts.loadImages({
+    include: undefined,
     exclude: path.join(PATHS.src, "assets", "fonts"),
     urlLoaderOptions: {
       limit: 10 * 1024,
@@ -147,7 +164,7 @@ const prodConfig = merge([
         quality: 40,
       },
       pngquant: {
-        quality: [0.50, 0.60],
+        quality: [0.5, 0.6],
         speed: 4,
       },
     },

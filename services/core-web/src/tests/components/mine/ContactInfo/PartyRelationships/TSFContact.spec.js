@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import EngineerOfRecord from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
+import TSFContact from "@/components/mine/ContactInfo/PartyRelationships/TSFContact";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -30,9 +30,9 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("EngineerOfRecord", () => {
+describe("TSFContact", () => {
   it("renders properly", () => {
-    const component = shallow(<EngineerOfRecord {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<TSFContact {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

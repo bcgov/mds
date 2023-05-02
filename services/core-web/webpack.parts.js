@@ -61,6 +61,30 @@ exports.loadJS = ({ include, exclude } = {}) => ({
   },
 });
 
+exports.loadTS = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        include,
+        exclude,
+        loader: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 1,
+              workerParallelJobs: 50,
+              workerNodeArgs: ["--max-old-space-size=1024"],
+            },
+          },
+          "babel-loader?cacheDirectory",
+          "ts-loader",
+        ],
+      },
+    ],
+  },
+});
+
 exports.loadCSS = ({ include, exclude, theme } = {}) => ({
   module: {
     rules: [

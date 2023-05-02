@@ -12,7 +12,7 @@ import { required, validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
-import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { TSFOptions } from "@/components/Forms/PartyRelationships/TSFOptions";
 import { UnionRepOptions } from "@/components/Forms/PartyRelationships/UnionRepOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
@@ -143,11 +143,14 @@ const validate = (values, props) => {
 };
 
 export class AddPartyRelationshipForm extends Component {
-  state = {
-    skipDateValidation: false,
-    currentAppointment: {},
-    selectedParty: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      skipDateValidation: false,
+      currentAppointment: {},
+      selectedParty: null,
+    };
+  }
 
   // When the start_date and/or the related_guid are changed this checks to see if the the only appointment
   // it violates is the current one. A state variable is set that toggles a check box if it only violates the current appointment.
@@ -193,8 +196,9 @@ export class AddPartyRelationshipForm extends Component {
   render() {
     let options;
     switch (this.props.partyRelationshipType.mine_party_appt_type_code) {
+      case "TQP":
       case "EOR":
-        options = <EngineerOfRecordOptions mine={this.props.mine} />;
+        options = <TSFOptions mine={this.props.mine} />;
         break;
       case "URP":
         options = <UnionRepOptions />;
@@ -248,9 +252,10 @@ export class AddPartyRelationshipForm extends Component {
                   <Field
                     id="start_date"
                     name="start_date"
-                    label="Start Date"
+                    label="* Start Date"
                     placeholder="yyyy-mm-dd"
                     component={renderConfig.DATE}
+                    validate={[required]}
                   />
                 </Form.Item>
               </Col>

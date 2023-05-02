@@ -5,16 +5,8 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-header"
-    gutter={
-      Array [
-        Object {
-          "sm": 0,
-          "xl": 64,
-        },
-      ]
-    }
+    gutter={64}
     justify="center"
-    type="flex"
   >
     <Col
       xl={
@@ -65,16 +57,8 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-section"
-    gutter={
-      Array [
-        Object {
-          "sm": 0,
-          "xl": 64,
-        },
-      ]
-    }
+    gutter={64}
     justify="center"
-    type="flex"
   >
     <Col
       sm={
@@ -223,7 +207,6 @@ exports[`LandingPage renders properly 1`] = `
       </Paragraph>
       <Row
         justify="center"
-        type="flex"
       >
         <Col
           span={24}
@@ -251,16 +234,8 @@ exports[`LandingPage renders properly 1`] = `
   <Row
     align="top"
     className="landing-section"
-    gutter={
-      Array [
-        Object {
-          "sm": 0,
-          "xl": 64,
-        },
-      ]
-    }
+    gutter={64}
     justify="center"
-    type="flex"
   >
     <Col
       sm={

@@ -31,10 +31,10 @@
     "postinstall": "husky install"
   },
   "lint-staged": {
-    "*.{js,css,json,md}": [
+    "*.{js,css,json,md,ts,tsx}": [
       "prettier --write --ignore-unknown --config .prettierrc.json"
     ],
-    "*.js": [
+    "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
   },

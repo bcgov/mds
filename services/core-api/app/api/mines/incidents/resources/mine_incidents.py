@@ -36,6 +36,7 @@ class MineIncidentListResource(Resource, UserMixin):
         location='json',
         required=True)
     parser.add_argument('incident_description', type=str, location='json', required=True)
+    parser.add_argument('incident_location', type=str, location='json', required=True)
     parser.add_argument(
         'reported_timestamp',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
@@ -125,6 +126,7 @@ class MineIncidentListResource(Resource, UserMixin):
             mine,
             data['incident_timestamp'],
             data['incident_description'],
+            data['incident_location'],
             data['determination_type_code'],
             mine_determination_type_code=data['mine_determination_type_code'],
             mine_determination_representative=data['mine_determination_representative'],
@@ -248,6 +250,7 @@ class MineIncidentResource(Resource, UserMixin):
         location='json',
         store_missing=False)
     parser.add_argument('incident_description', type=str, location='json', store_missing=False)
+    parser.add_argument('incident_location', type=str, location='json', store_missing=False)
     parser.add_argument(
         'reported_timestamp',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,

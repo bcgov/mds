@@ -206,7 +206,7 @@ class MineListResource(Resource, UserMixin):
             mines_name_query = Mine.query.filter(name_filter | number_filter)
 
             permit_query = Mine.query.join(MinePermitXref).join(Permit).filter(
-                permit_filter, Permit.deleted_ind == False)
+                permit_filter, Permit.deleted_ind == False, MinePermitXref.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
 
         # Filter by Major Mine, if provided

@@ -111,7 +111,7 @@ const IncidentCategoryCheckboxGroup = (props) => {
                   padding: "6px",
                 }}
               >
-                <Checkbox value={category.value}>
+                <Checkbox value={category.value} style={{ fontSize: "1rem" }}>
                   <b>{category.label}</b>
                 </Checkbox>
               </Row>
