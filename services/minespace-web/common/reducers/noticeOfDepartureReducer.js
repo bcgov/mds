@@ -1,18 +1,12 @@
-import { INoticeOfDeparture } from "@mds/common";
 import * as actionTypes from "../constants/actionTypes";
 import { NOTICES_OF_DEPARTURE } from "../constants/reducerTypes";
 
-interface NoDState {
-  nods: INoticeOfDeparture[];
-  noticeOfDeparture: INoticeOfDeparture | NonNullable<unknown>;
-}
-
-const initialState: NoDState = {
+const initialState = {
   nods: [],
   noticeOfDeparture: {},
 };
 
-export const noticeOfDepartureReducer = (state: NoDState = initialState, action) => {
+export const noticeOfDepartureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_NOTICES_OF_DEPARTURE:
       return {
@@ -33,9 +27,7 @@ const noticeOfDepartureReducerObject = {
   [NOTICES_OF_DEPARTURE]: noticeOfDepartureReducer,
 };
 
-export const getNoticesOfDeparture = (state): INoticeOfDeparture[] =>
-  state[NOTICES_OF_DEPARTURE].nods;
-export const getNoticeOfDeparture = (state): INoticeOfDeparture =>
-  state[NOTICES_OF_DEPARTURE].noticeOfDeparture;
+export const getNoticesOfDeparture = (state) => state[NOTICES_OF_DEPARTURE].nods;
+export const getNoticeOfDeparture = (state) => state[NOTICES_OF_DEPARTURE].noticeOfDeparture;
 
 export default noticeOfDepartureReducerObject;

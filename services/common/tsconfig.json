@@ -1,25 +1,21 @@
 {
-  // Change this to match your project
-  "include": ["src/**/*", "webpack.config.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
-  "compilerOptions": {
-    "outDir": "dist" /* Redirect output structure to the directory. */,
-    "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "jsx": "react",
-    "declaration": true,
-    "declarationMap": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-    "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": false /* Enable all strict type-checking options. */,
-    "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    // Change this to match your project
+    "include": ["src/**/*"],
+    "compilerOptions": {
+      // Tells TypeScript to read JS files, as
+      // normally they are ignored as source files
+      "allowJs": true,
+      // Generate d.ts files
+      "declaration": true,
+      // This compiler run should
+      // only output d.ts files
+      "emitDeclarationOnly": true,
+      // Types should go into this directory.
+      // Removing this would place the .d.ts files
+      // next to the .js files
+      "outDir": "dist",
+      // go to js file when using IDE functions like
+      // "Go to Definition" in VSCode
+      "declarationMap": true
+    }
   }
-}
