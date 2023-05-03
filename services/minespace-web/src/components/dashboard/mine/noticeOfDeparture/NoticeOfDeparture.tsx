@@ -46,7 +46,6 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   const url = useParams();
 
   const handleFetchPermits = async () => {
-    console.log(mine.mine_guid);
     await props.fetchPermits(mine.mine_guid);
     await setIsLoaded(true);
   };
