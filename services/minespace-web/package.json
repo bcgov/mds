@@ -85,7 +85,6 @@
     "@babel/preset-react": "7.14.5",
     "@types/react": "18.0.34",
     "@types/react-dom": "18.0.11",
-    "@types/redux": "^3.6.0",
     "@types/styled-components": "5.1.26",
     "acorn": "6.4.1",
     "autoprefixer": "9.7.4",

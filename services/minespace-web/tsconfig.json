@@ -5,7 +5,7 @@
     "jsx": "react",
     "paths": {
       "@common/*": ["common/*"],
-      "@mds/common/*": ["../common/"],
+      "@mds/common/*": ["../common"],
       "@/*": ["src/*"]
     },
     "moduleResolution": "node",
@@ -18,7 +18,7 @@
     "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*", "common/**/*", "tsconfig.json", "../../.eslintrc.js"],
+  "include": ["src/**/*", "common/**/*"],
   "exclude": [
     "node_modules",
     "src/**/*.test.ts",
