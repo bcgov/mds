@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -23,6 +23,9 @@ import configureStore from "./store/configureStore";
 
 export const store = configureStore();
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }} />);
 
 const propTypes = {
@@ -36,7 +39,13 @@ const defaultProps = {
   staticContentLoadingIsComplete: false,
 };
 
-const App = (props) => {
+interface AppProps {
+  isAuthenticated: boolean;
+  staticContentLoadingIsComplete: boolean;
+  loadBulkStaticContent: () => void;
+}
+
+const App: FC<AppProps> = (props) => {
   const [isIE, setIsIE] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
 
@@ -46,7 +55,7 @@ const App = (props) => {
     if (isAuthenticated) {
       loadBulkStaticContent();
     }
-    setIsIE(detectIE());
+    setIsIE(!!detectIE());
   }, []);
 
   useEffect(() => {
@@ -78,7 +87,7 @@ const App = (props) => {
               <MediaQuery maxWidth={500}>
                 {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
               </MediaQuery>
-              <Row type="flex" justify="center" align="top">
+              <Row justify="center" align="top">
                 <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
                   <Routes />
                 </Col>
@@ -115,4 +124,5 @@ export default compose(
   hot(module),
   connect(mapStateToProps, mapDispatchToProps),
   AuthenticationGuard(true)
+  // @ts-ignore
 )(App);
