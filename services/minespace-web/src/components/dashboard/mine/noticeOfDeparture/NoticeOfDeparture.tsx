@@ -13,7 +13,14 @@ import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelect
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation, useParams } from "react-router-dom";
-import { IMine, INoticeOfDeparture, IPermit } from "@mds/common";
+import {
+  ICreateNoticeOfDeparture,
+  IDocumentPayload,
+  IMine,
+  INoticeOfDeparture,
+  IPermit,
+  NodStatusSaveEnum,
+} from "@mds/common";
 
 import { getPermits } from "@common/selectors/permitSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
@@ -24,6 +31,7 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
+import { AxiosResponse } from "axios";
 
 interface NoticeOfDepartureProps {
   mine: IMine;
@@ -31,10 +39,15 @@ interface NoticeOfDepartureProps {
   permits: IPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
-  createNoticeOfDeparture: typeof createNoticeOfDeparture;
-  updateNoticeOfDeparture: typeof updateNoticeOfDeparture;
+  createNoticeOfDeparture: (
+    payload: ICreateNoticeOfDeparture
+  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
+  updateNoticeOfDeparture: (
+    { nodGuid }: { nodGuid: string },
+    payload: Partial<ICreateNoticeOfDeparture>
+  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   fetchNoticesOfDeparture: typeof fetchNoticesOfDeparture;
-  fetchDetailedNoticeOfDeparture: typeof fetchDetailedNoticeOfDeparture;
+  fetchDetailedNoticeOfDeparture: (nod_guid: string) => Promise<AxiosResponse<INoticeOfDeparture>>;
   addDocumentToNoticeOfDeparture: typeof addDocumentToNoticeOfDeparture;
   fetchPermits: typeof fetchPermits;
 }
@@ -59,27 +72,30 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
     handleFetchNoticesOfDeparture();
   }, []);
 
-  const handleAddDocuments = (documentArray, noticeOfDepartureGuid) => {
-    Promise.all(
-      documentArray.forEach((document) =>
-        props.addDocumentToNoticeOfDeparture(
-          { noticeOfDepartureGuid },
-          {
-            document_type: document.document_type,
-            document_name: document.document_name,
-            document_manager_guid: document.document_manager_guid,
-          }
-        )
-      )
-    );
+  const handleAddDocuments = (documentArray: IDocumentPayload[], noticeOfDepartureGuid: string) => {
+    for (const document of documentArray) {
+      props.addDocumentToNoticeOfDeparture(
+        { noticeOfDepartureGuid },
+        {
+          document_type: document.document_type,
+          document_name: document.document_name,
+          document_manager_guid: document.document_manager_guid,
+        }
+      );
+    }
   };
 
-  const handleCreateNoticeOfDeparture = (permit_guid, values, documentArray) => {
+  const handleCreateNoticeOfDeparture = (
+    permit_guid,
+    values,
+    documentArray: IDocumentPayload[]
+  ) => {
     setIsLoaded(false);
+    console.log("values", values);
     const nod_status =
-      values.nod_type === NOTICE_OF_DEPARTURE_TYPE_VALUES.non_substantial
-        ? NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial
-        : NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review;
+      values.nod_type === "non_substantial"
+        ? NodStatusSaveEnum.self_determined_non_substantial
+        : NodStatusSaveEnum.pending_review;
     return props
       .createNoticeOfDeparture({ ...values, nod_status, mine_guid: mine.mine_guid })
       .then(async (response) => {

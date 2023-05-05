@@ -24,7 +24,17 @@ module.exports = (mode) => {
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
-          use: ["babel-loader", "ts-loader"],
+          use: [
+            {
+              loader: "babel-loader",
+            },
+            {
+              loader: "ts-loader",
+              options: {
+                transpileOnly: false,
+              },
+            },
+          ],
         },
         {
           test: /\.(js|jsx)$/,

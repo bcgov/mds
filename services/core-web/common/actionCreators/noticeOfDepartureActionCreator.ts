@@ -1,36 +1,45 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import {
+  ENVIRONMENT,
+  IDocumentPayload,
+  INoticeOfDeparture,
+  ICreateNoticeOfDeparture,
+} from "@mds/common";
 import { error, request, success } from "../actions/genericActions";
 import {
-  CREATE_NOTICE_OF_DEPARTURE,
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
-  GET_NOTICES_OF_DEPARTURE,
+  CREATE_NOTICE_OF_DEPARTURE,
   GET_DETAILED_NOTICE_OF_DEPARTURE,
+  GET_NOTICES_OF_DEPARTURE,
   UPDATE_NOTICE_OF_DEPARTURE,
 } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import {
-  NOTICES_OF_DEPARTURE,
-  NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICE_OF_DEPARTURE,
+  NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENT,
+  NOTICES_OF_DEPARTURE_DOCUMENTS,
 } from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
-  storeNoticesOfDeparture,
   storeNoticeOfDeparture,
+  storeNoticesOfDeparture,
 } from "../actions/noticeOfDepartureActions";
+import { AxiosResponse } from "axios";
+import { AppThunk } from "@/store/appThunk.type";
 
 export const createNoticeOfDeparture =
-  (payload): any =>
-  (dispatch) => {
+  (
+    payload: Partial<ICreateNoticeOfDeparture>
+  ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> =>
+  (dispatch): Promise<AxiosResponse<INoticeOfDeparture>> => {
     dispatch(request(CREATE_NOTICE_OF_DEPARTURE));
     dispatch(showLoading("modal"));
 
     return CustomAxios()
       .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, payload, createRequestHeader())
-      .then((response) => {
+      .then((response: AxiosResponse<INoticeOfDeparture>) => {
         notification.success({
           message: "Successfully created Notice of Departure.",
           duration: 10,
@@ -46,7 +55,7 @@ export const createNoticeOfDeparture =
   };
 
 export const fetchNoticesOfDeparture =
-  (mine_guid): any =>
+  (mine_guid): AppThunk =>
   (dispatch) => {
     dispatch(request(GET_NOTICES_OF_DEPARTURE));
     dispatch(showLoading());
@@ -68,8 +77,8 @@ export const fetchNoticesOfDeparture =
   };
 
 export const updateNoticeOfDeparture =
-  ({ nodGuid }, payload): any =>
-  (dispatch) => {
+  ({ nodGuid }, payload): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> =>
+  (dispatch): Promise<AxiosResponse<INoticeOfDeparture>> => {
     dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
     dispatch(showLoading("modal"));
     return CustomAxios()
@@ -89,24 +98,35 @@ export const updateNoticeOfDeparture =
       .finally(() => dispatch(hideLoading("modal")));
   };
 
-export const fetchDetailedNoticeOfDeparture =
-  (nod_guid): any =>
-  (dispatch) => {
+export const fetchDetailedNoticeOfDeparture = (
+  nod_guid
+): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> => {
+  return async (dispatch): Promise<AxiosResponse<INoticeOfDeparture>> => {
     dispatch(request(GET_DETAILED_NOTICE_OF_DEPARTURE));
     dispatch(showLoading());
-    return CustomAxios()
-      .get(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nod_guid)}`, createRequestHeader())
-      .then((response) => {
+    try {
+      try {
+        const response: AxiosResponse<INoticeOfDeparture> = await CustomAxios().get(
+          `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nod_guid)}`,
+          createRequestHeader()
+        );
         dispatch(success(GET_DETAILED_NOTICE_OF_DEPARTURE));
         dispatch(storeNoticeOfDeparture(response.data));
         return response;
-      })
-      .catch(() => dispatch(error(GET_DETAILED_NOTICE_OF_DEPARTURE)))
-      .finally(() => dispatch(hideLoading()));
+      } catch {
+        dispatch(error(GET_DETAILED_NOTICE_OF_DEPARTURE));
+      }
+    } finally {
+      dispatch(hideLoading());
+    }
   };
+};
 
 export const addDocumentToNoticeOfDeparture =
-  ({ noticeOfDepartureGuid }, payload): any =>
+  (
+    { noticeOfDepartureGuid }: { noticeOfDepartureGuid: string },
+    payload: IDocumentPayload
+  ): AppThunk =>
   (dispatch) => {
     dispatch(showLoading("modal"));
     dispatch(request(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
@@ -127,7 +147,13 @@ export const addDocumentToNoticeOfDeparture =
       .finally(() => dispatch(hideLoading("modal")));
   };
 
-export const removeFileFromDocumentManager = ({ nod_guid, document_manager_guid }) => {
+export const removeFileFromDocumentManager = ({
+  nod_guid,
+  document_manager_guid,
+}: {
+  nod_guid: string;
+  document_manager_guid: string;
+}) => {
   if (!document_manager_guid) {
     throw new Error("Must provide document_manager_guid");
   }
