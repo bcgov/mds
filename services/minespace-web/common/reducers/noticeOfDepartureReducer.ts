@@ -1,10 +1,11 @@
 import { INoticeOfDeparture } from "@mds/common";
 import * as actionTypes from "../constants/actionTypes";
 import { NOTICES_OF_DEPARTURE } from "../constants/reducerTypes";
+import { RootState } from "@/App";
 
 interface NoDState {
   nods: INoticeOfDeparture[];
-  noticeOfDeparture: INoticeOfDeparture | NonNullable<unknown>;
+  noticeOfDeparture: INoticeOfDeparture | Record<string, never>;
 }
 
 const initialState: NoDState = {
@@ -33,9 +34,9 @@ const noticeOfDepartureReducerObject = {
   [NOTICES_OF_DEPARTURE]: noticeOfDepartureReducer,
 };
 
-export const getNoticesOfDeparture = (state): INoticeOfDeparture[] =>
+export const getNoticesOfDeparture = (state: RootState): INoticeOfDeparture[] =>
   state[NOTICES_OF_DEPARTURE].nods;
-export const getNoticeOfDeparture = (state): INoticeOfDeparture =>
+export const getNoticeOfDeparture = (state: RootState): INoticeOfDeparture =>
   state[NOTICES_OF_DEPARTURE].noticeOfDeparture;
 
 export default noticeOfDepartureReducerObject;
