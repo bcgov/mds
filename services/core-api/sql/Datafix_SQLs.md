@@ -6,14 +6,14 @@ Purpose of this document is to add any important details related to the data fix
 
 ## Summary
 
-|  No | Fix                                  | Details                                             | References                                                                                                                                                             |
-| --: | :----------------------------------- | :-------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|   1 | Delete Mine Permit Xref Record       | Refer sql file                                      | [delete_mine_permit_xref_record.sql](delete_mine_permit_xref_record.sql)                                                                                               |
-|   2 | Delete Mine Party Appt Record        | Refer sql file                                      | [delete_mine_party_appt_record.sql](delete_mine_party_appt_record.sql)                                                                                                 |
-|   3 | Delete Now Record                    | Refer sql file                                      | [delete_now_record.sql](delete_now_record.sql)                                                                                                                         |
-|   4 | Transfer Mine Permit Xref Record     | Refer sql file                                      | [transfer_mine_permit_xref_record.sql](transfer_mine_permit_xref_record.sql)                                                                                           |
-|   5 | Delete TSF Record                    | Refer sql file                                      | [delete_tsf_record.sql](delete_tsf_record.sql)                                                                                                                         |
-|   6 | Delete document from the Application | Refer [here](#delete-document-from-the-application) | [delete_imported_document_in_NOW_Application.sql](delete_imported_document_in_NOW_Application.sql)<br/>JIRA: [MDS-5039](https://bcmines.atlassian.net/browse/MDS-5039) |
+|  No | Fix                                  | Details                                                      | References                                                                                                                                                             |
+| --: | :----------------------------------- | :----------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   1 | Delete Mine Permit Xref Record       | Refer sql file                                               | [delete_mine_permit_xref_record.sql](delete_mine_permit_xref_record.sql)                                                                                               |
+|   2 | Delete Mine Party Appt Record        | Refer sql file                                               | [delete_mine_party_appt_record.sql](delete_mine_party_appt_record.sql)                                                                                                 |
+|   3 | Delete Now Record                    | Refer sql file                                               | [delete_now_record.sql](delete_now_record.sql)                                                                                                                         |
+|   4 | Transfer Mine Permit Xref Record     | Refer sql file                                               | [transfer_mine_permit_xref_record.sql](transfer_mine_permit_xref_record.sql)                                                                                           |
+|   5 | Delete TSF Record                    | Refer sql file                                               | [delete_tsf_record.sql](delete_tsf_record.sql)                                                                                                                         |
+|   6 | Delete document from the Application | Refer [here](#6-delete-imported-document-in-now-application) | [delete_imported_document_in_NOW_Application.sql](delete_imported_document_in_NOW_Application.sql)<br/>JIRA: [MDS-5039](https://bcmines.atlassian.net/browse/MDS-5039) |
 |     |
 
 ## Detailed Section
