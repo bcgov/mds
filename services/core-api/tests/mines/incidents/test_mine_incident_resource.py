@@ -42,6 +42,7 @@ class TestPutMineIncident:
         data = {
             'incident_timestamp': '2019-01-01 00:00',
             'reported_timestamp': '2019-01-01 00:00',
+            'incident_timezone': incident.incident_timezone,
             'incident_description': incident.incident_description,
             'incident_location': incident.incident_location,
             'reported_by_name': incident.reported_by_name,
@@ -77,6 +78,7 @@ class TestPutMineIncident:
         put_data = json.loads(put_resp.data.decode())
         assert put_resp.status_code == 200, put_resp.response
         assert put_data['incident_timestamp'] == data['incident_timestamp']
+        assert put_data['incident_timezone'] == data['incident_timezone']
         assert put_data['reported_timestamp'] == data['reported_timestamp']
         assert put_data['incident_description'] == data['incident_description']
         assert put_data['incident_location'] == data['incident_location']
