@@ -76,7 +76,7 @@ export class MineAlert extends Component<Props, State> {
       .then(() => this.fetchAlerts());
   };
 
-  submitCreateMineAlarmForm = (values: any) => {
+  submitCreateMineAlarmForm = () => (values: any) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date),
@@ -104,6 +104,7 @@ export class MineAlert extends Component<Props, State> {
         text: ModalContent.CREATE_MINE_ALERT_TEXT,
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
+        // @ts-ignore
         onSubmit: this.submitCreateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
         activeMineAlert,
         mineAlerts,
