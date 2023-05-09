@@ -64,7 +64,7 @@ def getJwtManager():
     aud = token.get('aud')
 
     if kc_realms in iss:
-        print("\n **Client from oidc.gov.bc.ca Detected \n")
+        print(f"\n **Client from oidc.gov.bc.ca Detected - Client ID: {aud}\n")
         return jwtv1
 
     if iss in test_config.JWT_OIDC_TEST_ISSUER:
