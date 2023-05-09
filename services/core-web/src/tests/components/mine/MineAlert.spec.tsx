@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { MineAlert } from "@/components/mine/MineAlert";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
+const props: any = {};
+const dispatchProps: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.createMineAlert = jest.fn();
