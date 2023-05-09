@@ -1,18 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import EditNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/EditNoticeOfDepartureForm";
+import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  afterClose: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
-};
+interface EditNoticeOfDepartureModalProps {
+  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload) => any;
+  initialValues: INoticeOfDeparture;
+  afterClose: () => void;
+  closeModal: () => void;
+  mineGuid: string;
+  noticeOfDeparture: INoticeOfDeparture;
+}
 
-const AddNoticeOfDepartureModal = (props) => {
+const AddNoticeOfDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (props) => {
   const { onSubmit, initialValues, afterClose, closeModal, mineGuid, noticeOfDeparture } = props;
 
   const close = () => {
@@ -32,7 +31,5 @@ const AddNoticeOfDepartureModal = (props) => {
     </div>
   );
 };
-
-AddNoticeOfDepartureModal.propTypes = propTypes;
 
 export default AddNoticeOfDepartureModal;

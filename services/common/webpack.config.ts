@@ -31,6 +31,7 @@ module.exports = (mode) => {
             {
               loader: "ts-loader",
               options: {
+                configFile: "tsconfig.json",
                 transpileOnly: false,
               },
             },
@@ -49,5 +50,6 @@ module.exports = (mode) => {
         },
       ],
     },
+    devtool: "source-map",
   };
 };

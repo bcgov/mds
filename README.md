@@ -48,6 +48,16 @@ The product is anticipated to include:
 - [Functional Tests](tests/functional-tests/README.md)
 - [Load Testing](tests/load-testing/README.md)
 
+---
+
+## Typescript
+
+This application was originally developed in Javascript, and is being migrated to Typescript. The following documentation is available to assist with the migration:
+
+- [Typescript](docs/processes/typescript.md)
+
+---
+
 ## How to Contribute
 
 Please read the [How to Contribute guide](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
