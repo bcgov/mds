@@ -36,15 +36,6 @@ interface State {
   pastMineAlerts: any[];
 }
 
-interface DispatchProps {
-  openModal: typeof openModal;
-  closeModal: typeof closeModal;
-  fetchMineAlertsByMine: typeof fetchMineAlertsByMine;
-  updateMineAlert: typeof updateMineAlert;
-  deleteMineAlert: typeof deleteMineAlert;
-  createMineAlert: typeof createMineAlert;
-}
-
 export class MineAlert extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -312,7 +303,7 @@ const mapStateToProps = (state: RootState) => ({
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps =>
+const mapDispatchToProps = (dispatch: Dispatch<Action>) =>
   bindActionCreators(
     {
       openModal,
