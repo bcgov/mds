@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component } from "react";
 import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormValues, getFormSyncErrors } from "redux-form";
@@ -17,27 +17,32 @@ import {
 import * as FORM from "@/constants/forms";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { RootState } from "@/App";
 
-interface Props {
+interface IMineAlert {
+  mine_alert_guid: string;
+  start_date: moment.Moment;
+  end_date?: moment.Moment | null;
+}
+
+interface IProps {
   closeModal: () => void;
-  openModal: (arg: any) => void;
-  createMineAlert: (arg1: string, arg2: any) => Promise<void>;
-  updateMineAlert: (arg1: string, arg2: string, arg3: any) => Promise<void>;
+  openModal: (arg: unknown) => void;
+  createMineAlert: (arg1: string, arg2: IMineAlert) => Promise<void>;
+  updateMineAlert: (arg1: string, arg2: string, arg3: IMineAlert) => Promise<void>;
   deleteMineAlert: (arg1: string, arg2: string) => Promise<void>;
   fetchMineAlertsByMine: (arg: string) => Promise<void>;
   mineAlerts: any;
   mine: any;
 }
 
-interface State {
+interface IState {
   loaded: boolean;
   activeMineAlert: any;
   pastMineAlerts: any[];
 }
 
-export class MineAlert extends Component<Props, State> {
-  constructor(props: Props) {
+export class MineAlert extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       loaded: false,
@@ -50,7 +55,7 @@ export class MineAlert extends Component<Props, State> {
     this.fetchAlerts();
   }
 
-  handleCreateMineAlert = (values: any) => {
+  handleCreateMineAlert = (values: IMineAlert) => {
     this.props
       .createMineAlert(this.props.mine.mine_guid, values)
       .then(() => {
@@ -61,7 +66,7 @@ export class MineAlert extends Component<Props, State> {
       });
   };
 
-  handleUpdateMineAlert = (values: any) => {
+  handleUpdateMineAlert = (values: IMineAlert) => {
     this.props
       .updateMineAlert(this.props.mine.mine_guid, values.mine_alert_guid, values)
       .then(() => {
@@ -76,7 +81,7 @@ export class MineAlert extends Component<Props, State> {
       .then(() => this.fetchAlerts());
   };
 
-  submitCreateMineAlarmForm = () => (values: any) => {
+  submitCreateMineAlarmForm = () => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date),
@@ -85,7 +90,7 @@ export class MineAlert extends Component<Props, State> {
     return this.handleCreateMineAlert(payload);
   };
 
-  submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: any) => {
+  submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date),
@@ -104,8 +109,7 @@ export class MineAlert extends Component<Props, State> {
         text: ModalContent.CREATE_MINE_ALERT_TEXT,
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
-        // @ts-ignore
-        onSubmit: this.submitCreateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        onSubmit: this.submitCreateMineAlarmForm(),
         activeMineAlert,
         mineAlerts,
       },
@@ -140,13 +144,17 @@ export class MineAlert extends Component<Props, State> {
     });
   };
 
-  async fetchAlerts(): Promise<any> {
+  async fetchAlerts(): Promise<void> {
     await this.props.fetchMineAlertsByMine(this.props.mine.mine_guid);
     this.setState({
-      activeMineAlert: this.props.mineAlerts?.filter((alert: any) => alert.is_active)?.[0],
+      activeMineAlert: this.props.mineAlerts?.filter(
+        (alert: { is_active: boolean }) => alert.is_active
+      )?.[0],
     });
     this.setState({
-      pastMineAlerts: this.props.mineAlerts?.filter((alert_1: any) => !alert_1.is_active),
+      pastMineAlerts: this.props.mineAlerts?.filter(
+        (alert: { is_active: boolean }) => !alert.is_active
+      ),
     });
     this.setState({ loaded: true });
   }
@@ -298,7 +306,7 @@ export class MineAlert extends Component<Props, State> {
     );
   }
 }
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: any) => ({
   mineAlerts: getMineAlerts(state),
   formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
