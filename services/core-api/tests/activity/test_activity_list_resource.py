@@ -50,6 +50,5 @@ class TestActivityListResource:
         assert len(get_data_lower['records']) == 4
         assert get_data_lower['total'] == 4
 
-        get_data_upper = json.loads(get_resp_upper.data.decode())
         assert len(get_data_upper['records']) == 4
         assert get_data_upper['total'] == 4
