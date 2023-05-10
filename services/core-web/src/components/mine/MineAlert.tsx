@@ -17,32 +17,27 @@ import {
 import * as FORM from "@/constants/forms";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
+import { IMineAlert } from "@mds/common";
 
-interface IMineAlert {
-  mine_alert_guid: string;
-  start_date: moment.Moment;
-  end_date?: moment.Moment | null;
-}
-
-interface IProps {
+interface MineAlertProps {
   closeModal: () => void;
   openModal: (arg: unknown) => void;
-  createMineAlert: (arg1: string, arg2: IMineAlert) => Promise<void>;
-  updateMineAlert: (arg1: string, arg2: string, arg3: IMineAlert) => Promise<void>;
+  createMineAlert: (arg1: string, arg2: IMineAlert) => Promise<IMineAlert>;
+  updateMineAlert: (arg1: string, arg2: string, arg3: IMineAlert) => Promise<IMineAlert>;
   deleteMineAlert: (arg1: string, arg2: string) => Promise<void>;
-  fetchMineAlertsByMine: (arg: string) => Promise<void>;
+  fetchMineAlertsByMine: (arg: string) => Promise<IMineAlert>;
   mineAlerts: any;
   mine: any;
 }
 
-interface IState {
+interface MineAlertState {
   loaded: boolean;
   activeMineAlert: any;
   pastMineAlerts: any[];
 }
 
-export class MineAlert extends Component<IProps, IState> {
-  constructor(props: IProps) {
+export class MineAlert extends Component<MineAlertProps, MineAlertState> {
+  constructor(props: MineAlertProps) {
     super(props);
     this.state = {
       loaded: false,
