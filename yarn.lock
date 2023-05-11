@@ -1996,6 +1996,8 @@ __metadata:
     "@types/lodash": 4.14.194
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.0
+    "@types/redux": ^3.6.0
+    "@types/redux-form": 8.2.6
     "@types/styled-components": 5.1.26
     acorn: 6.4.1
     antd: 4.6.2
