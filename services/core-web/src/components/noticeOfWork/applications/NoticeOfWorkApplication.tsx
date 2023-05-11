@@ -21,36 +21,40 @@ import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 
-import INOWApplication from "@mds/common";
-import INOW from "@mds/common";
-import INOWDraftPermit from "@mds/common";
+import INoticeOfWorkApplication from "@mds/common";
+import INoticeOfWork from "@mds/common";
+import INoticeOfWorkDraftPermit from "@mds/common";
 
 /**
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
  */
 
-const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-    replace: PropTypes.func,
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  fixedTop: PropTypes.bool.isRequired,
-  renderTabTitle: PropTypes.func.isRequired,
-  applicationPageFromRoute: CustomPropTypes.ApplicationPageFromRoute,
-  mineGuid: PropTypes.string.isRequired,
-  draftPermit: CustomPropTypes.permit.isRequired,
-};
+// const propTypes = {
+//   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+//   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+//   history: PropTypes.shape({
+//     push: PropTypes.func,
+//     replace: PropTypes.func,
+//   }).isRequired,
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string,
+//     }),
+//   }).isRequired,
+//   fixedTop: PropTypes.bool.isRequired,
+//   renderTabTitle: PropTypes.func.isRequired,
+//   applicationPageFromRoute: CustomPropTypes.ApplicationPageFromRoute,
+//   mineGuid: PropTypes.string.isRequired,
+//   draftPermit: CustomPropTypes.permit.isRequired,
+// };
 
-const defaultProps = { applicationPageFromRoute: "" };
+// const defaultProps = { applicationPageFromRoute: "" };
 
-export class NoticeOfWorkApplication extends Component<INOWApplication, INOW, INOWDraftPermit> {
+export class NoticeOfWorkApplication extends Component<
+  INoticeOfWorkApplication,
+  INoticeOfWork,
+  INoticeOfWorkDraftPermit
+> {
   state = {
     isTabLoaded: false,
     activeTab: "verification",
@@ -97,9 +101,12 @@ export class NoticeOfWorkApplication extends Component<INOWApplication, INOW, IN
     const isImported = this.props.noticeOfWork.imported_to_core;
     const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
 
-    const isNoticeOfWorkTypeDisabled =
-      (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
-      !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code);
+    const constructedProps = {
+      isNoticeOfWorkTypeDisabled:
+        (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
+        !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code),
+      fixedTop: this.props.fixedTop,
+    };
 
     return (
       <div className="page">
@@ -135,10 +142,11 @@ export class NoticeOfWorkApplication extends Component<INOWApplication, INOW, IN
           >
             {isImported && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ApplicationTab
+                {/* <ApplicationTab
                   fixedTop={this.props.fixedTop}
                   isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
-                />
+                /> */}
+                <ApplicationTab {...constructedProps} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>
@@ -198,10 +206,7 @@ export class NoticeOfWorkApplication extends Component<INOWApplication, INOW, IN
           >
             {verificationComplete && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <DraftPermitTab
-                  fixedTop={this.props.fixedTop}
-                  isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
-                />
+                <DraftPermitTab {...constructedProps} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>
