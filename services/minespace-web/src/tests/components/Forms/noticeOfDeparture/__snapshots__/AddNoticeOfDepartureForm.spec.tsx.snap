@@ -30,17 +30,10 @@ exports[`AddNoticeOfDepartureForm renders properly 1`] = `
     }
   }
 >
-  <ReduxForm
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={true}
-    form="ADD_NOTICE_OF_DEPARTURE"
-    getFormState={[Function]}
+  <Connect(ReduxForm)
     incidentDeterminationOptions={Object {}}
     initialValues={Object {}}
-    keepDirtyOnReinitialize={false}
     mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    onSubmitSuccess={[Function]}
     permits={
       Array [
         Object {
@@ -97,16 +90,6 @@ exports[`AddNoticeOfDepartureForm renders properly 1`] = `
         },
       ]
     }
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </ContextProvider>
 `;

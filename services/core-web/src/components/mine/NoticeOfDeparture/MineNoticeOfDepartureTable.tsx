@@ -10,7 +10,7 @@ import {
 import CoreTable from "@/components/common/CoreTable";
 import { INoticeOfDeparture } from "@mds/common";
 
-interface MineNoticeOfDepartureTableProps {
+export interface MineNoticeOfDepartureTableProps {
   nods: INoticeOfDeparture[];
   openViewNodModal: (one: any, two: any) => void;
   isDashboardView?: boolean;
