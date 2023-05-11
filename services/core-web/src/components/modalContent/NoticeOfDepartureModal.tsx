@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Col, Form, Popconfirm, Row } from "antd";
+import { Button, Col, Popconfirm, Row } from "antd";
+import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import {
@@ -20,7 +20,7 @@ import {
   updateNoticeOfDeparture,
 } from "@common/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { change, Field, FieldArray, reduxForm } from "redux-form";
+import { Field, FieldArray, InjectedFormProps, reduxForm } from "redux-form";
 import {
   email,
   maxLength,
@@ -28,9 +28,14 @@ import {
   required,
   validateSelectOptions,
 } from "@common/utils/Validate";
-import { USER_ROLES } from "@mds/common";
+import {
+  ICreateNoD,
+  IMine,
+  INoDContactInterface,
+  INoticeOfDeparture,
+  USER_ROLES,
+} from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -41,26 +46,11 @@ import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import * as Permission from "@/constants/permissions";
 
-const propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  closeModal: PropTypes.func.isRequired,
-  noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
-  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
-  fetchNoticesOfDeparture: PropTypes.func.isRequired,
-  updateNoticeOfDeparture: PropTypes.func.isRequired,
-  addDocumentToNoticeOfDeparture: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  mine: CustomPropTypes.mine.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+interface renderContactsProps {
+  fields: INoDContactInterface[];
+}
 
-const renderContactsPropTypes = {
-  fields: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
-
-export const renderContacts = (props, disabled = false) => {
+export const renderContacts: React.FC<renderContactsProps> = (props, disabled = false) => {
   const { fields } = props;
 
   return (
@@ -69,56 +59,51 @@ export const renderContacts = (props, disabled = false) => {
         <p className="nod-modal-section-sub-header margin-large--top">Primary Contact</p>
       )}
       {fields.map((contact, index) => (
-        // eslint-disable-next-line react/no-array-index-key
         <Row gutter={16} key={index}>
           <Col span={12}>
-            <Form.Item label="First Name">
-              <Field
-                id={`${contact}.first_name`}
-                name={`${contact}.first_name`}
-                placeholder="First Name"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(200)]}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              label="First Name"
+              id={`${contact}.first_name`}
+              name={`${contact}.first_name`}
+              placeholder="First Name"
+              component={renderConfig.FIELD}
+              validate={[required, maxLength(200)]}
+              disabled={disabled}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item label="Last Name">
-              <Field
-                id={`${contact}.last_name`}
-                name={`${contact}.last_name`}
-                placeholder="Last Name"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(200)]}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              label="Last Name"
+              id={`${contact}.last_name`}
+              name={`${contact}.last_name`}
+              placeholder="Last Name"
+              component={renderConfig.FIELD}
+              validate={[required, maxLength(200)]}
+              disabled={disabled}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item label="Phone Number">
-              <Field
-                name={`${contact}.phone_number`}
-                id={`${contact}.phone_number`}
-                placeholder="XXX-XXX-XXXX"
-                component={renderConfig.FIELD}
-                validate={[phoneNumber, maxLength(12), required]}
-                normalize={normalizePhone}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              label="Phone Number"
+              name={`${contact}.phone_number`}
+              id={`${contact}.phone_number`}
+              placeholder="XXX-XXX-XXXX"
+              component={renderConfig.FIELD}
+              validate={[phoneNumber, maxLength(12), required]}
+              normalize={normalizePhone}
+              disabled={disabled}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item label="Email">
-              <Field
-                id={`${contact}.email`}
-                name={`${contact}.email`}
-                component={renderConfig.FIELD}
-                placeholder="example@example.com"
-                validate={[email, required]}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              label="Email"
+              id={`${contact}.email`}
+              name={`${contact}.email`}
+              component={renderConfig.FIELD}
+              placeholder="example@example.com"
+              validate={[email, required]}
+              disabled={disabled}
+            />
           </Col>
         </Row>
       ))}
@@ -126,15 +111,30 @@ export const renderContacts = (props, disabled = false) => {
   );
 };
 
-renderContacts.propTypes = renderContactsPropTypes;
+interface NoticeOfDepartureModalProps {
+  initialValues: Partial<ICreateNoD>;
+  closeModal: () => void;
+  noticeOfDeparture: INoticeOfDeparture;
+  fetchDetailedNoticeOfDeparture: any;
+  fetchNoticesOfDeparture: any;
+  updateNoticeOfDeparture: any;
+  addDocumentToNoticeOfDeparture: any;
+  handleSubmit: (event?: any) => void;
+  pristine: boolean;
+  mine: IMine;
+  userRoles: string[];
+  change: (field: string, value: never) => void;
+}
 
-const NoticeOfDepartureModal = (props) => {
+const NoticeOfDepartureModal: React.FC<
+  InjectedFormProps<ICreateNoD> & NoticeOfDepartureModalProps
+> = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const { noticeOfDeparture, mine, handleSubmit, pristine } = props;
+  const { noticeOfDeparture, mine, handleSubmit, pristine, change } = props;
   const { nod_guid } = noticeOfDeparture;
 
   const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
@@ -237,7 +237,7 @@ const NoticeOfDepartureModal = (props) => {
         render: (text, record) => (
           <div className="nod-table-link">
             {text ? (
-              <LinkButton onClick={() => downloadFileFromDocumentManager(record)} title="Download">
+              <LinkButton onClick={() => downloadFileFromDocumentManager(record)}>
                 {text}
               </LinkButton>
             ) : (
@@ -277,12 +277,13 @@ const NoticeOfDepartureModal = (props) => {
                         mine_guid: mine.mine_guid,
                         nod_guid,
                         ...record,
-                      })}
+                      })
+                    }
                     okText="Yes"
                     cancelText="No"
                   >
                     <button type="button">
-                      <img name="remove" src={TRASHCAN} alt="Remove Document" />
+                      <img src={TRASHCAN} alt="Remove Document" />
                     </button>
                   </Popconfirm>
                 </div>
@@ -438,9 +439,7 @@ const NoticeOfDepartureModal = (props) => {
                 cancelText="No"
                 onConfirm={props.closeModal}
               >
-                <Button className="full-mobile nod-cancel-button" type="secondary">
-                  Cancel
-                </Button>
+                <Button className="full-mobile nod-cancel-button">Cancel</Button>
               </Popconfirm>
             </>
           )}
@@ -449,8 +448,6 @@ const NoticeOfDepartureModal = (props) => {
     </div>
   );
 };
-
-NoticeOfDepartureModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),
@@ -478,4 +475,4 @@ export default compose(
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
   })
-)(NoticeOfDepartureModal);
+)(NoticeOfDepartureModal) as React.FC<NoticeOfDepartureModalProps>;

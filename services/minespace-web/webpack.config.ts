@@ -66,7 +66,16 @@ const commonConfig = merge([
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          use: ["babel-loader", "ts-loader"],
+          use: [
+            { loader: "babel-loader" },
+            {
+              loader: "ts-loader",
+              options: {
+                configFile: "tsconfig.json",
+                transpileOnly: false,
+              },
+            },
+          ],
         },
         { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
       ],

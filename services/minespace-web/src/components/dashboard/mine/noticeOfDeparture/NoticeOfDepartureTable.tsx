@@ -2,12 +2,14 @@ import React from "react";
 import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { NOTICE_OF_DEPARTURE_TYPE, NOTICE_OF_DEPARTURE_STATUS } from "@common/constants/strings";
+import { NOTICE_OF_DEPARTURE_STATUS, NOTICE_OF_DEPARTURE_TYPE } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import { EMPTY_FIELD, EDITABLE_NOTICE_OF_DEPARTURE_STATUS } from "@/constants/strings";
+import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/strings";
 
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
+import { INoticeOfDeparture, NoDTypeEnum, NoDStatusDisplayEnum } from "@mds/common";
+import { ColumnsType } from "antd/lib/table";
 
 const propTypes = {
   data: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
@@ -16,18 +18,37 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
 };
 
-const NoticeOfDepartureTable = (props) => {
-  const handleOpenViewModal = (event, noticeOfDeparture) => {
+interface NoticeOfDepartureTableProps {
+  data: INoticeOfDeparture[];
+  openViewNoticeOfDepartureModal: (noticeOfDeparture: INoticeOfDeparture) => void;
+  openEditNoticeOfDepartureModal: (noticeOfDeparture: INoticeOfDeparture) => void;
+  isLoaded: boolean;
+}
+
+const NoticeOfDepartureTable: React.FC<NoticeOfDepartureTableProps> = (props) => {
+  const handleOpenViewModal = (event, noticeOfDeparture: INoticeOfDeparture) => {
     event.preventDefault();
     props.openViewNoticeOfDepartureModal(noticeOfDeparture);
   };
 
-  const handleOpenEditModal = (event, noticeOfDeparture) => {
+  const handleOpenEditModal = (event, noticeOfDeparture: INoticeOfDeparture) => {
     event.preventDefault();
     props.openEditNoticeOfDepartureModal(noticeOfDeparture);
   };
 
-  const columns = [
+  interface NodColumn {
+    key: React.Key;
+    nod_title: string;
+    nod_no: string;
+    permit: {
+      permit_no: string;
+    };
+    submitted_at: string;
+    nod_type: NoDTypeEnum;
+    nod_status: NoDStatusDisplayEnum;
+  }
+
+  const columns: ColumnsType<NodColumn> = [
     {
       title: "Title",
       dataIndex: "nod_title",
@@ -43,7 +64,7 @@ const NoticeOfDepartureTable = (props) => {
     {
       title: "Permit #",
       dataIndex: ["permit", "permit_no"],
-      key: ["permit", "permit_no"],
+      key: "permit_no",
       sorter: (a, b) => (a.permit.permit_no > b.permit.permit_no ? -1 : 1),
     },
     {
@@ -66,7 +87,7 @@ const NoticeOfDepartureTable = (props) => {
     },
     {
       render: (text, record) => (
-        <div title="" align="right">
+        <div>
           <Row>
             <Button type="primary" size="small" ghost>
               {!EDITABLE_NOTICE_OF_DEPARTURE_STATUS.includes(record.nod_status) ? (

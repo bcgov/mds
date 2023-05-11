@@ -5,8 +5,8 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 import { store } from "@/App";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupProps = () => {
   props.incidentDeterminationOptions = {};

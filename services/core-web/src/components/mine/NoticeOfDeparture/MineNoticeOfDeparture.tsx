@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Divider } from "antd";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import {
@@ -13,26 +12,25 @@ import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { useLocation } from "react-router-dom";
-import { USER_ROLES } from "@mds/common";
+import { IMine, INoticeOfDeparture, USER_ROLES } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
-import CustomPropTypes from "@/customPropTypes";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 import * as Permission from "@/constants/permissions";
 
-const propTypes = {
-  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  nods: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
-  openModal: PropTypes.func.isRequired,
-  fetchPermits: PropTypes.func.isRequired,
-  fetchNoticesOfDeparture: PropTypes.func.isRequired,
-  fetchDetailedNoticeOfDeparture: PropTypes.func.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+interface IMineNoticeOfDepartureProps {
+  mines: IMine[];
+  mineGuid: string;
+  nods: INoticeOfDeparture[];
+  openModal: (any) => void;
+  fetchPermits: (mineGuid: string) => any;
+  fetchNoticesOfDeparture: (mineGuid: string) => any;
+  fetchDetailedNoticeOfDeparture: (mineGuid: string) => any;
+  userRoles: string[];
+}
 
-export const MineNoticeOfDeparture = (props) => {
+export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mines, mineGuid, nods } = props;
   const mine = mines[mineGuid];
@@ -50,7 +48,10 @@ export const MineNoticeOfDeparture = (props) => {
     handleFetchNoticesOfDeparture();
   }, []);
 
-  const openNoticeOfDepartureModal = async (event, selectedNoticeOfDeparture) => {
+  const openNoticeOfDepartureModal = async (
+    event,
+    selectedNoticeOfDeparture: INoticeOfDeparture
+  ) => {
     if (event) {
       event.preventDefault();
     }
@@ -86,7 +87,7 @@ export const MineNoticeOfDeparture = (props) => {
     }
   }, [location]);
 
-  const renderNoticeOfDepartureTables = (selectedMine) => (
+  const renderNoticeOfDepartureTables = (selectedMine: IMine) => (
     <div>
       <br />
       <h4 className="uppercase">Notices of Departure</h4>
@@ -134,7 +135,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-MineNoticeOfDeparture.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);

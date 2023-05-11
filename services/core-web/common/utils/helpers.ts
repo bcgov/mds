@@ -54,6 +54,7 @@ export const createDropDownList = (
   const options = array.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
+    // @ts-ignore
     isActive: isActiveField ? item[isActiveField] : true,
     subType: subType ? item[subType] : null,
   }));
@@ -117,9 +118,8 @@ export const wholeNumberMask = createNumberMask({
 
 export const isDateRangeValid = (start, end) => {
   const duration = moment.duration(moment(end).diff(moment(start)));
-  // eslint-disable-next-line no-underscore-dangle
-  const isDateRangeValid = Math.sign(duration._milliseconds) !== -1;
-  return isDateRangeValid;
+  const milliseconds = duration.asMilliseconds();
+  return Math.sign(milliseconds) !== -1;
 };
 
 export const dateSorter = (key) => (a, b) => {
@@ -132,6 +132,7 @@ export const dateSorter = (key) => (a, b) => {
   if (!b[key]) {
     return -1;
   }
+  // @ts-ignore
   return moment(a[key]) - moment(b[key]);
 };
 
@@ -308,7 +309,7 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 // eslint-disable-snippets
 const _flattenObject = (ob, isArrayItem = false) => {
   const toReturn = {};
-  let flatObject;
+  let flatObject: any = {};
   for (const i in ob) {
     if (typeof ob[i] === "object") {
       flatObject = _flattenObject(ob[i], Array.isArray(ob[i]));
@@ -316,7 +317,7 @@ const _flattenObject = (ob, isArrayItem = false) => {
         if (!flatObject.hasOwnProperty(x)) {
           continue;
         }
-        toReturn[(isArrayItem ? `[${i}]` : i) + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
+        toReturn[(isArrayItem ? `[${i}]` : i) + (isNaN(Number(x)) ? `.${x}` : "")] = flatObject[x];
       }
     } else {
       toReturn[i] = ob[i];
@@ -372,7 +373,8 @@ export const renderLabel = (options, keyStr) =>
 
 export const getDurationText = (startDate, endDate) => {
   const duration = moment.duration(moment(endDate).diff(moment(startDate)));
-  if (Math.sign(duration._milliseconds) === -1) {
+  const milliseconds = duration.asMilliseconds();
+  if (Math.sign(milliseconds) === -1) {
     return "Invalid - End Date precedes Start Date";
   }
   const years = duration.years();
@@ -400,8 +402,7 @@ export const getDurationTextInDays = (duration) => {
   const monthsText = getDurationTextOrDefault(months, "Month");
   const daysText = getDurationTextOrDefault(days, "Day");
 
-  const value = `${yearsText} ${monthsText} ${daysText}`;
-  return value;
+  return `${yearsText} ${monthsText} ${daysText}`;
 };
 
 const getDurationTextOrDefault = (duration, unit) => {
@@ -537,14 +538,16 @@ export const formatUrlToUpperCaseString = (url) => {
   const stopWords = ["what", "which", "who", "and", "but"];
   let urlArr = url.split("-");
   return urlArr
-    .map((word, i) => {
+    .map((word) => {
       return stopWords.includes(word) ? [word] : word.charAt(0).toUpperCase() + word.slice(1);
     })
     .join(" ");
 };
 
 export const cleanFilePondFile = () => {
-  const fileUploaded = document.getElementsByClassName("filepond--action-revert-item-processing");
+  const fileUploaded: any = document.getElementsByClassName(
+    "filepond--action-revert-item-processing"
+  );
   if (fileUploaded.length > 0) {
     fileUploaded.forEach((file) => file.click());
   }

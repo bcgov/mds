@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import ViewNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/ViewNoticeOfDepartureModal";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onSubmit = jest.fn();

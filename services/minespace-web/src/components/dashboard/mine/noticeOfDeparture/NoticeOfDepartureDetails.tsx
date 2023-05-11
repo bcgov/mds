@@ -11,12 +11,23 @@ import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
+import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 
 const propTypes = {
   noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
 };
 
-export const documentSection = ({ documentArray, title }) => {
+interface NoticeOfDepartureDetailsProps {
+  noticeOfDeparture: INoticeOfDeparture;
+}
+
+export const documentSection = ({
+  documentArray,
+  title,
+}: {
+  documentArray: INodDocumentPayload[];
+  title: string;
+}) => {
   return (
     <div>
       <h4 className="nod-modal-section-header">{title}</h4>
@@ -32,7 +43,7 @@ export const documentSection = ({ documentArray, title }) => {
         </Col>
       </Row>
       {documentArray.map((document) => (
-        <Row>
+        <Row key={document.document_manager_guid}>
           <Col span={16}>
             <p>{document?.document_name || EMPTY_FIELD}</p>
           </Col>
@@ -41,10 +52,7 @@ export const documentSection = ({ documentArray, title }) => {
           </Col>
           <Col span={3}>
             {document?.document_name ? (
-              <LinkButton
-                onClick={() => downloadFileFromDocumentManager(document)}
-                title={document?.document_name}
-              >
+              <LinkButton onClick={() => downloadFileFromDocumentManager(document)}>
                 Download
               </LinkButton>
             ) : (
@@ -57,7 +65,7 @@ export const documentSection = ({ documentArray, title }) => {
   );
 };
 
-export const NoticeOfDepartureDetails = (props) => {
+export const NoticeOfDepartureDetails: React.FC<NoticeOfDepartureDetailsProps> = (props) => {
   const { noticeOfDeparture } = props;
   const {
     nod_title,
@@ -152,7 +160,7 @@ export const NoticeOfDepartureDetails = (props) => {
             </p>
           </Col>
         </Row>
-        <Row justify="left">
+        <Row justify="start">
           <Col span={12}>
             <p className="field-title">Self Determination Type</p>
             <p className="content--light-grey padding-sm">

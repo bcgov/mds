@@ -3,6 +3,7 @@
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "jsx": "react",
+    "outDir": "build" /* Redirect output structure to the directory. */,
     "paths": {
       "@common/*": ["common/*"],
       "@mds/common/*": ["../common/"],
@@ -16,13 +17,13 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": false /* Enable all strict type-checking options. */,
     "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "typeRoots": [
+      "../../node_modules/@types",
+      "node_modules/@types",
+      "types"
+    ] /* List of folders to include type definitions from. */
   },
   "include": ["src/**/*", "common/**/*", "tsconfig.json", "../../.eslintrc.js"],
-  "exclude": [
-    "node_modules",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx"
-    //    "src/tests/**/*",
-  ]
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

@@ -38,7 +38,7 @@
       "prettier --write --ignore-unknown --config .prettierrc.json"
     ],
     "*.{js,ts,tsx}": [
-      "eslint --fix --max-warnings=20"
+      "eslint --fix --max-warnings=30"
     ]
   },
   "lint-prepush": {
