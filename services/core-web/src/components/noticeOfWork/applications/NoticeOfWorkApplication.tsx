@@ -29,27 +29,6 @@ import INoticeOfWorkDraftPermit from "@mds/common";
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
  */
 
-// const propTypes = {
-//   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-//   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-//   history: PropTypes.shape({
-//     push: PropTypes.func,
-//     replace: PropTypes.func,
-//   }).isRequired,
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string,
-//     }),
-//   }).isRequired,
-//   fixedTop: PropTypes.bool.isRequired,
-//   renderTabTitle: PropTypes.func.isRequired,
-//   applicationPageFromRoute: CustomPropTypes.ApplicationPageFromRoute,
-//   mineGuid: PropTypes.string.isRequired,
-//   draftPermit: CustomPropTypes.permit.isRequired,
-// };
-
-// const defaultProps = { applicationPageFromRoute: "" };
-
 export class NoticeOfWorkApplication extends Component<
   INoticeOfWorkApplication,
   INoticeOfWork,
@@ -250,8 +229,5 @@ const mapStateToProps = (state) => ({
   documentContextTemplate: getDocumentContextTemplate(state),
   draftPermit: getDraftPermitForNOW(state),
 });
-
-// NoticeOfWorkApplication.propTypes = propTypes;
-// NoticeOfWorkApplication.defaultProps = defaultProps;
 
 export default connect(mapStateToProps)(ApplicationGuard(NoticeOfWorkApplication));
