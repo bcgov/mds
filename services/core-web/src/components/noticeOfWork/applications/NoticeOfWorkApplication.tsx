@@ -142,10 +142,6 @@ export class NoticeOfWorkApplication extends Component<
           >
             {isImported && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                {/* <ApplicationTab
-                  fixedTop={this.props.fixedTop}
-                  isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
-                /> */}
                 <ApplicationTab {...constructedProps} />
               </LoadingWrapper>
             )}
