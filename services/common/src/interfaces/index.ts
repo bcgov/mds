@@ -10,3 +10,4 @@ export * from "./mineType.interface";
 export * from "./mineTypeDetail.interface";
 export * from "./mineVerifiedStatus.interface";
 export * from "./mineWorkInformation.interface";
+export * from "./mineAlertCreate.interface";

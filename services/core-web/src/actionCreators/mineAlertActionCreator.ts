@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IMineAlert } from "@mds/common";
+import { ENVIRONMENT, IMineAlert, IMineAlertCreate } from "@mds/common";
 import { error, request, success } from "@common/actions/genericActions";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
@@ -30,7 +30,7 @@ export const fetchMineAlertsByMine =
   };
 
 export const createMineAlert =
-  (mineGuid: string, payload: IMineAlert): AppThunk<Promise<AxiosResponse<IMineAlert>>> =>
+  (mineGuid: string, payload: IMineAlertCreate): AppThunk<Promise<AxiosResponse<IMineAlert>>> =>
   (dispatch): Promise<AxiosResponse<IMineAlert>> => {
     dispatch(request(reducerTypes.CREATE_MINE_ALERTS));
     dispatch(showLoading("modal"));
