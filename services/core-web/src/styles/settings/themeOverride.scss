@@ -150,6 +150,13 @@
   }
 }
 
+.ant-input-search-button {
+  height: 34px;
+  width: 46px;
+  margin: 0;
+  border: 1px solid #d9d9d9;
+}
+
 
 .ant-btn-danger {
   background-color: $danger-btn-color;
@@ -333,7 +340,7 @@
 }
 
 .ant-card-body {
-  padding: 20px;
+  padding: 0;
 }
 
 .white .ant-card-head {

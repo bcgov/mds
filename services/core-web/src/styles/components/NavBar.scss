@@ -144,8 +144,9 @@
 
 .navbar-dropdown-menu-item {
   @extend .ant-dropdown-menu-item;
+  background-color: transparent !important;
   &:hover {
-    background-color: $primary-btn-color;
+    background-color: $primary-btn-color !important;
   }
 }
 

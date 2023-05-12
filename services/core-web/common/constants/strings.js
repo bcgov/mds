@@ -269,3 +269,47 @@ export const DAM_OPERATING_STATUS_HASH = {
   closure_active_care: "Closure - Active Care",
   closure_passive_care: "Closure - Passive Care",
 };
+
+export const BC_TIMEZONE_NAMES = ["Canada/Pacific", "Canada/Mountain", "Canada/Yukon"];
+
+// "Display name": [corresponding zones as picked up by moment]
+// the "Canada/*" TZs are valid, and what we want to display, but browser picks up "America/*"
+export const CANADA_TIMEZONE_MAP = {
+  // PDT (DST) -700
+  "Canada/Pacific": ["America/Vancouver"],
+  // MST (no DST) -700
+  "Canada/Yukon": [
+    "America/Creston",
+    "America/Dawson",
+    "America/Dawson_Creek",
+    "America/Fort_Nelson",
+    "America/Phoenix",
+    "America/Whitehorse",
+  ],
+  // MDT (DST) -600
+  "Canada/Mountain": [
+    "America/Cambridge_Bay",
+    "America/Edmonton",
+    "America/Inuvik",
+    "America/Yellowknife",
+  ],
+  //CST (no DST) -600
+  "Canada/Saskatchewan": ["America/Regina", "America/Swift_Current"],
+  // CDT (DST) -500
+  "Canada/Central": ["America/Winnipeg", "America/Rankin_Inlet", "America/Resolute"],
+  // EDT (DST) -400
+  "Canada/Eastern": ["America/Toronto", "America/Iqaluit"],
+  // ADT (DST) -300
+  "Canada/Atlantic": [
+    "America/Halifax",
+    "America/Moncton",
+    "America/Glace_Bay",
+    "America/Goose_Bay",
+  ],
+  // NDT (DST) -230
+  "Canada/Newfoundland": ["America/St_Johns"],
+};
+
+export const DEFAULT_TIMEZONE = "Canada/Pacific";
+
+export const DATETIME_TZ_FORMAT = "YYYY-MM-DD HH:mm Z z";

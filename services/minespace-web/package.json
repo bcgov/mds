@@ -32,7 +32,7 @@
     "@types/jest": "24.9.1",
     "@types/lodash": "4.14.192",
     "@types/react-router-dom": "5.3.3",
-    "antd": "4.6.2",
+    "antd": "4.24.10",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.17.0",
     "core-js": "3.6.4",

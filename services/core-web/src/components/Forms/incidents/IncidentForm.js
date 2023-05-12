@@ -21,6 +21,7 @@ import {
   requiredRadioButton,
   requiredNotUndefined,
   dateNotBeforeStrictOther,
+  dateNotInFutureTZ,
 } from "@common/utils/Validate";
 import { normalizePhone, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -46,6 +47,7 @@ import customPropTypes from "@/customPropTypes";
 import MinistryInternalComments from "@/components/mine/Incidents/MinistryInternalComments";
 import IncidentFileUpload from "./IncidentFileUpload";
 import IncidentCategoryCheckboxGroup from "./IncidentCategoryCheckboxGroup";
+import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -66,6 +68,7 @@ const propTypes = {
       mineIncidentGuid: PropTypes.string,
     }),
   }).isRequired,
+  form: PropTypes.string.isRequired,
 };
 
 const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
@@ -146,7 +149,12 @@ const retrieveInitialReportDynamicValidation = (childProps) => {
   };
 };
 
-const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEditMode) => {
+const renderInitialReport = (
+  incidentCategoryCodeOptions,
+  locationOptions,
+  isEditMode,
+  formName
+) => {
   return (
     <Row>
       {/* Reporter Details */}
@@ -245,31 +253,21 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
               />
             </Form.Item>
           </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="* Incident date">
-              <Field
-                id="incident_date"
-                name="incident_date"
-                placeholder="Please select date..."
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="* Incident time">
-              <Field
-                id="incident_time"
-                name="incident_time"
-                placeholder="Please select time..."
-                component={renderConfig.TIME}
-                validate={[required]}
-                disabled={!isEditMode}
-                fullWidth
-              />
-            </Form.Item>
-          </Col>
+          <Form.Item label="* Incident date & time">
+            <Field
+              id="incident_timestamp"
+              name="incident_timestamp"
+              disabled={!isEditMode}
+              validate={[dateNotInFutureTZ, required]}
+              component={(props) => (
+                <RenderDateTimeTz
+                  timezoneFieldProps={{ name: "incident_timezone" }}
+                  formName={formName}
+                  {...props}
+                />
+              )}
+            />
+          </Form.Item>
           <Col md={12} xs={24}>
             <Form.Item label="Proponent incident number (optional)">
               <Field
@@ -542,8 +540,10 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const { inspectorContactedValidation, inspectorContacted } =
-    retrieveInitialReportDynamicValidation(childProps);
+  const {
+    inspectorContactedValidation,
+    inspectorContacted,
+  } = retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
@@ -962,14 +962,18 @@ export const IncidentForm = (props) => {
     { label: "Underground", value: "underground" },
     ...(showUnspecified ? [{ label: "Not Specified", value: "" }] : []),
   ];
-
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
       <Col span={24}>{updateIncidentStatus(props, isNewIncident)}</Col>
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
-          {renderInitialReport(incidentCategoryCodeOptions, locationOptions, isEditMode)}
+          {renderInitialReport(
+            incidentCategoryCodeOptions,
+            locationOptions,
+            isEditMode,
+            props.form
+          )}
           <br />
           {renderDocumentation(props, isEditMode, localHandlers, parentHandlers)}
           <br />
@@ -1016,6 +1020,6 @@ export default compose(
     form: FORM.ADD_EDIT_INCIDENT,
     enableReinitialize: true,
     touchOnBlur: true,
-    touchOnChange: false,
+    touchOnChange: true,
   })
 )(IncidentForm);
