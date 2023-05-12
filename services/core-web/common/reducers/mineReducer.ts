@@ -12,7 +12,7 @@ interface MineState {
   mineIds: string[];
   mineNameList: IMine[];
   minesPageData: IMine;
-  mineGuid: boolean;
+  mineGuid: string;
   mineBasicInfoList: IMine[];
   mineDocuments: IMineDocument[];
   subscribedMines: IMine[];
@@ -26,7 +26,7 @@ const initialState: MineState = {
   mineIds: [],
   mineNameList: [],
   minesPageData: {},
-  mineGuid: false,
+  mineGuid: null,
   mineBasicInfoList: [],
   mineDocuments: [],
   subscribedMines: [],
@@ -43,7 +43,7 @@ export const mineReducer = (state: MineState = initialState, action) => {
         mines: createItemMap(action.payload.mines, "mine_guid"),
         mineIds: createItemIdsArray(action.payload.mines, "mine_guid"),
         minesPageData: action.payload,
-        mineGuid: false,
+        mineGuid: null,
       };
     case actionTypes.STORE_MINE:
       return {
