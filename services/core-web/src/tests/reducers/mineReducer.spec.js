@@ -13,11 +13,13 @@ const baseExpectedValue = {
   mineIds: [],
   mineNameList: [],
   minesPageData: {},
-  mineGuid: false,
+  mineGuid: "",
   mineBasicInfoList: [],
   mineDocuments: [],
   subscribedMines: [],
   mineComments: [],
+  currentUserVerifiedMines: [],
+  currentUserUnverifiedMinesMines: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

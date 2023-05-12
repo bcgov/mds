@@ -30,7 +30,7 @@ const mockState = {
   mineIds: Mock.MINES.mineIds,
   mineNameList: Mock.MINE_NAME_LIST.mines,
   minesPageData: Mock.PAGE_DATA,
-  mineGuid: false,
+  mineGuid: "",
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,
   mineBasicInfoList: Mock.MINE_BASIC_INFO,
   mineDocuments: Mock.MINEDOCUMENTS.records,
