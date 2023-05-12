@@ -3,12 +3,10 @@ import * as actionTypes from "../constants/actionTypes";
 import { MINES } from "../constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
 import { IMine, IMineComment, IMineDocument } from "@mds/common";
-
 /**
  * @file mineReducer.js
  * all data associated with new mine/existing mine records is handled witnin this reducer.
  */
-
 interface MineState {
   mines: IMine;
   mineIds: string[];
