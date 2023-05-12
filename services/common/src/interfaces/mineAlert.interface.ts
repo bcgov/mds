@@ -1,4 +1,4 @@
-interface IMineAlert {
+export interface IMineAlert {
   mine_alert_id: number;
   mine_alert_guid: string;
   mine_guid: string;

@@ -1,4 +1,7 @@
 import { ITailingsStorageFacility } from "@/interfaces/tailingsStorageFacility.interface";
+import { IMineType } from "./mineType.interface";
+import { IMineVerifiedStatus } from "./mineVerifiedStatus.interface";
+import { IMineWorkInformation } from "./mineWorkInformation.interface";
 
 export interface IMine {
   mine_guid: string;
@@ -13,4 +16,9 @@ export interface IMine {
   mine_tailings_storage_facilities: ITailingsStorageFacility[];
   number_of_mine_employees: number;
   number_of_contractors: number;
+  mine_type: IMineType[];
+  verified_status: IMineVerifiedStatus;
+  has_minespace_users: boolean;
+  mms_alias: string;
+  mine_work_information: IMineWorkInformation[];
 }
