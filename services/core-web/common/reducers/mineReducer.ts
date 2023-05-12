@@ -12,7 +12,7 @@ interface MineState {
   mineIds: string[];
   mineNameList: IMine[];
   minesPageData: IMine;
-  mineGuid: string;
+  mineGuid: any;
   mineBasicInfoList: IMine[];
   mineDocuments: IMineDocument[];
   subscribedMines: IMine[];
@@ -26,7 +26,7 @@ const initialState: MineState = {
   mineIds: [],
   mineNameList: [],
   minesPageData: {},
-  mineGuid: null,
+  mineGuid: false,
   mineBasicInfoList: [],
   mineDocuments: [],
   subscribedMines: [],
@@ -43,7 +43,7 @@ export const mineReducer = (state: MineState = initialState, action) => {
         mines: createItemMap(action.payload.mines, "mine_guid"),
         mineIds: createItemIdsArray(action.payload.mines, "mine_guid"),
         minesPageData: action.payload,
-        mineGuid: null,
+        mineGuid: false,
       };
     case actionTypes.STORE_MINE:
       return {
@@ -98,7 +98,7 @@ export const getMines = (state: RootState): IMine => state[MINES].mines;
 export const getMineIds = (state: RootState): string[] => state[MINES].mineIds;
 export const getMineNames = (state: RootState): IMine[] => state[MINES].mineNameList;
 export const getMinesPageData = (state: RootState): IMine => state[MINES].minesPageData;
-export const getMineGuid = (state: RootState): string => state[MINES].mineGuid;
+export const getMineGuid = (state: RootState): any => state[MINES].mineGuid;
 export const getMineBasicInfoList = (state: RootState): IMine[] => state[MINES].mineBasicInfoList;
 export const getMineDocuments = (state: RootState): IMineDocument[] => state[MINES].mineDocuments;
 export const getSubscribedMines = (state: RootState): IMine[] => state[MINES].subscribedMines;
