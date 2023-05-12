@@ -43,7 +43,7 @@ export const mineReducer = (state: MineState = initialState, action) => {
         mines: createItemMap(action.payload.mines, "mine_guid"),
         mineIds: createItemIdsArray(action.payload.mines, "mine_guid"),
         minesPageData: action.payload,
-        mineGuid: false,
+        mineGuid: "",
       };
     case actionTypes.STORE_MINE:
       return {
