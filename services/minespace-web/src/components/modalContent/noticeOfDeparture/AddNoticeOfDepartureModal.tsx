@@ -1,21 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
-import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import CustomPropTypes from "@/customPropTypes";
+import { IPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import { AxiosResponse } from "axios";
+import { RootState } from "@/App";
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  afterClose: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-};
+interface AddNoticeOfDepartureModalProps {
+  onSubmit: (
+    permitNumber: string,
+    values: ICreateNoD,
+    documentArray: INodDocumentPayload
+  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
+  initialValues: ICreateNoD;
+  afterClose: () => void;
+  closeModal: () => void;
+  mineGuid: string;
+  permits: IPermit[];
+}
 
-const AddNoticeOfDepartureModal = (props) => {
+const AddNoticeOfDepartureModal: React.FC<AddNoticeOfDepartureModalProps> = (props) => {
   const { onSubmit, initialValues, afterClose, closeModal, mineGuid, permits } = props;
 
   const close = () => {
@@ -26,21 +31,18 @@ const AddNoticeOfDepartureModal = (props) => {
   return (
     <div>
       <AddNoticeOfDepartureForm
-        initialValues={initialValues}
         permits={permits}
-        mineManagerOptions={[]}
-        mineGuid={mineGuid}
         onSubmit={onSubmit}
+        mineGuid={mineGuid}
         closeModal={close}
+        initialValues={initialValues}
       />
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   addNoticeOfDepartureFormValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
 });
-
-AddNoticeOfDepartureModal.propTypes = propTypes;
 
 export default connect(mapStateToProps)(AddNoticeOfDepartureModal);

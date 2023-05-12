@@ -7,6 +7,7 @@ from cerberus import Validator
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy import func
 from app.extensions import db
 from sqlalchemy.sql import table, column
 from app.api.utils.include.user_info import User
@@ -194,7 +195,7 @@ class ActivityNotification(AuditMixin, Base):
 
     @classmethod
     def find_all_by_recipient(cls, user, page, per_page):
-        query = cls.query.filter_by(notification_recipient=user).order_by(cls.create_timestamp.desc())
+        query = cls.query.filter(func.lower(ActivityNotification.notification_recipient)==user.lower()).order_by(cls.create_timestamp.desc())
 
         if (page):
             result = query.paginate(page, per_page, error_out=False)

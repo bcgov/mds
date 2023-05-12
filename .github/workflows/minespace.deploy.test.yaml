@@ -30,7 +30,7 @@ jobs:
 
   trigger-gitops:
     runs-on: ubuntu-20.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: promote-image
     steps:
       - name: Checkout

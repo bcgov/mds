@@ -4,6 +4,7 @@ const path = require("path");
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
+  ignorePatterns: ["services/minespace-web/webpack.config.ts"],
   parserOptions: {
     project: [
       "./services/common/tsconfig.json",
@@ -60,7 +61,7 @@ module.exports = {
     "@typescript-eslint/no-shadow": 1,
     "@typescript-eslint/no-unused-vars": 1,
     "import/no-extraneous-dependencies": 0,
-    "@typescript-eslint/quotes": [2, "double"],
+    "@typescript-eslint/quotes": [0, "double"],
     "@typescript-eslint/indent": [0, 4],
     "@typescript-eslint/comma-dangle": 0,
     "@typescript-eslint/naming-convention": 0,

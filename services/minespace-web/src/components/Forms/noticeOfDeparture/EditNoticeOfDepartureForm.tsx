@@ -1,42 +1,50 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { change, Field, FieldArray, reduxForm } from "redux-form";
-import { Button, Col, Popconfirm, Row, Typography, Alert } from "antd";
+import {
+  change,
+  Field,
+  FieldArray,
+  getFormSyncErrors,
+  InjectedFormProps,
+  reduxForm,
+} from "redux-form";
+import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import {
+  NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
-  NOD_TYPE_FIELD_VALUE,
 } from "@common/constants/strings";
 import { getNoticeOfDeparture } from "@common/reducers/noticeOfDepartureReducer";
-import { compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 import { EMPTY_FIELD } from "@/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
+import { ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import { bindActionCreators, compose } from "redux";
+import { connect } from "react-redux";
 
-const propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
-};
+interface EditNoticeOfDepartureFormProps {
+  initialValues: INoticeOfDeparture;
+  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload) => any;
+  closeModal: () => void;
+  mineGuid: string;
+  noticeOfDeparture: INoticeOfDeparture;
+  handleSubmit?: any;
+  logFormErrors?: any;
+  pristine?: boolean;
+  change?: (field: string, value: any) => void;
+}
 
-// eslint-disable-next-line import/no-mutable-exports
-const EditNoticeOfDepartureForm = (props) => {
+const EditNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
+> = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
@@ -63,7 +71,7 @@ const EditNoticeOfDepartureForm = (props) => {
     }
   }, [checklist]);
 
-  const handleNoticeOfDepartureSubmit = (values) => {
+  const handleNoticeOfDepartureSubmit = (values): any => {
     setSubmitting(true);
     onSubmit(nod_guid, values, documentArray).finally(() => setSubmitting(false));
   };
@@ -86,18 +94,20 @@ const EditNoticeOfDepartureForm = (props) => {
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      props.change("self-assessment", documentName);
       setHasChecklist(true);
     }
   };
 
   useEffect(() => {
-    change("uploadedFiles", documentArray);
+    props.change("uploadedFiles", documentArray);
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
+      props.change("self-assessment", null);
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -133,14 +143,13 @@ const EditNoticeOfDepartureForm = (props) => {
         <Typography.Text>
           Enter the following information about your Notice of Departure.
         </Typography.Text>
-        <Form.Item label="Project Title">
-          <Field
-            id="nodTitle"
-            name="nod_title"
-            component={renderConfig.FIELD}
-            validate={[required, maxLength(50)]}
-          />
-        </Form.Item>
+        <Field
+          label="Project Title"
+          id="nodTitle"
+          name="nod_title"
+          component={renderConfig.FIELD}
+          validate={[required, maxLength(50)]}
+        />
         <Row gutter={24}>
           <Col span={12}>
             <p className="field-title">Permit #</p>
@@ -158,7 +167,7 @@ const EditNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <FieldArray name="nod_contacts" component={renderContacts} />
+        <FieldArray props={{}} name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -208,10 +217,9 @@ const EditNoticeOfDepartureForm = (props) => {
             showIcon
           />
         )}
-        <Form.Item className="margin-y-large">
+        <div className="margin-y-large">
           <Field
-            name="nod_self_assessment_form"
-            id="nod_self_assessment_form"
+            name="self-assessment"
             onFileLoad={(documentName, document_manager_guid) => {
               onFileLoad(
                 documentName,
@@ -230,7 +238,7 @@ const EditNoticeOfDepartureForm = (props) => {
             acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
           />
-        </Form.Item>
+        </div>
         {checklist && documentSection({ title: "", documentArray: [checklist] })}
 
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
@@ -245,26 +253,33 @@ const EditNoticeOfDepartureForm = (props) => {
           <li>Total new disturbance area</li>
           <li>Relevant supporting info (management plans, field surveys, etc...)</li>
         </ul>
-        <Form.Item className="margin-y-large">
+        <div className="margin-y-large">
           <Field
-            onFileLoad={(documentName, document_manager_guid) => {
-              onFileLoad(
-                documentName,
-                document_manager_guid,
-                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
-              );
+            name="other_documents"
+            props={{
+              onFileLoad: (documentName, document_manager_guid) => {
+                onFileLoad(
+                  documentName,
+                  document_manager_guid,
+                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+                );
+              },
+              labelIdle:
+                '<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
+              onRemoveFile: onRemoveFile,
+              mineGuid: mineGuid,
+              allowMultiple: true,
+              setUploading: setUploading,
+              acceptedFileTypesMap: {
+                ...DOCUMENT,
+                ...EXCEL,
+                ...SPATIAL,
+              },
+              uploadType: NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER,
             }}
-            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
-            onRemoveFile={onRemoveFile}
-            mineGuid={mineGuid}
-            allowMultiple
-            setUploading={setUploading}
             component={NoticeOfDepartureFileUpload}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
-            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
-            validate={[required]}
           />
-        </Form.Item>
+        </div>
         {otherDocuments.length > 0 && documentSection({ title: "", documentArray: otherDocuments })}
         {decision.length > 0 &&
           documentSection({
@@ -321,14 +336,21 @@ const EditNoticeOfDepartureForm = (props) => {
   );
 };
 
-EditNoticeOfDepartureForm.propTypes = propTypes;
-
 const mapStateToProps = (state) => ({
   initialValues: getNoticeOfDeparture(state),
+  logFormErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_DEPARTURE)(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_DEPARTURE,
     onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
@@ -336,4 +358,4 @@ export default compose(
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
   })
-)(EditNoticeOfDepartureForm);
+)(EditNoticeOfDepartureForm) as React.FC<EditNoticeOfDepartureFormProps>;

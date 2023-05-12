@@ -1,41 +1,61 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { change, Field, reduxForm, FieldArray } from "redux-form";
-import { Button, Col, Popconfirm, Row, Typography, Alert } from "antd";
+import {
+  change,
+  Field,
+  FieldArray,
+  FieldArrayFieldsProps,
+  InjectedFormProps,
+  reduxForm,
+} from "redux-form";
+import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import {
+  email,
   maxLength,
+  phoneNumber,
   required,
   requiredList,
   requiredRadioButton,
   validateSelectOptions,
-  phoneNumber,
-  email,
 } from "@common/utils/Validate";
-import { resetForm, normalizePhone } from "@common/utils/helpers";
-import { NOTICE_OF_DEPARTURE_DOCUMENT_TYPE, NOD_TYPE_FIELD_VALUE } from "@common/constants/strings";
-import { compose } from "redux";
+import { normalizePhone, resetForm } from "@common/utils/helpers";
+import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { bindActionCreators, compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import {
+  ICreateNoD,
+  INoDContactInterface,
+  INodDocumentPayload,
+  INoticeOfDeparture,
+  IPermit,
+} from "@mds/common";
+import { AxiosResponse } from "axios";
+import { connect } from "react-redux";
 
-const propTypes = {
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-};
+interface RenderContactsProps {
+  fields: FieldArrayFieldsProps<INoDContactInterface>;
+}
 
-const renderContactsPropTypes = {
-  fields: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
+interface AddNoticeOfDepartureProps {
+  permits: IPermit[];
+  onSubmit: (
+    permitNumber: string,
+    values: ICreateNoD,
+    documentArray: INodDocumentPayload
+  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
+  closeModal: () => void;
+  mineGuid: string;
+  handleSubmit?: any;
+  change?: (fieldName: string, value: any) => void;
+  initialValues: { nod_contacts: [{ is_primary: boolean }] };
+}
 
-export const renderContacts = (props) => {
+export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   const { fields } = props;
   return (
     <div className="margin-large--bottom">
@@ -45,29 +65,26 @@ export const renderContacts = (props) => {
         </Typography.Title>
       )}
       {fields.map((contact, index) => (
-        // eslint-disable-next-line react/no-array-index-key
         <Row gutter={16} key={index}>
           <Col span={12}>
-            <Form.Item label="First Name">
-              <Field
-                id={`${contact}.first_name`}
-                name={`${contact}.first_name`}
-                placeholder="First Name"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(200)]}
-              />
-            </Form.Item>
+            <Field
+              label="First Name"
+              id={`${contact}.first_name`}
+              name={`${contact}.first_name`}
+              placeholder="First Name"
+              component={renderConfig.FIELD}
+              validate={[required, maxLength(200)]}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item label="Last Name">
-              <Field
-                id={`${contact}.last_name`}
-                name={`${contact}.last_name`}
-                placeholder="Last Name"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(200)]}
-              />
-            </Form.Item>
+            <Field
+              label="Last Name"
+              id={`${contact}.last_name`}
+              name={`${contact}.last_name`}
+              placeholder="Last Name"
+              component={renderConfig.FIELD}
+              validate={[required, maxLength(200)]}
+            />
           </Col>
           <Col span={12}>
             <Field
@@ -81,15 +98,14 @@ export const renderContacts = (props) => {
             />
           </Col>
           <Col span={12}>
-            <Form.Item label="Email">
-              <Field
-                id={`${contact}.email`}
-                name={`${contact}.email`}
-                component={renderConfig.FIELD}
-                placeholder="example@example.com"
-                validate={[email, required]}
-              />
-            </Form.Item>
+            <Field
+              label="Email"
+              id={`${contact}.email`}
+              name={`${contact}.email`}
+              component={renderConfig.FIELD}
+              placeholder="example@example.com"
+              validate={[email, required]}
+            />
           </Col>
         </Row>
       ))}
@@ -97,8 +113,10 @@ export const renderContacts = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit, mineGuid } = props;
+const AddNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
+> = (props) => {
+  const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -124,7 +142,11 @@ const AddNoticeOfDepartureForm = (props) => {
     onSubmit(permitNumber, values, documentArray).finally(() => setSubmitting(false));
   };
 
-  const onFileLoad = (documentName, document_manager_guid, documentType) => {
+  const onFileLoad = (
+    documentName: string,
+    document_manager_guid: string,
+    documentType: string
+  ) => {
     setUploadedFiles([
       ...uploadedFiles,
       {
@@ -142,6 +164,7 @@ const AddNoticeOfDepartureForm = (props) => {
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+      change("self-assessment", documentName);
       setHasChecklist(true);
     }
   };
@@ -154,6 +177,7 @@ const AddNoticeOfDepartureForm = (props) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
+      change("self-assessment", null);
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -185,27 +209,25 @@ const AddNoticeOfDepartureForm = (props) => {
             Enter the following information about your Notice of Departure.
           </Typography.Text>
         </div>
-        <Form.Item label="Departure Project Title">
-          <Field
-            id="nodTitle"
-            name="nod_title"
-            placeholder="Departure Project Title"
-            component={renderConfig.FIELD}
-            validate={[required, maxLength(50)]}
-          />
-        </Form.Item>
+        <Field
+          label="Departure Project Title"
+          id="nodTitle"
+          name="nod_title"
+          placeholder="Departure Project Title"
+          component={renderConfig.FIELD}
+          validate={[required, maxLength(50)]}
+        />
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label="Permit #">
-              <Field
-                id="permitGuid"
-                name="permit_guid"
-                placeholder="Select Permit #"
-                component={renderConfig.SELECT}
-                validate={[requiredList, validateSelectOptions(permitOptions)]}
-                data={permitOptions}
-              />
-            </Form.Item>
+            <Field
+              label="Permit #"
+              id="permitGuid"
+              name="permit_guid"
+              placeholder="Select Permit #"
+              component={renderConfig.SELECT}
+              validate={[requiredList, validateSelectOptions(permitOptions)]}
+              data={permitOptions}
+            />
           </Col>
         </Row>
         <Field
@@ -215,7 +237,7 @@ const AddNoticeOfDepartureForm = (props) => {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(3000), required]}
         />
-        <FieldArray name="nod_contacts" component={renderContacts} />
+        <FieldArray props={{}} name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
@@ -261,27 +283,31 @@ const AddNoticeOfDepartureForm = (props) => {
             showIcon
           />
         )}
-        <Form.Item className="margin-y-large">
+        <div className="margin-y-large">
           <Field
-            onFileLoad={(documentName, document_manager_guid) => {
-              onFileLoad(
-                documentName,
-                document_manager_guid,
-                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
-              );
+            name="self-assessment"
+            props={{
+              onFileLoad: (documentName, document_manager_guid) => {
+                onFileLoad(
+                  documentName,
+                  document_manager_guid,
+                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+                );
+              },
+              onRemoveFile,
+              mineGuid,
+              setUploading,
+              allowMultiple: true,
+              maxFiles: 1,
+              labelIdle:
+                '<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>',
+              acceptedFileTypesMap: { ...DOCUMENT, ...EXCEL },
+              uploadType: NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST,
             }}
-            onRemoveFile={onRemoveFile}
-            mineGuid={mineGuid}
-            setUploading={setUploading}
-            allowMultiple
             component={NoticeOfDepartureFileUpload}
-            maxFiles={1}
-            labelIdle='<strong class="filepond--label-action">Self-Assessment Upload</strong><div>Accepted filetypes: .doc .docx .xlsx .pdf</div>'
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST}
             validate={[required]}
           />
-        </Form.Item>
+        </div>
         <h4 className="nod-modal-section-header">Upload Application Documents</h4>
         <Typography.Text>
           Please support your Notice of Departure by uploading additional supporting application
@@ -294,26 +320,33 @@ const AddNoticeOfDepartureForm = (props) => {
           <li>Total new disturbance area</li>
           <li>Relevant supporting info (management plans, field surveys, etc...)</li>
         </ul>
-        <Form.Item className="margin-y-large">
+        <div className="margin-y-large">
           <Field
-            onFileLoad={(documentName, document_manager_guid) => {
-              onFileLoad(
-                documentName,
-                document_manager_guid,
-                NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
-              );
+            name="other_documents"
+            props={{
+              onFileLoad: (documentName, document_manager_guid) => {
+                onFileLoad(
+                  documentName,
+                  document_manager_guid,
+                  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+                );
+              },
+              labelIdle:
+                '<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
+              onRemoveFile: onRemoveFile,
+              mineGuid: mineGuid,
+              allowMultiple: true,
+              setUploading: setUploading,
+              acceptedFileTypesMap: {
+                ...DOCUMENT,
+                ...EXCEL,
+                ...SPATIAL,
+              },
+              uploadType: NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER,
             }}
-            onRemoveFile={onRemoveFile}
-            mineGuid={mineGuid}
-            allowMultiple
             component={NoticeOfDepartureFileUpload}
-            setUploading={setUploading}
-            labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
-            uploadType={NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER}
-            validate={[required]}
           />
-        </Form.Item>
+        </div>
         <div className="ant-modal-footer">
           <Popconfirm
             placement="top"
@@ -339,10 +372,16 @@ const AddNoticeOfDepartureForm = (props) => {
   );
 };
 
-AddNoticeOfDepartureForm.propTypes = propTypes;
-renderContacts.propTypes = renderContactsPropTypes;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
 
 export default compose(
+  connect(mapDispatchToProps),
   reduxForm({
     form: FORM.ADD_NOTICE_OF_DEPARTURE,
     onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
@@ -351,4 +390,4 @@ export default compose(
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,
   })
-)(AddNoticeOfDepartureForm);
+)(AddNoticeOfDepartureForm) as React.FC<AddNoticeOfDepartureProps>;

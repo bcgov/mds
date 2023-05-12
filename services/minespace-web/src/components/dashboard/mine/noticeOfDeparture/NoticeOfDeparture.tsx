@@ -14,8 +14,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation, useParams } from "react-router-dom";
 import {
-  ICreateNoticeOfDeparture,
-  IDocumentPayload,
+  ICreateNoD,
+  INodDocumentPayload,
   IMine,
   INoticeOfDeparture,
   IPermit,
@@ -39,12 +39,10 @@ interface NoticeOfDepartureProps {
   permits: IPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
-  createNoticeOfDeparture: (
-    payload: ICreateNoticeOfDeparture
-  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
+  createNoticeOfDeparture: (payload: ICreateNoD) => Promise<AxiosResponse<INoticeOfDeparture>>;
   updateNoticeOfDeparture: (
     { nodGuid }: { nodGuid: string },
-    payload: Partial<ICreateNoticeOfDeparture>
+    payload: Partial<ICreateNoD>
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   fetchNoticesOfDeparture: typeof fetchNoticesOfDeparture;
   fetchDetailedNoticeOfDeparture: (nod_guid: string) => Promise<AxiosResponse<INoticeOfDeparture>>;
@@ -56,7 +54,7 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   const { mine, nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const location = useLocation();
-  const url = useParams();
+  const url: { activeTab: string } = useParams();
 
   const handleFetchPermits = async () => {
     await props.fetchPermits(mine.mine_guid);
@@ -72,7 +70,10 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
     handleFetchNoticesOfDeparture();
   }, []);
 
-  const handleAddDocuments = (documentArray: IDocumentPayload[], noticeOfDepartureGuid: string) => {
+  const handleAddDocuments = (
+    documentArray: INodDocumentPayload[],
+    noticeOfDepartureGuid: string
+  ) => {
     for (const document of documentArray) {
       props.addDocumentToNoticeOfDeparture(
         { noticeOfDepartureGuid },
@@ -88,7 +89,7 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   const handleCreateNoticeOfDeparture = (
     permit_guid,
     values,
-    documentArray: IDocumentPayload[]
+    documentArray: INodDocumentPayload[]
   ) => {
     setIsLoaded(false);
     console.log("values", values);

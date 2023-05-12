@@ -1,12 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { Provider } from "react-redux";
-import * as MOCK from "@/tests/mocks/dataMocks";
-import AddNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/AddNoticeOfDepartureModal";
 import { store } from "@/App";
+import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/EditNoticeOfDepartureModal";
+import { NOTICE_OF_DEPARTURE_DETAILS, MINES } from "@/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onSubmit = jest.fn();
@@ -16,10 +16,13 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   // eslint-disable-next-line prefer-destructuring
-  props.mineGuid = MOCK.MINES.mineIds[0];
+  props.mineGuid = MINES.mineIds[0];
   props.initialValues = {};
-  props.permits = MOCK.PERMITS.permits;
+  props.noticeOfDeparture = NOTICE_OF_DEPARTURE_DETAILS;
   props.addNoticeOfDepartureFormValues = {};
+  props.onSubmit = jest.fn();
+  props.closeModal = jest.fn();
+  props.afterClose = jest.fn();
 };
 
 beforeEach(() => {
@@ -27,11 +30,11 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AddNoticeOfDepartureModal", () => {
+describe("EditNoticeOfDepartureModal", () => {
   it("renders properly", () => {
     const component = shallow(
       <Provider store={store}>
-        <AddNoticeOfDepartureModal {...dispatchProps} {...props} />
+        <EditNoticeOfDepartureModal {...dispatchProps} {...props} />
       </Provider>
     );
     expect(component).toMatchSnapshot();

@@ -1,11 +1,6 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import {
-  ENVIRONMENT,
-  IDocumentPayload,
-  INoticeOfDeparture,
-  ICreateNoticeOfDeparture,
-} from "@mds/common";
+import { ENVIRONMENT, INodDocumentPayload, INoticeOfDeparture, ICreateNoD } from "@mds/common";
 import { error, request, success } from "../actions/genericActions";
 import {
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
@@ -30,9 +25,7 @@ import { AxiosResponse } from "axios";
 import { AppThunk } from "@/store/appThunk.type";
 
 export const createNoticeOfDeparture =
-  (
-    payload: Partial<ICreateNoticeOfDeparture>
-  ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> =>
+  (payload: Partial<ICreateNoD>): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> =>
   (dispatch): Promise<AxiosResponse<INoticeOfDeparture>> => {
     dispatch(request(CREATE_NOTICE_OF_DEPARTURE));
     dispatch(showLoading("modal"));
@@ -125,7 +118,7 @@ export const fetchDetailedNoticeOfDeparture = (
 export const addDocumentToNoticeOfDeparture =
   (
     { noticeOfDepartureGuid }: { noticeOfDepartureGuid: string },
-    payload: IDocumentPayload
+    payload: INodDocumentPayload
   ): AppThunk =>
   (dispatch) => {
     dispatch(showLoading("modal"));

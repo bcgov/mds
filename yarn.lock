@@ -1482,6 +1482,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.9.2":
+  version: 7.21.5
+  resolution: "@babel/runtime@npm:7.21.5"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 358f2779d3187f5c67ad302e8f8d435412925d0b991d133c7d4a7b1ddd5a3fda1b6f34537cb64628dfd96a27ae46df105bed3895b8d754b88cacdded8d1129dd
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.14.5, @babel/template@npm:^7.18.10, @babel/template@npm:^7.4.0":
   version: 7.18.10
   resolution: "@babel/template@npm:7.18.10"
@@ -1987,6 +1996,8 @@ __metadata:
     "@types/lodash": 4.14.194
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.0
+    "@types/redux": ^3.6.0
+    "@types/redux-form": 8.2.6
     "@types/styled-components": 5.1.26
     acorn: 6.4.1
     antd: 4.6.2
@@ -2067,7 +2078,7 @@ __metadata:
     react-redux-loading-bar: 5.0.0
     react-responsive: 8.0.1
     react-responsive-carousel: 3.1.49
-    react-router-dom: 5.1.2
+    react-router-dom: 5.3.3
     react-scroll: 1.7.12
     react-sortable-hoc: 2.0.0
     reactour: 1.18.0
@@ -2150,6 +2161,7 @@ __metadata:
     "@types/react": 18.0.34
     "@types/react-dom": 18.0.11
     "@types/redux": ^3.6.0
+    "@types/redux-form": 8.2.6
     "@types/styled-components": 5.1.26
     acorn: 6.4.1
     antd: 4.6.2
@@ -2222,7 +2234,7 @@ __metadata:
     react-redux: 7.1.3
     react-redux-loading-bar: 5.0.0
     react-responsive: 7.0.0
-    react-router-dom: 5.1.2
+    react-router-dom: 5.3.3
     redux: 4.0.5
     redux-form: 8.2.6
     redux-form-input-masks: 2.0.1
@@ -3555,6 +3567,16 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: db3d92b423150222a666329f7aa3023e3e942044700557b8a7d161530847e621aec9f56c9e7f71761b06dd164c8a7b17ad52355863efe80963dffa5537e8e5fd
+  languageName: node
+  linkType: hard
+
+"@types/redux-form@npm:8.2.6":
+  version: 8.2.6
+  resolution: "@types/redux-form@npm:8.2.6"
+  dependencies:
+    "@types/react": "*"
+    redux: ^3.6.0 || ^4.0.0
+  checksum: c06b430e545e3eddd5c8cf36eb1f7950e4c7a93eb470702d9a449207309d4bdbcd21cec4c8d932fd3c6de3665a1e86b3e499116f2b12d568e400db260325de41
   languageName: node
   linkType: hard
 
@@ -14569,16 +14591,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-create-react-context@npm:^0.3.0":
-  version: 0.3.3
-  resolution: "mini-create-react-context@npm:0.3.3"
+"mini-create-react-context@npm:^0.4.0":
+  version: 0.4.1
+  resolution: "mini-create-react-context@npm:0.4.1"
   dependencies:
     "@babel/runtime": ^7.12.1
     tiny-warning: ^1.0.3
   peerDependencies:
     prop-types: ^15.0.0
     react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: df44f3b76568c0a997b781b72a71614c9b6f93c5287903293807b0104739b69f10fa08f5ca5ba4c797065026c2e39e14c40906e9b5554b25223320aa211a507e
+  checksum: f8cb2c7738aac355fe9ce7e8425f371b7fa90daddd5133edda4ccfdc18c49043b2ec04be6f3abf09b60a0f52549d54f158d5bfd81cdfb1a658531e5b9fe7bc6a
   languageName: node
   linkType: hard
 
@@ -18178,32 +18200,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:5.1.2":
-  version: 5.1.2
-  resolution: "react-router-dom@npm:5.1.2"
+"react-router-dom@npm:5.3.3":
+  version: 5.3.3
+  resolution: "react-router-dom@npm:5.3.3"
   dependencies:
-    "@babel/runtime": ^7.1.2
+    "@babel/runtime": ^7.12.13
     history: ^4.9.0
     loose-envify: ^1.3.1
     prop-types: ^15.6.2
-    react-router: 5.1.2
+    react-router: 5.3.3
     tiny-invariant: ^1.0.2
     tiny-warning: ^1.0.0
   peerDependencies:
     react: ">=15"
-  checksum: a42ff84bd8e442ce7d2abe472aadbad39eb7196cdffb29003213da691efbfaf849f4a7758d1f961b216cfd596c09099d673e747dfd4d26d744dc147767df5d7b
+  checksum: e1998918e391611f09b967bce0cb88bc9794aa3d8dc5f86453467a1226ae2ace648a1f401f5282f19c84a3a61fa6a3207e2a6fdfe8c8efae0b255244631febeb
   languageName: node
   linkType: hard
 
-"react-router@npm:5.1.2":
-  version: 5.1.2
-  resolution: "react-router@npm:5.1.2"
+"react-router@npm:5.3.3":
+  version: 5.3.3
+  resolution: "react-router@npm:5.3.3"
   dependencies:
-    "@babel/runtime": ^7.1.2
+    "@babel/runtime": ^7.12.13
     history: ^4.9.0
     hoist-non-react-statics: ^3.1.0
     loose-envify: ^1.3.1
-    mini-create-react-context: ^0.3.0
+    mini-create-react-context: ^0.4.0
     path-to-regexp: ^1.7.0
     prop-types: ^15.6.2
     react-is: ^16.6.0
@@ -18211,7 +18233,7 @@ __metadata:
     tiny-warning: ^1.0.0
   peerDependencies:
     react: ">=15"
-  checksum: 04e25eed70540fa705826cc92c4ceb4ae91ec0b7e78d333e77d7fd2f2fbc78d298546d95f1f9123eb89ad65ccba06c01cd72cf364e82c9614e3900dd1fe91eb3
+  checksum: 52a9f28fa97577fda18a8ed2922b658704eafe873e444fe07202640d55d9e81e67c03efd2b2a5b80e3a80e8be8352df826a227ce5f42b33b91bef853c74d4841
   languageName: node
   linkType: hard
 
@@ -18482,6 +18504,15 @@ __metadata:
     loose-envify: ^1.4.0
     symbol-observable: ^1.2.0
   checksum: 23689ba4318bfffd4517c8c8d49c5e9a7df1b864b3cf4a4784e10060652e28054586a4a64053d1252ae5f105da61cda03fe01a422b05a053c8604b1be1689d16
+  languageName: node
+  linkType: hard
+
+"redux@npm:^3.6.0 || ^4.0.0":
+  version: 4.2.1
+  resolution: "redux@npm:4.2.1"
+  dependencies:
+    "@babel/runtime": ^7.9.2
+  checksum: f63b9060c3a1d930ae775252bb6e579b42415aee7a23c4114e21a0b4ba7ec12f0ec76936c00f546893f06e139819f0e2855e0d55ebfce34ca9c026241a6950dd
   languageName: node
   linkType: hard
 

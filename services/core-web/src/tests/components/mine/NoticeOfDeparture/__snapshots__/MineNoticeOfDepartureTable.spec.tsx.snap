@@ -1,0 +1,629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineNoticeOfDepartureTable renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="skeleton-table"
+    >
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          NOD
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permit
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Submitted
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Updated
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 skeleton-table__row"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="skeleton-table__loader undefined"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

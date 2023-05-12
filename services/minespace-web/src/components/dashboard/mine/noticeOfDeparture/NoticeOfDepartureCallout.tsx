@@ -1,31 +1,27 @@
 import React from "react";
-import {
-  NOTICE_OF_DEPARTURE_STATUS,
-  CALLOUT_SEVERITY,
-  NOTICE_OF_DEPARTURE_STATUS_VALUES,
-} from "@common/constants/strings";
-import PropTypes from "prop-types";
+import { CALLOUT_SEVERITY, NOTICE_OF_DEPARTURE_STATUS_VALUES } from "@common/constants/strings";
 import Callout from "@/components/common/Callout";
+import { NoDStatusDisplayEnum, NodStatusSaveEnum } from "@mds/common";
 
-const calloutContent = (nodStatus) => {
+const calloutContent = (nodStatus: NodStatusSaveEnum) => {
   switch (nodStatus) {
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.self_determined_non_substantial:
       return {
         message: "This Notice of Departure has been self-determined to be non-substantial.",
-        title: NOTICE_OF_DEPARTURE_STATUS.self_determined_non_substantial,
+        title: NoDStatusDisplayEnum.self_determined_non_substantial,
         severity: CALLOUT_SEVERITY.success,
       };
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.determined_non_substantial:
       return {
         message: "This Notice of Departure has been reviewed and determined to be non-substantial.",
-        title: NOTICE_OF_DEPARTURE_STATUS.determined_non_substantial,
+        title: NoDStatusDisplayEnum.determined_non_substantial,
         severity: CALLOUT_SEVERITY.success,
       };
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review:
       return {
         message:
           "A notification has been sent to the Ministry that your Notice of Departure has been submitted. Please check MineSpace for updates to your submission status.",
-        title: NOTICE_OF_DEPARTURE_STATUS.pending_review,
+        title: NoDStatusDisplayEnum.pending_review,
         severity: CALLOUT_SEVERITY.warning,
       };
 
@@ -33,14 +29,14 @@ const calloutContent = (nodStatus) => {
       return {
         message:
           "After reviewing your Notice of Departure we have requested additional information to support the Ministry’s determination. Ministry staff will be in touch with further details.",
-        title: NOTICE_OF_DEPARTURE_STATUS.information_required,
+        title: NoDStatusDisplayEnum.information_required,
         severity: CALLOUT_SEVERITY.warning,
       };
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.in_review:
       return {
         message:
           "Your Notice of Departure is in the process of being reviewed. No edits can be made at this time.",
-        title: NOTICE_OF_DEPARTURE_STATUS.in_review,
+        title: NoDStatusDisplayEnum.in_review,
         severity: CALLOUT_SEVERITY.warning,
       };
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.determined_substantial:
@@ -53,7 +49,7 @@ const calloutContent = (nodStatus) => {
     case NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn:
       return {
         message: "This Notice of Departure has been withdrawn",
-        title: NOTICE_OF_DEPARTURE_STATUS.withdrawn,
+        title: NoDStatusDisplayEnum.withdrawn,
         severity: CALLOUT_SEVERITY.danger,
       };
     default:
@@ -61,11 +57,11 @@ const calloutContent = (nodStatus) => {
   }
 };
 
-const propTypes = {
-  nodStatus: PropTypes.string.isRequired,
-};
+interface NoticeOfDepartureCalloutProps {
+  nodStatus: NodStatusSaveEnum;
+}
 
-const NoticeOfDepartureCallout = (props) => {
+const NoticeOfDepartureCallout: React.FC<NoticeOfDepartureCalloutProps> = (props) => {
   const { nodStatus } = props;
   const { title, message, severity } = calloutContent(nodStatus);
 
@@ -82,7 +78,5 @@ const NoticeOfDepartureCallout = (props) => {
     />
   );
 };
-
-NoticeOfDepartureCallout.propTypes = propTypes;
 
 export default NoticeOfDepartureCallout;

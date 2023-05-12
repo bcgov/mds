@@ -1,29 +1,23 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field, WrappedFieldProps } from "redux-form";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
+import { IAcceptedFileTypes } from "@mds/common";
 
-const propTypes = {
-  onFileLoad: PropTypes.func.isRequired,
-  onRemoveFile: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  uploadType: PropTypes.string.isRequired,
-  allowMultiple: PropTypes.bool.isRequired,
-  maxFiles: PropTypes.number.isRequired,
-  setUploading: PropTypes.func.isRequired,
-  labelIdle: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  acceptedFileTypesMap: PropTypes.object.isRequired,
-  beforeUpload: PropTypes.func,
-};
+interface NoticeOfDepartureFileUploadProps extends WrappedFieldProps {
+  onFileLoad: (file: File) => void;
+  onRemoveFile: (file: File) => void;
+  mineGuid: string;
+  uploadType: string;
+  allowMultiple: boolean;
+  maxFiles: number;
+  setUploading: (uploading: boolean) => void;
+  labelIdle?: string;
+  acceptedFileTypesMap: IAcceptedFileTypes;
+  beforeUpload?: (file: File) => void;
+}
 
-const defaultProps = {
-  labelIdle: undefined,
-  beforeUpload: () => {},
-};
-
-export const NoticeOfDepartureFileUpload = (props) => {
+export const NoticeOfDepartureFileUpload: React.FC<NoticeOfDepartureFileUploadProps> = (props) => {
   const {
     mineGuid,
     onFileLoad,
@@ -56,8 +50,5 @@ export const NoticeOfDepartureFileUpload = (props) => {
     />
   );
 };
-
-NoticeOfDepartureFileUpload.propTypes = propTypes;
-NoticeOfDepartureFileUpload.defaultProps = defaultProps;
 
 export default NoticeOfDepartureFileUpload;

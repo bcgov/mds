@@ -1,13 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
-// eslint-disable-next-line import/no-unresolved
 import { Provider } from "react-redux";
 import NoticeOfDepartureModal from "@/components/modalContent/NoticeOfDepartureModal";
 import { MINE_RESPONSE, NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
 import { store } from "@/App";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
