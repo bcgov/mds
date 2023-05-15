@@ -47,11 +47,8 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
-      loading={false}
       type="primary"
     >
       <ForwardRef(SearchOutlined) />

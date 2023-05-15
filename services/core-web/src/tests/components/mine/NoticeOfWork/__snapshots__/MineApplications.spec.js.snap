@@ -16,7 +16,7 @@ exports[`MineApplications renders properly 1`] = `
     }
     type="card"
   >
-    <TabPane
+    <DeprecatedTabPane
       key="1"
       tab="Notice of Work (0)"
     >
@@ -45,8 +45,8 @@ exports[`MineApplications renders properly 1`] = `
         noticeOfWorkApplications={Array []}
         searchParams={Object {}}
       />
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="2"
       tab="Administrative Amendments (0)"
     >
@@ -86,13 +86,13 @@ exports[`MineApplications renders properly 1`] = `
         onExpand={[Function]}
         searchParams={Object {}}
       />
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="3"
       tab="Explosives Storage & Use Permit Applications (0)"
     >
       <Connect(ExplosivesPermit) />
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

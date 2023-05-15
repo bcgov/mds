@@ -7,7 +7,6 @@ exports[`NOWSideMenu renders properly 1`] = `
     offsetTop={160}
     onChange={[Function]}
     onClick={[Function]}
-    showInkInFixed={false}
   >
     <AnchorLink
       className="now-menu-link"

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadedDocumentTable renders properly 1`] = `
-<Table
+<ForwardRef(InternalTable)
   align="left"
   columns={
     Array [
@@ -34,6 +34,5 @@ exports[`UploadedDocumentTable renders properly 1`] = `
     }
   }
   pagination={false}
-  rowKey="key"
 />
 `;

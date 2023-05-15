@@ -6,11 +6,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title
+      <ForwardRef
         level={3}
       >
         All Project Documents
-      </Title>
+      </ForwardRef>
     </Col>
   </Row>
   <br />
@@ -48,11 +48,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="project-description"
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         Project Description
-      </Title>
+      </ForwardRef>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -81,11 +81,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="irt"
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         IRT
-      </Title>
+      </ForwardRef>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -111,16 +111,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       />
     </div>
     <br />
-    <Title
+    <ForwardRef
       id="major-mine-application"
       level={4}
     >
       Application Files
-    </Title>
+    </ForwardRef>
     <div
       id="primary-documents"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -130,7 +130,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Primary Documents
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -159,7 +159,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="spatial-components"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -169,7 +169,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Spatial Components
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -198,7 +198,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="supporting-documents"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -208,7 +208,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Supporting Documents
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [

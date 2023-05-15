@@ -167,11 +167,7 @@ exports[`ViewBondModal renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[MockFunction]}
       type="secondary"
     >

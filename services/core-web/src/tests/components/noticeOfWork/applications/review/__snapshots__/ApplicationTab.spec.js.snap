@@ -421,32 +421,21 @@ exports[`ApplicationTab renders properly 1`] = `
         <ForwardRef
           cancelText="No"
           disabled={false}
-          icon={<ForwardRef(ExclamationCircleFilled) />}
           okText="Yes"
-          okType="primary"
           onConfirm={[Function]}
           placement="bottomRight"
           title="You have unsaved changes. Are you sure you want to cancel?"
-          transitionName="zoom-big"
-          trigger="click"
         >
           <ForwardRef(InternalButton)
-            block={false}
             className="full-mobile"
             disabled={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             type="secondary"
           >
             Cancel
           </ForwardRef(InternalButton)>
         </ForwardRef>
         <ForwardRef(InternalButton)
-          block={false}
           className="full-mobile"
-          ghost={false}
-          htmlType="button"
           loading={false}
           onClick={[Function]}
           type="tertiary"
@@ -454,10 +443,7 @@ exports[`ApplicationTab renders properly 1`] = `
           Save & Continue
         </ForwardRef(InternalButton)>
         <ForwardRef(InternalButton)
-          block={false}
           className="full-mobile"
-          ghost={false}
-          htmlType="button"
           loading={false}
           onClick={[Function]}
           type="primary"

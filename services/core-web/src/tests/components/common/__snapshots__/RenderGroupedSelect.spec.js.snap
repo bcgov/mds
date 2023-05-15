@@ -7,9 +7,7 @@ exports[`RenderGroupedSelect renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <Select
-    bordered={true}
-    choiceTransitionName=""
+  <ForwardRef(InternalSelect)
     defaultValue=""
     disabled={false}
     dropdownMatchSelectWidth={true}
@@ -19,7 +17,6 @@ exports[`RenderGroupedSelect renders properly 1`] = `
     optionFilterProp="children"
     placeholder=""
     showSearch={true}
-    transitionName="slide-up"
     virtual={false}
   />
 </FormItem>

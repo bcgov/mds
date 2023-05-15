@@ -19,7 +19,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
         <div
           className="center margin-large"
         >
-          <Memo(RadioGroup)
+          <Memo([object Object])
             defaultValue={true}
             onChange={[MockFunction]}
             size="large"
@@ -35,7 +35,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
             >
               Organization
             </ForwardRef(RadioButton)>
-          </Memo(RadioGroup)>
+          </Memo([object Object])>
         </div>
         <Row
           gutter={16}

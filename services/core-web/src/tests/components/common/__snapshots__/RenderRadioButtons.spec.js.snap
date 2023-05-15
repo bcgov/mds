@@ -7,7 +7,7 @@ exports[`RenderRadioButtons renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <Memo(RadioGroup)
+  <Memo([object Object])
     checked={[Function]}
     defaultValue={null}
     disabled={false}

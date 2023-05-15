@@ -53,9 +53,7 @@ exports[`PermitConditionManagement renders properly 1`] = `
     <div
       className="tab__content"
     >
-      <Collapse
-        bordered={true}
-      />
+      <Collapse />
     </div>
   </div>
 </Fragment>

@@ -101,7 +101,7 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <Table
+  <ForwardRef(InternalTable)
     align="left"
     columns={
       Array [
@@ -161,7 +161,6 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
       }
     }
     pagination={false}
-    rowKey="key"
     rowSelection={null}
   />
 </div>

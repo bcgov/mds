@@ -16,7 +16,7 @@ exports[`ExternalAuthorizations renders properly 1`] = `
     }
     type="card"
   >
-    <TabPane
+    <DeprecatedTabPane
       key="1"
       tab="Epic Authorizations (0)"
     >
@@ -68,7 +68,7 @@ exports[`ExternalAuthorizations renders properly 1`] = `
         }
         isLoaded={false}
       />
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

@@ -5,7 +5,7 @@ exports[`ReclamationSummary renders properly 1`] = `
   <h3>
     Reclamation Summary
   </h3>
-  <Table
+  <ForwardRef(InternalTable)
     align="left"
     columns={
       Array [
@@ -35,7 +35,6 @@ exports[`ReclamationSummary renders properly 1`] = `
       }
     }
     pagination={false}
-    rowKey="key"
   />
 </div>
 `;

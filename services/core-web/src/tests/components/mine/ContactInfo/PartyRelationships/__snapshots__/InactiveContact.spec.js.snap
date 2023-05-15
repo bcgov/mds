@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`InactiveContact renders properly 1`] = `
-<Card
+<ForwardRef
   bodyStyle={
     Object {
       "background": "#EEEEEE",
@@ -29,10 +29,6 @@ exports[`InactiveContact renders properly 1`] = `
       className="right"
     >
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         style={
           Object {
@@ -44,5 +40,5 @@ exports[`InactiveContact renders properly 1`] = `
       </Button>
     </div>
   </div>
-</Card>
+</ForwardRef>
 `;

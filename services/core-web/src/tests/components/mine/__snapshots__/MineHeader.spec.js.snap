@@ -77,8 +77,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         >
           <Dropdown
             className="full-height"
-            mouseEnterDelay={0.15}
-            mouseLeaveDelay={0.1}
             overlay={
               <Menu>
                 <MenuItem>
@@ -105,10 +103,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
             placement="bottomLeft"
           >
             <Button
-              block={false}
-              ghost={false}
-              htmlType="button"
-              loading={false}
               type="primary"
             >
               <div

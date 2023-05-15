@@ -6,10 +6,8 @@ exports[`SearchBar renders properly 1`] = `
 >
   <Dropdown
     getPopupContainer=""
-    mouseEnterDelay={0.15}
-    mouseLeaveDelay={0.1}
     overlay={
-      <Card
+      <ForwardRef
         className="search-bar"
       >
         <SearchBarDropdown
@@ -47,7 +45,7 @@ exports[`SearchBar renders properly 1`] = `
           searchTerm=""
           searchTermHistory={Array []}
         />
-      </Card>
+      </ForwardRef>
     }
     trigger={
       Array [
@@ -57,13 +55,11 @@ exports[`SearchBar renders properly 1`] = `
     visible={false}
   >
     <Search
-      enterButton={false}
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       onSearch={[Function]}
       placeholder="Search"
-      size="large"
       value=""
     />
   </Dropdown>

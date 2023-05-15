@@ -8,7 +8,7 @@ exports[`RenderAutoSizeField renders properly 1`] = `
   placeholder=""
   validateStatus=""
 >
-  <TextArea
+  <ForwardRef
     autoSize={
       Object {
         "minRows": 3,

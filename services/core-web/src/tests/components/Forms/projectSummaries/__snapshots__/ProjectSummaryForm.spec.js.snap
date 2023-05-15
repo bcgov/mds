@@ -11,12 +11,8 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
       id="project-summary-submit"
-      loading={false}
       onClick={[Function]}
       type="primary"
     >
@@ -45,11 +41,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     />
     <br />
     <div>
-      <Title
+      <ForwardRef
         level={3}
       >
         Project details
-      </Title>
+      </ForwardRef>
     </div>
     <Row
       gutter={16}
@@ -136,11 +132,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   <div
     id="authorizations-involved"
   >
-    <Title
+    <ForwardRef
       level={3}
     >
       Authorizations potentially involved in the project
-    </Title>
+    </ForwardRef>
     <Alert
       description="Please select the permits and authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be complete list for the final application."
       message=""
@@ -148,11 +144,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       type="warning"
     />
     <br />
-    <Title
+    <ForwardRef
       level={3}
     >
       Mines Review Committee
-    </Title>
+    </ForwardRef>
     <Field
       component={[Function]}
       disabled={true}
@@ -183,11 +179,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   <div
     id="project-dates"
   >
-    <Title
+    <ForwardRef
       level={3}
     >
       Project dates
-    </Title>
+    </ForwardRef>
     <Alert
       description="These dates are for guidance and planning purposes only and do not reflect actual delivery dates. The Major Mines Office will work with you on a more definitive schedule."
       message=""
@@ -277,11 +273,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
   <div
     id="project-contacts"
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Project contacts
-    </Title>
+    </ForwardRef>
     <h3>
       EMLI contacts
     </h3>

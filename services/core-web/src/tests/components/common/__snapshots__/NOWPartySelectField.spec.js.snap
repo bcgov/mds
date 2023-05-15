@@ -7,10 +7,8 @@ exports[`NOWPartySelectField renders properly 1`] = `
   label="Party Select"
   validateStatus=""
 >
-  <Select
+  <ForwardRef(InternalSelect)
     backfill={true}
-    bordered={true}
-    choiceTransitionName=""
     defaultActiveFirstOption={false}
     disabled={false}
     dropdownMatchSelectWidth={true}
@@ -57,7 +55,6 @@ exports[`NOWPartySelectField renders properly 1`] = `
         "width": "100%",
       }
     }
-    transitionName="slide-up"
     value="mock value"
     virtual={false}
   />

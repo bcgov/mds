@@ -21,22 +21,22 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
     }
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Overview
-    </Title>
-    <Text
+    </ForwardRef>
+    <ForwardRef(Text)
       strong={true}
     >
       PROJECT DESCRIPTION
-    </Text>
-    <Paragraph />
-    <Text
+    </ForwardRef(Text)>
+    <ForwardRef />
+    <ForwardRef(Text)
       strong={true}
     >
       KEY DATES
-    </Text>
+    </ForwardRef(Text)>
     <Row>
       <Col
         lg={12}
@@ -85,11 +85,11 @@ exports[`ProjectOverviewTab renders properly 1`] = `
         </Descriptions>
       </Col>
     </Row>
-    <Title
+    <ForwardRef
       level={4}
     >
       Project Stages
-    </Title>
+    </ForwardRef>
     <ProjectStagesTable
       projectStages={
         Array [
@@ -105,11 +105,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
               to="/pre-applications/undefined/project-description/undefined"
             >
               <ForwardRef(InternalButton)
-                block={false}
                 className="full-mobile margin-small"
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="secondary"
               >
                 View
@@ -138,11 +134,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
               to="/pre-applications/undefined/final-app"
             >
               <ForwardRef(InternalButton)
-                block={false}
                 className="full-mobile margin-small"
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="secondary"
               >
                 View
@@ -169,12 +161,8 @@ exports[`ProjectOverviewTab renders properly 1`] = `
               to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"
             >
               <ForwardRef(InternalButton)
-                block={false}
                 className="full-mobile margin-small"
                 disabled={true}
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="secondary"
               >
                 View
@@ -210,7 +198,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       <Col
         span={24}
       >
-        <Card
+        <ForwardRef
           headStyle={
             Object {
               "minHeight": "unset",
@@ -218,21 +206,21 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           }
           title="Project Contacts"
         >
-          <Paragraph
+          <ForwardRef
             className="ministry-contact-item"
           >
-            <Text
+            <ForwardRef(Text)
               className="ministry-contact-title"
               strong={true}
             >
               EMLI Project Lead
-            </Text>
+            </ForwardRef(Text)>
             <br />
-            <Text>
+            <ForwardRef(Text)>
               Project Lead has not been assigned
-            </Text>
-          </Paragraph>
-        </Card>
+            </ForwardRef(Text)>
+          </ForwardRef>
+        </ForwardRef>
       </Col>
     </Row>
   </Col>
