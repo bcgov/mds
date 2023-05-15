@@ -50,7 +50,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
             options: {
               workers: 1,
               workerParallelJobs: 50,
-              workerNodeArgs: ["--max-old-space-size=4096"],
+              workerNodeArgs: ["--max-old-space-size=3072"],
             },
           },
           "babel-loader?cacheDirectory",
@@ -73,7 +73,7 @@ exports.loadTS = ({ include, exclude } = {}) => ({
             options: {
               workers: 1,
               workerParallelJobs: 50,
-              workerNodeArgs: ["--max-old-space-size=4096"],
+              workerNodeArgs: ["--max-old-space-size=3072"],
             },
           },
           "babel-loader?cacheDirectory",
