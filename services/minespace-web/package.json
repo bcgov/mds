@@ -31,6 +31,7 @@
     "@syncfusion/ej2-splitbuttons": "19.1.54",
     "@types/jest": "24.9.1",
     "@types/lodash": "4.14.192",
+    "@types/react-router-dom": "^5.3.3",
     "antd": "4.6.2",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.17.0",

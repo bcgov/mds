@@ -1,7 +1,7 @@
-import { ITailingsStorageFacility } from "@/interfaces/tailingsStorageFacility.interface";
 import { IMineType } from "./mineType.interface";
 import { IMineVerifiedStatus } from "./mineVerifiedStatus.interface";
 import { IMineWorkInformation } from "./mineWorkInformation.interface";
+import { ITailingsStorageFacility } from "@/interfaces";
 
 export interface IMine {
   mine_guid: string;
