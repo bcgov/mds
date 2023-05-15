@@ -4,14 +4,10 @@ exports[`EngineerOfRecord renders properly 1`] = `
 <ContextProvider
   value={
     Object {
-      "children": <EngineerOfRecord
-        loading={false}
-      />,
+      "children": <EngineerOfRecord />,
     }
   }
 >
-  <EngineerOfRecord
-    loading={false}
-  />
+  <EngineerOfRecord />
 </ContextProvider>
 `;

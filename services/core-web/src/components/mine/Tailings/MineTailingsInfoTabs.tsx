@@ -203,7 +203,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         )}
         {tabEnabled("tsf") && (
           <Tabs.TabPane
-            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`}
             key="tsf"
           >
             <div>
