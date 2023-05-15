@@ -1,6 +1,6 @@
 import { NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@/constants";
 import { IMine } from "@/interfaces/mine.interface";
-import { IPermit } from "@/interfaces/permit.interface";
+import { INoDPermit } from "@/interfaces/noticeOfDeparture/NoDPermit.interface";
 import { INoDDocument } from "@/interfaces";
 
 export interface INoticeOfDeparture {
@@ -13,7 +13,7 @@ export interface INoticeOfDeparture {
   create_timestamp: string;
   mine: IMine;
   documents: INoDDocument[];
-  permit: IPermit;
+  permit: INoDPermit;
   submission_timestamp: string;
   updated_timestamp: string;
 }

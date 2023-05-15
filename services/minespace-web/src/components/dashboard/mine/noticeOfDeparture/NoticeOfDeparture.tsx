@@ -18,7 +18,7 @@ import {
   INodDocumentPayload,
   IMine,
   INoticeOfDeparture,
-  IPermit,
+  INoDPermit,
   NodStatusSaveEnum,
 } from "@mds/common";
 
@@ -36,7 +36,7 @@ import { AxiosResponse } from "axios";
 interface NoticeOfDepartureProps {
   mine: IMine;
   nods: INoticeOfDeparture[];
-  permits: IPermit[];
+  permits: INoDPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
   createNoticeOfDeparture: (payload: ICreateNoD) => Promise<AxiosResponse<INoticeOfDeparture>>;
