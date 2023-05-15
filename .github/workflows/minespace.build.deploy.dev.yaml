@@ -39,7 +39,7 @@ jobs:
           context: .
           file: ${{ env.CONTEXT }}Dockerfile.ci
           push: true
-          tags: ${{ secrets.CLUSTE_RREGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }},${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+          tags: ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }},${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=min
 
