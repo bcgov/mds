@@ -7,6 +7,8 @@ WORKDIR /app
 # Install app dependencies
 COPY . .
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 # Install Dependencies
 RUN yarn
 
@@ -16,7 +18,6 @@ RUN yarn workspace @mds/common build
 # Build Core Web Only
 RUN yarn workspace @mds/minespace-web build
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Remove dependencies
 RUN rm -rf /app/node_modules
