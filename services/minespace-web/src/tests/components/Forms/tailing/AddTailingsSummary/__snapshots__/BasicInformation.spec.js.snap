@@ -5,11 +5,11 @@ exports[`BasicInformation renders properly 1`] = `
   <Row
     justify="space-between"
   >
-    <Title
+    <ForwardRef
       level={3}
     >
       Basic Information
-    </Title>
+    </ForwardRef>
   </Row>
   <Field
     component={[Function]}

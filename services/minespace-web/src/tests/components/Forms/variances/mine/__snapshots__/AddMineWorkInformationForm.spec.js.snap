@@ -21,32 +21,28 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
           label={
             <React.Fragment>
               <ForwardRef
-                arrowPointAtCenter={false}
-                autoAdjustOverflow={true}
                 mouseEnterDelay={0.3}
-                mouseLeaveDelay={0.1}
                 overlayClassName="minespace-tooltip"
                 placement="right"
                 title={
                   <React.Fragment>
-                    <Text
+                    <ForwardRef(Text)
                       strong={true}
                     >
                       Health, Safety and Reclamation Code for Mines in British Columbia
-                    </Text>
+                    </ForwardRef(Text)>
                     <br />
-                    <Text
+                    <ForwardRef(Text)
                       underline={true}
                     >
                       Notice To Start Work
-                    </Text>
+                    </ForwardRef(Text)>
                     <br />
-                    <Text>
+                    <ForwardRef(Text)>
                       6.2.1 The manager shall give 10 days’ notice to an inspector of intention to start [any mining activity] in, at, or about a mine, including seasonal reactivation.
-                    </Text>
+                    </ForwardRef(Text)>
                   </React.Fragment>
                 }
-                transitionName="zoom-big-fast"
               >
                 <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
@@ -79,32 +75,28 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
           label={
             <React.Fragment>
               <ForwardRef
-                arrowPointAtCenter={false}
-                autoAdjustOverflow={true}
                 mouseEnterDelay={0.3}
-                mouseLeaveDelay={0.1}
                 overlayClassName="minespace-tooltip"
                 placement="right"
                 title={
                   <React.Fragment>
-                    <Text
+                    <ForwardRef(Text)
                       strong={true}
                     >
                       Health, Safety and Reclamation Code for Mines in British Columbia
-                    </Text>
+                    </ForwardRef(Text)>
                     <br />
-                    <Text
+                    <ForwardRef(Text)
                       underline={true}
                     >
                       Notice to Stop Work
-                    </Text>
+                    </ForwardRef(Text)>
                     <br />
-                    <Text>
+                    <ForwardRef(Text)>
                       6.2.2 The manager shall give notice to an inspector of intention to stop [any mining activity] in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.
-                    </Text>
+                    </ForwardRef(Text)>
                   </React.Fragment>
                 }
-                transitionName="zoom-big-fast"
               >
                 <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
@@ -171,31 +163,21 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
     <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile margin-small"
         disabled={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         type="secondary"
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile margin-small"
-      ghost={false}
       htmlType="submit"
       loading={false}
       type="primary"

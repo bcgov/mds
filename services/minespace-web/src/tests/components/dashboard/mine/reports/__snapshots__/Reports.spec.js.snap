@@ -9,31 +9,31 @@ exports[`Reports renders properly 1`] = `
       <Col
         span={24}
       >
-        <Title
+        <ForwardRef
           level={4}
         >
           Reports
-        </Title>
-        <Paragraph>
+        </ForwardRef>
+        <ForwardRef>
           This table shows 
-          <Text
+          <ForwardRef(Text)
             className="color-primary"
             strong={true}
           >
             reports
-          </Text>
+          </ForwardRef(Text)>
            from the Health, Safety and Reclamation code that your mine has submitted to the Ministry. It also shows reports the Ministry has requested from your mine.
           <br />
           If you do not see an HSRC report that your mine must submit, click Submit Report, choose the report you need to send and then attach the file or files.
           <br />
-          <Text
+          <ForwardRef(Text)
             className="color-primary"
             strong={true}
           >
             Note
-          </Text>
+          </ForwardRef(Text)>
           : Do not use this page to submit reports specified in your permit. Continue to email these reports to the Ministry.
-        </Paragraph>
+        </ForwardRef>
         <br />
       </Col>
     </Row>
@@ -50,11 +50,7 @@ exports[`Reports renders properly 1`] = `
       >
         <Connect(AuthorizationWrapper)>
           <Button
-            block={false}
             className="float-right"
-            ghost={false}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             style={
               Object {

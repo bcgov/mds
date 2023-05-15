@@ -2,11 +2,11 @@
 
 exports[`ProjectDates renders properly 1`] = `
 <Fragment>
-  <Title
+  <ForwardRef
     level={3}
   >
     Project Dates
-  </Title>
+  </ForwardRef>
   <Callout
     message={
       <React.Fragment>

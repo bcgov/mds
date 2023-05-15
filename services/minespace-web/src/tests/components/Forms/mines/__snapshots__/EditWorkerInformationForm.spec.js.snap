@@ -10,25 +10,21 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
     layout="vertical"
     onSubmit={[MockFunction]}
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Worker Information
       <Tooltip
-        arrowPointAtCenter={false}
-        autoAdjustOverflow={true}
         mouseEnterDelay={0.3}
-        mouseLeaveDelay={0.1}
         overlayClassName="minespace-tooltip"
         placement="right"
         title="Approximate number of workers on site that includes mine employees and contractors."
-        transitionName="zoom-big-fast"
       >
         <ForwardRef(InfoCircleOutlined)
           className="padding-sm"
         />
       </Tooltip>
-    </Title>
+    </ForwardRef>
     <Row
       gutter={16}
     >
@@ -94,32 +90,22 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
       <ForwardRef
         cancelText="No"
         disabled={false}
-        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
-        okType="primary"
         onConfirm={[Function]}
         placement="topRight"
         title="Are you sure you want to cancel?"
-        transitionName="zoom-big"
-        trigger="click"
       >
         <Button
-          block={false}
           className="full-mobile margin-small"
           disabled={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           type="secondary"
         >
           Cancel
         </Button>
       </ForwardRef>
       <Button
-        block={false}
         className="full-mobile margin-small"
         disabled={false}
-        ghost={false}
         htmlType="submit"
         loading={false}
         type="primary"

@@ -48,9 +48,9 @@ exports[`EditVarianceForm renders properly 1`] = `
     hasFeedback={false}
     label="Attached Files"
   >
-    <Paragraph>
+    <ForwardRef>
       Please upload all of the required documents.
-    </Paragraph>
+    </ForwardRef>
     <Field
       component={[Function]}
       id="uploadedFiles"
@@ -65,28 +65,16 @@ exports[`EditVarianceForm renders properly 1`] = `
   >
     <ForwardRef
       cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
-      >
+      <Button>
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
-      ghost={false}
       htmlType="submit"
       loading={false}
       type="primary"

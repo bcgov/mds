@@ -6,7 +6,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title />
+      <ForwardRef />
     </Col>
   </Row>
   <Row>
@@ -28,11 +28,11 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         Information Requirements Table
-      </Title>
+      </ForwardRef>
     </Col>
     <Col
       span={24}
@@ -54,27 +54,23 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
           </Col>
         </Row>
         <br />
-        <Paragraph>
-          <Title
+        <ForwardRef>
+          <ForwardRef
             level={5}
           >
             Thank you, your IRT has been submitted!
-          </Title>
+          </ForwardRef>
           Your submission will soon be reviewed by the ministry.
-        </Paragraph>
-        <Paragraph>
+        </ForwardRef>
+        <ForwardRef>
           You will be contacted when the status updates on your submission.
-        </Paragraph>
+        </ForwardRef>
         <div>
           <p>
             <Link
               to="/projects/8132462392222/overview"
             >
               <Button
-                block={false}
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="primary"
               >
                 Back to Project Overview
@@ -92,12 +88,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
                 }
               }
             >
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="button"
-                loading={false}
-              >
+              <Button>
                 View Application
               </Button>
             </Link>

@@ -56,11 +56,7 @@ exports[`SteppedForm renders properly 1`] = `
       >
         <div>
           <Button
-            block={false}
             className="full-mobile draft-button"
-            ghost={false}
-            htmlType="button"
-            loading={false}
             onClick={[MockFunction]}
             style={
               Object {
@@ -72,11 +68,7 @@ exports[`SteppedForm renders properly 1`] = `
             Save Draft
           </Button>
           <Button
-            block={false}
             disabled={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             type="secondary"
           >
