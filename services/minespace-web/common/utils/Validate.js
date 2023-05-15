@@ -1,7 +1,7 @@
 import * as Strings from "@common/constants/strings";
 
 import { memoize } from "lodash";
-import moment from "moment";
+import moment from "moment-timezone";
 
 /**
  * Utility class for validating inputs using redux forms

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
@@ -293,7 +294,7 @@ export const CANADA_TIMEZONE_MAP = {
     "America/Inuvik",
     "America/Yellowknife",
   ],
-  //CST (no DST) -600
+  // CST (no DST) -600
   "Canada/Saskatchewan": ["America/Regina", "America/Swift_Current"],
   // CDT (DST) -500
   "Canada/Central": ["America/Winnipeg", "America/Rankin_Inlet", "America/Resolute"],

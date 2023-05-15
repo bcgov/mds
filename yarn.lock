@@ -1472,7 +1472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.9.2":
   version: 7.21.5
   resolution: "@babel/runtime@npm:7.21.5"
   dependencies:
@@ -1487,15 +1487,6 @@ __metadata:
   dependencies:
     regenerator-runtime: ^0.13.11
   checksum: 42a8504db21031b1859fbc0f52d698a3d2f5ada9519eb76c6f96a7e657d8d555732a18fe71ef428a67cc9fc81ca0d3562fb7afdc70549c5fec343190cbaa9b03
-  languageName: node
-  linkType: hard
-
-"@babel/runtime@npm:^7.9.2":
-  version: 7.21.5
-  resolution: "@babel/runtime@npm:7.21.5"
-  dependencies:
-    regenerator-runtime: ^0.13.11
-  checksum: 358f2779d3187f5c67ad302e8f8d435412925d0b991d133c7d4a7b1ddd5a3fda1b6f34537cb64628dfd96a27ae46df105bed3895b8d754b88cacdded8d1129dd
   languageName: node
   linkType: hard
 
@@ -2229,6 +2220,7 @@ __metadata:
     lodash: 4.17.15
     mini-css-extract-plugin: 0.7.0
     moment: 2.24.0
+    moment-timezone: 0.5.43
     optimize-css-assets-webpack-plugin: 5.0.3
     pm2: 3.5.2
     postcss-loader: 3.0.0
@@ -14466,7 +14458,6 @@ __metadata:
     husky: 8.0.2
     lint-prepush: 2.2.1
     lint-staged: 10.0.0
-    moment-timezone: ^0.5.43
     prettier: 2.8.0
   languageName: unknown
   linkType: soft
@@ -14853,7 +14844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.5.43, moment-timezone@npm:^0.5.43":
+"moment-timezone@npm:0.5.43":
   version: 0.5.43
   resolution: "moment-timezone@npm:0.5.43"
   dependencies:

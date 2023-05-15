@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
