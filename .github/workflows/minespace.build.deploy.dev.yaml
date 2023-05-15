@@ -26,6 +26,11 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.8.0
+          cache: "yarn"
 
       - name: Login
         run: |
@@ -39,7 +44,9 @@ jobs:
           context: .
           file: ${{ env.CONTEXT }}Dockerfile.ci
           push: true
-          tags: ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }},${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+          tags: |
+            ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }}
+            ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=min
 
