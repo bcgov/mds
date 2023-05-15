@@ -108,7 +108,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
-        'incident_timezone': 'Canada/Pacific'
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
