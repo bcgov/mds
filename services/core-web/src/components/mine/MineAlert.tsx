@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { getFormValues, getFormSyncErrors } from "redux-form";
 import { Alert, Button, Col, Row, Menu, Dropdown, Popconfirm } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -18,22 +17,28 @@ import {
 import * as FORM from "@/constants/forms";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import CustomPropTypes from "@/customPropTypes";
+import { IMineAlert } from "@mds/common";
 
-const propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  createMineAlert: PropTypes.func.isRequired,
-  updateMineAlert: PropTypes.func.isRequired,
-  deleteMineAlert: PropTypes.func.isRequired,
-  fetchMineAlertsByMine: PropTypes.func.isRequired,
-  mineAlerts: CustomPropTypes.mineAlert.isRequired,
-  mine: CustomPropTypes.mine.isRequired,
-};
+interface MineAlertProps {
+  closeModal: () => void;
+  openModal: (arg: unknown) => void;
+  createMineAlert: (arg1: string, arg2: IMineAlert) => Promise<IMineAlert>;
+  updateMineAlert: (arg1: string, arg2: string, arg3: IMineAlert) => Promise<IMineAlert>;
+  deleteMineAlert: (arg1: string, arg2: string) => Promise<void>;
+  fetchMineAlertsByMine: (arg: string) => Promise<IMineAlert>;
+  mineAlerts: any;
+  mine: any;
+}
 
-export class MineAlert extends Component {
-  constructor() {
-    super();
+interface MineAlertState {
+  loaded: boolean;
+  activeMineAlert: any;
+  pastMineAlerts: any[];
+}
+
+export class MineAlert extends Component<MineAlertProps, MineAlertState> {
+  constructor(props: MineAlertProps) {
+    super(props);
     this.state = {
       loaded: false,
       activeMineAlert: {},
@@ -45,7 +50,7 @@ export class MineAlert extends Component {
     this.fetchAlerts();
   }
 
-  handleCreateMineAlert = (values) => {
+  handleCreateMineAlert = (values: IMineAlert) => {
     this.props
       .createMineAlert(this.props.mine.mine_guid, values)
       .then(() => {
@@ -56,7 +61,7 @@ export class MineAlert extends Component {
       });
   };
 
-  handleUpdateMineAlert = (values) => {
+  handleUpdateMineAlert = (values: IMineAlert) => {
     this.props
       .updateMineAlert(this.props.mine.mine_guid, values.mine_alert_guid, values)
       .then(() => {
@@ -65,13 +70,13 @@ export class MineAlert extends Component {
       });
   };
 
-  handleRemoveAlert = (mineAlertGuid) => {
+  handleRemoveAlert = (mineAlertGuid: string) => {
     this.props
       .deleteMineAlert(this.props.mine.mine_guid, mineAlertGuid)
       .then(() => this.fetchAlerts());
   };
 
-  submitCreateMineAlarmForm = () => (values) => {
+  submitCreateMineAlarmForm = () => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date),
@@ -80,7 +85,7 @@ export class MineAlert extends Component {
     return this.handleCreateMineAlert(payload);
   };
 
-  submitUpdateMineAlarmForm = (mineAlertGuid) => (values) => {
+  submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date),
@@ -92,14 +97,14 @@ export class MineAlert extends Component {
     return null;
   };
 
-  openCreateMineAlertModal = (activeMineAlert, mineAlerts) => {
+  openCreateMineAlertModal = (activeMineAlert: any, mineAlerts: any) => {
     return this.props.openModal({
       props: {
         title: ModalContent.CREATE_MINE_ALERT_RECORD,
         text: ModalContent.CREATE_MINE_ALERT_TEXT,
         mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
         closeModal: this.props.closeModal,
-        onSubmit: this.submitCreateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        onSubmit: this.submitCreateMineAlarmForm(),
         activeMineAlert,
         mineAlerts,
       },
@@ -107,7 +112,7 @@ export class MineAlert extends Component {
     });
   };
 
-  openUpdateMineAlertModal = (activeMineAlert, mineAlerts) => {
+  openUpdateMineAlertModal = (activeMineAlert: any, mineAlerts: any) => {
     return this.props.openModal({
       props: {
         title: ModalContent.EDIT_MINE_ALERT_RECORD,
@@ -134,20 +139,23 @@ export class MineAlert extends Component {
     });
   };
 
-  fetchAlerts() {
-    return this.props.fetchMineAlertsByMine(this.props.mine.mine_guid).then(() => {
-      this.setState({
-        activeMineAlert: this.props.mineAlerts?.filter((alert) => alert.is_active)?.[0],
-      });
-      this.setState({
-        pastMineAlerts: this.props.mineAlerts?.filter((alert) => !alert.is_active),
-      });
-      this.setState({ loaded: true });
+  async fetchAlerts(): Promise<void> {
+    await this.props.fetchMineAlertsByMine(this.props.mine.mine_guid);
+    this.setState({
+      activeMineAlert: this.props.mineAlerts?.filter(
+        (alert: { is_active: boolean }) => alert.is_active
+      )?.[0],
     });
+    this.setState({
+      pastMineAlerts: this.props.mineAlerts?.filter(
+        (alert: { is_active: boolean }) => !alert.is_active
+      ),
+    });
+    this.setState({ loaded: true });
   }
 
   render() {
-    const menu = (
+    const menu: any = (
       <Menu>
         <Menu.Item key="create">
           <button
@@ -213,6 +221,7 @@ export class MineAlert extends Component {
       <div>
         {this.state.loaded && !this.state.activeMineAlert && (
           <Alert
+            message=""
             description={
               <Row>
                 <Col xs={24} md={18}>
@@ -222,7 +231,9 @@ export class MineAlert extends Component {
                 </Col>
                 <Col xs={24} md={6}>
                   <div className="right center-mobile">
+                    {/* @ts-ignore */}
                     <Dropdown overlay={menu} placement="bottomLeft">
+                      {/* @ts-ignore */}
                       <Button type="secondary" className="ant-btn-alert-info-ghost">
                         Actions
                         <DownOutlined className="padding-sm--left" />
@@ -240,6 +251,7 @@ export class MineAlert extends Component {
         )}
         {this.state.loaded && this.state.activeMineAlert && (
           <Alert
+            message=""
             description={
               <Row>
                 <Col xs={24} md={18}>
@@ -263,11 +275,13 @@ export class MineAlert extends Component {
                 </Col>
                 <Col xs={24} md={6}>
                   <div className="right center-mobile">
+                    {/* @ts-ignore */}
                     <Dropdown
                       className="full-height full-mobile"
                       overlay={menu}
                       placement="bottomLeft"
                     >
+                      {/* @ts-ignore */}
                       <Button type="secondary" className="ant-btn-alert-warning-ghost">
                         Actions
                         <DownOutlined className="padding-sm--left" />
@@ -287,14 +301,13 @@ export class MineAlert extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   mineAlerts: getMineAlerts(state),
   formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = (dispatch: Dispatch<Action>) =>
   bindActionCreators(
     {
       openModal,
@@ -306,7 +319,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-MineAlert.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineAlert);

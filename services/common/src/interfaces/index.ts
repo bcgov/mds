@@ -19,7 +19,11 @@ export * from "./permits/permitBond.interface";
 export * from "./permits/permitCondition.interface";
 export * from "./permits/permitUploadedFile.interface";
 export * from "./permits/createPermitAmendmentPayload.interface";
-
+export * from "./mineAlert.interface";
+export * from "./mineAlertCreate.interface";
+export * from "./mineComment.interface";
+export * from "./mineDocument.interface";
 export * from "./mineType.interface";
 export * from "./mineTypeDetail.interface";
-export * from "./mineDocument.interface";
+export * from "./mineVerifiedStatus.interface";
+export * from "./mineWorkInformation.interface";

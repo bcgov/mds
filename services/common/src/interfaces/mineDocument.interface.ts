@@ -3,6 +3,6 @@ export interface IMineDocument {
   mine_guid: string;
   document_manager_guid: string;
   document_name: string;
-  upload_date: string;
+  upload_date: Date;
   create_user: string;
 }

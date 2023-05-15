@@ -425,6 +425,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       tab="Verification"
     >
       <Connect(VerificationTab)
+        initialPermitGuid=""
         noticeOfWork={
           Object {
             "anyotherinformation": null,

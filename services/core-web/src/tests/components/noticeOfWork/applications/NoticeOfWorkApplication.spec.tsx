@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { NoticeOfWorkApplication } from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
-const dispatchProps = {};
-const reducerProps = {};
+const dispatchProps: any = {};
+const reducerProps: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.renderTabTitle = jest.fn();
