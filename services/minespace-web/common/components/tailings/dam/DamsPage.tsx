@@ -3,7 +3,7 @@ import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@common/actionCreators/damActionCreator";
-import { FormErrors, getFormSyncErrors, getFormValues, reduxForm, submit } from "redux-form";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Step from "@common/components/Step";
@@ -20,7 +20,7 @@ import DamForm from "./DamForm";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import { ADD_EDIT_DAM } from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
-import { ICreateDam, IDam, ITailingsStorageFacility } from "@mds/common";
+import { ICreateDam, ITailingsStorageFacility } from "@mds/common";
 import { ACType } from "@/interfaces/actionCreator.type";
 
 interface DamsPageProps {
@@ -28,24 +28,22 @@ interface DamsPageProps {
   storeTsf: typeof storeTsf;
   storeDam: typeof storeDam;
   fetchMineRecordById: ACType<typeof fetchMineRecordById>;
-  formValues: Partial<ICreateDam>;
-  formErrors: FormErrors;
-  submit: any;
+  formValues: ICreateDam;
+  formErrors: any;
+  submit: () => void;
   createDam: ACType<typeof createDam>;
   updateDam: ACType<typeof updateDam>;
-  initialValues: Partial<IDam>;
+  initialValues: ICreateDam;
 }
 
-interface DamsParams {
-  tailingsStorageFacilityGuid: string;
-  damGuid?: string;
-  mineGuid: string;
-}
-
-const DamsPage: FC<DamsPageProps> = (props) => {
+const DamsPage: React.FC<InjectedFormProps<ICreateDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
-  const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams<DamsParams>();
+  const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams<{
+    tailingsStorageFacilityGuid: string;
+    damGuid?: string;
+    mineGuid: string;
+  }>();
 
   useEffect(() => {
     if (!tsf.mine_tailings_storage_facility_guid) {

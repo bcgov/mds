@@ -1,5 +1,5 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
-import { change, Field, getFormValues } from "redux-form";
+import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
@@ -16,17 +16,21 @@ import {
 import ContactDetails from "@common/components/ContactDetails";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import moment from "moment";
-import { IMinePartyAppt } from "@mds/common";
 
 interface QualifiedPersonProps {
-  change: any;
-  openModal: any;
-  closeModal: any;
+  change: (
+    field: string,
+    value: any,
+    touch?: boolean,
+    persistentSubmitErrors?: boolean
+  ) => ChangeAction;
+  openModal: (value: any) => void;
+  closeModal: () => void;
   formValues: any;
-  partyRelationships: IMinePartyAppt[];
+  partyRelationships: any[];
   mineGuid: string;
-  loading: boolean;
-  isCore: boolean;
+  loading?: boolean;
+  isCore?: boolean;
 }
 
 export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {

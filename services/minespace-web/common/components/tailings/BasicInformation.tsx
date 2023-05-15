@@ -24,13 +24,14 @@ import { connect } from "react-redux";
 import { formatDateTime } from "@common/utils/helpers";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { getTsf } from "@common/selectors/tailingsSelectors";
+import { RootState } from "@/App";
 
 interface BasicInformationProps {
   permits: IPermit[];
   showUpdateTimestamp: boolean;
   renderConfig: any;
   tsf: ITailingsStorageFacility;
-  viewOnly: boolean;
+  viewOnly?: boolean;
 }
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
@@ -161,7 +162,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   permits: getPermits(state),
   tsf: getTsf(state),
 });

@@ -21,14 +21,14 @@ import { Field } from "redux-form";
 import React, { FC } from "react";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
-import { IDam, ITailingsStorageFacility } from "@mds/common";
+import { ITailingsStorageFacility, IDam } from "@mds/common";
 
 interface DamFormProps {
   tsf: ITailingsStorageFacility;
-  dam: IDam;
+  dam?: IDam;
 }
 
-interface DamFormParams {
+interface Params {
   tailingsStorageFacilityGuid: string;
   mineGuid: string;
 }
@@ -36,7 +36,7 @@ interface DamFormParams {
 const DamForm: FC<DamFormProps> = (props) => {
   const { tsf, dam } = props;
   const history = useHistory();
-  const { tailingsStorageFacilityGuid, mineGuid } = useParams<DamFormParams>();
+  const { tailingsStorageFacilityGuid, mineGuid } = useParams<Params>();
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,

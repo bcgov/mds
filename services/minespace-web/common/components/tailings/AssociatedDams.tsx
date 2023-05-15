@@ -14,12 +14,14 @@ import { storeDam } from "@common/actions/damActions";
 import { useHistory } from "react-router-dom";
 import { EditIcon } from "@/assets/icons";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
-import { ITailingsStorageFacility } from "@mds/common";
+import { IDam, INoticeOfDeparture } from "@mds/common";
+import { RootState } from "@/App";
+import { ColumnsType } from "antd/lib/table";
 
 interface AssociatedDamsProps {
-  tsf: ITailingsStorageFacility;
+  tsf: INoticeOfDeparture;
   storeDam: typeof storeDam;
-  isCore: boolean;
+  isCore?: boolean;
 }
 
 const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
@@ -44,7 +46,11 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   };
 
   // @ts-ignore
-  const columns = [
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
+  const columns: ColumnsType<IDam> = [
     {
       title: "Name",
       dataIndex: "dam_name",
@@ -88,7 +94,6 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       title: "Actions",
       key: "actions",
       dataIndex: "actions",
-      // eslint-disable-next-line react/display-name
       render: (text, record) => (
         // @ts-ignore
         <Space size="middle">
@@ -149,7 +154,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam }, dispatch);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   tsf: getTsf(state),
 });
 

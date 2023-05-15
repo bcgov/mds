@@ -1,8 +1,8 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "antd";
-import { change, Field, getFormValues } from "redux-form";
+import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
-import { IDocument, IMine, IMinePartyAppt, PARTY_APPOINTMENT_STATUS } from "@mds/common";
+import { IDocument, IMine, IMinePartyAppt, IParty, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
 import { PlusCircleFilled } from "@ant-design/icons";
@@ -27,18 +27,23 @@ import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
 
 interface EngineerOfRecordProps {
-  change: any;
-  openModal: any;
-  closeModal: any;
+  change: (
+    field: string,
+    value: any,
+    touch?: boolean,
+    persistentSubmitErrors?: boolean
+  ) => ChangeAction;
+  openModal: (value: any) => void;
+  closeModal: () => void;
   uploadedFiles: IDocument[];
-  setUploadedFiles: any;
+  setUploadedFiles: (value: Partial<IDocument>) => void;
   mineGuid: string;
   partyRelationships: IMinePartyAppt[];
-  loading: boolean;
+  loading?: boolean;
   mines: IMine[];
 }
 
-const columns = (LinkButton): ColumnsType<IDocument> => [
+const columns = (LinkButton): ColumnsType<IParty> => [
   {
     title: "File Name",
     dataIndex: "document_name",
@@ -113,7 +118,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     });
   };
 
-  const onFileLoad = (documentName: string, document_manager_guid: string) => {
+  const onFileLoad = (documentName, document_manager_guid) => {
     setUploadedFiles([
       ...uploadedFiles,
       {

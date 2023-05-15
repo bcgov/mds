@@ -15,7 +15,16 @@ import {
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import { flattenObject } from "@common/utils/helpers";
-import { getFormSyncErrors, getFormValues, isDirty, reduxForm, submit, touch } from "redux-form";
+import {
+  FormErrors,
+  getFormSyncErrors,
+  getFormValues,
+  InjectedFormProps,
+  isDirty,
+  reduxForm,
+  submit,
+  touch,
+} from "redux-form";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import BasicInformation from "@common/components/tailings/BasicInformation";
@@ -36,38 +45,40 @@ import {
 } from "@common/selectors/partiesSelectors";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { IDocument, IMine } from "@mds/common";
+import { ICreateTSF, IMine } from "@mds/common";
 import { ACType } from "@/interfaces/actionCreator.type";
 
 interface TailingsSummaryPageProps {
-  mines: IMine[];
   form: string;
   mineGuid: string;
   tsfGuid: string;
   tab: string;
-  history: any;
-  submit: any;
-  formErrors: any;
-  location: any;
-  fetchPartyRelationships: ACType<typeof fetchPartyRelationships>;
-  addDocumentToRelationship: ACType<typeof addDocumentToRelationship>;
-  updateTailingsStorageFacility: ACType<typeof updateTailingsStorageFacility>;
-  createTailingsStorageFacility: ACType<typeof createTailingsStorageFacility>;
-  addPartyRelationship: ACType<typeof addPartyRelationship>;
-  formValues: any;
-  fetchPermits: ACType<typeof fetchPermits>;
-  fetchMineRecordById: ACType<typeof fetchMineRecordById>;
-  storeTsf: typeof storeTsf;
-  clearTsf: typeof clearTsf;
-  isDirty: any;
-  initialValues: any;
+  mines?: IMine[];
+  history?: { push: (path: string) => void; replace: (path: string) => void };
+  submit?: (form: string) => void;
+  formErrors?: FormErrors;
+  location?: { pathname: string };
+  fetchPartyRelationships?: ACType<typeof fetchPartyRelationships>;
+  addDocumentToRelationship?: ACType<typeof addDocumentToRelationship>;
+  updateTailingsStorageFacility?: ACType<typeof updateTailingsStorageFacility>;
+  createTailingsStorageFacility?: ACType<typeof createTailingsStorageFacility>;
+  addPartyRelationship?: ACType<typeof addPartyRelationship>;
+  formValues?: Partial<ICreateTSF>;
+  fetchPermits?: ACType<typeof fetchPermits>;
+  fetchMineRecordById?: ACType<typeof fetchMineRecordById>;
+  storeTsf?: typeof storeTsf;
+  clearTsf?: typeof clearTsf;
+  isDirty?: (form: string) => boolean;
+  initialValues?: Partial<ICreateTSF>;
 }
 
-export const TailingsSummaryPage: FC<TailingsSummaryPageProps> = (props) => {
+export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTSF> & TailingsSummaryPageProps> = (
+  props
+) => {
   const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<IDocument>([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const { renderConfig, components, routes, isCore } = useContext(TailingsContext);
 
@@ -227,7 +238,7 @@ export const TailingsSummaryPage: FC<TailingsSummaryPageProps> = (props) => {
           <Col span={24}>
             <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "tailings")}>
               <ArrowLeftOutlined className="padding-sm--right" />
-              Back to: {mineName} Tailings
+              {`Back to: ${mineName} Tailings`}
             </Link>
           </Col>
         </Row>
