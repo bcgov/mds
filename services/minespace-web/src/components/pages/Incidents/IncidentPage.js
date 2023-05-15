@@ -16,7 +16,7 @@ import {
 import { Col, Row, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import moment from "moment";
+import moment from "moment-timezone";
 import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
   createMineIncident,
@@ -260,8 +260,6 @@ export const IncidentPage = (props) => {
   const formatInitialValues = () => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
     reported_to_inspector_contact_date: incident?.reported_timestamp
       ? moment(incident?.reported_timestamp).format("YYYY-MM-DD")
       : null,

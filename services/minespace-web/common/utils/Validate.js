@@ -181,6 +181,10 @@ export const alertNotInFutureIfCurrentActive = memoize(
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
 
+export const dateNotInFutureTZ = (value) => {
+  return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
+};
+
 export const dateInFuture = (value) =>
   value && new Date(value) < new Date() ? "Date must be in the future" : undefined;
 

@@ -457,11 +457,6 @@ th.ant-descriptions-item.vertical-description {
 // Radio
 .ant-radio .ant-radio-inner {
   border: 2px solid $primary-color;
-
-  &::after {
-    top: 2px;
-    left: 2px;
-  }
 }
 
 .ant-radio-group {
@@ -500,6 +495,12 @@ th.ant-descriptions-item.vertical-description {
 .ant-select-multiple.ant-select-show-arrow .ant-select-selector,
 .ant-select-multiple.ant-select-allow-clear .ant-select-selector {
   padding: 5px;
+}
+
+// DATE PICKER
+.ant-picker {
+  width: 100%;
+  @extend .ant-input;
 }
 
 // Picker time
