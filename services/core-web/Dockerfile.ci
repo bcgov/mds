@@ -7,13 +7,14 @@ WORKDIR /app
 # Copy all files to the working directory
 COPY . .
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 # Install Dependencies
 RUN yarn
 
 # Build Common Package
 RUN yarn workspace @mds/common build
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Build Core Web Only
 RUN yarn workspace @mds/core-web build
