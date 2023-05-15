@@ -381,7 +381,7 @@ class MineIncidentFactory(BaseFactory):
     mine_incident_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     incident_timestamp = factory.Faker('past_datetime')
-    incident_timezone = 'America/Vancouver'
+    incident_timezone = 'Canada/Pacific'
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     incident_location = factory.fuzzy.FuzzyChoice(['surface', 'underground', None])
     reported_timestamp = factory.Faker('past_datetime')

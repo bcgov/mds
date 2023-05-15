@@ -41,7 +41,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
         'incident_location': 'surface',
-        'incident_timezone': 'America/Vancouver'
+        'incident_timezone': 'Canada/Pacific'
     }
 
     post_resp = test_client.post(
@@ -71,7 +71,7 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
         'reported_timestamp': now_time_string,
         'incident_description': 'Someone got a paper cut',
         'incident_location': 'surface',
-        'incident_timezone': 'America/Vancouver',
+        'incident_timezone': 'Canada/Pacific',
         'mine_determination_type_code': 'NDO',
         'mine_determination_representative': 'Billy'
     }
@@ -108,7 +108,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
-        'incident_timezone': 'America/Vancouver'
+        'incident_timezone': 'Canada/Pacific'
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
@@ -136,7 +136,7 @@ def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_sessio
         'incident_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
-        'incident_timezone': 'America/Vancouver',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': []
     }
 
@@ -213,7 +213,7 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
         'incident_description': "Someone got a really bad paper cut",
-        'incident_timezone': 'America/Vancouver',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
@@ -241,7 +241,7 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
         'incident_timestamp': new_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
-        'incident_timezone': 'America/Vancouver',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': []
     }
 
