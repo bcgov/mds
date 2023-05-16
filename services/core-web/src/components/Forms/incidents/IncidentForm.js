@@ -253,21 +253,23 @@ const renderInitialReport = (
               />
             </Form.Item>
           </Col>
-          <Form.Item label="* Incident date & time">
-            <Field
-              id="incident_timestamp"
-              name="incident_timestamp"
-              disabled={!isEditMode}
-              validate={[dateNotInFutureTZ, required]}
-              component={(props) => (
-                <RenderDateTimeTz
-                  timezoneFieldProps={{ name: "incident_timezone" }}
-                  formName={formName}
-                  {...props}
-                />
-              )}
-            />
-          </Form.Item>
+          <Col md={12} xs={24}>
+            <Form.Item label="* Incident date & time">
+              <Field
+                id="incident_timestamp"
+                name="incident_timestamp"
+                disabled={!isEditMode}
+                validate={[dateNotInFutureTZ, required]}
+                component={(props) => (
+                  <RenderDateTimeTz
+                    timezoneFieldProps={{ name: "incident_timezone" }}
+                    formName={formName}
+                    {...props}
+                  />
+                )}
+              />
+            </Form.Item>
+          </Col>
           <Col md={12} xs={24}>
             <Form.Item label="Proponent incident number (optional)">
               <Field
@@ -540,10 +542,8 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const {
-    inspectorContactedValidation,
-    inspectorContacted,
-  } = retrieveInitialReportDynamicValidation(childProps);
+  const { inspectorContactedValidation, inspectorContacted } =
+    retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
