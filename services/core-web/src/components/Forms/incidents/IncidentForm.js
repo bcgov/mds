@@ -260,13 +260,8 @@ const renderInitialReport = (
                 name="incident_timestamp"
                 disabled={!isEditMode}
                 validate={[dateNotInFutureTZ, required]}
-                component={(props) => (
-                  <RenderDateTimeTz
-                    timezoneFieldProps={{ name: "incident_timezone" }}
-                    formName={formName}
-                    {...props}
-                  />
-                )}
+                props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
+                component={RenderDateTimeTz}
               />
             </Form.Item>
           </Col>

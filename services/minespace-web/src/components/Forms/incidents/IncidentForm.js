@@ -324,13 +324,8 @@ const renderIncidentDetails = (childProps) => {
             name="incident_timestamp"
             disabled={formDisabled}
             validate={[dateNotInFutureTZ, required]}
-            component={(props) => (
-              <RenderDateTimeTz
-                timezoneFieldProps={{ name: "incident_timezone" }}
-                formName={formName}
-                {...props}
-              />
-            )}
+            component={RenderDateTimeTz}
+            props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
           />
         </Form.Item>
       </Col>
