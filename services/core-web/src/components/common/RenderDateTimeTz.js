@@ -89,7 +89,7 @@ const RenderDateTimeTz = (props) => {
         disabled={disabled}
         showTime={{ format: "HH:mm" }}
         format={datePickerFormat}
-        value={selectedDatetime ? moment(selectedDatetime) : null}
+        value={selectedDatetime ? moment.tz(selectedDatetime, selectedTimezone) : null}
         validate={validate}
         onOpenChange={(open) => {
           if (!open) {
