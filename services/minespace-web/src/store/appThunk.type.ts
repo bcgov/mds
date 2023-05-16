@@ -1,5 +1,5 @@
 import { ThunkAction } from "redux-thunk";
-import { RootState } from "@/App";
+import { RootState } from "../App";
 import { AnyAction } from "redux";
 
 /**
