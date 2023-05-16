@@ -212,10 +212,26 @@ exports[`IncidentForm renders properly 1`] = `
             label="Incident date and time"
           >
             <Field
-              component={[Function]}
+              component={
+                Object {
+                  "$$typeof": Symbol(react.memo),
+                  "WrappedComponent": [Function],
+                  "compare": null,
+                  "displayName": "Connect(RenderDateTimeTz)",
+                  "type": [Function],
+                }
+              }
               disabled={true}
               id="incident_timestamp"
               name="incident_timestamp"
+              props={
+                Object {
+                  "formName": undefined,
+                  "timezoneFieldProps": Object {
+                    "name": "incident_timezone",
+                  },
+                }
+              }
               validate={
                 Array [
                   [Function],
