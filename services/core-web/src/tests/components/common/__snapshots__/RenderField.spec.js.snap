@@ -9,6 +9,11 @@ exports[`RenderField renders properly 1`] = `
 >
   <div
     className="inline-flex"
+    style={
+      Object {
+        "flexDirection": "column",
+      }
+    }
   >
     <Input
       allowClear={false}

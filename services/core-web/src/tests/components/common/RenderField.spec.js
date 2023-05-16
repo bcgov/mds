@@ -14,6 +14,7 @@ const setupProps = () => {
       error: false,
       warning: false,
     },
+    blockLabelText: "",
   };
 };
 
