@@ -40,7 +40,7 @@ class TestPutMineIncident:
         mine_incident = MineIncidentFactory()
         incident = MineIncidentFactory()
         data = {
-            'incident_timestamp': '2019-01-01 00:00',
+            'incident_timestamp': '2019-01-01T18:17:12.136000+00:00',
             'reported_timestamp': '2019-01-01 00:00',
             'incident_timezone': incident.incident_timezone,
             'incident_description': incident.incident_description,

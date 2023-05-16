@@ -41,7 +41,7 @@ class TestPostMineIncident:
         mine = MineFactory()
         incident = MineIncidentFactory(mine=mine)
         test_incident_data = {
-            'incident_timestamp': '2019-01-01 00:00',
+            'incident_timestamp': '2019-01-01T18:17:12.136000+00:00',
             'reported_timestamp': '2019-01-01 00:00',
             'incident_description': incident.incident_description,
             'incident_location': incident.incident_location,
