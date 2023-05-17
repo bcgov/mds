@@ -14,9 +14,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation, useParams } from "react-router-dom";
 import {
-  ICreateNoD,
-  INodDocumentPayload,
+  ActionCreator,
   IMine,
+  INodDocumentPayload,
   INoticeOfDeparture,
   IPermit,
   NodStatusSaveEnum,
@@ -31,7 +31,6 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
-import { AxiosResponse } from "axios";
 
 interface NoticeOfDepartureProps {
   mine: IMine;
@@ -39,15 +38,12 @@ interface NoticeOfDepartureProps {
   permits: IPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
-  createNoticeOfDeparture: (payload: ICreateNoD) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  updateNoticeOfDeparture: (
-    { nodGuid }: { nodGuid: string },
-    payload: Partial<ICreateNoD>
-  ) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  fetchNoticesOfDeparture: typeof fetchNoticesOfDeparture;
-  fetchDetailedNoticeOfDeparture: (nod_guid: string) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  addDocumentToNoticeOfDeparture: typeof addDocumentToNoticeOfDeparture;
-  fetchPermits: typeof fetchPermits;
+  createNoticeOfDeparture: ActionCreator<typeof createNoticeOfDeparture>;
+  updateNoticeOfDeparture: ActionCreator<typeof updateNoticeOfDeparture>;
+  fetchNoticesOfDeparture: ActionCreator<typeof fetchNoticesOfDeparture>;
+  fetchDetailedNoticeOfDeparture: ActionCreator<typeof fetchDetailedNoticeOfDeparture>;
+  addDocumentToNoticeOfDeparture: ActionCreator<typeof addDocumentToNoticeOfDeparture>;
+  fetchPermits: ActionCreator<typeof fetchPermits>;
 }
 
 export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {

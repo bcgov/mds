@@ -187,7 +187,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
       <Tabs type="card" style={{ textAlign: "left !important" }}>
         {tabEnabled("tsfDetails") && (
           <Tabs.TabPane
-            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`}
             key="tsfDetails"
           >
             <TailingsSummaryPageWrapper />
@@ -195,7 +195,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         )}
         {tabEnabled("dam") && (
           <Tabs.TabPane
-            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+            tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`}
             key="dam"
           >
             {/*@ts-ignore*/}
