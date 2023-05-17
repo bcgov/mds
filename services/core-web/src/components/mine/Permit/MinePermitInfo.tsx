@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+//import React, { FC, useEffect, useState, useRef } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider, Tabs } from "antd";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import {
   fetchPermits,
   createPermit,
@@ -22,13 +23,22 @@ import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as Permission from "@/constants/permissions";
-import CustomPropTypes from "@/customPropTypes";
+// import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/buttons/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import {
+  IPermit,
+  IMine,
+  IPartyRelationship,
+  ICreatePermitPayload,
+  IPermitAmendment,
+  ICreatePermitAmendmentPayload,
+  IExplosivesPermit,
+} from "@mds/common";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -36,47 +46,57 @@ import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
-const propTypes = {
-  match: PropTypes.shape({
-    params: {
-      id: PropTypes.string,
-    },
-  }).isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit),
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  fetchPartyRelationships: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  closeModal: PropTypes.func.isRequired,
-  createPermit: PropTypes.func.isRequired,
-  fetchPermits: PropTypes.func.isRequired,
-  updatePermit: PropTypes.func.isRequired,
-  updatePermitAmendment: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
-  createPermitAmendmentVC: PropTypes.func.isRequired,
-  removePermitAmendmentDocument: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
-  deletePermit: PropTypes.func.isRequired,
-  deletePermitAmendment: PropTypes.func.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  createMineTypes: PropTypes.func.isRequired,
-  explosivesPermits: PropTypes.arrayOf(CustomPropTypes.explosivesPermit).isRequired,
-};
+interface MinePermitInfoProps {
+  match: any;
+  mines: IMine[];
+  mineGuid: string;
+  permits?: IPermit[];
+  partyRelationships?: IPartyRelationship[];
+  fetchPartyRelationships: (arg1: any) => any;
+  openModal: (arg1: any) => void;
+  history: { push: (path: string) => void };
+  closeModal: () => void;
+  createPermit: (arg1: string, arg2: ICreatePermitPayload) => Promise<IPermit>;
+  fetchPermits: (arg1: string) => any;
+  updatePermit: (arg1: string, arg2: string, arg3: IPermit) => Promise<IPermit>;
+  updatePermitAmendment: (
+    arg1: string,
+    arg2: string,
+    arg3: string,
+    arg4: any
+  ) => Promise<IPermitAmendment>;
+  createPermitAmendment: (
+    arg1: string,
+    arg2: string,
+    arg3: Partial<ICreatePermitAmendmentPayload>
+  ) => Promise<IPermitAmendment>;
+  createPermitAmendmentVC: (arg1: string, arg2: string, arg3: string) => any;
+  removePermitAmendmentDocument: (arg1: string, arg2: string, arg3: string, arg4: string) => any;
+  fetchMineRecordById: (arg1: any) => Promise<IMine>;
+  deletePermit: (arg1: string, arg2: string) => any;
+  deletePermitAmendment: (arg1: string, arg2: string, arg3: string) => any;
+  userRoles: string[];
+  createMineTypes: (arg1: string, arg2: any) => any;
+  explosivesPermits: IExplosivesPermit[];
+}
 
-const defaultProps = {
-  partyRelationships: [],
-  permits: [],
-};
+interface MinePermitInfoState {
+  expandedRowKeys: any[];
+  modifiedPermits: boolean;
+  modifiedPermitGuid: any;
+  isLoaded: boolean;
+}
 
-export class MinePermitInfo extends Component {
-  state = {
-    expandedRowKeys: [],
-    modifiedPermits: false,
-    modifiedPermitGuid: null,
-    isLoaded: false,
-  };
+export class MinePermitInfo extends Component<MinePermitInfoProps, MinePermitInfoState> {
+  constructor(props: MinePermitInfoProps) {
+    super(props);
+    this.state = {
+      expandedRowKeys: [],
+      modifiedPermits: false,
+      modifiedPermitGuid: null,
+      isLoaded: false,
+    };
+  }
 
   componentDidMount = () => {
     if (this.props.permits.length === 0 || !this.props.mineGuid) {
@@ -304,7 +324,8 @@ export class MinePermitInfo extends Component {
       event,
       this.handleAddPermitAmendment,
       `Add Permit Amendment to ${permit.permit_no}`,
-      permit
+      permit,
+      null
     );
 
   openAddPermitHistoricalAmendmentModal = (event, permit) =>
@@ -312,7 +333,8 @@ export class MinePermitInfo extends Component {
       event,
       this.handleAddPermitAmendment,
       `Add Permit Historical Amendment to ${permit.permit_no}`,
-      permit
+      permit,
+      null
     );
 
   // Amendment Handlers
@@ -389,6 +411,7 @@ export class MinePermitInfo extends Component {
           <h2>Permits</h2>
           <Divider />
         </div>
+        {/* @ts-ignore */}
         <Tabs type="card" style={{ textAlign: "left !important" }}>
           <Tabs.TabPane tab={`Mines Act Permits (${this.props.permits.length})`} key="1">
             <>
@@ -478,7 +501,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-MinePermitInfo.propTypes = propTypes;
-MinePermitInfo.defaultProps = defaultProps;
+// MinePermitInfo.propTypes = propTypes;
+// MinePermitInfo.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);

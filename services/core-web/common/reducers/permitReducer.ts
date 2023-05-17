@@ -1,5 +1,16 @@
+import { IPermit, IPermitCondition, IStandardPermitCondition } from "@mds/common";
 import * as actionTypes from "../constants/actionTypes";
 import { PERMITS } from "../constants/reducerTypes";
+import { RootState } from "@/App";
+
+interface PermitState {
+  permits: IPermit[];
+  draftPermits: IPermit[];
+  permitConditions: IPermitCondition[];
+  editingConditionFlag: boolean;
+  editingPreambleFlag: boolean;
+  standardPermitConditions: IStandardPermitCondition[];
+}
 
 const initialState = {
   permits: [],
@@ -7,9 +18,10 @@ const initialState = {
   permitConditions: [],
   editingConditionFlag: false,
   editingPreambleFlag: false,
+  standardPermitConditions: [],
 };
 
-export const permitReducer = (state = initialState, action) => {
+export const permitReducer = (state: PermitState = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERMITS:
       return {
@@ -50,10 +62,14 @@ const permitReducerObject = {
   [PERMITS]: permitReducer,
 };
 
-export const getUnformattedPermits = (state) => state[PERMITS].permits;
-export const getDraftPermits = (state) => state[PERMITS].draftPermits;
-export const getPermitConditions = (state) => state[PERMITS].permitConditions;
-export const getStandardPermitConditions = (state) => state[PERMITS].standardPermitConditions;
-export const getEditingConditionFlag = (state) => state[PERMITS].editingConditionFlag;
-export const getEditingPreambleFlag = (state) => state[PERMITS].editingPreambleFlag;
+export const getUnformattedPermits = (state: RootState): IPermit[] => state[PERMITS].permits;
+export const getDraftPermits = (state: RootState): IPermit[] => state[PERMITS].draftPermits;
+export const getPermitConditions = (state: RootState): IPermitCondition[] =>
+  state[PERMITS].permitConditions;
+export const getStandardPermitConditions = (state: RootState): IStandardPermitCondition[] =>
+  state[PERMITS].standardPermitConditions;
+export const getEditingConditionFlag = (state: RootState): boolean =>
+  state[PERMITS].editingConditionFlag;
+export const getEditingPreambleFlag = (state: RootState): boolean =>
+  state[PERMITS].editingPreambleFlag;
 export default permitReducerObject;
