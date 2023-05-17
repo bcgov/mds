@@ -8,8 +8,6 @@ exports[`QualifiedPerson renders properly 1`] = `
         change={[MockFunction]}
         closeModal={[MockFunction]}
         formValues={Object {}}
-        isCore={false}
-        loading={false}
         openModal={[MockFunction]}
       />,
     }
@@ -19,8 +17,6 @@ exports[`QualifiedPerson renders properly 1`] = `
     change={[MockFunction]}
     closeModal={[MockFunction]}
     formValues={Object {}}
-    isCore={false}
-    loading={false}
     openModal={[MockFunction]}
   />
 </ContextProvider>

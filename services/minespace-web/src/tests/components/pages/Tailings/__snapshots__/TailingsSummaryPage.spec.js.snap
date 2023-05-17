@@ -15,15 +15,12 @@ exports[`TailingsSummaryPage renders properly 1`] = `
         fetchMineRecordById={[MockFunction]}
         fetchPartyRelationships={[MockFunction]}
         fetchPermits={[MockFunction]}
-        formErrors={Object {}}
-        formValues={Object {}}
         history={
           Object {
             "push": [Function],
             "replace": [Function],
           }
         }
-        initialValues={Object {}}
         location={
           Object {
             "pathname": "",
@@ -213,15 +210,12 @@ exports[`TailingsSummaryPage renders properly 1`] = `
     fetchMineRecordById={[MockFunction]}
     fetchPartyRelationships={[MockFunction]}
     fetchPermits={[MockFunction]}
-    formErrors={Object {}}
-    formValues={Object {}}
     history={
       Object {
         "push": [Function],
         "replace": [Function],
       }
     }
-    initialValues={Object {}}
     location={
       Object {
         "pathname": "",
