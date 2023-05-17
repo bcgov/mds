@@ -45,11 +45,6 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     history.push(url);
   };
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   const columns: ColumnsType<IDam> = [
     {
       title: "Name",

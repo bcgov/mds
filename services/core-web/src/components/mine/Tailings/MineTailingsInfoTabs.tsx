@@ -33,7 +33,8 @@ import AddButton from "@/components/common/buttons/AddButton";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
-import { ACType, IMine, IMineReport } from "@mds/common";
+import { IMine, IMineReport } from "@mds/common";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -44,14 +45,14 @@ interface MineTailingsInfoTabsProps {
   mineGuid: string;
   mineReports: IMineReport[];
   mineReportDefinitionOptions: any[];
-  updateMineReport: ACType<typeof updateMineReport>;
-  deleteMineReport: ACType<typeof deleteMineReport>;
-  fetchMineReports: ACType<typeof fetchMineReports>;
-  openModal: ACType<typeof openModal>;
-  closeModal: ACType<typeof closeModal>;
-  createTailingsStorageFacility: ACType<typeof createTailingsStorageFacility>;
-  updateTailingsStorageFacility: ACType<typeof updateTailingsStorageFacility>;
-  fetchMineRecordById: ACType<typeof fetchMineRecordById>;
+  updateMineReport: ActionCreator<typeof updateMineReport>;
+  deleteMineReport: ActionCreator<typeof deleteMineReport>;
+  fetchMineReports: ActionCreator<typeof fetchMineReports>;
+  openModal: typeof openModal;
+  closeModal: typeof closeModal;
+  createTailingsStorageFacility: ActionCreator<typeof createTailingsStorageFacility>;
+  updateTailingsStorageFacility: ActionCreator<typeof updateTailingsStorageFacility>;
+  fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
   TSFOperatingStatusCodeHash: any;
   consequenceClassificationStatusCodeHash: any;
   itrbExemptionStatusCodeHash: any;

@@ -21,18 +21,18 @@ import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import { ADD_EDIT_DAM } from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import { ICreateDam, ITailingsStorageFacility } from "@mds/common";
-import { ACType } from "@/interfaces/actionCreator.type";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface DamsPageProps {
   tsf: ITailingsStorageFacility;
   storeTsf: typeof storeTsf;
   storeDam: typeof storeDam;
-  fetchMineRecordById: ACType<typeof fetchMineRecordById>;
+  fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
   formValues: ICreateDam;
   formErrors: any;
   submit: () => void;
-  createDam: ACType<typeof createDam>;
-  updateDam: ACType<typeof updateDam>;
+  createDam: ActionCreator<typeof createDam>;
+  updateDam: ActionCreator<typeof updateDam>;
   initialValues: ICreateDam;
 }
 

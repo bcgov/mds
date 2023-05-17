@@ -46,7 +46,7 @@ import {
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { ICreateTSF, IMine } from "@mds/common";
-import { ACType } from "@/interfaces/actionCreator.type";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface TailingsSummaryPageProps {
   form: string;
@@ -58,14 +58,14 @@ interface TailingsSummaryPageProps {
   submit?: (form: string) => void;
   formErrors?: FormErrors;
   location?: { pathname: string };
-  fetchPartyRelationships?: ACType<typeof fetchPartyRelationships>;
-  addDocumentToRelationship?: ACType<typeof addDocumentToRelationship>;
-  updateTailingsStorageFacility?: ACType<typeof updateTailingsStorageFacility>;
-  createTailingsStorageFacility?: ACType<typeof createTailingsStorageFacility>;
-  addPartyRelationship?: ACType<typeof addPartyRelationship>;
+  fetchPartyRelationships?: ActionCreator<typeof fetchPartyRelationships>;
+  addDocumentToRelationship?: ActionCreator<typeof addDocumentToRelationship>;
+  updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
+  createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
+  addPartyRelationship?: ActionCreator<typeof addPartyRelationship>;
   formValues?: Partial<ICreateTSF>;
-  fetchPermits?: ACType<typeof fetchPermits>;
-  fetchMineRecordById?: ACType<typeof fetchMineRecordById>;
+  fetchPermits?: ActionCreator<typeof fetchPermits>;
+  fetchMineRecordById?: ActionCreator<typeof fetchMineRecordById>;
   storeTsf?: typeof storeTsf;
   clearTsf?: typeof clearTsf;
   isDirty?: (form: string) => boolean;

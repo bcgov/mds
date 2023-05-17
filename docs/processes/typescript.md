@@ -139,15 +139,15 @@ In the above example, the thunk returns a promise of `<AxiosResponse<INoticeOfDe
 
 ## Typing Action Creators
 
-An `ACType` type has been created to help type action creators. This is created for Core-Web and Minespace individually since it
+An `ActionCreator` type has been created to help type action creators. This is created for Core-Web and Minespace individually since it
 depends on the `RootState` type. It can be used as follows:
 
 ```typescript
 interface TailingsSummaryPageProps {
-  fetchPartyRelationships?: ACType<typeof fetchPartyRelationships>;
-  addDocumentToRelationship?: ACType<typeof addDocumentToRelationship>;
-  updateTailingsStorageFacility?: ACType<typeof updateTailingsStorageFacility>;
-  createTailingsStorageFacility?: ACType<typeof createTailingsStorageFacility>;
+  fetchPartyRelationships?: ActionCreator<typeof fetchPartyRelationships>;
+  addDocumentToRelationship?: ActionCreator<typeof addDocumentToRelationship>;
+  updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
+  createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
 }
 ```
 

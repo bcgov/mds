@@ -1,7 +1,6 @@
 export * from "./noticeOfDeparture";
 export * from "./permit.interface";
 export * from "./mine.interface";
-export * from "./tailingsStorageFacility";
 export * from "./amendment.interface";
 export * from "./acceptedFileTypes.type";
 export * from "./mineAlert.interface";
