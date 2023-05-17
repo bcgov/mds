@@ -8,12 +8,6 @@ exports[`SteppedForm renders properly 1`] = `
   >
     <Menu
       className="stepped-form"
-      items={
-        Array [
-          "1",
-          "2",
-        ]
-      }
       mode="inline"
       selectedKeys="1"
     >
