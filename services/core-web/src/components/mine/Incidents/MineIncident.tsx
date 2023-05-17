@@ -54,7 +54,7 @@ interface IProps {
 
 export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   const { formValues, formErrors, incident, history } = props;
-  const { mineGuid, mineIncidentGuid = null } = useParams();
+  const { mineGuid, mineIncidentGuid = null }: any = useParams();
   const { pathname, search = null } = useLocation();
   const [isNewIncident, setIsNewIncident] = useState<boolean>(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
