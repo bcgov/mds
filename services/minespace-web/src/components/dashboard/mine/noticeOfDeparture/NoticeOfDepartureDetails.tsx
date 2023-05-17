@@ -7,15 +7,10 @@ import {
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
-
-const propTypes = {
-  noticeOfDeparture: CustomPropTypes.noticeOfDeparture.isRequired,
-};
 
 interface NoticeOfDepartureDetailsProps {
   noticeOfDeparture: INoticeOfDeparture;
@@ -180,7 +175,5 @@ export const NoticeOfDepartureDetails: React.FC<NoticeOfDepartureDetailsProps> =
     </div>
   );
 };
-
-NoticeOfDepartureDetails.propTypes = propTypes;
 
 export default NoticeOfDepartureDetails;
