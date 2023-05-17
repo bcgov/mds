@@ -700,6 +700,13 @@ select {
   margin-top: -12px;
 }
 
+// counteracting a bug making these be 3.6px
+.ant-select-multiple .ant-select-selection-search-input,
+.ant-select-multiple .ant-select-selection-search-mirror {
+  height: 20px;
+  line-height: 20px;
+}
+
 // update HTML select component to look like the ant design select. This block of code changes the default icon
 select {
   width: inherit;

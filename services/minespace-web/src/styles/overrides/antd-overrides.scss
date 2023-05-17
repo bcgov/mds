@@ -143,6 +143,7 @@ h5.ant-typography,
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: $white  !important;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .ant-tabs-tab-btn:focus,
@@ -399,6 +400,10 @@ th.ant-descriptions-item.vertical-description {
 
 .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
   color: #036;
+}
+
+.ant-steps-item-icon {
+  line-height: 30px;
 }
 
 .ant-legacy-form-vertical .ant-legacy-form-item {
