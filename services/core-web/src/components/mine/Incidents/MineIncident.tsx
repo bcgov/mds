@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, Requireable, useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
@@ -25,16 +25,16 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 import IMineIncident from "@mds/common";
 
-interface MineIncidentProps {
+export interface MineIncidentProps {
   incident: IMineIncident;
-  createMineIncident(mineGuid: string, formattedValues: any): Promise<any>; /// check for any
-  fetchMineIncident: PropTypes.Requireable<(...args: any[]) => any>;
+  createMineIncident(mineGuid: string, formattedValues: any): Promise<IMineIncident>;
+  fetchMineIncident();
   updateMineIncident(mineGuid: string, mineIncidentGuid: string, formattedValues: any);
-  clearMineIncident(): Promise<any>;
-  removeDocumentFromMineIncident: PropTypes.Requireable<(...args: any[]) => any>;
+  clearMineIncident(): Promise<void>;
+  removeDocumentFromMineIncident();
   history: {
-    push: PropTypes.Requireable<(...args: any[]) => any>;
-    replace(mineGuid: string, formattedValues?: any): Promise<any>; /// check
+    push(): Promise<any>;
+    replace(mineGuid: string, formattedValues?: any): Promise<any>;
   };
   formValues: Record<string, any>;
   formIsDirty: boolean;
@@ -48,11 +48,7 @@ interface IParams {
 }
 
 interface IProps {
-  removeDocumentFromMineIncident: (
-    mineGuid: string,
-    mineIncidentGuid: string,
-    mineDocumentGuid: string
-  ) => Promise<void>;
+  removeDocumentFromMineIncident: (IParams) => Promise<void>;
   fetchMineIncident: (mineGuid: string, mineIncidentGuid: string) => Promise<void>;
 }
 
@@ -172,13 +168,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     handleFetchData: () => void
   ): Promise<void> | null => {
     if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
-      return props
-        .removeDocumentFromMineIncident(
-          params?.mineGuid,
-          params?.mineIncidentGuid,
-          params?.mineDocumentGuid
-        )
-        .then(() => handleFetchData());
+      return props.removeDocumentFromMineIncident(params).then(() => handleFetchData());
     }
     return null;
   };
@@ -289,8 +279,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     <Loading />
   );
 };
-
-// MineIncident.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   incident: getMineIncident(state) || {},

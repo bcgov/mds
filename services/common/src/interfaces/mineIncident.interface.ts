@@ -1,4 +1,4 @@
-interface IMineIncident {
+export interface IMineIncident {
   mine_name: string;
   categories: any;
   incident_timestamp: any;

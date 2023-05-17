@@ -1,13 +1,36 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineIncident } from "@/components/mine/Incidents/MineIncident";
+import { MineIncident, MineIncidentProps } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import PropTypes, { any } from "prop-types";
 
-const props = {};
-const dispatchProps = {};
+const props: MineIncidentProps = {
+  incident: MOCK.INCIDENT,
+  formErrors: {},
+  formValues: {
+    initial_incident_documents: [],
+    final_report_documents: [],
+    internal_ministry_documents: [],
+  },
+  formIsDirty: false,
+  history: {
+    push: jest.fn(),
+    replace: jest.fn(),
+  },
+  clearMineIncident: jest.fn(() => Promise.resolve()),
+  createMineIncident: jest.fn(() => Promise.resolve()),
+  fetchMineIncident: jest.fn(() => Promise.resolve()),
+  updateMineIncident: jest.fn(() => Promise.resolve()),
+  removeDocumentFromMineIncident: jest.fn(() => Promise.resolve()),
+};
+const dispatchProps = {
+  submit: jest.fn(),
+  touch: jest.fn(),
+  change: jest.fn(),
+};
 
 function mockFunction() {
-  const original = require.requireActual("react-router-dom");
+  const original = jest.requireActual("react-router-dom");
   return {
     ...original,
     useParams: jest.fn().mockReturnValue({
@@ -23,34 +46,13 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-const setupProps = () => {
-  props.incident = MOCK.INCIDENT;
-  props.formErrors = {};
-  props.formValues = {
-    initial_incident_documents: [],
-    final_report_documents: [],
-    internal_ministry_documents: [],
-  };
-  props.formIsDirty = false;
-  props.history = {
-    push: jest.fn(),
-    replace: jest.fn(),
-  };
-};
-
 const setupDispatchProps = () => {
-  dispatchProps.clearMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.createMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.updateMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.removeDocumentFromMineIncident = jest.fn(() => Promise.resolve());
   dispatchProps.submit = jest.fn(() => Promise.resolve());
   dispatchProps.touch = jest.fn(() => Promise.resolve());
   dispatchProps.change = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
-  setupProps();
   setupDispatchProps();
 });
 
