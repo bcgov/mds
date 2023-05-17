@@ -6,6 +6,8 @@ import {
   IPermit,
   IPermitAmendment,
   ICreatePermitAmendmentPayload,
+  ICreatePermitConditionPayload,
+  IPermitCondition,
 } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
@@ -22,14 +24,9 @@ export const createPermit =
   (dispatch): Promise<AxiosResponse<IPermit>> => {
     dispatch(request(reducerTypes.CREATE_PERMIT));
     dispatch(showLoading("modal"));
-    // console.log("inside createPermit");
-    // console.log(payload);
-    // console.log(dispatch);
     return CustomAxios()
       .post(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), payload, createRequestHeader())
       .then((response: AxiosResponse<IPermit>) => {
-        // console.log("createPermit response");
-        // console.log(response);
         notification.success({
           message: "Successfully created a new permit",
           duration: 10,
@@ -44,40 +41,30 @@ export const createPermit =
       .finally(() => dispatch(hideLoading("modal")));
   };
 
-export const fetchPermits =
-  (mineGuid): AppThunk =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.GET_PERMITS));
-    dispatch(showLoading("modal"));
-    // console.log("inside fetchPermits");
-    // console.log("dispatch");
-    // console.log(dispatch);
-    return CustomAxios({ errorToastMessage: String.ERROR })
-      .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
-      .then((response) => {
-        // console.log("fetchPermits response");
-        // console.log(response);
-        dispatch(success(reducerTypes.GET_PERMITS));
-        dispatch(permitActions.storePermits(response.data));
-      })
-      .catch(() => dispatch(error(reducerTypes.GET_PERMITS)))
-      .finally(() => dispatch(hideLoading("modal")));
-  };
+export const fetchPermits = (mineGuid: string) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMITS));
+  dispatch(showLoading("modal"));
+  return CustomAxios({ errorToastMessage: String.ERROR })
+    .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMITS));
+      dispatch(permitActions.storePermits(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PERMITS)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
 
 export const fetchDraftPermitByNOW =
   (mineGuid: string, nowApplicationGuid: string): AppThunk<Promise<AxiosResponse<IPermit[]>>> =>
   (dispatch): Promise<AxiosResponse<IPermit[]>> => {
     dispatch(request(reducerTypes.GET_PERMITS));
     dispatch(showLoading());
-    // console.log("fetchDraftPermitByNOW inside");
     return CustomAxios({ errorToastMessage: String.ERROR })
       .get(
         ENVIRONMENT.apiUrl + API.DRAFT_PERMITS(mineGuid, nowApplicationGuid),
         createRequestHeader()
       )
       .then((response: AxiosResponse<IPermit[]>) => {
-        // console.log("fetchDraftPermitByNOW response");
-        // console.log(response);
         dispatch(success(reducerTypes.GET_PERMITS));
         dispatch(permitActions.storeDraftPermits(response.data));
         return response;
@@ -96,8 +83,6 @@ export const updatePermit =
     payload: IPermit
   ): AppThunk<Promise<AxiosResponse<IPermit>>> =>
   (dispatch): Promise<AxiosResponse<IPermit>> => {
-    // console.log("updatePermit inside");
-    // console.log(payload);
     dispatch(request(reducerTypes.UPDATE_PERMIT));
     dispatch(showLoading());
     return CustomAxios()
@@ -107,8 +92,6 @@ export const updatePermit =
         createRequestHeader()
       )
       .then((response: AxiosResponse<IPermit>) => {
-        // console.log("updatePermit response");
-        // console.log(response);
         notification.success({
           message: `Successfully updated permit`,
           duration: 10,
@@ -132,8 +115,6 @@ export const createPermitAmendment =
   (dispatch): Promise<AxiosResponse<IPermitAmendment>> => {
     dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
     dispatch(showLoading("modal"));
-    // console.log("createPermitAmendment inside");
-    // console.log(payload);
     return CustomAxios()
       .post(
         `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENTS(mineGuid, permitGuid)}`,
@@ -141,8 +122,6 @@ export const createPermitAmendment =
         createRequestHeader()
       )
       .then((response: AxiosResponse<IPermitAmendment>) => {
-        // console.log("createPermitAmendment response");
-        // console.log(response);
         notification.success({
           message: "Successfully created a new amendment",
           duration: 10,
@@ -158,7 +137,7 @@ export const createPermitAmendment =
   };
 
 export const createPermitAmendmentVC =
-  (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+  (mineGuid: string, permitGuid: string, permitAmdendmentGuid: string) => (dispatch) => {
     dispatch(request(reducerTypes.PERMIT_AMENDMENT_VC));
     dispatch(showLoading());
     return CustomAxios()
@@ -187,7 +166,13 @@ export const createPermitAmendmentVC =
   };
 
 export const updatePermitAmendment =
-  (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+  (
+    mineGuid: string,
+    permitGuid: string,
+    permitAmdendmentGuid: string,
+    payload
+  ): AppThunk<Promise<AxiosResponse<IPermitAmendment>>> =>
+  (dispatch): Promise<AxiosResponse<IPermitAmendment>> => {
     dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
     dispatch(showLoading());
     return CustomAxios()
@@ -196,7 +181,7 @@ export const updatePermitAmendment =
         payload,
         createRequestHeader()
       )
-      .then((response) => {
+      .then((response: AxiosResponse<IPermitAmendment>) => {
         const successMessage =
           response.data.permit_amendment_status_code === "DFT"
             ? "Successfully updated draft permit"
@@ -215,27 +200,33 @@ export const updatePermitAmendment =
       .finally(() => dispatch(hideLoading()));
   };
 
-export const getPermitAmendment = (mineGuid, permitAmdendmentGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PERMIT_AMENDMENT));
-  dispatch(showLoading());
-  return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
-      return response.data;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading()));
-};
+export const getPermitAmendment =
+  (
+    mineGuid: string,
+    permitAmdendmentGuid: string
+  ): AppThunk<Promise<AxiosResponse<IPermitAmendment>>> =>
+  (dispatch): Promise<AxiosResponse<IPermitAmendment>> => {
+    dispatch(request(reducerTypes.GET_PERMIT_AMENDMENT));
+    dispatch(showLoading());
+    return CustomAxios()
+      .get(
+        `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`,
+        createRequestHeader()
+      )
+      .then((response: AxiosResponse<IPermitAmendment>) => {
+        dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
+        return response.data;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading()));
+  };
 
 export const removePermitAmendmentDocument =
-  (mineGuid, permitGuid, permitAmdendmentGuid, documentGuid) => (dispatch) => {
+  (mineGuid: string, permitGuid: string, permitAmdendmentGuid: string, documentGuid: string) =>
+  (dispatch) => {
     dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
     dispatch(showLoading());
     return CustomAxios()
@@ -263,7 +254,7 @@ export const removePermitAmendmentDocument =
       .finally(() => dispatch(hideLoading()));
   };
 
-export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
+export const deletePermit = (mineGuid: string, permitGuid: string) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT));
   dispatch(showLoading());
   return CustomAxios()
@@ -286,30 +277,31 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.DELETE_PERMIT_AMENDMENT));
-  dispatch(showLoading());
-  return CustomAxios()
-    .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully deleted permit amendment and all related documents.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
-      return response;
-    })
-    .catch((err) => {
-      dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT));
-      throw new Error(err);
-    })
-    .finally(() => dispatch(hideLoading()));
-};
+export const deletePermitAmendment =
+  (mineGuid: string, permitGuid: string, permitAmdendmentGuid: string) => (dispatch) => {
+    dispatch(request(reducerTypes.DELETE_PERMIT_AMENDMENT));
+    dispatch(showLoading());
+    return CustomAxios()
+      .delete(
+        `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+        createRequestHeader()
+      )
+      .then((response) => {
+        notification.success({
+          message: "Successfully deleted permit amendment and all related documents.",
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading()));
+  };
 
-export const fetchPermitConditions = (permitAmdendmentGuid) => (dispatch) => {
+export const fetchPermitConditions = (permitAmdendmentGuid: string) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
   return CustomAxios()
@@ -325,58 +317,61 @@ export const fetchPermitConditions = (permitAmdendmentGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
-  dispatch(showLoading());
-  return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
-      { permit_condition: payload },
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully created a new condition",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.CREATE_PERMIT_CONDITION));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading()));
-};
+export const createPermitCondition =
+  (permitAmdendmentGuid: string, payload: ICreatePermitConditionPayload) => (dispatch) => {
+    dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
+    dispatch(showLoading());
+    return CustomAxios()
+      .post(
+        `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
+        { permit_condition: payload },
+        createRequestHeader()
+      )
+      .then((response) => {
+        notification.success({
+          message: "Successfully created a new condition",
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.CREATE_PERMIT_CONDITION));
+        return response;
+      })
+      .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
+      .finally(() => dispatch(hideLoading()));
+  };
 
-export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
-        null,
-        null,
-        permitAmdendmentGuid,
-        permitConditionGuid
-      )}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully deleted permit condition.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.DELETE_PERMIT_CONDITION));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const deletePermitCondition =
+  (permitAmdendmentGuid: string, permitConditionGuid: string) => (dispatch) => {
+    dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .delete(
+        `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+          null,
+          null,
+          permitAmdendmentGuid,
+          permitConditionGuid
+        )}`,
+        createRequestHeader()
+      )
+      .then((response) => {
+        notification.success({
+          message: "Successfully deleted permit condition.",
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.DELETE_PERMIT_CONDITION));
+        return response;
+      })
+      .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const setEditingConditionFlag = (payload) => (dispatch) => {
   dispatch(permitActions.storeEditingConditionFlag(payload));
 };
 
 export const updatePermitCondition =
-  (permitConditionGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+  (permitConditionGuid: string, permitAmdendmentGuid: string, payload: IPermitCondition) =>
+  (dispatch) => {
     dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
     dispatch(showLoading());
     return CustomAxios()
@@ -402,7 +397,7 @@ export const updatePermitCondition =
       .finally(() => dispatch(hideLoading()));
   };
 
-export const patchPermitNumber = (permitGuid, mineGuid, payload) => (dispatch) => {
+export const patchPermitNumber = (permitGuid: string, mineGuid: string, payload) => (dispatch) => {
   dispatch(request(reducerTypes.PATCH_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -424,7 +419,7 @@ export const patchPermitNumber = (permitGuid, mineGuid, payload) => (dispatch) =
 };
 
 // standard permit conditions
-export const fetchStandardPermitConditions = (noticeOfWorkType) => (dispatch) => {
+export const fetchStandardPermitConditions = (noticeOfWorkType: string) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
   return CustomAxios()
@@ -466,7 +461,7 @@ export const createStandardPermitCondition = (type, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const deleteStandardPermitCondition = (permitConditionGuid) => (dispatch) => {
+export const deleteStandardPermitCondition = (permitConditionGuid: string) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -486,23 +481,24 @@ export const deleteStandardPermitCondition = (permitConditionGuid) => (dispatch)
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateStandardPermitCondition = (permitConditionGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
-  dispatch(showLoading());
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: `Successfully updated permit condition`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.UPDATE_PERMIT_CONDITION));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading()));
-};
+export const updateStandardPermitCondition =
+  (permitConditionGuid: string, payload) => (dispatch) => {
+    dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
+    dispatch(showLoading());
+    return CustomAxios()
+      .put(
+        `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`,
+        payload,
+        createRequestHeader()
+      )
+      .then((response) => {
+        notification.success({
+          message: `Successfully updated permit condition`,
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.UPDATE_PERMIT_CONDITION));
+        return response;
+      })
+      .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
+      .finally(() => dispatch(hideLoading()));
+  };
