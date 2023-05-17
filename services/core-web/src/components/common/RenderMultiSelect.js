@@ -61,7 +61,7 @@ export const RenderMultiSelect = (props) => (
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (
-            <Select.Option key={value} title={tooltip}>
+            <Select.Option key={value} value={value} title={tooltip}>
               {label}
             </Select.Option>
           ))}

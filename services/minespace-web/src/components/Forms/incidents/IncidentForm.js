@@ -264,6 +264,9 @@ const renderReporterDetails = (formDisabled) => {
             component={renderConfig.FIELD}
             validate={[required, email]}
             disabled={formDisabled}
+            blockLabelText={
+              "Notification of record creation and updates will be sent to this address"
+            }
           />
         </Form.Item>
       </Col>
@@ -784,7 +787,7 @@ const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
     return [
       <Field
-        key="recommendations"
+        key="default"
         name="recommendations"
         component={renderConfig.AUTO_SIZE_FIELD}
         disabled
@@ -792,9 +795,9 @@ const renderRecommendations = ({ fields }) => {
     ];
   }
   return [
-    fields.map((recommendation, index) => (
+    fields.map((recommendation) => (
       <Field
-        key={index}
+        key={recommendation}
         name={`${recommendation}.recommendation`}
         component={renderConfig.AUTO_SIZE_FIELD}
         disabled
