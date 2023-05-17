@@ -520,9 +520,9 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
 };
 
 const renderRecommendations = ({ fields, isEditMode }) => [
-  fields.map((recommendation, index) => (
+  fields.map((recommendation) => (
     <Field
-      key={index}
+      key={recommendation}
       name={`${recommendation}.recommendation`}
       placeholder="Write in each individual Mine Manager Recommendation here"
       component={renderConfig.AUTO_SIZE_FIELD}

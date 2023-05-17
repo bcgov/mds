@@ -130,6 +130,7 @@ exports[`IncidentForm renders properly 1`] = `
             label="Email"
           >
             <Field
+              blockLabelText="Notification of record creation and updates will be sent to this address"
               component={[Function]}
               disabled={true}
               id="reported_by_email"

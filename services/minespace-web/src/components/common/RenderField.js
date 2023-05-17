@@ -18,6 +18,7 @@ const propTypes = {
   disabled: PropTypes.bool,
   defaultValue: PropTypes.string,
   allowClear: PropTypes.bool,
+  blockLabelText: PropTypes.string,
 };
 
 const defaultProps = {
@@ -27,6 +28,7 @@ const defaultProps = {
   disabled: false,
   defaultValue: "",
   allowClear: false,
+  blockLabelText: "",
 };
 
 const RenderField = (props) => {
@@ -42,7 +44,7 @@ const RenderField = (props) => {
           (props.meta.warning && <span>{props.meta.warning}</span>))
       }
     >
-      <div className="inline-flex">
+      <div className="inline-flex" style={{ flexDirection: "column" }}>
         {props.inlineLabel && (
           <label htmlFor={props.id} style={{ paddingRight: "10px", fontSize: "20px" }}>
             {props.inlineLabel}
@@ -56,6 +58,7 @@ const RenderField = (props) => {
           allowClear={props.allowClear}
           {...props.input}
         />
+        {props.blockLabelText && <div className="block flex-start">{props.blockLabelText}</div>}
       </div>
     </Form.Item>
   );
