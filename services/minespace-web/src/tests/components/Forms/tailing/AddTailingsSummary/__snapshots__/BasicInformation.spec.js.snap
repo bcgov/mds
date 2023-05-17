@@ -4,7 +4,6 @@ exports[`BasicInformation renders properly 1`] = `
 <Fragment>
   <Row
     justify="space-between"
-    type="flex"
   >
     <Title
       level={3}

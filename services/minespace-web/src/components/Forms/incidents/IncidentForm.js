@@ -256,7 +256,7 @@ const renderReporterDetails = (formDisabled) => {
         </Form.Item>
       </Col>
       <Col md={10} xs={24}>
-        <Form.Item label="Email">
+        <Form.Item label="* Email">
           <Field
             id="reported_by_email"
             name="reported_by_email"
