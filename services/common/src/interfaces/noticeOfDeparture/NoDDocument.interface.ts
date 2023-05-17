@@ -1,12 +1,9 @@
 import { NoDTypeSaveEnum } from "@/constants";
+import { IDocument } from "@/index";
 
-export interface INoDDocument {
+export interface INoDDocument extends IDocument {
   create_timestamp: string;
   create_user: string;
-  document_manager_guid: string;
-  document_name: string;
   document_type: NoDTypeSaveEnum;
-  mine_document_guid: string;
-  mine_guid: string;
   upload_date?: string;
 }

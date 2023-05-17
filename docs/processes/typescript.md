@@ -137,6 +137,24 @@ In the above example, the thunk returns a promise of `<AxiosResponse<INoticeOfDe
 
 **Note:** _You also need to set the return type of the inner dispatch function to the same type as the thunk return type._
 
+## Typing Action Creators
+
+An `ActionCreator` type has been created to help type action creators. This is created for Core-Web and Minespace individually since it
+depends on the `RootState` type. It can be used as follows:
+
+```typescript
+interface TailingsSummaryPageProps {
+  fetchPartyRelationships?: ActionCreator<typeof fetchPartyRelationships>;
+  addDocumentToRelationship?: ActionCreator<typeof addDocumentToRelationship>;
+  updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
+  createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
+}
+```
+
+Setting the type like this will provide the correct props and return types for the action creators.
+
+---
+
 ### Forms
 
 There are a couple of tricky things to note when converting redux-forms to typescript.
