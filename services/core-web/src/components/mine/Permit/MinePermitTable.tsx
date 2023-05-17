@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, RouteComponentProps } from "react-router-dom";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import {
   MinusSquareFilled,
@@ -29,6 +29,7 @@ import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
 import { IPermit, IPartyRelationship, IPermitAmendment } from "@mds/common";
+import { ColumnsType } from "antd/lib/table";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -39,7 +40,7 @@ const draftAmendment = "DFT";
 interface MinePermitTableProps {
   permits: IPermit[];
   partyRelationships?: IPartyRelationship[];
-  permitStatusOptionsHash: any;
+  permitStatusOptionsHash?: any;
   major_mine_ind: boolean;
   openEditPermitModal: (arg1: any, arg2: IPermit) => any; //* for some reason there is a third param being used here in a call
   openAddPermitAmendmentModal: (arg1: any, arg2: IPermit) => any;
@@ -52,7 +53,7 @@ interface MinePermitTableProps {
   handleDeletePermit: (arg1: string) => any;
   handleDeletePermitAmendment: (arg1: any) => any;
   handlePermitAmendmentIssueVC: (arg1: any, arg2: IPermitAmendment, arg3: IPermit) => any;
-  permitAmendmentTypeOptionsHash: any;
+  permitAmendmentTypeOptionsHash?: any;
   openEditSitePropertiesModal: (arg1: any, arg2: IPermit) => any;
   openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
   match: any;
@@ -413,7 +414,7 @@ const columns = [
   },
 ];
 
-const childColumns = [
+const childColumns: ColumnsType<IPermit> = [
   {
     title: "#",
     dataIndex: "amendmentNumber",
@@ -671,7 +672,7 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   </a>
 );
 
-export const MinePermitTable: React.FC<MinePermitTableProps> = (props) => {
+export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
   const amendmentHistory = (permit) => {
     const childRowData = permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
@@ -688,9 +689,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = (props) => {
       )
     );
 
-    return (
-      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
-    );
+    return <Table pagination={false} columns={childColumns} dataSource={childRowData} />;
   };
 
   const rowData = props.permits?.map((permit) =>
@@ -738,4 +737,6 @@ const mapStateToProps = (state) => ({
 // MinePermitTable.propTypes = propTypes;
 // MinePermitTable.defaultProps = defaultProps;
 
-export default withRouter(connect(mapStateToProps)(MinePermitTable) as FC<MinePermitTableProps>);
+export default withRouter(
+  connect(mapStateToProps)(MinePermitTable) as FC<MinePermitTableProps & RouteComponentProps>
+);
