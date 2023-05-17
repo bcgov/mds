@@ -7,5 +7,5 @@ export interface INoWDocument {
   description: string;
   is_final_package: boolean;
   final_package_order: number;
-  mine_document: IMineDocument; //this will have to be changed
+  mine_document: IMineDocument;
 }
