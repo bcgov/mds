@@ -192,10 +192,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     };
   };
 
-  const linkProps = {
-    to: routes.MINE_GENERAL.dynamicRoute(mineGuid),
-  };
-
   const incidentFormProps = {
     initialValues: formatInitialValues(),
     isEditMode: { isEditMode },
@@ -252,7 +248,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
                   style={{ textDecoration: "none" }}
                   to={routes.MINE_GENERAL.dynamicRoute(mineGuid)}
                 >
-                  <EnvironmentOutlined />
+                  <EnvironmentOutlined className="padding-sm--right" />
                   {mineName}
                 </Link>
               </Tag>
