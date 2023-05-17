@@ -38,12 +38,15 @@ jobs:
       - name: Git Ops Push
         run: ./gitops/commit.sh ${{ env.IMAGE }} dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: Install oc
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
       - name: oc login
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: ./gitops/watch-deployment.sh minespace test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:

@@ -127,7 +127,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Email"
+            label="* Email"
           >
             <Field
               component={[Function]}

@@ -15,12 +15,24 @@ TIMESTAMP=$(date +"%y-%m-%d-%H-%M-%S")
 git config --global user.name $ACTOR_NAME
 git config --global user.email "dev@mds.gov.bc.ca"
 
+function set_rollout_needed_env() {
+    if [[ -n "$GITHUB_ENV" ]]; then
+        echo "NEEDS_ROLLOUT=$1" >> "$GITHUB_ENV"
+    fi
+}
+
 function commit() {
     git add -A
 
     if ! git diff-index --quiet HEAD; then
         git commit -m "$@"
         git push origin main
+
+        echo "$@"
+        set_rollout_needed_env true
+    else
+        echo "$TARGET_APP $TARGET_ENV is already at latest version"
+        set_rollout_needed_env false
     fi
 }
 

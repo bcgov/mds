@@ -196,14 +196,14 @@ const renderIncidentStatusCallout = (childProps) => {
 
   return (
     <Callout
-      message={(
+      message={
         <div>
           <h4 id="initial-report" style={{ color: "#313132", fontWeight: 700 }}>
             {title}
           </h4>
           <p>{message}</p>
         </div>
-      )}
+      }
       severity={severity}
     />
   );
@@ -256,7 +256,7 @@ const renderReporterDetails = (formDisabled) => {
         </Form.Item>
       </Col>
       <Col md={10} xs={24}>
-        <Form.Item label="Email">
+        <Form.Item label="* Email">
           <Field
             id="reported_by_email"
             name="reported_by_email"
@@ -640,7 +640,8 @@ const renderUploadInitialNotificationDocuments = (
                     document_manager_guid,
                     Strings.INCIDENT_DOCUMENT_TYPES.initial,
                     INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                  )}
+                  )
+                }
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={match.params?.mineGuid}
                 component={IncidentFileUpload}
@@ -666,7 +667,8 @@ const renderUploadInitialNotificationDocuments = (
                     parentHandlers.openUploadIncidentDocumentsModal(
                       e,
                       Strings.INCIDENT_DOCUMENT_TYPES.initial
-                    )}
+                    )
+                  }
                   className="full-mobile violet violet-border"
                 >
                   + Add Documentation
@@ -713,7 +715,8 @@ const renderUploadInitialNotificationDocuments = (
                       document_manager_guid,
                       Strings.INCIDENT_DOCUMENT_TYPES.final,
                       FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                    )}
+                    )
+                  }
                   onRemoveFile={parentHandlers?.deleteDocument}
                   mineGuid={match.params?.mineGuid}
                   component={IncidentFileUpload}
@@ -738,7 +741,8 @@ const renderUploadInitialNotificationDocuments = (
                     parentHandlers.openUploadIncidentDocumentsModal(
                       e,
                       Strings.INCIDENT_DOCUMENT_TYPES.final
-                    )}
+                    )
+                  }
                   className="full-mobile violet violet-border"
                 >
                   + Add Final Report
@@ -778,11 +782,19 @@ const renderUploadInitialNotificationDocuments = (
 
 const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
-    return [<Field name="recommendations" component={renderConfig.AUTO_SIZE_FIELD} disabled />];
+    return [
+      <Field
+        key="recommendations"
+        name="recommendations"
+        component={renderConfig.AUTO_SIZE_FIELD}
+        disabled
+      />,
+    ];
   }
   return [
-    fields.map((recommendation) => (
+    fields.map((recommendation, index) => (
       <Field
+        key={index}
         name={`${recommendation}.recommendation`}
         component={renderConfig.AUTO_SIZE_FIELD}
         disabled

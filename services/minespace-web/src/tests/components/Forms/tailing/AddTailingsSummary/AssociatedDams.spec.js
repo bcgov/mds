@@ -3,15 +3,15 @@ import React from "react";
 import { Provider } from "react-redux";
 import { shallow } from "enzyme";
 import { store } from "@/App";
-import AssociatedDams from "../../../../../../common/components/tailings/AssociatedDams";
+import AssociatedDams from "@common/components/tailings/AssociatedDams";
 
 let props = {};
 let dispatchProps = {};
 
 const setupProps = () => {
   props = {
-    tsf:
-      MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"].mine_tailings_storage_facilities[0],
+    tsf: MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"]
+      .mine_tailings_storage_facilities[0],
   };
 };
 

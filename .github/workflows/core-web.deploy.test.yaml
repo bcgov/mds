@@ -39,12 +39,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install oc
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
       - name: oc login
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: ./gitops/watch-deployment.sh core-web test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:

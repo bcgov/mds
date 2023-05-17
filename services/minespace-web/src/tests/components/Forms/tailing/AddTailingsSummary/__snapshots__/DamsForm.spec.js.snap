@@ -31,7 +31,6 @@ exports[`DamsForm renders properly 1`] = `
   }
 >
   <DamForm
-    dam={Object {}}
     tsf={
       Object {
         "dams": Array [

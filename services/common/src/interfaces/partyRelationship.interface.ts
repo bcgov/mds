@@ -1,4 +1,4 @@
-import { IParty } from "@/interfaces/party.interface";
+import { IParty } from "@/interfaces";
 
 export interface IPartyRelationship {
   mine_party_appt_guid: string;

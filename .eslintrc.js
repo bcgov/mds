@@ -68,7 +68,7 @@ module.exports = {
     "react/prop-types": 0,
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/default-param-last": 0,
-    // "@typescript-eslint/no-explicit-any": 1,
-    "@typescript-eslint/no-explicit-any": ["off"],
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-children-prop": 0,
   },
 };
