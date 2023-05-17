@@ -11,6 +11,10 @@
   &--search {
     margin-top: 3px;
     padding: $default-padding-sm;
+
+    .ant-card-body {
+      padding: 0;
+    }
   }
 
   &__img {

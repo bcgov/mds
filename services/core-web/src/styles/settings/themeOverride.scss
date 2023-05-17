@@ -15,6 +15,10 @@
   padding-top: 30px;
 }
 
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  text-shadow: none;
+}
+
 // VERTICAL TABS
 .vertical-tabs {
   &.ant-tabs {
@@ -339,10 +343,6 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.ant-card-body {
-  padding: 0;
-}
-
 .white .ant-card-head {
   min-height: 90px;
   background: white;
@@ -552,6 +552,17 @@
   color: $darkest-grey;
   background-color: $light-grey;
 }
+
+// disabling a rule that creates a horizontal bar across the bottom of the body/html
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+  border-color: transparent;
+}
+.ant-menu-horizontal>.ant-menu-item::after,
+.ant-menu-horizontal>.ant-menu-submenu::after {
+  right: 0;
+  left: 0;
+}
+
 
 // -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
