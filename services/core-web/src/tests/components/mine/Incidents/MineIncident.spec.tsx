@@ -3,6 +3,8 @@ import { shallow } from "enzyme";
 import { MineIncident, MineIncidentProps } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import PropTypes, { any } from "prop-types";
+import { createMineIncident } from "@common/actionCreators/incidentActionCreator";
+import { AxiosResponse } from "axios";
 
 const props: MineIncidentProps = {
   incident: MOCK.INCIDENT,
@@ -18,10 +20,34 @@ const props: MineIncidentProps = {
     replace: jest.fn(),
   },
   clearMineIncident: jest.fn(() => Promise.resolve()),
-  createMineIncident: jest.fn(() => Promise.resolve()),
-  fetchMineIncident: jest.fn(() => Promise.resolve()),
-  updateMineIncident: jest.fn(() => Promise.resolve()),
-  removeDocumentFromMineIncident: jest.fn(() => Promise.resolve()),
+  createMineIncident: function (
+    mine_guid: any,
+    payload: any,
+    message?: string
+  ): Promise<AxiosResponse<any>> {
+    throw new Error("Function not implemented.");
+  },
+  updateMineIncident: function (
+    mine_guid: any,
+    payload: any,
+    message?: string
+  ): Promise<AxiosResponse<any>> {
+    throw new Error("Function not implemented.");
+  },
+  removeDocumentFromMineIncident: function (
+    mine_guid: any,
+    payload: any,
+    message?: string
+  ): Promise<AxiosResponse<any>> {
+    throw new Error("Function not implemented.");
+  },
+  fetchMineIncident: function (
+    mine_guid: any,
+    payload: any,
+    message?: string
+  ): Promise<AxiosResponse<any>> {
+    throw new Error("Function not implemented.");
+  },
 };
 const dispatchProps = {
   submit: jest.fn(),

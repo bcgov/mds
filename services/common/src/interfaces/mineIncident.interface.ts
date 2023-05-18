@@ -1,6 +1,6 @@
 export interface IMineIncident {
   mine_name: string;
-  categories: any;
-  incident_timestamp: any;
+  categories: string;
+  incident_timestamp: string;
   mine_incident_guid: string;
 }

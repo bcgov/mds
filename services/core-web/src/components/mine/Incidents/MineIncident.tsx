@@ -6,7 +6,6 @@ import { Link, withRouter, useParams, useLocation, matchPath } from "react-route
 import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import PropTypes, { string } from "prop-types";
 import moment from "moment";
 import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
@@ -19,19 +18,19 @@ import { clearMineIncident } from "@common/actions/incidentActions";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
-// import customPropTypes from "@/customPropTypes";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 import IMineIncident from "@mds/common";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 export interface MineIncidentProps {
   incident: IMineIncident;
-  createMineIncident(mineGuid: string, formattedValues: any): Promise<IMineIncident>;
-  fetchMineIncident();
-  updateMineIncident(mineGuid: string, mineIncidentGuid: string, formattedValues: any);
+  createMineIncident: ActionCreator<typeof createMineIncident>;
+  fetchMineIncident: ActionCreator<typeof createMineIncident>;
+  updateMineIncident: ActionCreator<typeof createMineIncident>;
   clearMineIncident(): Promise<void>;
-  removeDocumentFromMineIncident();
+  removeDocumentFromMineIncident: ActionCreator<typeof createMineIncident>;
   history: {
     push(): Promise<any>;
     replace(mineGuid: string, formattedValues?: any): Promise<any>;
@@ -54,7 +53,7 @@ interface IProps {
 
 export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   const { formValues, formErrors, incident, history } = props;
-  const { mineGuid, mineIncidentGuid = null }: any = useParams();
+  const { mineGuid, mineIncidentGuid = null }: any = useParams<IParams>();
   const { pathname, search = null } = useLocation();
   const [isNewIncident, setIsNewIncident] = useState<boolean>(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
