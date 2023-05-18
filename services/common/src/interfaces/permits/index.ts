@@ -11,3 +11,5 @@ export * from "./permitBond.interface";
 export * from "./permitCondition.interface";
 export * from "./permitUploadedFile.interface";
 export * from "./standardPermitCondition.interface";
+export * from "./permitParty.interface";
+export * from "./permitPartyRelationship.interface";

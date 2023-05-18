@@ -8,7 +8,6 @@ import {
   SafetyCertificateOutlined,
   ReadOutlined,
 } from "@ant-design/icons";
-// import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { formatDate } from "@common/utils/helpers";
@@ -22,13 +21,12 @@ import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-// import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
-import { IPermit, IPartyRelationship, IPermitAmendment } from "@mds/common";
+import { IPermit, IPermitPartyRelationship, IPermitAmendment } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 
 /**
@@ -39,10 +37,10 @@ const draftAmendment = "DFT";
 
 interface MinePermitTableProps {
   permits: IPermit[];
-  partyRelationships?: IPartyRelationship[];
+  partyRelationships?: IPermitPartyRelationship[];
   permitStatusOptionsHash?: any;
   major_mine_ind: boolean;
-  openEditPermitModal: (arg1: any, arg2: IPermit) => any; //* for some reason there is a third param being used here in a call
+  openEditPermitModal: (arg1: any, arg2: IPermit) => any;
   openAddPermitAmendmentModal: (arg1: any, arg2: IPermit) => any;
   openAddAmalgamatedPermitModal: (arg1: any, arg2: IPermit) => any;
   openAddPermitHistoricalAmendmentModal: (arg1: any, arg2: IPermit) => any;
@@ -58,38 +56,6 @@ interface MinePermitTableProps {
   openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
   match: any;
 }
-
-// const propTypes = {
-//   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-//   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-//   permitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-//   major_mine_ind: PropTypes.bool.isRequired,
-//   openEditPermitModal: PropTypes.func.isRequired,
-//   openAddPermitAmendmentModal: PropTypes.func.isRequired,
-//   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
-//   openAddPermitHistoricalAmendmentModal: PropTypes.func.isRequired,
-//   // This prop is used. Linting issue is unclear
-//   openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
-//   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   onExpand: PropTypes.func.isRequired,
-//   isLoaded: PropTypes.bool.isRequired,
-//   handleDeletePermit: PropTypes.func.isRequired,
-//   handleDeletePermitAmendment: PropTypes.func.isRequired,
-//   handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
-//   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-//   openEditSitePropertiesModal: PropTypes.func.isRequired,
-//   openViewConditionModal: PropTypes.func.isRequired,
-//   match: PropTypes.shape({
-//     params: {
-//       mine_guid: PropTypes.string,
-//       id: PropTypes.string,
-//     },
-//   }).isRequired,
-// };
-
-// const defaultProps = {
-//   partyRelationships: [],
-// };
 
 const renderDocumentLink = (document, linkTitleOverride = null) => (
   <DocumentLink
@@ -132,7 +98,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
         cancelText="Cancel"
         onConfirm={
-          isLinkedToNowApplication ? () => { } : () => record.handleDeletePermitAmendment(record)
+          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
         }
       >
         <div className="custom-menu-item">
@@ -372,7 +338,7 @@ const columns = [
           onConfirm={
             isDeletionAllowed
               ? () => record.handleDeletePermit(record.permit.permit_guid)
-              : () => { }
+              : () => {}
           }
           okText={isDeletionAllowed ? "Delete" : "Ok"}
           cancelText="Cancel"
@@ -673,6 +639,7 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
 );
 
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
+  console.log("MinePermitTable!");
   const amendmentHistory = (permit) => {
     const childRowData = permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
@@ -733,9 +700,6 @@ const mapStateToProps = (state) => ({
   permitStatusOptionsHash: getDropdownPermitStatusOptionsHash(state),
   permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),
 });
-
-// MinePermitTable.propTypes = propTypes;
-// MinePermitTable.defaultProps = defaultProps;
 
 export default withRouter(
   connect(mapStateToProps)(MinePermitTable) as FC<MinePermitTableProps & RouteComponentProps>

@@ -1,4 +1,4 @@
-export interface IParty {
+export interface IPermitParty {
   party_guid: string;
   party_type_code: string;
   phone_no: string;

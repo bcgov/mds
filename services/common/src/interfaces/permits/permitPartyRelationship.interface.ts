@@ -1,9 +1,9 @@
-import { IParty } from "@/interfaces";
+import { IPermitParty } from "@/interfaces/permits/permitParty.interface";
 
-export interface IPartyRelationship {
+export interface IPermitPartyRelationship {
   mine_party_appt_guid: string;
   mine_guid: string;
-  party: IParty;
+  party: IPermitParty;
   mine_party_appt_type_code: string;
   related_guid: string;
   permit_no: string;

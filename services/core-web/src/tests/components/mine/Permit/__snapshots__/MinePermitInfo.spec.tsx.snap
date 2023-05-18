@@ -48,7 +48,7 @@ exports[`MinePermitInfo renders properly 1`] = `
         handleDeletePermit={[Function]}
         handleDeletePermitAmendment={[Function]}
         handlePermitAmendmentIssueVC={[Function]}
-        isLoaded={false}
+        isLoaded={true}
         major_mine_ind={true}
         onExpand={[Function]}
         openAddAmalgamatedPermitModal={[Function]}
@@ -58,8 +58,6 @@ exports[`MinePermitInfo renders properly 1`] = `
         openEditPermitModal={[Function]}
         openEditSitePropertiesModal={[Function]}
         openViewConditionModal={[Function]}
-        partyRelationships={Array []}
-        permits={Array []}
       />
     </TabPane>
     <TabPane

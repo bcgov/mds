@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider, Tabs } from "antd";
-//import PropTypes from "prop-types";
 import {
   fetchPermits,
   createPermit,
@@ -23,22 +22,14 @@ import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as Permission from "@/constants/permissions";
-// import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/buttons/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import {
-  IPermit,
-  IMine,
-  IPartyRelationship,
-  ICreatePermitPayload,
-  IPermitAmendment,
-  ICreatePermitAmendmentPayload,
-  IExplosivesPermit,
-} from "@mds/common";
+import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit } from "@mds/common";
+import { ActionCreator } from "@/interfaces/actionCreator";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -51,32 +42,23 @@ interface MinePermitInfoProps {
   mines: IMine[];
   mineGuid: string;
   permits?: IPermit[];
-  partyRelationships?: IPartyRelationship[];
+  partyRelationships?: IPermitPartyRelationship[];
   fetchPartyRelationships: (arg1: any) => any;
   openModal: (arg1: any) => void;
   history: { push: (path: string) => void };
   closeModal: () => void;
-  createPermit: (arg1: string, arg2: ICreatePermitPayload) => Promise<IPermit>;
-  fetchPermits: (arg1: string) => any;
-  updatePermit: (arg1: string, arg2: string, arg3: IPermit) => Promise<IPermit>;
-  updatePermitAmendment: (
-    arg1: string,
-    arg2: string,
-    arg3: string,
-    arg4: any
-  ) => Promise<IPermitAmendment>;
-  createPermitAmendment: (
-    arg1: string,
-    arg2: string,
-    arg3: Partial<ICreatePermitAmendmentPayload>
-  ) => Promise<IPermitAmendment>;
-  createPermitAmendmentVC: (arg1: string, arg2: string, arg3: string) => any;
-  removePermitAmendmentDocument: (arg1: string, arg2: string, arg3: string, arg4: string) => any;
-  fetchMineRecordById: (arg1: any) => Promise<IMine>;
-  deletePermit: (arg1: string, arg2: string) => any;
-  deletePermitAmendment: (arg1: string, arg2: string, arg3: string) => any;
+  createPermit: ActionCreator<typeof createPermit>;
+  fetchPermits: ActionCreator<typeof fetchPermits>;
+  updatePermit: ActionCreator<typeof updatePermit>;
+  updatePermitAmendment: ActionCreator<typeof updatePermitAmendment>;
+  createPermitAmendment: ActionCreator<typeof createPermitAmendment>;
+  createPermitAmendmentVC: ActionCreator<typeof createPermitAmendmentVC>;
+  removePermitAmendmentDocument: ActionCreator<typeof removePermitAmendmentDocument>;
+  fetchMineRecordById: (arg1: string) => Promise<any>;
+  deletePermit: ActionCreator<typeof deletePermit>;
+  deletePermitAmendment: ActionCreator<typeof deletePermitAmendment>;
   userRoles: string[];
-  createMineTypes: (arg1: string, arg2: any) => any;
+  createMineTypes: (arg1: string, arg2: any) => Promise<any>;
   explosivesPermits: IExplosivesPermit[];
 }
 
@@ -99,7 +81,8 @@ export class MinePermitInfo extends Component<MinePermitInfoProps, MinePermitInf
   }
 
   componentDidMount = () => {
-    if (this.props.permits.length === 0 || !this.props.mineGuid) {
+    console.log("MinePermitInfo!");
+    if (this.props.permits?.length === 0 || !this.props.mineGuid) {
       this.handleFetchData();
     } else {
       this.setState({ isLoaded: true });
@@ -413,7 +396,7 @@ export class MinePermitInfo extends Component<MinePermitInfoProps, MinePermitInf
         </div>
         {/* @ts-ignore */}
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <Tabs.TabPane tab={`Mines Act Permits (${this.props.permits.length})`} key="1">
+          <Tabs.TabPane tab={`Mines Act Permits (${this.props.permits?.length | 0})`} key="1">
             <>
               <br />
               <div>
