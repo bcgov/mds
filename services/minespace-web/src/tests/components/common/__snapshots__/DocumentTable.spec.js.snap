@@ -2,7 +2,7 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <div>
-  <Table
+  <ForwardRef(InternalTable)
     align="left"
     columns={
       Array [

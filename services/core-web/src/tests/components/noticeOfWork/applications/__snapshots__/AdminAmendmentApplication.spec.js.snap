@@ -420,7 +420,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       }
     }
   >
-    <TabPane
+    <DeprecatedTabPane
       key="application"
       tab="Application"
     >
@@ -432,8 +432,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           isNoticeOfWorkTypeDisabled={true}
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="referral"
     >
@@ -840,8 +840,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           type="REF"
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="consultation"
     >
@@ -1248,8 +1248,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           type="FNC"
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="draft-permit"
     >
@@ -1261,8 +1261,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           isNoticeOfWorkTypeDisabled={true}
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="process-permit"
       tab="Process"
@@ -1669,8 +1669,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           }
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="administrative"
       tab="Administrative"
@@ -1682,8 +1682,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
           fixedTop={false}
         />
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="manage-documents"
       tab="Manage Documents"

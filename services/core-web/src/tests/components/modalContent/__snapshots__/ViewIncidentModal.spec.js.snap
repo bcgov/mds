@@ -256,7 +256,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Initial Report Documents
     </h5>
-    <Table
+    <ForwardRef(InternalTable)
       align="left"
       columns={
         Array [
@@ -282,7 +282,6 @@ exports[`ViewIncidentModal renders properly 1`] = `
         }
       }
       pagination={false}
-      rowKey="key"
     />
     <br />
   </div>
@@ -363,7 +362,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Final Investigation Report
     </h5>
-    <Table
+    <ForwardRef(InternalTable)
       align="left"
       columns={
         Array [
@@ -381,7 +380,6 @@ exports[`ViewIncidentModal renders properly 1`] = `
         }
       }
       pagination={false}
-      rowKey="key"
     />
     <br />
   </div>
@@ -389,11 +387,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[MockFunction]}
       type="secondary"
     >

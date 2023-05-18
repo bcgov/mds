@@ -8,12 +8,6 @@ exports[`SteppedForm renders properly 1`] = `
   >
     <Menu
       className="stepped-form"
-      items={
-        Array [
-          "1",
-          "2",
-        ]
-      }
       mode="inline"
       selectedKeys="1"
     >
@@ -56,11 +50,7 @@ exports[`SteppedForm renders properly 1`] = `
       >
         <div>
           <Button
-            block={false}
             className="full-mobile draft-button"
-            ghost={false}
-            htmlType="button"
-            loading={false}
             onClick={[MockFunction]}
             style={
               Object {
@@ -72,11 +62,7 @@ exports[`SteppedForm renders properly 1`] = `
             Save Draft
           </Button>
           <Button
-            block={false}
             disabled={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             type="secondary"
           >

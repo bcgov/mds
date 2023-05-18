@@ -2,11 +2,11 @@
 
 exports[`DocumentUpload renders properly 1`] = `
 <Fragment>
-  <Title
+  <ForwardRef
     level={3}
   >
     Document Upload
-  </Title>
+  </ForwardRef>
   <FormItem
     hasFeedback={false}
     label="Attach your project description file(s) here."
@@ -17,7 +17,7 @@ exports[`DocumentUpload renders properly 1`] = `
       <Col
         span={12}
       >
-        <Paragraph>
+        <ForwardRef>
           <ul>
             <li>
               You cannot upload ZIP files
@@ -30,7 +30,7 @@ exports[`DocumentUpload renders properly 1`] = `
               Maximum individual file size is 400 MB
             </li>
           </ul>
-        </Paragraph>
+        </ForwardRef>
       </Col>
     </Row>
     <DocumentTable

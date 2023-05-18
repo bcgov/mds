@@ -2,11 +2,11 @@
 
 exports[`BasicInformation renders properly 1`] = `
 <Fragment>
-  <Title
+  <ForwardRef
     level={3}
   >
     Basic Information
-  </Title>
+  </ForwardRef>
   <Field
     component={[Function]}
     id="project_summary_title"

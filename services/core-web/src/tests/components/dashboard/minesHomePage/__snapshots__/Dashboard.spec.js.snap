@@ -51,7 +51,7 @@ exports[`Dashboard renders properly 1`] = `
         onTabClick={[Function]}
         size="large"
       >
-        <TabPane
+        <DeprecatedTabPane
           key="list"
           tab="List"
         >
@@ -790,8 +790,8 @@ exports[`Dashboard renders properly 1`] = `
               />
             </div>
           </div>
-        </TabPane>
-        <TabPane
+        </DeprecatedTabPane>
+        <DeprecatedTabPane
           key="map"
           tab="Map"
         >
@@ -817,7 +817,7 @@ exports[`Dashboard renders properly 1`] = `
                 />
                 <br />
                 <br />
-                <Card>
+                <ForwardRef>
                   <div>
                     <h3>
                       EMLI GIS Links
@@ -841,7 +841,7 @@ exports[`Dashboard renders properly 1`] = `
                       Sharepoint Requests Portal
                     </a>
                   </div>
-                </Card>
+                </ForwardRef>
               </Col>
               <Col
                 md={2}
@@ -1070,7 +1070,7 @@ exports[`Dashboard renders properly 1`] = `
               </Element>
             </LoadingWrapper>
           </div>
-        </TabPane>
+        </DeprecatedTabPane>
       </Tabs>
     </div>
   </div>

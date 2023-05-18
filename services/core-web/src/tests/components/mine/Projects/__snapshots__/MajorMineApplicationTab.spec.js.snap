@@ -84,11 +84,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           }
         }
       >
-        <Title
+        <ForwardRef
           level={3}
         >
           Basic Information
-        </Title>
+        </ForwardRef>
       </Col>
     </Row>
     <Row>
@@ -109,9 +109,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             className="vertical-description"
             label="Primary Contact"
           >
-            <Input
+            <ForwardRef
               disabled={true}
-              type="text"
               value="N/A"
             />
           </DescriptionsItem>
@@ -134,9 +133,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             className="vertical-description"
             label="Ministry Contact"
           >
-            <Input
+            <ForwardRef
               disabled={true}
-              type="text"
               value="N/A"
             />
           </DescriptionsItem>
@@ -161,9 +159,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             className="vertical-description"
             label="Submitted"
           >
-            <Input
+            <ForwardRef
               disabled={true}
-              type="text"
             />
           </DescriptionsItem>
         </Descriptions>
@@ -185,9 +182,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             className="vertical-description"
             label="Status"
           >
-            <Input
+            <ForwardRef
               disabled={true}
-              type="text"
               value="N/A"
             />
           </DescriptionsItem>
@@ -195,16 +191,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       </Col>
     </Row>
     <br />
-    <Title
+    <ForwardRef
       id="major-mine-application"
       level={4}
     >
       Application Files
-    </Title>
+    </ForwardRef>
     <div
       id="primary-documents"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -214,7 +210,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Primary Documents
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -244,7 +240,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="spatial-components"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -254,7 +250,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Spatial Components
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -284,7 +280,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="supporting-documents"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -294,7 +290,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Supporting Documents
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [
@@ -324,7 +320,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       id="ministry-decision-documents"
     >
-      <Text
+      <ForwardRef(Text)
         strong={true}
         style={
           Object {
@@ -334,7 +330,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
       >
         Ministry Decision Documents
-      </Text>
+      </ForwardRef(Text)>
       <DocumentTable
         additionalColumnProps={
           Array [

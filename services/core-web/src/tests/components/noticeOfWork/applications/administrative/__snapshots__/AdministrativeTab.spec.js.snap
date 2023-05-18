@@ -409,8 +409,6 @@ exports[`AdministrativeTab renders properly 1`] = `
         permission="role_edit_permits"
       >
         <Dropdown
-          mouseEnterDelay={0.15}
-          mouseLeaveDelay={0.1}
           onVisibleChange={[Function]}
           overlay={
             <Menu>
@@ -430,11 +428,7 @@ exports[`AdministrativeTab renders properly 1`] = `
           visible={false}
         >
           <ForwardRef(InternalButton)
-            block={false}
             className="full-mobile"
-            ghost={false}
-            htmlType="button"
-            loading={false}
             type="secondary"
           >
             Actions

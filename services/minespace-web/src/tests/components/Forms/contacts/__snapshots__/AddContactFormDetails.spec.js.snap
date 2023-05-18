@@ -13,9 +13,9 @@ exports[`AddContactFormDetails renders properly 1`] = `
     <Col
       span={24}
     >
-      <Paragraph>
+      <ForwardRef>
         Create a new contact for your organization. New contacts will be accessible accross all of your organizations mines during submission.
-      </Paragraph>
+      </ForwardRef>
     </Col>
     <Col
       span={12}
@@ -58,14 +58,14 @@ exports[`AddContactFormDetails renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title
+      <ForwardRef
         level={5}
       >
         Contact Details
-      </Title>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         Please enter all contact information for this contact.
-      </Paragraph>
+      </ForwardRef>
     </Col>
     <Col
       span={12}
@@ -218,34 +218,22 @@ exports[`AddContactFormDetails renders properly 1`] = `
   >
     <ForwardRef
       cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="top"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
         disabled={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
       disabled={false}
-      ghost={false}
       htmlType="submit"
-      loading={false}
       type="primary"
     >
       Create Contact

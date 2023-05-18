@@ -442,32 +442,20 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     >
       <ForwardRef
         cancelText="No"
-        disabled={false}
-        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
-        okType="primary"
         onConfirm={[Function]}
         placement="bottomRight"
         title="Are you sure you want to cancel? The form will be reset to the original state."
-        transitionName="zoom-big"
-        trigger="click"
       >
         <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           type="secondary"
         >
           Cancel
         </Button>
       </ForwardRef>
       <Button
-        block={false}
         disabled={true}
-        ghost={false}
         htmlType="submit"
-        loading={false}
         type="primary"
       >
         Verify Application

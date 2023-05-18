@@ -11,23 +11,21 @@ exports[`AddVarianceForm renders properly 1`] = `
     hasFeedback={false}
     label="Are you creating an application or an approved variance?"
   >
-    <Memo(RadioGroup)
+    <Memo([object Object])
       onChange={[Function]}
       value={true}
     >
       <Radio
-        type="radio"
         value={true}
       >
          Application 
       </Radio>
       <Radio
-        type="radio"
         value={false}
       >
          Approved Variance 
       </Radio>
-    </Memo(RadioGroup)>
+    </Memo([object Object])>
   </FormItem>
   <FormItem
     hasFeedback={false}
@@ -155,31 +153,20 @@ exports[`AddVarianceForm renders properly 1`] = `
   >
     <ForwardRef
       cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
         type="secondary"
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
       loading={false}
       type="primary"

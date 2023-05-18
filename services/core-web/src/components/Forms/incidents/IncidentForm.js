@@ -21,6 +21,7 @@ import {
   requiredRadioButton,
   requiredNotUndefined,
   dateNotBeforeStrictOther,
+  dateNotInFutureTZ,
 } from "@common/utils/Validate";
 import { normalizePhone, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -46,6 +47,7 @@ import customPropTypes from "@/customPropTypes";
 import MinistryInternalComments from "@/components/mine/Incidents/MinistryInternalComments";
 import IncidentFileUpload from "./IncidentFileUpload";
 import IncidentCategoryCheckboxGroup from "./IncidentCategoryCheckboxGroup";
+import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -66,6 +68,7 @@ const propTypes = {
       mineIncidentGuid: PropTypes.string,
     }),
   }).isRequired,
+  form: PropTypes.string.isRequired,
 };
 
 const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
@@ -146,7 +149,12 @@ const retrieveInitialReportDynamicValidation = (childProps) => {
   };
 };
 
-const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEditMode) => {
+const renderInitialReport = (
+  incidentCategoryCodeOptions,
+  locationOptions,
+  isEditMode,
+  formName
+) => {
   return (
     <Row>
       {/* Reporter Details */}
@@ -205,6 +213,9 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
                 component={renderConfig.FIELD}
                 validate={[required, email]}
                 disabled={!isEditMode}
+                blockLabelText={
+                  "Notification of record creation and updates will be sent to this address"
+                }
               />
             </Form.Item>
           </Col>
@@ -243,27 +254,14 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
             </Form.Item>
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item label="* Incident date">
+            <Form.Item label="* Incident date & time">
               <Field
-                id="incident_date"
-                name="incident_date"
-                placeholder="Please select date..."
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
+                id="incident_timestamp"
+                name="incident_timestamp"
                 disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="* Incident time">
-              <Field
-                id="incident_time"
-                name="incident_time"
-                placeholder="Please select time..."
-                component={renderConfig.TIME}
-                validate={[required]}
-                disabled={!isEditMode}
-                fullWidth
+                validate={[dateNotInFutureTZ, required]}
+                props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
+                component={RenderDateTimeTz}
               />
             </Form.Item>
           </Col>
@@ -440,7 +438,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   document_manager_guid,
                   Strings.INCIDENT_DOCUMENT_TYPES.initial,
                   INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                )}
+                )
+              }
               onRemoveFile={parentHandlers.deleteDocument}
               mineGuid={childProps.match.params?.mineGuid}
               component={IncidentFileUpload}
@@ -474,7 +473,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   document_manager_guid,
                   Strings.INCIDENT_DOCUMENT_TYPES.final,
                   FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                )}
+                )
+              }
               onRemoveFile={parentHandlers.deleteDocument}
               mineGuid={childProps.match.params?.mineGuid}
               component={IncidentFileUpload}
@@ -495,7 +495,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
         <Col span={24}>
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={(
+            description={
               <div className="center">
                 <Typography.Paragraph strong>
                   This incident requires a final investigation report.
@@ -506,7 +506,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
                   documentation by clicking below.
                 </Typography.Paragraph>
               </div>
-            )}
+            }
           />
         </Col>
       )}
@@ -517,6 +517,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
 const renderRecommendations = ({ fields, isEditMode }) => [
   fields.map((recommendation) => (
     <Field
+      key={recommendation}
       name={`${recommendation}.recommendation`}
       placeholder="Write in each individual Mine Manager Recommendation here"
       component={renderConfig.AUTO_SIZE_FIELD}
@@ -771,12 +772,12 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
         {!incidentCreated ? (
           <div className="center">
             <Empty
-              description={(
+              description={
                 <Typography.Paragraph strong className="center padding-md--top">
                   The internal ministry documentation section will be displayed after this incident
                   is created.
                 </Typography.Paragraph>
-              )}
+              }
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           </div>
@@ -807,7 +808,8 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
                         document_manager_guid,
                         Strings.INCIDENT_DOCUMENT_TYPES.internalMinistry,
                         INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD
-                      )}
+                      )
+                    }
                     onRemoveFile={parentHandlers.deleteDocument}
                     mineGuid={childProps.match.params?.mineGuid}
                     component={IncidentFileUpload}
@@ -846,7 +848,7 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
         message={
           childProps.incidentStatusCodeHash[childProps.incident?.status_code] || "Undefined Status"
         }
-        description={(
+        description={
           <Row>
             <Col xs={24} md={18}>
               <p>
@@ -886,7 +888,7 @@ const updateIncidentStatus = (childProps, isNewIncident) => {
               )}
             </Col>
           </Row>
-        )}
+        }
         type={!isClosed ? "warning" : "info"}
         showIcon
         style={{
@@ -955,14 +957,18 @@ export const IncidentForm = (props) => {
     { label: "Underground", value: "underground" },
     ...(showUnspecified ? [{ label: "Not Specified", value: "" }] : []),
   ];
-
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
       <Col span={24}>{updateIncidentStatus(props, isNewIncident)}</Col>
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
-          {renderInitialReport(incidentCategoryCodeOptions, locationOptions, isEditMode)}
+          {renderInitialReport(
+            incidentCategoryCodeOptions,
+            locationOptions,
+            isEditMode,
+            props.form
+          )}
           <br />
           {renderDocumentation(props, isEditMode, localHandlers, parentHandlers)}
           <br />
@@ -1009,6 +1015,6 @@ export default compose(
     form: FORM.ADD_EDIT_INCIDENT,
     enableReinitialize: true,
     touchOnBlur: true,
-    touchOnChange: false,
+    touchOnChange: true,
   })
 )(IncidentForm);

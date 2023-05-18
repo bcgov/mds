@@ -2,11 +2,7 @@
 
 exports[`ReferralConsultationPackage renders properly 1`] = `
 <Button
-  block={false}
   className="full-mobile"
-  ghost={false}
-  htmlType="button"
-  loading={false}
   onClick={[Function]}
   type="secondary"
 >

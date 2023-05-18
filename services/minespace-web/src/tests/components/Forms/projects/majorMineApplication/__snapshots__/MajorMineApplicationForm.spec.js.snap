@@ -12,12 +12,12 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <Title
+        <ForwardRef
           level={4}
         >
           Basic Information
-        </Title>
-        <Paragraph>
+        </ForwardRef>
+        <ForwardRef>
           Please ensure the following information is correct and up to date. If changes are needed please edit your 
           <Link
             to="/projects/8132462392222/project-description/undefined/basic-information"
@@ -25,7 +25,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
             project description
           </Link>
           .
-        </Paragraph>
+        </ForwardRef>
       </Col>
     </Row>
     <Row>
@@ -37,11 +37,11 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           }
         }
       >
-        <Title
+        <ForwardRef
           level={5}
         >
           Primary Contact
-        </Title>
+        </ForwardRef>
         <Field
           component={[Function]}
           disabled={true}
@@ -52,11 +52,11 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       <Col
         span={11}
       >
-        <Title
+        <ForwardRef
           level={5}
         >
           Mine Name
-        </Title>
+        </ForwardRef>
         <Field
           component={[Function]}
           disabled={true}
@@ -65,19 +65,19 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         />
       </Col>
     </Row>
-    <Title
+    <ForwardRef
       level={4}
     >
       Application Files
-    </Title>
-    <Title
+    </ForwardRef>
+    <ForwardRef
       level={5}
     >
       Upload primary application document
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
-    </Paragraph>
+    </ForwardRef>
     <Field
       acceptedFileTypesMap={
         Object {
@@ -132,14 +132,14 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       }
     />
     <br />
-    <Title
+    <ForwardRef
       level={5}
     >
       Upload spatial documents
-    </Title>
-    <Text>
+    </ForwardRef>
+    <ForwardRef(Text)>
       Please upload spatial files to support your application. You must upload at least one spatial file to support your application.
-    </Text>
+    </ForwardRef(Text)>
     <Field
       acceptedFileTypesMap={
         Object {
@@ -189,14 +189,14 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       uploadType="spatial_document"
     />
     <br />
-    <Title
+    <ForwardRef
       level={5}
     >
       Upload supporting application documents
-    </Title>
-    <Text>
+    </ForwardRef>
+    <ForwardRef(Text)>
       Upload additional files that support your primary document submission. You can include many types of files such as:
-    </Text>
+    </ForwardRef(Text)>
     <ul>
       <li>
         Application

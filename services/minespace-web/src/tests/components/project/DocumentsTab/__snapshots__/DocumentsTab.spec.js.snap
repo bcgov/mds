@@ -7,11 +7,11 @@ exports[`DocumentsTab renders properly 1`] = `
   <Col
     span={24}
   >
-    <Title
+    <ForwardRef
       level={2}
     >
       All Project Documents
-    </Title>
+    </ForwardRef>
   </Col>
   <Col
     span={24}
@@ -23,7 +23,7 @@ exports[`DocumentsTab renders properly 1`] = `
       onChange={[Function]}
       tabPosition="left"
     >
-      <TabPane
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="project-description"
         tab="Project Description"
@@ -55,8 +55,8 @@ exports[`DocumentsTab renders properly 1`] = `
             </div>
           </Col>
         </Row>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="information-requirements-table"
         tab="Information Requirements Table"
@@ -88,8 +88,8 @@ exports[`DocumentsTab renders properly 1`] = `
             </div>
           </Col>
         </Row>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="major-mine-application"
         tab="Major Mine Application"
@@ -121,7 +121,7 @@ exports[`DocumentsTab renders properly 1`] = `
             </div>
           </Col>
         </Row>
-      </TabPane>
+      </DeprecatedTabPane>
     </Tabs>
   </Col>
 </Row>

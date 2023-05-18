@@ -61,7 +61,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
   };
 
   const transformRowData = (items: ITailingsStorageFacility[]) => {
-    return items.map((tailing) => {
+    return items?.map((tailing) => {
       return {
         key: tailing.mine_tailings_storage_facility_guid,
         ...tailing,

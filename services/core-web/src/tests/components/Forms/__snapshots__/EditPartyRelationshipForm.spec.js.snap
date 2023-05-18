@@ -52,30 +52,20 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
     <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
         disabled={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         type="secondary"
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
       loading={false}
       type="primary"

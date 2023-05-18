@@ -58,7 +58,7 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
         }
       }
     >
-      <TabPane
+      <DeprecatedTabPane
         key="irt"
         tab="IRT"
       />
@@ -78,7 +78,7 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
       size="large"
       tabPosition="left"
     >
-      <TabPane
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="intro-project-overview"
         tab="Introduction and Project Overview"
@@ -147,8 +147,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
             }
           />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="baseline-information"
         tab="Baseline Information"
@@ -172,8 +172,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="mine-plan"
         tab="Mine Plan"
@@ -197,8 +197,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="reclamation-closure-plan"
         tab="Reclamation Closure Plan"
@@ -222,8 +222,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="modelling-mitigation-discharges"
         tab="Modelling Mitigation Discharges"
@@ -247,8 +247,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="environmental-assessment-predictions"
         tab="Environmental Assessment Predictions"
@@ -272,8 +272,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="environmental-monitoring"
         tab="Environmental Monitory"
@@ -297,8 +297,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="health-safety"
         tab="Health Safety"
@@ -322,8 +322,8 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         className="vertical-tabs--tabpane"
         key="management-plan"
         tab="Management Plan"
@@ -347,7 +347,7 @@ exports[`InformationRequirementsTableTab renders properly 1`] = `
           />
           <ReviewInformationRequirementsTable />
         </div>
-      </TabPane>
+      </DeprecatedTabPane>
     </Tabs>
   </div>
 </div>

@@ -32,11 +32,8 @@ exports[`NavBar renders properly 1`] = `
         maxWidth={1079}
       >
         <Button
-          block={false}
           className="menu__btn"
           ghost={true}
-          htmlType="button"
-          loading={false}
           onClick={[MockFunction]}
           style={
             Object {
@@ -61,8 +58,6 @@ exports[`NavBar renders properly 1`] = `
       >
         <div>
           <Dropdown
-            mouseEnterDelay={0.15}
-            mouseLeaveDelay={0.1}
             overlay={[Function]}
             placement="bottomLeft"
           >
@@ -83,12 +78,8 @@ exports[`NavBar renders properly 1`] = `
             to="/dashboard/mines/?page=1&per_page=10"
           >
             <Button
-              block={false}
               className="menu__btn--link"
-              ghost={false}
-              htmlType="button"
               id=""
-              loading={false}
             >
               Mines
             </Button>
@@ -97,12 +88,8 @@ exports[`NavBar renders properly 1`] = `
             to="/dashboard/contacts/?page=1&per_page=10"
           >
             <Button
-              block={false}
               className="menu__btn--link"
-              ghost={false}
-              htmlType="button"
               id=""
-              loading={false}
             >
               Contacts
             </Button>
@@ -111,8 +98,6 @@ exports[`NavBar renders properly 1`] = `
             permission="role_view_admin_route"
           >
             <Dropdown
-              mouseEnterDelay={0.15}
-              mouseLeaveDelay={0.1}
               overlay={[Function]}
               placement="bottomLeft"
             >
@@ -131,8 +116,6 @@ exports[`NavBar renders properly 1`] = `
             </Dropdown>
           </Connect(AuthorizationWrapper)>
           <Dropdown
-            mouseEnterDelay={0.15}
-            mouseLeaveDelay={0.1}
             overlay={[Function]}
             placement="bottomLeft"
           >
@@ -156,20 +139,11 @@ exports[`NavBar renders properly 1`] = `
             target="_blank"
           >
             <Tooltip
-              arrowPointAtCenter={false}
-              autoAdjustOverflow={true}
-              mouseEnterDelay={0.1}
-              mouseLeaveDelay={0.1}
               placement="bottom"
               title="Feedback"
-              transitionName="zoom-big-fast"
             >
               <Button
-                block={false}
                 className="menu__btn--link"
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="link"
               >
                 <ForwardRef(MessageOutlined)
@@ -184,12 +158,9 @@ exports[`NavBar renders properly 1`] = `
           >
             <Dropdown
               disabled={true}
-              mouseEnterDelay={0.15}
-              mouseLeaveDelay={0.1}
               overlay={
                 <Menu>
                   <MenuItemGroup
-                    disabled={true}
                     title="Please re-verify the following mines:"
                   />
                 </Menu>

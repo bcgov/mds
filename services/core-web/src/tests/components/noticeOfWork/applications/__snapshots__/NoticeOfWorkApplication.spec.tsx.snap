@@ -420,7 +420,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       }
     }
   >
-    <TabPane
+    <DeprecatedTabPane
       key="verification"
       tab="Verification"
     >
@@ -821,38 +821,38 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
           }
         }
       />
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="application"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="referral"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="consultation"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="public-comment"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="draft-permit"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="process-permit"
       tab="Process"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="administrative"
       tab="Administrative"
     />
-    <TabPane
+    <DeprecatedTabPane
       disabled={true}
       key="manage-documents"
       tab="Manage Documents"

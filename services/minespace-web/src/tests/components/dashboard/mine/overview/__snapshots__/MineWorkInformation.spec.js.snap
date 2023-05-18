@@ -7,18 +7,14 @@ exports[`MineWorkInformation renders properly 1`] = `
   <div
     className="inline-flex between"
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Work Information
-    </Title>
+    </ForwardRef>
     <span>
       <Connect(AuthorizationWrapper)>
         <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           onClick={[Function]}
           type="link"
         >
@@ -37,9 +33,9 @@ exports[`MineWorkInformation renders properly 1`] = `
   <Row
     gutter={5}
   >
-    <Paragraph>
+    <ForwardRef>
       Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health, Safety & Reclamation Code apply to any person doing any work (mining activity) at, on, or about the mine site.
-    </Paragraph>
+    </ForwardRef>
   </Row>
   <Row
     gutter={16}
@@ -70,32 +66,28 @@ exports[`MineWorkInformation renders properly 1`] = `
                       label={
                         <React.Fragment>
                           <ForwardRef
-                            arrowPointAtCenter={false}
-                            autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
-                            mouseLeaveDelay={0.1}
                             overlayClassName="minespace-tooltip"
                             placement="right"
                             title={
                               <React.Fragment>
-                                <Text
+                                <ForwardRef(Text)
                                   strong={true}
                                 >
                                   Health, Safety and Reclamation Code for Mines in British Columbia
-                                </Text>
+                                </ForwardRef(Text)>
                                 <br />
-                                <Text
+                                <ForwardRef(Text)
                                   underline={true}
                                 >
                                   Notice To Start Work
-                                </Text>
+                                </ForwardRef(Text)>
                                 <br />
-                                <Text>
+                                <ForwardRef(Text)>
                                   6.2.1 The manager shall give 10 days’ notice to an inspector of intention to start [any mining activity] in, at, or about a mine, including seasonal reactivation.
-                                </Text>
+                                </ForwardRef(Text)>
                               </React.Fragment>
                             }
-                            transitionName="zoom-big-fast"
                           >
                             <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
@@ -111,32 +103,28 @@ exports[`MineWorkInformation renders properly 1`] = `
                       label={
                         <React.Fragment>
                           <ForwardRef
-                            arrowPointAtCenter={false}
-                            autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
-                            mouseLeaveDelay={0.1}
                             overlayClassName="minespace-tooltip"
                             placement="right"
                             title={
                               <React.Fragment>
-                                <Text
+                                <ForwardRef(Text)
                                   strong={true}
                                 >
                                   Health, Safety and Reclamation Code for Mines in British Columbia
-                                </Text>
+                                </ForwardRef(Text)>
                                 <br />
-                                <Text
+                                <ForwardRef(Text)
                                   underline={true}
                                 >
                                   Notice to Stop Work
-                                </Text>
+                                </ForwardRef(Text)>
                                 <br />
-                                <Text>
+                                <ForwardRef(Text)>
                                   6.2.2 The manager shall give notice to an inspector of intention to stop [any mining activity] in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.
-                                </Text>
+                                </ForwardRef(Text)>
                               </React.Fragment>
                             }
-                            transitionName="zoom-big-fast"
                           >
                             <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"

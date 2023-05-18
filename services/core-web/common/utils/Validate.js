@@ -1,7 +1,7 @@
 import * as Strings from "@common/constants/strings";
 
 import { memoize } from "lodash";
-import moment from "moment";
+import moment from "moment-timezone";
 
 /**
  * Utility class for validating inputs using redux forms
@@ -180,6 +180,10 @@ export const alertNotInFutureIfCurrentActive = memoize(
 
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
+
+export const dateNotInFutureTZ = (value) => {
+  return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
+};
 
 export const dateInFuture = (value) =>
   value && new Date(value) < new Date() ? "Date must be in the future" : undefined;

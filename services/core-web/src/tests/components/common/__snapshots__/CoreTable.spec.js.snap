@@ -3,7 +3,7 @@
 exports[`CoreTable renders properly 1`] = `
 <div>
   <div>
-    <Table
+    <ForwardRef(InternalTable)
       columns={Array []}
       dataSource={Object {}}
       locale={
@@ -13,7 +13,6 @@ exports[`CoreTable renders properly 1`] = `
       }
       pagination={false}
       rowClassName="fade-in"
-      rowKey="key"
       tableLayout="auto"
     />
   </div>

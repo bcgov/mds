@@ -15,6 +15,10 @@
   padding-top: 30px;
 }
 
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  text-shadow: none;
+}
+
 // VERTICAL TABS
 .vertical-tabs {
   &.ant-tabs {
@@ -148,6 +152,13 @@
   span {
     font-size: $font-size-base;
   }
+}
+
+.ant-input-search-button {
+  height: 34px;
+  width: 46px;
+  margin: 0;
+  border: 1px solid #d9d9d9;
 }
 
 
@@ -330,10 +341,6 @@
   margin-bottom: 20px;
   text-align: left;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.ant-card-body {
-  padding: 20px;
 }
 
 .white .ant-card-head {
@@ -546,6 +553,17 @@
   background-color: $light-grey;
 }
 
+// disabling a rule that creates a horizontal bar across the bottom of the body/html
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+  border-color: transparent;
+}
+.ant-menu-horizontal>.ant-menu-item::after,
+.ant-menu-horizontal>.ant-menu-submenu::after {
+  right: 0;
+  left: 0;
+}
+
+
 // -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: $violet;
@@ -680,6 +698,13 @@ select {
 
 .ant-select-multiple.ant-select-sm .ant-select-selection-search-input {
   margin-top: -12px;
+}
+
+// counteracting a bug making these be 3.6px
+.ant-select-multiple .ant-select-selection-search-input,
+.ant-select-multiple .ant-select-selection-search-mirror {
+  height: 20px;
+  line-height: 20px;
 }
 
 // update HTML select component to look like the ant design select. This block of code changes the default icon

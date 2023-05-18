@@ -24,15 +24,15 @@
   font-size: 20px;
 }
 
-.notification-button .ant-scroll-number-only > p.ant-scroll-number-only-unit {
-  color: #FFF;
-  font-size: 10px;
+.notification-button .ant-scroll-number-only > span.ant-scroll-number-only-unit {
+  font-size: 12px;
 }
 
 .notification-button .ant-badge-count {
-  height: 15px;
-  min-width: 15px;
-  padding: 0;
+  height: 18px;
+  min-width: 18px;
+  line-height: 18px;
+  padding: 0 3px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,6 +98,7 @@
 
 .notification-drawer .ant-tabs > .ant-tabs-nav .ant-tabs-tab-active > div > article {
   color: #5E46A1;
+  text-shadow: none;
 }
 
 .notification-separator {

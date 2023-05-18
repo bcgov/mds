@@ -21,24 +21,24 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       }
     }
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Overview
-    </Title>
-    <Text
+    </ForwardRef>
+    <ForwardRef(Text)
       strong={true}
     >
       PROJECT DESCRIPTION
-    </Text>
-    <Paragraph>
+    </ForwardRef(Text)>
+    <ForwardRef>
       Sample description.
-    </Paragraph>
-    <Text
+    </ForwardRef>
+    <ForwardRef(Text)
       strong={true}
     >
       KEY DATES
-    </Text>
+    </ForwardRef(Text)>
     <Row>
       <Col
         lg={12}
@@ -87,11 +87,11 @@ exports[`ProjectOverviewTab renders properly 1`] = `
         </Descriptions>
       </Col>
     </Row>
-    <Title
+    <ForwardRef
       level={4}
     >
       Project Stages
-    </Title>
+    </ForwardRef>
     <ProjectStagesTable
       projectStages={
         Array [
@@ -188,14 +188,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       <Col
         span={24}
       >
-        <Card
+        <ForwardRef
           title="Project Contacts"
         />
       </Col>
       <Col
         span={24}
       >
-        <Card
+        <ForwardRef
           title="Ministry Contacts"
         />
       </Col>

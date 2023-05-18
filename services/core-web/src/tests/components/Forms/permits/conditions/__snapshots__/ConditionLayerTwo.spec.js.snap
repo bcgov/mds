@@ -44,12 +44,9 @@ exports[`ConditionLayerTwo renders properly 1`] = `
           tab="DFT"
         >
           <Button
-            block={false}
             className="no-margin"
             disabled={true}
             ghost={true}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             size="small"
             type="primary"
@@ -62,12 +59,9 @@ exports[`ConditionLayerTwo renders properly 1`] = `
           tab="DFT"
         >
           <Button
-            block={false}
             className="no-margin"
             disabled={true}
             ghost={true}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             size="small"
             type="primary"
@@ -80,12 +74,9 @@ exports[`ConditionLayerTwo renders properly 1`] = `
           tab="DFT"
         >
           <Button
-            block={false}
             className="no-margin"
             disabled={true}
             ghost={true}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             size="small"
             type="primary"
@@ -107,12 +98,9 @@ exports[`ConditionLayerTwo renders properly 1`] = `
           tab="DFT"
         >
           <Button
-            block={false}
             className="no-margin"
             disabled={true}
             ghost={true}
-            htmlType="button"
-            loading={false}
             onClick={[Function]}
             size="small"
             type="primary"

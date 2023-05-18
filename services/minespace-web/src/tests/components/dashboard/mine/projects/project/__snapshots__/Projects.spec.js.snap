@@ -5,24 +5,24 @@ exports[`Projects renders properly 1`] = `
   <Col
     span={24}
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Major Mine Applications
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       A
        
-      <Text
+      <ForwardRef(Text)
         className="color-primary"
         strong={true}
       >
         Major Mine Application 
-      </Text>
+      </ForwardRef(Text)>
       is an application to the Chief Permitting Officer to authorize the construction and operation of a coal or mineral mine through a permit issued under the Mines Act.
        
-    </Paragraph>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       If you are proposing induced polarization surveys or exploration drilling within the permit mine area of an operating production mineral or coal mine (
       <a
         href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
@@ -48,8 +48,8 @@ exports[`Projects renders properly 1`] = `
         FrontCounter BC
       </a>
       .
-    </Paragraph>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       If you are proposing exploration work (
       <a
         href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
@@ -68,8 +68,8 @@ exports[`Projects renders properly 1`] = `
         FrontCounter BC
       </a>
        to amend your MX or CX permit.
-    </Paragraph>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       If you are unsure how to proceed, please email the Major Mines Office at 
       <a
         href="mailto:permrecl@gov.bc.ca"
@@ -85,18 +85,14 @@ exports[`Projects renders properly 1`] = `
         Regional Mines Office
       </a>
        closest to your project location.
-    </Paragraph>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       <Connect(AuthorizationWrapper)>
         <Link
           to="/mines/undefined/project-description/new/basic-information"
         >
           <Button
-            block={false}
             disabled={true}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             type="primary"
           >
             <ForwardRef(PlusCircleFilled) />
@@ -104,7 +100,7 @@ exports[`Projects renders properly 1`] = `
           </Button>
         </Link>
       </Connect(AuthorizationWrapper)>
-    </Paragraph>
+    </ForwardRef>
     <ProjectsTable
       isLoaded={false}
       mine={Object {}}

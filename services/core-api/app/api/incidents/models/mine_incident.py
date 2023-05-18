@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from pytz import timezone
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -17,7 +18,7 @@ from app.api.utils.helpers import format_email_datetime_to_string
 
 
 def getYear():
-    return datetime.datetime.utcnow().year
+    return datetime.utcnow().year
 
 
 def format_incident_date(datetime_string):
@@ -35,6 +36,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
 
     incident_timestamp = db.Column(db.DateTime, nullable=False)
+    incident_timezone = db.Column(db.String)
     incident_description = db.Column(db.String, nullable=False)
     incident_location = db.Column(db.String)
 
@@ -189,6 +191,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     def create(cls,
                mine,
                incident_timestamp,
+               incident_timezone,
                incident_description,
                incident_location=None,
                determination_type_code=None,
@@ -200,6 +203,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
+            incident_timezone=incident_timezone,
             incident_description=incident_description,
             incident_location=incident_location,
             reported_timestamp=reported_timestamp,
@@ -235,17 +239,20 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 raise AssertionError('followup_inspection_number must not exceed 100 characters.')
         return followup_inspection_number
 
-    @validates('incident_timestamp')
-    def validate_incident_timestamp(self, key, incident_timestamp):
-        if incident_timestamp:
-            if incident_timestamp > datetime.datetime.utcnow():
-                raise AssertionError('incident_timestamp must not be in the future')
-        return incident_timestamp
-
+    @validates('incident_timestamp', 'incident_timezone')
+    def validate_incident_timestamp(self, key, value):
+        if key =='incident_timezone':
+            incident_timestamp = self.incident_timestamp
+            incident_timezone = value
+            if incident_timestamp:
+                if incident_timestamp > datetime.now(timezone(incident_timezone)):
+                    raise AssertionError('incident_timestamp must not be in the future')
+        return value
+        
     @validates('reported_timestamp')
     def validate_reported_timestamp(self, key, reported_timestamp):
         if reported_timestamp:
-            if reported_timestamp > datetime.datetime.utcnow():
+            if reported_timestamp > datetime.utcnow():
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
 
