@@ -149,13 +149,13 @@ const MineIncidentTable = (props) => {
       render: (text) => <div title="Number">{text}</div>,
     },
     {
-      title: "Incident Date",
+      title: "Occurred On",
       key: "incident_timestamp",
       dataIndex: "incident_timestamp",
       sortField: "incident_timestamp",
       sorter: isDashboardView || dateSorter("incident_timestamp"),
       defaultSortOrder: "descend",
-      render: (text) => <span title="Incident Date">{text}</span>,
+      render: (text) => <span title="Occurred On">{text}</span>,
     },
     {
       title: "Mine",
