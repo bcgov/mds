@@ -27,24 +27,21 @@ const props: MineIncidentProps = {
   ): Promise<AxiosResponse<any>> {
     throw new Error("Function not implemented.");
   },
+  fetchMineIncident: function (mine_guid: any, mine_incident_guid: any): Promise<any> {
+    throw new Error("Function not implemented.");
+  },
   updateMineIncident: function (
-    mine_guid: any,
+    mineGuid: any,
+    mineIncidentGuid: any,
     payload: any,
     message?: string
   ): Promise<AxiosResponse<any>> {
     throw new Error("Function not implemented.");
   },
   removeDocumentFromMineIncident: function (
-    mine_guid: any,
-    payload: any,
-    message?: string
-  ): Promise<AxiosResponse<any>> {
-    throw new Error("Function not implemented.");
-  },
-  fetchMineIncident: function (
-    mine_guid: any,
-    payload: any,
-    message?: string
+    mineGuid: any,
+    mineIncidentGuid: any,
+    mineDocumentGuid: any
   ): Promise<AxiosResponse<any>> {
     throw new Error("Function not implemented.");
   },

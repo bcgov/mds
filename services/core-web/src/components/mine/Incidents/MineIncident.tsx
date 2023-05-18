@@ -27,10 +27,10 @@ import { ActionCreator } from "@/interfaces/actionCreator";
 export interface MineIncidentProps {
   incident: IMineIncident;
   createMineIncident: ActionCreator<typeof createMineIncident>;
-  fetchMineIncident: ActionCreator<typeof createMineIncident>;
-  updateMineIncident: ActionCreator<typeof createMineIncident>;
+  fetchMineIncident: ActionCreator<typeof fetchMineIncident>;
+  updateMineIncident: ActionCreator<typeof updateMineIncident>;
   clearMineIncident(): Promise<void>;
-  removeDocumentFromMineIncident: ActionCreator<typeof createMineIncident>;
+  removeDocumentFromMineIncident: ActionCreator<typeof removeDocumentFromMineIncident>;
   history: {
     push(): Promise<any>;
     replace(mineGuid: string, formattedValues?: any): Promise<any>;
