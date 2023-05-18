@@ -7,7 +7,7 @@ import "@ant-design/compatible/assets/index.css";
 import moment from "moment-timezone";
 import { compose, bindActionCreators } from "redux";
 import {
-  DATETIME_TZ_FORMAT,
+  DATETIME_TZ_INPUT_FORMAT,
   DEFAULT_TIMEZONE,
   BC_TIMEZONE_NAMES,
   CANADA_TIMEZONE_MAP,
@@ -27,7 +27,7 @@ const propTypes = {
 };
 const defaultProps = {
   disabled: false,
-  displayFormat: DATETIME_TZ_FORMAT,
+  displayFormat: DATETIME_TZ_INPUT_FORMAT,
   showTimezones: BC_TIMEZONE_NAMES,
   timezone: null,
   validate: [],

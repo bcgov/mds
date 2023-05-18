@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import { truncateFilename } from "@common/utils/helpers";
+import { formatDateTimeTz, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   getIncidentDeterminationHash,
@@ -14,7 +14,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
-import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -81,9 +80,7 @@ export const IncidentsTable = (props) => {
       dataIndex: "incident_timestamp",
       sortField: "incident_timestamp",
       sorter: true,
-      render: (incident_timestamp) => (
-        <span title="Occurred On">{formatDate(incident_timestamp)}</span>
-      ),
+      render: (incident_timestamp) => <span title="Occurred On">{incident_timestamp}</span>,
     },
     {
       title: "Reported By",
@@ -150,6 +147,15 @@ export const IncidentsTable = (props) => {
     handleSearch(searchOptions);
   };
 
+  const formatIncidentData = (data) => {
+    return data.map((item) => {
+      return {
+        ...item,
+        incident_timestamp: formatDateTimeTz(item.incident_timestamp, item.incident_timezone),
+      };
+    });
+  };
+
   useEffect(() => {
     setPaginationOptions(serverSidePaginationOptions(pageData));
   }, [pageData]);
@@ -161,7 +167,7 @@ export const IncidentsTable = (props) => {
       onChange={handleTableUpdate}
       loading={!props.isLoaded}
       columns={columns}
-      dataSource={props.data}
+      dataSource={formatIncidentData(props.data)}
       rowKey={(record) => record.mine_incident_guid}
       locale={{ emptyText: "This mine has no incident data." }}
     />
