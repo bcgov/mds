@@ -6,9 +6,9 @@ exports[`IncidentSuccessPage renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title>
+      <ForwardRef>
         Record a Mine Incident - 
-      </Title>
+      </ForwardRef>
     </Col>
   </Row>
   <Row>
@@ -30,11 +30,11 @@ exports[`IncidentSuccessPage renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         Record New Mine Incident
-      </Title>
+      </ForwardRef>
     </Col>
     <Col
       span={24}
@@ -56,27 +56,23 @@ exports[`IncidentSuccessPage renders properly 1`] = `
           </Col>
         </Row>
         <br />
-        <Paragraph>
-          <Title
+        <ForwardRef>
+          <ForwardRef
             level={5}
           >
             Thank you, your Mines Incident has been submitted!
-          </Title>
+          </ForwardRef>
           Your submission will soon be reviewed by the ministry.
-        </Paragraph>
-        <Paragraph>
+        </ForwardRef>
+        <ForwardRef>
           This record will now move to the awaiting final investigation stage and requires you to visit this record again and upload your investigation documentation.
-        </Paragraph>
+        </ForwardRef>
         <div>
           <p>
             <Link
               to="/mines/undefined/incidents?"
             >
               <Button
-                block={false}
-                ghost={false}
-                htmlType="button"
-                loading={false}
                 type="primary"
               >
                 Back to All incidents
@@ -94,12 +90,7 @@ exports[`IncidentSuccessPage renders properly 1`] = `
                 }
               }
             >
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="button"
-                loading={false}
-              >
+              <Button>
                 View Mine Incident
               </Button>
             </Link>

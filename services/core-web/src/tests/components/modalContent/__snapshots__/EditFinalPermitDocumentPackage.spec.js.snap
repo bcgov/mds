@@ -50,31 +50,20 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
     <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
         disabled={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
       loading={false}
       onClick={[Function]}
       type="primary"

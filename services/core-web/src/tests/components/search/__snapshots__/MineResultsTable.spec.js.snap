@@ -6,7 +6,7 @@ exports[`MineResultsTable renders properly 1`] = `
     Mines
   </h2>
   <Divider />
-  <Table
+  <ForwardRef(InternalTable)
     align="left"
     className="nested-table padding-lg--bottom"
     columns={
@@ -163,7 +163,6 @@ exports[`MineResultsTable renders properly 1`] = `
       ]
     }
     pagination={false}
-    rowKey="key"
     showHeader={false}
   />
 </div>

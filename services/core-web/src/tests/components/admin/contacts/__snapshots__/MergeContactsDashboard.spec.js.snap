@@ -31,7 +31,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
       onTabClick={[Function]}
       size="large"
     >
-      <TabPane
+      <DeprecatedTabPane
         key="PER"
         tab="Merge Person"
       >
@@ -72,11 +72,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                     </ul>
                   </div>
                   <ForwardRef(InternalButton)
-                    block={false}
                     className="btn--expand"
-                    ghost={false}
-                    htmlType="button"
-                    loading={false}
                     onClick={[Function]}
                   >
                       ...Read more
@@ -129,7 +125,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                   <Col
                     span={24}
                   >
-                    <Card
+                    <ForwardRef
                       bordered={false}
                       className="no-header inherit-height"
                     >
@@ -226,7 +222,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                           </Col>
                         </Row>
                       </div>
-                    </Card>
+                    </ForwardRef>
                   </Col>
                 </div>
                 <div
@@ -258,34 +254,22 @@ exports[`MergeContactDashboard renders properly 1`] = `
                 >
                   <ForwardRef
                     cancelText="No"
-                    disabled={false}
-                    icon={<ForwardRef(ExclamationCircleFilled) />}
                     okText="Yes"
-                    okType="primary"
                     onConfirm={[Function]}
                     placement="topRight"
                     title="Are you sure you want to cancel?"
-                    transitionName="zoom-big"
-                    trigger="click"
                   >
                     <Button
-                      block={false}
                       className="full-mobile"
-                      ghost={false}
-                      htmlType="button"
-                      loading={false}
                       type="secondary"
                     >
                       Clear All
                     </Button>
                   </ForwardRef>
                   <Button
-                    block={false}
                     className="full-mobile"
                     disabled={true}
-                    ghost={false}
                     htmlType="submit"
-                    loading={false}
                     onClick={[Function]}
                     type="primary"
                   >
@@ -296,8 +280,8 @@ exports[`MergeContactDashboard renders properly 1`] = `
             </div>
           </div>
         </div>
-      </TabPane>
-      <TabPane
+      </DeprecatedTabPane>
+      <DeprecatedTabPane
         key="ORG"
         tab="Merge Organization"
       >
@@ -338,11 +322,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                     </ul>
                   </div>
                   <ForwardRef(InternalButton)
-                    block={false}
                     className="btn--expand"
-                    ghost={false}
-                    htmlType="button"
-                    loading={false}
                     onClick={[Function]}
                   >
                       ...Read more
@@ -395,7 +375,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                   <Col
                     span={24}
                   >
-                    <Card
+                    <ForwardRef
                       bordered={false}
                       className="no-header inherit-height"
                     >
@@ -492,7 +472,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
                           </Col>
                         </Row>
                       </div>
-                    </Card>
+                    </ForwardRef>
                   </Col>
                 </div>
                 <div
@@ -524,34 +504,22 @@ exports[`MergeContactDashboard renders properly 1`] = `
                 >
                   <ForwardRef
                     cancelText="No"
-                    disabled={false}
-                    icon={<ForwardRef(ExclamationCircleFilled) />}
                     okText="Yes"
-                    okType="primary"
                     onConfirm={[Function]}
                     placement="topRight"
                     title="Are you sure you want to cancel?"
-                    transitionName="zoom-big"
-                    trigger="click"
                   >
                     <Button
-                      block={false}
                       className="full-mobile"
-                      ghost={false}
-                      htmlType="button"
-                      loading={false}
                       type="secondary"
                     >
                       Clear All
                     </Button>
                   </ForwardRef>
                   <Button
-                    block={false}
                     className="full-mobile"
                     disabled={true}
-                    ghost={false}
                     htmlType="submit"
-                    loading={false}
                     onClick={[Function]}
                     type="primary"
                   >
@@ -562,7 +530,7 @@ exports[`MergeContactDashboard renders properly 1`] = `
             </div>
           </div>
         </div>
-      </TabPane>
+      </DeprecatedTabPane>
     </Tabs>
   </div>
 </div>

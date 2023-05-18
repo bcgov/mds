@@ -18,13 +18,8 @@ exports[`SearchBarDropdown renders properly 1`] = `
       See All
     </p>
   </MenuItem>
-  <Divider
-    className=""
-    disabled={true}
-    style={Object {}}
-  />
+  <MenuDivider />
   <MenuItemGroup
-    disabled={true}
     title="Quick results"
   >
     <MenuItem

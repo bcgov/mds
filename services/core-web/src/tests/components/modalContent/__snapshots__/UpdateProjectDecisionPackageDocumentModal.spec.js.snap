@@ -6,14 +6,14 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
     gutter={16}
   >
     <Col>
-      <Title
+      <ForwardRef
         level={4}
       >
         Select Files for Decision Package
-      </Title>
-      <Text>
+      </ForwardRef>
+      <ForwardRef(Text)>
         Select documents that will be displayed to proponents as a part of this application’s decision package. You can choose proponent upload documents as well as ministry uploaded documents.
-      </Text>
+      </ForwardRef(Text)>
       <br />
       <br />
     </Col>
@@ -28,9 +28,8 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
             Object {
               "dataIndex": "project_decision_package_document_type_code",
               "render": [Function],
-              "title": <Checkbox
+              "title": <ForwardRef(InternalCheckbox)
                 checked={false}
-                indeterminate={false}
                 onChange={[Function]}
               />,
             },
@@ -64,11 +63,11 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
       xs={24}
     >
       <br />
-      <Text
+      <ForwardRef(Text)
         strong={true}
       >
         0 files selected for decision package.
-      </Text>
+      </ForwardRef(Text)>
     </Col>
     <Col
       md={12}
@@ -81,32 +80,21 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
         <ForwardRef
           cancelText="No"
           disabled={false}
-          icon={<ForwardRef(ExclamationCircleFilled) />}
           okText="Yes"
-          okType="primary"
           onConfirm={[MockFunction]}
           placement="topRight"
           title="Are you sure you want to cancel?"
-          transitionName="zoom-big"
-          trigger="click"
         >
           <Button
-            block={false}
             className="full-mobile"
             disabled={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             type="secondary"
           >
             Cancel
           </Button>
         </ForwardRef>
         <Button
-          block={false}
           className="full-mobile"
-          ghost={false}
-          htmlType="button"
           loading={false}
           onClick={[Function]}
           type="primary"

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from app.extensions import db
 from app.api.incidents.models.mine_incident import MineIncident
 from tests.factories import MineFactory
+from tests.helpers import get_datetime_iso8601_string, get_datetime_tz_naive_string
 from tests.status_code_gen import SampleDangerousOccurrenceSubparagraphs, RandomIncidentDeterminationTypeCode
 
 
@@ -34,13 +35,16 @@ def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):
 def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
-    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_time = datetime.now()
+    now_time_string = get_datetime_tz_naive_string(now_time)
+    now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'NDO',
-        'incident_timestamp': now_time_string,
+        'incident_timestamp': now_time_string_iso8601,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
-        'incident_location': 'surface'
+        'incident_location': 'surface',
+        'incident_timezone': 'Canada/Pacific'
     }
 
     post_resp = test_client.post(
@@ -51,7 +55,8 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     assert post_data['mine_guid'] == str(test_mine_guid)
     assert post_data['determination_type_code'] == data['determination_type_code']
     assert post_data['incident_location'] == data['incident_location']
-    assert post_data['incident_timestamp'] == now_time_string
+    assert post_data['incident_timestamp'] == data['incident_timestamp']
+    assert post_data['incident_timezone'] == data['incident_timezone']
 
     # datetime.fromisoformat is in python 3.7
     # assert datetime.fromisoformat(post_data['incident_timestamp']) == datetime.strptime(
@@ -62,13 +67,16 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
 def test_post_mine_incidents_including_optional_fields(test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
-    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_time = datetime.now()
+    now_time_string = get_datetime_tz_naive_string(now_time)
+    now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'NDO',
-        'incident_timestamp': now_time_string,
+        'incident_timestamp': now_time_string_iso8601,
         'reported_timestamp': now_time_string,
         'incident_description': 'Someone got a paper cut',
         'incident_location': 'surface',
+        'incident_timezone': 'Canada/Pacific',
         'mine_determination_type_code': 'NDO',
         'mine_determination_representative': 'Billy'
     }
@@ -80,9 +88,10 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_guid'] == str(test_mine_guid)
     assert post_data['determination_type_code'] == data['determination_type_code']
-    assert post_data['incident_timestamp'] == now_time_string
+    assert post_data['incident_timestamp'] == data['incident_timestamp']
     assert post_data['incident_description'] == data['incident_description']
     assert post_data['incident_location'] == data['incident_location']
+    assert post_data['incident_timezone'] == data['incident_timezone']
     assert post_data['mine_determination_type_code'] == data['mine_determination_type_code']
     assert post_data['mine_determination_representative'] == data[
         'mine_determination_representative']
@@ -97,13 +106,16 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
         for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
     ]
 
-    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_time = datetime.now()
+    now_time_string = get_datetime_tz_naive_string(now_time)
+    now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'DO',
-        'incident_timestamp': now_time_string,
+        'incident_timestamp': now_time_string_iso8601,
         'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
@@ -114,9 +126,10 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_guid'] == str(test_mine_guid)
     assert post_data['determination_type_code'] == data['determination_type_code']
-    assert post_data['incident_timestamp'] == now_time_string
+    assert post_data['incident_timestamp'] == data['incident_timestamp']
     assert post_data['incident_description'] == data['incident_description']
     assert post_data['incident_location'] == data['incident_location']
+    assert post_data['incident_timezone'] == data['incident_timezone']
     assert set(post_data['dangerous_occurrence_subparagraph_ids']) == set(
         data['dangerous_occurrence_subparagraph_ids'])
 
@@ -124,12 +137,13 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
 def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
-    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_time_string_iso8601 = get_datetime_iso8601_string(datetime.now())
     data = {
         'determination_type_code': 'DO',
-        'incident_timestamp': now_time_string,
+        'incident_timestamp': now_time_string_iso8601,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': []
     }
 
@@ -143,10 +157,11 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time = datetime.now() - timedelta(days=1)
+    new_time_string_iso8601 = get_datetime_iso8601_string(new_time)
     data = {
         'determination_type_code': 'NDO',
-        'incident_timestamp': new_time_string,
+        'incident_timestamp': new_time_string_iso8601,
         'incident_description': "Someone got a second paper cut",
     }
 
@@ -158,7 +173,7 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
 
     put_data = json.loads(put_resp.data.decode())
     assert put_data['determination_type_code'] == data['determination_type_code']
-    assert put_data['incident_timestamp'] == new_time_string
+    assert put_data['incident_timestamp'] == data['incident_timestamp']
     assert put_data['incident_description'] == data['incident_description']
 
 
@@ -166,10 +181,12 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time = datetime.now() - timedelta(days=1)
+    new_time_string = get_datetime_tz_naive_string(new_time)
+    new_time_string_iso8601 = get_datetime_iso8601_string(new_time)
     data = {
         'determination_type_code': 'NDO',
-        'incident_timestamp': new_time_string,
+        'incident_timestamp': new_time_string_iso8601,
         'reported_timestamp': new_time_string,
         'incident_description': 'Someone got a paper cut',
         'mine_determination_type_code': 'NDO',
@@ -184,7 +201,7 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
 
     put_data = json.loads(put_resp.data.decode())
     assert put_data['determination_type_code'] == data['determination_type_code']
-    assert put_data['incident_timestamp'] == new_time_string
+    assert put_data['incident_timestamp'] == data['incident_timestamp']
     assert put_data['incident_description'] == data['incident_description']
     assert put_data['mine_determination_type_code'] == data['mine_determination_type_code']
     assert put_data['mine_determination_representative'] == data[
@@ -201,11 +218,13 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
         for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
     ]
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time = datetime.now() - timedelta(days=1)
+    new_time_string_iso8601 = get_datetime_iso8601_string(new_time)
     data = {
         'determination_type_code': 'DO',
-        'incident_timestamp': new_time_string,
+        'incident_timestamp': new_time_string_iso8601,
         'incident_description': "Someone got a really bad paper cut",
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
 
@@ -217,7 +236,7 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
 
     put_data = json.loads(put_resp.data.decode())
     assert put_data['determination_type_code'] == data['determination_type_code']
-    assert put_data['incident_timestamp'] == new_time_string
+    assert put_data['incident_timestamp'] == data['incident_timestamp']
     assert put_data['incident_description'] == data['incident_description']
     assert set(put_data['dangerous_occurrence_subparagraph_ids']) == set(
         data['dangerous_occurrence_subparagraph_ids'])
@@ -227,12 +246,14 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
     test_mine = MineFactory()
     existing_incident_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time = datetime.now() - timedelta(days=1)
+    new_time_string_iso8601 = get_datetime_iso8601_string(new_time)
     data = {
         'determination_type_code': 'DO',
-        'incident_timestamp': new_time_string,
+        'incident_timestamp': new_time_string_iso8601,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
+        'incident_timezone': 'Canada/Pacific',
         'dangerous_occurrence_subparagraph_ids': []
     }
 

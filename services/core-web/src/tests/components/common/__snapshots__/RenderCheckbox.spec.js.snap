@@ -7,7 +7,6 @@ exports[`RenderCheckbox renders properly 1`] = `
 >
   <Checkbox
     id={1}
-    indeterminate={false}
   />
 </FormItem>
 `;

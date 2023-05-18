@@ -143,6 +143,7 @@ h5.ant-typography,
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: $white  !important;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .ant-tabs-tab-btn:focus,
@@ -401,6 +402,10 @@ th.ant-descriptions-item.vertical-description {
   color: #036;
 }
 
+.ant-steps-item-icon {
+  line-height: 30px;
+}
+
 .ant-legacy-form-vertical .ant-legacy-form-item {
   padding-bottom: 0px;
   margin-bottom: 14px;
@@ -457,11 +462,6 @@ th.ant-descriptions-item.vertical-description {
 // Radio
 .ant-radio .ant-radio-inner {
   border: 2px solid $primary-color;
-
-  &::after {
-    top: 2px;
-    left: 2px;
-  }
 }
 
 .ant-radio-group {
@@ -500,6 +500,12 @@ th.ant-descriptions-item.vertical-description {
 .ant-select-multiple.ant-select-show-arrow .ant-select-selector,
 .ant-select-multiple.ant-select-allow-clear .ant-select-selector {
   padding: 5px;
+}
+
+// DATE PICKER
+.ant-picker {
+  width: 100%;
+  @extend .ant-input;
 }
 
 // Picker time

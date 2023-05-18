@@ -5,21 +5,21 @@ exports[`Inspections renders properly 1`] = `
   <Col
     span={24}
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Inspections
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       This table shows your mine's 
-      <Text
+      <ForwardRef(Text)
         className="color-primary"
         strong={true}
       >
         inspection history
-      </Text>
+      </ForwardRef(Text)>
        since March 2018. Each row represents an individual order.
-    </Paragraph>
+    </ForwardRef>
     <InspectionsTable
       isLoaded={false}
       orders={

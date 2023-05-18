@@ -42,14 +42,14 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <Title
+          <ForwardRef
             level={4}
           >
             Reporter Details
-          </Title>
-          <Paragraph>
+          </ForwardRef>
+          <ForwardRef>
             Enter all available details about the reporter of this incident.
-          </Paragraph>
+          </ForwardRef>
         </Col>
         <Col
           md={10}
@@ -157,15 +157,15 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <Title
+          <ForwardRef
             id="incident-details"
             level={4}
           >
             Incident Details
-          </Title>
-          <Paragraph>
+          </ForwardRef>
+          <ForwardRef>
             Enter more information regarding the reported incident. Some fields may be marked as optional but help the ministry understand the nature of the incident, please consider including them.
-          </Paragraph>
+          </ForwardRef>
         </Col>
         <Col
           span={24}
@@ -202,17 +202,36 @@ exports[`IncidentForm renders properly 1`] = `
               }
             />
           </FormItem>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
           <FormItem
             hasFeedback={false}
             label="Incident date and time"
           >
             <Field
-              component={[Function]}
+              component={
+                Object {
+                  "$$typeof": Symbol(react.memo),
+                  "WrappedComponent": [Function],
+                  "compare": null,
+                  "displayName": "Connect(RenderDateTimeTz)",
+                  "type": [Function],
+                }
+              }
               disabled={true}
               id="incident_timestamp"
               name="incident_timestamp"
-              placeholder="Please select date and time"
-              showTime={true}
+              props={
+                Object {
+                  "formName": undefined,
+                  "timezoneFieldProps": Object {
+                    "name": "incident_timezone",
+                  },
+                }
+              }
               validate={
                 Array [
                   [Function],
@@ -372,27 +391,27 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <Title
+          <ForwardRef
             level={4}
           >
             Inspectors, OHSC, Local Union or Worker Representatives
-          </Title>
+          </ForwardRef>
         </Col>
         <Col
           span={24}
         >
-          <Paragraph>
+          <ForwardRef>
             Please enter the details of those who have been contacted
-          </Paragraph>
+          </ForwardRef>
         </Col>
         <Col
           span={24}
         >
-          <Title
+          <ForwardRef
             level={5}
           >
             Verbal Notification
-          </Title>
+          </ForwardRef>
         </Col>
         <Col
           md={12}
@@ -419,11 +438,11 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <hr />
-          <Title
+          <ForwardRef
             level={5}
           >
             OHSC Worker Representative
-          </Title>
+          </ForwardRef>
         </Col>
         <Col
           md={12}
@@ -467,11 +486,11 @@ exports[`IncidentForm renders properly 1`] = `
           span={24}
         >
           <hr />
-          <Title
+          <ForwardRef
             level={5}
           >
             OHSC Management Representative
-          </Title>
+          </ForwardRef>
         </Col>
         <Col
           md={12}
@@ -515,12 +534,12 @@ exports[`IncidentForm renders properly 1`] = `
       <br />
       <br />
       <Row>
-        <Title
+        <ForwardRef
           id="documentation"
           level={3}
         >
           Documentation
-        </Title>
+        </ForwardRef>
         <Col
           span={24}
         >
@@ -529,11 +548,11 @@ exports[`IncidentForm renders properly 1`] = `
               md={12}
               xs={24}
             >
-              <Title
+              <ForwardRef
                 level={4}
               >
                 Incident Documents
-              </Title>
+              </ForwardRef>
             </Col>
             <Col
               md={12}
@@ -543,12 +562,8 @@ exports[`IncidentForm renders properly 1`] = `
                 className="right center-mobile"
               >
                 <Button
-                  block={false}
                   className="full-mobile violet violet-border"
-                  ghost={false}
-                  htmlType="button"
                   id="mine-incident-add-documentation"
-                  loading={false}
                   onClick={[Function]}
                   type="secondary"
                 >
@@ -593,12 +608,12 @@ exports[`IncidentForm renders properly 1`] = `
               md={12}
               xs={24}
             >
-              <Title
+              <ForwardRef
                 id="final-report"
                 level={4}
               >
                 Final Report Documents
-              </Title>
+              </ForwardRef>
             </Col>
             <Col
               md={12}
@@ -608,11 +623,7 @@ exports[`IncidentForm renders properly 1`] = `
                 className="right center-mobile"
               >
                 <Button
-                  block={false}
                   className="full-mobile violet violet-border"
-                  ghost={false}
-                  htmlType="button"
-                  loading={false}
                   onClick={[Function]}
                   type="primary"
                 >
@@ -622,9 +633,9 @@ exports[`IncidentForm renders properly 1`] = `
             </Col>
           </Row>
           <Row>
-            <Paragraph>
+            <ForwardRef>
               A final report must be submitted within 60 days of the reportable incident. Please add the final report documentation below.
-            </Paragraph>
+            </ForwardRef>
           </Row>
           <DocumentTable
             deletePayload={Object {}}
@@ -661,17 +672,17 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <Title
+          <ForwardRef
             id="ministry-follow-up"
             level={3}
           >
             Ministry Follow Up
-          </Title>
-          <Title
+          </ForwardRef>
+          <ForwardRef
             level={4}
           >
             Follow-Up Information
-          </Title>
+          </ForwardRef>
         </Col>
         <Col
           md={12}

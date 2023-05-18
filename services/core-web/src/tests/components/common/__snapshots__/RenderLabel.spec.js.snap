@@ -10,11 +10,11 @@ exports[`RenderLabel renders properly 1`] = `
     <Col
       span={2}
     >
-      <Paragraph
+      <ForwardRef
         disabled={true}
       >
         test
-      </Paragraph>
+      </ForwardRef>
     </Col>
     <Col
       span={1}
@@ -27,7 +27,7 @@ exports[`RenderLabel renders properly 1`] = `
     <Col
       span={21}
     >
-      <Paragraph
+      <ForwardRef
         ellipsis={
           Object {
             "expandable": true,

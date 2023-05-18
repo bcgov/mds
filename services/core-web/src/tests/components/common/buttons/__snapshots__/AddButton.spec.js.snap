@@ -2,11 +2,7 @@
 
 exports[`AddButton renders properly 1`] = `
 <Button
-  block={false}
   className="full-mobile btn--middle"
-  ghost={false}
-  htmlType="button"
-  loading={false}
   onClick={[MockFunction]}
   type="primary"
 >

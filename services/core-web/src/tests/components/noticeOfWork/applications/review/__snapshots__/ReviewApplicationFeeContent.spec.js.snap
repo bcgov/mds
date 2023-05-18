@@ -2,7 +2,7 @@
 
 exports[`ReviewApplicationFeeContent renders properly 1`] = `
 <Fragment>
-  <withConfigConsumer(Drawer)
+  <Drawer
     closable={false}
     onClose={[Function]}
     placement="right"
@@ -10,11 +10,8 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     visible={false}
   >
     <Button
-      block={false}
       className="modal__close"
       ghost={true}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
     >
       <ForwardRef(CloseOutlined) />
@@ -23,7 +20,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       <h4>
         Table 1: Permit Fees for Placer Mines
       </h4>
-      <Table
+      <ForwardRef(InternalTable)
         bordered={true}
         columns={
           Array [
@@ -81,14 +78,13 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
           ]
         }
         pagination={false}
-        rowKey="key"
         size="small"
       />
       <br />
       <h4>
         Table 2: Permit Fees for Pits and Quarries
       </h4>
-      <Table
+      <ForwardRef(InternalTable)
         bordered={true}
         columns={
           Array [
@@ -167,7 +163,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
           ]
         }
         pagination={false}
-        rowKey="key"
         size="small"
       />
       <br />
@@ -180,7 +175,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
         View Mines Fee Regulation
       </a>
     </div>
-  </withConfigConsumer(Drawer)>
+  </Drawer>
   <div
     className="fee-determination--block"
   >

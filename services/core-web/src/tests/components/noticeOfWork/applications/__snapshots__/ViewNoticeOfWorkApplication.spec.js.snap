@@ -419,7 +419,7 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
       }
     }
   >
-    <TabPane
+    <DeprecatedTabPane
       key="application"
       tab="Application"
     >
@@ -427,7 +427,7 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
         fixedTop={false}
         showActionsAndProgress={false}
       />
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

@@ -61,7 +61,7 @@ exports[`Project renders properly 1`] = `
       }
     }
   >
-    <TabPane
+    <DeprecatedTabPane
       key="overview"
       tab="Overview"
     >
@@ -74,8 +74,8 @@ exports[`Project renders properly 1`] = `
           <Connect(ProjectOverviewTab) />
         </div>
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="intro-project-overview"
       tab="IRT"
@@ -97,8 +97,8 @@ exports[`Project renders properly 1`] = `
           />
         </div>
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       disabled={true}
       key="final-app"
       tab="Final Application"
@@ -112,8 +112,8 @@ exports[`Project renders properly 1`] = `
           <withRouter(Connect(MajorMineApplicationTab)) />
         </div>
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="decision-package"
       tab="Decision Package"
     >
@@ -128,8 +128,8 @@ exports[`Project renders properly 1`] = `
           />
         </div>
       </LoadingWrapper>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="documents"
       tab="All Documents"
     >
@@ -142,7 +142,7 @@ exports[`Project renders properly 1`] = `
           <withRouter(Connect(ProjectDocumentsTab)) />
         </div>
       </LoadingWrapper>
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

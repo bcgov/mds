@@ -19,11 +19,7 @@ exports[`Logout renders properly 1`] = `
     to="/dashboard/mines"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       type="primary"
     >
       Log In

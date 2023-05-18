@@ -2,14 +2,10 @@
 
 exports[`CoreTooltip renders properly 1`] = `
 <Tooltip
-  arrowPointAtCenter={false}
-  autoAdjustOverflow={true}
   mouseEnterDelay={0.3}
-  mouseLeaveDelay={0.1}
   overlayClassName="core-tooltip"
   placement="right"
   title="tooltip title"
-  transitionName="zoom-big-fast"
 >
   <ForwardRef(InfoCircleOutlined)
     className="info-tooltip icon-sm"
@@ -24,13 +20,9 @@ exports[`CoreTooltip renders properly 1`] = `
 
 exports[`NOWFieldOriginTooltip renders properly 1`] = `
 <Tooltip
-  arrowPointAtCenter={false}
-  autoAdjustOverflow={true}
   mouseEnterDelay={0.3}
-  mouseLeaveDelay={0.1}
   placement="right"
   title="This field was not being sent by NROS or vFCBC. Only applications pushed directly from vFCBC will have this value. Open the original PDF to see the data."
-  transitionName="zoom-big-fast"
 >
   <ForwardRef(WarningOutlined)
     className="info-tooltip icon-sm"
@@ -40,13 +32,9 @@ exports[`NOWFieldOriginTooltip renders properly 1`] = `
 
 exports[`NOWOriginalValueTooltip renders properly 1`] = `
 <Tooltip
-  arrowPointAtCenter={false}
-  autoAdjustOverflow={true}
   className="position-right"
   mouseEnterDelay={0.3}
-  mouseLeaveDelay={0.1}
   placement="right"
   title="Original Value: mock value"
-  transitionName="zoom-big-fast"
 />
 `;

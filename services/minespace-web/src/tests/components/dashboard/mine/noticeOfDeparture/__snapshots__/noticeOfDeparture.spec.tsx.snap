@@ -6,10 +6,6 @@ exports[`NoticesOfDeparture renders properly 1`] = `
     span={24}
   >
     <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
       style={
         Object {
@@ -22,14 +18,14 @@ exports[`NoticesOfDeparture renders properly 1`] = `
       <ForwardRef(PlusCircleFilled) />
       Create a Notice of Departure
     </Button>
-    <Title
+    <ForwardRef
       level={4}
     >
       Notices of Departure
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       The below table displays all of the  Notices of Departure and their associated permits  associated with this mine.
-    </Paragraph>
+    </ForwardRef>
     <NoticeOfDepartureTable
       data={
         Array [

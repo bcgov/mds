@@ -406,11 +406,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
     tab="MND"
     tabActions={
       <ForwardRef(InternalButton)
-        block={false}
         className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         type="secondary"
       >

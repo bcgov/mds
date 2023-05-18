@@ -68,24 +68,22 @@ exports[`MineRecordForm renders properly 1`] = `
         hasFeedback={false}
         label="Is this a historic mine status?"
       >
-        <Memo(RadioGroup)
+        <Memo([object Object])
           defaultValue={false}
           onChange={[Function]}
           value={false}
         >
           <Radio
-            type="radio"
             value={true}
           >
             Yes
           </Radio>
           <Radio
-            type="radio"
             value={false}
           >
             No
           </Radio>
-        </Memo(RadioGroup)>
+        </Memo([object Object])>
       </FormItem>
     </Col>
   </Row>
@@ -198,24 +196,22 @@ exports[`MineRecordForm renders properly 1`] = `
         hasFeedback={false}
         label="Does this mine site belong to a government agency?"
       >
-        <Memo(RadioGroup)
+        <Memo([object Object])
           defaultValue={false}
           onChange={[Function]}
           value={false}
         >
           <Radio
-            type="radio"
             value={true}
           >
             Yes
           </Radio>
           <Radio
-            type="radio"
             value={false}
           >
             No
           </Radio>
-        </Memo(RadioGroup)>
+        </Memo([object Object])>
       </FormItem>
     </Col>
   </Row>
@@ -320,30 +316,19 @@ exports[`MineRecordForm renders properly 1`] = `
   >
     <ForwardRef
       cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
       id="mine-record-submit"
       loading={false}

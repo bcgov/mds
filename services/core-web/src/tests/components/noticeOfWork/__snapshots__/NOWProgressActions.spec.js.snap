@@ -8,10 +8,6 @@ exports[`NOWProgressActions renders properly 1`] = `
     permission="role_edit_permits"
   >
     <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
       type="primary"
     >

@@ -10,10 +10,8 @@ exports[`RenderSelect renders properly 1`] = `
   validateStatus=""
   value={null}
 >
-  <Select
+  <ForwardRef(InternalSelect)
     allowClear={true}
-    bordered={true}
-    choiceTransitionName=""
     disabled={false}
     dropdownMatchSelectWidth={true}
     dropdownStyle={
@@ -29,7 +27,6 @@ exports[`RenderSelect renders properly 1`] = `
     optionFilterProp="children"
     placeholder="Please select"
     showSearch={true}
-    transitionName="slide-up"
     value={null}
     virtual={false}
   >
@@ -51,6 +48,6 @@ exports[`RenderSelect renders properly 1`] = `
         }
       }
     />
-  </Select>
+  </ForwardRef(InternalSelect)>
 </FormItem>
 `;

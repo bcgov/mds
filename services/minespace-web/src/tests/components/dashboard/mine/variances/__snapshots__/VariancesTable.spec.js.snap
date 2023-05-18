@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VariancesTable renders properly 1`] = `
-<Table
+<ForwardRef(InternalTable)
   columns={
     Array [
       Object {
@@ -120,7 +120,6 @@ exports[`VariancesTable renders properly 1`] = `
     }
   }
   pagination={false}
-  rowKey="key"
   size="small"
 />
 `;

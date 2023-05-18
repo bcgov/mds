@@ -94,7 +94,7 @@ const SteppedForm = (props) => {
   return (
     <Row>
       <Col span={6} className="stepped-form-menu-container">
-        <Menu className="stepped-form" mode="inline" items={tabs} selectedKeys={tabs[tabIndex]}>
+        <Menu className="stepped-form" mode="inline" selectedKeys={tabs[tabIndex]}>
           {tabs.map((tab) => {
             const child = children.find((childTab) => childTab.key === tab);
 

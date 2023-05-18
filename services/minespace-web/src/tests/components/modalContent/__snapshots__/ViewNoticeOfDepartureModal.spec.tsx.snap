@@ -24,10 +24,6 @@ exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
     className="ant-modal-footer"
   >
     <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[MockFunction]}
     >
       Close

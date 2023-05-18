@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProjectStagesTable renders properly 1`] = `
-<Table
+<ForwardRef(InternalTable)
   columns={
     Array [
       Object {
@@ -80,7 +80,6 @@ exports[`ProjectStagesTable renders properly 1`] = `
     }
   }
   pagination={false}
-  rowKey="key"
   showHeader={false}
   size="small"
 />

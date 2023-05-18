@@ -6,11 +6,11 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
     <Col
       span={24}
     >
-      <Title
+      <ForwardRef
         level={3}
       >
         Basic Information
-      </Title>
+      </ForwardRef>
     </Col>
   </Row>
   <Row>
@@ -32,9 +32,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             }
           }
         >
-          <Input
+          <ForwardRef
             disabled={true}
-            type="text"
             value="N/A"
           />
         </DescriptionsItem>
@@ -58,9 +57,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             }
           }
         >
-          <Input
+          <ForwardRef
             disabled={true}
-            type="text"
             value="N/A"
           />
         </DescriptionsItem>
@@ -70,16 +68,16 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       span={24}
     >
       <br />
-      <Title
+      <ForwardRef
         level={3}
       >
         Application Files
-      </Title>
-      <Title
+      </ForwardRef>
+      <ForwardRef
         level={4}
       >
         Primary Document
-      </Title>
+      </ForwardRef>
       <DocumentTable
         deletePayload={
           Object {
@@ -102,11 +100,11 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         documents={Array []}
         handleDeleteDocument={[Function]}
       />
-      <Title
+      <ForwardRef
         level={4}
       >
         Spatial Components
-      </Title>
+      </ForwardRef>
       <DocumentTable
         deletePayload={
           Object {
@@ -129,11 +127,11 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         documents={Array []}
         handleDeleteDocument={[Function]}
       />
-      <Title
+      <ForwardRef
         level={4}
       >
         Supporting Documents
-      </Title>
+      </ForwardRef>
       <DocumentTable
         deletePayload={
           Object {
@@ -160,7 +158,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
     <Col
       span={24}
     >
-      <Card>
+      <ForwardRef>
         <p>
           <b>
             Confirmation of Submission
@@ -170,7 +168,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           <span>
             <Checkbox
               checked={false}
-              indeterminate={false}
               onChange={[MockFunction]}
             />
               
@@ -186,7 +183,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             *
           </span>
         </p>
-      </Card>
+      </ForwardRef>
       <br />
     </Col>
   </Row>

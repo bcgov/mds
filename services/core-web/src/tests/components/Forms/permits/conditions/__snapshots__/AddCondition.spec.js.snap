@@ -8,8 +8,6 @@ exports[`AddCondition renders properly 1`] = `
   >
     <Dropdown
       className="full-height"
-      mouseEnterDelay={0.15}
-      mouseLeaveDelay={0.1}
       placement="bottomLeft"
     >
       <AddButton

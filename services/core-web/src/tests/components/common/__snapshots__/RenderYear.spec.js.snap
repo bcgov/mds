@@ -7,7 +7,7 @@ exports[`RenderYear renders properly 1`] = `
   label="Time"
   validateStatus=""
 >
-  <Picker
+  <ForwardRef
     disabled={false}
     format="YYYY"
     id={1}

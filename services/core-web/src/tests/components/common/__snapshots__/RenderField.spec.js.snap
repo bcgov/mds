@@ -15,13 +15,12 @@ exports[`RenderField renders properly 1`] = `
       }
     }
   >
-    <Input
+    <ForwardRef
       allowClear={false}
       defaultValue=""
       disabled={false}
       id={1}
       placeholder=""
-      type="text"
     />
   </div>
 </FormItem>

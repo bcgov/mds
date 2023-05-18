@@ -7,10 +7,6 @@ exports[`MineIncidents renders properly 1`] = `
   >
     <Connect(AuthorizationWrapper)>
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         style={
           Object {
@@ -24,21 +20,21 @@ exports[`MineIncidents renders properly 1`] = `
         Record a mine incident
       </Button>
     </Connect(AuthorizationWrapper)>
-    <Title
+    <ForwardRef
       level={4}
     >
       Incidents
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       This table shows your mine's history of 
-      <Text
+      <ForwardRef(Text)
         className="color-primary"
         strong={true}
       >
         reported incidents.
-      </Text>
-    </Paragraph>
-    <Paragraph>
+      </ForwardRef(Text)>
+    </ForwardRef>
+    <ForwardRef>
       <a
         href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/incident-information"
         rel="noopener noreferrer"
@@ -48,7 +44,7 @@ exports[`MineIncidents renders properly 1`] = `
       </a>
        
       for more information on reportable incidents.
-    </Paragraph>
+    </ForwardRef>
     <withRouter(Connect(IncidentsTable))
       data={
         Array [

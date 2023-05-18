@@ -5,11 +5,11 @@ exports[`DocumentsPage renders properly 1`] = `
   <Col
     span={24}
   >
-    <Title
+    <ForwardRef
       level={3}
     >
       mockTitle
-    </Title>
+    </ForwardRef>
   </Col>
   <Col
     span={24}

@@ -9,46 +9,46 @@ exports[`MajorMineApplicationGetStarted renders properly 1`] = `
       }
     }
   >
-    <Title
+    <ForwardRef
       level={3}
     >
       Getting Started with your Major Mine Submission
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Basic information about what a major mine submission is will go here
-    </Paragraph>
-    <Title
+    </ForwardRef>
+    <ForwardRef
       level={4}
     >
       Basic Information
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Information what is needed for this section
-    </Paragraph>
-    <Title
+    </ForwardRef>
+    <ForwardRef
       level={4}
     >
       Upload Primary Document
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Information what is needed for this section
-    </Paragraph>
-    <Title
+    </ForwardRef>
+    <ForwardRef
       level={4}
     >
       Upload Spatial Components
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Information what is needed for this section
-    </Paragraph>
-    <Title
+    </ForwardRef>
+    <ForwardRef
       level={4}
     >
       Upload Supporting Documents
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       Information what is needed for this section
-    </Paragraph>
+    </ForwardRef>
   </Col>
 </Row>
 `;

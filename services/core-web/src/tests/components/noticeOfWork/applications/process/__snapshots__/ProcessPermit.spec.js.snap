@@ -77,8 +77,6 @@ exports[`ProcessPermit renders properly 1`] = `
           permission="role_edit_permits"
         >
           <Dropdown
-            mouseEnterDelay={0.15}
-            mouseLeaveDelay={0.1}
             overlay={
               <Menu>
                 <MenuItem
@@ -102,11 +100,7 @@ exports[`ProcessPermit renders properly 1`] = `
             placement="bottomLeft"
           >
             <ForwardRef(InternalButton)
-              block={false}
               className="full-mobile"
-              ghost={false}
-              htmlType="button"
-              loading={false}
               type="primary"
             >
               Process 
@@ -122,10 +116,7 @@ exports[`ProcessPermit renders properly 1`] = `
   <div
     className="side-menu--timeline"
   >
-    <Timeline
-      mode=""
-      reverse={false}
-    />
+    <Timeline />
   </div>
   <div
     className="view--content side-menu--content"

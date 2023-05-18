@@ -7,7 +7,7 @@ import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import moment from "moment";
+import moment from "moment-timezone";
 import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
   createMineIncident,
@@ -101,13 +101,6 @@ export const MineIncident = (props) => {
       .then(() => setIsLoaded(true));
   };
 
-  const formatTimestamp = (dateString, time) => {
-    if (!moment.isMoment(time)) {
-      return dateString && time && `${dateString} ${time}`;
-    }
-    return dateString && time && `${dateString} ${time.format("HH:mm")}`;
-  };
-
   const formatPayload = (values) => {
     const documents = [
       ...values?.initial_incident_documents,
@@ -118,7 +111,7 @@ export const MineIncident = (props) => {
     return {
       ...values,
       updated_documents: documents,
-      incident_timestamp: formatTimestamp(values?.incident_date, values?.incident_time),
+      incident_timestamp: moment(values?.incident_timestamp).toISOString(),
     };
   };
 
@@ -166,8 +159,6 @@ export const MineIncident = (props) => {
       return {
         ...incident,
         categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-        incident_date: moment(incident?.incident_timestamp).format("YYYY-MM-DD"),
-        incident_time: moment(incident?.incident_timestamp).format("HH:mm"),
         initial_incident_documents: [],
         final_report_documents: [],
         internal_ministry_documents: [],
