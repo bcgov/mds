@@ -20,8 +20,3 @@ export * from "./mineAlert.interface";
 export * from "./mineAlertCreate.interface";
 export * from "./mineComment.interface";
 export * from "./mineDocument.interface";
-
-//gotta remove these I think
-export * from "./mineType.interface";
-export * from "./mineTypeDetail.interface";
-export * from "./mineDocument.interface";
