@@ -45,8 +45,7 @@ import {
 } from "@common/selectors/partiesSelectors";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { ICreateTSF, IMine } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ICreateTSF, IMine, ActionCreator } from "@mds/common";
 
 interface TailingsSummaryPageProps {
   form: string;
