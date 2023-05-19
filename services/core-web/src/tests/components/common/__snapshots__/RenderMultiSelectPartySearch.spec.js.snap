@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DebounceSelect renders properly 1`] = `
-<Select
-  bordered={true}
-  choiceTransitionName=""
+<ForwardRef(InternalSelect)
   debounceTimeout="3000"
   fetchOptions={[MockFunction]}
   fetchSearchResults={[MockFunction]}
@@ -16,7 +14,6 @@ exports[`DebounceSelect renders properly 1`] = `
   onSelectedPartySearchResultsChanged={[MockFunction]}
   options={Array []}
   partyType="person"
-  transitionName="slide-up"
   triggerSelectReset={false}
 />
 `;

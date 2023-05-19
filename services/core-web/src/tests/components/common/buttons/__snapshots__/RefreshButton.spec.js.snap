@@ -2,11 +2,7 @@
 
 exports[`RefreshButton renders properly 1`] = `
 <Button
-  block={false}
   className="btn--middle"
-  ghost={false}
-  htmlType="button"
-  loading={false}
   onClick={[Function]}
   type="primary"
 >

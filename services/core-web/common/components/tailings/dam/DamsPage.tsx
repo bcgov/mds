@@ -22,6 +22,7 @@ import { ADD_EDIT_DAM } from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import { ICreateDam, ITailingsStorageFacility } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
+import { RootState } from "@/App";
 
 interface DamsPageProps {
   tsf: ITailingsStorageFacility;
@@ -140,7 +141,7 @@ const DamsPage: React.FC<InjectedFormProps<ICreateDam> & DamsPageProps> = (props
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   initialValues: getDam(state),
   tsf: getTsf(state),
   formValues: getFormValues(ADD_EDIT_DAM)(state),

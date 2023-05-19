@@ -186,13 +186,17 @@
 
 .notification-badge .ant-badge-count {
   box-shadow: unset !important;
-  height: 15px;
-  min-width: 15px;
-  padding: 0;
+  height: 18px;
+  min-width: 18px;
+  line-height: 18px;
+  padding: 0 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   transform: translate(60%, -60%);
+}
+.ant-scroll-number-only {
+  height: 16px;
 }
 
 .notification-button-all-container {
@@ -211,7 +215,7 @@
 }
 
 .notification-button-all > span {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .notification-button-all:hover {

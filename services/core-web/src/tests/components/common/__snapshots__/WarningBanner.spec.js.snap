@@ -9,9 +9,9 @@ exports[`WarningBanner renders properly 1`] = `
       className="warning-banner"
       closable={true}
       description={
-        <Text>
+        <ForwardRef(Text)>
           Features and layout could differ from the live production site and data entered in this system will not be saved.
-        </Text>
+        </ForwardRef(Text)>
       }
       icon={
         <img
@@ -24,11 +24,11 @@ exports[`WarningBanner renders properly 1`] = `
         />
       }
       message={
-        <Text
+        <ForwardRef(Text)
           strong={true}
         >
           This is the Core test site
-        </Text>
+        </ForwardRef(Text)>
       }
       onClose={[MockFunction]}
       showIcon={true}

@@ -14,6 +14,7 @@ import {
   phoneNumber,
   number,
   dateNotInFuture,
+  dateNotInFutureTZ,
   dateNotBeforeStrictOther,
   wholeNumber,
   requiredRadioButton,
@@ -35,11 +36,13 @@ import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "./IncidentFileUpload";
+import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 
 const propTypes = {
   incident: customPropTypes.incident.isRequired,
   inspectorOptions: customPropTypes.groupedDropdownList.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  form: PropTypes.string.isRequired,
   handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
   change: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -264,6 +267,9 @@ const renderReporterDetails = (formDisabled) => {
             component={renderConfig.FIELD}
             validate={[required, email]}
             disabled={formDisabled}
+            blockLabelText={
+              "Notification of record creation and updates will be sent to this address"
+            }
           />
         </Form.Item>
       </Col>
@@ -271,8 +277,8 @@ const renderReporterDetails = (formDisabled) => {
   );
 };
 
-const renderIncidentDetails = (childProps, formDisabled) => {
-  const { formValues } = childProps;
+const renderIncidentDetails = (childProps) => {
+  const { formValues, formDisabled, formName } = childProps;
   const {
     workerRepContactedValidation,
     workerRepContacted,
@@ -310,15 +316,16 @@ const renderIncidentDetails = (childProps, formDisabled) => {
             customOptions={locationOptions}
           />
         </Form.Item>
+      </Col>
+      <Col md={12} xs={24}>
         <Form.Item label="Incident date and time">
           <Field
             id="incident_timestamp"
             name="incident_timestamp"
-            placeholder="Please select date and time"
-            component={renderConfig.DATE}
-            showTime
-            validate={[required, dateNotInFuture]}
             disabled={formDisabled}
+            validate={[dateNotInFutureTZ, required]}
+            component={RenderDateTimeTz}
+            props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
           />
         </Form.Item>
       </Col>
@@ -784,7 +791,7 @@ const renderRecommendations = ({ fields }) => {
   if (fields?.length === 0) {
     return [
       <Field
-        key="recommendations"
+        key="default"
         name="recommendations"
         component={renderConfig.AUTO_SIZE_FIELD}
         disabled
@@ -792,9 +799,9 @@ const renderRecommendations = ({ fields }) => {
     ];
   }
   return [
-    fields.map((recommendation, index) => (
+    fields.map((recommendation) => (
       <Field
-        key={index}
+        key={recommendation}
         name={`${recommendation}.recommendation`}
         component={renderConfig.AUTO_SIZE_FIELD}
         disabled
@@ -875,6 +882,7 @@ export const IncidentForm = (props) => {
     confirmedSubmission,
     applicationSubmitted,
     location,
+    form,
     formValues,
     incidentFollowupActionOptions,
     incidentStatusCodeOptions,
@@ -918,7 +926,7 @@ export const IncidentForm = (props) => {
           <br />
           {renderReporterDetails(formDisabled)}
           <br />
-          {renderIncidentDetails({ formValues }, formDisabled)}
+          {renderIncidentDetails({ formValues, formDisabled, formName: form })}
           <br />
           <br />
           {renderUploadInitialNotificationDocuments(
@@ -975,6 +983,6 @@ export default compose(
     form: FORM.ADD_EDIT_INCIDENT,
     enableReinitialize: true,
     touchOnBlur: true,
-    touchOnChange: false,
+    touchOnChange: true,
   })
 )(IncidentForm);

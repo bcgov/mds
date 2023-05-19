@@ -28,11 +28,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
     className="left center-mobile"
   >
     <Button
-      block={false}
       className="btn--dropdown"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
     >
       Expand Filters
@@ -43,21 +39,15 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="reset"
-      loading={false}
       type="secondary"
     >
       Clear Filters
     </Button>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
-      loading={false}
       type="primary"
     >
       Apply Filters

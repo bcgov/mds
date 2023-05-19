@@ -9,8 +9,6 @@ exports[`StandardPermitConditions renders properly 1`] = `
      Template Permit Conditions
   </h2>
   <Divider />
-  <Collapse
-    bordered={true}
-  />
+  <Collapse />
 </LoadingWrapper>
 `;

@@ -18,7 +18,7 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
     }
     type="card"
   >
-    <TabPane
+    <DeprecatedTabPane
       key="tsf"
       tab="Tailings Storage Facilities (undefined)"
     >
@@ -48,8 +48,8 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
           openEditTailingsModal={[Function]}
         />
       </div>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="reports"
       tab="Tailings Reports"
     >
@@ -73,8 +73,8 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
           sortField="received_date"
         />
       </div>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="map"
       tab="Map"
     >
@@ -134,7 +134,7 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
           />
         </LoadingWrapper>
       </div>
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

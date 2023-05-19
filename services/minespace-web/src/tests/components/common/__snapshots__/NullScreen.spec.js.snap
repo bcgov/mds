@@ -7,7 +7,7 @@ exports[`NullScreen renders properly 1`] = `
   >
     <Result
       extra={
-        <Paragraph>
+        <ForwardRef>
           You may have to log in. Otherwise, please contact 
           <a
             href="mds@gov.bc.ca"
@@ -15,14 +15,14 @@ exports[`NullScreen renders properly 1`] = `
             mds@gov.bc.ca
           </a>
            for assistance.
-        </Paragraph>
+        </ForwardRef>
       }
       icon={<ForwardRef(StopOutlined) />}
       status="error"
       subTitle={
-        <Text>
+        <ForwardRef(Text)>
           You are not authorized to access this page.
-        </Text>
+        </ForwardRef(Text)>
       }
       title="Access Denied"
     />

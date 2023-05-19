@@ -14,31 +14,23 @@ exports[`WorkerInfoEmployee renders properly 1`] = `
         <div
           className="inline-flex between"
         >
-          <Title
+          <ForwardRef
             level={4}
           >
             Worker Information
             <Tooltip
-              arrowPointAtCenter={false}
-              autoAdjustOverflow={true}
               mouseEnterDelay={0.3}
-              mouseLeaveDelay={0.1}
               overlayClassName="minespace-tooltip"
               placement="right"
               title="Approximate number of workers on site that includes mine employees and contractors."
-              transitionName="zoom-big-fast"
             >
               <ForwardRef(InfoCircleOutlined)
                 className="padding-sm"
               />
             </Tooltip>
-          </Title>
+          </ForwardRef>
           <Connect(AuthorizationWrapper)>
             <Button
-              block={false}
-              ghost={false}
-              htmlType="button"
-              loading={false}
               onClick={[Function]}
               type="link"
             >

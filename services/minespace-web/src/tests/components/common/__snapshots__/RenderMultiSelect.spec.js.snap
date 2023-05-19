@@ -8,9 +8,7 @@ exports[`RenderMultiSelect renders properly 1`] = `
     label=""
     validateStatus=""
   >
-    <Select
-      bordered={true}
-      choiceTransitionName=""
+    <ForwardRef(InternalSelect)
       disabled={false}
       filterOption={[Function]}
       getPopupContainer={[Function]}
@@ -21,12 +19,11 @@ exports[`RenderMultiSelect renders properly 1`] = `
       placement="bottomCenter"
       showArrow={true}
       size="small"
-      transitionName="slide-up"
       virtual={false}
     >
       <Option />
       <Option />
-    </Select>
+    </ForwardRef(InternalSelect)>
   </FormItem>
 </div>
 `;

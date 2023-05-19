@@ -3,11 +3,7 @@
 exports[`PermitPackage renders properly 1`] = `
 <div>
   <Button
-    block={false}
     className="full-mobile"
-    ghost={false}
-    htmlType="button"
-    loading={false}
     onClick={[Function]}
     type="secondary"
   >
@@ -21,11 +17,7 @@ exports[`PermitPackage renders properly 1`] = `
     tab="REV"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
       type="secondary"
     >

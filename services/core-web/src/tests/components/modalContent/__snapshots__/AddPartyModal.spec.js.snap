@@ -43,34 +43,22 @@ exports[`AddPartyModal renders properly 1`] = `
       <ForwardRef
         cancelText="No"
         disabled={false}
-        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
-        okType="primary"
         onConfirm={[Function]}
         placement="top"
         title="Are you sure you want to cancel?"
-        transitionName="zoom-big"
-        trigger="click"
       >
         <Button
-          block={false}
           className="full-mobile"
           disabled={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           type="secondary"
         >
           Cancel
         </Button>
       </ForwardRef>
       <Button
-        block={false}
         className="full-mobile"
         disabled={true}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         type="primary"
       >

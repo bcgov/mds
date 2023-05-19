@@ -15,14 +15,9 @@ exports[`AddFullPartyForm renders properly 1`] = `
           undefined,
         ]
       }
-      bordered={true}
     />
     <Button
-      block={false}
       className="btn--dropdown"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
     >
       <ForwardRef(PlusOutlined)

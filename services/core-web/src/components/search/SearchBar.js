@@ -98,7 +98,6 @@ export class SearchBar extends Component {
           visible={this.state.isSelected}
         >
           <Input.Search
-            size="large"
             value={this.state.searchTerm}
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
             onSearch={(searchTerm) => this.search(searchTerm)}

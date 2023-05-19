@@ -2,7 +2,7 @@
 
 exports[`InspectionsTable renders properly 1`] = `
 <div>
-  <Table
+  <ForwardRef(InternalTable)
     columns={
       Array [
         Object {
@@ -98,18 +98,13 @@ exports[`InspectionsTable renders properly 1`] = `
       }
     }
     pagination={false}
-    rowKey="key"
     size="small"
   />
   <div
     align="right"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
       type="primary"
     >

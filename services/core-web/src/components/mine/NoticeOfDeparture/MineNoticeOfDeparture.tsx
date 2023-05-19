@@ -12,7 +12,7 @@ import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { useLocation } from "react-router-dom";
-import { IMine, INoticeOfDeparture, USER_ROLES } from "@mds/common";
+import { IMine, INoticeOfDeparture, USER_ROLES, ActionCreator } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
@@ -23,10 +23,10 @@ interface IMineNoticeOfDepartureProps {
   mines: IMine[];
   mineGuid: string;
   nods: INoticeOfDeparture[];
-  openModal: (any) => void;
-  fetchPermits: (mineGuid: string) => any;
-  fetchNoticesOfDeparture: (mineGuid: string) => any;
-  fetchDetailedNoticeOfDeparture: (mineGuid: string) => any;
+  openModal: typeof openModal;
+  fetchPermits: ActionCreator<typeof fetchPermits>;
+  fetchNoticesOfDeparture: ActionCreator<typeof fetchNoticesOfDeparture>;
+  fetchDetailedNoticeOfDeparture: ActionCreator<typeof fetchDetailedNoticeOfDeparture>;
   userRoles: string[];
 }
 

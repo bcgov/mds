@@ -372,7 +372,7 @@ exports[`MineSummary renders properly 1`] = `
         lg={8}
         xs={24}
       >
-        <Card
+        <ForwardRef
           bordered={false}
           className="compliance-card"
           title={
@@ -400,13 +400,13 @@ exports[`MineSummary renders properly 1`] = `
               Last Inspection Date
             </h4>
           </div>
-        </Card>
+        </ForwardRef>
       </Col>
       <Col
         lg={8}
         xs={12}
       >
-        <Card
+        <ForwardRef
           bordered={false}
           className="compliance-card"
           title={
@@ -442,13 +442,13 @@ exports[`MineSummary renders properly 1`] = `
               Open Orders
             </h4>
           </div>
-        </Card>
+        </ForwardRef>
       </Col>
       <Col
         lg={8}
         xs={12}
       >
-        <Card
+        <ForwardRef
           bordered={false}
           className="compliance-card"
           title={
@@ -484,7 +484,7 @@ exports[`MineSummary renders properly 1`] = `
               Overdue Orders
             </h4>
           </div>
-        </Card>
+        </ForwardRef>
       </Col>
     </Row>
     <Row>

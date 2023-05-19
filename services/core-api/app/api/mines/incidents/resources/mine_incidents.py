@@ -1,6 +1,7 @@
 from app.api.activity.models.activity_notification import ActivityType
 from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
+from dateutil import parser
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
@@ -32,9 +33,10 @@ class MineIncidentListResource(Resource, UserMixin):
     # required
     parser.add_argument(
         'incident_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         location='json',
         required=True)
+    parser.add_argument('incident_timezone', type=str, location='json', required=True)
     parser.add_argument('incident_description', type=str, location='json', required=True)
     parser.add_argument('incident_location', type=str, location='json', required=True)
     parser.add_argument(
@@ -125,6 +127,7 @@ class MineIncidentListResource(Resource, UserMixin):
         incident = MineIncident.create(
             mine,
             data['incident_timestamp'],
+            data['incident_timezone'],
             data['incident_description'],
             data['incident_location'],
             data['determination_type_code'],
@@ -246,9 +249,10 @@ class MineIncidentResource(Resource, UserMixin):
     # required
     parser.add_argument(
         'incident_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         location='json',
         store_missing=False)
+    parser.add_argument('incident_timezone', type=str, location='json', store_missing=False)
     parser.add_argument('incident_description', type=str, location='json', store_missing=False)
     parser.add_argument('incident_location', type=str, location='json', store_missing=False)
     parser.add_argument(

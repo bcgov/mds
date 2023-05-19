@@ -7,10 +7,6 @@ exports[`Variances renders properly 1`] = `
   >
     <Connect(AuthorizationWrapper)>
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         style={
           Object {
@@ -24,21 +20,21 @@ exports[`Variances renders properly 1`] = `
         Apply for a Variance
       </Button>
     </Connect(AuthorizationWrapper)>
-    <Title
+    <ForwardRef
       level={4}
     >
       Variances
-    </Title>
-    <Paragraph>
+    </ForwardRef>
+    <ForwardRef>
       This table shows your mine's 
-      <Text
+      <ForwardRef(Text)
         className="color-primary"
         strong={true}
       >
         variance history
-      </Text>
+      </ForwardRef(Text)>
       , including applications in progress and variances you may need to renew.
-    </Paragraph>
+    </ForwardRef>
     <VariancesTable
       complianceCodesHash={
         Object {

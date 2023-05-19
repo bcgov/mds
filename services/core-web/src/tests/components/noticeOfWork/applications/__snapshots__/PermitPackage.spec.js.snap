@@ -5,10 +5,7 @@ exports[`PermitPackage renders properly 1`] = `
   permission="role_edit_permits"
 >
   <Button
-    block={false}
     ghost={true}
-    htmlType="button"
-    loading={false}
     onClick={[Function]}
     size="small"
     type="primary"

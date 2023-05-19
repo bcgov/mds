@@ -3,14 +3,9 @@
 exports[`ModalWrapper renders properly 1`] = `
 <Modal
   closable={false}
-  confirmLoading={false}
   footer={null}
-  maskTransitionName="fade"
-  okType="primary"
   title="mockTitle"
-  transitionName="zoom"
   visible={false}
-  width={520}
 >
   <Connect(LoadingBar)
     className="color-primary"

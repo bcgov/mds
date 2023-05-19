@@ -36,9 +36,7 @@ exports[`Conditions renders properly 1`] = `
     </div>
   </div>
   <div>
-    <Collapse
-      bordered={true}
-    />
+    <Collapse />
   </div>
 </Fragment>
 `;

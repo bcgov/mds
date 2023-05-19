@@ -5,11 +5,11 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
   <Col
     span={24}
   >
-    <Title
+    <ForwardRef
       level={4}
     >
       Information Requirements Table
-    </Title>
+    </ForwardRef>
   </Col>
   <Col
     span={24}
@@ -31,12 +31,12 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
         }
       />
       <br />
-      <Paragraph>
-        <Title
+      <ForwardRef>
+        <ForwardRef
           level={5}
         >
           Resume IRT submission
-        </Title>
+        </ForwardRef>
         <div
           style={
             Object {
@@ -67,16 +67,12 @@ exports[`InformationRequirementsTableEntryTab renders properly 1`] = `
           optional
         </b>
         .
-      </Paragraph>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         Resume where you left off by clicking the button below.
-      </Paragraph>
+      </ForwardRef>
       <div>
         <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           onClick={[Function]}
           type="primary"
         >

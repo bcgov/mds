@@ -2,14 +2,10 @@
 
 exports[`DocumentViewer renders properly 1`] = `
 <Modal
-  confirmLoading={false}
   footer={null}
-  maskTransitionName="fade"
-  okType="primary"
   onCancel={[Function]}
   onOk={[Function]}
   title="mock title"
-  transitionName="zoom"
   visible={true}
   width="98%"
 >

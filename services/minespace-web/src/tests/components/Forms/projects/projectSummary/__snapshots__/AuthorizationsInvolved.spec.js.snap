@@ -2,26 +2,23 @@
 
 exports[`AuthorizationsInvolved renders properly 1`] = `
 <Fragment>
-  <Title
+  <ForwardRef
     level={3}
   >
     Authorizations potentially involved in the project
-  </Title>
+  </ForwardRef>
   <Callout
     message="Please select the authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be the complete list for the final application."
     severity="info"
     style={Object {}}
   />
   <br />
-  <Title
+  <ForwardRef
     level={5}
   >
     Mines Review Committee
     <Tooltip
-      arrowPointAtCenter={false}
-      autoAdjustOverflow={true}
       mouseEnterDelay={0.3}
-      mouseLeaveDelay={0.1}
       overlayClassName="minespace-tooltip"
       placement="right"
       title={
@@ -38,13 +35,12 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
           .
         </p>
       }
-      transitionName="zoom-big-fast"
     >
       <ForwardRef(InfoCircleOutlined)
         className="padding-sm"
       />
     </Tooltip>
-  </Title>
+  </ForwardRef>
   <Field
     component={[Function]}
     fieldName="mrc_review_required"

@@ -18,7 +18,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     }
     type="card"
   >
-    <TabPane
+    <DeprecatedTabPane
       key="1"
       tab="Mines Act Permits (0)"
     >
@@ -59,15 +59,15 @@ exports[`MinePermitInfo renders properly 1`] = `
         openEditSitePropertiesModal={[Function]}
         openViewConditionModal={[Function]}
       />
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="2"
       tab="Explosives Storage & Use Permits (0)"
     >
       <Connect(ExplosivesPermit)
         isPermitTab={true}
       />
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

@@ -26,11 +26,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
       />
     </FormItem>
     <Divider />
-    <Text>
+    <ForwardRef(Text)>
       <h4>
         Reporter Details
       </h4>
-    </Text>
+    </ForwardRef(Text)>
     <FormItem
       hasFeedback={false}
       label="Reported by"

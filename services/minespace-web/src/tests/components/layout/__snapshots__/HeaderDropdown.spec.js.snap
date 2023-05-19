@@ -14,19 +14,13 @@ exports[`HeaderDropdown renders properly 1`] = `
       </Link>
     </Connect(AuthorizationWrapper)>
     <Dropdown
-      mouseEnterDelay={0.15}
-      mouseLeaveDelay={0.1}
       overlay={
         <Menu
           className="header-dropdown-menu"
         >
           <MenuItem>
             <ForwardRef(InternalButton)
-              block={false}
               className="header-dropdown-item-button"
-              ghost={false}
-              htmlType="button"
-              loading={false}
               onClick={[Function]}
             >
               Log out
@@ -36,11 +30,7 @@ exports[`HeaderDropdown renders properly 1`] = `
       }
     >
       <Button
-        block={false}
         className="header-dropdown-button"
-        ghost={false}
-        htmlType="button"
-        loading={false}
       >
         <ForwardRef(CaretDownOutlined) />
       </Button>
@@ -50,8 +40,6 @@ exports[`HeaderDropdown renders properly 1`] = `
     maxWidth={1279}
   >
     <Dropdown
-      mouseEnterDelay={0.15}
-      mouseLeaveDelay={0.1}
       overlay={
         <Menu
           className="header-dropdown-menu"
@@ -59,11 +47,7 @@ exports[`HeaderDropdown renders properly 1`] = `
           <UNDEFINED>
             <MenuItem>
               <ForwardRef(InternalButton)
-                block={false}
                 className="header-dropdown-item-button"
-                ghost={false}
-                htmlType="button"
-                loading={false}
               >
                 <ForwardRef
                   to="/mines"
@@ -83,11 +67,7 @@ exports[`HeaderDropdown renders properly 1`] = `
           />
           <MenuItem>
             <ForwardRef(InternalButton)
-              block={false}
               className="header-dropdown-item-button"
-              ghost={false}
-              htmlType="button"
-              loading={false}
               onClick={[Function]}
             >
               Log out
@@ -98,12 +78,8 @@ exports[`HeaderDropdown renders properly 1`] = `
       placement="bottomRight"
     >
       <Button
-        block={false}
         className="header-dropdown-button"
-        ghost={false}
-        htmlType="button"
         id="dropdown-menu-mobile-trigger"
-        loading={false}
       >
         <img
           alt="Menu"

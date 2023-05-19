@@ -5,10 +5,8 @@ exports[`RenderAutoComplete renders properly 1`] = `
   hasFeedback={false}
   validateStatus=""
 >
-  <Select
+  <ForwardRef(InternalSelect)
     allowClear={true}
-    bordered={true}
-    choiceTransitionName=""
     defaultActiveFirstOption={false}
     disabled={false}
     dropdownMatchSelectWidth={true}
@@ -50,7 +48,6 @@ exports[`RenderAutoComplete renders properly 1`] = `
         "width": "100%",
       }
     }
-    transitionName="slide-up"
     virtual={false}
   />
 </FormItem>

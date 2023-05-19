@@ -41,10 +41,6 @@ exports[`Home renders properly 1`] = `
     <DashboardRoutes />
     <Memo(BackTop)>
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         type="primary"
       >
         <ForwardRef(ArrowUpOutlined) />

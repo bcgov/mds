@@ -16,7 +16,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
     }
     type="card"
   >
-    <TabPane
+    <DeprecatedTabPane
       key="1"
       tab="Bonds (3)"
     >
@@ -208,8 +208,8 @@ exports[`MineSecurityInfo renders properly 1`] = `
           recordsByPermit={[Function]}
         />
       </div>
-    </TabPane>
-    <TabPane
+    </DeprecatedTabPane>
+    <DeprecatedTabPane
       key="2"
       tab="Reclamation Invoices (2)"
     >
@@ -365,7 +365,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
         }
         recordsByPermit={[Function]}
       />
-    </TabPane>
+    </DeprecatedTabPane>
   </Tabs>
 </div>
 `;

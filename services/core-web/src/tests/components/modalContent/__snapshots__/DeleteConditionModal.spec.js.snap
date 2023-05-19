@@ -27,22 +27,15 @@ exports[`DeleteConditionModal renders properly 1`] = `
     className="right center-mobile"
   >
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[MockFunction]}
       type="secondary"
     >
       Cancel
     </Button>
     <Button
-      block={false}
       className="full-mobile"
-      ghost={false}
       htmlType="submit"
-      loading={false}
       onClick={[Function]}
       type="primary"
     >

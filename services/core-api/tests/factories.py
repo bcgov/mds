@@ -1,5 +1,6 @@
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
+from pytz import timezone, utc
 from random import randrange
 import factory
 import factory.fuzzy
@@ -238,7 +239,7 @@ class MineAlertFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory')
-        set_end_date = factory.Trait(end_date=(datetime.now(tz=timezone.utc) + timedelta(days=10)))
+        set_end_date = factory.Trait(end_date=(datetime.now(tz=utc) + timedelta(days=10)))
         set_inactive = factory.Trait(is_active=False)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
@@ -380,7 +381,8 @@ class MineIncidentFactory(BaseFactory):
     mine_incident_id_year = 2019
     mine_incident_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    incident_timestamp = factory.Faker('past_datetime')
+    incident_timestamp = factory.Faker('past_datetime', tzinfo=utc)
+    incident_timezone = 'Canada/Pacific'
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     incident_location = factory.fuzzy.FuzzyChoice(['surface', 'underground', None])
     reported_timestamp = factory.Faker('past_datetime')

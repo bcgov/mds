@@ -9,29 +9,25 @@ exports[`Tailings renders properly 1`] = `
       justify="space-between"
     >
       <Col>
-        <Title
+        <ForwardRef
           level={4}
         >
           Tailings Storage Facilities
-        </Title>
-        <Paragraph>
+        </ForwardRef>
+        <ForwardRef>
           This table shows 
-          <Text
+          <ForwardRef(Text)
             className="color-primary"
             strong={true}
           >
             Tailings Storage Facilities
-          </Text>
+          </ForwardRef(Text)>
            for your mine.
-        </Paragraph>
+        </ForwardRef>
         <br />
       </Col>
       <Col>
         <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
           onClick={[Function]}
           type="primary"
         >

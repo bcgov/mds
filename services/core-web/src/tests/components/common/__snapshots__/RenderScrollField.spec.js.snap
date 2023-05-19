@@ -8,7 +8,7 @@ exports[`RenderScrollField renders properly 1`] = `
   placeholder="scroll"
   validateStatus=""
 >
-  <TextArea
+  <ForwardRef
     disabled={false}
     id="1"
     placeholder="scroll"

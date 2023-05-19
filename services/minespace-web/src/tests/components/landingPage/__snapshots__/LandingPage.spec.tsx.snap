@@ -20,14 +20,14 @@ exports[`LandingPage renders properly 1`] = `
         }
       }
     >
-      <Title>
+      <ForwardRef>
         Welcome to MineSpace
-      </Title>
-      <Paragraph
+      </ForwardRef>
+      <ForwardRef
         className="header-text"
       >
         Manage applications, see inspection histories, submit reports, and more.
-      </Paragraph>
+      </ForwardRef>
       <div>
         <LoginButton
           className="login"
@@ -36,11 +36,7 @@ exports[`LandingPage renders properly 1`] = `
           inTesting={true}
         >
           <Button
-            block={false}
             className="login"
-            ghost={false}
-            htmlType="button"
-            loading={false}
             size="large"
             type="primary"
           >
@@ -77,44 +73,44 @@ exports[`LandingPage renders properly 1`] = `
         }
       }
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         What is MineSpace?
-      </Title>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         The
          
-        <Text
+        <ForwardRef(Text)
           strong={true}
         >
           Ministry of Energy, Mines and Low Carbon Innovation
-        </Text>
+        </ForwardRef(Text)>
          
         is developing a system to make it easier for the public, industry and government to see what's happening in the mining industry across British Columbia. The system is called 
-        <Text
+        <ForwardRef(Text)
           strong={true}
         >
           Mines Digital Services (MDS)
-        </Text>
+        </ForwardRef(Text)>
         .
-      </Paragraph>
-      <Paragraph>
-        <Text
+      </ForwardRef>
+      <ForwardRef>
+        <ForwardRef(Text)
           strong={true}
         >
           MineSpace
-        </Text>
+        </ForwardRef(Text)>
          is part of the MDS system, developed specifically for industry. It is intended to make it easier for businesses to manage applications, see their inspection history and submit reports.
-      </Paragraph>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         This system is being developed iteratively and with input from people who operate mines across B.C.
-      </Paragraph>
-      <Title
+      </ForwardRef>
+      <ForwardRef
         level={4}
       >
         What can I do in MineSpace?
-      </Title>
+      </ForwardRef>
       <ul
         className="landing-list"
       >
@@ -134,7 +130,7 @@ exports[`LandingPage renders properly 1`] = `
           Find important Ministry contacts
         </li>
       </ul>
-      <Paragraph />
+      <ForwardRef />
     </Col>
     <Col
       sm={
@@ -153,26 +149,26 @@ exports[`LandingPage renders properly 1`] = `
         }
       }
     >
-      <Title
+      <ForwardRef
         level={4}
       >
         How do I get access?
-      </Title>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         You must have a 
-        <Text
+        <ForwardRef(Text)
           strong={true}
         >
           Business or Basic BCeID
-        </Text>
+        </ForwardRef(Text)>
          and then contact us to request access to MineSpace.
-      </Paragraph>
-      <Paragraph
+      </ForwardRef>
+      <ForwardRef
         strong={true}
       >
         If you have a BCeID:
-      </Paragraph>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         Contact us at 
         <a
           href="mailto:mds@gov.bc.ca"
@@ -180,31 +176,31 @@ exports[`LandingPage renders properly 1`] = `
           mds@gov.bc.ca
         </a>
          to request access to MineSpace.
-      </Paragraph>
-      <Paragraph
+      </ForwardRef>
+      <ForwardRef
         strong={true}
       >
         If you have multiple employees who need to use MineSpace:
-      </Paragraph>
-      <Paragraph>
-        <Text>
+      </ForwardRef>
+      <ForwardRef>
+        <ForwardRef(Text)>
           Add them to your Business BCeID
-        </Text>
-        <Text>
+        </ForwardRef(Text)>
+        <ForwardRef(Text)>
           Let us know you want them to be able to access MineSpace
-        </Text>
-      </Paragraph>
-      <Title
+        </ForwardRef(Text)>
+      </ForwardRef>
+      <ForwardRef
         level={4}
       >
         Don't have a BCeID?
-      </Title>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         In order to access MineSpace, you need to register for a Business or Basic BCeID. It can take several weeks to process the request, so give yourself plenty of lead time.
-      </Paragraph>
-      <Paragraph>
+      </ForwardRef>
+      <ForwardRef>
         Once you have your BCeID, you can add employees and delegates. You can request that anyone added to your Business BCeID account be given access to MineSpace.
-      </Paragraph>
+      </ForwardRef>
       <Row
         justify="center"
       >
@@ -217,10 +213,6 @@ exports[`LandingPage renders properly 1`] = `
             target="_blank"
           >
             <Button
-              block={false}
-              ghost={false}
-              htmlType="button"
-              loading={false}
               size="large"
               type="primary"
             >
@@ -254,17 +246,17 @@ exports[`LandingPage renders properly 1`] = `
         }
       }
     >
-      <Card
+      <ForwardRef
         title="Questions?"
       >
         <Row>
           <Col
             span={24}
           >
-            <Paragraph>
+            <ForwardRef>
               Please let us know about any questions or comments you have regarding your experience using MineSpace.
-            </Paragraph>
-            <Paragraph>
+            </ForwardRef>
+            <ForwardRef>
               Email us at 
               <a
                 href="mailto:mds@gov.bc.ca"
@@ -272,10 +264,10 @@ exports[`LandingPage renders properly 1`] = `
                 mds@gov.bc.ca
               </a>
               .
-            </Paragraph>
+            </ForwardRef>
           </Col>
         </Row>
-      </Card>
+      </ForwardRef>
     </Col>
   </Row>
 </div>

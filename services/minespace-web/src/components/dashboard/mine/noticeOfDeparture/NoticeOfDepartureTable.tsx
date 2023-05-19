@@ -1,22 +1,13 @@
 import React from "react";
 import { Button, Row, Table } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import { NOTICE_OF_DEPARTURE_STATUS, NOTICE_OF_DEPARTURE_TYPE } from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/strings";
 
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
-import { INoticeOfDeparture, NoDTypeEnum, NoDStatusDisplayEnum } from "@mds/common";
+import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeEnum } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
-
-const propTypes = {
-  data: PropTypes.arrayOf(CustomPropTypes.noticeOfDeparture).isRequired,
-  openViewNoticeOfDepartureModal: PropTypes.func.isRequired,
-  openEditNoticeOfDepartureModal: PropTypes.func.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-};
 
 interface NoticeOfDepartureTableProps {
   data: INoticeOfDeparture[];
@@ -141,7 +132,5 @@ const NoticeOfDepartureTable: React.FC<NoticeOfDepartureTableProps> = (props) =>
     />
   );
 };
-
-NoticeOfDepartureTable.propTypes = propTypes;
 
 export default NoticeOfDepartureTable;

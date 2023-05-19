@@ -21,10 +21,6 @@ exports[`MineProject renders properly 1`] = `
           to="/mines/18145c75-49ad-0101-85f3-a43e45ae989a/project-description/new"
         >
           <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
             type="primary"
           >
             Create New Project

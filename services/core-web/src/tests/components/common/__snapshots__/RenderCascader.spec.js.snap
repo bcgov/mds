@@ -8,15 +8,11 @@ exports[`RenderCascader renders properly 1`] = `
   validateStatus=""
 >
   <Cascader
-    allowClear={true}
-    bordered={true}
     changeOnSelect={false}
-    disabled={false}
     expandTrigger="hover"
     id={1}
     options={Array []}
     placeholder=""
-    transitionName="slide-up"
   />
 </FormItem>
 `;

@@ -15,9 +15,7 @@ exports[`LoadingWrapper renders properly 1`] = `
       }
     />
   }
-  size="default"
   spinning={true}
   tip=""
-  wrapperClassName=""
 />
 `;

@@ -3,33 +3,21 @@
 exports[`ModalWrapper renders properly 1`] = `
 <Modal
   closable={false}
-  confirmLoading={false}
   footer={null}
-  maskTransitionName="fade"
-  okType="primary"
   title="mockTitle"
-  transitionName="zoom"
   visible={false}
   width={520}
 >
   <ForwardRef
     cancelText="No"
-    disabled={false}
-    icon={<ForwardRef(ExclamationCircleFilled) />}
     okText="Yes"
-    okType="primary"
     onConfirm={[Function]}
     placement="bottomRight"
     title="Are you sure you want to cancel?"
-    transitionName="zoom-big"
-    trigger="click"
   >
     <Button
-      block={false}
       className="modal__close"
       ghost={true}
-      htmlType="button"
-      loading={false}
     >
       <ForwardRef(CloseOutlined)
         className="icon-sm"

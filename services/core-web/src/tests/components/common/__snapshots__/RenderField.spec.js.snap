@@ -9,14 +9,18 @@ exports[`RenderField renders properly 1`] = `
 >
   <div
     className="inline-flex"
+    style={
+      Object {
+        "flexDirection": "column",
+      }
+    }
   >
-    <Input
+    <ForwardRef
       allowClear={false}
       defaultValue=""
       disabled={false}
       id={1}
       placeholder=""
-      type="text"
     />
   </div>
 </FormItem>

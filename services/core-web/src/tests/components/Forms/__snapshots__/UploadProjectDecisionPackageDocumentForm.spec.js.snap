@@ -11,14 +11,14 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
     gutter={16}
   >
     <Col>
-      <Title
+      <ForwardRef
         level={4}
       >
         Upload Document
-      </Title>
-      <Text>
+      </ForwardRef>
+      <ForwardRef(Text)>
         Click here to upload a document.
-      </Text>
+      </ForwardRef(Text)>
       <br />
       <br />
     </Col>
@@ -50,32 +50,21 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
     <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
-      okType="primary"
       placement="topRight"
       title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
     >
       <Button
-        block={false}
         className="full-mobile"
         disabled={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         type="secondary"
       >
         Cancel
       </Button>
     </ForwardRef>
     <Button
-      block={false}
       className="full-mobile"
       disabled={true}
-      ghost={false}
-      htmlType="button"
       loading={false}
       onClick={[Function]}
       type="primary"
