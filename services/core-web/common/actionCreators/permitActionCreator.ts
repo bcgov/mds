@@ -8,6 +8,7 @@ import {
   ICreatePermitAmendmentPayload,
   ICreatePermitConditionPayload,
   IPermitCondition,
+  IUpdatePermitAmendmentPayload,
 } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
@@ -170,7 +171,7 @@ export const updatePermitAmendment =
     mineGuid: string,
     permitGuid: string,
     permitAmdendmentGuid: string,
-    payload
+    payload: Partial<IUpdatePermitAmendmentPayload>
   ): AppThunk<Promise<AxiosResponse<IPermitAmendment>>> =>
   (dispatch): Promise<AxiosResponse<IPermitAmendment>> => {
     dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));

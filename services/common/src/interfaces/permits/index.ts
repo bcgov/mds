@@ -13,3 +13,4 @@ export * from "./permitUploadedFile.interface";
 export * from "./standardPermitCondition.interface";
 export * from "./permitParty.interface";
 export * from "./permitPartyRelationship.interface";
+export * from "./updatePermitAmendmentPayload.interface";
