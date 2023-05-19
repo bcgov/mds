@@ -639,7 +639,6 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
 );
 
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
-  console.log("MinePermitTable!");
   const amendmentHistory = (permit) => {
     const childRowData = permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
