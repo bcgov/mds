@@ -14,16 +14,14 @@
     "**/__pycache__": true
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "eslint.autoFixOnSave": true
   },
-  "cSpell.words": [
-    "idir"
-  ],
+  "cSpell.words": ["idir"],
   "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": ".github/workflows/**",
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/**"
   }
 }

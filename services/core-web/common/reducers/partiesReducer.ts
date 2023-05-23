@@ -2,17 +2,41 @@ import { uniqBy } from "lodash";
 import * as actionTypes from "../constants/actionTypes";
 import { PARTIES } from "../constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
+import { RootState } from "@/App";
+import {
+  IParty,
+  ItemMap,
+  IPartyAppt,
+  IPartiesPageData,
+  IAddPartyFormState,
+  IOption,
+} from "@mds/common";
 
 /**
  * @file partiesReducer.js
  * all data associated with parties is handled within this reducer.
  */
 
-const initialState = {
+interface PartiesState {
+  parties: ItemMap<IParty>;
+  rawParties: IParty[];
+  partyIds: string[];
+  partyRelationships: IPartyAppt[];
+  allPartyRelationships: IPartyAppt[];
+  partyPageData: IPartiesPageData;
+  addPartyFormState: IAddPartyFormState;
+  lastCreatedParty: IParty;
+  inspectors: IPartyAppt[];
+  projectLeads: IPartyAppt[];
+  engineersOfRecordOptions: IOption[];
+  engineersOfRecord: IPartyAppt[];
+  qualifiedPersons: IPartyAppt[];
+}
+
+const initialState: PartiesState = {
   parties: [],
   rawParties: [],
   partyIds: [],
-  partyRelationshipTypes: [],
   partyRelationships: [],
   allPartyRelationships: [],
   partyPageData: {},
@@ -21,6 +45,8 @@ const initialState = {
   inspectors: [],
   projectLeads: [],
   engineersOfRecordOptions: [],
+  engineersOfRecord: [],
+  qualifiedPersons: [],
 };
 
 export const partiesReducer = (state = initialState, action) => {
@@ -102,18 +128,19 @@ const partiesReducerObject = {
   [PARTIES]: partiesReducer,
 };
 
-export const getParties = (state) => state[PARTIES].parties;
-export const getRawParties = (state) => state[PARTIES].rawParties;
-export const getPartyIds = (state) => state[PARTIES].partyIds;
+export const getParties = (state: RootState) => state[PARTIES].parties;
+export const getRawParties = (state: RootState) => state[PARTIES].rawParties;
+export const getPartyIds = (state: RootState) => state[PARTIES].partyIds;
 
-export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
-export const getAllPartyRelationships = (state) => state[PARTIES].allPartyRelationships;
-export const getPartyPageData = (state) => state[PARTIES].partyPageData;
-export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
-export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
-export const getInspectors = (state) => state[PARTIES].inspectors;
-export const getProjectLeads = (state) => state[PARTIES].projectLeads;
-export const getEngineersOfRecordOptions = (state) => state[PARTIES].engineersOfRecordOptions;
-export const getEngineersOfRecord = (state) => state[PARTIES].engineersOfRecord;
-export const getQualifiedPersons = (state) => state[PARTIES].qualifiedPersons;
+export const getPartyRelationships = (state: RootState) => state[PARTIES].partyRelationships;
+export const getAllPartyRelationships = (state: RootState) => state[PARTIES].allPartyRelationships;
+export const getPartyPageData = (state: RootState) => state[PARTIES].partyPageData;
+export const getAddPartyFormState = (state: RootState) => state[PARTIES].addPartyFormState;
+export const getLastCreatedParty = (state: RootState) => state[PARTIES].lastCreatedParty;
+export const getInspectors = (state: RootState) => state[PARTIES].inspectors;
+export const getProjectLeads = (state: RootState) => state[PARTIES].projectLeads;
+export const getEngineersOfRecordOptions = (state: RootState) =>
+  state[PARTIES].engineersOfRecordOptions;
+export const getEngineersOfRecord = (state: RootState) => state[PARTIES].engineersOfRecord;
+export const getQualifiedPersons = (state: RootState) => state[PARTIES].qualifiedPersons;
 export default partiesReducerObject;
