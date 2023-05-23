@@ -344,8 +344,7 @@ const columns = [
           cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
-            {/* @ts-ignore */}
-            <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+            <img src={TRASHCAN} alt="Remove Permit" />
           </Button>
         </Popconfirm>
       );
@@ -353,7 +352,6 @@ const columns = [
       return (
         <div className="btn--middle flex">
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            {/* @ts-ignore */}
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               {/* @ts-ignore */}
               <Button type="secondary" className="permit-table-button">
@@ -371,7 +369,6 @@ const columns = [
             </Dropdown>
           </AuthorizationWrapper>
           <AuthorizationWrapper permission={Permission.ADMIN}>
-            {/* @ts-ignore */}
             {deletePermitPopUp}
           </AuthorizationWrapper>
         </div>
@@ -511,7 +508,6 @@ const childColumns: ColumnsType<IPermit> = [
       );
       return (
         <div>
-          {/* @ts-ignore */}
           <Dropdown overlay={menu} placement="bottomLeft">
             {/* @ts-ignore */}
             <Button type="secondary" className="permit-table-button">
