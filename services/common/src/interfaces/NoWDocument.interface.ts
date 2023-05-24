@@ -1,4 +1,4 @@
-import { IMineDocument } from "@/interfaces/mineDocument.interface";
+import { IMineDocument } from "@/index";
 
 export interface INoWDocument {
   now_application_document_xref_guid: string;

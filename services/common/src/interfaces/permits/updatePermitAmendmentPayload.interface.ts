@@ -1,9 +1,11 @@
-import { IPermitAmendment } from "@/interfaces/permits/permitAmendment.interface";
-import { IPermit } from "@/interfaces/permits/permit.interface";
-import { IPermitAmendmentDocument } from "@/interfaces/permits/permitAmendmentDocument.interface";
-import { INoWDocument } from "@/interfaces/NoWDocument.interface";
-import { INoWImportedApplicationDocument } from "@/interfaces/NoWImportedApplicationDocument.interface";
-import { IPermitCondition } from "@/interfaces/permits/permitCondition.interface";
+import {
+  IPermitAmendment,
+  IPermit,
+  IPermitAmendmentDocument,
+  INoWDocument,
+  INoWImportedApplicationDocument,
+  IPermitCondition,
+} from "@/index";
 
 export interface IUpdatePermitAmendmentPayload {
   amendmentNumber: number;

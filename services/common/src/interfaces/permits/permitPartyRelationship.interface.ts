@@ -1,4 +1,4 @@
-import { IPermitParty } from "@/interfaces/permits/permitParty.interface";
+import { IPermitParty } from "@/index";
 
 export interface IPermitPartyRelationship {
   mine_party_appt_guid: string;

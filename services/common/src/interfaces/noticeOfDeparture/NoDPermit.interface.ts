@@ -1,4 +1,4 @@
-import { IAmendment } from "@/interfaces/noticeOfDeparture/amendment.interface";
+import { IAmendment } from "@/index";
 
 export interface INoDPermit {
   permit_guid: string;

@@ -1,4 +1,4 @@
-import { IMagazine } from "@/interfaces/permits/magazine.interface";
+import { IMagazine } from "@/index";
 
 export interface IExplosivesPermit {
   explosives_permit_id: number;

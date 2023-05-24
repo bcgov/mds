@@ -1,5 +1,4 @@
-import { IPermitAmendment } from "@/interfaces/permits/permitAmendment.interface";
-import { IPermitUploadedFile } from "@/interfaces/permits/permitUploadedFile.interface";
+import { IPermitAmendment, IPermitUploadedFile } from "@/index";
 
 export interface ICreatePermitAmendmentPayload {
   mine_guid: string;

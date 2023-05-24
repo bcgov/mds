@@ -1,5 +1,4 @@
-import { ICreatePermitSiteProperties } from "@/interfaces/permits/createPermitSiteProperties.interface";
-import { IPermitUploadedFile } from "@/interfaces/permits/permitUploadedFile.interface";
+import { ICreatePermitSiteProperties, IPermitUploadedFile } from "@/index";
 
 export interface ICreatePermitPayload {
   permittee_party_guid: string;

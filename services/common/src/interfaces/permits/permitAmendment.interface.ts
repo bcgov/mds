@@ -1,7 +1,9 @@
-import { INoWDocument } from "@/interfaces/NoWDocument.interface";
-import { INoWImportedApplicationDocument } from "@/interfaces/NoWImportedApplicationDocument.interface";
-import { IPermitAmendmentDocument } from "@/interfaces/permits/permitAmendmentDocument.interface";
-import { IPermitCondition } from "@/interfaces/permits/permitCondition.interface";
+import {
+  INoWDocument,
+  IPermitAmendmentDocument,
+  INoWImportedApplicationDocument,
+  IPermitCondition,
+} from "@/index";
 
 export interface IPermitAmendment {
   permit_amendment_id: number;
