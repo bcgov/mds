@@ -42,18 +42,20 @@ export const createPermit =
       .finally(() => dispatch(hideLoading("modal")));
   };
 
-export const fetchPermits = (mineGuid: string) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PERMITS));
-  dispatch(showLoading("modal"));
-  return CustomAxios({ errorToastMessage: String.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_PERMITS));
-      dispatch(permitActions.storePermits(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_PERMITS)))
-    .finally(() => dispatch(hideLoading("modal")));
-};
+export const fetchPermits =
+  (mineGuid: string): AppThunk =>
+  (dispatch) => {
+    dispatch(request(reducerTypes.GET_PERMITS));
+    dispatch(showLoading("modal"));
+    return CustomAxios({ errorToastMessage: String.ERROR })
+      .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
+      .then((response) => {
+        dispatch(success(reducerTypes.GET_PERMITS));
+        dispatch(permitActions.storePermits(response.data));
+      })
+      .catch(() => dispatch(error(reducerTypes.GET_PERMITS)))
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const fetchDraftPermitByNOW =
   (mineGuid: string, nowApplicationGuid: string): AppThunk<Promise<AxiosResponse<IPermit[]>>> =>
