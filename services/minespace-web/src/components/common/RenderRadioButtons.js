@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Radio } from "antd";
 
 /**
@@ -22,42 +21,36 @@ const defaultProps = {
   customOptions: null,
 };
 
-class RenderRadioButtons extends Component {
-  state = { value: null };
+const RenderRadioButtons = (props) => {
+  const { meta, label, disabled, input, id, customOptions } = props;
+  const radioValue = typeof input.value !== "undefined" ? input.value.toString() : "";
 
-  render() {
-    const options = [
-      { label: "Yes", value: true },
-      { label: "No", value: false },
-    ];
-    return (
-      <Form.Item
-        validateStatus={
-          this.props.meta.touched
-            ? (this.props.meta.error && "error") || (this.props.meta.warning && "warning")
-            : ""
-        }
-        help={
-          this.props.meta.touched &&
-          ((this.props.meta.error && <span>{this.props.meta.error}</span>) ||
-            (this.props.meta.warning && <span>{this.props.meta.warning}</span>))
-        }
-        label={this.props.label}
-      >
-        <Radio.Group
-          disabled={this.props.disabled}
-          checked={() => {
-            this.setState((prevState) => ({ value: !prevState.value }));
-          }}
-          defaultValue={this.state.value}
-          {...this.props.input}
-          id={this.props.id}
-          options={this.props.customOptions ? this.props.customOptions : options}
-        />
-      </Form.Item>
-    );
-  }
-}
+  const options = customOptions ?? [
+    { label: "Yes", value: "true" },
+    { label: "No", value: "false" },
+  ];
+
+  return (
+    <Form.Item
+      validateStatus={meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""}
+      help={
+        meta.touched &&
+        ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
+      }
+      label={label}
+    >
+      <Radio.Group
+        disabled={disabled}
+        name={input.name}
+        {...input}
+        value={radioValue}
+        defaultValue={radioValue}
+        id={id}
+        options={options}
+      />
+    </Form.Item>
+  );
+};
 
 RenderRadioButtons.propTypes = propTypes;
 RenderRadioButtons.defaultProps = defaultProps;
