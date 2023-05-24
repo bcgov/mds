@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { MinePermitInfo } from "@/components/mine/Permit/MinePermitInfo";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());

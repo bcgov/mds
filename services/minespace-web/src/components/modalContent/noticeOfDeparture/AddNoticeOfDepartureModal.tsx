@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import * as FORM from "@/constants/forms";
 import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import { IPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import { INoDPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 import { AxiosResponse } from "axios";
 import { RootState } from "@/App";
 
@@ -17,7 +17,7 @@ interface AddNoticeOfDepartureModalProps {
   afterClose: () => void;
   closeModal: () => void;
   mineGuid: string;
-  permits: IPermit[];
+  permits: INoDPermit[];
 }
 
 const AddNoticeOfDepartureModal: React.FC<AddNoticeOfDepartureModalProps> = (props) => {

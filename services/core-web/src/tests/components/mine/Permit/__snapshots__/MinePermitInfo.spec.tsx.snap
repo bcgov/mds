@@ -58,8 +58,6 @@ exports[`MinePermitInfo renders properly 1`] = `
         openEditPermitModal={[Function]}
         openEditSitePropertiesModal={[Function]}
         openViewConditionModal={[Function]}
-        partyRelationships={Array []}
-        permits={Array []}
       />
     </DeprecatedTabPane>
     <DeprecatedTabPane

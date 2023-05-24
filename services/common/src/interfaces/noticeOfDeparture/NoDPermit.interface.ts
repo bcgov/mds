@@ -1,6 +1,6 @@
-import { IAmendment } from "@/interfaces/amendment.interface";
+import { IAmendment } from "@/index";
 
-export interface IPermit {
+export interface INoDPermit {
   permit_guid: string;
   permit_no: string;
   mine_guid: string;

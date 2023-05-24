@@ -32,7 +32,7 @@ import {
   INoDContactInterface,
   INodDocumentPayload,
   INoticeOfDeparture,
-  IPermit,
+  INoDPermit,
 } from "@mds/common";
 import { AxiosResponse } from "axios";
 import { connect } from "react-redux";
@@ -42,7 +42,7 @@ interface RenderContactsProps {
 }
 
 interface AddNoticeOfDepartureProps {
-  permits: IPermit[];
+  permits: INoDPermit[];
   onSubmit: (
     permitNumber: string,
     values: ICreateNoD,

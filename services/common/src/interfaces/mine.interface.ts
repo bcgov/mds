@@ -1,7 +1,9 @@
-import { IMineType } from "./mineType.interface";
-import { IMineVerifiedStatus } from "./mineVerifiedStatus.interface";
-import { IMineWorkInformation } from "./mineWorkInformation.interface";
-import { ITailingsStorageFacility } from "@/interfaces";
+import {
+  IMineType,
+  IMineVerifiedStatus,
+  IMineWorkInformation,
+  ITailingsStorageFacility,
+} from "@/index";
 
 export interface IMine {
   mine_guid: string;

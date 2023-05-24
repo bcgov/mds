@@ -18,7 +18,7 @@ import {
   IMine,
   INodDocumentPayload,
   INoticeOfDeparture,
-  IPermit,
+  INoDPermit,
   NodStatusSaveEnum,
 } from "@mds/common";
 
@@ -35,7 +35,7 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 interface NoticeOfDepartureProps {
   mine: IMine;
   nods: INoticeOfDeparture[];
-  permits: IPermit[];
+  permits: INoDPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
   createNoticeOfDeparture: ActionCreator<typeof createNoticeOfDeparture>;
@@ -88,7 +88,6 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
     documentArray: INodDocumentPayload[]
   ) => {
     setIsLoaded(false);
-    console.log("values", values);
     const nod_status =
       values.nod_type === "non_substantial"
         ? NodStatusSaveEnum.self_determined_non_substantial

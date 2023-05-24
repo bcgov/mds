@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.openEditPermitModal = jest.fn();
