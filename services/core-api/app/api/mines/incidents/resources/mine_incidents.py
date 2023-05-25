@@ -1,6 +1,7 @@
 from app.api.activity.models.activity_notification import ActivityType
 from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
+from pytz import timezone
 from dateutil import parser
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -119,8 +120,7 @@ class MineIncidentListResource(Resource, UserMixin):
                         'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3'
                     )
 
-        reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] else data['reported_timestamp']
+        reported_timestamp_default = datetime.now(timezone('UTC')) if not data['reported_timestamp'] else data['reported_timestamp']
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(

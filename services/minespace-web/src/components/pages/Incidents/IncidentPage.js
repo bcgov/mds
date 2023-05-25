@@ -16,7 +16,6 @@ import {
 import { Col, Row, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import moment from "moment-timezone";
 import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
   createMineIncident,
@@ -175,13 +174,6 @@ export const IncidentPage = (props) => {
     });
   };
 
-  const formatTimestamp = (dateString, time) => {
-    if (!moment.isMoment(time)) {
-      return dateString && time && `${dateString} ${time}`;
-    }
-    return dateString && time && `${dateString} ${time.format("HH:mm")}`;
-  };
-
   const formatPayload = (values) => {
     const reportedToInspectorDateSet =
       values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
@@ -203,25 +195,6 @@ export const IncidentPage = (props) => {
       ...values,
       categories: values?.categories?.map((cat) => cat?.mine_incident_category_code || cat),
       updated_documents: updatedDocuments,
-      incident_timestamp: values.incident_timestamp,
-      reported_timestamp: reportedToInspectorDateSet
-        ? formatTimestamp(
-            values?.reported_to_inspector_contact_date,
-            values?.reported_to_inspector_contact_time
-          )
-        : values?.reported_timestamp,
-      johsc_worker_rep_contact_timestamp: johscWorkerRepDateSet
-        ? formatTimestamp(
-            values?.johsc_worker_rep_contact_date,
-            values?.johsc_worker_rep_contact_time
-          )
-        : values?.johsc_worker_rep_contact_timestamp,
-      johsc_management_rep_contact_timestamp: johscManagementRepDateSet
-        ? formatTimestamp(
-            values?.johsc_management_rep_contact_date,
-            values?.johsc_management_rep_contact_time
-          )
-        : values?.johsc_management_rep_contact_timestamp,
     };
   };
 
@@ -260,24 +233,6 @@ export const IncidentPage = (props) => {
   const formatInitialValues = () => ({
     ...incident,
     categories: incident?.categories?.map((cat) => cat?.mine_incident_category_code),
-    reported_to_inspector_contact_date: incident?.reported_timestamp
-      ? moment(incident?.reported_timestamp).format("YYYY-MM-DD")
-      : null,
-    reported_to_inspector_contact_time: incident?.reported_timestamp
-      ? moment(incident?.reported_timestamp).format("HH:mm")
-      : null,
-    johsc_worker_rep_contact_date: incident?.johsc_worker_rep_contact_timestamp
-      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("YYYY-MM-DD")
-      : null,
-    johsc_worker_rep_contact_time: incident?.johsc_worker_rep_contact_timestamp
-      ? moment(incident?.johsc_worker_rep_contact_timestamp).format("HH:mm")
-      : null,
-    johsc_management_rep_contact_date: incident?.johsc_management_rep_contact_timestamp
-      ? moment(incident?.johsc_management_rep_contact_timestamp).format("YYYY-MM-DD")
-      : null,
-    johsc_management_rep_contact_time: incident?.johsc_management_rep_contact_timestamp
-      ? moment(incident?.johsc_management_rep_contact_timestamp).format("HH:mm")
-      : null,
     [INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD]: [],
     [FINAL_REPORT_DOCUMENTS_FORM_FIELD]: [],
   });

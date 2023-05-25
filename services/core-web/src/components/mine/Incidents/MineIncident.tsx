@@ -6,7 +6,6 @@ import { Link, withRouter, useParams, useLocation, matchPath } from "react-route
 import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import moment from "moment-timezone";
 import { getMineIncident } from "@common/reducers/incidentReducer";
 import {
   createMineIncident,
@@ -124,7 +123,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return {
       ...values,
       updated_documents: documents,
-      incident_timestamp: moment(values?.incident_timestamp).toISOString(),
     };
   };
 

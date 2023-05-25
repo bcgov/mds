@@ -196,6 +196,8 @@ export const normalizePhone = (value, previousValue) => {
 
 export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
 
+export const normalizeDatetime = (value) => moment(value).toISOString();
+
 export const upperCase = (value) => value && value.toUpperCase();
 
 export const truncateFilename = (filename = "", max = 40) => {
