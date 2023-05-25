@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Badge, Tooltip, Table, Button, Menu, Popconfirm, Dropdown } from "antd";
 import { withRouter } from "react-router-dom";
-import { WarningOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
+import { WarningOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -54,29 +54,6 @@ const transformRowData = (permits) => {
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
-
-const RenderTableExpandIcon = (rowProps) => {
-  return (
-    <a
-      role="link"
-      className="expand-row-icon"
-      onClick={(e) => rowProps.onExpand(rowProps.record, e)}
-      onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
-      style={{ cursor: "pointer" }}
-      tabIndex="0"
-    >
-      {rowProps.expanded ? (
-        <Tooltip title="Click to hide document details." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled className="icon-lg--lightgrey" />
-        </Tooltip>
-      ) : (
-        <Tooltip title="Click to show document details." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--lightgrey" />
-        </Tooltip>
-      )}
-    </a>
-  );
-};
 
 export class MineExplosivesPermitTable extends Component {
   columns = () => [
@@ -236,7 +213,7 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "total_explosive_quantity",
       sortField: "total_explosive_quantity",
       render: (text, record) => (
-        /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+        /* eslint-disable-next-line */
         <div
           title="Explosive Quantity"
           className="underline"
@@ -257,7 +234,7 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "total_detonator_quantity",
       sortField: "total_detonator_quantity",
       render: (text, record) => (
-        /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+        /* eslint-disable-next-line */
         <div
           title="Detonator Quantity"
           className="underline"
@@ -501,10 +478,10 @@ export class MineExplosivesPermitTable extends Component {
         condition={this.props.isLoaded}
         dataSource={transformRowData(this.props.data)}
         columns={this.columns(this.props)}
+        recordType="document details"
         tableProps={{
           align: "left",
           pagination: false,
-          expandIcon: RenderTableExpandIcon,
           expandRowByClick: true,
           expandedRowRender: this.documentDetail,
           expandedRowKeys: this.props.expandedRowKeys,
