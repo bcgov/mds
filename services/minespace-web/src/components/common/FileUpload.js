@@ -26,6 +26,7 @@ const propTypes = {
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
+  allowReorder: PropTypes.bool,
   maxFiles: PropTypes.number,
   afterSuccess: PropTypes.shape({
     action: PropTypes.func,
@@ -37,6 +38,7 @@ const propTypes = {
   importIsSuccessful: PropTypes.func,
   beforeAddFile: PropTypes.func,
   beforeDropFile: PropTypes.func,
+  itemInsertLocation: PropTypes.func | PropTypes.string,
 };
 
 const defaultProps = {
@@ -56,6 +58,7 @@ const defaultProps = {
   labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
   beforeAddFile: () => {},
   beforeDropFile: () => {},
+  itemInsertLocation: "before",
 };
 
 class FileUpload extends React.Component {
@@ -140,11 +143,14 @@ class FileUpload extends React.Component {
           allowMultiple={this.props.allowMultiple}
           onaddfilestart={this.props.addFileStart}
           onprocessfiles={this.props.onprocessfiles}
+          allowReorder={this.props.allowReorder}
           labelIdle={this.props.labelIdle}
           onprocessfileabort={this.props.onAbort}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
+          itemInsertLocation={this.props?.itemInsertLocation}
+          credits={null}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {

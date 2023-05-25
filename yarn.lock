@@ -2030,13 +2030,13 @@ __metadata:
     eslint-plugin-jsx-a11y: 6.2.3
     eslint-plugin-react: 7.18.0
     file-loader: 4.3.0
-    filepond: 4.4.9
-    filepond-plugin-file-encode: 2.1.6
-    filepond-plugin-file-validate-size: 2.2.0
-    filepond-plugin-file-validate-type: 1.2.4
-    filepond-plugin-get-file: 1.0.3
-    filepond-plugin-image-exif-orientation: 1.0.9
-    filepond-plugin-image-preview: 4.6.4
+    filepond: 4.30.4
+    filepond-plugin-file-encode: 2.1.10
+    filepond-plugin-file-validate-size: 2.2.8
+    filepond-plugin-file-validate-type: 1.2.8
+    filepond-plugin-get-file: 1.1.0
+    filepond-plugin-image-exif-orientation: 1.0.11
+    filepond-plugin-image-preview: 4.6.11
     filepond-polyfill: 1.0.4
     hard-source-webpack-plugin: 0.13.1
     hoist-non-react-statics: 3.3.1
@@ -2196,9 +2196,9 @@ __metadata:
     express: 4.17.1
     express-cache-controller: 1.1.0
     file-loader: 4.3.0
-    filepond: 4.4.9
-    filepond-plugin-file-validate-size: 2.2.0
-    filepond-plugin-file-validate-type: 1.2.4
+    filepond: 4.30.4
+    filepond-plugin-file-validate-size: 2.2.8
+    filepond-plugin-file-validate-type: 1.2.8
     filepond-polyfill: 1.0.4
     hard-source-webpack-plugin: 0.13.1
     hoist-non-react-statics: 3.3.1
@@ -9912,57 +9912,57 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filepond-plugin-file-encode@npm:2.1.6":
-  version: 2.1.6
-  resolution: "filepond-plugin-file-encode@npm:2.1.6"
+"filepond-plugin-file-encode@npm:2.1.10":
+  version: 2.1.10
+  resolution: "filepond-plugin-file-encode@npm:2.1.10"
   peerDependencies:
     filepond: ">=3.x <5.x"
-  checksum: 131ebd1c06bc3e24109bdae3f8d35524af03ef1b0e0cf17d13b19debf60a2cdf42571d7e1e7674d02c2d4556d7ca631e41e0d342af5f8da3baba0eef329d6dca
+  checksum: eb51ca41c716898d636d1258611fb792687cfcc2b12dc455303d48f9dfbb47e16cc3c22d2c82132c179d5031b679ed755c39145b53e54e6f21be2849fcc89691
   languageName: node
   linkType: hard
 
-"filepond-plugin-file-validate-size@npm:2.2.0":
-  version: 2.2.0
-  resolution: "filepond-plugin-file-validate-size@npm:2.2.0"
+"filepond-plugin-file-validate-size@npm:2.2.8":
+  version: 2.2.8
+  resolution: "filepond-plugin-file-validate-size@npm:2.2.8"
   peerDependencies:
     filepond: ">=3.1.2 <5.x"
-  checksum: 33ad54ff551fd4f896c580dee4dff5a67c8d1ff423b2b4214958446394a5f093805b56653a1243c45f83368dfc3d38efef7b06003a17205d9401749b11f1f3f2
+  checksum: 5db8d18008fc0066247587f4905d733cfeaa250e0837310ebe6ebfba33c87a3dfbcb2bd4391ae30da5500c39a463fbd80ba13c7fb01160577397c4b14cdb91a9
   languageName: node
   linkType: hard
 
-"filepond-plugin-file-validate-type@npm:1.2.4":
-  version: 1.2.4
-  resolution: "filepond-plugin-file-validate-type@npm:1.2.4"
+"filepond-plugin-file-validate-type@npm:1.2.8":
+  version: 1.2.8
+  resolution: "filepond-plugin-file-validate-type@npm:1.2.8"
   peerDependencies:
     filepond: ">=1.x <5.x"
-  checksum: 897cddcd055b8c2d1f1569a46aab347c364f83f435f5986aa8e2ef73d26b94fd66b6cf3fdbb1d2e025ea44c6d8d402cd9ebe637f559851e5108ba24ccd478d2c
+  checksum: 5a8334323d0f9ef154f4f5788125e8b724ab3e39f23ccb35defad8d4a0f324f3097c280858f9662278576a9e9929065739c455f3bfe7bab1827bd1d9fe32d204
   languageName: node
   linkType: hard
 
-"filepond-plugin-get-file@npm:1.0.3":
-  version: 1.0.3
-  resolution: "filepond-plugin-get-file@npm:1.0.3"
+"filepond-plugin-get-file@npm:1.1.0":
+  version: 1.1.0
+  resolution: "filepond-plugin-get-file@npm:1.1.0"
   peerDependencies:
     filepond: ">=4.x <5.x"
-  checksum: 1a402ce853f9bf61e16b1a8d1d1168681c2283c8ace0c70d0e3fc6fa5bc6b0818d107905559b9442131e025843ec55a71c57c072edcdd67f470e187e758e532f
+  checksum: 248c2f9a4629570a7a134450c3630fa4f02f681bed4d2a5ae28f358164f68e66b828065844c516144e1be5ba83ee7ab9a402d84238a3024514b4ea28ee8361e3
   languageName: node
   linkType: hard
 
-"filepond-plugin-image-exif-orientation@npm:1.0.9":
-  version: 1.0.9
-  resolution: "filepond-plugin-image-exif-orientation@npm:1.0.9"
+"filepond-plugin-image-exif-orientation@npm:1.0.11":
+  version: 1.0.11
+  resolution: "filepond-plugin-image-exif-orientation@npm:1.0.11"
   peerDependencies:
     filepond: ">=3.x <5.x"
-  checksum: 46c89a56bd1c115d21baaa5242c3a06b22369e532cbc1b008313d913558badeed39556d4c74b7806da047bedec170302310043e5a7993b00f2e34afa9f07238d
+  checksum: e9b8c886eac8da9a17684937aa8e702b65c3286c6feeb5a987c7eea0bd94b50e8e5804ceea3a257a4b0dfbaffd3657f9cd3e4f7be5a043e69a201f5e96f77116
   languageName: node
   linkType: hard
 
-"filepond-plugin-image-preview@npm:4.6.4":
-  version: 4.6.4
-  resolution: "filepond-plugin-image-preview@npm:4.6.4"
+"filepond-plugin-image-preview@npm:4.6.11":
+  version: 4.6.11
+  resolution: "filepond-plugin-image-preview@npm:4.6.11"
   peerDependencies:
     filepond: ">=4.x <5.x"
-  checksum: 4bb8ec998f6f8b17916e44a174b0b78444a740b4050463f51495c8935b7c5f9eddbbf08dcc57a24e47af8a11af92dd8b9b991c9d3a26990a8c9f629b63cb7249
+  checksum: 436ee3396910efe7973bbaf4578eb2a2b19246ea4b94e6d6265361b37919c978d4ceed8fbd6fa5b8f24fe848ae5e6270cae243a4ac5f84744960fa107bb8da4e
   languageName: node
   linkType: hard
 
@@ -9973,10 +9973,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filepond@npm:4.4.9":
-  version: 4.4.9
-  resolution: "filepond@npm:4.4.9"
-  checksum: bb3888df5cb6501530df026f3d6762047adbb7bcc7d30028aa6733596e2bb04486097efe417e239a13b8a5b15ce250a218a8b2eca550674eb5f38707c13c0710
+"filepond@npm:4.30.4":
+  version: 4.30.4
+  resolution: "filepond@npm:4.30.4"
+  checksum: ec1c06a11ceda231e5589f52307fa2f34b9c67c14b22c2be7adde227159f32e9ed1aa0e0a32fbca4e08a837b6714084e9f629c097a669fc1c3076be8c5f3c295
   languageName: node
   linkType: hard
 

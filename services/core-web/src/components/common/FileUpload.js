@@ -28,8 +28,10 @@ const propTypes = {
   labelIdle: PropTypes.string,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
+  allowReorder: PropTypes.bool,
   onProcessFiles: PropTypes.func,
   onAbort: PropTypes.func,
+  itemInsertLocation: PropTypes.func | PropTypes.string,
 };
 
 const defaultProps = {
@@ -41,8 +43,10 @@ const defaultProps = {
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
+  allowReorder: false,
   onProcessFiles: () => {},
   onAbort: () => {},
+  itemInsertLocation: "before",
   labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
 };
 
@@ -135,12 +139,15 @@ class FileUpload extends React.Component {
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}
           onaddfilestart={this.props.addFileStart}
+          allowReorder={this.props.allowReorder}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
           onprocessfiles={this.props.onProcessFiles}
           onprocessfileabort={this.props.onAbort}
           labelIdle={this.props?.labelIdle}
+          itemInsertLocation={this.props?.itemInsertLocation}
+          credits={null}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {
