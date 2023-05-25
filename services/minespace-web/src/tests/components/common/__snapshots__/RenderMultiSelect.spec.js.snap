@@ -16,7 +16,6 @@ exports[`RenderMultiSelect renders properly 1`] = `
       mode="multiple"
       onSearch={[Function]}
       placeholder=""
-      placement="bottomCenter"
       showArrow={true}
       size="small"
       virtual={false}

@@ -44,6 +44,7 @@ exports[`MinePermitTable renders properly 1`] = `
     ]
   }
   dataSource={Array []}
+  recordType="details"
   tableProps={
     Object {
       "align": "left",
