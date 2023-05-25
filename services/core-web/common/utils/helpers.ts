@@ -7,6 +7,7 @@ import { createNumberMask } from "redux-form-input-masks";
 /* eslint-disable */
 import moment from "moment";
 import { reset } from "redux-form";
+import { ItemMap } from "@mds/common";
 
 /**
  * Helper function to clear redux form after submission
@@ -29,8 +30,8 @@ export const createReducer = (reducer, name) => (state, action) => {
   return reducer(state, action);
 };
 // Function to create state object using the id as the key (used in src/reducers/<customReducer>)
-export const createItemMap = (array, idField) => {
-  const mapping = {};
+export const createItemMap = <T>(array: T[], idField: string): ItemMap<T> => {
+  const mapping: ItemMap<T> = {};
   // NOTE: Implementation chosen for performance
   // Please do not refactor to use immutable data
   array.forEach((item) => {

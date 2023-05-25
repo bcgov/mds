@@ -6,7 +6,6 @@ const baseExpectedValue = {
   rawParties: [],
   partyIds: [],
   partyRelationships: [],
-  partyRelationshipTypes: [],
   allPartyRelationships: [],
   partyPageData: {},
   addPartyFormState: {},
@@ -14,6 +13,8 @@ const baseExpectedValue = {
   inspectors: [],
   projectLeads: [],
   engineersOfRecordOptions: [],
+  engineersOfRecord: [],
+  qualifiedPersons: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

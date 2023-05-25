@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { ITSFParty, ITailingsStorageFacility } from "@mds/common";
+import { IPartyAppt, ITailingsStorageFacility } from "@mds/common";
 
 interface TSFCardProps {
   tailingsStorageFacility: ITailingsStorageFacility;
-  PartyRelationships: ITSFParty[];
+  PartyRelationships: IPartyAppt[];
 }
 
 export const TSFCard: FC<TSFCardProps> = (props) => {

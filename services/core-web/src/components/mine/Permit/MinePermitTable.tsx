@@ -352,6 +352,7 @@ const columns = [
       return (
         <div className="btn--middle flex">
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            {/* @ts-ignore */}
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               {/* @ts-ignore */}
               <Button type="secondary" className="permit-table-button">
@@ -508,6 +509,7 @@ const childColumns: ColumnsType<IPermit> = [
       );
       return (
         <div>
+          {/* @ts-ignore */}
           <Dropdown overlay={menu} placement="bottomLeft">
             {/* @ts-ignore */}
             <Button type="secondary" className="permit-table-button">
