@@ -27,8 +27,8 @@ def generate_draft_permit_no_suffix(permit, separator, filling=2):
 def format_datetime_to_string(date):
     return date.strftime("%b %d %Y") if date else ''
 
-def format_email_datetime_to_string(date):
-    return date.replace(tzinfo=utc).astimezone(timezone("America/Vancouver")).strftime('%b %d %Y at %H:%M PST') if date else ''
+def format_email_datetime_to_string(date, timezoneName="Canada/Pacific"):
+    return date.replace(tzinfo=utc).astimezone(timezone(timezoneName)).strftime('%b %d %Y at %H:%M %Z') if date else ''
 
 def format_currency(value):
     return '${:,.2f}'.format(float(value or 0)) if value else '$0.00'
