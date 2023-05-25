@@ -41,7 +41,7 @@ class TestPutMineIncident:
         incident = MineIncidentFactory()
         data = {
             'incident_timestamp': '2019-01-01T18:17:12.136000+00:00',
-            'reported_timestamp': '2019-01-01 00:00',
+            'reported_timestamp': '2019-01-01T18:27:12.136000+00:00',
             'incident_timezone': incident.incident_timezone,
             'incident_description': incident.incident_description,
             'incident_location': incident.incident_location,
@@ -59,7 +59,7 @@ class TestPutMineIncident:
             'determination_type_code': incident.determination_type_code,
             'followup_investigation_type_code': incident.followup_investigation_type_code,
             'followup_inspection': incident.followup_inspection,
-            'followup_inspection_date': '2019-01-01',
+            'followup_inspection_date': '2019-01-01T18:27:12.136000+00:00',
             'status_code': incident.status_code,
             'dangerous_occurrence_subparagraph_ids': incident.dangerous_occurrence_subparagraph_ids,
             'recommendations': incident.recommendations,

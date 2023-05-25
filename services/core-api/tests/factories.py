@@ -385,7 +385,7 @@ class MineIncidentFactory(BaseFactory):
     incident_timezone = 'Canada/Pacific'
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     incident_location = factory.fuzzy.FuzzyChoice(['surface', 'underground', None])
-    reported_timestamp = factory.Faker('past_datetime')
+    reported_timestamp = factory.Faker('past_datetime', tzinfo=utc)
     reported_by_name = factory.Faker('name')
     reported_by_phone_no = factory.Faker('numerify', text='###-###-####')
     reported_by_email = factory.Faker('email')
