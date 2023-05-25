@@ -15,9 +15,12 @@ exports[`FileUpload renders properly 1`] = `
     acceptedFileTypes={Array []}
     allowFileTypeValidation={false}
     allowMultiple={true}
+    allowReorder={false}
     allowRevert={false}
+    credits={null}
     fileValidateTypeDetectType={[Function]}
     fileValidateTypeLabelExpectedTypesMap={Object {}}
+    itemInsertLocation="before"
     labelIdle="Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span>"
     maxFileSize="750MB"
     name="file"
