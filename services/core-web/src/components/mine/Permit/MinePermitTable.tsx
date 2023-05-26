@@ -1,13 +1,7 @@
 import React, { FC } from "react";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
-import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
-import {
-  MinusSquareFilled,
-  PlusOutlined,
-  PlusSquareFilled,
-  SafetyCertificateOutlined,
-  ReadOutlined,
-} from "@ant-design/icons";
+import { Table, Menu, Dropdown, Button, Popconfirm } from "antd";
+import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 
 import { formatDate } from "@common/utils/helpers";
@@ -615,27 +609,6 @@ const transformChildRowData = (
   ...amendment,
 });
 
-export const RenderPermitTableExpandIcon = (rowProps) => (
-  <a
-    role="link"
-    className="expand-row-icon"
-    onClick={(e) => rowProps.onExpand(rowProps.record, e)}
-    onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
-    style={{ cursor: "pointer" }}
-    tabIndex={0}
-  >
-    {rowProps.expanded ? (
-      <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    )}
-  </a>
-);
-
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
   const amendmentHistory = (permit) => {
     const childRowData = permit?.permit_amendments?.map((amendment, index) =>
@@ -677,12 +650,12 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
       condition={props.isLoaded}
       dataSource={rowData}
       columns={columns}
+      recordType="amendment history"
       tableProps={{
         className: "nested-table",
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        expandIcon: RenderPermitTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: amendmentHistory,
         expandedRowKeys: props.expandedRowKeys,

@@ -43,7 +43,7 @@ export const CoreTable = (props) => {
   }));
 
   const renderTableExpandIcon = ({ expanded, onExpand, record }) => {
-    if (!props.tableProps.rowExpandable(record)) {
+    if (props.tableProps.rowExpandable && !props.tableProps.rowExpandable(record)) {
       return null;
     }
     return (
@@ -81,7 +81,7 @@ export const CoreTable = (props) => {
         <div>
           <Table
             {...combinedProps}
-            expandIcon={combinedProps.expandable ? renderTableExpandIcon : null}
+            expandIcon={combinedProps.expandRowByClick ? renderTableExpandIcon : null}
             columns={props.columns}
             dataSource={props.dataSource}
             locale={{ emptyText: "No Data Yet" }}
