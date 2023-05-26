@@ -12,12 +12,7 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownIncidentStatusCodeOptions,
 } from "@common/selectors/staticContentSelectors";
-import {
-  formatDate,
-  dateSorter,
-  optionsFilterLabelAndValue,
-  formatDateTimeTz,
-} from "@common/utils/helpers";
+import { dateSorter, optionsFilterLabelAndValue, formatDateTimeTz } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
@@ -106,7 +101,6 @@ const MineIncidentTable = (props) => {
           incident.incident_timestamp,
           incident.incident_timezone
         ),
-        reported_timestamp: formatDate(incident.reported_timestamp),
         reported_by: incident.reported_by_name || Strings.EMPTY_FIELD,
         mine_name: incident.mine_name || Strings.EMPTY_FIELD,
         incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD,

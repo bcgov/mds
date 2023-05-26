@@ -112,7 +112,7 @@ const RenderDateTimeTz = (props) => {
         allowClear
         showNow
         disabled={disabled}
-        showTime={!!showTime && { format: "HH:mm" }}
+        showTime={showTime && { format: "HH:mm" }}
         format={datePickerFormat}
         value={selectedDatetime ? moment(selectedDatetime) : null}
         validate={validate}
