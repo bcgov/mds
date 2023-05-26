@@ -44,6 +44,9 @@ class ActivityDetailBase(AuditMixin, Base):
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
     _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
+    
+    activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', backref='activity_detail', cascade='all,delete-orphan')
+    activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', backref='activity_detail', cascade='all,delete-orphan')
 
     activity_type_code = db.column_property(
         func.coalesce(
