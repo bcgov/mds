@@ -44,12 +44,11 @@ exports[`MinePermitTable renders properly 1`] = `
     ]
   }
   dataSource={Array []}
-  recordType="details"
+  recordType="amendment history"
   tableProps={
     Object {
       "align": "left",
       "className": "nested-table",
-      "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": undefined,
       "expandedRowRender": [Function],
