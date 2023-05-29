@@ -6,6 +6,7 @@ exports[`CoreTable renders properly 1`] = `
     <ForwardRef(InternalTable)
       columns={Array []}
       dataSource={Object {}}
+      expandIcon={null}
       locale={
         Object {
           "emptyText": "No Data Yet",

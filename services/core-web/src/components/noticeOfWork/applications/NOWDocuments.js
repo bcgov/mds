@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table, Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
-import { MinusSquareFilled, PlusSquareFilled, FlagOutlined, MenuOutlined } from "@ant-design/icons";
+import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -77,20 +77,6 @@ const defaultProps = {
   isSortingAllowed: false,
   showDescription: false,
 };
-
-export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
-  <div>
-    {rowProps.expanded ? (
-      <Tooltip title="Click to hide document description." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Click to view document description." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    )}
-  </div>
-);
 
 const transformDocuments = (
   documents,
@@ -435,7 +421,6 @@ export class NOWDocuments extends Component {
             );
           }
           return (
-            /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
             <div disabled onClick={(event) => event.stopPropagation()}>
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
@@ -629,23 +614,25 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows && !this.props.isViewMode && !this.props.isRefConDocuments && (
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab={this.props.isAdminView ? "" : "REV"}
-                allowAfterProcess={this.props.allowAfterProcess}
-                ignoreDelay
-              >
-                <AddButton
-                  className="position-right"
-                  disabled={this.props.isViewMode}
-                  style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                  onClick={this.openAddDocumentModal}
+            {!this.props.selectedRows &&
+              !this.props.isViewMode &&
+              !this.props.isRefConDocuments && (
+                <NOWActionWrapper
+                  permission={Permission.EDIT_PERMITS}
+                  tab={this.props.isAdminView ? "" : "REV"}
+                  allowAfterProcess={this.props.allowAfterProcess}
+                  ignoreDelay
                 >
-                  Add Document
-                </AddButton>
-              </NOWActionWrapper>
-            )}
+                  <AddButton
+                    className="position-right"
+                    disabled={this.props.isViewMode}
+                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
+                    onClick={this.openAddDocumentModal}
+                  >
+                    Add Document
+                  </AddButton>
+                </NOWActionWrapper>
+              )}
           </Col>
         </Row>
         <br />
@@ -656,6 +643,7 @@ export class NOWDocuments extends Component {
             this.props.noticeOfWorkApplicationDocumentTypeOptions,
             this.props.categoriesToShow
           )}
+          recordType="document description"
           // The key must be set to "undefined" to allow the key set in the "transform documents" function to be applied in order to edit documents.
           rowKey={this.props.isSortingAllowed ? "index" : undefined}
           dataSource={this.state.dataSource}
@@ -678,7 +666,6 @@ export class NOWDocuments extends Component {
                 }
               : null
           }
-          expandIcon={this.props.showDescription ? RenderNowDocumentsTableExpandIcon : undefined}
           expandRowByClick={this.props.showDescription}
           expandedRowRender={this.props.showDescription ? this.docDescription : undefined}
         />
@@ -688,12 +675,10 @@ export class NOWDocuments extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
-    state
-  ),
-  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
-    state
-  ),
+  noticeOfWorkApplicationDocumentTypeOptionsHash:
+    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
+  noticeOfWorkApplicationDocumentTypeOptions:
+    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
 });

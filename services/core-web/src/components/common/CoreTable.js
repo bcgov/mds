@@ -1,6 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 
 /**
  * @constant CoreTable renders react children or a skeleton loading view using the column headers
@@ -18,10 +19,12 @@ const propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
   condition: PropTypes.bool.isRequired,
   tableProps: PropTypes.objectOf(PropTypes.any),
+  recordType: PropTypes.string,
 };
 
 const defaultProps = {
   tableProps: {},
+  recordType: "details",
 };
 
 export const CoreTable = (props) => {
@@ -39,12 +42,46 @@ export const CoreTable = (props) => {
     render: () => <div className={`skeleton-table__loader ${column.className}`} />,
   }));
 
+  const renderTableExpandIcon = ({ expanded, onExpand, record }) => {
+    if (props.tableProps.rowExpandable && !props.tableProps.rowExpandable(record)) {
+      return null;
+    }
+    return (
+      <a
+        role="link"
+        className="expand-row-icon"
+        onClick={(e) => onExpand(record, e)}
+        style={{ cursor: "pointer" }}
+        tabIndex={0}
+      >
+        {expanded ? (
+          <Tooltip
+            title={`Click to hide ${props.recordType}.`}
+            placement="right"
+            mouseEnterDelay={1}
+          >
+            <MinusSquareFilled className="icon-lg--lightgrey" />
+          </Tooltip>
+        ) : (
+          <Tooltip
+            title={`Click to show ${props.recordType}.`}
+            placement="right"
+            mouseEnterDelay={1}
+          >
+            <PlusSquareFilled className="icon-lg--lightgrey" />
+          </Tooltip>
+        )}
+      </a>
+    );
+  };
+
   return (
     <div>
       {props.condition ? (
         <div>
           <Table
             {...combinedProps}
+            expandIcon={combinedProps.expandRowByClick ? renderTableExpandIcon : null}
             columns={props.columns}
             dataSource={props.dataSource}
             locale={{ emptyText: "No Data Yet" }}

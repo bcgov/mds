@@ -8,11 +8,11 @@ exports[`RenderRadioButtons renders properly 1`] = `
   validateStatus=""
 >
   <Memo([object Object])
-    checked={[Function]}
-    defaultValue={null}
+    defaultValue=""
     disabled={false}
     id="1"
     options={Array []}
+    value=""
   />
 </FormItem>
 `;

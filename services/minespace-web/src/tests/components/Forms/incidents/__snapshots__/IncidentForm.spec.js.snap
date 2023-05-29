@@ -224,9 +224,9 @@ exports[`IncidentForm renders properly 1`] = `
               disabled={true}
               id="incident_timestamp"
               name="incident_timestamp"
+              normalize={[Function]}
               props={
                 Object {
-                  "formName": undefined,
                   "timezoneFieldProps": Object {
                     "name": "incident_timezone",
                   },
@@ -709,10 +709,20 @@ exports[`IncidentForm renders properly 1`] = `
             label="Follow-up inspection date"
           >
             <Field
-              component={[Function]}
+              component={
+                Object {
+                  "$$typeof": Symbol(react.memo),
+                  "WrappedComponent": [Function],
+                  "compare": null,
+                  "displayName": "Connect(RenderDateTimeTz)",
+                  "type": [Function],
+                }
+              }
               disabled={true}
               id="followup_inspection_date"
               name="followup_inspection_date"
+              normalize={[Function]}
+              showTime={false}
             />
           </FormItem>
         </Col>

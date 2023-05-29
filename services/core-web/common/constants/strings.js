@@ -313,4 +313,6 @@ export const CANADA_TIMEZONE_MAP = {
 
 export const DEFAULT_TIMEZONE = "Canada/Pacific";
 
-export const DATETIME_TZ_FORMAT = "YYYY-MM-DD HH:mm Z z";
+export const DATETIME_TZ_INPUT_FORMAT = "YYYY-MM-DD HH:mm Z z";
+export const DATE_TZ_INPUT_FORMAT = "YYYY-MM-DD Z z";
+export const DATETIME_TZ_FORMAT = "MMM DD YYYY, HH:mm (z)";

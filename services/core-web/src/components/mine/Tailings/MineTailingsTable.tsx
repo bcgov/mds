@@ -248,6 +248,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       condition={props.isLoaded}
       dataSource={transformRowData(props.tailings)}
       columns={columns}
+      recordType="associated dams"
       tableProps={{
         className: "tailings-table",
         align: "center",

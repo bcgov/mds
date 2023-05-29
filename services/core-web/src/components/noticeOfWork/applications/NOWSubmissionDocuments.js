@@ -342,7 +342,6 @@ export const NOWSubmissionDocuments = (props) => {
           );
         }
         return (
-          /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
           <div disabled onClick={(event) => event.stopPropagation()}>
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
@@ -687,6 +686,7 @@ export const NOWSubmissionDocuments = (props) => {
         align="left"
         pagination={false}
         columns={columns}
+        recordType="document description"
         dataSource={dataSource}
         locale={{
           emptyText: "No Data Yet",
@@ -704,7 +704,6 @@ export const NOWSubmissionDocuments = (props) => {
               }
             : null
         }
-        expandIcon={props.showDescription ? RenderNowDocumentsTableExpandIcon : undefined}
         expandRowByClick={props.showDescription}
         expandedRowRender={props.showDescription ? docDescription : undefined}
       />
@@ -713,12 +712,10 @@ export const NOWSubmissionDocuments = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
-    state
-  ),
-  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
-    state
-  ),
+  noticeOfWorkApplicationDocumentTypeOptions:
+    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationDocumentTypeOptionsHash:
+    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
   noticeOfWork: getNoticeOfWork(state),
 });
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { Menu, Dropdown, Button, Tooltip, Table } from "antd";
-import { EyeOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
+import { Menu, Dropdown, Button, Table } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
@@ -246,27 +246,6 @@ export const MineBondTable = (props) => {
     );
   };
 
-  const RenderTableExpandIcon = (rowProps) => (
-    <a
-      role="link"
-      className="expand-row-icon"
-      onClick={(e) => rowProps.onExpand(rowProps.record, e)}
-      onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
-      style={{ cursor: "pointer" }}
-      tabIndex="0"
-    >
-      {rowProps.expanded ? (
-        <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled className="icon-lg--lightgrey" />
-        </Tooltip>
-      ) : (
-        <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--lightgrey" />
-        </Tooltip>
-      )}
-    </a>
-  );
-
   const transformRowData = (permits) =>
     permits.map((permit) => {
       return {
@@ -284,12 +263,12 @@ export const MineBondTable = (props) => {
       condition={props.isLoaded}
       dataSource={transformRowData(props.permits)}
       columns={columns}
+      recordType="associated bonds"
       tableProps={{
         className: "nested-table",
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,
         expandedRowKeys: props.expandedRowKeys,

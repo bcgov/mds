@@ -152,7 +152,6 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
       ]
     }
     dataSource={Array []}
-    expandIcon={[Function]}
     expandRowByClick={true}
     expandedRowRender={[Function]}
     locale={
@@ -161,6 +160,7 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
       }
     }
     pagination={false}
+    recordType="document description"
     rowSelection={null}
   />
 </div>

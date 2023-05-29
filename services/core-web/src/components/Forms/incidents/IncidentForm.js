@@ -15,7 +15,6 @@ import {
   email,
   phoneNumber,
   number,
-  dateNotInFuture,
   wholeNumber,
   validateSelectOptions,
   requiredRadioButton,
@@ -23,7 +22,7 @@ import {
   dateNotBeforeStrictOther,
   dateNotInFutureTZ,
 } from "@common/utils/Validate";
-import { normalizePhone, formatDate } from "@common/utils/helpers";
+import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
@@ -149,12 +148,7 @@ const retrieveInitialReportDynamicValidation = (childProps) => {
   };
 };
 
-const renderInitialReport = (
-  incidentCategoryCodeOptions,
-  locationOptions,
-  isEditMode,
-  formName
-) => {
+const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEditMode) => {
   return (
     <Row>
       {/* Reporter Details */}
@@ -259,8 +253,9 @@ const renderInitialReport = (
                 id="incident_timestamp"
                 name="incident_timestamp"
                 disabled={!isEditMode}
+                normalize={normalizeDatetime}
                 validate={[dateNotInFutureTZ, required]}
-                props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
+                props={{ timezoneFieldProps: { name: "incident_timezone" } }}
                 component={RenderDateTimeTz}
               />
             </Form.Item>
@@ -303,7 +298,6 @@ const renderInitialReport = (
               <Field
                 id="emergency_services_called"
                 name="emergency_services_called"
-                placeholder="Please choose one..."
                 component={renderConfig.RADIO}
                 disabled={!isEditMode}
               />
@@ -614,12 +608,14 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                 <Field
                   id="verbal_notification_timestamp"
                   name="verbal_notification_timestamp"
-                  component={renderConfig.DATE}
+                  component={RenderDateTimeTz}
+                  normalize={normalizeDatetime}
+                  timezone={formValues.incident_timezone}
                   showTime
                   disabled={!isEditMode}
                   placeholder="Please select date"
                   validate={[
-                    dateNotInFuture,
+                    dateNotInFutureTZ,
                     dateNotBeforeStrictOther(formValues.incident_timestamp),
                   ]}
                 />
@@ -660,13 +656,15 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                   <Field
                     id="reported_timestamp"
                     name="reported_timestamp"
-                    component={renderConfig.DATE}
+                    component={RenderDateTimeTz}
+                    normalize={normalizeDatetime}
+                    timezone={formValues.incident_timezone}
                     showTime
                     disabled={!isEditMode}
                     placeholder="Please select date"
                     validate={[
                       required,
-                      dateNotInFuture,
+                      dateNotInFutureTZ,
                       dateNotBeforeStrictOther(formValues.incident_timestamp),
                     ]}
                   />
@@ -715,9 +713,12 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                 id="followup_inspection_date"
                 name="followup_inspection_date"
                 placeholder="Please select date..."
-                component={renderConfig.DATE}
+                showTime={false}
+                component={RenderDateTimeTz}
+                normalize={normalizeDatetime}
+                timezone={formValues.incident_timezone}
                 validate={[
-                  dateNotInFuture,
+                  dateNotInFutureTZ,
                   dateNotBeforeStrictOther(formValues.incident_timestamp),
                 ]}
                 disabled={!isEditMode}

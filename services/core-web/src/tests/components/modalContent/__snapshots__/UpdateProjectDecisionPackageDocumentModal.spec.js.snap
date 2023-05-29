@@ -49,6 +49,7 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
         }
         condition={true}
         dataSource={Array []}
+        recordType="details"
         tableProps={
           Object {
             "pagination": false,

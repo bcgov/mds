@@ -39,6 +39,7 @@ exports[`AdminVerifiedMinesList renders properly 1`] = `
     }
     condition={false}
     dataSource={Array []}
+    recordType="details"
     tableProps={
       Object {
         "align": "center",

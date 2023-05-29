@@ -57,7 +57,6 @@ export const RenderMultiSelect = (props) => (
         onChange={props.input.onChange}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
         showArrow
-        placement="bottomCenter"
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (

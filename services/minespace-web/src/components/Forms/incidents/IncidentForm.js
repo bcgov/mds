@@ -20,7 +20,7 @@ import {
   requiredRadioButton,
   requiredNotUndefined,
 } from "@common/utils/Validate";
-import { normalizePhone } from "@common/utils/helpers";
+import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import {
@@ -278,7 +278,7 @@ const renderReporterDetails = (formDisabled) => {
 };
 
 const renderIncidentDetails = (childProps) => {
-  const { formValues, formDisabled, formName } = childProps;
+  const { formValues, formDisabled } = childProps;
   const {
     workerRepContactedValidation,
     workerRepContacted,
@@ -324,8 +324,9 @@ const renderIncidentDetails = (childProps) => {
             name="incident_timestamp"
             disabled={formDisabled}
             validate={[dateNotInFutureTZ, required]}
+            normalize={normalizeDatetime}
             component={RenderDateTimeTz}
-            props={{ formName, timezoneFieldProps: { name: "incident_timezone" } }}
+            props={{ timezoneFieldProps: { name: "incident_timezone" } }}
           />
         </Form.Item>
       </Col>
@@ -468,7 +469,9 @@ const renderIncidentDetails = (childProps) => {
               <Field
                 id="johsc_worker_rep_contact_timestamp"
                 name="johsc_worker_rep_contact_timestamp"
-                component={renderConfig.DATE}
+                component={RenderDateTimeTz}
+                normalize={normalizeDatetime}
+                timezone={formValues.incident_timezone}
                 showTime
                 disabled={formDisabled}
                 placeholder="Please select date and time"
@@ -528,13 +531,15 @@ const renderIncidentDetails = (childProps) => {
               <Field
                 id="johsc_management_rep_contact_timestamp"
                 name="johsc_management_rep_contact_timestamp"
-                component={renderConfig.DATE}
+                normalize={normalizeDatetime}
+                component={RenderDateTimeTz}
+                timezone={formValues.incident_timezone}
                 showTime
                 disabled={formDisabled}
                 placeholder="Please select date and time"
                 validate={[
                   required,
-                  dateNotInFuture,
+                  dateNotInFutureTZ,
                   dateNotBeforeStrictOther(formValues.incident_timestamp),
                 ]}
               />
@@ -810,7 +815,7 @@ const renderRecommendations = ({ fields }) => {
   ];
 };
 
-const renderMinistryFollowUp = (childProps, formDisabled) => {
+const renderMinistryFollowUp = (childProps, formDisabled, formValues) => {
   const { incidentFollowupActionOptions, incidentStatusCodeOptions } = childProps;
   return (
     <Row gutter={[16]}>
@@ -835,7 +840,10 @@ const renderMinistryFollowUp = (childProps, formDisabled) => {
           <Field
             id="followup_inspection_date"
             name="followup_inspection_date"
-            component={renderConfig.DATE}
+            normalize={normalizeDatetime}
+            component={RenderDateTimeTz}
+            timezone={formValues.incident_timezone}
+            showTime={false}
             disabled={formDisabled}
           />
         </Form.Item>
@@ -882,7 +890,6 @@ export const IncidentForm = (props) => {
     confirmedSubmission,
     applicationSubmitted,
     location,
-    form,
     formValues,
     incidentFollowupActionOptions,
     incidentStatusCodeOptions,
@@ -926,7 +933,7 @@ export const IncidentForm = (props) => {
           <br />
           {renderReporterDetails(formDisabled)}
           <br />
-          {renderIncidentDetails({ formValues, formDisabled, formName: form })}
+          {renderIncidentDetails({ formValues, formDisabled })}
           <br />
           <br />
           {renderUploadInitialNotificationDocuments(
@@ -940,7 +947,8 @@ export const IncidentForm = (props) => {
               <br />
               {renderMinistryFollowUp(
                 { incidentFollowupActionOptions, incidentStatusCodeOptions },
-                formDisabled
+                formDisabled,
+                formValues
               )}
             </>
           )}

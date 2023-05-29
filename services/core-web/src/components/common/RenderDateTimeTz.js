@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Form, DatePicker, Select } from "antd";
 import { useSelector, connect } from "react-redux";
@@ -7,7 +7,8 @@ import "@ant-design/compatible/assets/index.css";
 import moment from "moment-timezone";
 import { compose, bindActionCreators } from "redux";
 import {
-  DATETIME_TZ_FORMAT,
+  DATETIME_TZ_INPUT_FORMAT,
+  DATE_TZ_INPUT_FORMAT,
   DEFAULT_TIMEZONE,
   BC_TIMEZONE_NAMES,
   CANADA_TIMEZONE_MAP,
@@ -16,18 +17,19 @@ import {
 const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  timezoneFieldProps: PropTypes.shape({ name: PropTypes.string }).isRequired,
+  timezoneFieldProps: PropTypes.shape({ name: PropTypes.string }),
   disabled: PropTypes.bool,
-  formName: PropTypes.string.isRequired,
   change: PropTypes.func.isRequired,
   displayFormat: PropTypes.string,
   timezone: PropTypes.string, // to set a default other than user TZ for new records
+  showTime: PropTypes.bool,
   showTimezones: PropTypes.arrayOf(PropTypes.string), // list of zones to show, user tz will be added if within Canada
   validate: PropTypes.arrayOf(PropTypes.func),
 };
 const defaultProps = {
   disabled: false,
-  displayFormat: DATETIME_TZ_FORMAT,
+  displayFormat: null,
+  showTime: true,
   showTimezones: BC_TIMEZONE_NAMES,
   timezone: null,
   validate: [],
@@ -37,15 +39,15 @@ const RenderDateTimeTz = (props) => {
   const {
     disabled,
     timezoneFieldProps,
-    formName,
     input,
     meta,
     displayFormat,
     validate,
     timezone,
+    showTime,
     showTimezones,
   } = props;
-  const formValues = useSelector((state) => getFormValues(formName)(state));
+
   const tzGuess = moment.tz.guess();
   // find the matching zone within Canada
   const userCanadaTz = Object.entries(CANADA_TIMEZONE_MAP).find(
@@ -53,8 +55,14 @@ const RenderDateTimeTz = (props) => {
   );
   // return the tz name OR use the default if not within Canada.
   const userTz = userCanadaTz ? userCanadaTz[0] : DEFAULT_TIMEZONE;
+  let formTimezone;
+  if (timezoneFieldProps) {
+    const formValues = useSelector((state) => getFormValues(meta.form)(state));
+    formTimezone = formValues[timezoneFieldProps.name];
+  }
 
-  const defaultTimezone = formValues[timezoneFieldProps.name] ?? timezone ?? userTz;
+  const defaultTimezone = formTimezone ?? timezone ?? userTz;
+
   const [selectedTimezone, setTimezone] = useState(defaultTimezone);
   moment.tz.setDefault(defaultTimezone);
 
@@ -66,13 +74,29 @@ const RenderDateTimeTz = (props) => {
   });
 
   const datePickerFormat = (value) => {
-    return value ? moment.tz(value, selectedTimezone).format(displayFormat) : "";
+    const format = displayFormat ?? showTime ? DATETIME_TZ_INPUT_FORMAT : DATE_TZ_INPUT_FORMAT;
+    return value ? moment.tz(value, selectedTimezone).format(format) : "";
   };
 
-  const updateFormValues = (datetime = selectedDatetime) => {
-    props.change(formName, timezoneFieldProps.name, selectedTimezone);
+  const updateFormValues = (datetime) => {
+    setDatetime(datetime);
+    if (timezoneFieldProps) {
+      props.change(meta.form, timezoneFieldProps.name, selectedTimezone);
+    }
     return input.onChange(datetime);
   };
+
+  useEffect(() => {
+    if (timezone) {
+      setTimezone(timezone);
+    }
+  }, [timezone]);
+
+  useEffect(() => {
+    if (input.value) {
+      setDatetime(input.value);
+    }
+  }, [input.value]);
 
   return (
     <Form.Item
@@ -85,48 +109,54 @@ const RenderDateTimeTz = (props) => {
       <DatePicker
         id={input.name}
         meta={input.meta}
+        allowClear
         showNow
         disabled={disabled}
-        showTime={{ format: "HH:mm" }}
+        showTime={showTime && { format: "HH:mm" }}
         format={datePickerFormat}
-        value={selectedDatetime ? moment.tz(selectedDatetime, selectedTimezone) : null}
+        value={selectedDatetime ? moment(selectedDatetime) : null}
         validate={validate}
         onOpenChange={(open) => {
           if (!open) {
-            updateFormValues();
+            updateFormValues(selectedDatetime);
           }
+        }}
+        onChange={(val) => {
+          updateFormValues(val);
         }}
         onSelect={(val) => {
           setDatetime(val);
         }}
-        renderExtraFooter={() => (
-          <Form.Item label="Timezone" gutter={8} className="padding-md--top">
-            <Field
-              id={timezoneFieldProps.name}
-              name={timezoneFieldProps.name}
-              component={(tzProps) => (
-                <Select
-                  virtual={false}
-                  disabled={disabled}
-                  defaultValue={defaultTimezone}
-                  dropdownMatchSelectWidth
-                  getPopupContainer={(trigger) => trigger.parentNode}
-                  dropdownStyle={{
-                    zIndex: 100000,
-                    position: "relative",
-                  }}
-                  value={selectedTimezone}
-                  {...tzProps}
-                  {...timezoneFieldProps}
-                  onChange={(val) => {
-                    setTimezone(val);
-                  }}
-                  options={timezoneOptions}
-                />
-              )}
-            />
-          </Form.Item>
-        )}
+        renderExtraFooter={() =>
+          timezoneFieldProps && (
+            <Form.Item label="Timezone" gutter={8} className="padding-md--top">
+              <Field
+                id={timezoneFieldProps?.name}
+                name={timezoneFieldProps?.name}
+                component={(tzProps) => (
+                  <Select
+                    virtual={false}
+                    disabled={disabled}
+                    defaultValue={defaultTimezone}
+                    dropdownMatchSelectWidth
+                    getPopupContainer={(trigger) => trigger.parentNode}
+                    dropdownStyle={{
+                      zIndex: 100000,
+                      position: "relative",
+                    }}
+                    value={selectedTimezone}
+                    {...tzProps}
+                    {...timezoneFieldProps}
+                    onChange={(val) => {
+                      setTimezone(val);
+                    }}
+                    options={timezoneOptions}
+                  />
+                )}
+              />
+            </Form.Item>
+          )
+        }
       />
     </Form.Item>
   );

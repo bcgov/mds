@@ -1,6 +1,7 @@
 from app.api.activity.models.activity_notification import ActivityType
 from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
+from pytz import timezone
 from dateutil import parser
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -19,7 +20,6 @@ from app.api.parties.party.models.party import Party
 from app.api.activity.utils import trigger_notification
 
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
-
 
 def _compliance_article_is_do_subparagraph(ca):
     if ca is None:
@@ -41,7 +41,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('incident_location', type=str, location='json', required=True)
     parser.add_argument(
         'reported_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         required=False,
         location='json')
     parser.add_argument('reported_by_name', type=str, location='json')
@@ -64,7 +64,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('mine_determination_representative', type=str, location='json')
     parser.add_argument(
         'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         store_missing=False,
         location='json')
     parser.add_argument('status_code', type=str, location='json')
@@ -77,13 +77,13 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('johsc_worker_rep_name', type=str, location='json')
     parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_worker_rep_contact_method', type=str, location='json')
-    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
     parser.add_argument('johsc_management_rep_name', type=str, location='json')
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
-    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
     parser.add_argument('verbal_notification_provided', type=inputs.boolean, location='json')
-    parser.add_argument('verbal_notification_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('verbal_notification_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
 
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
@@ -120,8 +120,7 @@ class MineIncidentListResource(Resource, UserMixin):
                         'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3'
                     )
 
-        reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] else data['reported_timestamp']
+        reported_timestamp_default = datetime.now(timezone('UTC')) if not data['reported_timestamp'] else data['reported_timestamp']
 
         mine_incident_year = self._get_year_incident(data['incident_timestamp'])
         incident = MineIncident.create(
@@ -257,7 +256,7 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('incident_location', type=str, location='json', store_missing=False)
     parser.add_argument(
         'reported_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         store_missing=False,
         location='json')
     parser.add_argument('reported_by_name', type=str, location='json', store_missing=False)
@@ -284,7 +283,7 @@ class MineIncidentResource(Resource, UserMixin):
         'followup_inspection', type=inputs.boolean, location='json', store_missing=False)
     parser.add_argument(
         'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: parser.parse(x) if x else None,
         store_missing=False,
         location='json')
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
@@ -302,13 +301,13 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('johsc_worker_rep_name', type=str, location='json')
     parser.add_argument('johsc_worker_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_worker_rep_contact_method', type=str, location='json')
-    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('johsc_worker_rep_contact_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
     parser.add_argument('johsc_management_rep_name', type=str, location='json')
     parser.add_argument('johsc_management_rep_contacted', type=inputs.boolean, location='json')
     parser.add_argument('johsc_management_rep_contact_method', type=str, location='json')
-    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('johsc_management_rep_contact_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
     parser.add_argument('verbal_notification_provided', type=inputs.boolean, location='json')
-    parser.add_argument('verbal_notification_timestamp', type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None, location='json')
+    parser.add_argument('verbal_notification_timestamp', type=lambda x: parser.parse(x) if x else None, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all

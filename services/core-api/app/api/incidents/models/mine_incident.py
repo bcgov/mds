@@ -16,7 +16,6 @@ from app.config import Config
 from app.extensions import db
 from app.api.utils.helpers import format_email_datetime_to_string
 
-
 def getYear():
     return datetime.utcnow().year
 
@@ -252,7 +251,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     @validates('reported_timestamp')
     def validate_reported_timestamp(self, key, reported_timestamp):
         if reported_timestamp:
-            if reported_timestamp > datetime.utcnow():
+            if reported_timestamp > datetime.now(timezone('UTC')):
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
 
@@ -278,8 +277,8 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         emli_context = {
             "incident": {
                 "mine_incident_report_no": self.mine_incident_report_no,
-                "incident_timestamp": format_email_datetime_to_string(self.incident_timestamp),
-                "reported_timestamp": format_email_datetime_to_string(self.reported_timestamp),
+                "incident_timestamp": format_email_datetime_to_string(self.incident_timestamp, self.incident_timezone),
+                "reported_timestamp": format_email_datetime_to_string(self.reported_timestamp, self.incident_timezone),
                 "report_time_diff": f'{int(days[0])} days and {int(hours[0])} hours',
                 "reported_by_name": self.reported_by_name,
                 "incident_description": self.incident_description,
