@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { NOWActionWrapper } from "@/components/noticeOfWork/NOWActionWrapper";
 
-const reducerProps = {};
+const reducerProps: any = {};
 
 const setupReducerProps = () => {
   reducerProps.children = <></>;

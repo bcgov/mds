@@ -2,8 +2,8 @@ import React from "react";
 import { shallow } from "enzyme";
 import { AddCondition } from "@/components/Forms/permits/conditions/AddCondition";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.setEditingConditionFlag = jest.fn();

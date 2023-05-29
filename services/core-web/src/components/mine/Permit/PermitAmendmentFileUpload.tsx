@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -7,14 +6,14 @@ import { PERMITS } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
-const propTypes = {
-  onFileLoad: PropTypes.func.isRequired,
-  onRemoveFile: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  allowMultiple: PropTypes.bool.isRequired,
-};
+interface PermitAmendmentFileUploadProps {
+  onFileLoad: (arg1: string, arg2: string) => any;
+  onRemoveFile: (arg1: any, arg2: any) => any;
+  mineGuid: string;
+  allowMultiple: boolean;
+}
 
-export const PermitAmendmentFileUpload = (props) => (
+export const PermitAmendmentFileUpload: FC<PermitAmendmentFileUploadProps> = (props) => (
   <Form.Item>
     <Field
       id="fileUpload"
@@ -29,7 +28,5 @@ export const PermitAmendmentFileUpload = (props) => (
     />
   </Form.Item>
 );
-
-PermitAmendmentFileUpload.propTypes = propTypes;
 
 export default PermitAmendmentFileUpload;
