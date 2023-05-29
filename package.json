@@ -28,7 +28,7 @@
     "husky": "8.0.2",
     "lint-prepush": "2.2.1",
     "lint-staged": "10.0.0",
-    "prettier": "2.8.0"
+    "prettier": "1.19.1"
   },
   "scripts": {
     "postinstall": "husky install"

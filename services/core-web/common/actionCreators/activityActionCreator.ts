@@ -6,9 +6,15 @@ import { GET_ACTIVITIES } from "../constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import { storeActivities } from "../actions/activityActions";
 import { ACTIVITIES, ACTIVITIES_MARK_AS_READ } from "../constants/API";
+import { AppThunk } from "@/store/appThunk.type";
+import { AxiosResponse } from "axios";
+import { IActivity } from "@mds/common";
 
-// eslint-disable-next-line import/prefer-default-export
-export const fetchActivities = (user, page = 1, per_page = 20) => (dispatch) => {
+export const fetchActivities = (
+  user: string,
+  page = 1,
+  per_page = 20
+): AppThunk<Promise<AxiosResponse<IActivity>>> => (dispatch) => {
   dispatch(storeActivities({}));
   dispatch(request(GET_ACTIVITIES));
   dispatch(showLoading());
@@ -34,16 +40,15 @@ export const fetchActivities = (user, page = 1, per_page = 20) => (dispatch) => 
     .finally(() => dispatch(hideLoading()));
 };
 
-export const markActivitiesAsRead = (activity_guids) => (dispatch) => {
+export const markActivitiesAsRead = (activity_guids: string[]): AppThunk => (dispatch) => {
   dispatch(showLoading());
   const headers = {
     ...createRequestHeader(),
   };
   return CustomAxios()
     .patch(`${ENVIRONMENT.apiUrl}${ACTIVITIES_MARK_AS_READ()}`, { activity_guids }, headers)
-    .then((response) => {
+    .then(() => {
       dispatch(success(GET_ACTIVITIES));
-      return response;
     })
     .catch((err) => {
       dispatch(error(GET_ACTIVITIES));

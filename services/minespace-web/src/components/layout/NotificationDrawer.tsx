@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
@@ -7,34 +7,35 @@ import {
   fetchActivities,
   markActivitiesAsRead,
 } from "@common/actionCreators/activityActionCreator";
-import PropTypes from "prop-types";
 import { formatDateTime } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { storeActivities } from "@common/actions/activityActions";
 import { useHistory } from "react-router-dom";
 import {
-  MINE_DASHBOARD,
   EDIT_MINE_INCIDENT,
   EDIT_PROJECT_SUMMARY,
+  EDIT_TAILINGS_STORAGE_FACILITY,
+  MINE_DASHBOARD,
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
-  EDIT_TAILINGS_STORAGE_FACILITY,
 } from "@/constants/routes";
+import { ActionCreator } from "@mds/core-web/src/interfaces/actionCreator";
+import { IActivity } from "@mds/common";
 
-const propTypes = {
-  fetchActivities: PropTypes.func.isRequired,
-  markActivitiesAsRead: PropTypes.func.isRequired,
-  userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  storeActivities: PropTypes.func.isRequired,
-};
+interface INotificationDrawerProps {
+  fetchActivities: ActionCreator<typeof fetchActivities>;
+  markActivitiesAsRead: ActionCreator<typeof markActivitiesAsRead>;
+  userInfo: any;
+  activities: IActivity[];
+  storeActivities: typeof storeActivities;
+}
 
-const NotificationDrawer = (props) => {
+const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
   const [open, setOpen] = useState(false);
   const history = useHistory();
 
-  const handleMarkAsRead = async (guid = null) => {
+  const handleMarkAsRead = async (guid: string = null) => {
     if (guid) {
       await props.markActivitiesAsRead([guid]);
     }
@@ -60,7 +61,7 @@ const NotificationDrawer = (props) => {
     });
   };
 
-  const outsideClickHandler = (ref) => {
+  const outsideClickHandler = (ref: RefObject<HTMLDivElement>) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
         if (open) {
@@ -95,7 +96,7 @@ const NotificationDrawer = (props) => {
     handleCollapse();
   };
 
-  const navigationHandler = (notification) => {
+  const navigationHandler = (notification: IActivity) => {
     switch (notification.notification_document.metadata.entity) {
       case "NoticeOfDeparture":
         return {
@@ -165,7 +166,7 @@ const NotificationDrawer = (props) => {
     }
   };
 
-  const activityClickHandler = async (notification) => {
+  const activityClickHandler = async (notification: IActivity) => {
     await handleMarkAsRead(notification.notification_guid);
     handleCollapse();
     const routeSpecifics = navigationHandler(notification);
@@ -223,10 +224,9 @@ const NotificationDrawer = (props) => {
               </Button>
             </div>
             {(props.activities || [])?.map((activity) => (
-              <div className="notification-list-item">
+              <div className="notification-list-item" key={activity.notification_guid}>
                 <div className={!activity.notification_read ? "notification-dot" : ""} />
-                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-                <div tabIndex="0" role="button" onClick={() => activityClickHandler(activity)}>
+                <div tabIndex={0} role="button" onClick={() => activityClickHandler(activity)}>
                   <Typography.Text>{activity.notification_document?.message}</Typography.Text>
                   <Row className="items-center margin-small" gutter={6}>
                     <Col>
@@ -279,7 +279,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-NotificationDrawer.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationDrawer);
