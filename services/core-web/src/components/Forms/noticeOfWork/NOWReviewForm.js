@@ -114,14 +114,7 @@ export class NOWReviewForm extends Component {
                   <Field
                     id="response_url"
                     name="response_url"
-                    label={
-                      <label>
-                        Link to First Nations Consultation System (FNCS){" "}
-                        <a href="https://www.google.ca" target="_blank" rel="noopener noreferrer">
-                          open FNCS here
-                        </a>
-                      </label>
-                    }
+                    label="Link to First Nations Consultation System (FNCS)"
                     component={renderConfig.FIELD}
                     validate={[protocol]}
                   />
