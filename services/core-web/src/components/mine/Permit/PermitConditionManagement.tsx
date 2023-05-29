@@ -25,14 +25,14 @@ import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import { Link } from "react-router-dom";
 import * as route from "@/constants/routes";
-import { IDropDownListItem, IPermitAmendment } from "@mds/common";
+import { IOption, IPermitAmendment } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface PermitConditionManagementProps {
   openModal: (arg1: any) => void;
   closeModal: () => void;
   conditions: any[];
-  permitConditionCategoryOptions: IDropDownListItem[];
+  permitConditionCategoryOptions: IOption[];
   editingConditionFlag: boolean;
   fetchPermitConditions: ActionCreator<typeof fetchPermitConditions>;
   setEditingConditionFlag: ActionCreator<typeof setEditingConditionFlag>;

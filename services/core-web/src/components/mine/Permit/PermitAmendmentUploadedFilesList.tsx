@@ -25,10 +25,11 @@ export const PermitAmendmentUploadedFilesList: FC<PermitAmendmentUploadedFilesLi
             <Popconfirm
               placement="top"
               title={[
-                <p>Are you sure you want to remove this file?</p>,
-                <p>This cannot be undone.</p>,
+                <p key={file.permit_amendment_document_guid}>
+                  Are you sure you want to remove this file?
+                </p>,
+                <p key={file.permit_amendment_document_guid}>This cannot be undone.</p>,
               ]}
-              /* eslint react/jsx-key: 0 */
               okText="Yes"
               cancelText="No"
               onConfirm={() => {
