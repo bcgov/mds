@@ -40,11 +40,11 @@ const responseDateLabels = {
 
 const columns = (type) => {
   const urlColumn = {
-    title: "Link to CRTS",
+    title: "Link to Record",
     dataIndex: "response_url",
     key: "response_url",
     render: (text) => (
-      <div title="Link to CRTS">
+      <div title="Link to Record">
         {text ? (
           <a href={text} target="_blank" rel="noopener noreferrer" alt={text}>
             {truncateFilename(text)}
