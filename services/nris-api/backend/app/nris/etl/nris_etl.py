@@ -86,6 +86,9 @@ def import_nris_xml():
 
 def etl_nris_data():
     nris_data = db.session.query(NRISRawData).all()
+
+    print('Parsing {} assessments'.format(len(nris_data)))
+
     for item in nris_data:
         _parse_nris_element(item.nris_data)
 
@@ -134,12 +137,21 @@ def _parse_nris_element(input):
         closing = data.find('report_closing')
         notes = data.find('officer_notes')
 
+        authorization = data.find('authorization')
+
         inspection.mine_no = _parse_element_text(mine_number)
         inspection.inspector_idir = _parse_element_text(inspector)
         inspection.inspection_introduction = _parse_element_text(intro)
         inspection.inspection_preamble = _parse_element_text(preamble)
         inspection.inspection_closing = _parse_element_text(closing)
         inspection.officer_notes = _parse_element_text(notes)
+
+        # Parse Authorization (Permit)
+        if authorization is not None:
+            inspection.inspection_auth_source_id = _parse_element_text(authorization.find('source_id'))
+            inspection.inspection_auth_source_application = _parse_element_text(authorization.find('source_application'))
+            inspection.inspection_auth_status = _parse_element_text(authorization.find('auth_status'))
+            inspection.inspection_auth_type = _parse_element_text(authorization.find('auth_type'))
 
         db.session.add(inspection)
 

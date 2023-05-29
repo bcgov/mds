@@ -197,9 +197,7 @@ export const dateNotBeforeOther = memoize(
 
 export const dateNotBeforeStrictOther = memoize(
   (other) => (value) =>
-    value && other && new Date(value) < new Date(other)
-      ? `Date cannot be before ${other}`
-      : undefined
+    value && other && moment(value).isBefore(other) ? `Date cannot be before ${other}` : undefined
 );
 
 export const timeNotBeforeOther = memoize(

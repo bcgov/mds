@@ -12,7 +12,7 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownIncidentStatusCodeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { formatDate, dateSorter, optionsFilterLabelAndValue } from "@common/utils/helpers";
+import { dateSorter, optionsFilterLabelAndValue, formatDateTimeTz } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
@@ -97,8 +97,10 @@ const MineIncidentTable = (props) => {
         key: incident.mine_incident_guid,
         mine_guid: incident.mine_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
-        incident_timestamp: formatDate(incident.incident_timestamp),
-        reported_timestamp: formatDate(incident.reported_timestamp),
+        incident_timestamp: formatDateTimeTz(
+          incident.incident_timestamp,
+          incident.incident_timezone
+        ),
         reported_by: incident.reported_by_name || Strings.EMPTY_FIELD,
         mine_name: incident.mine_name || Strings.EMPTY_FIELD,
         incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD,
@@ -141,13 +143,13 @@ const MineIncidentTable = (props) => {
       render: (text) => <div title="Number">{text}</div>,
     },
     {
-      title: "Incident Date",
+      title: "Occurred On",
       key: "incident_timestamp",
       dataIndex: "incident_timestamp",
       sortField: "incident_timestamp",
       sorter: isDashboardView || dateSorter("incident_timestamp"),
       defaultSortOrder: "descend",
-      render: (text) => <span title="Incident Date">{text}</span>,
+      render: (text) => <span title="Occurred On">{text}</span>,
     },
     {
       title: "Mine",

@@ -25,6 +25,7 @@ exports[`MinespaceUserList renders properly 1`] = `
     ]
   }
   dataSource={Array []}
+  recordType="details"
   tableProps={
     Object {
       "align": "center",

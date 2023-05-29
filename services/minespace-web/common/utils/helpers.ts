@@ -1,11 +1,13 @@
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   CONSEQUENCE_CLASSIFICATION_RANK_HASH,
+  DATETIME_TZ_FORMAT,
+  DEFAULT_TIMEZONE,
 } from "@common/constants/strings";
 import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 /* eslint-disable */
-import moment from "moment";
+import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
 
@@ -78,6 +80,12 @@ export const formatDate = (dateString) =>
 export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
+
+export const formatDateTimeTz = (
+  dateTime: Date | string,
+  timezone: string = DEFAULT_TIMEZONE
+): string =>
+  moment(dateTime, true).isValid() && moment.tz(dateTime, timezone).format(DATETIME_TZ_FORMAT);
 
 export const timeAgo = (dateTime, unit = "day") => {
   const startDate = dateTime;
@@ -187,6 +195,8 @@ export const normalizePhone = (value, previousValue) => {
 };
 
 export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
+
+export const normalizeDatetime = (value) => moment(value).toISOString();
 
 export const upperCase = (value) => value && value.toUpperCase();
 

@@ -49,11 +49,11 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
+  recordType="associated bonds"
   tableProps={
     Object {
       "align": "left",
       "className": "nested-table",
-      "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],

@@ -289,10 +289,10 @@ exports[`MineExplosivesPermitTable renders properly 1`] = `
       },
     ]
   }
+  recordType="document details"
   tableProps={
     Object {
       "align": "left",
-      "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],

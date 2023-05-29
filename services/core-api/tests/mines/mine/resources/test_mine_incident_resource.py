@@ -36,12 +36,11 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
     now_time = datetime.now()
-    now_time_string = get_datetime_tz_naive_string(now_time)
     now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': now_time_string_iso8601,
-        'reported_timestamp': now_time_string,
+        'reported_timestamp': now_time_string_iso8601,
         'incident_description': "Someone got a paper cut",
         'incident_location': 'surface',
         'incident_timezone': 'Canada/Pacific'
@@ -68,12 +67,11 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
     test_mine_guid = MineFactory().mine_guid
 
     now_time = datetime.now()
-    now_time_string = get_datetime_tz_naive_string(now_time)
     now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': now_time_string_iso8601,
-        'reported_timestamp': now_time_string,
+        'reported_timestamp': now_time_string_iso8601,
         'incident_description': 'Someone got a paper cut',
         'incident_location': 'surface',
         'incident_timezone': 'Canada/Pacific',
@@ -107,12 +105,11 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
     ]
 
     now_time = datetime.now()
-    now_time_string = get_datetime_tz_naive_string(now_time)
     now_time_string_iso8601 = get_datetime_iso8601_string(now_time)
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': now_time_string_iso8601,
-        'reported_timestamp': now_time_string,
+        'reported_timestamp': now_time_string_iso8601,
         'incident_description': "Someone got a really bad paper cut",
         'incident_location': 'underground',
         'incident_timezone': 'Canada/Pacific',
@@ -182,12 +179,11 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
     new_time = datetime.now() - timedelta(days=1)
-    new_time_string = get_datetime_tz_naive_string(new_time)
     new_time_string_iso8601 = get_datetime_iso8601_string(new_time)
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': new_time_string_iso8601,
-        'reported_timestamp': new_time_string,
+        'reported_timestamp': new_time_string_iso8601,
         'incident_description': 'Someone got a paper cut',
         'mine_determination_type_code': 'NDO',
         'mine_determination_representative': 'Billy'

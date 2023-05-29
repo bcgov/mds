@@ -8,7 +8,7 @@ class ActivitySummaryStagingAreaDetailXref(Base):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
     activity_detail_id = db.Column(
-        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+        db.Integer, db.ForeignKey('activity_detail.activity_detail_id', ondelete='CASCADE'), primary_key=True)
 
     summary = db.relationship(
         'ActivitySummaryBase', backref='staging_area_summary_associations', load_on_pending=True)

@@ -93,10 +93,10 @@ exports[`MineAdministrativeAmendmentTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
+  recordType="amendment details"
   tableProps={
     Object {
       "align": "left",
-      "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],

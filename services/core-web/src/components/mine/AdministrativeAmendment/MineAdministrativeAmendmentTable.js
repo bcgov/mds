@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Badge, Tooltip, Table, Button } from "antd";
+import { Badge, Table, Button } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -90,27 +89,6 @@ const transformExpandedRowData = (record) => ({
     })),
 });
 
-const RenderTableExpandIcon = (rowProps) => (
-  <a
-    role="link"
-    className="expand-row-icon"
-    onClick={(e) => rowProps.onExpand(rowProps.record, e)}
-    onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
-    style={{ cursor: "pointer" }}
-    tabIndex="0"
-  >
-    {rowProps.expanded ? (
-      <Tooltip title="Click to hide amendment details." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Click to show amendment details." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    )}
-  </a>
-);
-
 export class MineAdministrativeAmendmentTable extends Component {
   createLinkTo = (route, record) => {
     return {
@@ -156,6 +134,7 @@ export class MineAdministrativeAmendmentTable extends Component {
         <div className="cap-col-height">
           {(trigger &&
             trigger.length > 0 &&
+            // eslint-disable-next-line react/jsx-key
             trigger.map((item) => <div>{item.description}</div>)) ||
             Strings.EMPTY_FIELD}
         </div>
@@ -270,11 +249,11 @@ export class MineAdministrativeAmendmentTable extends Component {
           this.props.sortField,
           this.props.sortDir
         )}
+        recordType="amendment details"
         tableProps={{
           align: "left",
           pagination: false,
           onChange: handleTableChange(this.props.handleSearch),
-          expandIcon: RenderTableExpandIcon,
           expandRowByClick: true,
           expandedRowRender: this.administrativeAmendmentDetail,
           expandedRowKeys: this.props.expandedRowKeys,

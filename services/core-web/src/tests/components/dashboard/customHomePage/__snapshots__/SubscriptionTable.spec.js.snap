@@ -90,6 +90,7 @@ exports[`SubscriptionTable renders properly 1`] = `
       },
     ]
   }
+  recordType="details"
   tableProps={
     Object {
       "align": "left",

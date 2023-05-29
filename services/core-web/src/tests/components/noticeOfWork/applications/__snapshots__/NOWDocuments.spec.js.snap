@@ -78,6 +78,7 @@ exports[`NOWDocuments renders properly 1`] = `
       }
     }
     pagination={false}
+    recordType="document description"
     rowSelection={null}
   />
 </div>
