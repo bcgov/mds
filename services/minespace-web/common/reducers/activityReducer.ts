@@ -1,7 +1,14 @@
+import { RootState } from "@/App";
 import * as actionTypes from "../constants/actionTypes";
 import { ACTIVITIES } from "../constants/reducerTypes";
+import { IActivity } from "@mds/common";
 
-const initialState = {
+interface IActivityReducer {
+  activities: IActivity[];
+  totalActivities: number;
+}
+
+const initialState: IActivityReducer = {
   activities: [],
   totalActivities: null,
 };
@@ -28,7 +35,7 @@ const activityReducerObject = {
   [ACTIVITIES]: activityReducer,
 };
 
-export const getActivities = (state) => state[ACTIVITIES].activities;
-export const getTotalActivities = (state) => state[ACTIVITIES].totalActivities;
+export const getActivities = (state: RootState) => state[ACTIVITIES].activities;
+export const getTotalActivities = (state: RootState) => state[ACTIVITIES].totalActivities;
 
 export default activityReducerObject;

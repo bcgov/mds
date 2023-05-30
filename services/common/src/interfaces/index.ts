@@ -20,3 +20,4 @@ export * from "./mineAlert.interface";
 export * from "./mineAlertCreate.interface";
 export * from "./mineComment.interface";
 export * from "./mineDocument.interface";
+export * from "./activity";
