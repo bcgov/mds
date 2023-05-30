@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Requireable, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect } from "react-redux";
@@ -45,14 +45,10 @@ interface IParams {
   mineDocumentGuid?: string;
 }
 
-interface IProps {
-  removeDocumentFromMineIncident: (IParams) => Promise<void>;
-  fetchMineIncident: (mineGuid: string, mineIncidentGuid: string) => Promise<void>;
-}
-
 export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   const { formValues, formErrors, incident, history } = props;
-  const { mineGuid, mineIncidentGuid = null }: any = useParams<IParams>();
+  const params = useParams<IParams>();
+  const { mineGuid, mineIncidentGuid = null } = params;
   const { pathname, search = null } = useLocation();
   const [isNewIncident, setIsNewIncident] = useState<boolean>(!mineIncidentGuid);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -83,10 +79,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     }
   };
 
-  const handleFetchData = (
-    { mineGuid, mineIncidentGuid }: IParams,
-    props?: IProps
-  ): Promise<void> => {
+  const handleFetchData = (): Promise<void> => {
     if (mineGuid && mineIncidentGuid) {
       setIsNewIncident(false);
       return props.fetchMineIncident(mineGuid, mineIncidentGuid);
@@ -101,7 +94,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
         history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
-      .then(() => handleFetchData({ mineGuid, mineIncidentGuid }))
+      .then(() => handleFetchData())
       .then(() => setIsLoaded(true));
   };
 
@@ -109,7 +102,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     setIsLoaded(false);
     return props
       .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
-      .then(() => handleFetchData({ mineGuid, mineIncidentGuid }))
+      .then(() => handleFetchData())
       .then(() => setIsLoaded(true));
   };
 
@@ -152,13 +145,15 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return null;
   };
 
-  const handleDeleteDocument = (
-    params: IParams,
-    props: IProps,
-    handleFetchData: () => void
-  ): Promise<void> | null => {
+  const handleDeleteDocument = (): Promise<void> | null => {
     if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
-      return props.removeDocumentFromMineIncident(params).then(() => handleFetchData());
+      return props
+        .removeDocumentFromMineIncident(
+          params?.mineGuid,
+          params?.mineIncidentGuid,
+          params.mineDocumentGuid
+        )
+        .then(() => handleFetchData());
     }
     return null;
   };
@@ -182,9 +177,9 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
 
   const incidentFormProps = {
     initialValues: formatInitialValues(),
-    isEditMode: { isEditMode },
-    isNewIncident: { isNewIncident },
-    incident: { incident },
+    isEditMode: isEditMode,
+    isNewIncident: isNewIncident,
+    incident: incident,
     handlers: {
       deleteDocument: handleDeleteDocument,
       handleSaveData,
@@ -208,7 +203,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   window.addEventListener("scroll", handleScroll);
 
   useEffect(() => {
-    handleFetchData({ mineGuid, mineIncidentGuid }).then(() => {
+    handleFetchData().then(() => {
       setIsLoaded(true);
 
       return () => {
