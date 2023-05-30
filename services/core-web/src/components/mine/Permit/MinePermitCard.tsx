@@ -1,26 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
 import { getMineTenureTypesHash } from "@common/selectors/staticContentSelectors";
-import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { IPermit, IPermitPartyRelationship } from "@mds/common";
 
-const propTypes = {
-  permit: PropTypes.objectOf(CustomPropTypes.permit),
-  PartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
-};
+interface MinePermitCardProps {
+  permit?: IPermit;
+  PartyRelationships?: IPermitPartyRelationship[];
+  mineTenureHash: any;
+}
 
-const defaultProps = {
-  permit: {},
-  PartyRelationships: [],
-};
-
-export const PermitCard = (props) => {
+export const PermitCard: FC<MinePermitCardProps> = (props) => {
   const pmt = props.PartyRelationships.filter((pr) => pr.mine_party_appt_type_code === "PMT")
     .filter((pmts) => pmts.related_guid.includes(props.permit.permit_guid))
-    .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
+    .sort((a, b) => new Date(b.start_date).valueOf() - new Date(a.start_date).valueOf())[0];
   return (
     <div>
       <h4>{props.permit.permit_no}</h4>
@@ -55,9 +49,6 @@ export const PermitCard = (props) => {
     </div>
   );
 };
-
-PermitCard.propTypes = propTypes;
-PermitCard.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),

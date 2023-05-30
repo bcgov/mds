@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { Col, Row, Popconfirm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
+import { IPermitAmendmentMineDocument } from "@mds/common";
 
-import CustomPropTypes from "@/customPropTypes";
+interface PermitAmendmentUploadedFilesListProps {
+  relatedDocuments: IPermitAmendmentMineDocument[];
+  handleRemovePermitAmendmentDocument: (arg1: any[], arg2: string) => any;
+}
 
-const propTypes = {
-  relatedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
-  handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
-};
-
-export const PermitAmendmentUploadedFilesList = (props) => (
+export const PermitAmendmentUploadedFilesList: FC<PermitAmendmentUploadedFilesListProps> = (
+  props
+) => (
   <div>
     {props.relatedDocuments.map((file) => (
       <div
@@ -25,8 +25,10 @@ export const PermitAmendmentUploadedFilesList = (props) => (
             <Popconfirm
               placement="top"
               title={[
-                <p>Are you sure you want to remove this file?</p>,
-                <p>This cannot be undone.</p>,
+                <p key={file.permit_amendment_document_guid}>
+                  Are you sure you want to remove this file?
+                </p>,
+                <p key={file.permit_amendment_document_guid}>This cannot be undone.</p>,
               ]}
               okText="Yes"
               cancelText="No"
@@ -47,7 +49,5 @@ export const PermitAmendmentUploadedFilesList = (props) => (
     ))}
   </div>
 );
-
-PermitAmendmentUploadedFilesList.propTypes = propTypes;
 
 export default PermitAmendmentUploadedFilesList;

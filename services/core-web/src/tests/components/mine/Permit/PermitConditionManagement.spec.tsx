@@ -2,8 +2,8 @@ import React from "react";
 import { shallow } from "enzyme";
 import { PermitConditionManagement } from "@/components/mine/Permit/PermitConditionManagement";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();

@@ -14,3 +14,6 @@ export * from "./standardPermitCondition.interface";
 export * from "./permitParty.interface";
 export * from "./permitPartyRelationship.interface";
 export * from "./updatePermitAmendmentPayload.interface";
+export * from "./PermitAmendmentMineDocument.interface";
+export * from "./patchPermitNumber.interface";
+export * from "./draftPermitAmendment.interface";
