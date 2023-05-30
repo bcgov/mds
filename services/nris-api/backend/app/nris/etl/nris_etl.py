@@ -85,12 +85,29 @@ def import_nris_xml():
 
 
 def etl_nris_data():
-    nris_data = db.session.query(NRISRawData).all()
+    nris_data = db.session.query(NRISRawData) \
+        .paginate(per_page=100)
 
-    print('Parsing {} assessments'.format(len(nris_data)))
+    has_next_page = True
+    i = 0
 
-    for item in nris_data:
-        _parse_nris_element(item.nris_data)
+    print('Parsing {} assessments'.format(nris_data.total))
+
+    # Parse nris elements iteratively using pagination
+    # Print "progress" as we go
+    while has_next_page:
+        has_next_page = bool(nris_data.next_num)
+
+        for item in nris_data.items:
+            i = i+1
+
+            if(i % 100 == 0):
+                print(i, '/', nris_data.total)
+
+            _parse_nris_element(item.nris_data)
+        nris_data = nris_data.next()
+
+
 
 
 def _parse_element_text(_element):
