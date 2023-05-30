@@ -114,7 +114,7 @@ export class NOWReviewForm extends Component {
                   <Field
                     id="response_url"
                     name="response_url"
-                    label="Link to CRTS"
+                    label="Link to First Nations Consultation System (FNCS)"
                     component={renderConfig.FIELD}
                     validate={[protocol]}
                   />
