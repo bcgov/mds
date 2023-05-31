@@ -255,11 +255,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
                 name="incident_timestamp"
                 disabled={!isEditMode}
                 normalize={normalizeDatetime}
-                validate={[
-                  dateNotInFutureTZ,
-                  required,
-                  // dateTimezoneRequired("incident_timezone")
-                ]}
+                validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
                 props={{ timezoneFieldProps: { name: "incident_timezone" } }}
                 component={RenderDateTimeTz}
               />
