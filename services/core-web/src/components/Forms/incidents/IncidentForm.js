@@ -531,8 +531,10 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const { inspectorContactedValidation, inspectorContacted } =
-    retrieveInitialReportDynamicValidation(childProps);
+  const {
+    inspectorContactedValidation,
+    inspectorContacted,
+  } = retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
@@ -593,7 +595,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
             <h4>Verbal Notification</h4>
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)">
+            <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
               <Field
                 id="verbal_notification_provided"
                 name="verbal_notification_provided"
