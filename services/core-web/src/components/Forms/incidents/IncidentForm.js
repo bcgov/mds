@@ -21,6 +21,7 @@ import {
   requiredNotUndefined,
   dateNotBeforeStrictOther,
   dateNotInFutureTZ,
+  dateTimezoneRequired,
 } from "@common/utils/Validate";
 import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -254,7 +255,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
                 name="incident_timestamp"
                 disabled={!isEditMode}
                 normalize={normalizeDatetime}
-                validate={[dateNotInFutureTZ, required]}
+                validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
                 props={{ timezoneFieldProps: { name: "incident_timezone" } }}
                 component={RenderDateTimeTz}
               />
@@ -966,12 +967,7 @@ export const IncidentForm = (props) => {
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
-          {renderInitialReport(
-            incidentCategoryCodeOptions,
-            locationOptions,
-            isEditMode,
-            props.form
-          )}
+          {renderInitialReport(incidentCategoryCodeOptions, locationOptions, isEditMode)}
           <br />
           {renderDocumentation(props, isEditMode, localHandlers, parentHandlers)}
           <br />

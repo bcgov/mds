@@ -1,5 +1,5 @@
 from datetime import datetime
-from pytz import timezone
+from pytz import timezone, all_timezones
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -243,6 +243,8 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         if key =='incident_timezone':
             incident_timestamp = self.incident_timestamp
             incident_timezone = value
+            if not incident_timezone or incident_timezone not in all_timezones:
+                raise AssertionError('invalid incident_timezone')
             if incident_timestamp:
                 if incident_timestamp > datetime.now(timezone(incident_timezone)):
                     raise AssertionError('incident_timestamp must not be in the future')
