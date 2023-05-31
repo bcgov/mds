@@ -15,6 +15,7 @@ import {
   number,
   dateNotInFuture,
   dateNotInFutureTZ,
+  dateTimezoneRequired,
   dateNotBeforeStrictOther,
   wholeNumber,
   requiredRadioButton,
@@ -327,7 +328,7 @@ const renderIncidentDetails = (childProps) => {
             id="incident_timestamp"
             name="incident_timestamp"
             disabled={formDisabled}
-            validate={[dateNotInFutureTZ, required]}
+            validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
             normalize={normalizeDatetime}
             component={RenderDateTimeTz}
             props={{ timezoneFieldProps: { name: "incident_timezone" } }}
