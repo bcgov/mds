@@ -158,6 +158,7 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
     parser.add_argument('description', type=str, location='json')
 
     @api.response(201, 'Successfully linked document.')
+    @requires_role_edit_permit
     def post(self, application_guid):
         data = self.parser.parse_args()
         document_manager_document_guid = data.get('document_manager_document_guid')
