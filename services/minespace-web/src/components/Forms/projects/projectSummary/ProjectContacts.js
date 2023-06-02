@@ -130,6 +130,7 @@ const contacts = ({ fields }) => {
 
 export class ProjectContacts extends Component {
   componentWillMount() {
+    console.log(this.props);
     if (isNil(this.props.contacts) || this.props.contacts.length === 0) {
       this.props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
     }

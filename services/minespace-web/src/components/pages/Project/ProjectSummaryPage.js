@@ -160,6 +160,7 @@ export const ProjectSummaryPage = (props) => {
       ...values,
       authorizations: updatedAuthorizations,
     };
+    console.log('transformed payloadValues', payloadValues)
     // eslint-disable-next-line no-param-reassign
     delete payloadValues.authorizationOptions;
     return payloadValues;
