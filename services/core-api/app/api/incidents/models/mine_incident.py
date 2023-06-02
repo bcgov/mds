@@ -248,8 +248,10 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             if not tz_legacy:
                 if not incident_timezone or incident_timezone not in all_timezones:
                     raise AssertionError('invalid incident_timezone')
-            if incident_timestamp:
                 if incident_timestamp > datetime.now(timezone(incident_timezone)):
+                    raise AssertionError('incident_timestamp must not be in the future')
+            if incident_timestamp and tz_legacy:
+                if incident_timestamp > datetime.now(timezone('UTC')):
                     raise AssertionError('incident_timestamp must not be in the future')
         return value
         
