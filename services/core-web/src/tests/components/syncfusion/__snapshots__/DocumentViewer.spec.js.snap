@@ -5,8 +5,8 @@ exports[`DocumentViewer renders properly 1`] = `
   footer={null}
   onCancel={[Function]}
   onOk={[Function]}
+  open={true}
   title="mock title"
-  visible={true}
   width="98%"
 >
   <n
