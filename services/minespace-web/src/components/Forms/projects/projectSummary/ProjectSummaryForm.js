@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { flattenObject, resetForm } from "@common/utils/helpers";
 import { compose, bindActionCreators } from "redux";
-import { isNil } from "lodash";
 import {
   reduxForm,
   change,
@@ -13,16 +12,11 @@ import {
   getFormValues,
   getFormSyncErrors,
 } from "redux-form";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Row, Col, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import BasicInformation from "@/components/Forms/projects/projectSummary/BasicInformation";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
-import LinkButton from "@/components/common/LinkButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
 import ProjectDates from "@/components/Forms/projects/projectSummary/ProjectDates";
 import AuthorizationsInvolved from "@/components/Forms/projects/projectSummary/AuthorizationsInvolved";
@@ -65,27 +59,26 @@ const tabs = [
   "document-upload",
 ];
 
-
 export class ProjectSummaryForm extends Component {
-
   render() {
     const renderTabComponent = (tab) =>
-    ({
-      "basic-information": <BasicInformation initialValues={this.props.initialValues} />,
-      "project-contacts": <ProjectContacts initialValues={this.props.initialValues} />,
-      "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
-      "authorizations-involved": (
-        <AuthorizationsInvolved
-          initialValues={this.props.initialValues}
-          change={this.props.change}
-        />
-      ),
-      "document-upload": (
-        <DocumentUpload initialValues={this.props.initialValues} {...this.props} />
-      ),
-    }[tab]);
+      ({
+        "basic-information": <BasicInformation initialValues={this.props.initialValues} />,
+        "project-contacts": <ProjectContacts initialValues={this.props.initialValues} />,
+        "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
+        "authorizations-involved": (
+          <AuthorizationsInvolved
+            initialValues={this.props.initialValues}
+            change={this.props.change}
+          />
+        ),
+        "document-upload": (
+          <DocumentUpload initialValues={this.props.initialValues} {...this.props} />
+        ),
+      }[tab]);
 
     const errors = Object.keys(flattenObject(this.props.formErrors));
+    const disabledTabs = errors.length > 0;
     return (
       <SteppedForm
         errors={errors}
@@ -94,11 +87,11 @@ export class ProjectSummaryForm extends Component {
         handleTabChange={this.props.handleTabChange}
         activeTab={this.props.activeTab}
       >
-        {tabs.map((tab) =>
-          <Step key={tab}>
-            {renderTabComponent(tab)}
+        {tabs.map((tab) => (
+          <Step key={tab} disabled={disabledTabs}>
+            {renderTabComponent(tab, disabledTabs)}
           </Step>
-        )}
+        ))}
       </SteppedForm>
     );
   }
@@ -131,6 +124,6 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
     onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
-    onSubmit: () => { },
+    onSubmit: () => {},
   })
 )(withRouter(ProjectSummaryForm));

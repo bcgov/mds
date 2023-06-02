@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { flattenObject, formatUrlToUpperCaseString } from "@common/utils/helpers";
+import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
-import { submit, formValueSelector, getFormSyncErrors, reset, touch, getFormValues } from "redux-form";
-import { Row, Col, Typography, Tabs, Divider } from "antd";
+import { submit, formValueSelector, getFormSyncErrors, reset, touch } from "redux-form";
+import { Row, Col, Typography, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -55,7 +55,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   touch: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  // formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
   anyTouched: PropTypes.bool,
   formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -94,16 +94,23 @@ export const ProjectSummaryPage = (props) => {
     clearProjectSummary,
     createProjectSummary,
     updateProjectSummary,
-    updateProject
+    updateProject,
   } = props;
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams();
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
-
   const history = useHistory();
   const location = useLocation();
+
+  const activeTab = tab ?? tabs[0];
+
+  const handleFetchData = () => {
+    if (projectGuid && projectSummaryGuid) {
+      setIsEditMode(true);
+      return fetchProjectById(projectGuid);
+    }
+    return fetchMineRecordById(mineGuid);
+  };
 
   useEffect(() => {
     if (!isLoaded) {
@@ -111,59 +118,13 @@ export const ProjectSummaryPage = (props) => {
     }
     return () => {
       clearProjectSummary();
-    }
+    };
   }, []);
 
-  const handleFetchData = () => {
-    if (projectGuid && projectSummaryGuid) {
-      setIsEditMode(true);
-      return fetchProjectById(projectGuid)
-    }
-    return fetchMineRecordById(mineGuid)
-  }
-
-  const handleSaveData = (e, tab) => {
-    if (e) {
-      e.preventDefault();
-    }
-    const message = tab === 'document-upload'
-      ? "Successfully submitted a project description to the Province of British Columbia."
-      : "Successfully updated the project description.";
-    const values = { ...formValues, status_code: "SUB" };
-    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    const errors = Object.keys(flattenObject(formErrors));
-    if (errors.length === 0) {
-      if (!isEditMode) {
-        return handleCreateProjectSummary(values, message);
-      }
-      return handleUpdateProjectSummary(values, message);
-    }
-  };
-
-  const handleSaveDraft = (e) => {
-    console.log(e);
-    const message = "Successfully saved a draft project description.";
-    const values = { ...formValues, status_code: "DFT" };
-    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    const errors = Object.keys(flattenObject(formErrors));
-    if (errors.length === 0) {
-      if (!isEditMode) {
-        return handleCreateProjectSummary(values, message);
-      }
-      return handleUpdateProjectSummary(values, message);
-    }
-
-  }
-
   const handleTransformPayload = (values) => {
-    console.log('raw payload values', values)
-    // const status_code = !this.state.isEditMode || this.props.initialValues.status_code === "DFT" ? "DFT" : "SUB";
     let payloadValues = {};
     const updatedAuthorizations = [];
-    // eslint-disable-next-line array-callback-return
-    Object.keys(values).map((key) => {
+    Object.keys(values).forEach((key) => {
       // Pull out form properties from request object that match known authorization types
       if (values[key] && projectSummaryAuthorizationTypesArray.includes(key)) {
         const project_summary_guid = values?.project_summary_guid;
@@ -192,46 +153,19 @@ export const ProjectSummaryPage = (props) => {
       ...values,
       authorizations: updatedAuthorizations,
     };
-    console.log('transformed payloadValues', payloadValues)
     // eslint-disable-next-line no-param-reassign
     delete payloadValues.authorizationOptions;
     return payloadValues;
   };
 
-  const handleTabChange = (activeTab) => {
-    const url = isEditMode
-      ? EDIT_PROJECT_SUMMARY.dynamicRoute(
-        projectGuid,
-        projectSummaryGuid,
-        activeTab
-      )
-      : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, activeTab);
-    // setActiveTab(activeTab);
-    history.push(url);
-  };
-
-  const handleCreateProjectSummary = (values, message) => {
-    return createProjectSummary(
-      {
-        mineGuid: mineGuid,
-      },
-      handleTransformPayload(values),
-      message
-    )
-      .then(({ data: { project_guid, project_summary_guid } }) => {
-        history.replace(
-          EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid)
-        );
-      });
-  }
-
   const handleUpdateProjectSummary = (values, message) => {
-    const { project_guid: projectGuid, project_summary_guid: projectSummaryGuid } = values;
+    const { project_guid, project_summary_guid } = values;
     const payload = handleTransformPayload(values);
+    setIsLoaded(false);
     return updateProjectSummary(
       {
-        projectGuid,
-        projectSummaryGuid,
+        projectGuid: project_guid,
+        projectSummaryGuid: project_summary_guid,
       },
       payload,
       message
@@ -246,11 +180,63 @@ export const ProjectSummaryPage = (props) => {
       })
       .then(() => {
         handleFetchData();
+        setIsLoaded(true);
       });
-  }
+  };
 
-  const errors = Object.keys(flattenObject(formErrors));
-  const disabledTabs = errors.length > 0;
+  const handleCreateProjectSummary = (values, message) => {
+    return createProjectSummary(
+      {
+        mineGuid: mineGuid,
+      },
+      handleTransformPayload(values),
+      message
+    ).then(({ data: { project_guid, project_summary_guid } }) => {
+      history.replace(EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid));
+    });
+  };
+
+  const handleSaveData = (e, currentTab) => {
+    if (e) {
+      e.preventDefault();
+    }
+    const message =
+      currentTab === "document-upload"
+        ? "Successfully submitted a project description to the Province of British Columbia."
+        : "Successfully updated the project description.";
+    const values = { ...formValues, status_code: "SUB" };
+    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const errors = Object.keys(flattenObject(formErrors));
+    if (errors.length === 0) {
+      if (!isEditMode) {
+        return handleCreateProjectSummary(values, message);
+      }
+      return handleUpdateProjectSummary(values, message);
+    }
+  };
+
+  const handleSaveDraft = () => {
+    const message = "Successfully saved a draft project description.";
+    const values = { ...formValues, status_code: "DFT" };
+    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    const errors = Object.keys(flattenObject(formErrors));
+    if (errors.length === 0) {
+      if (!isEditMode) {
+        return handleCreateProjectSummary(values, message);
+      }
+      return handleUpdateProjectSummary(values, message);
+    }
+  };
+
+  const handleTabChange = (newTab) => {
+    const url = isEditMode
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
+      : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
+    history.push(url);
+  };
+
   const mineName = isEditMode
     ? formattedProjectSummary?.mine_name || ""
     : mines[mineGuid]?.mine_name || "";
@@ -258,7 +244,9 @@ export const ProjectSummaryPage = (props) => {
     ? `Edit project description - ${projectSummary?.project_summary_title}`
     : `New project description for ${mineName}`;
 
-  let initialValues = isEditMode ? { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required } : {};
+  let initialValues = isEditMode
+    ? { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required }
+    : {};
 
   return (
     (isLoaded && (
@@ -310,7 +298,7 @@ export const ProjectSummaryPage = (props) => {
       </>
     )) || <Loading />
   );
-}
+};
 
 const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
 const mapStateToProps = (state) => ({
@@ -323,7 +311,7 @@ const mapStateToProps = (state) => ({
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  // formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
   contacts: selector(state, "contacts"),
 });
 
