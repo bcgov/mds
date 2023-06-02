@@ -193,6 +193,7 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
       dispatch(success(reducerTypes.GET_PROJECT));
       dispatch(projectActions.storeProject(response.data));
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
+      // the below is blank??
       dispatch(projectActions.storeProjectSummary(response.data.project_summary));
       dispatch(success(reducerTypes.GET_INFORMATION_REQUIREMENTS_TABLE));
       dispatch(

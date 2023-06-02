@@ -59,7 +59,6 @@ const tabs = [
   "document-upload",
 ];
 
-
 export class ProjectSummaryForm extends Component {
   render() {
     const renderTabComponent = (tab) =>
