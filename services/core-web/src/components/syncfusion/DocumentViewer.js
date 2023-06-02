@@ -110,7 +110,7 @@ export class DocumentViewer extends Component {
     return (
       <Modal
         title={this.props.props.title}
-        open={this.props.isDocumentViewerOpen}
+        visible={this.props.isDocumentViewerOpen}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         footer={null}
