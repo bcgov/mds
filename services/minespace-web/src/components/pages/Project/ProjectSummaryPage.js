@@ -3,7 +3,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
-import { submit, formValueSelector, getFormSyncErrors, reset, touch } from "redux-form";
+import {
+  submit,
+  formValueSelector,
+  getFormSyncErrors,
+  getFormValues,
+  reset,
+  touch,
+} from "redux-form";
 import { Row, Col, Typography, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -55,7 +62,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   touch: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
-  // formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
   anyTouched: PropTypes.bool,
   formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -159,13 +166,12 @@ export const ProjectSummaryPage = (props) => {
   };
 
   const handleUpdateProjectSummary = (values, message) => {
-    const { project_guid, project_summary_guid } = values;
     const payload = handleTransformPayload(values);
     setIsLoaded(false);
     return updateProjectSummary(
       {
-        projectGuid: project_guid,
-        projectSummaryGuid: project_summary_guid,
+        projectGuid,
+        projectSummaryGuid,
       },
       payload,
       message
@@ -311,7 +317,7 @@ const mapStateToProps = (state) => ({
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  // formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
   contacts: selector(state, "contacts"),
 });
 
