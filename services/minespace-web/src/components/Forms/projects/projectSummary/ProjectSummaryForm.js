@@ -89,7 +89,7 @@ export class ProjectSummaryForm extends Component {
       >
         {tabs.map((tab) => (
           <Step key={tab} disabled={disabledTabs}>
-            {renderTabComponent(tab, disabledTabs)}
+            {renderTabComponent(tab)}
           </Step>
         ))}
       </SteppedForm>
