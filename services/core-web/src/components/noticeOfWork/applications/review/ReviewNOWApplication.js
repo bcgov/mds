@@ -1100,61 +1100,6 @@ export const ReviewNOWApplication = (props) => {
             )}
           </>
         </ScrollContentWrapper>
-
-        <ScrollContentWrapper id="cultural-heritage-resources" title="Cultural Heritage Resources">
-          <>
-            <Row gutter={16}>
-              <Col md={12} sm={24}>
-                <div className="field-title">
-                  Are you aware of any protected archaeological sites that may be affected by the
-                  proposed project?
-                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                  <NOWOriginalValueTooltip
-                    originalValue={
-                      props.renderOriginalValues("state_of_land.has_archaeology_sites_affected")
-                        .value
-                    }
-                    isVisible={
-                      props.renderOriginalValues("state_of_land.has_archaeology_sites_affected")
-                        .edited
-                    }
-                  />
-                </div>
-                <Field
-                  id="has_archaeology_sites_affected"
-                  name="has_archaeology_sites_affected"
-                  component={RenderRadioButtons}
-                  disabled={props.isViewMode}
-                  validate={[requiredRadioButton]}
-                />
-                {props.archaeologySitesAffected && (
-                  <>
-                    <div className="field-title">
-                      Plan to protect the archaeological site
-                      {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                      <NOWOriginalValueTooltip
-                        originalValue={
-                          props.renderOriginalValues("state_of_land.arch_site_protection_plan")
-                            .value
-                        }
-                        isVisible={
-                          props.renderOriginalValues("state_of_land.arch_site_protection_plan")
-                            .edited
-                        }
-                      />
-                    </div>
-                    <Field
-                      id="arch_site_protection_plan"
-                      name="arch_site_protection_plan"
-                      component={RenderField}
-                      disabled={props.isViewMode}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-          </>
-        </ScrollContentWrapper>
         <ScrollContentWrapper id="first-nations-engagement" title="First Nations Engagement">
           <>
             <Row gutter={16}>

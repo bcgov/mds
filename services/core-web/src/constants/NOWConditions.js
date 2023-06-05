@@ -69,12 +69,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "cultural-heritage-resources",
-        title: "Cultural Heritage Resources",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
         href: "first-nations-engagement",
         title: "First Nations Engagement",
         alwaysVisible: true,
