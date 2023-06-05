@@ -36,6 +36,7 @@ class StateOfLand(Base):
     legal_description_land = db.Column(db.String)
 
     has_shared_info_with_fn = db.Column(db.Boolean)
+    has_acknowledged_undrip = db.Column(db.Boolean)
     has_fn_cultural_heritage_sites_in_area = db.Column(db.Boolean)
     has_activity_in_park = db.Column(db.Boolean)
     is_on_private_land = db.Column(db.Boolean)
