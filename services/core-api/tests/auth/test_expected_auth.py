@@ -52,7 +52,7 @@ from app.api.projects.information_requirements_table.resources.information_requi
 from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
 from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
 from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
-
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
@@ -88,6 +88,7 @@ from app.api.projects.project_decision_package.resources.project_decision_packag
      (MineVarianceListResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
      (MineVarianceResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineVarianceResource, "put", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (NOWApplicationDocumentIdentityResource, "post", [EDIT_PERMIT]),
      (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
      (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "delete", [MINE_ADMIN]),

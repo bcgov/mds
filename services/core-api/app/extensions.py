@@ -26,6 +26,7 @@ def get_jwt_by_audience(aud):
         'JWT_OIDC_AUDIENCE_NRIS': jwt_nris,
         'JWT_OIDC_AUDIENCE_VFCBC': jwt_vfcbc,
         'JWT_OIDC_AUDIENCE_BCGW': jwt_bcgw,
+        'JWT_OIDC_AUDIENCE_DOCMAN_CELERY': jwt_docman_celery,
     }
 
     for audience_env, jwt_value in audience_jwt_map.items():
@@ -49,6 +50,9 @@ jwt_gentax = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_GENTAX'
 jwt_nris = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_NRIS'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_NRIS'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 jwt_vfcbc = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_VFCBC'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_VFCBC'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 jwt_bcgw = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_BCGW'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_BCGW'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+
+# Gold SSO - Register Config Per Integration Client for Internal Services:
+jwt_docman_celery = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_DOCMAN_CELERY'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_DOCMAN_CELERY'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 
 
 # Test JWT Config for integration tests

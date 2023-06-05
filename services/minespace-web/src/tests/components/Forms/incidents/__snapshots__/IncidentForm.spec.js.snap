@@ -236,6 +236,7 @@ exports[`IncidentForm renders properly 1`] = `
                 Array [
                   [Function],
                   [Function],
+                  [Function],
                 ]
               }
             />
@@ -419,7 +420,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)"
+            label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
           >
             <Field
               component={[Function]}

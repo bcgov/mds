@@ -7,7 +7,6 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
   props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;
   props.mines = {};
   props.fieldsTouched = {};
@@ -22,6 +21,24 @@ const setupDispatchProps = () => {
   dispatchProps.updateProjectSummary = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
 };
+
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      projectGuid: "74120872-74f2-4e27-82e6-878ddb472e5a",
+      projectSummaryGuid: "70414192-ca71-4d03-93a5-630491e9c554",
+      tab: "basic-information",
+    }),
+    useLocation: jest.fn().mockReturnValue({
+      pathname:
+        "/projects/74120872-74f2-4e27-82e6-878ddb472e5a/project-description/70414192-ca71-4d03-93a5-630491e9c554/basic-information",
+    }),
+  };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
 
 beforeEach(() => {
   setupProps();

@@ -323,9 +323,6 @@ export class ApplicationTab extends Component {
                 } that must be fixed before proceeding.`}
                 type="error"
                 showIcon
-                style={{
-                  display: "initial",
-                }}
               />
             )}
           </div>

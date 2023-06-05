@@ -21,6 +21,7 @@ import {
   requiredNotUndefined,
   dateNotBeforeStrictOther,
   dateNotInFutureTZ,
+  dateTimezoneRequired,
 } from "@common/utils/Validate";
 import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -254,7 +255,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
                 name="incident_timestamp"
                 disabled={!isEditMode}
                 normalize={normalizeDatetime}
-                validate={[dateNotInFutureTZ, required]}
+                validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
                 props={{ timezoneFieldProps: { name: "incident_timezone" } }}
                 component={RenderDateTimeTz}
               />
@@ -531,8 +532,10 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const { inspectorContactedValidation, inspectorContacted } =
-    retrieveInitialReportDynamicValidation(childProps);
+  const {
+    inspectorContactedValidation,
+    inspectorContacted,
+  } = retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
@@ -559,7 +562,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
           </Col>
           {formValues?.determination_type_code &&
             formValues?.determination_type_code !==
-              Strings.INCIDENT_DETERMINATION_TYPES.pending && (
+            Strings.INCIDENT_DETERMINATION_TYPES.pending && (
               <Col xs={24} md={12}>
                 <Form.Item label="* Inspector who made the determination">
                   <Field
@@ -575,25 +578,25 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
             )}
           {formValues?.determination_type_code ===
             Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-            <Col xs={24} md={12}>
-              <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
-                <Field
-                  id="dangerous_occurrence_subparagraph_ids"
-                  name="dangerous_occurrence_subparagraph_ids"
-                  placeholder="Please choose one or more..."
-                  component={renderConfig.MULTI_SELECT}
-                  data={childProps.dangerousOccurenceSubparagraphOptions}
-                  validate={[required, validateDoSubparagraphs]}
-                  disabled={!isEditMode}
-                />
-              </Form.Item>
-            </Col>
-          )}
+              <Col xs={24} md={12}>
+                <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
+                  <Field
+                    id="dangerous_occurrence_subparagraph_ids"
+                    name="dangerous_occurrence_subparagraph_ids"
+                    placeholder="Please choose one or more..."
+                    component={renderConfig.MULTI_SELECT}
+                    data={childProps.dangerousOccurenceSubparagraphOptions}
+                    validate={[required, validateDoSubparagraphs]}
+                    disabled={!isEditMode}
+                  />
+                </Form.Item>
+              </Col>
+            )}
           <Col span={24}>
             <h4>Verbal Notification</h4>
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)">
+            <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
               <Field
                 id="verbal_notification_provided"
                 name="verbal_notification_provided"
@@ -964,12 +967,7 @@ export const IncidentForm = (props) => {
       <Row>
         <Col span={24}>{renderEditSaveControls(props, isEditMode, isNewIncident)}</Col>
         <Col span={16} offset={4}>
-          {renderInitialReport(
-            incidentCategoryCodeOptions,
-            locationOptions,
-            isEditMode,
-            props.form
-          )}
+          {renderInitialReport(incidentCategoryCodeOptions, locationOptions, isEditMode)}
           <br />
           {renderDocumentation(props, isEditMode, localHandlers, parentHandlers)}
           <br />

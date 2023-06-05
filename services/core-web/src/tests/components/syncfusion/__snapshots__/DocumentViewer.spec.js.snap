@@ -1,59 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentViewer renders properly 1`] = `
-<Modal
-  footer={null}
-  onCancel={[Function]}
-  onOk={[Function]}
-  title="mock title"
-  visible={true}
-  width="98%"
->
-  <n
-    ajaxRequestSettings={
-      Object {
-        "ajaxHeaders": Array [
-          Object {
-            "headerName": "Access-Control-Allow-Origin",
-            "headerValue": "*",
-          },
-          Object {
-            "headerName": "Authorization",
-            "headerValue": "Bearer undefined",
-          },
-        ],
-        "withCredentials": false,
-      }
-    }
-    documentPath="mock path name"
-    enableAnnotation={false}
-    id="pdfviewer-container"
-    serviceUrl="<FILESYSTEM_PROVIDER_URL>"
-    style={
-      Object {
-        "display": "block",
-        "height": "80vh",
-      }
-    }
+<Fragment>
+  <div />
+  <Modal
+    footer={null}
+    getContainer={[Function]}
+    onCancel={[Function]}
+    onOk={[Function]}
+    open={true}
+    title="mock title"
+    width="98%"
   >
-    <t
-      services={
-        Array [
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-        ]
+    <n
+      ajaxRequestSettings={
+        Object {
+          "ajaxHeaders": Array [
+            Object {
+              "headerName": "Access-Control-Allow-Origin",
+              "headerValue": "*",
+            },
+            Object {
+              "headerName": "Authorization",
+              "headerValue": "Bearer undefined",
+            },
+          ],
+          "withCredentials": false,
+        }
       }
-    />
-  </n>
-</Modal>
+      documentPath="mock path name"
+      enableAnnotation={false}
+      id="pdfviewer-container"
+      serviceUrl="<FILESYSTEM_PROVIDER_URL>"
+      style={
+        Object {
+          "display": "block",
+          "height": "80vh",
+        }
+      }
+    >
+      <t
+        services={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
+    </n>
+  </Modal>
+</Fragment>
 `;

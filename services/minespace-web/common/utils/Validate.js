@@ -185,6 +185,11 @@ export const dateNotInFutureTZ = (value) => {
   return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
 };
 
+export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValues) => {
+  const formTimezone = allValues[timezoneField];
+  return formTimezone && formTimezone.length > 0 ? undefined : "Please select a timezone";
+});
+
 export const dateInFuture = (value) =>
   value && new Date(value) < new Date() ? "Date must be in the future" : undefined;
 

@@ -48,8 +48,8 @@ export class NOWSideMenu extends Component {
     // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
     let link =
       this.props.location &&
-      this.props.location.hash &&
-      !this.props.location.hash.startsWith("#state")
+        this.props.location.hash &&
+        !this.props.location.hash.startsWith("#state")
         ? this.props.location.hash
         : undefined;
 
@@ -58,9 +58,11 @@ export class NOWSideMenu extends Component {
     }
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
-    link = link.substr(0, link.indexOf("&"));
+    if (link.includes('&')) {
+      link = link.substr(0, link.indexOf("&"));
+    }
     this.updateUrlRoute(link);
-    this.anchor.handleScrollTo(link);
+    document.querySelector(link)?.scrollIntoView()
   }
 
   handleAnchorOnClick = (e, link) => {
@@ -125,9 +127,6 @@ export class NOWSideMenu extends Component {
           offsetTop={160}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
-          ref={(anchor) => {
-            this.anchor = anchor;
-          }}
         >
           {sideMenuOptions(this.props.tabSection, hasPermitConditionsFlow)
             .filter(

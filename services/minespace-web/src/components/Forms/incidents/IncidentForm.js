@@ -15,6 +15,7 @@ import {
   number,
   dateNotInFuture,
   dateNotInFutureTZ,
+  dateTimezoneRequired,
   dateNotBeforeStrictOther,
   wholeNumber,
   requiredRadioButton,
@@ -99,8 +100,12 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
-    childProps;
+  const {
+    applicationSubmitted,
+    location,
+    confirmedSubmission,
+    setConfirmedSubmission,
+  } = childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -323,7 +328,7 @@ const renderIncidentDetails = (childProps) => {
             id="incident_timestamp"
             name="incident_timestamp"
             disabled={formDisabled}
-            validate={[dateNotInFutureTZ, required]}
+            validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
             normalize={normalizeDatetime}
             component={RenderDateTimeTz}
             props={{ timezoneFieldProps: { name: "incident_timezone" } }}
@@ -425,7 +430,7 @@ const renderIncidentDetails = (childProps) => {
         <Typography.Title level={5}>Verbal Notification</Typography.Title>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Verbal notification must be provided within 4 hours of the reportable  incident. Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)? (Yes/No)">
+        <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
           <Field
             id="verbal_notification_provided"
             name="verbal_notification_provided"

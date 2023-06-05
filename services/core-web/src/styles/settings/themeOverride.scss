@@ -825,6 +825,7 @@ select {
   border-radius: 9px;
   height: 18px;
   width: 18px;
+  transform: none;
 
   &:focus,
   &:hover {
@@ -852,7 +853,7 @@ select {
 }
 
 .ant-table-row-expand-icon-cell>span {
-  z-index: 100;
+  z-index: 49;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
