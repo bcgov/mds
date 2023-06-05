@@ -60,13 +60,13 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
-      href="#cultural-heritage-resources"
-      title="Cultural Heritage Resources"
+      href="#first-nations-engagement"
+      title="First Nations Engagement"
     />
     <AnchorLink
       className="now-menu-link"
-      href="#first-nations-engagement"
-      title="First Nations Engagement"
+      href="#indegenous-engagement"
+      title="Indegenous Engagement"
     />
     <AnchorLink
       className="now-menu-link"
