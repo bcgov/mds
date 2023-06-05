@@ -62,7 +62,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   touch: PropTypes.func.isRequired,
   formErrors: PropTypes.objectOf(PropTypes.string),
-  // formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
   anyTouched: PropTypes.bool,
   formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -170,8 +170,8 @@ export const ProjectSummaryPage = (props) => {
     setIsLoaded(false);
     return updateProjectSummary(
       {
-        projectGuid: project_guid,
-        projectSummaryGuid: project_summary_guid,
+        projectGuid,
+        projectSummaryGuid,
       },
       payload,
       message
@@ -317,7 +317,7 @@ const mapStateToProps = (state) => ({
   projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
   projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
   formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  // formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
+  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
   contacts: selector(state, "contacts"),
 });
 
