@@ -202,27 +202,36 @@ export const ProjectSummaryPage = (props) => {
     });
   };
 
-  const handleSaveData = (e, currentTab) => {
+  const handleTabChange = (newTab) => {
+    const url = isEditMode
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
+      : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
+    history.push(url);
+  };
+
+  const handleSaveData = (e, newActiveTab) => {
     if (e) {
       e.preventDefault();
     }
-    const message =
-      currentTab === "document-upload"
-        ? "Successfully submitted a project description to the Province of British Columbia."
-        : "Successfully updated the project description.";
+    const message = newActiveTab
+      ? "Successfully updated the project description."
+      : "Successfully submitted a project description to the Province of British Columbia.";
     const values = { ...formValues, status_code: "SUB" };
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       if (!isEditMode) {
-        return handleCreateProjectSummary(values, message);
+        handleCreateProjectSummary(values, message);
       }
-      return handleUpdateProjectSummary(values, message);
+      handleUpdateProjectSummary(values, message);
     }
+    handleTabChange(newActiveTab);
   };
 
   const handleSaveDraft = () => {
+    const currentTabIndex = tabs.indexOf(activeTab);
+    const newActiveTab = tabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
@@ -230,17 +239,11 @@ export const ProjectSummaryPage = (props) => {
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       if (!isEditMode) {
-        return handleCreateProjectSummary(values, message);
+        handleCreateProjectSummary(values, message);
       }
-      return handleUpdateProjectSummary(values, message);
+      handleUpdateProjectSummary(values, message);
     }
-  };
-
-  const handleTabChange = (newTab) => {
-    const url = isEditMode
-      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
-      : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
-    history.push(url);
+    handleTabChange(newActiveTab);
   };
 
   const mineName = isEditMode

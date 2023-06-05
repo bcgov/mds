@@ -62,20 +62,20 @@ const tabs = [
 export class ProjectSummaryForm extends Component {
   render() {
     const renderTabComponent = (tab) =>
-      ({
-        "basic-information": <BasicInformation initialValues={this.props.initialValues} />,
-        "project-contacts": <ProjectContacts initialValues={this.props.initialValues} />,
-        "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
-        "authorizations-involved": (
-          <AuthorizationsInvolved
-            initialValues={this.props.initialValues}
-            change={this.props.change}
-          />
-        ),
-        "document-upload": (
-          <DocumentUpload initialValues={this.props.initialValues} {...this.props} />
-        ),
-      }[tab]);
+    ({
+      "basic-information": <BasicInformation initialValues={this.props.initialValues} />,
+      "project-contacts": <ProjectContacts initialValues={this.props.initialValues} />,
+      "project-dates": <ProjectDates initialValues={this.props.initialValues} />,
+      "authorizations-involved": (
+        <AuthorizationsInvolved
+          initialValues={this.props.initialValues}
+          change={this.props.change}
+        />
+      ),
+      "document-upload": (
+        <DocumentUpload initialValues={this.props.initialValues} {...this.props} />
+      ),
+    }[tab]);
 
     const errors = Object.keys(flattenObject(this.props.formErrors));
     const disabledTabs = errors.length > 0;
@@ -124,6 +124,6 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
     onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(withRouter(ProjectSummaryForm));
