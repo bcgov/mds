@@ -6,10 +6,15 @@ import * as reducerTypes from "../constants/reducerTypes";
 import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { AppThunk } from "@/store/appThunk.type";
+import { IComplianceArticle } from "@mds/common";
 
 // This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
-export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) => {
+
+export const fetchMineComplianceInfo = (
+  mineNo: string,
+  silent = false
+): AppThunk<Promise<IComplianceArticle>> => (dispatch): Promise<IComplianceArticle> => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
   dispatch(complianceActions.storeMineComplianceInfo({}));
