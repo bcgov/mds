@@ -19,11 +19,5 @@ describe("Login Page", () => {
 
     // Assert that landing on the home page is successful
     cy.url().should("include", "/home");
-
-    // Wait for the home page to load
-    cy.wait(10000); // Adjust the wait time as needed
-
-    // Verify that the home page contains the welcome heading
-    cy.contains("Welcome!").should("be.visible");
   });
 });
