@@ -8,8 +8,16 @@ import * as String from "../constants/strings";
 import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { IExplosivesPermit } from "@mds/common";
+import { AppThunk } from "@/store/appThunk.type";
+import { AxiosResponse } from "axios";
 
-export const createExplosivesPermit = (mineGuid, payload) => (dispatch) => {
+export const createExplosivesPermit = (
+  mineGuid: string,
+  payload: Partial<IExplosivesPermit>
+): AppThunk<Promise<AxiosResponse<IExplosivesPermit>>> => (
+  dispatch
+): Promise<AxiosResponse<IExplosivesPermit>> => {
   dispatch(request(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -29,7 +37,11 @@ export const createExplosivesPermit = (mineGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
+export const fetchExplosivesPermits = (
+  mineGuid: string
+): AppThunk<Promise<AxiosResponse<IExplosivesPermit[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IExplosivesPermit[]>> => {
   dispatch(request(reducerTypes.GET_EXPLOSIVES_PERMITS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: String.ERROR })
@@ -46,7 +58,13 @@ export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateExplosivesPermit = (mineGuid, explosivesPermitGuid, payload) => (dispatch) => {
+export const updateExplosivesPermit = (
+  mineGuid: string,
+  explosivesPermitGuid: string,
+  payload: Partial<IExplosivesPermit>
+): AppThunk<Promise<AxiosResponse<IExplosivesPermit>>> => (
+  dispatch
+): Promise<AxiosResponse<IExplosivesPermit>> => {
   dispatch(request(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -70,7 +88,10 @@ export const updateExplosivesPermit = (mineGuid, explosivesPermitGuid, payload) 
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const deleteExplosivesPermit = (mineGuid, explosivesPermitGuid) => (dispatch) => {
+export const deleteExplosivesPermit = (
+  mineGuid: string,
+  explosivesPermitGuid: string
+): AppThunk<Promise<AxiosResponse<null>>> => (dispatch): Promise<AxiosResponse<null>> => {
   dispatch(request(reducerTypes.DELETE_EXPLOSIVES_PERMIT));
   dispatch(showLoading());
   return CustomAxios()

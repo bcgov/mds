@@ -21,3 +21,5 @@ export * from "./mineAlertCreate.interface";
 export * from "./mineComment.interface";
 export * from "./mineDocument.interface";
 export * from "./activity";
+export * from "./complianceArticle.interface";
+export * from "./user";
