@@ -426,7 +426,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
             <Field
               id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
               name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
               onFileLoad={(document_name, document_manager_guid) =>
                 handlers.onFileLoad(
                   document_name,
@@ -461,7 +462,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
             <Field
               id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
               name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
               onFileLoad={(document_name, document_manager_guid) =>
                 handlers.onFileLoad(
                   document_name,
@@ -562,7 +564,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
           </Col>
           {formValues?.determination_type_code &&
             formValues?.determination_type_code !==
-            Strings.INCIDENT_DETERMINATION_TYPES.pending && (
+              Strings.INCIDENT_DETERMINATION_TYPES.pending && (
               <Col xs={24} md={12}>
                 <Form.Item label="* Inspector who made the determination">
                   <Field
@@ -578,20 +580,20 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
             )}
           {formValues?.determination_type_code ===
             Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-              <Col xs={24} md={12}>
-                <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
-                  <Field
-                    id="dangerous_occurrence_subparagraph_ids"
-                    name="dangerous_occurrence_subparagraph_ids"
-                    placeholder="Please choose one or more..."
-                    component={renderConfig.MULTI_SELECT}
-                    data={childProps.dangerousOccurenceSubparagraphOptions}
-                    validate={[required, validateDoSubparagraphs]}
-                    disabled={!isEditMode}
-                  />
-                </Form.Item>
-              </Col>
-            )}
+            <Col xs={24} md={12}>
+              <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
+                <Field
+                  id="dangerous_occurrence_subparagraph_ids"
+                  name="dangerous_occurrence_subparagraph_ids"
+                  placeholder="Please choose one or more..."
+                  component={renderConfig.MULTI_SELECT}
+                  data={childProps.dangerousOccurenceSubparagraphOptions}
+                  validate={[required, validateDoSubparagraphs]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col span={24}>
             <h4>Verbal Notification</h4>
           </Col>
@@ -805,7 +807,8 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
                   <Field
                     id={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
                     name={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
-                    labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                    labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+                    <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
                     onFileLoad={(document_name, document_manager_guid) =>
                       handlers.onFileLoad(
                         document_name,
