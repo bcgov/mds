@@ -21,7 +21,7 @@ exports[`FileUpload renders properly 1`] = `
     fileValidateTypeDetectType={[Function]}
     fileValidateTypeLabelExpectedTypesMap={Object {}}
     itemInsertLocation="before"
-    labelIdle="Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span>"
+    labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><br>   <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>"
     maxFileSize="750MB"
     name="file"
     onaddfilestart={[MockFunction]}

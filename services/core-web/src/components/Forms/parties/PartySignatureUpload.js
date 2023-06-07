@@ -42,7 +42,8 @@ export const PartySignatureUpload = (props) => {
         files={props.signature ? [props.signature] : files}
         allowImagePreview
         allowRevert
-        labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+        <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
         acceptedFileTypes={Object.values(IMAGE)}
         onupdatefiles={(fileItems) => {
           const item = fileItems && fileItems[0];
