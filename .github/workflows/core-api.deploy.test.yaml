@@ -43,7 +43,7 @@ jobs:
       - name: Git Ops Push
         run: ./gitops/commit.sh core-api dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
       - name: ArgoCD Sync
-        uses: ./github/shared/argocd-sync.yaml
+        uses: ./github/shared/argocd-sync/
         with:
           SERVICE: core-api
           ENV: dev
