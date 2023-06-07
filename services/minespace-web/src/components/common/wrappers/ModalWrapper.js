@@ -35,6 +35,7 @@ export class ModalWrapper extends Component {
     super(props);
     // Closes modal on browser forward/back actions
     window.onpopstate = this.onBrowserButtonEvent;
+    this.containerRef = React.createRef();
   }
 
   onBrowserButtonEvent = () => {
@@ -44,33 +45,42 @@ export class ModalWrapper extends Component {
   render() {
     const ChildComponent = this.props.content;
     return (
-      <Modal
-        title={this.props.props.title}
-        visible={this.props.isModalOpen}
-        width={this.props.width}
-        footer={null}
-        closable={false}
-      >
-        <LoadingBar
-          scope="modal"
-          className="color-primary"
-          style={{
-            position: "absolute",
-            top: "50px",
-            left: 0,
-            width: "100%",
-            height: "8px",
-            zIndex: 1001,
-          }}
-        />
-        {ChildComponent && (
-          <ChildComponent
-            closeModal={this.props.closeModal}
-            clearOnSubmit={this.props.clearOnSubmit}
-            {...this.props.props}
+      <>
+        {/*
+          This will make sure the modal has a container 
+          referenced on first render that will prevent issues with
+          some libraries (e.g. leaflet)
+         */}
+        <div ref={this.containerRef}></div>
+        <Modal
+          title={this.props.props.title}
+          open={this.props.isModalOpen}
+          width={this.props.width}
+          footer={null}
+          closable={false}
+          getContainer={() => this.containerRef?.current}
+        >
+          <LoadingBar
+            scope="modal"
+            className="color-primary"
+            style={{
+              position: "absolute",
+              top: "50px",
+              left: 0,
+              width: "100%",
+              height: "8px",
+              zIndex: 1001,
+            }}
           />
-        )}
-      </Modal>
+          {ChildComponent && (
+            <ChildComponent
+              closeModal={this.props.closeModal}
+              clearOnSubmit={this.props.clearOnSubmit}
+              {...this.props.props}
+            />
+          )}
+        </Modal>
+      </>
     );
   }
 }

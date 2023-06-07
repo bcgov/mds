@@ -1,51 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalWrapper renders properly 1`] = `
-<Modal
-  closable={false}
-  footer={null}
-  title="mockTitle"
-  visible={false}
-  width={520}
->
-  <ForwardRef
-    cancelText="No"
-    okText="Yes"
-    onConfirm={[Function]}
-    placement="bottomRight"
-    title="Are you sure you want to cancel?"
+<Fragment>
+  <div />
+  <Modal
+    closable={false}
+    footer={null}
+    getContainer={[Function]}
+    open={false}
+    title="mockTitle"
+    width={520}
   >
-    <Button
-      className="modal__close"
-      ghost={true}
+    <ForwardRef
+      cancelText="No"
+      okText="Yes"
+      onConfirm={[Function]}
+      placement="bottomRight"
+      title="Are you sure you want to cancel?"
     >
-      <ForwardRef(CloseOutlined)
-        className="icon-sm"
-      />
-    </Button>
-  </ForwardRef>
-  <Connect(LoadingBar)
-    scope="modal"
-    style={
-      Object {
-        "backgroundColor": "#5e46a1",
-        "height": "3px",
-        "left": 0,
-        "position": "absolute",
-        "top": "54px",
-        "zIndex": 100,
+      <Button
+        className="modal__close"
+        ghost={true}
+      >
+        <ForwardRef(CloseOutlined)
+          className="icon-sm"
+        />
+      </Button>
+    </ForwardRef>
+    <Connect(LoadingBar)
+      scope="modal"
+      style={
+        Object {
+          "backgroundColor": "#5e46a1",
+          "height": "3px",
+          "left": 0,
+          "position": "absolute",
+          "top": "54px",
+          "zIndex": 100,
+        }
       }
-    }
-  />
-  <Connect(AddPartyComponentWrapper)
-    childProps={
-      Object {
-        "title": "mockTitle",
+    />
+    <Connect(AddPartyComponentWrapper)
+      childProps={
+        Object {
+          "title": "mockTitle",
+        }
       }
-    }
-    clearOnSubmit={false}
-    closeModal={[MockFunction]}
-    content={[MockFunction]}
-  />
-</Modal>
+      clearOnSubmit={false}
+      closeModal={[MockFunction]}
+      content={[MockFunction]}
+    />
+  </Modal>
+</Fragment>
 `;
