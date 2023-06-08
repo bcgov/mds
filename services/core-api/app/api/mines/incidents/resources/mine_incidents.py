@@ -332,6 +332,7 @@ class MineIncidentResource(Resource, UserMixin):
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
+        current_do_sub_codes = incident.dangerous_occurrence_subparagraphs
         prev_status_code = incident.status_code
         if not incident or str(incident.mine_guid) != mine_guid:
             raise NotFound("Mine Incident not found")
@@ -398,7 +399,7 @@ class MineIncidentResource(Resource, UserMixin):
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
             sub = ComplianceArticle.find_by_compliance_article_id(id)
-            if not _compliance_article_is_do_subparagraph(sub):
+            if not _compliance_article_is_do_subparagraph(sub) and sub not in current_do_sub_codes:
                 raise BadRequest(
                     'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
                 )
