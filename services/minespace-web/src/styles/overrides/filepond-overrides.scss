@@ -5,7 +5,7 @@
 
 /* the text color of the drop label*/
 .filepond--drop-label {
-  color: $gov-grey-dark; //#555;
+  color: rgba(49, 49, 50, 1); //#555;
 }
 
 /* underline color for "Browse" button */
@@ -15,16 +15,6 @@
   &:focus {
     outline: none !important;
   }
-}
-
-/* the background color of the filepond drop area */
-.filepond--panel-root {
-  background-color: $white; //#eee;
-}
-
-/* the border radius of the drop area */
-.filepond--panel-root {
-  border-radius: $border-radius-base;
 }
 
 /* the border radius of the file item */
@@ -75,8 +65,8 @@
 
 /* bordered drop area */
 .filepond--panel-root {
-  background-color: transparent;
-  border: 2px solid $primary-color;
+  background-color: rgba(230, 235, 240, 1); /* the background color of the filepond drop area */
+  border-radius: $border-radius-base; /* the border radius of the drop area */
 }
 
 .filepond--root {
