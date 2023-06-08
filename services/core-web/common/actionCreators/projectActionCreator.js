@@ -11,27 +11,27 @@ import CustomAxios from "../customAxios";
 
 export const createProjectSummary =
   ({ mineGuid }, payload, message = "Successfully created a new project description") =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
-    dispatch(showLoading());
-    return CustomAxios()
-      .post(
-        ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(null),
-        { ...payload, mine_guid: mineGuid },
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({ message, duration: 10 });
-        dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
-        dispatch(projectActions.storeProjectSummary(payload));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+      dispatch(showLoading());
+      return CustomAxios()
+        .post(
+          ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(null),
+          { ...payload, mine_guid: mineGuid },
+          createRequestHeader()
+        )
+        .then((response) => {
+          notification.success({ message, duration: 10 });
+          dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+          dispatch(projectActions.storeProjectSummary(payload));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const updateProjectSummary =
   (
@@ -39,30 +39,30 @@ export const updateProjectSummary =
     payload,
     message = "Successfully updated project description"
   ) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({
-          message,
-          duration: 10,
-        });
-        dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-        dispatch(projectActions.storeProjectSummary(payload));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+      dispatch(showLoading());
+      return CustomAxios()
+        .put(
+          ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          notification.success({
+            message,
+            duration: 10,
+          });
+          dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+          dispatch(projectActions.storeProjectSummary(payload));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const updateProject =
   (
@@ -71,46 +71,46 @@ export const updateProject =
     message = "Successfully updated project.",
     showSuccessMessage = true
   ) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.UPDATE_PROJECT));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
-      .then((response) => {
-        if (showSuccessMessage) {
-          notification.success({
-            message,
-            duration: 10,
-          });
-        }
-        dispatch(success(reducerTypes.UPDATE_PROJECT));
-        dispatch(projectActions.storeProject(payload));
-        return response.data;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_PROJECT));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.UPDATE_PROJECT));
+      dispatch(showLoading());
+      return CustomAxios()
+        .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
+        .then((response) => {
+          if (showSuccessMessage) {
+            notification.success({
+              message,
+              duration: 10,
+            });
+          }
+          dispatch(success(reducerTypes.UPDATE_PROJECT));
+          dispatch(projectActions.storeProject(payload));
+          return response.data;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.UPDATE_PROJECT));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const fetchProjectSummariesByMine =
   ({ mineGuid }) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
-    dispatch(showLoading());
-    return CustomAxios({ errorToastMessage: Strings.ERROR })
-      .get(
-        ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(null, { mine_guid: mineGuid }),
-        createRequestHeader()
-      )
-      .then((response) => {
-        dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
-        dispatch(projectActions.storeProjectSummaries(response.data));
-      })
-      .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
+      dispatch(showLoading());
+      return CustomAxios({ errorToastMessage: Strings.ERROR })
+        .get(
+          ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(null, { mine_guid: mineGuid }),
+          createRequestHeader()
+        )
+        .then((response) => {
+          dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
+          dispatch(projectActions.storeProjectSummaries(response.data));
+        })
+        .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
@@ -138,7 +138,7 @@ export const removeDocumentFromProjectSummary =
     return CustomAxios()
       .delete(
         ENVIRONMENT.apiUrl +
-          API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
+        API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
         createRequestHeader()
       )
       .then((response) => {
@@ -171,18 +171,18 @@ export const fetchProjectSummaries = (payload) => (dispatch) => {
 
 export const fetchProjectsByMine =
   ({ mineGuid }) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.GET_PROJECTS));
-    dispatch(showLoading());
-    return CustomAxios({ errorToastMessage: Strings.ERROR })
-      .get(ENVIRONMENT.apiUrl + API.PROJECTS(mineGuid), createRequestHeader())
-      .then((response) => {
-        dispatch(success(reducerTypes.GET_PROJECTS));
-        dispatch(projectActions.storeProjects(response.data));
-      })
-      .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.GET_PROJECTS));
+      dispatch(showLoading());
+      return CustomAxios({ errorToastMessage: Strings.ERROR })
+        .get(ENVIRONMENT.apiUrl + API.PROJECTS(mineGuid), createRequestHeader())
+        .then((response) => {
+          dispatch(success(reducerTypes.GET_PROJECTS));
+          dispatch(projectActions.storeProjects(response.data));
+        })
+        .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const fetchProjectById = (projectGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT));
@@ -190,6 +190,8 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), createRequestHeader())
     .then((response) => {
+      console.log("inside fetchProjectById");
+      console.log(response);
       dispatch(success(reducerTypes.GET_PROJECT));
       dispatch(projectActions.storeProject(response.data));
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
@@ -285,7 +287,7 @@ export const updateInformationRequirementsTableByFile =
     return CustomAxios({ suppressErrorNotification: true })
       .put(
         ENVIRONMENT.apiUrl +
-          API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
         formData,
         createRequestHeader(customContentType)
       )
@@ -306,30 +308,30 @@ export const updateInformationRequirementsTable =
     payload,
     message = "Successfully updated information requirements table"
   ) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        ENVIRONMENT.apiUrl +
+    (dispatch) => {
+      dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(showLoading());
+      return CustomAxios()
+        .put(
+          ENVIRONMENT.apiUrl +
           API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({
-          message,
-          duration: 10,
-        });
-        dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          notification.success({
+            message,
+            duration: 10,
+          });
+          dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const fetchRequirements = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_REQUIREMENTS));
@@ -354,7 +356,7 @@ export const removeDocumentFromInformationRequirementsTable =
     return CustomAxios()
       .delete(
         ENVIRONMENT.apiUrl +
-          API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
+        API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
         createRequestHeader()
       )
       .then((response) => {
@@ -374,31 +376,31 @@ export const removeDocumentFromInformationRequirementsTable =
 
 export const createMajorMineApplication =
   ({ projectGuid }, payload, message = "Successfully created a new major mine application") =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
-    dispatch(showLoading());
-    return CustomAxios()
-      .post(
-        ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATIONS(projectGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        if (message) {
-          notification.success({
-            message,
-            duration: 10,
-          });
-        }
-        dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+      dispatch(showLoading());
+      return CustomAxios()
+        .post(
+          ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATIONS(projectGuid),
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          if (message) {
+            notification.success({
+              message,
+              duration: 10,
+            });
+          }
+          dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const updateMajorMineApplication =
   (
@@ -406,31 +408,31 @@ export const updateMajorMineApplication =
     payload,
     message = "Successfully updated major mine application"
   ) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATION(projectGuid, majorMineApplicationGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        if (message) {
-          notification.success({
-            message,
-            duration: 10,
-          });
-        }
-        dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+      dispatch(showLoading());
+      return CustomAxios()
+        .put(
+          ENVIRONMENT.apiUrl + API.MAJOR_MINE_APPLICATION(projectGuid, majorMineApplicationGuid),
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          if (message) {
+            notification.success({
+              message,
+              duration: 10,
+            });
+          }
+          dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const removeDocumentFromMajorMineApplication =
   (projectGuid, majorMineApplicationGuid, mineDocumentGuid) => (dispatch) => {
@@ -439,11 +441,11 @@ export const removeDocumentFromMajorMineApplication =
     return CustomAxios()
       .delete(
         ENVIRONMENT.apiUrl +
-          API.MAJOR_MINE_APPLICATION_DOCUMENT(
-            projectGuid,
-            majorMineApplicationGuid,
-            mineDocumentGuid
-          ),
+        API.MAJOR_MINE_APPLICATION_DOCUMENT(
+          projectGuid,
+          majorMineApplicationGuid,
+          mineDocumentGuid
+        ),
         createRequestHeader()
       )
       .then((response) => {
@@ -463,26 +465,26 @@ export const removeDocumentFromMajorMineApplication =
 
 export const createProjectDecisionPackage =
   ({ projectGuid }, payload, message = "Successfully created a new project decision package.") =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
-    dispatch(showLoading());
-    return CustomAxios()
-      .post(
-        ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGES(projectGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({ message, duration: 10 });
-        dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+      dispatch(showLoading());
+      return CustomAxios()
+        .post(
+          ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGES(projectGuid),
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          notification.success({ message, duration: 10 });
+          dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const updateProjectDecisionPackage =
   (
@@ -490,26 +492,26 @@ export const updateProjectDecisionPackage =
     payload,
     message = "Successfully updated decision package."
   ) =>
-  (dispatch) => {
-    dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGE(projectGuid, projectDecisionPackageGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({ message, duration: 10 });
-        dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+    (dispatch) => {
+      dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+      dispatch(showLoading());
+      return CustomAxios()
+        .put(
+          ENVIRONMENT.apiUrl + API.PROJECT_DECISION_PACKAGE(projectGuid, projectDecisionPackageGuid),
+          payload,
+          createRequestHeader()
+        )
+        .then((response) => {
+          notification.success({ message, duration: 10 });
+          dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+          return response;
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+          throw new Error(err);
+        })
+        .finally(() => dispatch(hideLoading()));
+    };
 
 export const removeDocumentFromProjectDecisionPackage =
   (projectGuid, projectDecisionPackageGuid, mineDocumentGuid) => (dispatch) => {
@@ -518,11 +520,11 @@ export const removeDocumentFromProjectDecisionPackage =
     return CustomAxios()
       .delete(
         ENVIRONMENT.apiUrl +
-          API.PROJECT_DECISION_PACKAGE_DOCUMENT(
-            projectGuid,
-            projectDecisionPackageGuid,
-            mineDocumentGuid
-          ),
+        API.PROJECT_DECISION_PACKAGE_DOCUMENT(
+          projectGuid,
+          projectDecisionPackageGuid,
+          mineDocumentGuid
+        ),
         createRequestHeader()
       )
       .then((response) => {

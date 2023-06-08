@@ -60,6 +60,9 @@ export class MajorMineApplicationTab extends Component {
   };
 
   componentDidMount() {
+    console.log("componentDidMount for MajorMineApplicationTab");
+    //this.props.project.major_mine_application?.documents?
+    console.log(this.props);
     const { projectGuid } = this.props.match.params;
     this.props.fetchProjectById(projectGuid);
     window.addEventListener("scroll", this.handleScroll);
