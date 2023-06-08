@@ -1,29 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalWrapper renders properly 1`] = `
-<Modal
-  closable={false}
-  footer={null}
-  title="mockTitle"
-  visible={false}
->
-  <Connect(LoadingBar)
-    className="color-primary"
-    scope="modal"
-    style={
-      Object {
-        "height": "8px",
-        "left": 0,
-        "position": "absolute",
-        "top": "50px",
-        "width": "100%",
-        "zIndex": 1001,
-      }
-    }
-  />
-  <mockConstructor
-    closeModal={[MockFunction]}
+<Fragment>
+  <div />
+  <Modal
+    closable={false}
+    footer={null}
+    getContainer={[Function]}
+    open={false}
     title="mockTitle"
-  />
-</Modal>
+  >
+    <Connect(LoadingBar)
+      className="color-primary"
+      scope="modal"
+      style={
+        Object {
+          "height": "8px",
+          "left": 0,
+          "position": "absolute",
+          "top": "50px",
+          "width": "100%",
+          "zIndex": 1001,
+        }
+      }
+    />
+    <mockConstructor
+      closeModal={[MockFunction]}
+      title="mockTitle"
+    />
+  </Modal>
+</Fragment>
 `;

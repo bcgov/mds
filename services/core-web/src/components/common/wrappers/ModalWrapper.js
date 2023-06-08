@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -47,6 +47,8 @@ export const ModalWrapper = (props) => {
     content,
   } = props;
 
+  const containerRef = useRef(null);
+
   const onBrowserButtonEvent = () => {
     handleCloseModal();
   };
@@ -73,50 +75,60 @@ export const ModalWrapper = (props) => {
   };
 
   return (
-    <Modal
-      width={width}
-      title={childProps.title}
-      visible={isModalOpen}
-      closable={false}
-      footer={null}
-    >
-      {isViewOnly ? (
-        <Button ghost className="modal__close" onClick={(event) => closeModal(event)}>
-          <CloseOutlined className="icon-sm" />
-        </Button>
-      ) : (
-        <Popconfirm
-          placement="bottomRight"
-          title="Are you sure you want to cancel?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={(event) => closeModal(event)}
-        >
-          <Button ghost className="modal__close">
+    <>
+      {/*
+        This will make sure the modal has a container 
+        referenced on first render that will prevent issues with
+        some libraries (e.g. leaflet)
+       */}
+      <div ref={containerRef}></div>
+
+      <Modal
+        width={width}
+        title={childProps.title}
+        open={isModalOpen}
+        closable={false}
+        footer={null}
+        getContainer={() => containerRef?.current}
+      >
+        {isViewOnly ? (
+          <Button ghost className="modal__close" onClick={(event) => closeModal(event)}>
             <CloseOutlined className="icon-sm" />
           </Button>
-        </Popconfirm>
-      )}
-      <LoadingBar
-        scope="modal"
-        style={{
-          position: "absolute",
-          top: "54px",
-          left: 0,
-          backgroundColor: Styles.COLOR.violet,
-          height: "3px",
-          zIndex: 100,
-        }}
-      />
-      {content && (
-        <AddPartyComponentWrapper
-          closeModal={handleCloseModal}
-          clearOnSubmit={clearOnSubmit}
-          content={content}
-          childProps={childProps}
+        ) : (
+          <Popconfirm
+            placement="bottomRight"
+            title="Are you sure you want to cancel?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={(event) => closeModal(event)}
+          >
+            <Button ghost className="modal__close">
+              <CloseOutlined className="icon-sm" />
+            </Button>
+          </Popconfirm>
+        )}
+        <LoadingBar
+          scope="modal"
+          style={{
+            position: "absolute",
+            top: "54px",
+            left: 0,
+            backgroundColor: Styles.COLOR.violet,
+            height: "3px",
+            zIndex: 100,
+          }}
         />
-      )}
-    </Modal>
+        {content && (
+          <AddPartyComponentWrapper
+            closeModal={handleCloseModal}
+            clearOnSubmit={clearOnSubmit}
+            content={content}
+            childProps={childProps}
+          />
+        )}
+      </Modal>
+    </>
   );
 };
 
