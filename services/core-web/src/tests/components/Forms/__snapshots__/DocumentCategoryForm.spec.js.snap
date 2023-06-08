@@ -10,6 +10,7 @@ exports[`DocumentCategoryForm renders properly 1`] = `
   >
     <div
       className="inputs"
+      style="margin-bottom: 5px;"
     >
       <FieldArray
         component={[Function]}

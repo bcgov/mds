@@ -78,8 +78,8 @@ export class DocumentCategoryForm extends Component {
                     <Popconfirm
                       placement="top"
                       title={[
-                        <p>Are you sure you want to remove this file?</p>,
-                        <p>This cannot be undone.</p>,
+                        <p key={index}>Are you sure you want to remove this file?</p>,
+                        <p key={index}>This cannot be undone.</p>,
                       ]}
                       okText="Yes"
                       cancelText="No"
@@ -105,7 +105,7 @@ export class DocumentCategoryForm extends Component {
     return (
       <div className="document-container">
         <Form.Item label="Select Files/Upload files*">
-          <div className="inputs">
+          <div className="inputs" style="margin-bottom: 5px;">
             <FieldArray name="documents" component={this.DocumentCategories} />
           </div>
           <Field
