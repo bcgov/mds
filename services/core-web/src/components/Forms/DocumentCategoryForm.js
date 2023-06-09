@@ -105,7 +105,7 @@ export class DocumentCategoryForm extends Component {
     return (
       <div className="document-container">
         <Form.Item label="Select Files/Upload files*">
-          <div className="inputs" style="margin-bottom: 5px;">
+          <div className="inputs">
             <FieldArray name="documents" component={this.DocumentCategories} />
           </div>
           <Field
