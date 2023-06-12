@@ -28,6 +28,10 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     document_class = db.Column(db.String)
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
+    is_archived = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    archived_date = db.Column(db.DateTime, nullable=True)
+    archived_by = db.Column(db.String(60))
+
     mine_name = association_proxy('mine', 'mine_name')
 
     __mapper_args__ = {'polymorphic_on': document_class}
@@ -41,7 +45,25 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
             deleted_ind=False).first()
 
-    # TODO: Remove when mine_party_appt is refactored
+    @classmethod
+    def _mine_document_by_guids_qs(cls, mine_document_guids):
+        return cls.query\
+            .filter(cls.mine_document_guid.in_(mine_document_guids)) \
+            .filter_by(deleted_ind=False) \
+
+
+    @classmethod
+    def find_by_mine_document_guid_many(cls, mine_document_guids):
+        return cls._mine_document_by_guids_qs(mine_document_guids).all()
+
+    @classmethod
+    def mark_as_archived_many(cls, mine_document_guids):
+        return cls._mine_document_by_guids_qs(mine_document_guids) \
+            .update({
+                'is_archived': True,
+                'archived_date': datetime.utcnow(),
+            }, synchronize_session='fetch')
+
     def json(self):
         return {
             'mine_document_guid': str(self.mine_document_guid),

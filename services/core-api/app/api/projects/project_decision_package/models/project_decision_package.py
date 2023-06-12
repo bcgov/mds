@@ -28,7 +28,7 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='project_decision_package_document_xref',
-        secondaryjoin='and_(foreign(ProjectDecisionPackageDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(ProjectDecisionPackageDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)'
     )
 
     def __repr__(self):

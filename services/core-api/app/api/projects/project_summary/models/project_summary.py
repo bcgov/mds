@@ -59,7 +59,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='project_summary_document_xref',
-        secondaryjoin='and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False), MineDocument.is_archived == False)'
     )
 
     def __repr__(self):

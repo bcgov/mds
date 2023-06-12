@@ -101,6 +101,11 @@ MINE_DOCUMENT_MODEL = api.model(
         'create_user': fields.String
     })
 
+ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {
+    'mine_document_guids': fields.List(fields.String)
+})
+
+
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
         'messageid': fields.Integer,
