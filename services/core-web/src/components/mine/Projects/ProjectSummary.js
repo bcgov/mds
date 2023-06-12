@@ -242,16 +242,17 @@ export class ProjectSummary extends Component {
       });
   };
 
-  handleArchiveDocuments = async (event, documentGuid) => {
-    console.log("hjiihihihi");
-    event.preventDefault();
-    const mineGuid = this.props.match?.params?.mineGuid;
-    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
-
-    await this.props.archiveMineDocuments(mineGuid, [documentGuid]);
+  handleArchiveDocuments = async (projectSummary, documents) => {
+    await this.props.archiveMineDocuments(
+      projectSummary.mine_guid,
+      documents.map((d) => d.mine_document_guid)
+    );
 
     this.setState({ isLoaded: false });
-    await this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+    await this.props.fetchProjectSummaryById(
+      projectSummary.mine_guid,
+      projectSummary.project_summary_guid
+    );
     this.setState({ isLoaded: true });
   };
 
@@ -275,6 +276,10 @@ export class ProjectSummary extends Component {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
     }
+
+    const mineGuid = this.props.match?.params?.mineGuid;
+    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
+
     return (
       (this.state.isLoaded && (
         <>
@@ -406,7 +411,10 @@ export class ProjectSummary extends Component {
                       handleSaveData={this.handleSaveData}
                       handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
-                      archiveDocuments={this.handleArchiveDocuments}
+                      archiveDocuments={this.handleArchiveDocuments.bind(
+                        this,
+                        this.props.formattedProjectSummary
+                      )}
                     />
                   </div>
                 </LoadingWrapper>

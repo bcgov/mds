@@ -58,16 +58,18 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def mark_as_archived_many(cls, mine_document_guids):
-        return cls._mine_document_by_guids_qs(mine_document_guids) \
+        cls._mine_document_by_guids_qs(mine_document_guids) \
             .update({
                 'is_archived': True,
                 'archived_date': datetime.utcnow(),
             }, synchronize_session='fetch')
+        db.session.commit()
 
     def json(self):
         return {
             'mine_document_guid': str(self.mine_document_guid),
             'mine_guid': str(self.mine_guid),
             'document_manager_guid': str(self.document_manager_guid),
-            'document_name': self.document_name
+            'document_name': self.document_name,
+            'is_arhived': self.is_archived
         }

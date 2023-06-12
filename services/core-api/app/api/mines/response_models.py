@@ -98,7 +98,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'document_manager_guid': fields.String,
         'document_name': fields.String,
         'upload_date': fields.DateTime,
-        'create_user': fields.String
+        'create_user': fields.String,
+        'is_archived': fields.Boolean
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {

@@ -4,13 +4,16 @@ import React, { FC } from "react";
 
 interface ArchiveDocumentModalProps {
   documents: any[];
-  handleSubmit(): Promise<void>;
+  handleSubmit(documents: any[]): Promise<void>;
   closeModal(): void;
 }
 
 const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocumentModalProps) => {
   return (
-    <Form layout="vertical" onFinish={props.handleSubmit}>
+    <Form
+      layout="vertical"
+      onFinish={() => props.handleSubmit(props.documents).then(props.closeModal)}
+    >
       <Typography.Paragraph>
         <Alert
           message="Archived files are not reviewed as part of the submission"

@@ -51,14 +51,17 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     def patch(self, mine_guid):
 
         mine = Mine.find_by_mine_guid(mine_guid)
-
+        
         if not mine:
             raise NotFound('Mine not found.')
 
         args = self.parser.parse_args()
         mine_document_guids = args.get('mine_document_guids')
 
+        print(f'Archiving {len(mine_document_guids)} documents for {mine.mine_guid}')
+
         documents = MineDocument.find_by_mine_document_guid_many(mine_document_guids)
+        print(f'a {len(documents)}')
 
         if len(documents) != len(mine_document_guids):
             raise NotFound('Doucment not found')
