@@ -139,6 +139,7 @@ export class ProjectDocumentsTab extends Component {
           )}
           documentParent={documentParent}
           removeDocument={this.handleDeleteDocument}
+          archiveDocument={this.handleArchiveDocument}
           excludedColumnKeys={["dated", "category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
         />

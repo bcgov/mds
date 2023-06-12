@@ -95,62 +95,58 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => 
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createTailingsStorageFacility =
-  (
-    mine_guid: string,
-    payload: ICreateTailingsStorageFacility
-  ): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> =>
-  (dispatch): Promise<AxiosResponse<ITailingsStorageFacility>> => {
-    dispatch(request(reducerTypes.CREATE_TSF));
-    dispatch(showLoading());
-    return CustomAxios()
-      .post(ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid), payload, createRequestHeader())
-      .then((response) => {
-        notification.success({
-          message: "Successfully added a new Tailings Storage Facility.",
-          duration: 10,
-        });
-        dispatch(success(reducerTypes.CREATE_TSF));
-        dispatch(tsfActions.storeTsf(response.data));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.CREATE_TSF));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+export const createTailingsStorageFacility = (
+  mine_guid: string,
+  payload: ICreateTailingsStorageFacility
+): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
+  dispatch
+): Promise<AxiosResponse<ITailingsStorageFacility>> => {
+  dispatch(request(reducerTypes.CREATE_TSF));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully added a new Tailings Storage Facility.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_TSF));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
 
-export const updateTailingsStorageFacility =
-  (
-    mineGuid: string,
-    TSFGuid: string,
-    payload: Partial<ITailingsStorageFacility>
-  ): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> =>
-  (dispatch): Promise<AxiosResponse<ITailingsStorageFacility>> => {
-    dispatch(request(reducerTypes.UPDATE_TSF));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        `${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`,
-        payload,
-        createRequestHeader()
-      )
-      .then((response) => {
-        notification.success({
-          message: "Successfully updated Tailing Storage Facility.",
-          duration: 10,
-        });
-        dispatch(success(reducerTypes.UPDATE_TSF));
-        dispatch(tsfActions.storeTsf(response.data));
-        return response;
-      })
-      .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_TSF));
-        throw new Error(err);
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
+export const updateTailingsStorageFacility = (
+  mineGuid: string,
+  TSFGuid: string,
+  payload: Partial<ITailingsStorageFacility>
+): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
+  dispatch
+): Promise<AxiosResponse<ITailingsStorageFacility>> => {
+  dispatch(request(reducerTypes.UPDATE_TSF));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated Tailing Storage Facility.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_TSF));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
 
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
@@ -199,20 +195,18 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNameList =
-  (params = {}) =>
-  (dispatch) => {
-    dispatch(showLoading());
-    dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
-    return CustomAxios()
-      .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
-      .then((response) => {
-        dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
-        dispatch(mineActions.storeMineNameList(response.data));
-      })
-      .catch(() => dispatch(error(reducerTypes.GET_MINE_NAME_LIST)))
-      .finally(() => dispatch(hideLoading()));
-  };
+export const fetchMineNameList = (params = {}) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
+      dispatch(mineActions.storeMineNameList(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_NAME_LIST)))
+    .finally(() => dispatch(hideLoading()));
+};
 
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
@@ -238,6 +232,25 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_DOCUMENTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const archiveMineDocuments = (mineGuid: string, mineDocumentGuids: string[]) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.ARCHIVE_MINE_DOCUMENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${API.ARCHIVE_MINE_DOCUMENTS(mineGuid)}`,
+      { mine_document_guids: mineDocumentGuids },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ARCHIVE_MINE_DOCUMENTS));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.ARCHIVE_MINE_DOCUMENTS)))
     .finally(() => dispatch(hideLoading()));
 };
 

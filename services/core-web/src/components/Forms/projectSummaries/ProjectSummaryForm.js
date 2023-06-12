@@ -51,6 +51,7 @@ const propTypes = {
   handleSaveData: PropTypes.func.isRequired,
   handleUpdateData: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
+  archiveDocuments: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -546,6 +547,7 @@ export const ProjectSummaryForm = (props) => {
         <ProjectSummaryDocumentUpload
           initialValues={props.initialValues}
           canRemoveDocuments={canRemoveDocuments}
+          canArchiveDocuments={canRemoveDocuments}
           mineGuid={
             props.match?.params?.mineGuid
               ? props.match?.params?.mineGuid

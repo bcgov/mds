@@ -28,7 +28,10 @@ import {
   removeDocumentFromProjectSummary,
   updateProject,
 } from "@common/actionCreators/projectActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import {
+  fetchMineRecordById,
+  archiveMineDocuments,
+} from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
@@ -239,6 +242,19 @@ export class ProjectSummary extends Component {
       });
   };
 
+  handleArchiveDocuments = async (event, documentGuid) => {
+    console.log("hjiihihihi");
+    event.preventDefault();
+    const mineGuid = this.props.match?.params?.mineGuid;
+    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
+
+    await this.props.archiveMineDocuments(mineGuid, [documentGuid]);
+
+    this.setState({ isLoaded: false });
+    await this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+    this.setState({ isLoaded: true });
+  };
+
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
     const {
@@ -390,6 +406,7 @@ export class ProjectSummary extends Component {
                       handleSaveData={this.handleSaveData}
                       handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
+                      archiveDocuments={this.handleArchiveDocuments}
                     />
                   </div>
                 </LoadingWrapper>
@@ -435,6 +452,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectById,
       updateProjectSummary,
       removeDocumentFromProjectSummary,
+      archiveMineDocuments,
       clearProjectSummary,
       fetchMineRecordById,
       updateProject,
