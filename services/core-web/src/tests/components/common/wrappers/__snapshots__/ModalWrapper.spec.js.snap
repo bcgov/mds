@@ -5,6 +5,7 @@ exports[`ModalWrapper renders properly 1`] = `
   <div />
   <Modal
     closable={false}
+    destroyOnClose={true}
     footer={null}
     getContainer={[Function]}
     open={false}
