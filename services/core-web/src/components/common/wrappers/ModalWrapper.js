@@ -90,6 +90,7 @@ export const ModalWrapper = (props) => {
         closable={false}
         footer={null}
         getContainer={() => containerRef?.current}
+        destroyOnClose={true}
       >
         {isViewOnly ? (
           <Button ghost className="modal__close" onClick={(event) => closeModal(event)}>
