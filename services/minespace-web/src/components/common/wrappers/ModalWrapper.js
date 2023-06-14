@@ -59,6 +59,7 @@ export class ModalWrapper extends Component {
           footer={null}
           closable={false}
           getContainer={() => this.containerRef?.current}
+          destroyOnClose={true}
         >
           <LoadingBar
             scope="modal"
