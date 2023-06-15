@@ -426,7 +426,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
             <Field
               id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
               name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
               onFileLoad={(document_name, document_manager_guid) =>
                 handlers.onFileLoad(
                   document_name,
@@ -461,7 +462,8 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
             <Field
               id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
               name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
               onFileLoad={(document_name, document_manager_guid) =>
                 handlers.onFileLoad(
                   document_name,
@@ -805,7 +807,8 @@ const renderInternalDocumentsComments = (childProps, isEditMode, handlers, paren
                   <Field
                     id={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
                     name={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
-                    labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                    labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+                    <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
                     onFileLoad={(document_name, document_manager_guid) =>
                       handlers.onFileLoad(
                         document_name,

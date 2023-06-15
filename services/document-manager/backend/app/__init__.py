@@ -2,6 +2,7 @@ import sys
 import json
 import os
 
+
 from flask import Flask, current_app, request
 from flask_cors import CORS
 from flask_restplus import Resource
@@ -17,6 +18,7 @@ from app.docman.resources import *
 from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, cache, db, jwt, migrate
+from app.utils.celery_health_check import HealthCheckProbe
 
 from .config import Config
 
@@ -70,6 +72,9 @@ def make_celery(app=None):
         backend=app.config['CELERY_RESULT_BACKEND'],
         broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
+
+    # Add Celery StartStopStep for Health Check Probing
+    celery.steps['worker'].add(HealthCheckProbe)
 
     TaskBase = celery.Task
 

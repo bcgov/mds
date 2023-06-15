@@ -51,6 +51,7 @@ html {
 
 .violet {
   color: $violet;
+
   &-border {
     border-color: $violet;
   }
@@ -115,7 +116,7 @@ html {
     height: 50%;
   }
 
-  & > div {
+  &>div {
     margin-right: 5px;
   }
 
@@ -394,38 +395,39 @@ html {
 
 .margin-small {
   &--left {
-    margin-left: $default-margin-sm  !important;
+    margin-left: $default-margin-sm !important;
   }
 
   &--right {
-    margin-right: $default-margin-sm  !important;
+    margin-right: $default-margin-sm !important;
   }
 
   &--top {
-    margin-top: $default-margin-sm  !important;
+    margin-top: $default-margin-sm !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-sm  !important;
+    margin-bottom: $default-margin-sm !important;
   }
 
   margin: $default-margin-sm;
 }
+
 .margin-medium {
   &--left {
-    margin-left: $default-margin-md  !important;
+    margin-left: $default-margin-md !important;
   }
 
   &--right {
-    margin-right: $default-margin-md  !important;
+    margin-right: $default-margin-md !important;
   }
 
   &--top {
-    margin-top: $default-margin-md  !important;
+    margin-top: $default-margin-md !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-md  !important;
+    margin-bottom: $default-margin-md !important;
   }
 
   margin: $default-margin-md;
@@ -433,22 +435,22 @@ html {
 
 .margin-large {
   &--left {
-    margin-left: $default-margin-lg  !important;
+    margin-left: $default-margin-lg !important;
   }
 
   &--right {
-    margin-right: $default-margin-lg  !important;
+    margin-right: $default-margin-lg !important;
   }
 
   &--top {
-    margin-top: $default-margin-lg  !important;
+    margin-top: $default-margin-lg !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-lg  !important;
+    margin-bottom: $default-margin-lg !important;
   }
 
-  margin: $default-margin-lg  !important;
+  margin: $default-margin-lg !important;
 }
 
 .margin-xlarge {
@@ -624,7 +626,6 @@ img.lessOpacity {
   padding: 10px;
 
   .inputs {
-    overflow: scroll;
     max-height: 300px;
   }
 }

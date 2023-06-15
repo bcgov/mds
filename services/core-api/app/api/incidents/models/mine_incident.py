@@ -38,6 +38,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     incident_timezone = db.Column(db.String)
     incident_description = db.Column(db.String, nullable=False)
     incident_location = db.Column(db.String)
+    tz_legacy = db.Column(db.Boolean)
 
     reported_timestamp = db.Column(db.DateTime)
     reported_by_name = db.Column(db.String)
@@ -238,15 +239,19 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 raise AssertionError('followup_inspection_number must not exceed 100 characters.')
         return followup_inspection_number
 
-    @validates('incident_timestamp', 'incident_timezone')
+    @validates('incident_timestamp', 'incident_timezone', 'tz_legacy')
     def validate_incident_timestamp(self, key, value):
         if key =='incident_timezone':
             incident_timestamp = self.incident_timestamp
             incident_timezone = value
-            if not incident_timezone or incident_timezone not in all_timezones:
-                raise AssertionError('invalid incident_timezone')
-            if incident_timestamp:
+            tz_legacy = self.tz_legacy
+            if not tz_legacy:
+                if not incident_timezone or incident_timezone not in all_timezones:
+                    raise AssertionError('invalid incident_timezone')
                 if incident_timestamp > datetime.now(timezone(incident_timezone)):
+                    raise AssertionError('incident_timestamp must not be in the future')
+            if incident_timestamp and tz_legacy:
+                if incident_timestamp > datetime.now(timezone('UTC')):
                     raise AssertionError('incident_timestamp must not be in the future')
         return value
         

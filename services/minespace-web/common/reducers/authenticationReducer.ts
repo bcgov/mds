@@ -1,20 +1,27 @@
 import * as ActionTypes from "../constants/actionTypes";
 import { AUTHENTICATION } from "../constants/reducerTypes";
+import { IUserInfo } from "@mds/common";
+
+interface IAuthenticationReducerState {
+  isAuthenticated: boolean;
+  userAccessData: string[];
+  userInfo: IUserInfo;
+}
 
 /**
  * @file authenticationReducer.js
  * all data associated with a users record is handled within this reducer.
  */
-const initialState = {
+const initialState: IAuthenticationReducerState = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {},
 };
 
 const getUserName = (tokenParsed) => {
-  const {bceid_username} = tokenParsed;
+  const { bceid_username } = tokenParsed;
   if (bceid_username && bceid_username.length > 0) {
-    return `${bceid_username  }@bceid`;
+    return `${bceid_username}@bceid`;
   }
   if (tokenParsed.idir_username) {
     return tokenParsed.idir_username;

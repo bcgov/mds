@@ -1,7 +1,13 @@
 import * as actionTypes from "../constants/actionTypes";
 import { EXPLOSIVES_PERMITS } from "../constants/reducerTypes";
+import { IExplosivesPermit } from "@mds/common";
+import { RootState } from "@/App";
 
-const initialState = {
+interface IExplosivesPermitReducerState {
+  explosivesPermits: IExplosivesPermit[];
+}
+
+const initialState: IExplosivesPermitReducerState = {
   explosivesPermits: [],
 };
 
@@ -21,5 +27,6 @@ const explosivesPermitReducerObject = {
   [EXPLOSIVES_PERMITS]: explosivesPermitReducer,
 };
 
-export const getExplosivesPermits = (state) => state[EXPLOSIVES_PERMITS].explosivesPermits;
+export const getExplosivesPermits = (state: RootState) =>
+  state[EXPLOSIVES_PERMITS].explosivesPermits;
 export default explosivesPermitReducerObject;

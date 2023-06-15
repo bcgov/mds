@@ -80,6 +80,9 @@ $component-background: $white; //#fff;
 // Popover background color
 $popover-background: $component-background;
 
+// The background color of the filepond drop area
+$filepond-drop-bg: #E6EBF0;
+
 // font, headings, etc
 $font-family: "BCSans", "Noto Sans", Verdana, Arial, sans-serif; //"Myriad Pro", sans-serif; //-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',   'Noto Color Emoji';
 $code-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;

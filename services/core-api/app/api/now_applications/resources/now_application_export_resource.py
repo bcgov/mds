@@ -75,6 +75,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.cultural_heritage_description',
     'state_of_land.recreational_trail_use_description',
     'state_of_land.has_shared_info_with_fn',
+    'state_of_land.has_acknowledged_undrip',
     'state_of_land.has_archaeology_sites_affected',
     'state_of_land.has_licence_of_occupation',
     'state_of_land.licence_of_occupation',

@@ -308,6 +308,7 @@ class Application(Base):
     isparkactivities = db.Column(db.String)
     hasltgovauthorization = db.Column(db.String)
     hasengagedfirstnations = db.Column(db.String)
+    hasacknowledgedundrip = db.Column(db.String)
     hasculturalheritageresources = db.Column(db.String)
     firstnationsactivities = db.Column(db.String)
     curturalheritageresources = db.Column(db.String)

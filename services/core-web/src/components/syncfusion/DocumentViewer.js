@@ -91,6 +91,7 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
 export class DocumentViewer extends Component {
   constructor() {
     super(...arguments);
+    this.containerRef = React.createRef();
     this.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
       "AmazonS3Provider/",
       "PdfViewer"
@@ -108,43 +109,53 @@ export class DocumentViewer extends Component {
     };
 
     return (
-      <Modal
-        title={this.props.props.title}
-        visible={this.props.isDocumentViewerOpen}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-        footer={null}
-        width="98%"
-      >
-        {/* // NOTE: See here for documentation:
-        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
-        <PdfViewerComponent
-          id="pdfviewer-container"
-          serviceUrl={this.pdfViewerServiceUrl}
-          documentPath={this.props.documentPath}
-          ajaxRequestSettings={ajaxRequestSettings}
-          style={{ display: "block", height: "80vh" }}
-          enableAnnotation={false}
+      <>
+        {/*
+          Create a container for the pdf viewer modal to be put in.
+          Without it, syncfusion will crash :dragons:
+         */}
+        <div ref={this.containerRef}></div>
+
+        <Modal
+          title={this.props.props.title}
+          open={this.props.isDocumentViewerOpen}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          getContainer={() => this.containerRef?.current}
+          footer={null}
+          width="98%"
+          destroyOnClose={true}
         >
-          {/* NOTE: Some toolbar items are hidden using CSS. */}
-          <Inject
-            services={[
-              Toolbar,
-              Magnification,
-              Navigation,
-              Annotation,
-              LinkAnnotation,
-              BookmarkView,
-              ThumbnailView,
-              Print,
-              TextSelection,
-              TextSearch,
-              FormFields,
-              FormDesigner,
-            ]}
-          />
-        </PdfViewerComponent>
-      </Modal>
+          {/* // NOTE: See here for documentation:
+        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
+          <PdfViewerComponent
+            id="pdfviewer-container"
+            serviceUrl={this.pdfViewerServiceUrl}
+            documentPath={this.props.documentPath}
+            ajaxRequestSettings={ajaxRequestSettings}
+            style={{ display: "block", height: "80vh" }}
+            enableAnnotation={false}
+          >
+            {/* NOTE: Some toolbar items are hidden using CSS. */}
+            <Inject
+              services={[
+                Toolbar,
+                Magnification,
+                Navigation,
+                Annotation,
+                LinkAnnotation,
+                BookmarkView,
+                ThumbnailView,
+                Print,
+                TextSelection,
+                TextSearch,
+                FormFields,
+                FormDesigner,
+              ]}
+            />
+          </PdfViewerComponent>
+        </Modal>
+      </>
     );
   }
 }
