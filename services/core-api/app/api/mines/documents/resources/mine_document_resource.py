@@ -20,12 +20,53 @@ class MineDocumentListResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_DOCUMENT_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
+        parser = reqparse.RequestParser()
+
+        parser.add_argument(
+            'is_archived',
+            type=bool,
+            help='Include archived documents',
+            location='args',
+            required=False
+        )
+
+        parser.add_argument(
+            'project_guid',
+            type=str,
+            help='Filter by documents for given project',
+            location='args',
+            required=False
+        )
+
+        parser.add_argument(
+            'project_summary_guid',
+            type=str,
+            help='Filter by documents for given project summary',
+            location='args',
+            required=False
+        )
+
+        parser.add_argument(
+            'project_decision_package_guid',
+            type=str,
+            help='Filter by documents for given project decision package',
+            location='args',
+            required=False
+        )
         mine = Mine.find_by_mine_guid(mine_guid)
+
         if not mine:
             raise NotFound('Mine not found.')
 
-        return mine.mine_documents
+        args = parser.parse_args()
 
+        return MineDocument.filter_by(
+            mine_guid=mine.mine_guid,
+            is_archived=args.get('is_archived'),
+            project_guid=args.get('project_guid'),
+            project_summary_guid=args.get('project_summary_guid'),
+            project_decision_package_guid=args.get('project_decision_package_guid'),
+        )
 
 class MineDocumentArchiveResource(Resource, UserMixin):
     parser = reqparse.RequestParser()

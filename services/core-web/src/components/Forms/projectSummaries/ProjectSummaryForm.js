@@ -42,6 +42,7 @@ import * as routes from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
+import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
@@ -52,6 +53,7 @@ const propTypes = {
   handleUpdateData: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   archiveDocuments: PropTypes.func.isRequired,
+  archivedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -559,6 +561,21 @@ export const ProjectSummaryForm = (props) => {
     );
   };
 
+  const renderArchivedDocuments = () => {
+    const docs = props.archivedDocuments.map((d) => {
+      d.name = d.document_name;
+
+      return d;
+    });
+
+    return (
+      <div id="archived-documents">
+        <Typography.Title level={4}>Archived Documents</Typography.Title>
+        <DocumentTable documents={docs}></DocumentTable>
+      </div>
+    );
+  };
+
   const cancelEdit = () => {
     props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
     props.toggleEditMode();
@@ -635,6 +652,8 @@ export const ProjectSummaryForm = (props) => {
       {renderContacts()}
       <br />
       {renderDocuments()}
+      <br />
+      {renderArchivedDocuments()}
       <div className="right center-mobile">
         {(props.isNewProject || props.isEditMode) && (
           <>

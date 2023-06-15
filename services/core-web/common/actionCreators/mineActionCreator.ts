@@ -221,11 +221,14 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineDocuments = (mineGuid) => (dispatch) => {
+export const fetchMineDocuments = (
+  mineGuid,
+  filters = { project_summary_guid: undefined, is_archived: false }
+) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid, filters)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
       dispatch(mineActions.storeMineDocuments(response.data));
