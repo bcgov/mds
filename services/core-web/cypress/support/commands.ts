@@ -23,14 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
 // eslint-disable-next-line consistent-return
 Cypress.Commands.add("login", () => {
-  cy.visit("localhost:3000");
-  cy.get("#username").type(Cypress.env("test-user"));
-  cy.get("#password")
-    .click()
-    .type(Cypress.env("test-pwd"));
-  cy.get("#kc-form-login").submit();
-  cy.url().should("eq", "http://localhost:3000/home/");
+  const username = Cypress.env("test-user");
+  const password = Cypress.env("test-pwd");
+  const url = Cypress.env("url");
+  cy.visit(url);
+
+  cy.url({ timeout: 10000 }).should("include", "test.loginproxy.gov.bc.ca");
+  cy.get("a#social-idir").click();
+  cy.url({ timeout: 10000 }).should("include", "logontest7.gov.bc.ca");
+
+  cy.get("#user").type(username);
+  cy.get("#password").type(password);
+
+  cy.get('[name="btnSubmit"]').click();
 });
