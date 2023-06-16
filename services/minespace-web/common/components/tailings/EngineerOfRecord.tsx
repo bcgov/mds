@@ -313,7 +313,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
                 acceptedFileTypesMap={{ ...PDF }}
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-                <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+                <div>Accepted filetypes: pdf</div>'
                 allowRevert
                 onprocessfiles={() => setUploading(false)}
               />
