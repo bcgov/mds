@@ -1,6 +1,7 @@
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import backref
 
 from sqlalchemy.schema import FetchedValue
 from werkzeug.exceptions import BadRequest
@@ -54,7 +55,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
-    documents = db.relationship('ProjectSummaryDocumentXref', lazy='select')
+    documents = db.relationship(
+        'ProjectSummaryDocumentXref',
+        lazy='select',
+        # primary='project_summary_document_xref',
+        primaryjoin='and_(ProjectSummaryDocumentXref.project_summary_id == ProjectSummary.project_summary_id, ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+        # secondaryjoin='and_(remote(ProjectSummaryDocumentXref.mine_document_guid) == foreign(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+    )
+
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',

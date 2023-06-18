@@ -1,5 +1,6 @@
 import decimal
 import uuid
+
 from flask import request
 from flask_restplus import Resource, reqparse, fields
 from datetime import datetime
@@ -11,6 +12,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 
 from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL
 
@@ -60,13 +62,14 @@ class MineDocumentListResource(Resource, UserMixin):
 
         args = parser.parse_args()
 
-        return MineDocument.filter_by(
+        return MineDocumentSearchUtil.filter_by(
             mine_guid=mine.mine_guid,
             is_archived=args.get('is_archived'),
             project_guid=args.get('project_guid'),
             project_summary_guid=args.get('project_summary_guid'),
             project_decision_package_guid=args.get('project_decision_package_guid'),
         )
+
 
 class MineDocumentArchiveResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -92,7 +95,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     def patch(self, mine_guid):
 
         mine = Mine.find_by_mine_guid(mine_guid)
-        
+
         if not mine:
             raise NotFound('Mine not found.')
 

@@ -46,18 +46,6 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).first()
 
     @classmethod
-    def filter_by(cls, mine_guid, project_guid=None, project_summary_guid=None, project_decision_package_guid=None, irt_id=None, is_archived=False):
-        qy = cls.query.filter_by(mine_guid=mine_guid)
-
-        if project_guid is not None:
-            qy = qy.filter_by(project_guid=project_guid)
-        
-        if is_archived is not None:
-            qy = qy.filter_by(is_archived=is_archived)
-
-        return qy.all()
-
-    @classmethod
     def _mine_document_by_guids_qs(cls, mine_document_guids):
         return cls.query\
             .filter(cls.mine_document_guid.in_(mine_document_guids)) \

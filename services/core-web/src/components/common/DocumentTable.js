@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Popconfirm, Button } from "antd";
+import { Table, Popconfirm, Button, Tag } from "antd";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
 import { some } from "lodash";
 import DocumentLink from "@/components/common/DocumentLink";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
@@ -16,7 +17,12 @@ const propTypes = {
   isViewOnly: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
-  archiveDocuments: PropTypes.func,
+  archiveMineDocuments: PropTypes.func,
+  archiveDocumentsArgs: PropTypes.shape({
+    mineGuid: PropTypes.string,
+  }),
+  onArchivedDocuments: PropTypes.func,
+  canArchiveDocuments: PropTypes.bool,
   excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
   additionalColumnProps: PropTypes.arrayOf(
     PropTypes.shape({
@@ -35,12 +41,12 @@ const defaultProps = {
   documents: [],
   isViewOnly: false,
   removeDocument: () => {},
-  archiveDocuments: () => {},
   excludedColumnKeys: [],
   additionalColumnProps: [],
   documentColumns: null,
   documentParent: null,
   view: "standard",
+  canArchiveDocuments: false,
 };
 
 const openArchiveModal = (event, props, documents) => {
@@ -50,12 +56,29 @@ const openArchiveModal = (event, props, documents) => {
     props: {
       title: `Archive ${props.documents?.length > 1 ? "Multiple Files" : "File"}`,
       closeModal: props.closeModal,
-      handleSubmit: props.archiveDocuments,
+      handleSubmit: async () => {
+        await props.archiveMineDocuments(
+          props.archiveDocumentsArgs.mineGuid,
+          documents.map((d) => d.mine_document_guid)
+        );
+        if (props.onArchivedDocuments) {
+          props.onArchivedDocuments(documents);
+        }
+      },
       documents,
     },
     content: modalConfig.ARCHIVE_DOCUMENT,
-    // width: "75vw",
   });
+};
+
+const withTag = (text, elem) => {
+  return (
+    <div className="inline-flex flex-between">
+      {elem}
+
+      <Tag>{text}</Tag>
+    </div>
+  );
 };
 
 export const DocumentTable = (props) => {
@@ -68,19 +91,21 @@ export const DocumentTable = (props) => {
       dataIndex: "name",
       sorter: !isMinimalView && nullableStringSorter("name"),
       render: (text, record) => {
-        if (isMinimalView) {
-          return record.name;
+        let content = record.name;
+
+        if (!isMinimalView) {
+          content = (
+            <div key={record.key} title="Name">
+              <DocumentLink
+                documentManagerGuid={record.document_manager_guid}
+                documentName={record.name}
+                truncateDocumentName={false}
+              />
+            </div>
+          );
         }
 
-        return (
-          <div key={record.key} title="Name">
-            <DocumentLink
-              documentManagerGuid={record.document_manager_guid}
-              documentName={record.name}
-              truncateDocumentName={false}
-            />
-          </div>
-        );
+        return record.is_archived ? withTag("Archived", content) : content;
       },
     },
     {
@@ -127,9 +152,9 @@ export const DocumentTable = (props) => {
     },
     {
       key: "archive",
-      className: props.isViewOnly || !props.archiveDocuments ? "column-hide" : "",
+      className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
       render: (text, record) => (
-        <div className={props.isViewOnly || !props.archiveDocuments ? "column-hide" : ""}>
+        <div className={props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : ""}>
           <Button
             ghost
             type="primary"
@@ -144,7 +169,7 @@ export const DocumentTable = (props) => {
   ];
 
   if (isMinimalView) {
-    props.excludedColumnKeys = props.excludedColumnKeys.concat(["remove", "archive", "category"]);
+    // props.excludedColumnKeys = props.excludedColumnKeys.concat(["remove", "archive", "category"]);
   }
 
   if (!some(props.documents, "dated")) {
@@ -186,6 +211,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
+      archiveMineDocuments,
     },
     dispatch
   );

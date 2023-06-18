@@ -32,6 +32,7 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  archivedDocuments: PropTypes.arrayOf(customPropTypes.mineDocument),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   updateProjectDecisionPackage: PropTypes.func.isRequired,
@@ -109,12 +110,29 @@ export class DecisionPackageTab extends Component {
       .then(() => this.handleFetchData());
   };
 
-  renderDocumentSection = (sectionTitle, sectionHref, sectionText, sectionDocuments) => {
+  renderArchivedDocumentsSection = (archivedDocuments) => {
+    const docs = archivedDocuments?.map((d) => {
+      d.name = d.document_name;
+
+      return d;
+    });
+
+    return (
+      <div id="archived-documents">
+        <Typography.Title level={4}>Archived Documents</Typography.Title>
+        <DocumentTable documents={docs}></DocumentTable>
+      </div>
+    );
+  };
+
+  renderDocumentSection = (project, sectionTitle, sectionHref, sectionText, sectionDocuments) => {
     const titleElement = (
       <Typography.Text strong style={{ fontSize: "1.5rem" }}>
         {sectionTitle}
       </Typography.Text>
     );
+
+    console.log(project);
 
     return (
       <div id={sectionHref}>
@@ -138,6 +156,9 @@ export class DecisionPackageTab extends Component {
           )}
           excludedColumnKeys={["category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          canArchiveDocuments={true}
+          archiveDocumentsArgs={{ mine_guid: project?.mine_guid }}
+          onDocumentsArchived={this.handleFetchData}
           removeDocument={this.handleDeleteDocument}
         />
       </div>
@@ -225,6 +246,7 @@ export class DecisionPackageTab extends Component {
               { href: "decision-package-documents", title: "Decision Package" },
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
+              { href: "archived-documents", title: "Archived Documents" },
             ]}
             featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
@@ -260,6 +282,7 @@ export class DecisionPackageTab extends Component {
             </Col>
           </Row>
           {this.renderDocumentSection(
+            this.props.project,
             <Row>
               <Col xs={24} md={12}>
                 Decision Package Documents
@@ -295,6 +318,7 @@ export class DecisionPackageTab extends Component {
           )}
           <br />
           {this.renderDocumentSection(
+            this.props.project,
             "Additional Government Documents",
             "additional-goverment-documents",
             <Typography.Text>
@@ -316,6 +340,7 @@ export class DecisionPackageTab extends Component {
             </Col>
           </Row>
           {this.renderDocumentSection(
+            this.props.project,
             <Row>
               <Col xs={24} md={12}>
                 Internal Ministry Documentation
@@ -340,6 +365,7 @@ export class DecisionPackageTab extends Component {
               (doc) => doc.project_decision_package_document_type_code === "INM"
             ) || []
           )}
+          {this.renderArchivedDocumentsSection(this.props.archivedDocuments)}
         </div>
       </>
     );

@@ -52,8 +52,8 @@ const propTypes = {
   handleSaveData: PropTypes.func.isRequired,
   handleUpdateData: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
-  archiveDocuments: PropTypes.func.isRequired,
   archivedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  onArchivedDocuments: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

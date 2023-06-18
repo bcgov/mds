@@ -30,10 +30,7 @@ import {
   removeDocumentFromProjectSummary,
   updateProject,
 } from "@common/actionCreators/projectActionCreator";
-import {
-  fetchMineRecordById,
-  archiveMineDocuments,
-} from "@common/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@common/actions/projectActions";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
@@ -255,18 +252,13 @@ export class ProjectSummary extends Component {
       });
   };
 
-  handleArchiveDocuments = async (projectSummary, documents) => {
-    await this.props.archiveMineDocuments(
-      projectSummary.mine_guid,
-      documents.map((d) => d.mine_document_guid)
-    );
-
+  reloadData = async (mineGuid, projectSummaryGuid) => {
     this.setState({ isLoaded: false });
-    await this.props.fetchProjectSummaryById(
-      projectSummary.mine_guid,
-      projectSummary.project_summary_guid
-    );
-    this.setState({ isLoaded: true });
+    try {
+      await this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+    } finally {
+      this.setState({ isLoaded: true });
+    }
   };
 
   handleRemoveDocument = (event, documentGuid) => {
@@ -279,8 +271,7 @@ export class ProjectSummary extends Component {
     return this.props
       .removeDocumentFromProjectSummary(projectGuid, projectSummaryGuid, documentGuid)
       .then(() => {
-        this.setState({ isLoaded: false });
-        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.reloadData(mineGuid, projectSummaryGuid);
       })
       .finally(() => this.setState({ isLoaded: true }));
   };
@@ -290,8 +281,8 @@ export class ProjectSummary extends Component {
       return <NullScreen type="generic" />;
     }
 
-    const mineGuid = this.props.match?.params?.mineGuid;
-    const projectSummaryGuid = this.props.match?.params?.projectSummaryGuid;
+    const mineGuid = this.props.formattedProjectSummary?.mine_guid;
+    const projectSummaryGuid = this.props.formattedProjectSummary?.project_summary_guid;
 
     return (
       (this.state.isLoaded && (
@@ -425,10 +416,7 @@ export class ProjectSummary extends Component {
                       handleSaveData={this.handleSaveData}
                       handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
-                      archiveDocuments={this.handleArchiveDocuments.bind(
-                        this,
-                        this.props.formattedProjectSummary
-                      )}
+                      onArchivedDocuments={this.reloadData.bind(this, mineGuid, projectSummaryGuid)}
                       archivedDocuments={this.props.mineDocuments}
                     />
                   </div>
@@ -476,7 +464,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectById,
       updateProjectSummary,
       removeDocumentFromProjectSummary,
-      archiveMineDocuments,
       clearProjectSummary,
       fetchMineRecordById,
       fetchMineDocuments,

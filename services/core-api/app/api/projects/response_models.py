@@ -81,7 +81,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'expected_permit_application_date': fields.DateTime,
         'expected_permit_receipt_date': fields.DateTime,
         'expected_project_start_date': fields.DateTime,
-        'documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL), attribute='mine_documents'),
+        'documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
         'contacts': fields.List(fields.Nested(PROJECT_SUMMARY_CONTACT_MODEL)),
         'authorizations': fields.List(fields.Nested(PROJECT_SUMMARY_AUTHORIZATION_MODEL)),
         'update_user': fields.String,
@@ -250,7 +250,7 @@ PROJECT_MODEL = api.model(
     })
 
 PROJECT_MINE_LIST_MODEL = api.model(
-    'ProjectMineList',{
+    'ProjectMineList', {
         'stage': fields.String,
         'id': fields.Integer,
         'guid': fields.String,
