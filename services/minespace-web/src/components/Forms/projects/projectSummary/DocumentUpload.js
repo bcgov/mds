@@ -51,7 +51,7 @@ export class DocumentUpload extends Component {
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
     const fileUploadParams = {
-      mineGuid: this.props.isEditMode ? this.props.mineGuid : this.props.match?.params?.mineGuid,
+      mineGuid: this.props.initialValues.mine_guid,
       projectGuid: this.props.initialValues.project_guid,
       projectSummaryGuid: this.props.initialValues.project_summary_guid,
     };

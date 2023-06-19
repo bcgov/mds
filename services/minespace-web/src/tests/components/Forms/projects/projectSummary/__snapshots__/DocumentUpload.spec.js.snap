@@ -80,7 +80,7 @@ exports[`DocumentUpload renders properly 1`] = `
       onRemoveFile={[Function]}
       params={
         Object {
-          "mineGuid": Object {},
+          "mineGuid": undefined,
           "projectGuid": undefined,
           "projectSummaryGuid": undefined,
         }
