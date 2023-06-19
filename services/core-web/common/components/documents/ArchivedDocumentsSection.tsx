@@ -1,5 +1,5 @@
 import React from "react";
-import DocumentTable from "./DocumentTable";
+import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { IMineDocument } from "@mds/common";
 import { DeleteOutlined } from "@ant-design/icons";

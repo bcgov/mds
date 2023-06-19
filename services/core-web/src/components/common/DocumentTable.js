@@ -155,7 +155,13 @@ export const DocumentTable = (props) => {
       key: "archive",
       className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
       render: (text, record) => (
-        <div className={props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : ""}>
+        <div
+          className={
+            !record?.mine_document_guid || props.isViewOnly || !props.canArchiveDocuments
+              ? "column-hide"
+              : ""
+          }
+        >
           <Button
             ghost
             type="primary"

@@ -32,12 +32,14 @@ import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majo
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,
   clearMajorMinesApplication: PropTypes.func.isRequired,
   createMajorMineApplication: PropTypes.func.isRequired,
   updateMajorMineApplication: PropTypes.func.isRequired,
+  fetchMineDocuments: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   majorMinesApplicationDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -75,7 +77,8 @@ const StepForms = (
   next,
   prev,
   handleSaveData,
-  setConfirmedSubmission
+  setConfirmedSubmission,
+  handleFetchData
 ) => [
   {
     title: "Get Started",
@@ -102,6 +105,7 @@ const StepForms = (
     title: "Create Submission",
     content: (
       <MajorMineApplicationForm
+        refreshData={() => handleFetchData()}
         initialValues={{
           mine_name: mineName,
           primary_contact: primaryContact,
@@ -210,6 +214,7 @@ const StepForms = (
         setConfirmedSubmission={setConfirmedSubmission}
         confirmedSubmission={state.confirmedSubmission}
         project={props.project}
+        refreshData={() => handleFetchData()}
       />
     ),
     buttons: [
@@ -285,9 +290,14 @@ export class MajorMineApplicationPage extends Component {
     this.props.destroy(FORM.ADD_MINE_MAJOR_APPLICATION);
   }
 
-  handleFetchData = () => {
+  handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
-    return this.props.fetchProjectById(projectGuid);
+    const project = await this.props.fetchProjectById(projectGuid);
+
+    this.props.fetchMineDocuments(project.mine_guid, {
+      is_archived: true,
+      major_mine_application_guid: project.major_mine_application?.major_mine_application_guid,
+    });
   };
 
   handleCreateMajorMineApplication = (values, isDraft) => {
@@ -377,7 +387,8 @@ export class MajorMineApplicationPage extends Component {
       this.next,
       this.prev,
       this.handleSaveData,
-      this.setConfirmedSubmission
+      this.setConfirmedSubmission,
+      this.handleFetchData
     );
 
     return (
@@ -464,6 +475,7 @@ const mapDispatchToProps = (dispatch) =>
       updateMajorMineApplication,
       fetchProjectById,
       clearMajorMinesApplication,
+      fetchMineDocuments,
       submit,
       reset,
       touch,

@@ -17,7 +17,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
-import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {

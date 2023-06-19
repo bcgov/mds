@@ -9,6 +9,9 @@ import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentsPage from "./DocumentsPage";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import { uploadDateColumn } from "@/components/common/DocumentColumns";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -21,9 +24,16 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  refreshData: PropTypes.func.isRequired,
+  mineDocuments: PropTypes.arrayOf(customPropTypes.mineDocument),
 };
 
-const tabs = ["project-description", "information-requirements-table", "major-mine-application"];
+const tabs = [
+  "project-description",
+  "information-requirements-table",
+  "major-mine-application",
+  "archived-documents",
+];
 
 export class DocumentsTab extends Component {
   state = {
@@ -56,18 +66,41 @@ export class DocumentsTab extends Component {
   };
 
   render() {
+    const documentColumns = [uploadDateColumn("upload_date")];
+
     const renderAllDocuments = (docs) => (
       <Row>
         <Col span={24}>
           <div id="project-description">
-            <DocumentsPage title={formatUrlToUpperCaseString(tabs[0])} documents={docs[0]} />
+            <DocumentsPage
+              onArchivedDocuments={this.props.refreshData}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
+              title={formatUrlToUpperCaseString(tabs[0])}
+              documents={docs[0]}
+            />
           </div>
           <div id="information-requirements-table">
-            <DocumentsPage title={formatUrlToUpperCaseString(tabs[1])} documents={docs[1]} />
+            <DocumentsPage
+              onArchivedDocuments={this.props.refreshData}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
+              title={formatUrlToUpperCaseString(tabs[1])}
+              documents={docs[1]}
+            />
           </div>
           <div id="major-mine-application">
-            <DocumentsPage title={formatUrlToUpperCaseString(tabs[2])} documents={docs[2]} />
+            <DocumentsPage
+              onArchivedDocuments={this.props.refreshData}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
+              title={formatUrlToUpperCaseString(tabs[2])}
+              documents={docs[2]}
+            />
           </div>
+
+          <ArchivedDocumentsSection
+            titleLevel={3}
+            documents={this.props.mineDocuments}
+            documentColumns={documentColumns}
+          />
         </Col>
       </Row>
     );
@@ -105,6 +138,7 @@ export class DocumentsTab extends Component {
 
 const mapStateToProps = (state) => ({
   project: getProject(state),
+  mineDocuments: getMineDocuments(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

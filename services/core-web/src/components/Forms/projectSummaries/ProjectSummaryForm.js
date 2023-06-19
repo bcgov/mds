@@ -42,7 +42,7 @@ import * as routes from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
-import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
