@@ -2,7 +2,6 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <ForwardRef(InternalTable)
-  align="left"
   columns={
     Array [
       Object {
@@ -32,6 +31,11 @@ exports[`DocumentTable renders properly 1`] = `
         "key": "remove",
         "render": [Function],
       },
+      Object {
+        "className": "column-hide",
+        "key": "archive",
+        "render": [Function],
+      },
     ]
   }
   dataSource={Array []}
@@ -41,5 +45,6 @@ exports[`DocumentTable renders properly 1`] = `
     }
   }
   pagination={false}
+  showHeader={true}
 />
 `;

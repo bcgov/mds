@@ -72,12 +72,8 @@ exports[`VarianceDetails renders properly 1`] = `
   <h5>
     Documents
   </h5>
-  <DocumentTable
-    additionalColumnProps={Array []}
-    documentColumns={null}
-    documentParent={null}
+  <Connect(DocumentTable)
     documents={Array []}
-    excludedColumnKeys={Array []}
     isViewOnly={false}
     removeDocument={[MockFunction]}
   />

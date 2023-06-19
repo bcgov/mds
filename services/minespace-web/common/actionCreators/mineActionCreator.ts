@@ -224,9 +224,11 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
 export const fetchMineDocuments = (
   mineGuid,
   filters = {
-    project_summary_guid: undefined,
     is_archived: false,
+    project_summary_guid: undefined,
     project_decision_package_guid: undefined,
+    project_guid: undefined,
+    major_mine_application_guid: undefined,
   }
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
