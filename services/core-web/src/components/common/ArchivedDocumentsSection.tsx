@@ -19,14 +19,12 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
     <div id="archived-documents">
       <Typography.Title level={4}>
         <DeleteOutlined className="violet" />
-        &nbsp;Archived Documents{" "}
+        &nbsp;Archived Documents
       </Typography.Title>
       <Typography.Paragraph>
         These files are not reviewed as part of the submission.
       </Typography.Paragraph>
-      <DocumentTable documents={docs} excludedColumnKeys={["archive", "remove"]}>
-        {" "}
-      </DocumentTable>
+      <DocumentTable documents={docs} excludedColumnKeys={["archive", "remove"]} />
     </div>
   );
 };

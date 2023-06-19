@@ -1,10 +1,12 @@
-import DocumentTable from "@/components/common/DocumentTable";
-import { Alert, Button, Form, Typography } from "antd";
 import React, { FC } from "react";
 
+import DocumentTable from "@/components/common/DocumentTable";
+import { Alert, Button, Form, Typography } from "antd";
+import { IMineDocument } from "@mds/common";
+
 interface ArchiveDocumentModalProps {
-  documents: any[];
-  handleSubmit(documents: any[]): Promise<void>;
+  documents: IMineDocument[];
+  handleSubmit(documents: IMineDocument[]): Promise<void>;
   closeModal(): void;
 }
 

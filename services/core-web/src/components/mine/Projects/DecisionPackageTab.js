@@ -130,8 +130,6 @@ export class DecisionPackageTab extends Component {
       </Typography.Text>
     );
 
-    console.log(project);
-
     return (
       <div id={sectionHref}>
         <p>{titleElement}</p>
