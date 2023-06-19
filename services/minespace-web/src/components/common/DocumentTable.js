@@ -22,6 +22,8 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   documentColumns: PropTypes.arrayOf(PropTypes.string),
   deletePermission: PropTypes.string,
+  view: PropTypes.string,
+  excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
