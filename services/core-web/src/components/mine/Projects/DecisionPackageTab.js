@@ -26,6 +26,7 @@ import * as FORM from "@/constants/forms";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -242,8 +243,8 @@ export class DecisionPackageTab extends Component {
               { href: "decision-package-documents", title: "Decision Package" },
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
-              { href: "archived-documents", title: "Archived Documents" },
-            ]}
+              !IN_PROD() && { href: "archived-documents", title: "Archived Documents" },
+            ].filter(Boolean)}
             featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />

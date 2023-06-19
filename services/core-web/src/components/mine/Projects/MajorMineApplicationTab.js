@@ -21,6 +21,7 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -56,11 +57,11 @@ const menuOptions = [
     href: "ministry-decision-documents",
     title: "Ministry Decision Documents",
   },
-  {
+  !IN_PROD() && {
     href: "archived-documents",
     title: "Archived Documents",
   },
-];
+].filter(Boolean);
 
 export class MajorMineApplicationTab extends Component {
   state = {

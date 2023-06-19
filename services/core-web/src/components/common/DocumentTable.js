@@ -11,6 +11,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
@@ -150,7 +151,7 @@ export const DocumentTable = (props) => {
         </div>
       ),
     },
-    {
+    !IN_PROD() && {
       key: "archive",
       className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
       render: (text, record) => (
@@ -166,7 +167,7 @@ export const DocumentTable = (props) => {
         </div>
       ),
     },
-  ];
+  ].filter(Boolean);
 
   if (!some(props.documents, "dated")) {
     columns = columns.filter((column) => column.key !== "dated");

@@ -3,12 +3,17 @@ import DocumentTable from "./DocumentTable";
 import { Typography } from "antd";
 import { IMineDocument } from "@mds/common";
 import { DeleteOutlined } from "@ant-design/icons";
+import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
 
 interface ArchivedDocumentsSectionProps {
   documents: IMineDocument;
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
+  if (IN_PROD()) {
+    return <></>;
+  }
+
   const docs = props.documents.map((d) => {
     d.name = d.document_name;
 
