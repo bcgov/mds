@@ -55,6 +55,15 @@ class MineDocumentListResource(Resource, UserMixin):
             location='args',
             required=False
         )
+
+        parser.add_argument(
+            'major_mine_application_guid',
+            type=str,
+            help='Filter by documents for given major mine application guid',
+            location='args',
+            required=False
+        )
+
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -68,6 +77,7 @@ class MineDocumentListResource(Resource, UserMixin):
             project_guid=args.get('project_guid'),
             project_summary_guid=args.get('project_summary_guid'),
             project_decision_package_guid=args.get('project_decision_package_guid'),
+            major_mine_application_guid=args.get('major_mine_application_guid')
         )
 
 

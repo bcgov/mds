@@ -23,7 +23,11 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
         db.ForeignKey('project_decision_package_status_code.project_decision_package_status_code'),
         nullable=False)
     project = db.relationship("Project", back_populates="project_decision_package")
-    documents = db.relationship('ProjectDecisionPackageDocumentXref', lazy='select')
+    documents = db.relationship(
+        'ProjectDecisionPackageDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectDecisionPackageDocumentXref.project_decision_package_id == ProjectDecisionPackage.project_decision_package_id, ProjectDecisionPackageDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+    )
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',

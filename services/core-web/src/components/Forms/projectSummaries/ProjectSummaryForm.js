@@ -42,7 +42,7 @@ import * as routes from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
-import DocumentTable from "@/components/common/DocumentTable";
+import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
 
 const propTypes = {
   projectSummary: CustomPropTypes.projectSummary.isRequired,
@@ -562,18 +562,7 @@ export const ProjectSummaryForm = (props) => {
   };
 
   const renderArchivedDocuments = () => {
-    const docs = props.archivedDocuments.map((d) => {
-      d.name = d.document_name;
-
-      return d;
-    });
-
-    return (
-      <div id="archived-documents">
-        <Typography.Title level={4}>Archived Documents</Typography.Title>
-        <DocumentTable documents={docs}></DocumentTable>
-      </div>
-    );
+    return <ArchivedDocumentsSection documents={props.archivedDocuments} />;
   };
 
   const cancelEdit = () => {

@@ -23,6 +23,9 @@ import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplica
 import { modalConfig } from "@/components/modalContent/config";
 import { getProjectDecisionPackageStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@/components/common/ArchivedDocumentsSection";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -33,6 +36,7 @@ const propTypes = {
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
   archivedDocuments: PropTypes.arrayOf(customPropTypes.mineDocument),
+  fetchMineDocuments: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   updateProjectDecisionPackage: PropTypes.func.isRequired,
@@ -65,9 +69,14 @@ export class DecisionPackageTab extends Component {
     }
   };
 
-  handleFetchData = () => {
+  handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
-    return this.props.fetchProjectById(projectGuid);
+    const project = await this.props.fetchProjectById(projectGuid);
+
+    await this.props.fetchMineDocuments(project.mine_guid, {
+      is_archived: true,
+      project_decision_package_guid: project.project_decision_package.project_decision_package_guid,
+    });
   };
 
   handleUpdateProjectDecisionPackage = (event, values) => {
@@ -111,18 +120,7 @@ export class DecisionPackageTab extends Component {
   };
 
   renderArchivedDocumentsSection = (archivedDocuments) => {
-    const docs = archivedDocuments?.map((d) => {
-      d.name = d.document_name;
-
-      return d;
-    });
-
-    return (
-      <div id="archived-documents">
-        <Typography.Title level={4}>Archived Documents</Typography.Title>
-        <DocumentTable documents={docs}></DocumentTable>
-      </div>
-    );
+    return <ArchivedDocumentsSection documents={archivedDocuments}></ArchivedDocumentsSection>;
   };
 
   renderDocumentSection = (project, sectionTitle, sectionHref, sectionText, sectionDocuments) => {
@@ -157,8 +155,8 @@ export class DecisionPackageTab extends Component {
           excludedColumnKeys={["category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
           canArchiveDocuments={true}
-          archiveDocumentsArgs={{ mine_guid: project?.mine_guid }}
-          onDocumentsArchived={this.handleFetchData}
+          archiveDocumentsArgs={{ mineGuid: project?.mine_guid }}
+          onArchivedDocuments={this.handleFetchData}
           removeDocument={this.handleDeleteDocument}
         />
       </div>
@@ -365,7 +363,7 @@ export class DecisionPackageTab extends Component {
               (doc) => doc.project_decision_package_document_type_code === "INM"
             ) || []
           )}
-          {this.renderArchivedDocumentsSection(this.props.archivedDocuments)}
+          {this.renderArchivedDocumentsSection(this.props.mineDocuments)}
         </div>
       </>
     );
@@ -376,6 +374,7 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   projectDecisionPackageStatusCodesHash: getProjectDecisionPackageStatusCodesHash(state),
   formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
+  mineDocuments: getMineDocuments(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -385,6 +384,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectById,
       createProjectDecisionPackage,
       removeDocumentFromProjectDecisionPackage,
+      fetchMineDocuments,
       openModal,
       closeModal,
     },

@@ -1,5 +1,5 @@
 import DocumentTable from "@/components/common/DocumentTable";
-import { Alert, Button, Form, Table, Typography } from "antd";
+import { Alert, Button, Form, Typography } from "antd";
 import React, { FC } from "react";
 
 interface ArchiveDocumentModalProps {
@@ -27,7 +27,11 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
         You&apos;re about to archive the following file{props.documents?.length > 1 ? "s" : ""}:
       </Typography.Paragraph>
 
-      <DocumentTable documents={props.documents} view="minimal" />
+      <DocumentTable
+        documents={props.documents}
+        view="minimal"
+        excludedColumnKeys={["archive", "remove"]}
+      />
 
       <div className="right center-mobile">
         <Button className="full-mobile" onClick={props.closeModal}>

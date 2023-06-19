@@ -58,9 +58,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     documents = db.relationship(
         'ProjectSummaryDocumentXref',
         lazy='select',
-        # primary='project_summary_document_xref',
         primaryjoin='and_(ProjectSummaryDocumentXref.project_summary_id == ProjectSummary.project_summary_id, ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
-        # secondaryjoin='and_(remote(ProjectSummaryDocumentXref.mine_document_guid) == foreign(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
     mine_documents = db.relationship(
