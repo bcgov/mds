@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Col, Row, Table, Typography, Select } from "antd";
+import { Col, Row, Table, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Field, FieldArray, change } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -24,8 +24,6 @@ const propTypes = {
 const defaultProps = {
   columns: [],
 };
-
-const { Option } = Select;
 
 const PartyAppointmentTable = (props) => {
   const { columns } = props;
@@ -87,17 +85,15 @@ const PartyAppointmentTable = (props) => {
       render: (status, record) => {
         if (isCore) {
           return (
-            <Select
-              defaultValue={record.status || "Pending"}
+            <Field
+              id={`${record.rowName}.status`}
+              name={`${record.rowName}.status`}
+              component={renderConfig.SELECT}
+              props={{ allowClear: false }}
+              data={statusColumns}
               loading={loadingField[`${record.rowName}.status`]}
               onChange={(val) => partyAppointmentChanged(record.rowName, record.key, "status", val)}
-            >
-              {statusColumns.map((option) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
+            />
           );
         }
 
@@ -130,26 +126,26 @@ const PartyAppointmentTable = (props) => {
     {
       title: "Ministry Acknowledged",
       dataIndex: "ministryAcknowledged",
-      render: (ministryAcknowledged, record) => (
-        <Select
-          defaultValue={record.ministryAcknowledged}
-          loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
-          onChange={(val) =>
-            partyAppointmentChanged(
-              record.rowName,
-              record.key,
-              "mine_party_acknowledgement_status",
-              val
-            )
-          }
-        >
-          {ministryAcknowledgedColumns.map((option) => (
-            <Option key={option.value} value={option.value}>
-              {option.label}
-            </Option>
-          ))}
-        </Select>
-      ),
+      render: (ministryAcknowledged, record) => {
+        return (
+          <Field
+            id={`${record.rowName}.mine_party_acknowledgement_status`}
+            name={`${record.rowName}.mine_party_acknowledgement_status`}
+            component={renderConfig.SELECT}
+            props={{ allowClear: false }}
+            data={ministryAcknowledgedColumns}
+            loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
+            onChange={(val) =>
+              partyAppointmentChanged(
+                record.rowName,
+                record.key,
+                "mine_party_acknowledgement_status",
+                val
+              )
+            }
+          />
+        );
+      },
     },
   ];
 
