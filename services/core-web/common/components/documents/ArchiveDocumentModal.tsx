@@ -32,7 +32,7 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
       <DocumentTable
         documents={props.documents}
         view="minimal"
-        excludedColumnKeys={["archive", "remove"]}
+        excludedColumnKeys={["archive", "remove", "category"]}
       />
 
       <div className="right center-mobile">

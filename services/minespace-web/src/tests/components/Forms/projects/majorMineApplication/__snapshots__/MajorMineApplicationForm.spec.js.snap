@@ -265,6 +265,18 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       projectGuid="8132462392222"
       uploadType="supporting_document"
     />
+    <ArchivedDocumentsSection
+      documentColumns={
+        Array [
+          Object {
+            "dataIndex": "upload_date",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Upload Date",
+          },
+        ]
+      }
+    />
   </Form>
 </div>
 `;

@@ -7,6 +7,8 @@ import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils
 
 interface ArchivedDocumentsSectionProps {
   documents: IMineDocument;
+  documentColumns: any;
+  titleLevel?: 1 | 2 | 3 | 4 | 5;
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
@@ -22,14 +24,18 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
 
   return (
     <div id="archived-documents">
-      <Typography.Title level={4}>
+      <Typography.Title level={props.titleLevel || 4}>
         <DeleteOutlined className="violet" />
         &nbsp;Archived Documents
       </Typography.Title>
       <Typography.Paragraph>
         These files are not reviewed as part of the submission.
       </Typography.Paragraph>
-      <DocumentTable documents={docs} excludedColumnKeys={["archive", "remove"]} />
+      <DocumentTable
+        documentColumns={props.documentColumns}
+        documents={docs}
+        excludedColumnKeys={["archive", "remove"]}
+      />
     </div>
   );
 };

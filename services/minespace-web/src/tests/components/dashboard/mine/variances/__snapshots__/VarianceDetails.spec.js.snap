@@ -28,9 +28,7 @@ exports[`VarianceDetails renders properly 1`] = `
       notesss
     </DescriptionsItem>
   </Descriptions>
-  <DocumentTable
-    deletePayload={Object {}}
-    deletePermission={null}
+  <Connect(DocumentTable)
     documentColumns={
       Array [
         Object {
@@ -58,7 +56,6 @@ exports[`VarianceDetails renders properly 1`] = `
         },
       ]
     }
-    handleDeleteDocument={[Function]}
   />
   <Descriptions
     size="small"
