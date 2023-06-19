@@ -168,10 +168,6 @@ export const DocumentTable = (props) => {
     },
   ];
 
-  if (isMinimalView) {
-    // props.excludedColumnKeys = props.excludedColumnKeys.concat(["remove", "archive", "category"]);
-  }
-
   if (!some(props.documents, "dated")) {
     columns = columns.filter((column) => column.key !== "dated");
   }

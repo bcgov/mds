@@ -12,14 +12,27 @@ from app.extensions import db, api
 
 
 class MineDocumentSearchUtil():
+    """
+    Utility functions for searching mine documents.
+    This is split out from the MineDocument itself as to prevent circular dependencies
+    """
     @classmethod
     def filter_by(cls, mine_guid, project_guid=None, major_mine_application_guid=None, project_summary_guid=None, project_decision_package_guid=None, irt_id=None, is_archived=False):
+        """
+        Find Mine Documents by the given project related params
+        Returns a list of MineDocuments
+        """
         qy = db.session.query(MineDocument).filter_by(mine_guid=mine_guid)
 
         if is_archived is not None:
             qy = qy.filter_by(is_archived=is_archived)
 
         if project_guid is not None:
+            # A Project consists of the following loosely related entities (hence the many joins)
+            # - Major Mine Applications
+            # - Project Summary
+            # - Project Decision Package
+            # - Information Requirements Table
             qy.join(MajorMineApplicationDocumentXref)\
                 .join(MajorMineApplication)\
                 .join(ProjectSummaryDocumentXref)\

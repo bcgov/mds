@@ -93,17 +93,16 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     )
 
     @api.doc(
-        description='Archives a mine document.',
+        description='Archives the given mine documents.',
         params={
-            'mine_guid': 'The GUID of the mine the document belongs to.',
-            'explosives_permit_guid': 'The GUID of the Mine Document to Archive.'
+            'mine_guid': 'The GUID of the mine the documents belongs to.',
+            'mine_document_guids': 'The GUID of the Mine Documents to Archive.'
         }
     )
     @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS])
     @api.expect(ARCHIVE_MINE_DOCUMENT)
     @api.response(204, 'Successfully archived documents')
     def patch(self, mine_guid):
-
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -112,17 +111,14 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         args = self.parser.parse_args()
         mine_document_guids = args.get('mine_document_guids')
 
-        print(f'Archiving {len(mine_document_guids)} documents for {mine.mine_guid}')
-
         documents = MineDocument.find_by_mine_document_guid_many(mine_document_guids)
-        print(f'a {len(documents)}')
 
         if len(documents) != len(mine_document_guids):
             raise NotFound('Doucment not found')
 
-        # for document in documents:
-        #     if document.mine_guid != mine_guid:
-        #         raise BadRequest('Document not attached to mine')
+        for document in documents:
+            if str(document.mine_guid) != str(mine_guid):
+                raise BadRequest('Document not attached to mine')
 
         MineDocument.mark_as_archived_many(mine_document_guids)
 
