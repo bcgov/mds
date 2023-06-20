@@ -105,7 +105,7 @@ const PartyAppointmentTable = (props) => {
       dataIndex: "dates",
       render: (text, record) => (
         <div title="Dates">
-          {record.startDate} -{record.endDate}
+          {record.startDate} - {record.endDate}
         </div>
       ),
     },
