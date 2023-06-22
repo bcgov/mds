@@ -24,35 +24,30 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 // eslint-disable-next-line consistent-return
+
 Cypress.Commands.add("login", () => {
-  const baseUrl = 'http://localhost:8080/auth/realms/standard/protocol/openid-connect/auth';
-  const clientId = 'mines-digital-services-mds-public-client-4414';
-  const redirectUri = 'http://localhost:3000/home';
-  const responseType = 'code';
-  const challengeType = 'login';
-  const codeChallengeMethod = 'S256';
-  const codeChallenge = "Kc-nRFsPUU8pX16RwVPj_XkGndvukBihHfkvjUEE5a4";
-
-  const keycloakUrl = `${baseUrl}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=${responseType}&challenge_type=${challengeType}&code_challenge_method=${codeChallengeMethod}&code_challenge=${codeChallenge}`;
-
-  cy.log(keycloakUrl);
-  console.log(keycloakUrl);
-
-  cy.intercept('GET', 'https://test.loginproxy.gov.bc.ca/auth**', (req) => {
-    req.redirect(keycloakUrl);
-  }).as('redirectInterceptor');
-
-  const username = Cypress.env("test-user");
-  const password = Cypress.env("test-pwd");
   const url = Cypress.env("url");
+  const environmentUrl = Cypress.env("environmentUrl");
+
+  const response = {
+    backend: Cypress.env("backend"),
+    apiUrl: Cypress.env("apiUrl"),
+    docManUrl: Cypress.env("docManUrl"),
+    matomoUrl: Cypress.env("matomoUrl"),
+    filesystemProviderUrl: Cypress.env("filesystemProviderUrl"),
+    keycloak_clientId: Cypress.env("keycloakClientId"),
+    keycloak_resource: Cypress.env("keycloakResource"),
+    keycloak_url: Cypress.env("keyCloakUrl"),
+    keycloak_idpHint: Cypress.env("keyCloakIDPHint"),
+    environment: Cypress.env("environment"),
+  };
+
+  cy.intercept("GET", environmentUrl, (req) => {
+    req.reply(response);
+  });
   cy.visit(url);
-
-  // cy.url({ timeout: 10000 }).should("include", "test.loginproxy.gov.bc.ca");
-  // cy.get("a#social-idir").click();
-  // cy.url({ timeout: 10000 }).should("include", "logontest7.gov.bc.ca");
-
-  // cy.get("#username").type(username);
-  // cy.get("#password").type(password);
-
-  // cy.get('[name="btnSubmit"]').click();
+  cy.url({ timeout: 10000 }).should("include", "localhost:8080");
+  cy.get("#username").type("cypress");
+  cy.get("#password").type("cypress");
+  cy.get("#kc-login").click();
 });
