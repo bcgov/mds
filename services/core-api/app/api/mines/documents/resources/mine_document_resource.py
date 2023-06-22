@@ -114,7 +114,10 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         documents = MineDocument.find_by_mine_document_guid_many(mine_document_guids)
 
         if len(documents) != len(mine_document_guids):
-            raise NotFound('Document not found')
+            found_doc_guids = [str(d.mine_document_guid) for d in documents]
+            difference = set(mine_document_guids) - set(found_doc_guids)
+
+            raise NotFound(f'The following document(s) are not associated with the given mine: {", ".join(difference)}')
 
         for document in documents:
             if str(document.mine_guid) != str(mine_guid):
