@@ -18,6 +18,8 @@ const propTypes = {
   removeDocument: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   canRemoveDocuments: PropTypes.bool.isRequired,
+  canArchiveDocuments: PropTypes.bool.isRequired,
+  onArchivedDocuments: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
   match: PropTypes.shape({
@@ -97,6 +99,9 @@ export class ProjectSummaryDocumentUpload extends Component {
               []
             )}
             removeDocument={this.props.canRemoveDocuments ? this.props.removeDocument : null}
+            canArchiveDocuments={true}
+            archiveDocumentsArgs={{ mineGuid: fileUploadParams.mineGuid }}
+            onArchivedDocuments={this.props.onArchivedDocuments}
             isViewOnly={!(this.props.isEditMode || this.props.isNewProject)}
           />
           {(this.props.isEditMode || this.props.isNewProject) && (

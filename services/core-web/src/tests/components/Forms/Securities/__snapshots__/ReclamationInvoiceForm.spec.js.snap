@@ -121,13 +121,8 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
     <Col
       xs={24}
     >
-      <DocumentTable
-        additionalColumnProps={Array []}
-        documentColumns={null}
-        documentParent={null}
+      <Connect(DocumentTable)
         documents={Array []}
-        excludedColumnKeys={Array []}
-        isViewOnly={false}
         removeDocument={[Function]}
       />
     </Col>

@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "../constants";
 
 /**
  * detect IE

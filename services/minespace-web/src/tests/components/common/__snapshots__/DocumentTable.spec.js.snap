@@ -8,16 +8,19 @@ exports[`DocumentTable renders properly 1`] = `
       Array [
         Object {
           "dataIndex": "document_name",
+          "key": "name",
           "render": [Function],
           "title": "File Name",
         },
         Object {
           "dataIndex": undefined,
+          "key": "category",
           "render": [Function],
           "title": "Category",
         },
         Object {
           "dataIndex": undefined,
+          "key": "uploaded",
           "render": [Function],
           "title": "Upload Date",
         },

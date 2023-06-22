@@ -15,6 +15,10 @@ import {
 import customPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -24,6 +28,7 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  mineDocuments: PropTypes.arrayOf(customPropTypes.documentRecord),
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
   removeDocumentFromInformationRequirementsTable: PropTypes.func.isRequired,
   removeDocumentFromMajorMineApplication: PropTypes.func.isRequired,
@@ -52,9 +57,14 @@ export class ProjectDocumentsTab extends Component {
     }
   };
 
-  handleFetchData = () => {
+  handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
-    return this.props.fetchProjectById(projectGuid);
+    const project = await this.props.fetchProjectById(projectGuid);
+
+    this.props.fetchMineDocuments(project.mine_guid, {
+      is_archived: true,
+      project_guid: projectGuid,
+    });
   };
 
   handleDeleteDocument = (event, key, documentParent) => {
@@ -139,11 +149,18 @@ export class ProjectDocumentsTab extends Component {
           )}
           documentParent={documentParent}
           removeDocument={this.handleDeleteDocument}
+          canArchiveDocuments={true}
+          onArchivedDocuments={() => this.handleFetchData()}
+          archiveDocumentsArgs={{ mineGuid: this.props?.project?.mine_guid }}
           excludedColumnKeys={["dated", "category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
         />
       </div>
     );
+  };
+
+  renderArchivedDocumentsSection = (archivedDocuments) => {
+    return <ArchivedDocumentsSection documents={archivedDocuments} />;
   };
 
   render() {
@@ -161,7 +178,11 @@ export class ProjectDocumentsTab extends Component {
               { href: "project-description", title: "Project Description" },
               { href: "irt", title: "IRT" },
               { href: "major-mine-application", title: "Major Mine Application" },
-            ]}
+              isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                href: "archived-documents",
+                title: "Archived Documents",
+              },
+            ].filter(Boolean)}
             featureUrlRoute={routes.PROJECT_ALL_DOCUMENTS.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
@@ -212,6 +233,8 @@ export class ProjectDocumentsTab extends Component {
             ) || [],
             true
           )}
+          <br />
+          {this.renderArchivedDocumentsSection(this.props.mineDocuments)}
         </div>
       </>
     );
@@ -220,12 +243,14 @@ export class ProjectDocumentsTab extends Component {
 
 const mapStateToProps = (state) => ({
   project: getProject(state),
+  mineDocuments: getMineDocuments(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchProjectById,
+      fetchMineDocuments,
       removeDocumentFromProjectSummary,
       removeDocumentFromInformationRequirementsTable,
       removeDocumentFromMajorMineApplication,

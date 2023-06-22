@@ -7,7 +7,7 @@ import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";

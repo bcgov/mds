@@ -53,6 +53,8 @@ from app.api.projects.project_summary.models.project_summary_contact import Proj
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
+from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
 from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
 from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
@@ -99,8 +101,8 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'flush'
 
-from tests.now_submission_factories import *
 from tests.now_application_factories import *
+from tests.now_submission_factories import *
 
 class MineDocumentFactory(BaseFactory):
     class Meta:
@@ -320,6 +322,38 @@ class ProjectSummaryDocumentFactory(BaseFactory):
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
+
+
+class InformationRequirementsTableDocumentFactory(BaseFactory):
+    class Meta:
+        model = InformationRequirementsTableDocumentXref
+
+    class Params:
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..information_requirements_table.project.mine_guid'))
+        information_requirements_table = factory.SubFactory('tests.factories.InformationRequirementsTable')
+
+    information_requirements_table_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    irt_id = factory.SelfAttribute('information_requirements_table.irt_id')
+    information_requirements_table_document_type_code = factory.LazyFunction(RandomInformationRequirementsTableDocumentTypeCode)
+
+
+class ProjectDecisionPackageDocumentFactory(BaseFactory):
+    class Meta:
+        model = ProjectDecisionPackageDocumentXref
+
+    class Params:
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..project_decision_package.project.mine_guid'))
+        project_decision_package = factory.SubFactory('tests.factories.InformationRequirementsTable')
+
+    project_decision_package_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    project_decision_package_id = factory.SelfAttribute('project_decision_package.project_decision_package_id')
+    project_decision_package_document_type_code = factory.LazyFunction(RandomInformationRequirementsTableDocumentTypeCode)
 
 
 def RandomPermitNumber():
@@ -680,6 +714,8 @@ class MinespaceUserFactory(BaseFactory):
     email_or_username = factory.Faker('email')
 
 # Core subscriptions
+
+
 class SubscriptionFactory(BaseFactory):
     class Meta:
         model = Subscription
@@ -691,6 +727,8 @@ class SubscriptionFactory(BaseFactory):
     user_name = factory.Faker('last_name')
 
 # Minespace subscriptions/access
+
+
 class MinespaceSubscriptionFactory(BaseFactory):
     class Meta:
         model = MinespaceUserMine
@@ -701,6 +739,7 @@ class MinespaceSubscriptionFactory(BaseFactory):
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_id = factory.SelfAttribute('minespace_user.user_id')
+
 
 class MineFactory(BaseFactory):
     class Meta:
@@ -1298,6 +1337,18 @@ class InformationRequirementsTableFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     irt_guid = GUID
     status_code = 'SUB'
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        InformationRequirementsTableDocumentFactory.create_batch(
+            size=extracted, information_requirements_table=obj, mine_document__mine=None, **kwargs)
 
 
 class MajorMineApplicationFactory(BaseFactory):
@@ -1327,6 +1378,17 @@ class ProjectDecisionPackageFactory(BaseFactory):
     status_code = 'NTS'
     documents = []
     deleted_ind = False
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ProjectDecisionPackageDocumentFactory.create_batch(
+            size=extracted, project_decision_package=obj, mine_document__mine=None, **kwargs)
 
 
 class ActivityFactory(BaseFactory):

@@ -34,6 +34,8 @@ from app.api.now_applications.models.activity_detail.underground_exploration_typ
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
+from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
+from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
 
 
 def RandomMineRegionCode():
@@ -164,6 +166,14 @@ def RandomExplosivesPermitMagazineTypeCode():
 def RandomProjectSummaryDocumentTypeCode():
     return random.choice(
         [x.project_summary_document_type_code for x in ProjectSummaryDocumentType.get_all()])
+
+def RandomProjectDecisionPackageDocumentTypeCode():
+    return random.choice(
+        [x.project_decision_package_document_type_code for x in ProjectDecisionPackageDocumentType.get_all()])
+
+def RandomInformationRequirementsTableDocumentTypeCode():
+    return random.choice(
+        [x.information_requirements_table_document_type_code for x in InformationRequirementsTableDocumentType.get_all()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):

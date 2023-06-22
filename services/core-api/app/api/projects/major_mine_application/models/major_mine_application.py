@@ -28,12 +28,16 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         db.ForeignKey('major_mine_application_status_code.major_mine_application_status_code'),
         nullable=False)
     project = db.relationship("Project", back_populates="major_mine_application")
-    documents = db.relationship('MajorMineApplicationDocumentXref', lazy='select')
+    documents = db.relationship(
+        'MajorMineApplicationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(MajorMineApplicationDocumentXref.major_mine_application_id == MajorMineApplication.major_mine_application_id, MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+    )
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',
         secondary='major_mine_application_document_xref',
-        secondaryjoin='and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)'
     )
 
     def __repr__(self):

@@ -10,7 +10,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { useHistory, useParams } from "react-router-dom";
 
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import PropTypes from "prop-types";
 import React from "react";
 import { bindActionCreators } from "redux";

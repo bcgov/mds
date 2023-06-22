@@ -1,7 +1,7 @@
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
 import { isEmpty } from "lodash";
-import { getEnvironment } from "@common/utils/environmentUtils";
+import { getEnvironment } from "@mds/common";
 import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";

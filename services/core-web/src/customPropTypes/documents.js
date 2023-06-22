@@ -6,6 +6,7 @@ export const mineDocument = shape({
   document_manager_guid: PropTypes.string,
   document_name: PropTypes.string,
   active_ind: PropTypes.string,
+  is_archived: PropTypes.bool,
 });
 
 export const documentRecord = shape({
