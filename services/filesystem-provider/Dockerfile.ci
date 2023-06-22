@@ -16,14 +16,10 @@ RUN apt-get update \
     supervisor \     
     procps     
 
+RUN mkdir /tmp/DOTNET_CLI_HOME
 
-# Provide user permissions to temp dotnet workspace
-RUN mkdir /.dotnet
-RUN chmod -R 700 /.dotnet
-RUN chown -R 1001:0 /.dotnet
-
-ENV DOTNET_CLI_HOME /.dotnet
-ENV XDG_DATA_HOME /.dotnet
+ENV DOTNET_CLI_HOME /tmp/DOTNET_CLI_HOME
+ENV XDG_DATA_HOME /tmp
 
 RUN cd ${APP_ROOT}/app && dotnet restore && dotnet build
 
