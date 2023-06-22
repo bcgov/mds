@@ -114,7 +114,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         documents = MineDocument.find_by_mine_document_guid_many(mine_document_guids)
 
         if len(documents) != len(mine_document_guids):
-            raise NotFound('Doucment not found')
+            raise NotFound('Document not found')
 
         for document in documents:
             if str(document.mine_guid) != str(mine_guid):

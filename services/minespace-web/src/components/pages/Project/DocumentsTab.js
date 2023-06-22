@@ -12,6 +12,7 @@ import DocumentsPage from "./DocumentsPage";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -32,8 +33,8 @@ const tabs = [
   "project-description",
   "information-requirements-table",
   "major-mine-application",
-  "archived-documents",
-];
+  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && "archived-documents",
+].filter(Boolean);
 
 export class DocumentsTab extends Component {
   state = {

@@ -41,7 +41,7 @@ class TestMineDocumentListResource:
         assert len(get_data['records']) == 0
 
     def test_list_resource_one_document(self, test_client, db_session, auth_headers, setup_info):
-        """Should return no documents"""
+        """Should return one document"""
 
         mine = setup_info['mine']
 
@@ -58,7 +58,7 @@ class TestMineDocumentListResource:
         assert len(get_data['records']) == 1
 
     def test_list_resource_scoped_by_mine(self, test_client, db_session, auth_headers, setup_info):
-        """Should return no documents"""
+        """Should only return document scoped by mine"""
 
         mine = setup_info['mine']
 
@@ -76,7 +76,7 @@ class TestMineDocumentListResource:
         assert len(get_data['records']) == 1
 
     def test_list_resource_filter_by_project_summary_guid(self, test_client, db_session, auth_headers, setup_info):
-        """Should return no documents"""
+        """Should only return documents related to the project summary"""
 
         mine = setup_info['mine']
 
@@ -98,7 +98,7 @@ class TestMineDocumentListResource:
         assert str(ps.documents[0].mine_document_guid) == get_data['records'][0]['mine_document_guid']
 
     def test_list_resource_filter_by_project_decision_package_guid(self, test_client, db_session, auth_headers, setup_info):
-        """Should return no documents"""
+        """Should only return documents related to the project decision package"""
 
         mine = setup_info['mine']
 

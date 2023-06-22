@@ -11,7 +11,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
@@ -151,7 +151,7 @@ export const DocumentTable = (props) => {
         </div>
       ),
     },
-    !IN_PROD() && {
+    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
       key: "archive",
       className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
       render: (text, record) => (

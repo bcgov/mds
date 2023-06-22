@@ -26,7 +26,7 @@ import * as FORM from "@/constants/forms";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -235,6 +235,8 @@ export class DecisionPackageTab extends Component {
       Boolean(projectDecisionPackage?.project_decision_package_guid) &&
       projectDecisionPackage?.status_code !== "NTS";
 
+    const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+
     return (
       <>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
@@ -243,7 +245,7 @@ export class DecisionPackageTab extends Component {
               { href: "decision-package-documents", title: "Decision Package" },
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
-              !IN_PROD() && { href: "archived-documents", title: "Archived Documents" },
+              canArchiveDocuments && { href: "archived-documents", title: "Archived Documents" },
             ].filter(Boolean)}
             featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}

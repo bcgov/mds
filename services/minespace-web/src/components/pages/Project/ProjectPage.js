@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";

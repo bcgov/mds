@@ -22,7 +22,7 @@ class MineDocumentSearchUtil():
         Find Mine Documents by the given project related params
         Returns a list of MineDocuments
         """
-        qy = db.session.query(MineDocument).filter_by(mine_guid=mine_guid)
+        qy = db.session.query(MineDocument).filter_by(mine_guid=mine_guid, deleted_ind=False)
 
         if is_archived is not None:
             qy = qy.filter_by(is_archived=is_archived)

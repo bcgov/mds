@@ -21,7 +21,7 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -35,6 +35,8 @@ const propTypes = {
   updateMajorMineApplication: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
 };
+
+const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
 
 const menuOptions = [
   {
@@ -57,7 +59,7 @@ const menuOptions = [
     href: "ministry-decision-documents",
     title: "Ministry Decision Documents",
   },
-  !IN_PROD() && {
+  canArchiveDocuments && {
     href: "archived-documents",
     title: "Archived Documents",
   },

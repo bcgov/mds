@@ -3,7 +3,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { IMineDocument } from "@mds/common";
 import { DeleteOutlined } from "@ant-design/icons";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 interface ArchivedDocumentsSectionProps {
   documents: IMineDocument;
@@ -12,7 +12,7 @@ interface ArchivedDocumentsSectionProps {
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
-  if (IN_PROD()) {
+  if (!isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)) {
     return <></>;
   }
 

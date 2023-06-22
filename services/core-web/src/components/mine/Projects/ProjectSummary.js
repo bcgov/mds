@@ -41,7 +41,7 @@ import Loading from "@/components/common/Loading";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -360,7 +360,10 @@ export class ProjectSummary extends Component {
                   { href: "project-dates", title: "Project dates" },
                   { href: "project-contacts", title: "Project contacts" },
                   { href: "document-details", title: "Documents" },
-                  !IN_PROD() && { href: "archived-documents", title: "Archived Documents" },
+                  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                    href: "archived-documents",
+                    title: "Archived Documents",
+                  },
                 ].filter(Boolean)}
                 featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
                 featureUrlRouteArguments={[

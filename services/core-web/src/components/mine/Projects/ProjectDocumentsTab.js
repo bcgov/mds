@@ -18,7 +18,7 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -178,7 +178,10 @@ export class ProjectDocumentsTab extends Component {
               { href: "project-description", title: "Project Description" },
               { href: "irt", title: "IRT" },
               { href: "major-mine-application", title: "Major Mine Application" },
-              !IN_PROD() && { href: "archived-documents", title: "Archived Documents" },
+              isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                href: "archived-documents",
+                title: "Archived Documents",
+              },
             ].filter(Boolean)}
             featureUrlRoute={routes.PROJECT_ALL_DOCUMENTS.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}

@@ -12,6 +12,7 @@ import DocumentLink from "@/components/common/DocumentLink";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import modalConfig from "../modalContent/config";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
@@ -170,8 +171,6 @@ export const DocumentTable = (props) => {
     ),
   };
 
-  console.log(props.documents);
-
   if (props.documentColumns?.length > 0) {
     columns.push(...props.documentColumns);
   } else {
@@ -179,7 +178,7 @@ export const DocumentTable = (props) => {
     columns.push(uploadDateColumn);
   }
 
-  if (props.canArchiveDocuments) {
+  if (props.canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)) {
     columns.push(archiveColumn);
   }
 
