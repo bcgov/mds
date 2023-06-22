@@ -202,19 +202,18 @@ class TestConfig(Config):
                                                        Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
     SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = "test_audience"
+    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', 'test_audience')
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
-    JWT_OIDC_TEST_ISSUER = "test_issuer"
+    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', 'test_issuer')
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
 
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": "flask-jwt-oidc-test-client",
+            "kid": os.environ.get('KEY_ID', 'flask-jwt-oidc-test-client'),
             "kty": "RSA",
             "alg": "RS256",
             "use": "sig",
-            "n":
-            "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
+            "n": os.environ.get('PUBLIC_KEY', 'AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR'),
             "e": "AQAB"
         }]
     }
