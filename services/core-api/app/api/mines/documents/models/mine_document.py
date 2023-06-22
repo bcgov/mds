@@ -47,5 +47,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'mine_document_guid': str(self.mine_document_guid),
             'mine_guid': str(self.mine_guid),
             'document_manager_guid': str(self.document_manager_guid),
-            'document_name': self.document_name
+            'document_name': self.document_name,
+            'upload_date': self.upload_date,
+            'create_user': self.create_user,
         }

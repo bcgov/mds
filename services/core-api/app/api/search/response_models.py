@@ -83,6 +83,8 @@ MINE_DOCUMENT_SEARCH_MODEL = api.model(
         'document_name': fields.String,
         'mine_name': fields.String,
         'document_manager_guid': fields.String,
+        'upload_date': fields.String,
+        'create_user': fields.String
     })
 
 PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
