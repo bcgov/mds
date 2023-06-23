@@ -91,6 +91,18 @@ MINE_LOCATION_MODEL = api.model(
         'mine_location_description': fields.String,
     })
 
+MINE_DOCUMENT_VERSION_MODEL = api.model(
+    'MineDocumentVersion', {
+        'mine_document_guid': fields.String,
+        'mine_document_version_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_manager_version_guid': fields.String,
+        'document_name': fields.String,
+        'upload_date': fields.DateTime,
+        'create_user': fields.String,
+    })
+
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -99,7 +111,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'document_name': fields.String,
         'upload_date': fields.DateTime,
         'create_user': fields.String,
-        'is_archived': fields.Boolean
+        'is_archived': fields.Boolean,
+        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL))
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {

@@ -1,3 +1,4 @@
+import random
 import uuid
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -5,9 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from datetime import datetime
 from marshmallow import fields
+from app.config import Config
 
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class MineDocument(SoftDeleteMixin, AuditMixin, Base):
@@ -65,11 +68,60 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             }, synchronize_session='fetch')
         db.session.commit()
 
+    @hybrid_property
+    def versions(self):
+        """
+        TODO: Remove this once file versioning backend changes have been implemented.
+
+        Utility prop used for returning version data used for testing purposes.
+
+        Returns randomly generated versions (between 0 and 5) for this mine document.
+        """
+        if Config.ENVIRONMENT_NAME == 'prod':
+            return []
+
+        users = ['test@bceid', 'test1@idir', 'test2@bceid', 'test2@idir']
+
+        current_version = {
+            'mine_document_guid': str(self.mine_document_guid),
+            'mine_document_version_guid': str(uuid.uuid4()),
+            'mine_guid': str(self.mine_guid),
+            'document_manager_guid': str(self.document_manager_guid),
+            'document_manager_version_guid': str(uuid.uuid4()),
+            'document_name': self.document_name,
+            'upload_date': self.upload_date,
+            'create_user': self.create_user
+        }
+
+        to_return = [current_version]
+
+        rand = random.randint(0, 5)
+
+        for i in range(rand):
+            to_return.append({
+                'mine_document_guid': str(self.mine_document_guid),
+                'mine_document_version_guid': str(uuid.uuid4()),
+                'mine_guid': str(self.mine_guid),
+                'document_manager_guid': str(self.document_manager_guid),
+                'document_manager_version_guid': str(uuid.uuid4()),
+                'document_name': self.document_name,
+                'upload_date': self.upload_date,
+                'create_user': random.choice(users)
+            })
+
+        return to_return
+
+    # TODO: Remove when mine_party_appt is refactored
+
     def json(self):
         return {
             'mine_document_guid': str(self.mine_document_guid),
             'mine_guid': str(self.mine_guid),
             'document_manager_guid': str(self.document_manager_guid),
             'document_name': self.document_name,
+            << << << < HEAD
             'is_archived': self.is_archived
+            == == == =
+            'versions': self.versions,
+            >>>>>> > 5564abb81([MDS - 5268] Added file version model for testing purposes)
         }
