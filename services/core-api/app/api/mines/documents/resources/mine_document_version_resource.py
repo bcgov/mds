@@ -12,13 +12,12 @@ from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 
-from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
 
 
-class MineDocumentVersionResource(Resource, UserMixin):
+class MineDocumentVersionListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
 
     @api.doc(
