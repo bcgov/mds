@@ -119,9 +119,6 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'document_manager_guid': str(self.document_manager_guid),
             'document_name': self.document_name,
-            << << << < HEAD
-            'is_archived': self.is_archived
-            == == == =
+            'is_archived': self.is_archived,
             'versions': self.versions,
-            >>>>>> > 5564abb81([MDS - 5268] Added file version model for testing purposes)
         }
