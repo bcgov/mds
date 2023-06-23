@@ -1,12 +1,12 @@
 /* eslint-disable */
 import React from "react";
-import { Table } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { formatDateTime } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 import * as Strings from "@common/constants/strings";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   files: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -98,10 +98,9 @@ const transformRowData = (file, showRemove, updateDocumentHandler, documentTypeO
 
 export const UploadedDocumentsTable = (props) => {
   return (
-    <Table
-      align="left"
-      pagination={false}
+    <CoreTable
       columns={columns(props.showRemove, props.showCategory)}
+      emptyText="No documents."
       dataSource={props.files.map((file) =>
         transformRowData(
           file,
@@ -110,7 +109,6 @@ export const UploadedDocumentsTable = (props) => {
           props.documentTypeOptionsHash
         )
       )}
-      locale={{ emptyText: "No documents." }}
     />
   );
 };

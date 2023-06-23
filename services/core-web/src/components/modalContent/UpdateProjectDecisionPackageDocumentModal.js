@@ -98,14 +98,7 @@ export const UpdateProjectDecisionPackageDocumentModal = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <CoreTable
-            columns={columns}
-            dataSource={files}
-            tableProps={{
-              pagination: false,
-            }}
-            condition
-          />
+          <CoreTable columns={columns} dataSource={files} condition />
         </Col>
       </Row>
       <Row>

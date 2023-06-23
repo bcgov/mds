@@ -77,8 +77,8 @@ const INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD = "internal_ministry_documents";
 
 const documentColumns = [
   documentNameColumn("document_name"),
-  uploadedByColumn("update_user"),
   uploadDateColumn("upload_date"),
+  uploadedByColumn("update_user"),
 ];
 
 const alertText = (updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
@@ -532,10 +532,8 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
     (act) =>
       act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-  const {
-    inspectorContactedValidation,
-    inspectorContacted,
-  } = retrieveInitialReportDynamicValidation(childProps);
+  const { inspectorContactedValidation, inspectorContacted } =
+    retrieveInitialReportDynamicValidation(childProps);
 
   const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
@@ -562,7 +560,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
           </Col>
           {formValues?.determination_type_code &&
             formValues?.determination_type_code !==
-            Strings.INCIDENT_DETERMINATION_TYPES.pending && (
+              Strings.INCIDENT_DETERMINATION_TYPES.pending && (
               <Col xs={24} md={12}>
                 <Form.Item label="* Inspector who made the determination">
                   <Field
@@ -578,20 +576,20 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
             )}
           {formValues?.determination_type_code ===
             Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-              <Col xs={24} md={12}>
-                <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
-                  <Field
-                    id="dangerous_occurrence_subparagraph_ids"
-                    name="dangerous_occurrence_subparagraph_ids"
-                    placeholder="Please choose one or more..."
-                    component={renderConfig.MULTI_SELECT}
-                    data={childProps.dangerousOccurenceSubparagraphOptions}
-                    validate={[required, validateDoSubparagraphs]}
-                    disabled={!isEditMode}
-                  />
-                </Form.Item>
-              </Col>
-            )}
+            <Col xs={24} md={12}>
+              <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
+                <Field
+                  id="dangerous_occurrence_subparagraph_ids"
+                  name="dangerous_occurrence_subparagraph_ids"
+                  placeholder="Please choose one or more..."
+                  component={renderConfig.MULTI_SELECT}
+                  data={childProps.dangerousOccurenceSubparagraphOptions}
+                  validate={[required, validateDoSubparagraphs]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col span={24}>
             <h4>Verbal Notification</h4>
           </Col>

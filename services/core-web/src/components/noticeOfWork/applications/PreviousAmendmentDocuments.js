@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormSection, Field } from "redux-form";
-import { Table } from "antd";
+import CoreTable from "@/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import { renderConfig } from "@/components/common/config";
 
@@ -88,9 +88,7 @@ export const PreviousAmendmentDocuments = (props) => {
       <p>These documents came from the previous permit amendment.</p>
       <br />
       <FormSection name="previous_amendment_documents_metadata">
-        <Table
-          align="left"
-          pagination={false}
+        <CoreTable
           columns={columns}
           rowKey={(record) => record.permit_amendment_document_guid}
           dataSource={props.previousAmendmentDocuments}

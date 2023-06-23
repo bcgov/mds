@@ -102,9 +102,6 @@ export const MineProjectTable = (props) => {
       condition={props.isLoaded}
       columns={columns}
       dataSource={transformRowData(props.projects)}
-      tableProps={{
-        align: "left",
-      }}
     />
   );
 };
