@@ -50,4 +50,28 @@ Cypress.Commands.add("login", () => {
   cy.get("#username").type("cypress");
   cy.get("#password").type("cypress");
   cy.get("#kc-login").click();
+
+  cy.intercept(
+    "POST",
+    "http://localhost:8080/auth/realms/standard/protocol/openid-connect/token",
+    (req) => {
+      req.reply({
+        statusCode: 200,
+        body: {
+          access_token: "abcde123",
+          expires_in: 300,
+          refresh_expires_in: 1800,
+          refresh_token: "abcde123",
+          token_type: "Bearer",
+          id_token: "abcde123",
+          "not-before-policy": 0,
+          session_state: "f3452404-6dcf-4f0c-8ae2-26768db40cc3",
+          scope: "openid idir profile email bceidboth",
+        },
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+    }
+  );
 });
