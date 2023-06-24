@@ -329,6 +329,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     id="document-details"
   >
     <ProjectSummaryDocumentUpload
+      canArchiveDocuments={false}
       canRemoveDocuments={false}
       formErrors={Object {}}
       formValues={
@@ -394,6 +395,8 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       userRoles={Array []}
     />
   </div>
+  <br />
+  <ArchivedDocumentsSection />
   <div
     className="right center-mobile"
   />

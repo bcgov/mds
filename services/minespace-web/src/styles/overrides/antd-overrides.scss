@@ -47,7 +47,7 @@
 // Divider
 
 .ant-divider:not(.ant-divider-plain) {
-  background-color: $primary-color; 
+  background-color: $primary-color;
 }
 
 .ant-divider-horizontal {
@@ -129,19 +129,19 @@ h5.ant-typography,
 .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
 .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
   border-bottom: 4px solid #124673 !important;
-  color: $white  !important;
+  color: $white !important;
   border: 2px solid transparent;
   font-weight: bold;
 }
 
 .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active,
 .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab-active {
-  background-color: $primary-color  !important;
-  color: $white  !important;
+  background-color: $primary-color !important;
+  color: $white !important;
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: $white  !important;
+  color: $white !important;
   font-weight: bold;
   text-shadow: none;
 }
@@ -150,7 +150,7 @@ h5.ant-typography,
 .ant-tabs-tab-remove:focus,
 .ant-tabs-tab-btn:active,
 .ant-tabs-tab-remove:active {
-  color: $white  !important;
+  color: $white !important;
 }
 
 .ant-tabs {
@@ -162,7 +162,7 @@ h5.ant-typography,
 
 .ant-tabs-tab:not(.ant-tabs-tab-active) {
   &:hover {
-    color: $white  !important;
+    color: $white !important;
     background-color: #999 !important;
   }
 }
@@ -305,6 +305,11 @@ tr.ant-table-expanded-row {
 
 // Tags
 
+.ant-tag {
+  border-radius: 25px;
+  padding: 2px 7px;
+}
+
 .ant-tag,
 .ant-select-selection--multiple .ant-select-selection__choice {
   border: 1px solid $table-seperator;
@@ -446,10 +451,10 @@ th.ant-descriptions-item.vertical-description {
 .ant-input-number-disabled,
 .ant-radio-disabled .ant-radio-inner,
 .ant-checkbox-disabled .ant-checkbox-inner {
-  border-color: $disabled-bg  !important;
+  border-color: $disabled-bg !important;
 
   &:hover {
-    border-color: $disabled-bg  !important;
+    border-color: $disabled-bg !important;
   }
 }
 

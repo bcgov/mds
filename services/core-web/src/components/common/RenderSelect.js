@@ -30,6 +30,7 @@ const defaultProps = {
   meta: {},
   onSelect: () => {},
   usedOptions: [],
+  allowClear: true,
 };
 
 const RenderSelect = (props) => {
@@ -53,7 +54,7 @@ const RenderSelect = (props) => {
       <Select
         virtual={false}
         disabled={props.disabled}
-        allowClear
+        allowClear={props.allowClear}
         dropdownMatchSelectWidth
         getPopupContainer={(trigger) => trigger.parentNode}
         showSearch

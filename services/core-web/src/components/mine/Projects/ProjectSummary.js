@@ -14,12 +14,14 @@ import {
   getProjectSummaryAuthorizationTypesArray,
   getDropdownProjectSummaryStatusCodes,
 } from "@common/selectors/staticContentSelectors";
-import { getMines } from "@common/selectors/mineSelectors";
+import { getMineDocuments, getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
   getProject,
 } from "@common/selectors/projectSelectors";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+
 import {
   createProjectSummary,
   fetchProjectSummaryById,
@@ -39,6 +41,7 @@ import Loading from "@/components/common/Loading";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -72,6 +75,7 @@ const propTypes = {
   projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
 };
 
 const defaultProps = {
@@ -116,11 +120,21 @@ export class ProjectSummary extends Component {
 
   handleFetchData = (params) => {
     const { projectGuid, projectSummaryGuid, mineGuid, tab } = params;
+
     if (projectGuid && projectSummaryGuid) {
       return this.props
         .fetchProjectById(projectGuid)
-        .then(() => this.setState({ isLoaded: true, isValid: true, isNewProject: false }))
-        .catch(() => this.setState({ isLoaded: false, isValid: false }));
+        .then((res) => {
+          this.setState({ isLoaded: true, isValid: true, isNewProject: false });
+          this.props.fetchMineDocuments(res.mine_guid, {
+            project_summary_guid: projectSummaryGuid,
+            is_archived: true,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          this.setState({ isLoaded: false, isValid: false });
+        });
     }
     return this.props.fetchMineRecordById(mineGuid).then(() => {
       const mine = this.props.mines[mineGuid];
@@ -239,6 +253,15 @@ export class ProjectSummary extends Component {
       });
   };
 
+  reloadData = async (mineGuid, projectSummaryGuid) => {
+    this.setState({ isLoaded: false });
+    try {
+      await this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+    } finally {
+      this.setState({ isLoaded: true });
+    }
+  };
+
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
     const {
@@ -249,8 +272,7 @@ export class ProjectSummary extends Component {
     return this.props
       .removeDocumentFromProjectSummary(projectGuid, projectSummaryGuid, documentGuid)
       .then(() => {
-        this.setState({ isLoaded: false });
-        this.props.fetchProjectSummaryById(mineGuid, projectSummaryGuid);
+        this.reloadData(mineGuid, projectSummaryGuid);
       })
       .finally(() => this.setState({ isLoaded: true }));
   };
@@ -259,6 +281,10 @@ export class ProjectSummary extends Component {
     if (!this.state.isValid) {
       return <NullScreen type="generic" />;
     }
+
+    const mineGuid = this.props.formattedProjectSummary?.mine_guid;
+    const projectSummaryGuid = this.props.formattedProjectSummary?.project_summary_guid;
+
     return (
       (this.state.isLoaded && (
         <>
@@ -334,7 +360,11 @@ export class ProjectSummary extends Component {
                   { href: "project-dates", title: "Project dates" },
                   { href: "project-contacts", title: "Project contacts" },
                   { href: "document-details", title: "Documents" },
-                ]}
+                  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                    href: "archived-documents",
+                    title: "Archived Documents",
+                  },
+                ].filter(Boolean)}
                 featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
                 featureUrlRouteArguments={[
                   this.props.match?.params?.mineGuid,
@@ -390,6 +420,8 @@ export class ProjectSummary extends Component {
                       handleSaveData={this.handleSaveData}
                       handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
+                      onArchivedDocuments={this.reloadData.bind(this, mineGuid, projectSummaryGuid)}
+                      archivedDocuments={this.props.mineDocuments}
                     />
                   </div>
                 </LoadingWrapper>
@@ -415,6 +447,7 @@ const mapStateToProps = (state) => {
     formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
     anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
     fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
+    mineDocuments: getMineDocuments(state),
     projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
     projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
     projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
@@ -437,6 +470,7 @@ const mapDispatchToProps = (dispatch) =>
       removeDocumentFromProjectSummary,
       clearProjectSummary,
       fetchMineRecordById,
+      fetchMineDocuments,
       updateProject,
       submit,
       touch,

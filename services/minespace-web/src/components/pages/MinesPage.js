@@ -14,7 +14,7 @@ import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
-import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
+import { detectDevelopmentEnvironment } from "@mds/common";
 
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,

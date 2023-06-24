@@ -14,9 +14,8 @@ exports[`DocumentsPage renders properly 1`] = `
   <Col
     span={24}
   >
-    <DocumentTable
-      deletePayload={Object {}}
-      deletePermission={null}
+    <Connect(DocumentTable)
+      canArchiveDocuments={true}
       documentColumns={
         Array [
           Object {
@@ -62,7 +61,6 @@ exports[`DocumentsPage renders properly 1`] = `
           },
         ]
       }
-      handleDeleteDocument={[Function]}
     />
   </Col>
 </Row>

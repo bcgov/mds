@@ -33,9 +33,7 @@ exports[`DocumentUpload renders properly 1`] = `
         </ForwardRef>
       </Col>
     </Row>
-    <DocumentTable
-      deletePayload={Object {}}
-      deletePermission={null}
+    <Connect(DocumentTable)
       documentColumns={
         Array [
           Object {
@@ -52,8 +50,6 @@ exports[`DocumentUpload renders properly 1`] = `
         ]
       }
       documentParent="project summary"
-      documents={Array []}
-      handleDeleteDocument={[Function]}
     />
     <Field
       acceptedFileTypesMap={

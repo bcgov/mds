@@ -13,8 +13,13 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.HttpLogging;
 using System;
 using System.Linq;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Http;
+using System.Web;
 
 namespace EJ2FileManagerService
 {
@@ -30,6 +35,9 @@ namespace EJ2FileManagerService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+
             services.AddMemoryCache();
             services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddCors(options =>
@@ -66,19 +74,51 @@ namespace EJ2FileManagerService
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();
             IdentityModelEventSource.ShowPII = true;
+
+            // Enable logging of http request. Make sure to not include HttpLoggingFields.RequestQuery as
+            // a users auth token is included as a GET param (token) for image requests
+            services.AddHttpLogging(logging =>
+            {
+                logging.LoggingFields = HttpLoggingFields.RequestProperties |
+                    HttpLoggingFields.ResponseStatusCode |
+                    HttpLoggingFields.RequestQuery;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, bool IsDevelopment)
         {
+
             DotNetEnv.Env.Load();
             DotNetEnv.Env.TraversePath().Load();
+
+            app.Use(async (context, next) =>
+            {
+                // Middleware to transform get requests with an auth token included as a query param
+                // into an Authorization header.
+                // Background: The Syncfusion frontend libraries don't support passing along an Authorization header
+                // for image requests.
+                var token = context.Request.Query["token"];
+
+                if (!String.IsNullOrEmpty(token))
+                {
+                    NameValueCollection filtered = HttpUtility.ParseQueryString(context.Request.QueryString.ToString());
+
+                    // Remove token from query string so it doesn't show up in logs.
+                    filtered.Remove("token");
+
+                    context.Request.QueryString = new QueryString("?" + filtered.ToString());
+                    context.Request.Headers.Authorization = "Bearer " + token;
+                }
+                await next(context);
+            });
 
             // Register Syncfusion License (https://help.syncfusion.com/common/essential-studio/licensing/license-key)
             string syncfusionLicenseKey = System.Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
 
-            if (env.IsDevelopment())
+            if (IsDevelopment)
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -86,6 +126,7 @@ namespace EJ2FileManagerService
             {
                 app.UseHsts();
             }
+            app.UseHttpLogging();
 
             app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
@@ -95,12 +136,15 @@ namespace EJ2FileManagerService
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
+
+
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
         }
     }
 
@@ -114,12 +158,12 @@ namespace EJ2FileManagerService
         }
 
         public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
-        {            
+        {
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
             // Flatten client_roles because Microsoft identity model doesn't support nested claims
             if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "client_roles"))
-            {     
-            foreach (var claim in principal.Claims.ToList())
+            {
+                foreach (var claim in principal.Claims.ToList())
                 {
                     // Console.WriteLine("Claim Type: {0}, Value: {1}", claim.Type, claim.Value);
                     if (claim.Type == "client_roles")

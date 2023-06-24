@@ -34,7 +34,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         secondary='information_requirements_table_document_xref',
         secondaryjoin=
-        'and_(foreign(InformationRequirementsTableDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        'and_(foreign(InformationRequirementsTableDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)'
     )
 
     def __repr__(self):
