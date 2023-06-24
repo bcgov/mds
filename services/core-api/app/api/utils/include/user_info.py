@@ -6,7 +6,7 @@ from flask import has_request_context
 VALID_REALM = ['idir']
 
 DUMMY_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "typ": "Bearer",
     "username": "mds",
     "preferred_username": "mds",

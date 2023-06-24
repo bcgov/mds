@@ -1,9 +1,9 @@
 import os
 # Auth Constants
-TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}
+TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": os.environ.get('KEY_ID ', 'flask-jwt-oidc-test-client')}
 
 BASE_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -16,7 +16,7 @@ BASE_AUTH_CLAIMS = {
 }
 
 FULL_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -40,7 +40,7 @@ FULL_AUTH_CLAIMS = {
 }
 
 VIEW_ONLY_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -54,7 +54,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
 }
 
 CREATE_ONLY_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -67,7 +67,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
 }
 
 ADMIN_ONLY_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -80,7 +80,7 @@ ADMIN_ONLY_AUTH_CLAIMS = {
 }
 
 PROPONENT_ONLY_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -95,7 +95,7 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
 }
 
 NROS_VFCBC_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
@@ -109,7 +109,7 @@ NROS_VFCBC_AUTH_CLAIMS = {
 }
 
 CORE_EDIT_PARTIES_AUTH_CLAIMS = {
-    "iss": "test_issuer",
+    "iss": os.environ.get('JWT_OIDC_TEST_ISSUER ', 'test_issuer'),
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
     "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
