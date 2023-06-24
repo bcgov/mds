@@ -1,10 +1,11 @@
+import os
 # Auth Constants
 TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}
 
 BASE_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -17,7 +18,7 @@ BASE_AUTH_CLAIMS = {
 FULL_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -41,7 +42,7 @@ FULL_AUTH_CLAIMS = {
 VIEW_ONLY_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -55,7 +56,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
 CREATE_ONLY_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -68,7 +69,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
 ADMIN_ONLY_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -81,7 +82,7 @@ ADMIN_ONLY_AUTH_CLAIMS = {
 PROPONENT_ONLY_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -96,7 +97,7 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
 NROS_VFCBC_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
@@ -110,7 +111,7 @@ NROS_VFCBC_AUTH_CLAIMS = {
 CORE_EDIT_PARTIES_AUTH_CLAIMS = {
     "iss": "test_issuer",
     "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
-    "aud": "test_audience",
+    "aud": os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience'),
     "exp": 21531718745,
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",

@@ -202,7 +202,7 @@ class TestConfig(Config):
                                                        Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
     SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = "test_audience"
+    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE ', 'test_audience')
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
