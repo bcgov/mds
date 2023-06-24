@@ -1,4 +1,3 @@
-import os
 from app.extensions import jwt
 from jose import jwt as jwt_jose
 from flask import has_request_context
