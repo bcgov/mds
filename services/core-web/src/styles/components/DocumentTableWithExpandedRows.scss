@@ -27,7 +27,7 @@ th.file-name-column {
 .file-name-container {
     display: flex;
     align-items: center;
-    min-width: 85%;
+    flex-basis: 85%;
     margin: 14px;
 
     @media (min-width: 769px) {
