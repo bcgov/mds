@@ -240,6 +240,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
+        expandable={true}
+        isLoaded={false}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -283,6 +285,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
+        expandable={true}
+        isLoaded={false}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -326,6 +330,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
+        expandable={true}
+        isLoaded={false}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -369,6 +375,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
+        expandable={true}
+        isLoaded={false}
         onArchivedDocuments={[Function]}
       />
     </div>

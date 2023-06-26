@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentActions renders properly 1`] = `
+<div>
+  <Dropdown
+    overlay={
+      <Menu>
+        <MenuItem
+          icon={<ForwardRef(DownloadOutlined) />}
+        >
+          <button
+            className="full add-permit-dropdown-button"
+            onClick={[Function]}
+            type="button"
+          >
+            <div>
+              Download File
+            </div>
+          </button>
+        </MenuItem>
+      </Menu>
+    }
+    placement="bottomLeft"
+  >
+    <Button
+      className="permit-table-button"
+      type="secondary"
+    >
+      Actions
+      <img
+        alt="Menu"
+        className="padding-sm--right icon-svg-filter"
+        src={
+          Object {
+            "process": [Function],
+          }
+        }
+        style={
+          Object {
+            "paddingLeft": "5px",
+          }
+        }
+      />
+    </Button>
+  </Dropdown>
+</div>
+`;

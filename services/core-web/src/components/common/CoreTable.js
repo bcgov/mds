@@ -47,7 +47,7 @@ export const CoreTable = (props) => {
       return null;
     }
 
-    if (!record.numberOfVersions || (record?.numberOfVersions === 0)) {
+    if (record.numberOfVersions !== undefined && record.numberOfVersions === 0) {
       return null;
     }
 
@@ -86,9 +86,11 @@ export const CoreTable = (props) => {
         <div>
           <Table
             {...combinedProps}
-            expandIcon={combinedProps.expandRowByClick || combinedProps.expandable
-              ? renderTableExpandIcon
-              : null}
+            expandIcon={
+              combinedProps.expandRowByClick || combinedProps.expandable
+                ? renderTableExpandIcon
+                : null
+            }
             columns={props.columns}
             dataSource={props.dataSource}
             locale={{ emptyText: "No Data Yet" }}

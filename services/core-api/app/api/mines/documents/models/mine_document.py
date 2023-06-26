@@ -90,7 +90,8 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'document_manager_version_guid': str(uuid.uuid4()),
             'document_name': self.document_name,
             'upload_date': self.upload_date,
-            'create_user': self.create_user
+            'create_user': self.create_user,
+            'update_timestamp': self.update_timestamp
         }
 
         to_return = [current_version]
@@ -106,7 +107,8 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
                 'document_manager_version_guid': str(uuid.uuid4()),
                 'document_name': self.document_name,
                 'upload_date': self.upload_date,
-                'create_user': random.choice(users)
+                'create_user': random.choice(users),
+                'update_timestamp': self.update_timestamp
             })
 
         return to_return
