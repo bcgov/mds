@@ -17,7 +17,7 @@ const propTypes = {
 
 const defaultProps = {
   isViewOnly: false,
-  removeDocument: () => {},
+  removeDocument: () => { },
 };
 
 export const VarianceDetails = (props) => (

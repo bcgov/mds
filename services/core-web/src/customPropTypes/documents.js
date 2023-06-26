@@ -15,6 +15,7 @@ export const documentRecord = shape({
   name: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   uploaded: PropTypes.string.isRequired,
+  update_timestamp: PropTypes.string.isRequired,
 });
 
 export const documentDownloadState = PropTypes.shape({

@@ -57,14 +57,15 @@ const menuOptions = [
 export class MajorMineApplicationTab extends Component {
   state = {
     fixedTop: false,
+    isLoaded: false,
   };
 
   componentDidMount() {
-    console.log("componentDidMount for MajorMineApplicationTab");
-    //this.props.project.major_mine_application?.documents?
-    console.log(this.props);
     const { projectGuid } = this.props.match.params;
-    this.props.fetchProjectById(projectGuid);
+    this.props.fetchProjectById(projectGuid).then(() => {
+      this.setState({ isLoaded: true });
+    });
+
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
@@ -123,13 +124,19 @@ export class MajorMineApplicationTab extends Component {
                 name: doc.document_name,
                 category: null,
                 uploaded: doc.upload_date,
+                update_timestamp: doc.update_timestamp,
+                create_user: doc.create_user,
+                major_mine_application_document_type: doc.major_mine_application_document_type_code,
+                versions: doc.versions,
               },
               ...docs,
             ],
             []
           )}
-          excludedColumnKeys={["dated", "category", "remove"]}
-          additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          excludedColumnKeys={[]}
+          additionalColumnProps={[]}
+          isLoaded={this.state.isLoaded}
+          expandable={true}
         />
       </div>
     );

@@ -46,6 +46,11 @@ export const CoreTable = (props) => {
     if (props.tableProps.rowExpandable && !props.tableProps.rowExpandable(record)) {
       return null;
     }
+
+    if (!record.numberOfVersions || (record?.numberOfVersions === 0)) {
+      return null;
+    }
+
     return (
       <a
         role="link"
@@ -81,7 +86,9 @@ export const CoreTable = (props) => {
         <div>
           <Table
             {...combinedProps}
-            expandIcon={combinedProps.expandRowByClick ? renderTableExpandIcon : null}
+            expandIcon={combinedProps.expandRowByClick || combinedProps.expandable
+              ? renderTableExpandIcon
+              : null}
             columns={props.columns}
             dataSource={props.dataSource}
             locale={{ emptyText: "No Data Yet" }}
