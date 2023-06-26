@@ -10,7 +10,6 @@ import {
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@common/constants/strings";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate, normalizePhone, resetForm } from "@common/utils/helpers";
 import {
   addDocumentToNoticeOfDeparture,
@@ -37,10 +36,14 @@ import {
 } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import CoreTable from "@/components/common/CoreTable";
+import {
+  renderDateColumn,
+  renderDocumentLinkColumn,
+  renderTextColumn,
+} from "../common/CoreTableCommonColumns";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
-import LinkButton from "@/components/common/buttons/LinkButton";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
@@ -227,47 +230,17 @@ const NoticeOfDepartureModal: React.FC<
     props.closeModal();
   };
 
-  const fileColumns = (isSortable) => {
+  const fileColumns = (isSortable: boolean) => {
     return [
-      {
-        title: "Name",
-        dataIndex: "document_name",
-        sortField: "document_name",
-        sorter: isSortable ? (a, b) => a.document_name.localeCompare(b.document_name) : false,
-        render: (text, record) => (
-          <div className="nod-table-link">
-            {text ? (
-              <LinkButton onClick={() => downloadFileFromDocumentManager(record)}>
-                {text}
-              </LinkButton>
-            ) : (
-              <div>{EMPTY_FIELD}</div>
-            )}
-          </div>
-        ),
-      },
-      {
-        title: "Category",
-        dataIndex: "document_category",
-        sortField: "document_category",
-        sorter: isSortable
-          ? (a, b) => a.document_category.localeCompare(b.document_category)
-          : false,
-        render: (text) => <div title="Id">{text || EMPTY_FIELD}</div>,
-      },
-      {
-        title: "Uploaded",
-        dataIndex: "create_timestamp",
-        sortField: "create_timestamp",
-        sorter: isSortable ? (a, b) => a.create_timestamp.localeCompare(b.create_timestamp) : false,
-        render: (text) => <div title="Type">{formatDate(text) || EMPTY_FIELD}</div>,
-      },
+      renderDocumentLinkColumn("document_name", "File Name", isSortable),
+      renderTextColumn("document_category", "Category", isSortable, EMPTY_FIELD),
+      renderDateColumn("create_timestamp", "Uploaded", isSortable, null, EMPTY_FIELD),
       ...(disabled
         ? []
         : [
             {
-              dataIndex: "actions",
-              render: (text, record) => (
+              key: "actions",
+              render: (record) => (
                 <div className="btn--middle flex">
                   <Popconfirm
                     placement="topRight"
@@ -334,30 +307,15 @@ const NoticeOfDepartureModal: React.FC<
           component={(componentProps) => renderContacts(componentProps, disabled)}
         />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
-        <CoreTable
-          condition
-          columns={fileColumns(false)}
-          dataSource={checklist}
-          tableProps={{ pagination: false }}
-        />
+        <CoreTable condition columns={fileColumns(false)} dataSource={checklist} />
         <h4 className="nod-modal-section-header padding-md--top">Application Documentation</h4>
-        <CoreTable
-          condition
-          columns={fileColumns(true)}
-          dataSource={otherDocuments}
-          tableProps={{ pagination: false }}
-        />
+        <CoreTable condition columns={fileColumns(true)} dataSource={otherDocuments} />
         {decision.length > 0 && (
           <div>
             <h4 className="nod-modal-section-header padding-md--top">
               Ministry Decision Documentation
             </h4>
-            <CoreTable
-              condition
-              columns={fileColumns(false)}
-              dataSource={decision}
-              tableProps={{ pagination: false }}
-            />
+            <CoreTable condition columns={fileColumns(false)} dataSource={decision} />
           </div>
         )}
         {!disabled && (
@@ -423,6 +381,15 @@ const NoticeOfDepartureModal: React.FC<
             </Button>
           ) : (
             <>
+              <Popconfirm
+                placement="top"
+                title="Are you sure you want to cancel?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={props.closeModal}
+              >
+                <Button className="full-mobile">Cancel</Button>
+              </Popconfirm>
               <Button
                 className="full-mobile nod-update-button"
                 type="primary"
@@ -432,15 +399,6 @@ const NoticeOfDepartureModal: React.FC<
               >
                 Update
               </Button>
-              <Popconfirm
-                placement="top"
-                title="Are you sure you want to cancel?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={props.closeModal}
-              >
-                <Button className="full-mobile nod-cancel-button">Cancel</Button>
-              </Popconfirm>
             </>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { Button, Col, Row, Space, Table, Typography } from "antd";
+import { Button, Col, Row, Space, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -17,6 +17,7 @@ import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
 import { IDam, INoticeOfDeparture } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
+import CoreTable from "@/components/common/CoreTable";
 
 interface AssociatedDamsProps {
   tsf: INoticeOfDeparture;
@@ -88,9 +89,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     {
       title: "Actions",
       key: "actions",
-      dataIndex: "actions",
-      render: (text, record) => (
-        // @ts-ignore
+      render: (record) => (
         <Space size="middle">
           <div className="inline-flex">
             <Button type="primary" size="small" ghost>
@@ -126,7 +125,9 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
         <Col>
           {isCore ? (
             <div>
-              <Typography.Paragraph strong>Last Updated</Typography.Paragraph>
+              <Typography.Paragraph strong style={{ textAlign: "right" }}>
+                Last Updated
+              </Typography.Paragraph>
               <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
             </div>
           ) : (
@@ -137,12 +138,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
           )}
         </Col>
       </Row>
-      <Table
-        columns={columns}
-        dataSource={tsf.dams}
-        locale={{ emptyText: "No Data Yet" }}
-        pagination={false}
-      />
+      <CoreTable condition={true} columns={columns} dataSource={tsf.dams} />
     </div>
   );
 };

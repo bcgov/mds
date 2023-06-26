@@ -41,6 +41,8 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
     render: () => <div className={`skeleton-table__loader ${column.className}`} />,
   }));
 
+  const tableClass = classPrefix ? classPrefix + "-table" : "";
+
   const renderTableExpandIcon = ({ expanded, onExpand, record }) => {
     const { rowExpandable, getDataSource, recordDescription = "details" } = expandProps;
     const isRowExpandable = rowExpandable ?? ((rec) => getDataSource(rec).length > 0);
@@ -84,8 +86,8 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
         locale={{ emptyText }}
         pagination={false}
         size="small"
-        className={`${classPrefix}-nested-table`}
-        rowClassName={`${classPrefix}-table-expanded-row fade-in`}
+        className={`${tableClass} nested-table`}
+        rowClassName={`${tableClass} expanded-row fade-in`}
         rowKey={expandProps.rowKey}
       />
     );
@@ -106,7 +108,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       expandable={expansionProps}
       pagination={pagination}
       locale={{ emptyText }}
-      className={`${classPrefix}-table`}
+      className={`${tableClass} core-table`}
       tableLayout={tableLayout}
       rowClassName={"fade-in"}
       {...tableProps}

@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "../common/CoreTable";
+import { renderTextColumn } from "../common/CoreTableCommonColumns";
 
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
@@ -21,15 +22,9 @@ const defaultProps = {
 };
 
 const columns = [
-  {
-    title: "Email/BCeID",
-    width: 150,
-    dataIndex: "email_or_username",
-    render: (text) => <div title="Email/BCeID">{text}</div>,
-  },
+  renderTextColumn("email_or_username", "Email/BCeID", true),
   {
     title: "Mines",
-    width: 150,
     dataIndex: "mineNames",
     render: (text) => (
       <div title="Mines">
@@ -45,8 +40,8 @@ const columns = [
   },
   {
     title: "",
-    width: 150,
     dataIndex: "delete",
+    width: 175,
     render: (text, record) => (
       <div title="">
         <Button
@@ -103,10 +98,6 @@ export const MinespaceUserList = (props) => (
       props.handleDelete,
       props.handleOpenModal
     )}
-    tableProps={{
-      align: "center",
-      pagination: false,
-    }}
   />
 );
 MinespaceUserList.propTypes = propTypes;

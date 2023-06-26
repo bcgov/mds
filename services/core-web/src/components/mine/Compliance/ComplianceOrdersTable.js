@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
 import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/utils/helpers";
 import { downloadNrisDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
+import CoreTable from "@/components/common/CoreTable";
+import { renderDateColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
@@ -36,28 +36,16 @@ const fileColumns = [
       <div title="File Name" key={record.externalId}>
         <DocumentLink
           documentManagerGuid={null}
-          documentName={record.fileName}
+          documentName={text}
           onClickAlternative={() =>
-            downloadNrisDocument(record.externalId, record.inspectionId, record.fileName)
+            downloadNrisDocument(record.externalId, record.inspectionId, text)
           }
         />
       </div>
     ),
   },
-  {
-    title: "Upload Date/Time",
-    dataIndex: "fileDate",
-    key: "fileDate",
-    sorter: dateSorter("fileDate"),
-    render: (text, record) => <div title="Upload Date/Time">{formatDateTime(record.fileDate)}</div>,
-  },
-  {
-    title: "Type",
-    dataIndex: "fileType",
-    key: "fileType",
-    sorter: (a, b) => a.fileType.localeCompare(b.fileType),
-    render: (text, record) => <div title="Type">{record.fileType}</div>,
-  },
+  renderDateColumn("fileDate", "Upload Date/Time", true, formatDateTime),
+  renderTextColumn("fileType", "Type", true),
 ];
 
 const columns = [
@@ -67,7 +55,7 @@ const columns = [
     dataIndex: "overdue",
     render: (text, record) => (
       <div title="Overdue">
-        {record.overdue && record.due_date !== null ? (
+        {text && record.due_date !== null ? (
           <img className="padding-sm" src={RED_CLOCK} alt="Overdue Report" />
         ) : (
           ""
@@ -75,61 +63,24 @@ const columns = [
       </div>
     ),
   },
-  {
-    title: "Order No.",
-    key: "order_no",
-    dataIndex: "order_no",
-    render: (text, record) => <div title="Order No.">{record.order_no || "-"}</div>,
-    sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
-  },
+  renderTextColumn("order_no", "Order No.", true, "-"),
   {
     title: "Violation",
     key: "violation",
     dataIndex: "violation",
-    render: (text, record) => <div title="Violation">{record.violation || "-"}</div>,
+    render: (text) => <div title="Violation">{text || "-"}</div>,
     sorter: (a, b) => compareCodes(a.violation, b.violation),
   },
-  {
-    title: "Report No.",
-    key: "report_no",
-    dataIndex: "report_no",
-    render: (text, record) => <div title="Report No.">{record.report_no || "-"}</div>,
-    sorter: (a, b) => (a.report_no > b.report_no ? -1 : 1),
-  },
-  {
-    title: "Inspector",
-    key: "inspector",
-    dataIndex: "inspector",
-    render: (text, record) => <div title="Inspector">{record.inspector || "-"}</div>,
-    sorter: (a, b) => (a.inspector > b.inspector ? -1 : 1),
-  },
-  {
-    title: "Order Status",
-    key: "order_status",
-    dataIndex: "order_status",
-    render: (text, record) => <div title="Order Status">{record.order_status || "-"}</div>,
-    sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
-  },
+  renderTextColumn("report_no", "Report No.", true, "-"),
+  renderTextColumn("inspector", "Inspector", true, "-"),
+  renderTextColumn("order_status", "Order Status", true, "-"),
   {
     title: "Due Date",
     key: "due_date",
     dataIndex: "due_date",
-    render: (text, record) => <div title="Due Date">{formatDate(record.due_date) || "-"}</div>,
+    render: (text) => <div title="Due Date">{formatDate(text) || "-"}</div>,
     sorter: dateSorter("due_date"),
     defaultSortOrder: "descend",
-  },
-  {
-    title: "Documents",
-    key: "documents",
-    dataIndex: "documents",
-    render: (text, record) => (
-      <Table
-        align="left"
-        pagination={false}
-        columns={fileColumns}
-        dataSource={record.documents.map((file) => transformFileRowData(file, record.report_no))}
-      />
-    ),
   },
 ];
 
@@ -150,11 +101,15 @@ const ComplianceOrdersTable = (props) => (
   <CoreTable
     condition={props.isLoaded}
     columns={columns}
+    pagination={true}
     dataSource={transformRowData(props.filteredOrders)}
-    tableProps={{
-      align: "left",
-      pagination: true,
-      className: `center-pagination page-count-${pageCount(props.filteredOrders)}`,
+    className={`center-pagination page-count-${pageCount(props.filteredOrders)}`}
+    expandProps={{
+      getDataSource: (record) =>
+        record.documents.map((file) => transformFileRowData(file, record.report_no)),
+      subTableColumns: fileColumns,
+      rowExpandable: (record) => record.documents.length > 0,
+      recordDescription: "document details",
     }}
   />
 );

@@ -6,8 +6,9 @@ import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import CoreTable from "@/components/common/CoreTable";
+import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -55,27 +56,9 @@ const columns = [
       );
     },
   },
-  {
-    title: "Role",
-    key: "role",
-    dataIndex: "role",
-    width: 150,
-    render: (text) => <div title="Role">{text}</div>,
-  },
-  {
-    title: "Email",
-    key: "email",
-    dataIndex: "email",
-    width: 150,
-    render: (text) => <div title="Email">{text}</div>,
-  },
-  {
-    title: "Phone",
-    key: "phone",
-    dataIndex: "phone",
-    width: 150,
-    render: (text) => <div title="Phone">{text}</div>,
-  },
+  renderTextColumn("role", "Role", false, "", 150),
+  renderTextColumn("email", "Email", false, "", 150),
+  renderTextColumn("phone", "Phone", false, "", 150),
 ];
 
 const uniqueRolesString = (mine_party_appt, relationshipTypeHash) =>
@@ -126,11 +109,7 @@ export const ContactList = (props) => (
     condition={props.isLoaded}
     columns={applySortIndicator(columns, props.sortField, props.sortDir)}
     dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
-    tableProps={{
-      align: "left",
-      pagination: false,
-      onChange: handleTableChange(props.handleSearch),
-    }}
+    onChange={handleTableChange(props.handleSearch)}
   />
 );
 

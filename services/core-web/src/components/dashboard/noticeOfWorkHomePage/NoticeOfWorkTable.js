@@ -126,7 +126,7 @@ export class NoticeOfWorkTable extends Component {
           <Input
             id={field}
             ref={(node) => {
-              this.searchInput = node && node.props.value;
+              this.searchInput = node && node?.input?.value;
             }}
             placeholder={`Search ${name}`}
             value={selectedKeys[0] || this.props.searchParams[field]}
@@ -340,12 +340,8 @@ export class NoticeOfWorkTable extends Component {
           this.props.sortField,
           this.props.sortDir
         )}
+        onChange={handleTableChange(this.props.handleSearch, this.props.searchParams)}
         dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
-        tableProps={{
-          align: "left",
-          pagination: false,
-          onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
-        }}
       />
     );
   }

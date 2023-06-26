@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table } from "antd";
+import { Button } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatMoney } from "@common/utils/helpers";
@@ -20,13 +20,10 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   invoices: PropTypes.arrayOf(CustomPropTypes.invoice).isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openEditReclamationInvoiceModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openAddReclamationInvoiceModal: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  onExpand: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   getBalance: PropTypes.func.isRequired,
@@ -75,7 +72,7 @@ export const MineReclamationInvoiceTable = (props) => {
     {
       key: "addEditButton",
       align: "right",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
             <Button
@@ -118,6 +115,7 @@ export const MineReclamationInvoiceTable = (props) => {
     {
       title: "Documents",
       dataIndex: "documents",
+      key: "documents",
       render: (text, record) => (
         <div title="Documents">
           {record.documents.length > 0
@@ -136,7 +134,7 @@ export const MineReclamationInvoiceTable = (props) => {
     {
       key: "addEditButton",
       align: "right",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
@@ -161,18 +159,6 @@ export const MineReclamationInvoiceTable = (props) => {
     },
   ];
 
-  const invoices = (record) => {
-    return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={invoiceColumns}
-        dataSource={props.recordsByPermit(record, props.invoices)}
-        locale={{ emptyText: "No Data Yet" }}
-      />
-    );
-  };
-
   const transformRowData = (permits) =>
     permits.map((permit) => {
       return {
@@ -189,16 +175,12 @@ export const MineReclamationInvoiceTable = (props) => {
       condition={props.isLoaded}
       dataSource={transformRowData(props.permits)}
       columns={columns}
-      recordType="associated bonds"
-      tableProps={{
-        className: "nested-table",
-        rowClassName: "table-row-align-middle pointer fade-in",
-        align: "left",
-        pagination: false,
-        expandRowByClick: true,
-        expandedRowRender: invoices,
-        expandedRowKeys: props.expandedRowKeys,
-        onExpand: props.onExpand,
+      classPrefix="mine-reclamation-invoices"
+      expandProps={{
+        recordDescription: "associated bonds",
+        rowExpandable: (record) => props.recordsByPermit(record, props.invoices).length > 0,
+        getDataSource: (record) => props.recordsByPermit(record, props.invoices),
+        subTableColumns: invoiceColumns,
       }}
     />
   );

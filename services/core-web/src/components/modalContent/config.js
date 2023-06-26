@@ -13,7 +13,6 @@ import EditVarianceModal from "./EditVarianceModal";
 import AddIncidentModal from "./AddIncidentModal";
 import AddReportModal from "./AddReportModal";
 import AddMineWorkInformationModal from "./AddMineWorkInformationModal";
-import ViewIncidentModal from "./ViewIncidentModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import UpdateNOWStatusModal from "./UpdateNOWStatusModal";
@@ -77,7 +76,6 @@ export const modalConfig = {
   ADD_REPORT: AddReportModal,
   ADD_MINE_WORK_INFORMATION: AddMineWorkInformationModal,
   GENERATE_DOCUMENT: GenerateDocumentModal,
-  VIEW_MINE_INCIDENT: ViewIncidentModal,
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
   CHANGE_NOW_MINE: ChangeNOWMineModal,
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,

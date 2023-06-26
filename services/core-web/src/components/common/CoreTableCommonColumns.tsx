@@ -42,13 +42,14 @@ export const renderCategoryColumn = (
   dataIndex: string,
   title: string,
   categoryMap: any,
-  sortable = false
+  sortable = false,
+  placeHolder = ""
 ) => {
   return {
     title,
     dataIndex,
     key: dataIndex,
-    render: (text) => <div title={title}>{categoryMap[text]}</div>,
+    render: (text) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
 };

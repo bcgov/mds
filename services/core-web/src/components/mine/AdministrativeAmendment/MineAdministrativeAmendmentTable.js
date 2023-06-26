@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Badge, Table, Button } from "antd";
+import { Badge, Button } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
@@ -22,8 +22,6 @@ const propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  onExpand: PropTypes.func.isRequired,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -198,46 +196,34 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
   ];
 
-  administrativeAmendmentDetail = (record) => {
-    const expandedColumns = [
-      {
-        title: "Reason For Status",
-        dataIndex: "status_reason",
-        key: "status_reason",
-      },
-      {
-        title: "Application Request Document",
-        dataIndex: "documents",
-        key: "documents",
-        render: (text) => (
-          <div className="cap-col-height">
-            {(text &&
-              text.length > 0 &&
-              text.map((file) => (
-                <>
-                  <DocumentLink
-                    documentManagerGuid={file.document_manager_guid}
-                    documentName={file.document_name}
-                  />
-                  <br />
-                </>
-              ))) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-    ];
-
-    return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={expandedColumns}
-        dataSource={[transformExpandedRowData(record)]}
-        locale={{ emptyText: "No Data Yet" }}
-      />
-    );
-  };
+  expandedColumns = [
+    {
+      title: "Reason For Status",
+      dataIndex: "status_reason",
+      key: "status_reason",
+    },
+    {
+      title: "Application Request Document",
+      dataIndex: "documents",
+      key: "documents",
+      render: (text) => (
+        <div className="cap-col-height">
+          {(text &&
+            text.length > 0 &&
+            text.map((file) => (
+              <>
+                <DocumentLink
+                  documentManagerGuid={file.document_manager_guid}
+                  documentName={file.document_name}
+                />
+                <br />
+              </>
+            ))) ||
+            Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+  ];
 
   render() {
     return (
@@ -249,15 +235,11 @@ export class MineAdministrativeAmendmentTable extends Component {
           this.props.sortField,
           this.props.sortDir
         )}
-        recordType="amendment details"
-        tableProps={{
-          align: "left",
-          pagination: false,
-          onChange: handleTableChange(this.props.handleSearch),
-          expandRowByClick: true,
-          expandedRowRender: this.administrativeAmendmentDetail,
-          expandedRowKeys: this.props.expandedRowKeys,
-          onExpand: this.props.onExpand,
+        onChange={handleTableChange(this.props.handleSearch)}
+        expandProps={{
+          recordDescription: "amendment details",
+          getDataSource: (record) => [transformExpandedRowData(record)],
+          subTableColumns: this.expandedColumns,
         }}
       />
     );

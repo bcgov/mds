@@ -49,7 +49,6 @@ export class MineApplications extends Component {
     params: {
       ...this.params,
     },
-    expandedRowKeys: [],
   };
 
   componentDidMount() {
@@ -91,14 +90,6 @@ export class MineApplications extends Component {
           })
     );
   };
-
-  onExpand = (expanded, record) =>
-    this.setState((prevState) => {
-      const expandedRowKeys = expanded
-        ? prevState.expandedRowKeys.concat(record.key)
-        : prevState.expandedRowKeys.filter((key) => key !== record.key);
-      return { expandedRowKeys };
-    });
 
   handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
@@ -199,9 +190,7 @@ export class MineApplications extends Component {
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
                 searchParams={this.state.params}
-                onExpand={this.onExpand}
                 mineRegionHash={this.props.mineRegionHash}
-                expandedRowKeys={this.state.expandedRowKeys}
               />
             </>
           </Tabs.TabPane>
