@@ -24,6 +24,14 @@ beforeEach(() => {
 
 describe("RenderCascader", () => {
   it("renders properly", () => {
+    const props = {
+      input: {
+        onChange: jest.fn(), // Mock the onChange function
+      },
+      meta: {
+        touched: true, // Set the desired value for 'touched'
+      },
+    };
     const wrapper = shallow(<RenderCascader {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

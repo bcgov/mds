@@ -1,7 +1,7 @@
 from flask_restplus import Namespace
 
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
-from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
+from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource, MineDocumentArchiveResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
@@ -68,6 +68,7 @@ api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/t
 api.add_resource(MineTailingsStorageFacilityResource,
                  '/<string:mine_guid>/tailings/<string:mine_tailings_storage_facility_guid>')
 api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
+api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/archive')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 

@@ -2,6 +2,7 @@ import datetime
 import requests
 import os
 from logging.config import dictConfig
+
 from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
@@ -35,10 +36,11 @@ from app.api.dams.namespace import api as dams_api
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
-from app.extensions import db, jwtv2, jwtv1, jwt,jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, jwt_docman_celery, api as root_api_namespace, cache
+from app.extensions import db, jwtv2, jwtv1, jwt, jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, jwt_docman_celery, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
+from app.tasks.celery_health_check import HealthCheckProbe
 
 
 def create_app(test_config=None):
@@ -62,8 +64,10 @@ def create_app(test_config=None):
 
     return app
 
-def make_celery(app):    
+
+def make_celery(app):
     TaskBase = celery.Task
+
     class ContextTask(TaskBase):
         """
         Make celery aware of the flask application context
@@ -80,18 +84,21 @@ def make_celery(app):
     celery.Task = ContextTask
 
     celery.conf.update(
-        result_backend = Config.CELERY_RESULT_BACKEND,
-        broker_url = Config.CELERY_BROKER_URL,
-         # Set default queue to put tasks in
-        task_default_queue = Config.CELERY_DEFAULT_QUEUE,
+        result_backend=Config.CELERY_RESULT_BACKEND,
+        broker_url=Config.CELERY_BROKER_URL,
+        # Set default queue to put tasks in
+        task_default_queue=Config.CELERY_DEFAULT_QUEUE,
         # Register beat schedule (for triggering scheduled tasks)
-        beat_schedule = Config.CELERY_BEAT_SCHEDULE,
-        beat_scheduler = 'redbeat.RedBeatScheduler',
-        redbeat_redis_url = Config.CELERY_READBEAT_BROKER_URL,
-        redbeat_lock_key = 'core-api'
+        beat_schedule=Config.CELERY_BEAT_SCHEDULE,
+        beat_scheduler='redbeat.RedBeatScheduler',
+        redbeat_redis_url=Config.CELERY_READBEAT_BROKER_URL,
+        redbeat_lock_key='core-api'
     )
 
+    celery.steps['worker'].add(HealthCheckProbe)
+
     return celery
+
 
 def register_extensions(app, test_config=None):
 

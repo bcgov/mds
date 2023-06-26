@@ -14,12 +14,14 @@ import ImportIRTSuccessModal from "@/components/modalContent/informationRequirem
 import ImportIRTErrorModal from "@/components/modalContent/informationRequirementsTable/ImportIRTErrorModal";
 import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
 import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
+import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
   EDIT_REPORT: EditReportModal,
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
+  ARCHIVE_DOCUMENT: ArchiveDocumentModal,
   EDIT_VARIANCE: EditVarianceModal,
   VIEW_INCIDENT: ViewIncidentModal,
   ADD_TAILINGS: AddTailingsModal,

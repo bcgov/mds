@@ -6,10 +6,7 @@ import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import {
-  detectDevelopmentEnvironment,
-  detectProdEnvironment,
-} from "@common/utils/environmentUtils";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
 

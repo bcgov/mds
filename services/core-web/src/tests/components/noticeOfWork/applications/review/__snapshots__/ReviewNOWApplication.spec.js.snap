@@ -1040,41 +1040,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           </Row>
         </withRouter(Connect(ScrollContentWrapper))>
         <withRouter(Connect(ScrollContentWrapper))
-          id="cultural-heritage-resources"
-          title="Cultural Heritage Resources"
-        >
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Are you aware of any protected archaeological sites that may be affected by the proposed project?
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="has_archaeology_sites_affected"
-                name="has_archaeology_sites_affected"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </Col>
-          </Row>
-        </withRouter(Connect(ScrollContentWrapper))>
-        <withRouter(Connect(ScrollContentWrapper))
           id="first-nations-engagement"
           title="First Nations Engagement"
         >
@@ -1106,6 +1071,36 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               md={12}
               sm={24}
             />
+          </Row>
+        </withRouter(Connect(ScrollContentWrapper))>
+        <withRouter(Connect(ScrollContentWrapper))
+          id="indegenous-engagement"
+          title="Indigenous Engagement"
+        >
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Have you read and understand United Nations Declaration on the Rights of Indigenous Peoples and the Truth and Reconciliation Commission of Canada's Calls to Action?
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="has_acknowledged_undrip"
+                name="has_acknowledged_undrip"
+              />
+            </Col>
           </Row>
         </withRouter(Connect(ScrollContentWrapper))>
       </FormSection>
@@ -1314,16 +1309,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.has_activity_in_park",
             ],
             Array [
-              "state_of_land.has_archaeology_sites_affected",
-            ],
-            Array [
-              "state_of_land.has_archaeology_sites_affected",
-            ],
-            Array [
               "state_of_land.has_shared_info_with_fn",
             ],
             Array [
               "state_of_land.has_shared_info_with_fn",
+            ],
+            Array [
+              "state_of_land.has_acknowledged_undrip",
+            ],
+            Array [
+              "state_of_land.has_acknowledged_undrip",
             ],
             Array [
               "merchantable_timber_volume",

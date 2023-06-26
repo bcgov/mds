@@ -17,7 +17,7 @@ import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
-import { detectIE } from "@/utils/environmentUtils";
+import { detectIE } from "@mds/common";
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
 

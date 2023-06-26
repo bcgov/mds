@@ -22,11 +22,15 @@ import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,
   change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  refreshData: PropTypes.func.isRequired,
   primary_documents: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
   ),
@@ -193,6 +197,9 @@ export class MajorMineApplicationForm extends Component {
               documents={primaryDocuments}
               documentColumns={documentColumns}
               documentParent="Major Mine Application"
+              canArchiveDocuments={true}
+              onArchivedDocuments={() => this.props.refreshData()}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
 
@@ -237,6 +244,9 @@ export class MajorMineApplicationForm extends Component {
               documents={spatialDocuments}
               documentColumns={documentColumns}
               documentParent="Major Mine Application"
+              canArchiveDocuments={true}
+              onArchivedDocuments={() => this.props.refreshData()}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
           <br />
@@ -288,8 +298,16 @@ export class MajorMineApplicationForm extends Component {
               documents={supportDocuments}
               documentParent="Major Mine Application"
               documentColumns={documentColumns}
+              canArchiveDocuments={true}
+              onArchivedDocuments={() => this.props.refreshData()}
+              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
+
+          <ArchivedDocumentsSection
+            documents={this.props.mineDocuments}
+            documentColumns={documentColumns}
+          />
         </Form>
       </div>
     );
@@ -304,12 +322,14 @@ const mapStateToProps = (state) => ({
   primary_documents: selector(state, "primary_documents"),
   spatial_documents: selector(state, "spatial_documents"),
   supporting_documents: selector(state, "supporting_documents"),
+  mineDocuments: getMineDocuments(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       change,
+      fetchMineDocuments,
     },
     dispatch
   );

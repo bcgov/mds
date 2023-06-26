@@ -14,7 +14,7 @@ import { resetForm } from "@common/utils/helpers";
 import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
-import { detectProdEnvironment as IN_PROD } from "@/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import TailingsTable from "./TailingsTable";

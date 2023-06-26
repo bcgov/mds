@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Popconfirm, Button, Tooltip } from "antd";
+import { Table, Popconfirm, Button, Tooltip, Tag } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
 import { some } from "lodash";
@@ -9,14 +9,25 @@ import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
-
 import DocumentActions from "@/components/common/DocumentActions";
+import { closeModal, openModal } from "@common/actions/modalActions";
+import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { modalConfig } from "@/components/modalContent/config";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
   isViewOnly: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
+  archiveMineDocuments: PropTypes.func,
+  archiveDocumentsArgs: PropTypes.shape({
+    mineGuid: PropTypes.string,
+  }),
+  onArchivedDocuments: PropTypes.func,
+  canArchiveDocuments: PropTypes.bool,
   excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
   additionalColumnProps: PropTypes.arrayOf(
     PropTypes.shape({
@@ -28,7 +39,9 @@ const propTypes = {
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
   isLoaded: PropTypes.bool,
-  expandable: PropTypes.bool
+  expandable: PropTypes.bool,
+  openModal: PropTypes.func.isRequired,
+  view: PropTypes.string.isRequired,
 };
 
 const renderFileLocation = (documentTypeCode) => {
@@ -88,9 +101,44 @@ const defaultProps = {
   documentParent: null,
   isLoaded: false,
   expandable: false,
+  view: "standard",
+  canArchiveDocuments: false,
+};
+
+const openArchiveModal = (event, props, documents) => {
+  event.preventDefault();
+
+  props.openModal({
+    props: {
+      title: `Archive ${props.documents?.length > 1 ? "Multiple Files" : "File"}`,
+      closeModal: props.closeModal,
+      handleSubmit: async () => {
+        await props.archiveMineDocuments(
+          props.archiveDocumentsArgs.mineGuid,
+          documents.map((d) => d.mine_document_guid)
+        );
+        if (props.onArchivedDocuments) {
+          props.onArchivedDocuments(documents);
+        }
+      },
+      documents,
+    },
+    content: modalConfig.ARCHIVE_DOCUMENT,
+  });
+};
+
+const withTag = (text, elem) => {
+  return (
+    <div className="inline-flex flex-between">
+      {elem}
+
+      <Tag>{text}</Tag>
+    </div>
+  );
 };
 
 export const DocumentTable = (props) => {
+  const isMinimalView = props.view === "minimal";
   let columns = props.expandable
     ? [
       {
@@ -170,24 +218,30 @@ export const DocumentTable = (props) => {
         title: "Name",
         key: "name",
         dataIndex: "name",
-        sorter: nullableStringSorter("name"),
+        sorter: !isMinimalView && nullableStringSorter("name"),
         render: (text, record) => {
-          return (
-            <div key={record.key} title="Name">
-              <DocumentLink
-                documentManagerGuid={record.document_manager_guid}
-                documentName={record.name}
-                truncateDocumentName={false}
-              />
-            </div>
-          )
+          let content = record.name;
+
+          if (!isMinimalView) {
+            content = (
+              <div key={record.key} title="Name">
+                <DocumentLink
+                  documentManagerGuid={record.document_manager_guid}
+                  documentName={record.name}
+                  truncateDocumentName={false}
+                />
+              </div>
+            );
+          }
+
+          return record.is_archived ? withTag("Archived", content) : content;
         },
       },
       {
         title: "Dated",
         key: "dated",
         dataIndex: "dated",
-        sorter: dateSorter("dated"),
+        sorter: !isMinimalView && dateSorter("dated"),
         defaultSortOrder: "descend",
         render: (text) => <div title="Dated">{formatDate(text)}</div>,
       },
@@ -195,14 +249,14 @@ export const DocumentTable = (props) => {
         title: "Category",
         key: "category",
         dataIndex: "category",
-        sorter: nullableStringSorter("category"),
+        sorter: !isMinimalView && nullableStringSorter("category"),
         render: (text) => <div title="Category">{text}</div>,
       },
       {
         title: "Uploaded",
         key: "uploaded",
         dataIndex: "uploaded",
-        sorter: dateSorter("uploaded"),
+        sorter: !isMinimalView && dateSorter("uploaded"),
         defaultSortOrder: "descend",
         render: (text) => <div title="Uploaded">{formatDate(text)}</div>,
       },
@@ -210,10 +264,7 @@ export const DocumentTable = (props) => {
         key: "remove",
         className: props.isViewOnly || !props.removeDocument ? "column-hide" : "",
         render: (text, record) => (
-          <div
-            align="right"
-            className={props.isViewOnly || !props.removeDocument ? "column-hide" : ""}
-          >
+          <div className={props.isViewOnly || !props.removeDocument ? "column-hide" : ""}>
             <Popconfirm
               placement="topLeft"
               title={`Are you sure you want to delete ${record.name}?`}
@@ -228,7 +279,30 @@ export const DocumentTable = (props) => {
           </div>
         ),
       },
-    ];
+      isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+        key: "archive",
+        className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
+        render: (text, record) => (
+          <div
+            className={
+              !record?.mine_document_guid || props.isViewOnly || !props.canArchiveDocuments
+                ? "column-hide"
+                : ""
+            }
+          >
+            <Button
+              ghost
+              type="primary"
+              size="small"
+              onClick={(event) => openArchiveModal(event, props, [record])}
+            >
+              Archive
+            </Button>
+          </div>
+        ),
+      },
+    ].filter(Boolean);
+
 
   const currentRowData = props.expandable
     ? props.documents?.map((document) => {
@@ -274,11 +348,13 @@ export const DocumentTable = (props) => {
           }}
         />)
         : (<Table
-          align="left"
           pagination={false}
           columns={props?.documentColumns ?? columns}
           locale={{ emptyText: "No Data Yet" }}
           dataSource={props.documents}
+          showHeader={!isMinimalView}
+          size={isMinimalView ? "small" : undefined}
+          rowClassName={isMinimalView ? "ant-table-row-minimal" : undefined}
         />)
     )
   );
@@ -287,4 +363,14 @@ export const DocumentTable = (props) => {
 DocumentTable.propTypes = propTypes;
 DocumentTable.defaultProps = defaultProps;
 
-export default DocumentTable;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openModal,
+      closeModal,
+      archiveMineDocuments,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(DocumentTable);

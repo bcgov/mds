@@ -122,3 +122,17 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
   background: none;
   border-top: 2px solid $black;
 }
+
+.ant-table-tbody>tr.ant-table-row.ant-table-row-minimal {
+  &>td {
+    border-bottom: none;
+  }
+
+  &:hover>td {
+    background: none
+  }
+
+  &>td:first-child {
+    padding-left: 0;
+  }
+}

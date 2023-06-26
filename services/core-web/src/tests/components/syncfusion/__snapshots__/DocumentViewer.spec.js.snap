@@ -4,6 +4,7 @@ exports[`DocumentViewer renders properly 1`] = `
 <Fragment>
   <div />
   <Modal
+    destroyOnClose={true}
     footer={null}
     getContainer={[Function]}
     onCancel={[Function]}

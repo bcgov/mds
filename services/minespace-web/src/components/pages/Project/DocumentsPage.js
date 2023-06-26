@@ -8,6 +8,10 @@ import { uploadDateColumn } from "@/components/common/DocumentColumns";
 const propTypes = {
   title: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onArchivedDocuments: PropTypes.func.isRequired,
+  archiveDocumentsArgs: PropTypes.shape({
+    mineGuid: PropTypes.string,
+  }),
 };
 
 export const DocumentsPage = (props) => {
@@ -22,6 +26,9 @@ export const DocumentsPage = (props) => {
           documents={props.documents}
           documentParent={props.title}
           documentColumns={documentColumns}
+          canArchiveDocuments={true}
+          onArchivedDocuments={props.onArchivedDocuments}
+          archiveDocumentsArgs={props.archiveDocumentsArgs}
         />
       </Col>
     </Row>

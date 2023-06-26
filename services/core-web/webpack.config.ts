@@ -1,13 +1,12 @@
 /* eslint-disable */
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const merge = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 const parts = require("./webpack.parts");
-
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
 const HOST = process.env.HOST || "0.0.0.0";
@@ -66,9 +65,17 @@ const commonConfig = merge([
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          use: ["babel-loader", "ts-loader"],
+          use: [
+            "babel-loader?cacheDirectory",
+            {
+              loader: "ts-loader",
+              options: {
+                transpileOnly: true,
+              }
+            }
+          ],
         },
-        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
+        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader?cacheDirectory" },
       ],
     },
     plugins: [
@@ -108,6 +115,9 @@ const commonConfig = merge([
 ]);
 
 const devConfig = merge([
+  {
+    plugins: [new ForkTsCheckerWebpackPlugin()]
+  },
   {
     output: {
       path: PATHS.build,

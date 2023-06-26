@@ -15,6 +15,20 @@ const fieldDefaultProps = {
   span: 12,
 };
 
+const getContactAddress = (contact) => {
+  if (!contact.address || !contact.address[0]) {
+    return "N/A";
+  }
+  const address = contact.address[0];
+  const suiteNo = address.suite_no ? `${address.suite_no}-` : "";
+  const addressLine1 = address.address_line_1 ? `${address.address_line_1}, ` : "";
+  const addressLine2 = address.address_line_2 ? `${address.address_line_2}, ` : "";
+  const city = address.city ? `${address.city}, ` : "";
+  const postCode = address.post_code ? address.post_code : "";
+
+  return `${suiteNo}${addressLine1}${addressLine2}${city}${postCode}`;
+};
+
 const ContactField = ({ label, value, span = 12 }) => (
   <Col span={span}>
     <Typography.Paragraph>
@@ -42,10 +56,14 @@ export const ContactDetails = (props) => (
           : "N/A"
       }
     />
-    <ContactField label="Company name" value={props.contact.organization?.party_name || "N/A"} />
+    <ContactField
+      label="Company Affiliation"
+      value={props.contact.organization?.party_name || "N/A"}
+    />
     <ContactField label="Email" value={props.contact.email} />
     <ContactField span={8} label="Phone Number" value={props.contact.phone_no} />
     <ContactField span={4} label="Ext." value={props.contact.phone_ext || "N/A"} />
+    <ContactField label="Address (Optional)" value={getContactAddress(props.contact)} />
   </Row>
 );
 

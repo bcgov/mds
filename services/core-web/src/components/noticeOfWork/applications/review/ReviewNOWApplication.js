@@ -83,6 +83,7 @@ const propTypes = {
   lieutenantGovernorAuthorization: PropTypes.bool.isRequired,
   archaeologySitesAffected: PropTypes.bool.isRequired,
   sharedInfoWithFn: PropTypes.bool.isRequired,
+  acknowledgedUNDRIP: PropTypes.bool.isRequired,
   culturalHeritageSites: PropTypes.bool.isRequired,
   appliedLicenceOccupation: PropTypes.bool.isRequired,
   isOnCrownLand: PropTypes.bool.isRequired,
@@ -1099,61 +1100,6 @@ export const ReviewNOWApplication = (props) => {
             )}
           </>
         </ScrollContentWrapper>
-
-        <ScrollContentWrapper id="cultural-heritage-resources" title="Cultural Heritage Resources">
-          <>
-            <Row gutter={16}>
-              <Col md={12} sm={24}>
-                <div className="field-title">
-                  Are you aware of any protected archaeological sites that may be affected by the
-                  proposed project?
-                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                  <NOWOriginalValueTooltip
-                    originalValue={
-                      props.renderOriginalValues("state_of_land.has_archaeology_sites_affected")
-                        .value
-                    }
-                    isVisible={
-                      props.renderOriginalValues("state_of_land.has_archaeology_sites_affected")
-                        .edited
-                    }
-                  />
-                </div>
-                <Field
-                  id="has_archaeology_sites_affected"
-                  name="has_archaeology_sites_affected"
-                  component={RenderRadioButtons}
-                  disabled={props.isViewMode}
-                  validate={[requiredRadioButton]}
-                />
-                {props.archaeologySitesAffected && (
-                  <>
-                    <div className="field-title">
-                      Plan to protect the archaeological site
-                      {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                      <NOWOriginalValueTooltip
-                        originalValue={
-                          props.renderOriginalValues("state_of_land.arch_site_protection_plan")
-                            .value
-                        }
-                        isVisible={
-                          props.renderOriginalValues("state_of_land.arch_site_protection_plan")
-                            .edited
-                        }
-                      />
-                    </div>
-                    <Field
-                      id="arch_site_protection_plan"
-                      name="arch_site_protection_plan"
-                      component={RenderField}
-                      disabled={props.isViewMode}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-          </>
-        </ScrollContentWrapper>
         <ScrollContentWrapper id="first-nations-engagement" title="First Nations Engagement">
           <>
             <Row gutter={16}>
@@ -1257,6 +1203,34 @@ export const ReviewNOWApplication = (props) => {
                 )}
               </Row>
             )}
+          </>
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="indegenous-engagement" title="Indigenous Engagement">
+          <>
+            <Row gutter={16}>
+              <Col md={12} sm={24}>
+                <div className="field-title">
+                  Have you read and understand United Nations Declaration on the Rights of
+                  Indigenous Peoples and the Truth and Reconciliation Commission of Canada&apos;s
+                  Calls to Action?
+                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                  <NOWOriginalValueTooltip
+                    originalValue={
+                      props.renderOriginalValues("state_of_land.has_acknowledged_undrip").value
+                    }
+                    isVisible={
+                      props.renderOriginalValues("state_of_land.has_acknowledged_undrip").edited
+                    }
+                  />
+                </div>
+                <Field
+                  id="has_acknowledged_undrip"
+                  name="has_acknowledged_undrip"
+                  component={RenderRadioButtons}
+                  disabled={props.isViewMode}
+                />
+              </Col>
+            </Row>
           </>
         </ScrollContentWrapper>
       </FormSection>
@@ -1585,6 +1559,7 @@ export default compose(
     ),
     archaeologySitesAffected: selector(state, "state_of_land.has_archaeology_sites_affected"),
     sharedInfoWithFn: selector(state, "state_of_land.has_shared_info_with_fn"),
+    acknowledgedUNDRIP: selector(state, "state_of_land.has_acknowledged_undrip"),
     culturalHeritageSites: selector(state, "state_of_land.has_fn_cultural_heritage_sites_in_area"),
     isOnCrownLand: selector(state, "state_of_land.is_on_crown_land"),
     hasLicenceOfOccupation: selector(state, "state_of_land.has_licence_of_occupation"),
