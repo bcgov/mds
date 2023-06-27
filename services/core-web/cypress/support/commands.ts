@@ -24,18 +24,30 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 // eslint-disable-next-line consistent-return
+
 Cypress.Commands.add("login", () => {
-  const username = Cypress.env("test-user");
-  const password = Cypress.env("test-pwd");
   const url = Cypress.env("url");
+  const environmentUrl = Cypress.env("environmentUrl");
+
+  const response = {
+    backend: Cypress.env("backend"),
+    apiUrl: Cypress.env("apiUrl"),
+    docManUrl: Cypress.env("docManUrl"),
+    matomoUrl: Cypress.env("matomoUrl"),
+    filesystemProviderUrl: Cypress.env("filesystemProviderUrl"),
+    keycloak_clientId: Cypress.env("keycloakClientId"),
+    keycloak_resource: Cypress.env("keycloakResource"),
+    keycloak_url: Cypress.env("keyCloakUrl"),
+    keycloak_idpHint: Cypress.env("keyCloakIDPHint"),
+    environment: Cypress.env("environment"),
+  };
+
+  cy.intercept("GET", environmentUrl, (req) => {
+    req.reply(response);
+  });
   cy.visit(url);
-
-  cy.url({ timeout: 10000 }).should("include", "test.loginproxy.gov.bc.ca");
-  cy.get("a#social-idir").click();
-  cy.url({ timeout: 10000 }).should("include", "logontest7.gov.bc.ca");
-
-  cy.get("#user").type(username);
-  cy.get("#password").type(password);
-
-  cy.get('[name="btnSubmit"]').click();
+  cy.url({ timeout: 10000 }).should("include", "localhost:8080");
+  cy.get("#username").type("cypress");
+  cy.get("#password").type("cypress");
+  cy.get("#kc-login").click();
 });

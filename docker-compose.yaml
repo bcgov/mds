@@ -2,6 +2,25 @@ version: "3"
 
 services:
 
+  ####################### Keycloak for Cypress #######################
+  keycloak:
+    image: jboss/keycloak
+    container_name: cypress-keycloak
+    environment:
+      DB_VENDOR: h2
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
+    volumes:
+      - ./cypress/realm-export.json:/tmp/realm-export.json
+    build:
+      context: ./cypress/.docker/keycloak
+      dockerfile: Dockerfile.test
+    ports:
+      - 8080:8080
   ####################### Open Telemetry #######################
   otelcollector:
     image: otel/opentelemetry-collector
