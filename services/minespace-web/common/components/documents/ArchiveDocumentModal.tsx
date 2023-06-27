@@ -32,10 +32,11 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
       <DocumentTable
         documents={props.documents}
         view="minimal"
+        uploadDateIndex="upload_date"
         excludedColumnKeys={["archive", "remove", "category"]}
       />
 
-      <div className="right center-mobile">
+      <div className="ant-modal-footer">
         <Button className="full-mobile" onClick={props.closeModal}>
           Cancel
         </Button>
