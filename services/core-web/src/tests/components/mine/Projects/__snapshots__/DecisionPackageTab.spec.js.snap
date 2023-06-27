@@ -146,6 +146,12 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
+          ]
+        }
         documentColumns={null}
         documentParent={null}
         documents={Array []}
@@ -192,6 +198,12 @@ exports[`DecisionPackageTab renders properly 1`] = `
               },
               "key": "name",
             },
+          ]
+        }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
           ]
         }
         documentColumns={null}
@@ -280,6 +292,12 @@ exports[`DecisionPackageTab renders properly 1`] = `
               },
               "key": "name",
             },
+          ]
+        }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
           ]
         }
         documentColumns={null}

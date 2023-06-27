@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineResultsTable renders properly 1`] = `
-<div>
+exports[`ContactResultsTable renders properly 1`] = `
+<div
+  className="padding-lg--bottom"
+>
   <h2>
     Contacts
   </h2>
@@ -12,16 +14,33 @@ exports[`MineResultsTable renders properly 1`] = `
       }
     }
   />
-  <ForwardRef(InternalTable)
-    align="left"
-    className="nested-table padding-lg--bottom"
+  <CoreTable
     columns={
       Array [
         Object {
-          "dataIndex": "party_guid",
-          "key": "party_guid",
+          "dataIndex": "name",
+          "key": "name",
           "render": [Function],
-          "title": "Party Guid",
+          "sorter": [Function],
+          "title": "Name",
+        },
+        Object {
+          "key": "roles",
+          "render": [Function],
+          "title": "Roles",
+        },
+        Object {
+          "dataIndex": "phone_no",
+          "key": "phone_no",
+          "render": [Function],
+          "title": "Phone",
+        },
+        Object {
+          "dataIndex": "email",
+          "key": "email",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Email",
         },
       ]
     }
@@ -113,8 +132,6 @@ exports[`MineResultsTable renders properly 1`] = `
         },
       ]
     }
-    pagination={false}
-    showHeader={false}
   />
 </div>
 `;

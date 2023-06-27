@@ -1,21 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentResultsTable renders properly 1`] = `
-<div>
+<div
+  className="padding-lg--bottom"
+>
   <h2>
     Mine Documents
   </h2>
   <Divider />
-  <ForwardRef(InternalTable)
-    align="left"
-    className="nested-table padding-lg--bottom"
+  <CoreTable
     columns={
       Array [
         Object {
-          "dataIndex": "document_guid",
-          "key": "document_guid",
+          "dataIndex": "document_name",
+          "key": "document_name",
           "render": [Function],
-          "title": "Document Guid",
+          "sorter": [Function],
+          "title": "File Name",
+        },
+        Object {
+          "dataIndex": "mine_name",
+          "key": "mine_name",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Mine",
+        },
+        Object {
+          "dataIndex": "upload_date",
+          "key": "upload_date",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Uploaded",
+        },
+        Object {
+          "dataIndex": "create_user",
+          "key": "create_user",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Uploaded By",
         },
       ]
     }
@@ -65,8 +87,6 @@ exports[`DocumentResultsTable renders properly 1`] = `
         },
       ]
     }
-    pagination={false}
-    showHeader={false}
   />
 </div>
 `;

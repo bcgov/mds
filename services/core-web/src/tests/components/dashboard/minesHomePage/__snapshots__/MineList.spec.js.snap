@@ -2,6 +2,7 @@
 
 exports[`MineList renders properly 1`] = `
 <CoreTable
+  classPrefix="mines"
   columns={
     Array [
       Object {
@@ -138,13 +139,7 @@ exports[`MineList renders properly 1`] = `
       },
     ]
   }
-  recordType="details"
-  tableProps={
-    Object {
-      "align": "left",
-      "onChange": [Function],
-      "pagination": false,
-    }
-  }
+  onChange={[Function]}
+  rowKey="mine_guid"
 />
 `;

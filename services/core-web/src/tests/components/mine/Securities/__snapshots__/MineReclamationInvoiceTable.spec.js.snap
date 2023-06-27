@@ -2,6 +2,7 @@
 
 exports[`MineReclamationInvoiceTable renders properly 1`] = `
 <CoreTable
+  classPrefix="mine-reclamation-invoices"
   columns={
     Array [
       Object {
@@ -49,17 +50,42 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
-  recordType="associated bonds"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "className": "nested-table",
-      "expandRowByClick": true,
-      "expandedRowKeys": Array [],
-      "expandedRowRender": [Function],
-      "onExpand": [MockFunction],
-      "pagination": false,
-      "rowClassName": "table-row-align-middle pointer fade-in",
+      "getDataSource": [Function],
+      "recordDescription": "associated bonds",
+      "rowExpandable": [Function],
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "amount",
+          "key": "amount",
+          "render": [Function],
+          "title": "Amount",
+        },
+        Object {
+          "dataIndex": "vendor",
+          "key": "vendor",
+          "render": [Function],
+          "title": "Vendor",
+        },
+        Object {
+          "dataIndex": "note",
+          "key": "note",
+          "render": [Function],
+          "title": "Notes",
+        },
+        Object {
+          "dataIndex": "documents",
+          "key": "documents",
+          "render": [Function],
+          "title": "Documents",
+        },
+        Object {
+          "align": "right",
+          "key": "addEditButton",
+          "render": [Function],
+        },
+      ],
     }
   }
 />

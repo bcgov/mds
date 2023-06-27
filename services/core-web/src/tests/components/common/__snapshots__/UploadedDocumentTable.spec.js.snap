@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadedDocumentTable renders properly 1`] = `
-<ForwardRef(InternalTable)
-  align="left"
+<CoreTable
   columns={
     Array [
       Object {
@@ -28,11 +27,6 @@ exports[`UploadedDocumentTable renders properly 1`] = `
     ]
   }
   dataSource={Array []}
-  locale={
-    Object {
-      "emptyText": "No documents.",
-    }
-  }
-  pagination={false}
+  emptyText="No documents."
 />
 `;

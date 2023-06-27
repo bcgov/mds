@@ -2,6 +2,7 @@
 
 exports[`MinePermitTable renders properly 1`] = `
 <CoreTable
+  classPrefix="permits"
   columns={
     Array [
       Object {
@@ -44,17 +45,68 @@ exports[`MinePermitTable renders properly 1`] = `
     ]
   }
   dataSource={Array []}
-  recordType="amendment history"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "className": "nested-table",
-      "expandRowByClick": true,
       "expandedRowKeys": undefined,
-      "expandedRowRender": [Function],
+      "getDataSource": [Function],
       "onExpand": [MockFunction],
-      "pagination": false,
-      "rowClassName": "table-row-align-middle pointer fade-in",
+      "recordDescription": "amendment history",
+      "rowKey": "permit_amendment_guid",
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "amendmentNumber",
+          "key": "amendmentNumber",
+          "render": [Function],
+          "title": "#",
+          "width": "30px",
+        },
+        Object {
+          "dataIndex": "permit_amendment_type_code",
+          "key": "permit_amendment_type_code",
+          "render": [Function],
+          "title": "Type",
+          "width": "130px",
+        },
+        Object {
+          "dataIndex": "issueDate",
+          "key": "issueDate",
+          "render": [Function],
+          "title": "Date Issued",
+          "width": "130px",
+        },
+        Object {
+          "dataIndex": "authorizationEndDate",
+          "key": "authorizationEndDate",
+          "render": [Function],
+          "title": "Authorization End Date",
+          "width": "250px",
+        },
+        Object {
+          "dataIndex": "description",
+          "key": "description",
+          "render": [Function],
+          "title": "Description",
+        },
+        Object {
+          "dataIndex": "finalApplicationPackage",
+          "key": "finalApplicationPackage",
+          "render": [Function],
+          "title": "Permit Package",
+        },
+        Object {
+          "dataIndex": "documents",
+          "key": "documents",
+          "render": [Function],
+          "title": "Permit Files",
+        },
+        Object {
+          "align": "right",
+          "dataIndex": "operations",
+          "key": "operations",
+          "render": [Function],
+          "title": "",
+        },
+      ],
     }
   }
 />

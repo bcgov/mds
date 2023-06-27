@@ -142,10 +142,8 @@ exports[`MineSecurityInfo renders properly 1`] = `
               },
             ]
           }
-          expandedRowKeys={Array []}
           getBalance={[Function]}
           isLoaded={false}
-          onExpand={[Function]}
           openAddBondModal={[Function]}
           openCloseBondModal={[Function]}
           openEditBondModal={[Function]}
@@ -285,7 +283,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             },
           ]
         }
-        expandedRowKeys={Array []}
         getAmountSum={[Function]}
         getBalance={[Function]}
         invoices={
@@ -305,7 +302,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
           ]
         }
         isLoaded={false}
-        onExpand={[Function]}
         openAddBondModal={[Function]}
         openAddReclamationInvoiceModal={[Function]}
         openEditReclamationInvoiceModal={[Function]}

@@ -74,6 +74,12 @@ exports[`VarianceDetails renders properly 1`] = `
   </h5>
   <DocumentTable
     additionalColumnProps={Array []}
+    defaultSortKeys={
+      Array [
+        "upload_date",
+        "dated",
+      ]
+    }
     documentColumns={null}
     documentParent={null}
     documents={Array []}

@@ -64,6 +64,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
+          ]
+        }
         documentColumns={null}
         documentParent="project summary"
         documents={Array []}
@@ -95,6 +101,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               },
               "key": "name",
             },
+          ]
+        }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
           ]
         }
         documentColumns={null}
@@ -142,6 +154,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
+          ]
+        }
         documentColumns={null}
         documentParent="major mine application"
         documents={Array []}
@@ -181,6 +199,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
+          ]
+        }
         documentColumns={null}
         documentParent="major mine application"
         documents={Array []}
@@ -218,6 +242,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               },
               "key": "name",
             },
+          ]
+        }
+        defaultSortKeys={
+          Array [
+            "upload_date",
+            "dated",
           ]
         }
         documentColumns={null}
