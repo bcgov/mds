@@ -137,7 +137,7 @@ export const removeDocumentFromProjectSummary = (
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-        API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
+      API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {
@@ -288,7 +288,7 @@ export const updateInformationRequirementsTableByFile = (
   return CustomAxios({ suppressErrorNotification: true })
     .put(
       ENVIRONMENT.apiUrl +
-        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+      API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
       formData,
       createRequestHeader(customContentType)
     )
@@ -313,7 +313,7 @@ export const updateInformationRequirementsTable = (
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl +
-        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+      API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
       payload,
       createRequestHeader()
     )
@@ -358,7 +358,7 @@ export const removeDocumentFromInformationRequirementsTable = (
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-        API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
+      API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {
@@ -446,11 +446,11 @@ export const removeDocumentFromMajorMineApplication = (
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-        API.MAJOR_MINE_APPLICATION_DOCUMENT(
-          projectGuid,
-          majorMineApplicationGuid,
-          mineDocumentGuid
-        ),
+      API.MAJOR_MINE_APPLICATION_DOCUMENT(
+        projectGuid,
+        majorMineApplicationGuid,
+        mineDocumentGuid
+      ),
       createRequestHeader()
     )
     .then((response) => {
@@ -528,11 +528,11 @@ export const removeDocumentFromProjectDecisionPackage = (
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-        API.PROJECT_DECISION_PACKAGE_DOCUMENT(
-          projectGuid,
-          projectDecisionPackageGuid,
-          mineDocumentGuid
-        ),
+      API.PROJECT_DECISION_PACKAGE_DOCUMENT(
+        projectGuid,
+        projectDecisionPackageGuid,
+        mineDocumentGuid
+      ),
       createRequestHeader()
     )
     .then((response) => {
