@@ -70,7 +70,7 @@ export class PermitAmendmentTable extends Component {
         ),
       },
     ];
-    console.log(this.transformRowData(this.props.permit.permit_amendments || []));
+
     return (
       <CoreTable
         condition
