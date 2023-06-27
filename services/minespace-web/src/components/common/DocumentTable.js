@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import DocumentLink from "@/components/common/DocumentLink";
+import CoreTable from "./CoreTable";
+import { categoryColumn, uploadDateColumn } from "./DocumentColumns";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
@@ -43,6 +43,7 @@ export const DocumentTable = (props) => {
   const columns = [
     {
       title: "File Name",
+      key: "document_name",
       dataIndex: "document_name",
       render: (text, record) => {
         return (
@@ -56,17 +57,8 @@ export const DocumentTable = (props) => {
     },
   ];
 
-  const categoryColumn = {
-    title: "Category",
-    dataIndex: props.categoryDataIndex,
-    render: (text) => <div title="Category">{props.documentCategoryOptionsHash[text]}</div>,
-  };
-
-  const uploadDateColumn = {
-    title: "Upload Date",
-    dataIndex: props.uploadDateIndex,
-    render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
-  };
+  const catColumn = categoryColumn("category", props.documentCategoryOptionsHash);
+  const uploadedDateColumn = uploadDateColumn();
 
   const canDeleteDocuments =
     props?.deletePayload &&
@@ -76,6 +68,7 @@ export const DocumentTable = (props) => {
   if (canDeleteDocuments) {
     columns[0] = {
       title: "File Name",
+      key: "document_name",
       dataIndex: "document_name",
       render: (text, record) => {
         const { mine_document_guid } = record;
@@ -84,7 +77,7 @@ export const DocumentTable = (props) => {
           <div key={record?.mine_document_guid}>
             <DocumentLink
               documentManagerGuid={record.document_manager_guid}
-              documentName={record.document_name}
+              documentName={text}
               handleDelete={props.handleDeleteDocument}
               deletePayload={payload}
               deletePermission={props?.deletePermission}
@@ -99,18 +92,16 @@ export const DocumentTable = (props) => {
   if (props.documentColumns?.length > 0) {
     columns.push(...props.documentColumns);
   } else {
-    columns.push(categoryColumn);
-    columns.push(uploadDateColumn);
+    columns.push(catColumn);
+    columns.push(uploadedDateColumn);
   }
 
   return (
     <div>
-      <Table
-        align="left"
-        pagination={false}
+      <CoreTable
         columns={columns}
         rowKey={(record) => record.mine_document_guid}
-        locale={{ emptyText: `This ${props.documentParent} does not contain any documents.` }}
+        emptyText={`This ${props.documentParent} does not contain any documents.`}
         dataSource={props.documents}
       />
     </div>

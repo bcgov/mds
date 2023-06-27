@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Col, Row, Table, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Field, FieldArray, change } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -9,10 +9,9 @@ import {
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
-// import { getUserInfo } from "@/selectors/authenticationSelectors";
-
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
@@ -104,10 +103,7 @@ const PartyAppointmentTable = (props) => {
       dataIndex: "dates",
       render: (text, record) => (
         <div title="Dates">
-          {record.startDate}
-          {' '}
--
-          {record.endDate}
+          {record.startDate} -{record.endDate}
         </div>
       ),
     },
@@ -117,6 +113,7 @@ const PartyAppointmentTable = (props) => {
       render: (documents) =>
         documents.map((d) => (
           <DocumentLink
+            key={d.document_manager_guid}
             openDocument
             documentManagerGuid={d.document_manager_guid}
             documentName={d.document_name}
@@ -140,7 +137,8 @@ const PartyAppointmentTable = (props) => {
               record.key,
               "mine_party_acknowledgement_status",
               val
-            )}
+            )
+          }
         />
       ),
     },
@@ -185,12 +183,10 @@ const PartyAppointmentTable = (props) => {
         <FieldArray
           name="engineers_of_record"
           component={({ fields }) => (
-            <Table
-              align="left"
+            <CoreTable
               pagination={false}
               columns={columnsToDisplay}
               dataSource={transformRowData(fields || [])}
-              locale={{ emptyText: "No Data Yet" }}
             />
           )}
         />
@@ -208,7 +204,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       updatePartyRelationship,
       fetchPartyRelationships,
-      // getUserInfo,
       change,
     },
     dispatch

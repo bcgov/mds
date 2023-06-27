@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Table, Button } from "antd";
+import { Button } from "antd";
 import PropTypes from "prop-types";
 import {
   truncateFilename,
@@ -15,6 +15,7 @@ import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -113,13 +114,11 @@ export const ReportsTable = (props) => {
   ];
 
   return (
-    <Table
-      size="small"
-      pagination={false}
+    <CoreTable
       loading={!props.isLoaded}
       columns={columns}
       rowKey={(record) => record.mine_report_guid}
-      locale={{ emptyText: "This mine has no report data." }}
+      emptyText="This mine has no report data."
       dataSource={props.mineReports}
     />
   );

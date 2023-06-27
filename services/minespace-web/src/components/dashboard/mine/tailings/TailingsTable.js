@@ -1,4 +1,4 @@
-import { Button, Table, Typography } from "antd";
+import { Button, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -21,6 +21,7 @@ import { storeTsf } from "@common/actions/tailingsActions";
 import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -36,7 +37,7 @@ const propTypes = {
 export const TailingsTable = (props) => {
   const history = useHistory();
   const { id: mineGuid } = useParams();
-  const [expandedRows, setExpandedRows] = React.useState([]);
+  // const [expandedRows, setExpandedRows] = React.useState([]);
   const {
     editTailings,
     tailings,
@@ -63,13 +64,13 @@ export const TailingsTable = (props) => {
     history.push(url);
   };
 
-  const handleRowExpand = (record) => {
-    const key = record.mine_tailings_storage_facility_guid;
-    const expandedRowKeys = expandedRows.includes(key)
-      ? expandedRows.filter((k) => k !== key)
-      : expandedRows.concat(key);
-    setExpandedRows(expandedRowKeys);
-  };
+  // const handleRowExpand = (record) => {
+  //   const key = record.mine_tailings_storage_facility_guid;
+  //   const expandedRowKeys = expandedRows.includes(key)
+  //     ? expandedRows.filter((k) => k !== key)
+  //     : expandedRows.concat(key);
+  //   setExpandedRows(expandedRowKeys);
+  // };
 
   const columns = [
     {
@@ -172,75 +173,63 @@ export const TailingsTable = (props) => {
     },
   ];
 
-  const expandedRowRender = (expandedRecord) => {
-    const expandedColumns = [
-      { title: "Dam Name", dataIndex: "dam_name", key: "dam_name" },
-      {
-        title: "Operating Status",
-        key: "operating_status",
-        render: (record) => (
-          <Typography.Text>{DAM_OPERATING_STATUS_HASH[record.operating_status]}</Typography.Text>
-        ),
+  const expandedColumns = [
+    { title: "Dam Name", dataIndex: "dam_name", key: "dam_name" },
+    {
+      title: "Operating Status",
+      key: "operating_status",
+      render: (record) => (
+        <Typography.Text>{DAM_OPERATING_STATUS_HASH[record.operating_status]}</Typography.Text>
+      ),
+    },
+    {
+      title: "Consequence Classification",
+      key: "consequence_classification",
+      render: (record) => (
+        <Typography.Text>
+          {CONSEQUENCE_CLASSIFICATION_CODE_HASH[record.consequence_classification]}
+        </Typography.Text>
+      ),
+    },
+    {
+      title: "",
+      fixed: "right",
+      dataIndex: "edit",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+            <AuthorizationWrapper>
+              <Button
+                type="link"
+                onClick={(event) => {
+                  handleEditDam(event, record);
+                }}
+              >
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
       },
-      {
-        title: "Consequence Classification",
-        key: "consequence_classification",
-        render: (record) => (
-          <Typography.Text>
-            {CONSEQUENCE_CLASSIFICATION_CODE_HASH[record.consequence_classification]}
-          </Typography.Text>
-        ),
-      },
-      {
-        title: "",
-        fixed: "right",
-        dataIndex: "edit",
-        render: (text, record) => {
-          return (
-            <div title="" align="right">
-              <AuthorizationWrapper>
-                <Button
-                  type="link"
-                  onClick={(event) => {
-                    handleEditDam(event, record);
-                  }}
-                >
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              </AuthorizationWrapper>
-            </div>
-          );
-        },
-      },
-    ];
-    return (
-      <Table
-        className="tailings-nested-table"
-        columns={expandedColumns}
-        dataSource={expandedRecord.dams}
-        pagination={false}
-        size="small"
-        rowKey={(record) => record.dam_guid}
-      />
-    );
-  };
+    },
+  ];
 
   return (
-    <Table
-      size="small"
-      pagination={false}
+    <CoreTable
       columns={columns}
-      // FEATURE FLAG: TSF
-      expandable={!IN_PROD() ? { expandedRowRender } : null}
-      expandRowByClick
-      onExpand={(expanded, record) => handleRowExpand(record)}
-      expandedRows={expandedRows}
-      rowExpandable={(record) => record.dams.length > 0}
-      indentSize={500}
-      expandedRowClassName={() => "tailings-table-expanded-row"}
       rowKey={(record) => record.mine_tailings_storage_facility_guid}
-      locale={{ emptyText: "This mine has no tailing storage facilities data." }}
+      emptyText="This mine has no tailing storage facilities data."
       dataSource={tailings}
+      // FEATURE FLAG: TSF
+      expandProps={
+        !IN_PROD()
+          ? {
+              recordDescription: "associated dams",
+              getDataSource: (record) => record.dams,
+              subTableColumns: expandedColumns,
+            }
+          : null
+      }
     />
   );
 };

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
+import { Button } from "antd";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -159,9 +160,7 @@ export class VariancesTable extends Component {
 
   render() {
     return (
-      <Table
-        size="small"
-        pagination={false}
+      <CoreTable
         loading={!this.props.isLoaded}
         columns={this.columns()}
         dataSource={this.transformRowData(
@@ -169,7 +168,7 @@ export class VariancesTable extends Component {
           this.props.complianceCodesHash,
           this.props.varianceStatusOptionsHash
         )}
-        locale={{ emptyText: "This mine has no variance data." }}
+        emptyText="This mine has no variance data."
       />
     );
   }

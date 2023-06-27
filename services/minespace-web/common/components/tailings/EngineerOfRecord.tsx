@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Empty, Popconfirm, Row, Table, Typography } from "antd";
+import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@common/actions/modalActions";
@@ -25,6 +25,7 @@ import TailingsContext from "@common/components/tailings/TailingsContext";
 import { getMines } from "@common/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
+import CoreTable from "@/components/common/CoreTable";
 
 interface EngineerOfRecordProps {
   change: (
@@ -278,14 +279,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Typography.Title level={4} className="margin-large--top">
                 Acceptance Letter
               </Typography.Title>
-              <Table
-                pagination={false}
-                columns={columns(LinkButton)}
-                dataSource={currentEor.documents}
-                locale={{
-                  emptyText: "This Engineer of Record does not currently have any documents",
-                }}
-              />
+              <CoreTable columns={columns(LinkButton)} dataSource={currentEor.documents} />
             </div>
           )}
 
