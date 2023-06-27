@@ -138,7 +138,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
           )}
         </Col>
       </Row>
-      <CoreTable condition={true} columns={columns} dataSource={tsf.dams} />
+      <CoreTable columns={columns} dataSource={tsf.dams} />
     </div>
   );
 };

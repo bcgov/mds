@@ -86,11 +86,12 @@ export class ProjectSummaryDocumentUpload extends Component {
                   key: doc.mine_document_guid,
                   mine_document_guid: doc.mine_document_guid,
                   document_manager_guid: doc.document_manager_guid,
-                  name: doc.document_name,
-                  category: this.props.projectSummaryDocumentTypesHash[
-                    doc.project_summary_document_type_code
-                  ],
-                  uploaded: doc.upload_date,
+                  document_name: doc.document_name,
+                  category:
+                    this.props.projectSummaryDocumentTypesHash[
+                      doc.project_summary_document_type_code
+                    ],
+                  upload_date: doc.upload_date,
                 },
                 ...docs,
               ],

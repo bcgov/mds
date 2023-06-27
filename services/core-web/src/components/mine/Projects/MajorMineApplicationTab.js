@@ -85,8 +85,8 @@ export class MajorMineApplicationTab extends Component {
       .updateMajorMineApplication(
         {
           projectGuid,
-          majorMineApplicationGuid: this.props.project.major_mine_application
-            .major_mine_application_guid,
+          majorMineApplicationGuid:
+            this.props.project.major_mine_application.major_mine_application_guid,
         },
         values
       )
@@ -117,9 +117,9 @@ export class MajorMineApplicationTab extends Component {
                 key: doc.mine_document_guid,
                 mine_document_guid: doc.mine_document_guid,
                 document_manager_guid: doc.document_manager_guid,
-                name: doc.document_name,
+                document_name: doc.document_name,
                 category: null,
-                uploaded: doc.upload_date,
+                upload_date: doc.upload_date,
               },
               ...docs,
             ],

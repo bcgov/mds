@@ -32,6 +32,7 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import arrayMove from "array-move";
+import CoreTable from "@/components/common/CoreTable";
 
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 
@@ -636,38 +637,26 @@ export class NOWDocuments extends Component {
           </Col>
         </Row>
         <br />
-        <Table
-          align="left"
-          pagination={false}
+        <CoreTable
           columns={this.columns(
             this.props.noticeOfWorkApplicationDocumentTypeOptions,
             this.props.categoriesToShow
           )}
           recordType="document description"
-          // The key must be set to "undefined" to allow the key set in the "transform documents" function to be applied in order to edit documents.
-          rowKey={this.props.isSortingAllowed ? "index" : undefined}
           dataSource={this.state.dataSource}
-          locale={{
-            emptyText: "No Data Yet",
+          expandProps={{
+            recordDescription: "document details",
+            expandedRowRender: this.props.showDescription ? this.docDescription : undefined,
+            rowExpandable: () => this.props.showDescription,
           }}
+          // The key must be set to "index" to allow the drag-sort to work.
+          rowKey={this.props.isSortingAllowed ? "index" : "key"}
           components={{
             body: {
               wrapper: this.DraggableContainer,
               row: this.DraggableBodyRow,
             },
           }}
-          rowSelection={
-            this.props.selectedRows
-              ? {
-                  selectedRowKeys: this.props.selectedRows.selectedCoreRows,
-                  onChange: (selectedRowKeys) => {
-                    this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                  },
-                }
-              : null
-          }
-          expandRowByClick={this.props.showDescription}
-          expandedRowRender={this.props.showDescription ? this.docDescription : undefined}
         />
       </div>
     );

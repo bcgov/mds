@@ -75,10 +75,10 @@ export const VarianceDetails = (props) => (
             key: doc.mine_document_guid,
             mine_document_guid: doc.mine_document_guid,
             document_manager_guid: doc.document_manager_guid,
-            name: doc.document_name,
+            document_name: doc.document_name,
             category:
               props.varianceDocumentCategoryOptionsHash[doc.variance_document_category_code],
-            uploaded: doc.created_at,
+            upload_date: doc.created_at,
           },
           ...docs,
         ],

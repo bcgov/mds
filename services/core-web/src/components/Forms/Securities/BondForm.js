@@ -81,21 +81,22 @@ export class BondForm extends Component {
   render() {
     const filesUploaded = this.state.uploadedFiles.length >= 1;
 
-    const documentTableRecords = (this.props.bond.documents
-      ? this.props.bond.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
-      : []
+    const documentTableRecords = (
+      this.props.bond.documents
+        ? this.props.bond.documents.filter(
+            (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+          )
+        : []
     ).reduce(
       (docs, doc) => [
         {
           key: doc.mine_document_guid,
           mine_document_guid: doc.mine_document_guid,
           document_manager_guid: doc.document_manager_guid,
-          name: doc.document_name,
+          document_name: doc.document_name,
           date: doc.document_date,
           category: this.props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
-          uploaded: doc.upload_date,
+          upload_date: doc.upload_date,
         },
         ...docs,
       ],
@@ -104,9 +105,8 @@ export class BondForm extends Component {
 
     const isBondClosed =
       this.props.bond.bond_status_code === "REL" || this.props.bond.bond_status_code === "CON";
-    const bondStatusDescription = this.props.bondStatusOptionsHash[
-      this.props.bond.bond_status_code
-    ];
+    const bondStatusDescription =
+      this.props.bondStatusOptionsHash[this.props.bond.bond_status_code];
 
     return (
       <Form

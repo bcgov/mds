@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Popconfirm, Button } from "antd";
-import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
-import { some } from "lodash";
-import DocumentLink from "@/components/common/DocumentLink";
-import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
+import { documentNameColumn, removeFunctionColumn, uploadDateColumn } from "./DocumentColumns";
+import { renderTextColumn } from "./CoreTableCommonColumns";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
@@ -22,6 +20,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
+  defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -32,75 +31,21 @@ const defaultProps = {
   additionalColumnProps: [],
   documentColumns: null,
   documentParent: null,
+  defaultSortKeys: ["upload_date", "dated"], // keys to sort by when page loads
 };
 
 export const DocumentTable = (props) => {
   let columns = [
-    {
-      title: "Name",
-      key: "name",
-      dataIndex: "name",
-      sorter: nullableStringSorter("name"),
-      render: (text, record) => (
-        <div key={record.key} title="Name">
-          <DocumentLink
-            documentManagerGuid={record.document_manager_guid}
-            documentName={record.name}
-            truncateDocumentName={false}
-          />
-        </div>
-      ),
-    },
-    {
-      title: "Dated",
-      key: "dated",
-      dataIndex: "dated",
-      sorter: dateSorter("dated"),
-      defaultSortOrder: "descend",
-      render: (text) => <div title="Dated">{formatDate(text)}</div>,
-    },
-    {
-      title: "Category",
-      key: "category",
-      dataIndex: "category",
-      sorter: nullableStringSorter("category"),
-      render: (text) => <div title="Category">{text}</div>,
-    },
-    {
-      title: "Uploaded",
-      key: "uploaded",
-      dataIndex: "uploaded",
-      sorter: dateSorter("uploaded"),
-      defaultSortOrder: "descend",
-      render: (text) => <div title="Uploaded">{formatDate(text)}</div>,
-    },
-    {
-      key: "remove",
-      className: props.isViewOnly || !props.removeDocument ? "column-hide" : "",
-      render: (text, record) => (
-        <div
-          align="right"
-          className={props.isViewOnly || !props.removeDocument ? "column-hide" : ""}
-        >
-          <Popconfirm
-            placement="topLeft"
-            title={`Are you sure you want to delete ${record.name}?`}
-            onConfirm={(event) => props.removeDocument(event, record.key, props?.documentParent)}
-            okText="Delete"
-            cancelText="Cancel"
-          >
-            <Button ghost type="primary" size="small">
-              <img src={TRASHCAN} alt="Remove" />
-            </Button>
-          </Popconfirm>
-        </div>
-      ),
-    },
+    documentNameColumn(),
+    renderTextColumn("category", "Category", true),
+    uploadDateColumn(),
+    removeFunctionColumn(
+      props.removeDocument,
+      props.isViewOnly || !props.removeDocument,
+      "name",
+      props?.documentParent
+    ),
   ];
-
-  if (!some(props.documents, "dated")) {
-    columns = columns.filter((column) => column.key !== "dated");
-  }
 
   if (props?.excludedColumnKeys?.length > 0) {
     columns = columns.filter((column) => !props.excludedColumnKeys.includes(column.key));
@@ -116,15 +61,14 @@ export const DocumentTable = (props) => {
     });
   }
 
-  return (
-    <Table
-      align="left"
-      pagination={false}
-      columns={props?.documentColumns ?? columns}
-      locale={{ emptyText: "No Data Yet" }}
-      dataSource={props.documents}
-    />
-  );
+  if (props.defaultSortKeys.length > 0) {
+    columns = columns.map((column) => {
+      const isDefaultSort = props.defaultSortKeys.includes(column.key);
+      return isDefaultSort ? { defaultSortOrder: "descend", ...column } : column;
+    });
+  }
+
+  return <CoreTable columns={props?.documentColumns ?? columns} dataSource={props.documents} />;
 };
 
 DocumentTable.propTypes = propTypes;

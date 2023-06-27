@@ -128,9 +128,8 @@ export class DecisionPackageTab extends Component {
                 key: doc.mine_document_guid,
                 mine_document_guid: doc.mine_document_guid,
                 document_manager_guid: doc.document_manager_guid,
-                name: doc.document_name,
-                category: null,
-                uploaded: doc.upload_date,
+                document_name: doc.document_name,
+                upload_date: doc.upload_date,
               },
               ...docs,
             ],
@@ -242,8 +241,8 @@ export class DecisionPackageTab extends Component {
               }}
               displayValues={{
                 status_code: projectDecisionPackage?.status_code || "NTS",
-                projectDecisionPackageStatusCodesHash: this.props
-                  ?.projectDecisionPackageStatusCodesHash,
+                projectDecisionPackageStatusCodesHash:
+                  this.props?.projectDecisionPackageStatusCodesHash,
                 updateUser: projectDecisionPackage?.update_user,
                 updateDate: projectDecisionPackage?.update_timestamp,
                 documents: projectDecisionPackage?.documents,

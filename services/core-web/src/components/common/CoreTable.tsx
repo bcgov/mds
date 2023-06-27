@@ -15,7 +15,7 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
 interface CoreTableProps<T> extends TableProps<T> {
   columns: ColumnType<T>[];
   dataSource: T[];
-  condition: boolean;
+  condition?: boolean;
   rowKey?: string | ((record: T) => string | number); // defaults to "key"
   classPrefix?: string;
   emptyText?: string;
