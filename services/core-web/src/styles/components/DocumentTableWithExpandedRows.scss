@@ -25,13 +25,12 @@ th.file-name-column {
 }
 
 .file-name-container {
-    display: flex;
     align-items: center;
-    flex-basis: 85%;
-    margin: 14px;
+    flex-basis: 90%;
 
     @media (min-width: 769px) {
         justify-content: space-between;
+        margin: 14px;
     }
 
     @media (max-width: 768px) {
@@ -43,21 +42,13 @@ th.file-name-column {
     @media (min-width: 769px) {
         width: 60%;
     }
+
+    @media (max-width: 768px) {
+        margin-left: 0 !important;
+    }
 }
 
 .file-version-amount {
-    background-color: #5E46A1;
-    float: right;
     color: white;
-    min-width: 55px;
-    padding: 5px 9px;
-    font-size: 15px;
-    height: 60%;
     margin-left: 5px;
-    border-radius: 13px;
-
-    span:first-of-type {
-        color: white;
-        margin-right: 5px;
-    }
 }
