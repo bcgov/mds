@@ -281,7 +281,11 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Typography.Title level={4} className="margin-large--top">
                 Acceptance Letter
               </Typography.Title>
-              <CoreTable columns={columns(LinkButton)} dataSource={currentEor.documents} />
+              <CoreTable
+                columns={columns(LinkButton)}
+                dataSource={currentEor.documents}
+                emptyText="This Engineer of Record does not currently have any documents"
+              />
             </div>
           )}
 
