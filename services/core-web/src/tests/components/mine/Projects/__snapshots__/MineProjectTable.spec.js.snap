@@ -36,9 +36,9 @@ exports[`MineProjectTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "last_updated_date",
+        "defaultSortOrder": "descend",
         "key": "last_updated_date",
         "render": [Function],
-        "sortOrder": "descend",
         "sorter": [Function],
         "title": "Last Submission date",
       },
