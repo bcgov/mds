@@ -124,6 +124,7 @@ export class DocumentViewer extends Component {
           getContainer={() => this.containerRef?.current}
           footer={null}
           width="98%"
+          destroyOnClose={true}
         >
           {/* // NOTE: See here for documentation:
         https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}

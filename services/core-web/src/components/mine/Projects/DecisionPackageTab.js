@@ -23,6 +23,10 @@ import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplica
 import { modalConfig } from "@/components/modalContent/config";
 import { getProjectDecisionPackageStatusCodesHash } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -32,6 +36,8 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  archivedDocuments: PropTypes.arrayOf(customPropTypes.mineDocument),
+  fetchMineDocuments: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   updateProjectDecisionPackage: PropTypes.func.isRequired,
@@ -64,9 +70,14 @@ export class DecisionPackageTab extends Component {
     }
   };
 
-  handleFetchData = () => {
+  handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
-    return this.props.fetchProjectById(projectGuid);
+    const project = await this.props.fetchProjectById(projectGuid);
+
+    await this.props.fetchMineDocuments(project.mine_guid, {
+      is_archived: true,
+      project_decision_package_guid: project.project_decision_package.project_decision_package_guid,
+    });
   };
 
   handleUpdateProjectDecisionPackage = (event, values) => {
@@ -109,7 +120,11 @@ export class DecisionPackageTab extends Component {
       .then(() => this.handleFetchData());
   };
 
-  renderDocumentSection = (sectionTitle, sectionHref, sectionText, sectionDocuments) => {
+  renderArchivedDocumentsSection = (archivedDocuments) => {
+    return <ArchivedDocumentsSection documents={archivedDocuments}></ArchivedDocumentsSection>;
+  };
+
+  renderDocumentSection = (project, sectionTitle, sectionHref, sectionText, sectionDocuments) => {
     const titleElement = (
       <Typography.Text strong style={{ fontSize: "1.5rem" }}>
         {sectionTitle}
@@ -137,6 +152,9 @@ export class DecisionPackageTab extends Component {
           )}
           excludedColumnKeys={["category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          canArchiveDocuments={true}
+          archiveDocumentsArgs={{ mineGuid: project?.mine_guid }}
+          onArchivedDocuments={this.handleFetchData}
           removeDocument={this.handleDeleteDocument}
         />
       </div>
@@ -216,6 +234,8 @@ export class DecisionPackageTab extends Component {
       Boolean(projectDecisionPackage?.project_decision_package_guid) &&
       projectDecisionPackage?.status_code !== "NTS";
 
+    const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+
     return (
       <>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
@@ -224,7 +244,8 @@ export class DecisionPackageTab extends Component {
               { href: "decision-package-documents", title: "Decision Package" },
               { href: "additional-goverment-documents", title: "Government Documents" },
               { href: "internal-ministry-documents", title: "Internal Documents" },
-            ]}
+              canArchiveDocuments && { href: "archived-documents", title: "Archived Documents" },
+            ].filter(Boolean)}
             featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
@@ -241,8 +262,8 @@ export class DecisionPackageTab extends Component {
               }}
               displayValues={{
                 status_code: projectDecisionPackage?.status_code || "NTS",
-                projectDecisionPackageStatusCodesHash:
-                  this.props?.projectDecisionPackageStatusCodesHash,
+                projectDecisionPackageStatusCodesHash: this.props
+                  ?.projectDecisionPackageStatusCodesHash,
                 updateUser: projectDecisionPackage?.update_user,
                 updateDate: projectDecisionPackage?.update_timestamp,
                 documents: projectDecisionPackage?.documents,
@@ -259,6 +280,7 @@ export class DecisionPackageTab extends Component {
             </Col>
           </Row>
           {this.renderDocumentSection(
+            this.props.project,
             <Row>
               <Col xs={24} md={12}>
                 Decision Package Documents
@@ -294,6 +316,7 @@ export class DecisionPackageTab extends Component {
           )}
           <br />
           {this.renderDocumentSection(
+            this.props.project,
             "Additional Government Documents",
             "additional-goverment-documents",
             <Typography.Text>
@@ -315,6 +338,7 @@ export class DecisionPackageTab extends Component {
             </Col>
           </Row>
           {this.renderDocumentSection(
+            this.props.project,
             <Row>
               <Col xs={24} md={12}>
                 Internal Ministry Documentation
@@ -339,6 +363,7 @@ export class DecisionPackageTab extends Component {
               (doc) => doc.project_decision_package_document_type_code === "INM"
             ) || []
           )}
+          {this.renderArchivedDocumentsSection(this.props.mineDocuments)}
         </div>
       </>
     );
@@ -349,6 +374,7 @@ const mapStateToProps = (state) => ({
   project: getProject(state),
   projectDecisionPackageStatusCodesHash: getProjectDecisionPackageStatusCodesHash(state),
   formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
+  mineDocuments: getMineDocuments(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -358,6 +384,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchProjectById,
       createProjectDecisionPackage,
       removeDocumentFromProjectDecisionPackage,
+      fetchMineDocuments,
       openModal,
       closeModal,
     },

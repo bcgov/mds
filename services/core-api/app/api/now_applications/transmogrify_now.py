@@ -153,6 +153,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     has_auth_lieutenant_gov_council = get_boolean_value(now_sub.hasltgovauthorization)
     arch_site_protection_plan = now_sub.archaeologicalprotectionplan
     has_shared_info_with_fn = get_boolean_value(now_sub.hasengagedfirstnations)
+    has_acknowledged_undrip = get_boolean_value(now_sub.hasacknowledgedundrip)
     has_fn_cultural_heritage_sites_in_area = get_boolean_value(now_sub.hasculturalheritageresources)
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
@@ -164,7 +165,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     file_number_of_app = now_sub.filenumberofappl
     landlegaldesc = now_sub.landlegaldesc
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_acknowledged_undrip or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=get_boolean_value(landcommunitywatershed),
             has_archaeology_sites_affected=get_boolean_value(archsitesaffected),
@@ -180,6 +181,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
             arch_site_protection_plan=arch_site_protection_plan,
             has_shared_info_with_fn=has_shared_info_with_fn,
+            has_acknowledged_undrip=has_acknowledged_undrip,
             has_fn_cultural_heritage_sites_in_area=has_fn_cultural_heritage_sites_in_area,
             fn_engagement_activities=fn_engagement_activities,
             cultural_heritage_description=cultural_heritage_description,

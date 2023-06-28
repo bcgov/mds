@@ -395,13 +395,14 @@
   .ant-alert-icon {
     margin-top: 4px;
   }
-  &.ant-alert-warning-custom-with-red-icon{
+
+  &.ant-alert-warning-custom-with-red-icon {
     .ant-alert-icon {
       background-color: #ff0000 !important;
-      color: #FFF2F0  !important;
+      color: #FFF2F0 !important;
       border-radius: 50%;
       top: 20px;
-     }
+    }
   }
 }
 
@@ -436,18 +437,20 @@
     background-color: #ecf6fd !important;
     color: #3d6de7 !important;
   }
-  &.ant-alert-info-custom-with-black-icon{
+
+  &.ant-alert-info-custom-with-black-icon {
     .ant-alert-icon {
       background-color: #F4F0F0 !important;
       color: black !important;
       top: 20px;
-     }
+    }
   }
-  &.ant-alert-info-custom-core-color-icon{
+
+  &.ant-alert-info-custom-core-color-icon {
     .ant-alert-icon {
       background-color: #FFFFFF !important;
       color: $primary-color !important;
-     }
+    }
   }
 }
 
@@ -554,9 +557,10 @@
 }
 
 // disabling a rule that creates a horizontal bar across the bottom of the body/html
-.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected::after {
   border-color: transparent;
 }
+
 .ant-menu-horizontal>.ant-menu-item::after,
 .ant-menu-horizontal>.ant-menu-submenu::after {
   right: 0;
@@ -600,6 +604,10 @@
 
 .ant-modal-body {
   min-height: 200px;
+}
+
+.ant-modal-footer {
+  padding: 0;
 }
 
 // SIDE MENU NAVIGATION
@@ -726,6 +734,12 @@ select {
 
 .filepond--root {
   font-family: $default-font;
+  font-size: 0.7rem;
+
+  &,
+  .filepond--drop-label {
+    min-height: 84.6px;
+  }
 }
 
 .whirlpool-container {

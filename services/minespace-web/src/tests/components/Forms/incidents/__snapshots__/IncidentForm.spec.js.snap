@@ -573,9 +573,7 @@ exports[`IncidentForm renders properly 1`] = `
               </div>
             </Col>
           </Row>
-          <DocumentTable
-            deletePayload={Object {}}
-            deletePermission={null}
+          <Connect(DocumentTable)
             documentColumns={
               Array [
                 Object {
@@ -604,7 +602,6 @@ exports[`IncidentForm renders properly 1`] = `
                 },
               ]
             }
-            handleDeleteDocument={[Function]}
           />
           <Row>
             <Col
@@ -640,9 +637,7 @@ exports[`IncidentForm renders properly 1`] = `
               A final report must be submitted within 60 days of the reportable incident. Please add the final report documentation below.
             </ForwardRef>
           </Row>
-          <DocumentTable
-            deletePayload={Object {}}
-            deletePermission={null}
+          <Connect(DocumentTable)
             documentColumns={
               Array [
                 Object {
@@ -662,7 +657,6 @@ exports[`IncidentForm renders properly 1`] = `
             }
             documentParent="Mine Incident"
             documents={Array []}
-            handleDeleteDocument={[Function]}
           />
         </Col>
       </Row>

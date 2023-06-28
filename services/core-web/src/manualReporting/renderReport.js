@@ -123,6 +123,7 @@ const simpleRender = () => {
       fn_engagement_activities: "asdsad",
       cultural_heritage_description: "sadasd",
       has_shared_info_with_fn: false,
+      has_acknowledged_undrip: false,
       has_fn_cultural_heritage_sites_in_area: true,
       has_activity_in_park: false,
       has_auth_lieutenant_gov_council: true,

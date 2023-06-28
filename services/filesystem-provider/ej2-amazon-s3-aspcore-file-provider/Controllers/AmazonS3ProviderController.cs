@@ -63,6 +63,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         // Gets the image(s) from the given path
         [HttpGet]
         [Route("AmazonS3GetImage")]
+        [Authorize("View")]
         public IActionResult AmazonS3GetImage(FileManagerDirectoryContent args)
         {
             return operation.GetImage(args.Path, args.Id, false, null, args.Data);

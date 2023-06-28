@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchMineDocuments, fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { fetchEMLIContactsByRegion } from "@common/actionCreators/minespaceActionCreator";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
@@ -27,6 +27,7 @@ const propTypes = {
   fetchProjectById: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchEMLIContactsByRegion: PropTypes.func.isRequired,
+  fetchMineDocuments: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
@@ -47,6 +48,10 @@ export class ProjectPage extends Component {
   };
 
   componentDidMount() {
+    this.handleFetchData();
+  }
+
+  handleFetchData(includeArchivedDocuments = false) {
     const { projectGuid } = this.props.match?.params;
     if (projectGuid) {
       this.props
@@ -64,8 +69,25 @@ export class ProjectPage extends Component {
             activeTab: tabs.indexOf(this.props.match.params.tab),
           });
         });
+
+      if (includeArchivedDocuments) {
+        this.fetchArchivedDocuments();
+      }
     }
     return null;
+  }
+
+  fetchArchivedDocuments(activeTab = this.state.activeTab) {
+    let filters = { project_guid: this.props?.project?.project_guid, is_archived: true };
+    if (activeTab == "major-mine-application") {
+      filters = {
+        major_mine_application_guid: this.props?.project?.major_mine_application
+          ?.major_mine_application_guid,
+        is_archived: true,
+      };
+    }
+
+    this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,6 +99,9 @@ export class ProjectPage extends Component {
 
   handleTabChange = (activeTab, irtStatus) => {
     this.setState({ activeTab });
+
+    this.fetchArchivedDocuments(activeTab);
+
     if (activeTab === "overview") {
       const url = router.EDIT_PROJECT.dynamicRoute(this.props.match.params?.projectGuid, activeTab);
       return this.props.history.push(url);
@@ -169,6 +194,7 @@ export class ProjectPage extends Component {
           project={this.props.project}
           applicationSubmitted
           tabbedView
+          refreshData={() => this.handleFetchData()}
         />
       );
     }
@@ -211,7 +237,10 @@ export class ProjectPage extends Component {
                 {/* FEATURE FLAG: PROJECTS */}
                 {!IN_PROD() && (
                   <Tabs.TabPane tab="Documents" key="documents">
-                    <DocumentsTab project={this.props.project} />
+                    <DocumentsTab
+                      project={this.props.project}
+                      refreshData={() => this.handleFetchData(true)}
+                    />
                   </Tabs.TabPane>
                 )}
               </Tabs>
@@ -234,6 +263,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       fetchProjectById,
       fetchEMLIContactsByRegion,
+      fetchMineDocuments,
     },
     dispatch
   );

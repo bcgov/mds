@@ -26,11 +26,6 @@ exports[`DocumentTable renders properly 1`] = `
         "sorter": [Function],
         "title": "Uploaded",
       },
-      Object {
-        "className": "column-hide",
-        "key": "remove",
-        "render": [Function],
-      },
     ]
   }
   dataSource={Array []}

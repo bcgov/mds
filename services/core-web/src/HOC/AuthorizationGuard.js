@@ -4,10 +4,7 @@ import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import {
-  detectDevelopmentEnvironment,
-  detectProdEnvironment,
-} from "@common/utils/environmentUtils";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import NullScreen from "@/components/common/NullScreen";
 import * as Permission from "@/constants/permissions";
 

@@ -18,9 +18,14 @@ import UpdateMajorMineAppStatusForm from "@/components/Forms/majorMineApplicatio
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@common/selectors/mineSelectors";
+import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
+  mineDocuments: PropTypes.arrayOf(CustomPropTypes.documentRecord),
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectGuid: PropTypes.string,
@@ -30,6 +35,8 @@ const propTypes = {
   updateMajorMineApplication: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
 };
+
+const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
 
 const menuOptions = [
   {
@@ -52,7 +59,11 @@ const menuOptions = [
     href: "ministry-decision-documents",
     title: "Ministry Decision Documents",
   },
-];
+  canArchiveDocuments && {
+    href: "archived-documents",
+    title: "Archived Documents",
+  },
+].filter(Boolean);
 
 export class MajorMineApplicationTab extends Component {
   state = {
@@ -60,10 +71,18 @@ export class MajorMineApplicationTab extends Component {
   };
 
   componentDidMount() {
-    const { projectGuid } = this.props.match.params;
-    this.props.fetchProjectById(projectGuid);
+    this.fetchData();
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
+  }
+
+  async fetchData() {
+    const { projectGuid } = this.props.match.params;
+    const project = await this.props.fetchProjectById(projectGuid);
+    this.props.fetchMineDocuments(project.mine_guid, {
+      is_archived: true,
+      major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
+    });
   }
 
   componentWillUnmount() {
@@ -85,12 +104,12 @@ export class MajorMineApplicationTab extends Component {
       .updateMajorMineApplication(
         {
           projectGuid,
-          majorMineApplicationGuid:
-            this.props.project.major_mine_application.major_mine_application_guid,
+          majorMineApplicationGuid: this.props.project.major_mine_application
+            .major_mine_application_guid,
         },
         values
       )
-      .then(() => this.props.fetchProjectById(projectGuid));
+      .then(() => this.fetchData());
   };
 
   renderDocumentSection = (
@@ -125,11 +144,18 @@ export class MajorMineApplicationTab extends Component {
             ],
             []
           )}
+          canArchiveDocuments={true}
+          archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
+          onArchivedDocuments={() => this.fetchData()}
           excludedColumnKeys={["dated", "category", "remove"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
         />
       </div>
     );
+  };
+
+  renderArchivedDocuments = () => {
+    return <ArchivedDocumentsSection documents={this.props.mineDocuments} />;
   };
 
   render() {
@@ -257,6 +283,8 @@ export class MajorMineApplicationTab extends Component {
             [],
             true
           )}
+          <br />
+          {this.renderArchivedDocuments()}
         </div>
       </>
     );
@@ -265,6 +293,7 @@ export class MajorMineApplicationTab extends Component {
 
 const mapStateToProps = (state) => ({
   project: getProject(state),
+  mineDocuments: getMineDocuments(state),
   majorMineAppStatusCodesHash: getMajorMinesApplicationStatusCodesHash(state),
 });
 
@@ -273,6 +302,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       updateMajorMineApplication,
       fetchProjectById,
+      fetchMineDocuments,
     },
     dispatch
   );

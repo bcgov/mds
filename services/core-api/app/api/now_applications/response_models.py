@@ -309,6 +309,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'fn_engagement_activities': fields.String,
         'cultural_heritage_description': fields.String,
         'has_shared_info_with_fn': fields.Boolean,
+        'has_acknowledged_undrip': fields.Boolean,
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
         'has_activity_in_park': fields.Boolean,
         'is_on_private_land': fields.Boolean,

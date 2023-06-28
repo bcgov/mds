@@ -3,12 +3,17 @@ import moment from "moment";
 import { dateSorter, formatDate, formatDateTime } from "@common/utils/helpers";
 import * as Strings from "@/constants/strings";
 
-export const categoryColumn = (categoryDataIndex, documentCategoryOptionsHash) => {
+export const categoryColumn = (
+  categoryDataIndex = "category",
+  documentCategoryOptionsHash = []
+) => {
   return {
     title: "Category",
     key: categoryDataIndex,
     dataIndex: categoryDataIndex,
-    render: (text) => <div title="Category">{documentCategoryOptionsHash[text]}</div>,
+    render: (text) => (
+      <div title="Category">{documentCategoryOptionsHash[text] || Strings.EMPTY_FIELD}</div>
+    ),
   };
 };
 

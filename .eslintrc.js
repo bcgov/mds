@@ -4,7 +4,12 @@ const path = require("path");
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
-  ignorePatterns: ["services/minespace-web/webpack.config.ts"],
+  ignorePatterns: [
+    "services/minespace-web/webpack.config.ts",
+    "services/core-web/webpack.config.ts",
+    "services/core-web/cypress.config.ts",
+    "services/core-web/cypress/**",
+  ],
   parserOptions: {
     project: [
       "./services/common/tsconfig.json",

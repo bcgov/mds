@@ -42,9 +42,8 @@ interface EditNoticeOfDepartureFormProps {
   change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<
-  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
-> = (props) => {
+const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>> &
+  EditNoticeOfDepartureFormProps> = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
@@ -265,7 +264,7 @@ const EditNoticeOfDepartureForm: React.FC<
                 );
               },
               labelIdle:
-                '<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
+                '<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
               onRemoveFile: onRemoveFile,
               mineGuid: mineGuid,
               allowMultiple: true,

@@ -151,20 +151,9 @@ exports[`ViewBondModal renders properly 1`] = `
       >
         Documents
       </p>
-      <DocumentTable
-        additionalColumnProps={Array []}
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
-        }
-        documentColumns={null}
-        documentParent={null}
+      <Connect(DocumentTable)
         documents={Array []}
-        excludedColumnKeys={Array []}
         isViewOnly={true}
-        removeDocument={[Function]}
       />
     </div>
   </div>

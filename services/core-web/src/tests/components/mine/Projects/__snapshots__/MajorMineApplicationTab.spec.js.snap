@@ -34,6 +34,10 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "href": "ministry-decision-documents",
             "title": "Ministry Decision Documents",
           },
+          Object {
+            "href": "archived-documents",
+            "title": "Archived Documents",
+          },
         ]
       }
     />
@@ -211,7 +215,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Primary Documents
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -222,14 +226,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
@@ -238,8 +240,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        isViewOnly={false}
-        removeDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
     </div>
     <br />
@@ -257,7 +258,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Spatial Components
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -268,14 +269,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
@@ -284,8 +283,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        isViewOnly={false}
-        removeDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
     </div>
     <br />
@@ -303,7 +301,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Supporting Documents
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -314,14 +312,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
@@ -330,8 +326,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        isViewOnly={false}
-        removeDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
     </div>
     <br />
@@ -349,7 +344,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Ministry Decision Documents
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -360,14 +355,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
@@ -376,10 +369,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        isViewOnly={false}
-        removeDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
     </div>
+    <br />
+    <ArchivedDocumentsSection />
   </div>
 </Fragment>
 `;

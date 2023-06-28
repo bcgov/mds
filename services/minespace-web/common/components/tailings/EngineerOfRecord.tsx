@@ -162,7 +162,9 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const daysToEORExpiry =
     currentEor?.end_date &&
-    moment(currentEor.end_date).startOf("day").diff(moment().startOf("day"), "days");
+    moment(currentEor.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
 
   // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
   // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).
@@ -304,7 +306,8 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 onAbort={() => setUploading(false)}
                 uploadUrl={MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid)}
                 acceptedFileTypesMap={{ ...PDF }}
-                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse.</strong><div>Accepted format: pdf</div>'
+                labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+                <div>Accepted formats: pdf</div>'
                 allowRevert
                 onprocessfiles={() => setUploading(false)}
               />

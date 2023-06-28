@@ -100,8 +100,12 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
-    childProps;
+  const {
+    applicationSubmitted,
+    location,
+    confirmedSubmission,
+    setConfirmedSubmission,
+  } = childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -658,7 +662,7 @@ const renderUploadInitialNotificationDocuments = (
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={match.params?.mineGuid}
                 component={IncidentFileUpload}
-                labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
               />
             </Form.Item>
           </Col>

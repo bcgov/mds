@@ -113,9 +113,8 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm: React.FC<
-  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
-> = (props) => {
+const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
+  AddNoticeOfDepartureProps> = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
@@ -332,7 +331,7 @@ const AddNoticeOfDepartureForm: React.FC<
                 );
               },
               labelIdle:
-                '<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
+                '<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>',
               onRemoveFile: onRemoveFile,
               mineGuid: mineGuid,
               allowMultiple: true,

@@ -56,6 +56,7 @@ import UploadProjectDecisionPackageDocumentModal from "./UploadProjectDecisionPa
 import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPackageDocumentModal";
 import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
+import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -63,6 +64,7 @@ export const modalConfig = {
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
   ADD_QUICK_PARTY: AddQuickPartyModal,
   MERGE_PARTY_CONFIRMATION: MergePartyConfirmationModal,
+  ARCHIVE_DOCUMENT: ArchiveDocumentModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,

@@ -241,7 +241,7 @@ describe("`fetchMineNameList` action creator", () => {
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid, { is_archived: false })}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };

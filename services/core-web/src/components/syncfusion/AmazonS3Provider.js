@@ -15,6 +15,7 @@ import {
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { openDocumentViewer } from "@common/actions/documentViewerActions";
 import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
+import keycloak from "@/keycloak";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
@@ -79,7 +80,7 @@ export class AmazonS3Provider extends SampleBase {
       const xhr = new XMLHttpRequest();
       xhr.open("POST", this.filemanager.ajaxSettings.downloadUrl, true);
       xhr.responseType = "blob";
-      xhr.onload = function() {
+      xhr.onload = function () {
         if (this.status === 200) {
           let name = "";
 
@@ -104,7 +105,7 @@ export class AmazonS3Provider extends SampleBase {
           } else {
             window.location = anchorUrl;
           }
-          setTimeout(function() {
+          setTimeout(function () {
             URL.revokeObjectURL(anchorUrl);
           }, 100);
         }
@@ -160,7 +161,7 @@ export class AmazonS3Provider extends SampleBase {
               const data = JSON.parse(args.ajaxSettings.data);
               data.path = this.pathPrefix + data.path;
               args.ajaxSettings.data = JSON.stringify(data);
-              args.ajaxSettings.beforeSend = function(args) {
+              args.ajaxSettings.beforeSend = function (args) {
                 args.httpRequest.setRequestHeader(
                   "Authorization",
                   createRequestHeader().headers.Authorization
@@ -176,6 +177,8 @@ export class AmazonS3Provider extends SampleBase {
                 "/AmazonS3GetImage?path=",
                 `/AmazonS3GetImage?path=${this.pathPrefix}`
               );
+
+              args.imageUrl += `&token=${keycloak.token}`;
             }}
             menuClick={this.menuClick}
             toolbarClick={this.toolbarClick}

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
 import DocumentLink from "./DocumentLink";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
 import { ColumnType } from "antd/lib/table";
+import { Tag } from "antd";
 
 export const renderTextColumn = (
   dataIndex: string,
@@ -71,25 +72,57 @@ export const renderHighlightedTextColumn = (
   };
 };
 
+const withTag = (text: string, elem: ReactNode) => {
+  return (
+    <div className="inline-flex flex-between">
+      {elem}
+      <Tag>{text}</Tag>
+    </div>
+  );
+};
+
 export const renderDocumentLinkColumn = (
   dataIndex: string,
   title = "File Name",
   sortable = true,
-  docManGuidIndex = "document_manager_guid"
+  docManGuidIndex = "document_manager_guid",
+  showArchiveIndicator = true
 ): ColumnType<any> => {
   return {
     title,
     dataIndex,
     key: dataIndex,
-    render: (text = "", record: any) => (
-      <div key={record.key ?? record[docManGuidIndex]} title={title}>
-        <DocumentLink
-          documentManagerGuid={record[docManGuidIndex]}
-          documentName={text}
-          truncateDocumentName={false}
-        />
-      </div>
-    ),
+    render: (text = "", record: any) => {
+      const link = (
+        <div key={record.key ?? record[docManGuidIndex]} title={title}>
+          <DocumentLink
+            documentManagerGuid={record[docManGuidIndex]}
+            documentName={text}
+            truncateDocumentName={false}
+          />
+        </div>
+      );
+      return showArchiveIndicator && record.is_archived ? withTag("Archived", link) : link;
+    },
+    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+  };
+};
+
+export const renderTaggedColumn = (
+  dataIndex: string,
+  title: string,
+  tag: string,
+  sortable = false,
+  placeHolder = ""
+) => {
+  return {
+    title,
+    dataIndex,
+    key: dataIndex,
+    render: (text: any) => {
+      const content = <div title={title}>{text ?? placeHolder}</div>;
+      return withTag(tag, content);
+    },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
 };

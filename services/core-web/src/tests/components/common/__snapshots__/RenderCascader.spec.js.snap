@@ -3,16 +3,13 @@
 exports[`RenderCascader renders properly 1`] = `
 <FormItem
   hasFeedback={false}
-  help={false}
   label=""
-  validateStatus=""
 >
   <Cascader
     changeOnSelect={false}
+    defaultValue=""
     expandTrigger="hover"
-    id={1}
-    options={Array []}
-    placeholder=""
+    onChange={[Function]}
   />
 </FormItem>
 `;

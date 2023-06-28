@@ -38,6 +38,10 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "href": "major-mine-application",
             "title": "Major Mine Application",
           },
+          Object {
+            "href": "archived-documents",
+            "title": "Archived Documents",
+          },
         ]
       }
     />
@@ -53,7 +57,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Project Description
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -64,13 +68,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
+        canArchiveDocuments={true}
         documentParent="project summary"
         documents={Array []}
         excludedColumnKeys={
@@ -79,7 +82,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -92,7 +95,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         IRT
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -103,13 +106,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
+        canArchiveDocuments={true}
         documentParent="irt"
         documents={Array []}
         excludedColumnKeys={
@@ -118,7 +120,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -143,7 +145,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Primary Documents
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -154,13 +156,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
+        canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={
@@ -169,7 +170,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -188,7 +189,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Spatial Components
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -199,13 +200,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
+        canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={
@@ -214,7 +214,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -233,7 +233,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       >
         Supporting Documents
       </ForwardRef(Text)>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -244,13 +244,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
+        canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
         excludedColumnKeys={
@@ -259,10 +258,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
+    <br />
+    <ArchivedDocumentsSection />
   </div>
 </Fragment>
 `;

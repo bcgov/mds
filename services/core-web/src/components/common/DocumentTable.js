@@ -4,12 +4,26 @@ import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { documentNameColumn, removeFunctionColumn, uploadDateColumn } from "./DocumentColumns";
 import { renderTextColumn } from "./CoreTableCommonColumns";
+import { Button } from "antd";
+import { some } from "lodash";
+import { closeModal, openModal } from "@common/actions/modalActions";
+import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { modalConfig } from "@/components/modalContent/config";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
   isViewOnly: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
+  archiveMineDocuments: PropTypes.func,
+  archiveDocumentsArgs: PropTypes.shape({
+    mineGuid: PropTypes.string,
+  }),
+  onArchivedDocuments: PropTypes.func,
+  canArchiveDocuments: PropTypes.bool,
   excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
   additionalColumnProps: PropTypes.arrayOf(
     PropTypes.shape({
@@ -21,6 +35,8 @@ const propTypes = {
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
   defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
+  openModal: PropTypes.func.isRequired,
+  view: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -32,20 +48,75 @@ const defaultProps = {
   documentColumns: null,
   documentParent: null,
   defaultSortKeys: ["upload_date", "dated"], // keys to sort by when page loads
+  view: "standard",
+  canArchiveDocuments: false,
+};
+
+const openArchiveModal = (event, props, documents) => {
+  event.preventDefault();
+
+  props.openModal({
+    props: {
+      title: `Archive ${props.documents?.length > 1 ? "Multiple Files" : "File"}`,
+      closeModal: props.closeModal,
+      handleSubmit: async () => {
+        await props.archiveMineDocuments(
+          props.archiveDocumentsArgs.mineGuid,
+          documents.map((d) => d.mine_document_guid)
+        );
+        if (props.onArchivedDocuments) {
+          props.onArchivedDocuments(documents);
+        }
+      },
+      documents,
+    },
+    content: modalConfig.ARCHIVE_DOCUMENT,
+  });
 };
 
 export const DocumentTable = (props) => {
+  const isMinimalView = props.view === "minimal";
+  const canDelete = !props.isViewOnly && props.removeDocument;
+  const canArchive =
+    !props.isViewOnly &&
+    props.canArchiveDocuments &&
+    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+
+  const archiveColumn = {
+    key: "archive",
+    render: (record) => {
+      const button = (
+        <Button
+          ghost
+          type="primary"
+          size="small"
+          onClick={(event) => openArchiveModal(event, props, [record])}
+        >
+          Archive
+        </Button>
+      );
+      return record?.mine_document_guid ? <div>{button}</div> : <div></div>;
+    },
+  };
+
   let columns = [
-    documentNameColumn(),
-    renderTextColumn("category", "Category", true),
-    uploadDateColumn(),
-    removeFunctionColumn(
-      props.removeDocument,
-      props.isViewOnly || !props.removeDocument,
-      "name",
-      props?.documentParent
-    ),
+    documentNameColumn("document_name", "File Name", isMinimalView),
+    renderTextColumn("category", "Category", !isMinimalView),
+    uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
+    uploadDateColumn("dated", "Dated", !isMinimalView),
   ];
+
+  if (canDelete) {
+    columns.push(removeFunctionColumn(props.removeDocument, props?.documentParent));
+  }
+
+  if (canArchive) {
+    columns.push(archiveColumn);
+  }
+
+  if (!some(props.documents, "dated")) {
+    columns = columns.filter((column) => column.key !== "dated");
+  }
 
   if (props?.excludedColumnKeys?.length > 0) {
     columns = columns.filter((column) => !props.excludedColumnKeys.includes(column.key));
@@ -68,10 +139,29 @@ export const DocumentTable = (props) => {
     });
   }
 
-  return <CoreTable columns={props?.documentColumns ?? columns} dataSource={props.documents} />;
+  const minimalProps = isMinimalView
+    ? { size: "small", rowClassName: "ant-table-row-minimal" }
+    : null;
+  return (
+    <CoreTable
+      columns={props?.documentColumns ?? columns}
+      dataSource={props.documents}
+      {...minimalProps}
+    />
+  );
 };
 
 DocumentTable.propTypes = propTypes;
 DocumentTable.defaultProps = defaultProps;
 
-export default DocumentTable;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openModal,
+      closeModal,
+      archiveMineDocuments,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(DocumentTable);

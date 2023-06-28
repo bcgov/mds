@@ -5,36 +5,45 @@ import { TRASHCAN } from "@/constants/assets";
 import {
   renderDateColumn,
   renderDocumentLinkColumn,
+  renderTaggedColumn,
   renderTextColumn,
 } from "./CoreTableCommonColumns";
 
 export const documentNameColumn = (
   documentNameColumnIndex = "document_name",
-  title = "File Name"
+  title = "File Name",
+  minimalView = false
 ) => {
-  return renderDocumentLinkColumn(documentNameColumnIndex, title, true);
+  return minimalView
+    ? renderTaggedColumn(documentNameColumnIndex, title, "Archived")
+    : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
 };
 
-export const uploadDateColumn = (uploadDateIndex = "upload_date", title = "Uploaded") => {
-  return renderDateColumn(uploadDateIndex, title, true, null, Strings.EMPTY_FIELD);
+export const uploadDateColumn = (
+  uploadDateIndex = "upload_date",
+  title = "Uploaded",
+  sortable = true
+) => {
+  return renderDateColumn(uploadDateIndex, title, sortable, null, Strings.EMPTY_FIELD);
 };
 
-export const uploadedByColumn = (uploadedByIndex = "update_user", title = "Uploaded By") => {
-  return renderTextColumn(uploadedByIndex, title);
+export const uploadedByColumn = (
+  uploadedByIndex = "update_user",
+  title = "Uploaded By",
+  sortable = true
+) => {
+  return renderTextColumn(uploadedByIndex, title, sortable);
 };
 
 export const removeFunctionColumn = (
   removeFunction,
-  hideColumn = false,
-  documentNameColumnIndex = "document_name",
-  documentParent = ""
+  documentParent = "",
+  documentNameColumnIndex = "document_name"
 ) => {
-  const className = hideColumn ? "column-hide" : "test";
   return {
     key: "remove",
-    className,
     render: (record) => (
-      <div align="right" className>
+      <div align="right">
         <Popconfirm
           placement="topLeft"
           title={`Are you sure you want to delete ${record[documentNameColumnIndex]}?`}

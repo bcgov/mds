@@ -20,6 +20,7 @@ def JWT_ROLE_CALLBACK_V1(jwt_dict):
 def get_jwt_by_audience(aud):
     audience_jwt_map = {
         'JWT_OIDC_AUDIENCE': jwtv2,
+        'JWT_OIDC_AUDIENCE_CYPRESS': jwt_cypress,
         'JWT_OIDC_AUDIENCE_BCMI': jwt_bcmi,
         'JWT_OIDC_AUDIENCE_FNCS': jwt_fncs,
         'JWT_OIDC_AUDIENCE_GENTAX': jwt_gentax,
@@ -54,6 +55,9 @@ jwt_bcgw = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_BCGW'), N
 # Gold SSO - Register Config Per Integration Client for Internal Services:
 jwt_docman_celery = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_DOCMAN_CELERY'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_DOCMAN_CELERY'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 
+
+# Cypress JWT Config
+jwt_cypress = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_CYPRESS'), None, 'RS256', os.environ.get('JWT_OIDC_JWKS_URI_CYPRESS'), None, os.environ.get('JWT_OIDC_AUDIENCE_CYPRESS'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
 
 # Test JWT Config for integration tests
 test_config = TestConfig()

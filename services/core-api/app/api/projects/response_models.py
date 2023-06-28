@@ -250,7 +250,7 @@ PROJECT_MODEL = api.model(
     })
 
 PROJECT_MINE_LIST_MODEL = api.model(
-    'ProjectMineList',{
+    'ProjectMineList', {
         'stage': fields.String,
         'id': fields.Integer,
         'guid': fields.String,

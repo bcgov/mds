@@ -13,7 +13,7 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { detectProdEnvironment as IN_PROD } from "@common/utils/environmentUtils";
+import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { bindActionCreators } from "redux";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";

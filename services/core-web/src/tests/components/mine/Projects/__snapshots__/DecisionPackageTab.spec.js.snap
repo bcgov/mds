@@ -26,6 +26,10 @@ exports[`DecisionPackageTab renders properly 1`] = `
             "href": "internal-ministry-documents",
             "title": "Internal Documents",
           },
+          Object {
+            "href": "archived-documents",
+            "title": "Archived Documents",
+          },
         ]
       }
     />
@@ -135,7 +139,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
            Upload Ministry Decision documentation.
         </ForwardRef(Text)>
       </p>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -146,21 +150,19 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -189,7 +191,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
            Upload Supplemental Ministry documentation.
         </ForwardRef(Text)>
       </p>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -200,21 +202,19 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
@@ -283,7 +283,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
           Upload internal documents that are created durring the review process.
         </ForwardRef(Text)>
       </p>
-      <DocumentTable
+      <Connect(DocumentTable)
         additionalColumnProps={
           Array [
             Object {
@@ -294,24 +294,23 @@ exports[`DecisionPackageTab renders properly 1`] = `
             },
           ]
         }
-        defaultSortKeys={
-          Array [
-            "upload_date",
-            "dated",
-          ]
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+          }
         }
-        documentColumns={null}
-        documentParent={null}
+        canArchiveDocuments={true}
         documents={Array []}
         excludedColumnKeys={
           Array [
             "category",
           ]
         }
-        isViewOnly={false}
+        onArchivedDocuments={[Function]}
         removeDocument={[Function]}
       />
     </div>
+    <ArchivedDocumentsSection />
   </div>
 </Fragment>
 `;

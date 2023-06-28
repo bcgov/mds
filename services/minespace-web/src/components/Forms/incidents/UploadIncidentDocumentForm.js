@@ -93,7 +93,7 @@ const UploadIncidentDocumentForm = (props) => {
                 onRemoveFile={onRemoveFile}
                 mineGuid={props.mineGuid}
                 component={IncidentFileUpload}
-                labelIdle='<strong class="filepond--label-action">Supporting Document Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
                 validate={[required]}
               />
             </Form.Item>

@@ -33,6 +33,7 @@ class MajorMineApplicationDocumentXref(Base):
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+    versions = association_proxy('mine_document', 'versions')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.major_mine_application_document_xref_guid}'

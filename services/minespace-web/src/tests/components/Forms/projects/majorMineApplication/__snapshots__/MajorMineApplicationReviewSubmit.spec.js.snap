@@ -78,7 +78,13 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       >
         Primary Document
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
+          }
+        }
+        canArchiveDocuments={true}
         deletePayload={
           Object {
             "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
@@ -98,15 +104,21 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           ]
         }
         documentParent="Major Mine Application"
-        documents={Array []}
         handleDeleteDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
       <ForwardRef
         level={4}
       >
         Spatial Components
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
+          }
+        }
+        canArchiveDocuments={true}
         deletePayload={
           Object {
             "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
@@ -126,15 +138,21 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           ]
         }
         documentParent="Major Mine Application"
-        documents={Array []}
         handleDeleteDocument={[Function]}
+        onArchivedDocuments={[Function]}
       />
       <ForwardRef
         level={4}
       >
         Supporting Documents
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
+        archiveDocumentsArgs={
+          Object {
+            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
+          }
+        }
+        canArchiveDocuments={true}
         deletePayload={
           Object {
             "majorMineApplicationGuid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
@@ -154,8 +172,21 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           ]
         }
         documentParent="Major Mine Application"
-        documents={Array []}
         handleDeleteDocument={[Function]}
+        onArchivedDocuments={[Function]}
+      />
+      <ArchivedDocumentsSection
+        documentColumns={
+          Array [
+            Object {
+              "dataIndex": "upload_date",
+              "key": "upload_date",
+              "render": [Function],
+              "sorter": null,
+              "title": "Uploaded",
+            },
+          ]
+        }
       />
     </Col>
     <Col

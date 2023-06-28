@@ -12,11 +12,7 @@ import {
   fetchInspectors,
   fetchProjectLeads,
 } from "@common/actionCreators/staticContentActionCreator";
-import {
-  detectIE,
-  detectTestEnvironment,
-  detectDevelopmentEnvironment,
-} from "@common/utils/environmentUtils";
+import { detectIE, detectTestEnvironment, detectDevelopmentEnvironment } from "@mds/common";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";

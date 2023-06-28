@@ -23,14 +23,31 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
 // eslint-disable-next-line consistent-return
+
 Cypress.Commands.add("login", () => {
-  cy.visit("localhost:3000");
-  cy.get("#username").type(Cypress.env("test-user"));
-  cy.get("#password")
-    .click()
-    .type(Cypress.env("test-pwd"));
-  cy.get("#kc-form-login").submit();
-  cy.url().should("eq", "http://localhost:3000/home/");
+  const url = Cypress.env("url");
+  const environmentUrl = Cypress.env("environmentUrl");
+
+  const response = {
+    backend: Cypress.env("backend"),
+    apiUrl: Cypress.env("apiUrl"),
+    docManUrl: Cypress.env("docManUrl"),
+    matomoUrl: Cypress.env("matomoUrl"),
+    filesystemProviderUrl: Cypress.env("filesystemProviderUrl"),
+    keycloak_clientId: Cypress.env("keycloakClientId"),
+    keycloak_resource: Cypress.env("keycloakResource"),
+    keycloak_url: Cypress.env("keyCloakUrl"),
+    keycloak_idpHint: Cypress.env("keyCloakIDPHint"),
+    environment: Cypress.env("environment"),
+  };
+
+  cy.intercept("GET", environmentUrl, (req) => {
+    req.reply(response);
+  });
+  cy.visit(url);
+  cy.url({ timeout: 10000 }).should("include", "localhost:8080");
+  cy.get("#username").type("cypress");
+  cy.get("#password").type("cypress");
+  cy.get("#kc-login").click();
 });

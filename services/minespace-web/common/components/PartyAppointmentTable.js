@@ -31,9 +31,9 @@ const PartyAppointmentTable = (props) => {
 
   const [loadingField, setLoadingField] = useState({});
 
-  const ministryAcknowledgedColumns = Object.entries(MINISTRY_ACKNOWLEDGED_STATUS).map(
-    ([value, label]) => ({ value, label })
-  );
+  const ministryAcknowledgedColumns = Object.entries(
+    MINISTRY_ACKNOWLEDGED_STATUS
+  ).map(([value, label]) => ({ value, label }));
   const statusColumns = Object.entries(PARTY_APPOINTMENT_STATUS).map(([value, label]) => ({
     value,
     label,
@@ -88,6 +88,7 @@ const PartyAppointmentTable = (props) => {
               id={`${record.rowName}.status`}
               name={`${record.rowName}.status`}
               component={renderConfig.SELECT}
+              props={{ allowClear: false }}
               data={statusColumns}
               loading={loadingField[`${record.rowName}.status`]}
               onChange={(val) => partyAppointmentChanged(record.rowName, record.key, "status", val)}
@@ -100,10 +101,10 @@ const PartyAppointmentTable = (props) => {
     },
     {
       title: "Date",
-      dataIndex: "dates",
-      render: (text, record) => (
+      key: "dates",
+      render: (record) => (
         <div title="Dates">
-          {record.startDate} -{record.endDate}
+          {record.startDate} - {record.endDate}
         </div>
       ),
     },
@@ -123,24 +124,27 @@ const PartyAppointmentTable = (props) => {
     },
     {
       title: "Ministry Acknowledged",
-      dataIndex: "ministryAcknowledged",
-      render: (ministryAcknowledged, record) => (
-        <Field
-          id={`${record.rowName}.mine_party_acknowledgement_status`}
-          name={`${record.rowName}.mine_party_acknowledgement_status`}
-          component={renderConfig.SELECT}
-          data={ministryAcknowledgedColumns}
-          loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
-          onChange={(val) =>
-            partyAppointmentChanged(
-              record.rowName,
-              record.key,
-              "mine_party_acknowledgement_status",
-              val
-            )
-          }
-        />
-      ),
+      key: "ministryAcknowledged",
+      render: (record) => {
+        return (
+          <Field
+            id={`${record.rowName}.mine_party_acknowledgement_status`}
+            name={`${record.rowName}.mine_party_acknowledgement_status`}
+            component={renderConfig.SELECT}
+            props={{ allowClear: false }}
+            data={ministryAcknowledgedColumns}
+            loading={loadingField[`${record.rowName}.mine_party_acknowledgement_status`]}
+            onChange={(val) =>
+              partyAppointmentChanged(
+                record.rowName,
+                record.key,
+                "mine_party_acknowledgement_status",
+                val
+              )
+            }
+          />
+        );
+      },
     },
   ];
 
