@@ -2,7 +2,7 @@
 
 exports[`InspectionsTable renders properly 1`] = `
 <div>
-  <ForwardRef(InternalTable)
+  <CoreTable
     columns={
       Array [
         Object {
@@ -91,14 +91,8 @@ exports[`InspectionsTable renders properly 1`] = `
         },
       ]
     }
+    emptyText="This mine has no inspection data."
     loading={false}
-    locale={
-      Object {
-        "emptyText": "This mine has no inspection data.",
-      }
-    }
-    pagination={false}
-    size="small"
   />
   <div
     align="right"

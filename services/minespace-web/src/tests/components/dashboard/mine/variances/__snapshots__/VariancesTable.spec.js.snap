@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VariancesTable renders properly 1`] = `
-<ForwardRef(InternalTable)
+<CoreTable
   columns={
     Array [
       Object {
@@ -113,13 +113,7 @@ exports[`VariancesTable renders properly 1`] = `
       },
     ]
   }
+  emptyText="This mine has no variance data."
   loading={true}
-  locale={
-    Object {
-      "emptyText": "This mine has no variance data.",
-    }
-  }
-  pagination={false}
-  size="small"
 />
 `;

@@ -579,15 +579,17 @@ exports[`IncidentForm renders properly 1`] = `
             documentColumns={
               Array [
                 Object {
-                  "dataIndex": "update_user",
+                  "dataIndex": "upload_date",
+                  "key": "upload_date",
                   "render": [Function],
-                  "title": "Uploader",
+                  "sorter": null,
+                  "title": "Uploaded",
                 },
                 Object {
-                  "dataIndex": "upload_date",
+                  "dataIndex": "update_user",
+                  "key": "update_user",
                   "render": [Function],
-                  "sorter": [Function],
-                  "title": "Upload Date",
+                  "title": "Uploaded By",
                 },
               ]
             }
@@ -644,15 +646,17 @@ exports[`IncidentForm renders properly 1`] = `
             documentColumns={
               Array [
                 Object {
-                  "dataIndex": "update_user",
+                  "dataIndex": "upload_date",
+                  "key": "upload_date",
                   "render": [Function],
-                  "title": "Uploader",
+                  "sorter": null,
+                  "title": "Uploaded",
                 },
                 Object {
-                  "dataIndex": "upload_date",
+                  "dataIndex": "update_user",
+                  "key": "update_user",
                   "render": [Function],
-                  "sorter": [Function],
-                  "title": "Upload Date",
+                  "title": "Uploaded By",
                 },
               ]
             }

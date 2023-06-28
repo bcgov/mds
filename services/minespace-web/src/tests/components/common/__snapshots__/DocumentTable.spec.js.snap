@@ -2,24 +2,27 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <div>
-  <ForwardRef(InternalTable)
-    align="left"
+  <CoreTable
     columns={
       Array [
         Object {
           "dataIndex": "document_name",
+          "key": "document_name",
           "render": [Function],
           "title": "File Name",
         },
         Object {
-          "dataIndex": undefined,
+          "dataIndex": "category",
+          "key": "category",
           "render": [Function],
           "title": "Category",
         },
         Object {
-          "dataIndex": undefined,
+          "dataIndex": "upload_date",
+          "key": "upload_date",
           "render": [Function],
-          "title": "Upload Date",
+          "sorter": null,
+          "title": "Uploaded",
         },
       ]
     }
@@ -34,12 +37,7 @@ exports[`DocumentTable renders properly 1`] = `
         },
       ]
     }
-    locale={
-      Object {
-        "emptyText": "This undefined does not contain any documents.",
-      }
-    }
-    pagination={false}
+    emptyText="This undefined does not contain any documents."
     rowKey={[Function]}
   />
 </div>

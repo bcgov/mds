@@ -35,14 +35,16 @@ exports[`VarianceDetails renders properly 1`] = `
       Array [
         Object {
           "dataIndex": "variance_document_category_code",
+          "key": "variance_document_category_code",
           "render": [Function],
           "title": "Category",
         },
         Object {
           "dataIndex": "created_at",
+          "key": "created_at",
           "render": [Function],
-          "sorter": [Function],
-          "title": "Upload Date",
+          "sorter": null,
+          "title": "Uploaded",
         },
       ]
     }
