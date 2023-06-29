@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -16,13 +16,26 @@ const propTypes = {
   disabled: PropTypes.bool.isRequired,
 };
 
-const RenderCheckbox = (props) => (
-  <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
-    <Checkbox id={props.id} {...props.input} disabled={props.disabled}>
-      {props.label}
-    </Checkbox>
-  </Form.Item>
-);
+const RenderCheckbox = (props) => {
+  const [checked, setChecked] = useState(false);
+  const onChange = (e) => {
+    setChecked(e.target.checked);
+  };
+
+  return (
+    <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
+      <Checkbox
+        id={props.id}
+        {...props.input}
+        disabled={props.disabled}
+        checked={checked}
+        onChange={onChange}
+      >
+        {props.label}
+      </Checkbox>
+    </Form.Item>
+  );
+};
 
 RenderCheckbox.propTypes = propTypes;
 
