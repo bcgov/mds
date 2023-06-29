@@ -1,11 +1,14 @@
 import React from "react";
-import { Table, Divider, Descriptions } from "antd";
+import { Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
 import { Validate } from "@common/utils/Validate";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
+import CoreTable from "@/components/common/CoreTable";
+import { renderHighlightedTextColumn } from "../common/CoreTableCommonColumns";
+import { nullableStringSorter } from "@common/utils/helpers";
 
 /**
  * @class  ContactResultsTable - displays a table of mine search results
@@ -39,52 +42,52 @@ const parseQuery = (query) => {
 export const ContactResultsTable = (props) => {
   const columns = [
     {
-      title: "Party Guid",
-      dataIndex: "party_guid",
-      key: "party_guid",
-      render: (text, record) => [
-        <Descriptions
-          column={{ sm: 1, md: 2 }}
-          title={
-            <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
-              <Highlight search={props.highlightRegex}>{record.name}</Highlight>
-            </Link>
-          }
-        >
-          <Descriptions.Item label="Roles">
-            {props.partyRelationshipTypeHash.PMT &&
-              record.mine_party_appt.map((pr) => (
-                <p>
-                  {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
-                  <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
-                    ({pr.mine_party_appt_type_code === "PMT" ? pr.permit_no : pr.mine.mine_name})
-                  </span>
-                </p>
-              ))}
-          </Descriptions.Item>
-          <Descriptions.Item label="Email">
-            <Highlight search={props.highlightRegex}>{record.email}</Highlight>
-          </Descriptions.Item>
-          <Descriptions.Item label="Phone">
-            <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
-            {record.phone_ext}
-          </Descriptions.Item>
-        </Descriptions>,
-      ],
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => {
+        return (
+          <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
+            <Highlight search={props.highlightRegex}>{text}</Highlight>
+          </Link>
+        );
+      },
+      sorter: nullableStringSorter("name"),
     },
+    {
+      title: "Roles",
+      key: "roles",
+      render: props.partyRelationshipTypeHash.PMT
+        ? (record) => {
+            return record.mine_party_appt.map((pr) => (
+              <p key={"permit-record-" + pr.permit_no}>
+                {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
+                <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
+                  ({pr.mine_party_appt_type_code === "PMT" ? pr.permit_no : pr.mine.mine_name})
+                </span>
+              </p>
+            ));
+          }
+        : null,
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone_no",
+      key: "phone_no",
+      render: (text, record) => (
+        <>
+          <Highlight search={props.highlightRegex}>{text}</Highlight>
+          {record.phone_ext}
+        </>
+      ),
+    },
+    renderHighlightedTextColumn("email", "Email", props.highlightRegex),
   ];
   return (
-    <div>
+    <div className="padding-lg--bottom">
       <h2>{props.header}</h2>
       <Divider style={{ padding: "0" }} />
-      <Table
-        className="nested-table padding-lg--bottom"
-        align="left"
-        showHeader={false}
-        pagination={false}
-        columns={columns}
-        dataSource={props.searchResults}
-      />
+      <CoreTable columns={columns} dataSource={props.searchResults} />
       {props.showAdvancedLookup && (
         <Link
           className="padding-lg--left float-right"

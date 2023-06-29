@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { Divider } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { nullableStringSorter } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 
 /**
  * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.
@@ -23,32 +24,23 @@ const propTypes = {
 const columns = [
   {
     title: "Mine Name",
-    width: 150,
     dataIndex: "mine_name",
+    key: "mine_name",
     render: (text, record) => (
       <div key={record.key} title="Mine Name">
         <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
       </div>
     ),
+    sorter: nullableStringSorter("mine_name"),
   },
-  {
-    title: "Last Verified By",
-    width: 150,
-    dataIndex: "verifying_user",
-    render: (text) => <div title="Last Verified By">{text}</div>,
-  },
-  {
-    title: "Last Verified On",
-    width: 150,
-    dataIndex: "formatted_timestamp",
-    render: (text) => <div title="Last Verified On">{text}</div>,
-  },
+  renderTextColumn("verifying_user", "Last Verified By", true),
+  renderDateColumn("verifying_timestamp", "Last Verified On", true),
 ];
 
 const transformRowData = (verifiedMinesList) =>
   verifiedMinesList.map(({ mine_guid, verifying_timestamp, ...rest }) => ({
     key: mine_guid,
-    formatted_timestamp: formatDate(verifying_timestamp),
+    verifying_timestamp,
     ...rest,
   }));
 
@@ -91,11 +83,7 @@ export class AdminVerifiedMinesList extends Component {
           condition={this.state.isLoaded}
           dataSource={transformRowData(data)}
           columns={columns}
-          tableProps={{
-            align: "center",
-            pagination: false,
-            scroll: { y: 500 },
-          }}
+          scroll={{ y: 500 }}
         />
       </div>
     );

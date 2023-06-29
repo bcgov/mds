@@ -5,8 +5,7 @@ exports[`ReclamationSummary renders properly 1`] = `
   <h3>
     Reclamation Summary
   </h3>
-  <ForwardRef(InternalTable)
-    align="left"
+  <CoreTable
     columns={
       Array [
         Object {
@@ -29,12 +28,6 @@ exports[`ReclamationSummary renders properly 1`] = `
         },
       ]
     }
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
   />
 </div>
 `;

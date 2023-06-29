@@ -238,10 +238,13 @@ h5.ant-typography,
 .ant-table {
   border: none !important;
   border-radius: 0 !important;
+  margin-bottom: 16px;
 
-  table {
+  .ant-table-content {
     overflow-x: auto;
-    margin: $padding-md 0;
+  }
+  tr > td {
+    border-bottom: 1px solid #BBBBBB;
   }
 }
 
@@ -256,19 +259,15 @@ h5.ant-typography,
 }
 
 .ant-table-thead>tr>th {
-  border-top: 2px solid $primary-color;
+  background: #F7F8FA;
+  color: #494949;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
-  color: $primary-color;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .ant-table-header-column {
   font-weight: bold;
-}
-
-.ant-table-column-sorters {
-  font-weight: 700;
 }
 
 .ant-table-row-expand-icon {
@@ -293,10 +292,6 @@ td a {
 }
 
 tr.ant-table-expanded-row {
-  & .ant-table-thead>tr>th {
-    border-top: none;
-  }
-
   & table,
   .ant-table-body {
     margin: 0;

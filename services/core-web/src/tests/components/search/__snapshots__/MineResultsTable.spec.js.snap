@@ -1,21 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineResultsTable renders properly 1`] = `
-<div>
+<div
+  className="padding-lg--bottom"
+>
   <h2>
     Mines
   </h2>
   <Divider />
-  <ForwardRef(InternalTable)
-    align="left"
-    className="nested-table padding-lg--bottom"
+  <CoreTable
     columns={
       Array [
         Object {
-          "dataIndex": "mine_guid",
-          "key": "mine_guid",
+          "dataIndex": "mine_name",
+          "key": "mine_name",
           "render": [Function],
-          "title": "Mine Guid",
+          "sorter": [Function],
+          "title": "Mine Name",
+        },
+        Object {
+          "dataIndex": "mms_alias",
+          "key": "mms_alias",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Legacy Alias",
+        },
+        Object {
+          "dataIndex": "mine_no",
+          "key": "mine_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Mine No.",
+        },
+        Object {
+          "key": "permit_no",
+          "render": [Function],
+          "title": "Permit No.",
+        },
+        Object {
+          "dataIndex": "mine_region",
+          "key": "mine_region",
+          "render": [Function],
+          "title": "Region",
+        },
+        Object {
+          "key": "status",
+          "render": [Function],
+          "title": "Status",
         },
       ]
     }
@@ -162,8 +193,6 @@ exports[`MineResultsTable renders properly 1`] = `
         },
       ]
     }
-    pagination={false}
-    showHeader={false}
   />
 </div>
 `;

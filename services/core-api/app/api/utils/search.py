@@ -72,7 +72,7 @@ full_additional_search_targets = {
         'model': MineDocument,
         'primary_column': MineDocument.mine_document_guid,
         'description': 'Mine Documents',
-        'entities_to_return': [MineDocument.mine_document_guid, MineDocument.document_name],
+        'entities_to_return': [MineDocument.mine_document_guid, MineDocument.document_name, MineDocument.create_user, MineDocument.upload_date],
         'columns_to_search': [MineDocument.document_name],
         'has_deleted_ind': False,
         'id_field': 'mine_document_guid',

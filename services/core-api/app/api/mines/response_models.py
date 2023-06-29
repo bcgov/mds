@@ -113,6 +113,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'upload_date': fields.DateTime,
         'create_user': fields.String,
         'is_archived': fields.Boolean,
+        'archived_date': fields.DateTime,
+        'archived_by': fields.String,
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL))
     })
 

@@ -1,21 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CoreTable renders properly 1`] = `
-<div>
-  <div>
-    <ForwardRef(InternalTable)
-      columns={Array []}
-      dataSource={Object {}}
-      expandIcon={null}
-      locale={
-        Object {
-          "emptyText": "No Data Yet",
-        }
-      }
-      pagination={false}
-      rowClassName="fade-in"
-      tableLayout="auto"
-    />
-  </div>
-</div>
+<ForwardRef(InternalTable)
+  className=" core-table"
+  columns={Array []}
+  dataSource={Object {}}
+  expandable={null}
+  locale={
+    Object {
+      "emptyText": "No Data Yet",
+    }
+  }
+  pagination={false}
+  rowClassName="fade-in"
+  tableLayout="auto"
+  tableProps={Object {}}
+/>
 `;

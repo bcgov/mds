@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown, Button, Table } from "antd";
+import { Menu, Dropdown, Button } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
@@ -24,7 +24,6 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openEditBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -35,8 +34,6 @@ const propTypes = {
   openAddBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openCloseBondModal: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  onExpand: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   activeBondCount: PropTypes.func.isRequired,
@@ -234,18 +231,6 @@ export const MineBondTable = (props) => {
     },
   ];
 
-  const bonds = (record) => {
-    return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={bondColumns}
-        dataSource={props.recordsByPermit(record, props.bonds)}
-        locale={{ emptyText: "No Data Yet" }}
-      />
-    );
-  };
-
   const transformRowData = (permits) =>
     permits.map((permit) => {
       return {
@@ -263,16 +248,11 @@ export const MineBondTable = (props) => {
       condition={props.isLoaded}
       dataSource={transformRowData(props.permits)}
       columns={columns}
-      recordType="associated bonds"
-      tableProps={{
-        className: "nested-table",
-        rowClassName: "table-row-align-middle pointer fade-in",
-        align: "left",
-        pagination: false,
-        expandRowByClick: true,
-        expandedRowRender: bonds,
-        expandedRowKeys: props.expandedRowKeys,
-        onExpand: props.onExpand,
+      expandProps={{
+        rowKey: (bond) => bond.bond_guid,
+        recordDescription: "associated bonds",
+        getDataSource: (record) => props.recordsByPermit(record, props.bonds),
+        subTableColumns: bondColumns,
       }}
     />
   );

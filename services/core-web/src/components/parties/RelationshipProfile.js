@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Table } from "antd";
+import { Tabs } from "antd";
 import { isEmpty } from "lodash";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
@@ -19,6 +19,7 @@ import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types
@@ -223,12 +224,9 @@ export class RelationshipProfile extends Component {
             >
               <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content">
-                  <Table
-                    align="left"
-                    pagination={false}
+                  <CoreTable
                     columns={columns}
                     dataSource={transformRowData(filteredRelationships)}
-                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
               </Tabs.TabPane>

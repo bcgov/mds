@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
-<ForwardRef(InternalTable)
+<CoreTable
   columns={
     Array [
       Object {
-        "dataIndex": "name",
-        "key": "name",
+        "dataIndex": "document_name",
+        "key": "document_name",
         "render": [Function],
         "sorter": [Function],
-        "title": "Name",
+        "title": "File Name",
       },
       Object {
         "dataIndex": "category",
@@ -19,32 +19,15 @@ exports[`DocumentTable renders properly 1`] = `
         "title": "Category",
       },
       Object {
-        "dataIndex": "uploaded",
+        "dataIndex": "upload_date",
         "defaultSortOrder": "descend",
-        "key": "uploaded",
+        "key": "upload_date",
         "render": [Function],
         "sorter": [Function],
         "title": "Uploaded",
       },
-      Object {
-        "className": "column-hide",
-        "key": "remove",
-        "render": [Function],
-      },
-      Object {
-        "className": "column-hide",
-        "key": "archive",
-        "render": [Function],
-      },
     ]
   }
   dataSource={Array []}
-  locale={
-    Object {
-      "emptyText": "No Data Yet",
-    }
-  }
-  pagination={false}
-  showHeader={true}
 />
 `;

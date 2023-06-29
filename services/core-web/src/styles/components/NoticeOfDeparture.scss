@@ -18,18 +18,6 @@
   padding: 11px;
 }
 
-.nod-cancel-button {
-  transition: all 0.1s ease-in-out;
-  background: #FFFFFF;
-  border: 2px solid $violet;
-  border-radius: 4px;
-  color: #5E46A1;
-  &:hover {
-    background: $violet;
-    color: #FFFFFF;
-  }
-}
-
 .nod-table-link > a {
   color: #333;
 }

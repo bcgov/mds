@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Table, Button, Popconfirm } from "antd";
+import { Tabs, Button, Popconfirm } from "antd";
 import {
   PhoneOutlined,
   MinusCircleOutlined,
@@ -37,6 +37,7 @@ import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
+import CoreTable from "@/components/common/CoreTable";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -320,16 +321,13 @@ export class PartyProfile extends Component {
             >
               <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content ">
-                  <Table
-                    align="left"
-                    pagination={false}
+                  <CoreTable
                     columns={columns}
                     dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
                       transformBusinessRoleRowData(
                         this.props.parties[id].business_role_appts
                       ).concat(transformNOWRoleRowData(this.props.parties[id].now_party_appt))
                     )}
-                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
               </Tabs.TabPane>

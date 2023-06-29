@@ -6,6 +6,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   ignorePatterns: [
     "services/minespace-web/webpack.config.ts",
+    "services/core-web/webpack.config.ts",
     "services/core-web/cypress.config.ts",
     "services/core-web/cypress/**",
   ],

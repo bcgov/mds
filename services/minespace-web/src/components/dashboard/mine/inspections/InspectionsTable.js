@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Table, Button } from "antd";
+import { Button } from "antd";
 import { compareCodes, dateSorter } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as STRINGS from "@/constants/strings";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   orders: CustomPropTypes.complianceOrders,
@@ -100,13 +101,11 @@ export const InspectionsTable = (props) => {
   const [showClosedOrders, setShowClosedOrders] = useState(false);
   return (
     <div>
-      <Table
-        size="small"
-        pagination={false}
+      <CoreTable
         loading={!props.isLoaded}
         columns={columns}
         dataSource={filterClosedOrders(props.orders, showClosedOrders)}
-        locale={{ emptyText: "This mine has no inspection data." }}
+        emptyText="This mine has no inspection data."
       />
       {props.isLoaded && (
         <div align="right">

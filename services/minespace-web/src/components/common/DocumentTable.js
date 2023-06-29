@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Button, Tag, Row } from "antd";
+import { truncateFilename } from "@common/utils/helpers";
+import { Button, Tag, Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import DocumentLink from "@/components/common/DocumentLink";
+import CoreTable from "./CoreTable";
+import { categoryColumn, uploadDateColumn } from "./DocumentColumns";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import modalConfig from "../modalContent/config";
@@ -59,7 +60,7 @@ const openArchiveModal = (event, props, documents) => {
 
   props.openModal({
     props: {
-      title: `Archive ${props.documents?.length > 1 ? "Multiple Files" : "File"}`,
+      title: `Archive ${documents?.length > 1 ? "Multiple Files" : "File"}`,
       closeModal: props.closeModal,
       handleSubmit: async () => {
         await props.archiveMineDocuments(
@@ -89,8 +90,8 @@ const withTag = (text, elem) => {
 export const DocumentTable = (props) => {
   let columns = [
     {
-      key: "name",
       title: "File Name",
+      key: "document_name",
       dataIndex: "document_name",
       render: (text, record) => {
         const fileName = (
@@ -106,28 +107,19 @@ export const DocumentTable = (props) => {
     },
   ];
 
-  const categoryColumn = {
-    title: "Category",
-    key: "category",
-    dataIndex: props.categoryDataIndex,
-    render: (text) => <div title="Category">{props.documentCategoryOptionsHash[text]}</div>,
-  };
-
-  const uploadDateColumn = {
-    key: "uploaded",
-    title: "Upload Date",
-    dataIndex: props.uploadDateIndex,
-    render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
-  };
+  const catColumn = categoryColumn(props.categoryDataIndex, props.documentCategoryOptionsHash);
+  const uploadedDateColumn = uploadDateColumn(props.uploadDateIndex);
 
   const canDeleteDocuments =
     props?.deletePayload &&
     props?.handleDeleteDocument &&
     props?.deletePermission &&
     deleteEnabledDocumentParents.includes(props.documentParent);
+
   if (canDeleteDocuments) {
     columns[0] = {
       title: "File Name",
+      key: "document_name",
       dataIndex: "document_name",
       render: (text, record) => {
         const { mine_document_guid } = record;
@@ -136,7 +128,7 @@ export const DocumentTable = (props) => {
           <div key={record?.mine_document_guid}>
             <DocumentLink
               documentManagerGuid={record.document_manager_guid}
-              documentName={record.document_name}
+              documentName={text}
               handleDelete={props.handleDeleteDocument}
               deletePayload={payload}
               deletePermission={props?.deletePermission}
@@ -151,7 +143,7 @@ export const DocumentTable = (props) => {
   const archiveColumn = {
     key: "archive",
     className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
-    render: (text, record) => (
+    render: (record) => (
       <div
         className={
           !record?.mine_document_guid || props.isViewOnly || !props.canArchiveDocuments
@@ -174,8 +166,8 @@ export const DocumentTable = (props) => {
   if (props.documentColumns?.length > 0) {
     columns.push(...props.documentColumns);
   } else {
-    columns.push(categoryColumn);
-    columns.push(uploadDateColumn);
+    columns.push(catColumn);
+    columns.push(uploadedDateColumn);
   }
 
   if (props.canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)) {
@@ -188,12 +180,10 @@ export const DocumentTable = (props) => {
 
   return (
     <div>
-      <Table
-        align="left"
-        pagination={false}
+      <CoreTable
         columns={columns}
         rowKey={(record) => record.mine_document_guid}
-        locale={{ emptyText: `This ${props.documentParent} does not contain any documents.` }}
+        emptyText={`This ${props.documentParent} does not contain any documents.`}
         dataSource={props.documents}
       />
     </div>

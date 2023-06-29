@@ -8,6 +8,7 @@ import { formatDate } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
+import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
@@ -87,56 +88,18 @@ export const MajorProjectTable = (props) => {
         </Link>
       ),
     },
-    {
-      key: "project_id",
-      title: "Project ID",
-      dataIndex: "project_id",
-      sortField: "project_id",
-      sorter: true,
-      render: (text) => <div title="Project ID">{text}</div>,
-    },
-    {
-      key: "mine_name",
-      title: "Mine Name",
-      dataIndex: "mine_name",
-      sortField: "mine_name",
-      sorter: true,
-      render: (text) => <div title="Mine Name">{text}</div>,
-    },
-    {
-      key: "mrc_review_required",
-      title: "MRC",
-      dataIndex: "mrc_review_required",
-      sortField: "mrc_review_required",
-      sorter: true,
-      render: (text) => <div title="MRC">{text}</div>,
-    },
-    {
-      key: "project_stage",
-      title: "Stage",
-      dataIndex: "project_stage",
-      sortField: "project_stage",
-      sorter: false,
-      render: (text) => <div title="Stage">{text}</div>,
-    },
-    {
-      key: "status_code",
-      title: "Review Status",
-      dataIndex: "status_code",
-      sortField: "status_code",
-      sorter: false,
-      render: (text) => (
-        <div title="Review Status">{props.statusCodeHash[text] || Strings.EMPTY_FIELD}</div>
-      ),
-    },
-    {
-      key: "project_lead_name",
-      title: "EMLI Project Lead",
-      dataIndex: "project_lead_name",
-      sortField: "project_lead_name",
-      sorter: true,
-      render: (text) => <div title="EMLI Project Lead">{text}</div>,
-    },
+    renderTextColumn("project_id", "Project ID", true),
+    renderTextColumn("mine_name", "Mine Name", true),
+    renderTextColumn("mrc_review_required", "MRC", true),
+    renderTextColumn("project_stage", "Stage"),
+    renderCategoryColumn(
+      "status_code",
+      "Review Status",
+      props.statusCodeHash,
+      false,
+      Strings.EMPTY_FIELD
+    ),
+    renderTextColumn("project_lead_name", "EMLI Project Lead", true),
     {
       key: "commodity",
       title: "Commodity",
@@ -151,12 +114,14 @@ export const MajorProjectTable = (props) => {
     },
     {
       title: "Updated Date",
+      key: "update_timestamp",
       dataIndex: "update_timestamp",
       render: (text) => <div title="Updated Date">{text}</div>,
       sorter: false,
     },
     {
       title: "",
+      key: "project",
       dataIndex: "project",
       render: (text, record) => (
         <div title="" align="right">
@@ -183,11 +148,7 @@ export const MajorProjectTable = (props) => {
       condition={props.isLoaded}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
       dataSource={transformRowData(props.projects, props.mineCommodityOptionsHash)}
-      tableProps={{
-        align: "left",
-        pagination: false,
-        onChange: handleTableChange(props.handleSearch, props.filters),
-      }}
+      onChange={handleTableChange(props.handleSearch, props.filters)}
     />
   );
 };

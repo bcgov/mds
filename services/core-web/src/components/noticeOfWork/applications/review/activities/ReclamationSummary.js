@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { formatMoney } from "@common/utils/helpers";
-import { Table } from "antd";
+import CoreTable from "@/components/common/CoreTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
@@ -42,15 +42,7 @@ export const ReclamationSummary = (props) => {
   return (
     <div>
       <h3>Reclamation Summary</h3>
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns}
-        dataSource={props.summary}
-        locale={{
-          emptyText: "No Data Yet",
-        }}
-      />
+      <CoreTable columns={columns} dataSource={props.summary} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty, startCase } from "lodash";
-import { Col, Row, Button, Card, Result, Table, Input, Alert } from "antd";
+import { Col, Row, Button, Card, Result, Input, Alert } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "redux-form";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -32,6 +32,7 @@ import * as Strings from "@common/constants/strings";
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@/components/common/RenderSelect";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -108,10 +109,9 @@ const renderContacts = ({
               </p>
             </Col>
             {fields.map((field, index) => {
-              // eslint-disable-next-line no-unused-expressions
-              fields.get(index).id
-                ? (fields.get(index).id = fields.get(index).id)
-                : (fields.get(index).id = uuidv4());
+              if (!fields.get(index).id) {
+                fields.get(index).id = uuidv4();
+              }
               const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
 
               const isSelectedContact = selectedContactIndex === index;
@@ -586,19 +586,14 @@ export class VerifyNoWContacts extends Component {
                   value={this.state.searchTerm}
                   onSearch={(searchTerm) => this.handleSimpleSearch(searchTerm)}
                   onChange={(e) => this.setState({ searchTerm: e.target.value })}
-                  size="large"
                 />
                 <br />
                 <LoadingWrapper condition={!this.state.isLoading}>
-                  <Table
+                  <CoreTable
                     className="party-table"
-                    align="left"
-                    pagination={false}
                     columns={columns}
                     dataSource={transformData(this.props.searchResults.party)}
-                    locale={{
-                      emptyText: "No Results",
-                    }}
+                    emptyText="No Results"
                     rowSelection={{
                       selectedRowKeys: this.state.selectedRows,
                       onChange: (selectedRowKeys) => {

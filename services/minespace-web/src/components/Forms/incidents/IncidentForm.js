@@ -79,8 +79,8 @@ export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_notification_docum
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
 
 const documentColumns = [
-  uploadedByColumn("Uploader", "update_user"),
   uploadDateColumn("upload_date"),
+  uploadedByColumn("Uploaded By", "update_user"),
 ];
 
 const retrieveIncidentDetailsDynamicValidation = (childProps) => {

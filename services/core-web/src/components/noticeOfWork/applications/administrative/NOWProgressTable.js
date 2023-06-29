@@ -577,9 +577,6 @@ export class NOWProgressTable extends Component {
             this.props.noticeOfWorkApplicationStatusOptionsHash
           )}
           columns={this.progressColumns()}
-          tableProps={{
-            pagination: false,
-          }}
         />
         <br />
         <br />
@@ -591,9 +588,6 @@ export class NOWProgressTable extends Component {
             this.props.delayTypeOptionsHash
           )}
           columns={this.delayColumns()}
-          tableProps={{
-            pagination: false,
-          }}
         />
         <br />
 

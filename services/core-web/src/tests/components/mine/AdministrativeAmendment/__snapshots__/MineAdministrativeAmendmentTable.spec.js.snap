@@ -93,17 +93,25 @@ exports[`MineAdministrativeAmendmentTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
-  recordType="amendment details"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "expandRowByClick": true,
-      "expandedRowKeys": Array [],
-      "expandedRowRender": [Function],
-      "onChange": [Function],
-      "onExpand": [MockFunction],
-      "pagination": false,
+      "getDataSource": [Function],
+      "recordDescription": "amendment details",
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "status_reason",
+          "key": "status_reason",
+          "title": "Reason For Status",
+        },
+        Object {
+          "dataIndex": "documents",
+          "key": "documents",
+          "render": [Function],
+          "title": "Application Request Document",
+        },
+      ],
     }
   }
+  onChange={[Function]}
 />
 `;

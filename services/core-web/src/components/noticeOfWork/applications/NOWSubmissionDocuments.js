@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Table, Badge, Tooltip, Button, Popconfirm, Row, Col, Descriptions } from "antd";
+import { Badge, Tooltip, Button, Popconfirm, Row, Col, Descriptions } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-  ImportOutlined,
-  ReloadOutlined,
-  MinusSquareFilled,
-  PlusSquareFilled,
-  FlagOutlined,
-} from "@ant-design/icons";
+import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
@@ -38,6 +32,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -135,20 +130,6 @@ const transformDocuments = (
       ...document,
     };
   });
-
-export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
-  <div>
-    {rowProps.expanded ? (
-      <Tooltip title="Click to hide document description." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Click to view document description." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    )}
-  </div>
-);
 
 export const NOWSubmissionDocuments = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
@@ -682,14 +663,14 @@ export const NOWSubmissionDocuments = (props) => {
         </Col>
       </Row>
       <br />
-      <Table
-        align="left"
-        pagination={false}
+      <CoreTable
         columns={columns}
-        recordType="document description"
         dataSource={dataSource}
-        locale={{
-          emptyText: "No Data Yet",
+        expandProps={{
+          rowKey: (record) => record.key + "description",
+          recordDescription: "document details",
+          expandedRowRender: props.showDescription ? docDescription : undefined,
+          rowExpandable: (record) => props.showDescription && record.description,
         }}
         rowSelection={
           props.selectedRows
@@ -704,18 +685,18 @@ export const NOWSubmissionDocuments = (props) => {
               }
             : null
         }
-        expandRowByClick={props.showDescription}
-        expandedRowRender={props.showDescription ? docDescription : undefined}
       />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptions:
-    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
-  noticeOfWorkApplicationDocumentTypeOptionsHash:
-    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
   noticeOfWork: getNoticeOfWork(state),
 });
 

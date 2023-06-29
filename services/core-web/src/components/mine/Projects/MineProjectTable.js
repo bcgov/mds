@@ -78,7 +78,7 @@ export const MineProjectTable = (props) => {
       dataIndex: "last_updated_date",
       render: (text) => <div title="Last updated date">{text}</div>,
       sorter: dateSorter("last_updated_date"),
-      sortOrder: "descend",
+      defaultSortOrder: "descend",
     },
     {
       title: "",
@@ -102,9 +102,6 @@ export const MineProjectTable = (props) => {
       condition={props.isLoaded}
       columns={columns}
       dataSource={transformRowData(props.projects)}
-      tableProps={{
-        align: "left",
-      }}
     />
   );
 };

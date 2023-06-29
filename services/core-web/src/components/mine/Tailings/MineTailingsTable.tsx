@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, useParams, withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
@@ -23,7 +23,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
-import { ColumnsType, ColumnType } from "antd/lib/table";
+import { ColumnsType } from "antd/lib/table";
+import { FixedType } from "rc-table/lib/interface";
+import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -50,15 +52,6 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     handleEditTailings,
     tailings,
   } = props;
-  const [expandedRows, setExpandedRows] = useState<string[]>([]);
-
-  const handleRowExpand = (record: ITailingsStorageFacility) => {
-    const key = record.mine_tailings_storage_facility_guid;
-    const expandedRowKeys = expandedRows.includes(key)
-      ? expandedRows.filter((k) => k !== key)
-      : expandedRows.concat(key);
-    setExpandedRows(expandedRowKeys);
-  };
 
   const transformRowData = (items: ITailingsStorageFacility[]) => {
     return items?.map((tailing) => {
@@ -101,8 +94,8 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
     {
       title: "Consequence Classification",
-      dataIndex: "consequence_classification_status_code",
-      render: (text, record) => <Typography.Text>{getHighestConsequence(record)}</Typography.Text>,
+      key: "consequence_classification_status_code",
+      render: (record) => <Typography.Text>{getHighestConsequence(record)}</Typography.Text>,
     },
     {
       title: "Independent Tailings Review Board",
@@ -146,7 +139,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       key: "operations",
       title: "Actions",
       fixed: "right",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_TSF}>
@@ -183,86 +176,57 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
   ];
 
-  const expandedRowRender = (
-    expandedRecord: ITailingsStorageFacility
-  ): ColumnType<ITailingsStorageFacility> => {
-    const expandedColumns = [
-      { title: "Dam Name", dataIndex: "dam_name", key: "dam_name" },
-      {
-        title: "Operating Status",
-        key: "operating_status",
-        render: (record) => (
-          <Typography.Text>{DAM_OPERATING_STATUS_HASH[record.operating_status]}</Typography.Text>
-        ),
+  const damColumns = [
+    renderTextColumn("dam_name", "Dam Name"),
+    renderCategoryColumn("operating_status", "Operating Status", DAM_OPERATING_STATUS_HASH),
+    renderCategoryColumn(
+      "consequence_classification",
+      "Consequence Classification",
+      CONSEQUENCE_CLASSIFICATION_CODE_HASH
+    ),
+    {
+      title: "",
+      fixed: "right" as FixedType,
+      key: "edit",
+      render: (record) => {
+        return (
+          <div>
+            <AuthorizationWrapper>
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={(event) => {
+                  handleEditDam(event, record);
+                }}
+              >
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
       },
-      {
-        title: "Consequence Classification",
-        key: "consequence_classification",
-        render: (record) => (
-          <Typography.Text>
-            {CONSEQUENCE_CLASSIFICATION_CODE_HASH[record.consequence_classification]}
-          </Typography.Text>
-        ),
-      },
-      {
-        title: "",
-        fixed: "right",
-        dataIndex: "edit",
-        render: (text, record) => {
-          return (
-            <div>
-              <AuthorizationWrapper>
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={(event) => {
-                    handleEditDam(event, record);
-                  }}
-                >
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
-                </Button>
-              </AuthorizationWrapper>
-            </div>
-          );
-        },
-      },
-    ];
-    return (
-      <CoreTable
-        columns={expandedColumns}
-        dataSource={expandedRecord.dams}
-        tableProps={{
-          size: "small",
-          pagination: false,
-          rowKey: (record) => record.dam_guid,
-          className: "tailings-nested-table",
-        }}
-        condition={props.isLoaded}
-      />
-    );
-  };
+    },
+  ];
 
   return (
     <CoreTable
       condition={props.isLoaded}
       dataSource={transformRowData(props.tailings)}
       columns={columns}
-      recordType="associated dams"
-      tableProps={{
-        className: "tailings-table",
-        align: "center",
-        pagination: false,
-        // FEATURE FLAG: TSF
-        expandable: IN_PROD() ? null : { expandedRowRender },
-        expandRowByClick: true,
-        onExpand: (expanded, record) => handleRowExpand(record),
-        expandedRows,
-        rowExpandable: (record) => record.dams.length > 0,
-        indentSize: 500,
-        expandedRowClassName: () => "tailings-table-expanded-row",
-        rowKey: (record) => record.mine_tailings_storage_facility_guid,
-      }}
+      rowKey="mine_tailings_storage_facility_guid"
+      classPrefix="tailings"
+      expandProps={
+        IN_PROD()
+          ? null
+          : {
+              rowKey: "dam_guid",
+              rowExpandable: (record: any) => record.dams.length > 0,
+              recordDescription: "associated dams",
+              getDataSource: (record: any) => record.dams,
+              subTableColumns: damColumns,
+            }
+      }
     />
   );
 };

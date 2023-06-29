@@ -8,6 +8,7 @@ import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
@@ -69,16 +70,8 @@ const columns = (
       </div>
     ),
   },
-  {
-    title: "Email",
-    dataIndex: "email",
-    render: (text) => <div title="Email">{text}</div>,
-  },
-  {
-    title: "Phone Number",
-    dataIndex: "phone_number",
-    render: (text) => <div title="Phone Number">{text || Strings.EMPTY_FIELD}</div>,
-  },
+  renderTextColumn("email", "Email", true),
+  renderTextColumn("phone_number", "Phone Number", false, Strings.EMPTY_FIELD),
   {
     title: "Fax Number",
     dataIndex: "fax_number",
@@ -153,10 +146,6 @@ export const EMLIContactsTable = (props) => {
         props.EMLIContactTypesHash
       )}
       dataSource={transformRowData(props.contacts)}
-      tableProps={{
-        align: "left",
-        pagination: false,
-      }}
     />
   );
 };

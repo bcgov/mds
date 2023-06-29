@@ -38,14 +38,16 @@ exports[`DocumentUpload renders properly 1`] = `
         Array [
           Object {
             "dataIndex": "project_summary_document_type_code",
+            "key": "project_summary_document_type_code",
             "render": [Function],
             "title": "Category",
           },
           Object {
             "dataIndex": "upload_date",
+            "key": "upload_date",
             "render": [Function],
-            "sorter": [Function],
-            "title": "Upload Date",
+            "sorter": null,
+            "title": "Uploaded",
           },
         ]
       }

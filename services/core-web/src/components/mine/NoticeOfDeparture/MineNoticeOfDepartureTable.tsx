@@ -9,6 +9,7 @@ import {
 } from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import { INoticeOfDeparture } from "@mds/common";
+import { TablePaginationConfig } from "antd/es/table";
 
 export interface MineNoticeOfDepartureTableProps {
   nods: INoticeOfDeparture[];
@@ -17,7 +18,7 @@ export interface MineNoticeOfDepartureTableProps {
   sortField?: string;
   sortDir?: string;
   isLoaded?: boolean;
-  isPaginated?: boolean;
+  isPaginated?: false | TablePaginationConfig;
 }
 
 const applySortIndicator = (_columns, field, dir) =>
@@ -27,8 +28,15 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const MineNoticeOfDepartureTable: React.FC<MineNoticeOfDepartureTableProps> = (props) => {
-  const { isDashboardView, isLoaded, isPaginated, sortField, sortDir, nods, openViewNodModal } =
-    props;
+  const {
+    isDashboardView,
+    isLoaded,
+    isPaginated,
+    sortField,
+    sortDir,
+    nods,
+    openViewNodModal,
+  } = props;
   const transformRowData = (baseNods) =>
     baseNods.map(
       ({
@@ -117,10 +125,7 @@ export const MineNoticeOfDepartureTable: React.FC<MineNoticeOfDepartureTableProp
       condition={isLoaded}
       columns={isDashboardView ? applySortIndicator(columns, sortField, sortDir) : columns}
       dataSource={transformRowData(nods)}
-      tableProps={{
-        align: "left",
-        pagination: isPaginated,
-      }}
+      pagination={isPaginated}
     />
   );
 };

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
-import { Table, Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
+import { Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
@@ -32,6 +32,7 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import arrayMove from "array-move";
+import CoreTable from "@/components/common/CoreTable";
 
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 
@@ -614,42 +615,41 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows &&
-              !this.props.isViewMode &&
-              !this.props.isRefConDocuments && (
-                <NOWActionWrapper
-                  permission={Permission.EDIT_PERMITS}
-                  tab={this.props.isAdminView ? "" : "REV"}
-                  allowAfterProcess={this.props.allowAfterProcess}
-                  ignoreDelay
+            {!this.props.selectedRows && !this.props.isViewMode && !this.props.isRefConDocuments && (
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={this.props.isAdminView ? "" : "REV"}
+                allowAfterProcess={this.props.allowAfterProcess}
+                ignoreDelay
+              >
+                <AddButton
+                  className="position-right"
+                  disabled={this.props.isViewMode}
+                  style={this.props.isAdminView ? { marginRight: "100px" } : {}}
+                  onClick={this.openAddDocumentModal}
                 >
-                  <AddButton
-                    className="position-right"
-                    disabled={this.props.isViewMode}
-                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                    onClick={this.openAddDocumentModal}
-                  >
-                    Add Document
-                  </AddButton>
-                </NOWActionWrapper>
-              )}
+                  Add Document
+                </AddButton>
+              </NOWActionWrapper>
+            )}
           </Col>
         </Row>
         <br />
-        <Table
-          align="left"
-          pagination={false}
+        <CoreTable
           columns={this.columns(
             this.props.noticeOfWorkApplicationDocumentTypeOptions,
             this.props.categoriesToShow
           )}
           recordType="document description"
-          // The key must be set to "undefined" to allow the key set in the "transform documents" function to be applied in order to edit documents.
-          rowKey={this.props.isSortingAllowed ? "index" : undefined}
           dataSource={this.state.dataSource}
-          locale={{
-            emptyText: "No Data Yet",
+          expandProps={{
+            rowKey: (record) => record.key + "description",
+            recordDescription: "document details",
+            expandedRowRender: this.props.showDescription ? this.docDescription : undefined,
+            rowExpandable: (record) => this.props.showDescription && record.description,
           }}
+          // The key must be set to "index" to allow the drag-sort to work.
+          rowKey={this.props.isSortingAllowed ? "index" : "key"}
           components={{
             body: {
               wrapper: this.DraggableContainer,
@@ -666,8 +666,6 @@ export class NOWDocuments extends Component {
                 }
               : null
           }
-          expandRowByClick={this.props.showDescription}
-          expandedRowRender={this.props.showDescription ? this.docDescription : undefined}
         />
       </div>
     );
@@ -675,10 +673,12 @@ export class NOWDocuments extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptionsHash:
-    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
-  noticeOfWorkApplicationDocumentTypeOptions:
-    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
+    state
+  ),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
 });

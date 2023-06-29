@@ -61,7 +61,9 @@ export class PermitAmendmentTable extends Component {
           <div title="Documents">
             <ul>
               {text?.map((file) => (
-                <li className="wrapped-text">{renderDocumentLink(file)}</li>
+                <li className="wrapped-text" key={file.document_manager_guid}>
+                  {renderDocumentLink(file)}
+                </li>
               ))}
             </ul>
           </div>
@@ -74,10 +76,6 @@ export class PermitAmendmentTable extends Component {
         condition
         columns={columns}
         dataSource={this.transformRowData(this.props.permit.permit_amendments || [])}
-        tableProps={{
-          align: "center",
-          pagination: false,
-        }}
       />
     );
   }

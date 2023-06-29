@@ -15,8 +15,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
 import { Badge } from "antd";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -269,17 +267,15 @@ export const MineReportTable = (props) => {
     <CoreTable
       condition={props.isLoaded}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+      classPrefix="mine-reports"
       dataSource={transformRowData(
         props.mineReports,
         props.openEditReportModal,
         props.handleEditReport,
         props.handleRemoveReport
       )}
-      tableProps={{
-        align: "left",
-        pagination: props.isPaginated,
-        onChange: handleTableChange(props.handleTableChange, props.filters),
-      }}
+      pagination={props.isPaginated}
+      onChange={handleTableChange(props.handleTableChange, props.filters)}
     />
   );
 };

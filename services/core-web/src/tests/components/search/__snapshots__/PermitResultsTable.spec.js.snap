@@ -1,21 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitResultsTable renders properly 1`] = `
-<div>
+<div
+  className="padding-lg--bottom"
+>
   <h2>
     Permits
   </h2>
   <Divider />
-  <ForwardRef(InternalTable)
-    align="left"
-    className="nested-table padding-lg--bottom"
+  <CoreTable
     columns={
       Array [
         Object {
-          "dataIndex": "permit_guid",
-          "key": "permit_guid",
+          "dataIndex": "permit_no",
+          "key": "permit_no",
           "render": [Function],
-          "title": "Permit Guid",
+          "sorter": [Function],
+          "title": "Permit No.",
+        },
+        Object {
+          "dataIndex": "current_permittee",
+          "key": "current_permittee",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Permittee",
+        },
+        Object {
+          "dataIndex": "current_permittee",
+          "key": "current_permittee",
+          "render": [Function],
+          "title": "Permittee",
+        },
+        Object {
+          "key": "mine_guid",
+          "render": [Function],
+          "title": "Mine(s)",
         },
       ]
     }
@@ -65,8 +84,6 @@ exports[`PermitResultsTable renders properly 1`] = `
         },
       ]
     }
-    pagination={false}
-    showHeader={false}
   />
 </div>
 `;

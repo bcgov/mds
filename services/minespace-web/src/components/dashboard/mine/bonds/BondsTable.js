@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Table } from "antd";
 import PropTypes from "prop-types";
 import { dateSorter, nullableStringSorter, formatMoney } from "@common/utils/helpers";
 import {
@@ -10,6 +9,7 @@ import {
 import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
@@ -79,13 +79,11 @@ export const BondsTable = (props) => {
     }));
 
   return (
-    <Table
-      size="small"
-      pagination={false}
+    <CoreTable
       loading={!props.isLoaded}
       columns={columns}
       rowKey={(record) => record.bond_guid}
-      locale={{ emptyText: "This mine has no bond data." }}
+      emptyText="This mine has no bond data."
       dataSource={transformRowData(props.bonds)}
     />
   );

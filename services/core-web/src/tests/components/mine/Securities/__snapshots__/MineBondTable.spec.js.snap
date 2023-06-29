@@ -61,17 +61,52 @@ exports[`MineBondTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
-  recordType="associated bonds"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "className": "nested-table",
-      "expandRowByClick": true,
-      "expandedRowKeys": Array [],
-      "expandedRowRender": [Function],
-      "onExpand": [MockFunction],
-      "pagination": false,
-      "rowClassName": "table-row-align-middle pointer fade-in",
+      "getDataSource": [Function],
+      "recordDescription": "associated bonds",
+      "rowKey": [Function],
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "issue_date",
+          "key": "issue_date",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Issue Date",
+        },
+        Object {
+          "dataIndex": "payer_party_guid",
+          "key": "payer_party_guid",
+          "render": [Function],
+          "title": "Payer",
+        },
+        Object {
+          "dataIndex": "bond_type_code",
+          "key": "bond_type_code",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Type",
+        },
+        Object {
+          "dataIndex": "amount",
+          "key": "amount",
+          "render": [Function],
+          "title": "Amount",
+        },
+        Object {
+          "dataIndex": "bond_status_code",
+          "defaultSortOrder": "descend",
+          "key": "bond_status_code",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Status",
+        },
+        Object {
+          "align": "right",
+          "key": "addEditButton",
+          "render": [Function],
+        },
+      ],
     }
   }
 />

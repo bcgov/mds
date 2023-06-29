@@ -7,8 +7,21 @@
   position: relative;
 }
 
-.ant-table-body {
+.ant-table-content {
   overflow-x: auto;
+  .ant-table-tbody {
+    tr.ant-table-row {
+      td.ant-table-cell {
+        span.ant-badge-status {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+.ant-table-thead > tr > th {
+  font-weight: 600;
 }
 
 @include tablet {
@@ -60,6 +73,12 @@
 }
 
 // Nested Table
+tr.ant-table-expanded-row, tr.ant-table-expanded-row:hover {
+  > td {
+    background-color: #fff;
+  }  
+}
+
 .nested-table {
   tr {
     &.ant-table-expanded-row {
