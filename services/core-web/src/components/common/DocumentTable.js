@@ -55,7 +55,7 @@ const openArchiveModal = (event, props, documents) => {
 
   props.openModal({
     props: {
-      title: `Archive ${props.documents?.length > 1 ? "Multiple Files" : "File"}`,
+      title: `Archive ${documents?.length > 1 ? "Multiple Files" : "File"}`,
       closeModal: props.closeModal,
       handleSubmit: async () => {
         await props.archiveMineDocuments(
