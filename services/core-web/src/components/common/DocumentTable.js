@@ -133,12 +133,6 @@ export const DocumentTable = (props) => {
       render: (text) => <div title="Uploaded">{formatDate(text)}</div>,
     },
     {
-      title: "Created By",
-      key: "create_user",
-      dataIndex: "create_user",
-      render: (text) => <div title="Created By">{text}</div>,
-    },
-    {
       key: "remove",
       className: props.isViewOnly || !props.removeDocument ? "column-hide" : "",
       render: (text, record) => (
@@ -201,7 +195,6 @@ export const DocumentTable = (props) => {
 
   return (
     <Table
-      className={isMinimalView ? "ant-table-minimal" : undefined}
       pagination={false}
       columns={props?.documentColumns ?? columns}
       locale={{ emptyText: "No Data Yet" }}
