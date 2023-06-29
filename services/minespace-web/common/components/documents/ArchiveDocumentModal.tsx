@@ -21,7 +21,7 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
           message="Archived files are not reviewed as part of the submission"
           showIcon
           type="warning"
-          description="By archiving this file, you are archiving all of its previous versions. You can find the file in Archived Documents if you wish to undo this action later"
+          description="By archiving this file, you are archiving all of its previous versions. This action cannot be undone, you can find the file in Archived Documents."
         />
       </Typography.Paragraph>
 

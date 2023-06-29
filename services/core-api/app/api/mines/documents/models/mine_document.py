@@ -1,5 +1,6 @@
 import random
 import uuid
+from app.api.utils.include.user_info import User
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
@@ -65,6 +66,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             .update({
                 'is_archived': True,
                 'archived_date': datetime.utcnow(),
+                'archived_by': User().get_user_username(),
             }, synchronize_session='fetch')
         db.session.commit()
 
@@ -120,5 +122,8 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'document_manager_guid': str(self.document_manager_guid),
             'document_name': self.document_name,
             'is_archived': self.is_archived,
+            'archived_date': self.archived_date,
+            'archived_by': self.archived_by,
+            'upload_date': self.upload_date,
             'versions': self.versions,
         }
