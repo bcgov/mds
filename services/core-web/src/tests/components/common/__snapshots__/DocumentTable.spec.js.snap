@@ -27,6 +27,12 @@ exports[`DocumentTable renders properly 1`] = `
         "title": "Uploaded",
       },
       Object {
+        "dataIndex": "create_user",
+        "key": "create_user",
+        "render": [Function],
+        "title": "Created By",
+      },
+      Object {
         "className": "column-hide",
         "key": "remove",
         "render": [Function],
