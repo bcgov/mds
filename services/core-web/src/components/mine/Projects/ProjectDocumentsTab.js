@@ -136,12 +136,8 @@ export class ProjectDocumentsTab extends Component {
           documents={sectionDocuments?.reduce(
             (docs, doc) => [
               {
+                ...doc,
                 key: doc.mine_document_guid,
-                mine_document_guid: doc.mine_document_guid,
-                document_manager_guid: doc.document_manager_guid,
-                document_name: doc.document_name,
-                category: null,
-                upload_date: doc.upload_date,
               },
               ...docs,
             ],
