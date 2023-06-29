@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Badge, Tooltip, Table, Button, Menu, Popconfirm, Dropdown } from "antd";
+import { Badge, Tooltip, Button, Menu, Popconfirm, Dropdown } from "antd";
 import { withRouter } from "react-router-dom";
 import { WarningOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -56,7 +56,7 @@ const transformRowData = (permits) => {
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineExplosivesPermitTable extends Component {
-  columns = () => [
+  columns = [
     {
       title: "Permit #",
       dataIndex: "permit_number",
@@ -430,62 +430,50 @@ export class MineExplosivesPermitTable extends Component {
     },
   ];
 
-  documentDetail = (permit) => {
-    const expandedColumns = [
-      {
-        title: "Category",
-        dataIndex: "explosives_permit_document_type_code",
-        key: "explosives_permit_document_type_code",
-        render: (text) => (
-          <div title="Upload Date">
-            {this.props.explosivesPermitDocumentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "Document Name",
-        dataIndex: "document_name",
-        key: "document_name",
-        render: (text, record) => (
-          <div className="cap-col-height" title="Document Name">
-            <DocumentLink documentManagerGuid={record.document_manager_guid} documentName={text} />
-            <br />
-          </div>
-        ),
-      },
-      {
-        title: "Date",
-        dataIndex: "upload_date",
-        key: "upload_date",
-        render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
-      },
-    ];
-
-    return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={expandedColumns}
-        dataSource={permit.documents}
-        locale={{ emptyText: "No Data Yet" }}
-      />
-    );
-  };
+  documentDetailColumns = [
+    {
+      title: "Category",
+      dataIndex: "explosives_permit_document_type_code",
+      key: "explosives_permit_document_type_code",
+      render: (text) => (
+        <div title="Upload Date">
+          {this.props.explosivesPermitDocumentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "Document Name",
+      dataIndex: "document_name",
+      key: "document_name",
+      render: (text, record) => (
+        <div className="cap-col-height" title="Document Name">
+          <DocumentLink documentManagerGuid={record.document_manager_guid} documentName={text} />
+          <br />
+        </div>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "upload_date",
+      key: "upload_date",
+      render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+    },
+  ];
 
   render() {
     return (
       <CoreTable
         condition={this.props.isLoaded}
         dataSource={transformRowData(this.props.data)}
-        columns={this.columns(this.props)}
-        recordType="document details"
-        tableProps={{
-          align: "left",
-          pagination: false,
-          expandRowByClick: true,
-          expandedRowRender: this.documentDetail,
-          expandedRowKeys: this.props.expandedRowKeys,
-          onExpand: this.props.onExpand,
+        rowKey={(record) => record.explosives_permit_guid}
+        classPrefix="explosives-permits"
+        columns={this.columns}
+        expandProps={{
+          rowKey: (document) => document.mine_document_guid,
+          rowExpandable: (record) => record.documents.length > 0,
+          recordDescription: "document details",
+          getDataSource: (record) => record.documents,
+          subTableColumns: this.documentDetailColumns,
         }}
       />
     );

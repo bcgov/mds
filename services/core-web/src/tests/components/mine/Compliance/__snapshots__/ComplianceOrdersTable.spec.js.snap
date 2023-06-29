@@ -2,6 +2,7 @@
 
 exports[`ComplianceOrdersTable renders properly 1`] = `
 <CoreTable
+  className="center-pagination page-count-1"
   columns={
     Array [
       Object {
@@ -53,12 +54,6 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
         "sorter": [Function],
         "title": "Due Date",
       },
-      Object {
-        "dataIndex": "documents",
-        "key": "documents",
-        "render": [Function],
-        "title": "Documents",
-      },
     ]
   }
   dataSource={
@@ -92,13 +87,36 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
       },
     ]
   }
-  recordType="details"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "className": "center-pagination page-count-1",
-      "pagination": true,
+      "getDataSource": [Function],
+      "recordDescription": "document details",
+      "rowExpandable": [Function],
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "fileName",
+          "key": "fileName",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "File Name",
+        },
+        Object {
+          "dataIndex": "fileDate",
+          "key": "fileDate",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Upload Date/Time",
+        },
+        Object {
+          "dataIndex": "fileType",
+          "key": "fileType",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Type",
+        },
+      ],
     }
   }
+  pagination={true}
 />
 `;

@@ -1,7 +1,7 @@
 /* eslint-disable */
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const merge = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
@@ -71,8 +71,8 @@ const commonConfig = merge([
               loader: "ts-loader",
               options: {
                 transpileOnly: true,
-              }
-            }
+              },
+            },
           ],
         },
         { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader?cacheDirectory" },
@@ -84,7 +84,7 @@ const commonConfig = merge([
         template: PATHS.template,
       }),
       // Adding timestamp to builds
-      function () {
+      function() {
         this.plugin("watch-run", (watching, callback) => {
           console.log(`Begin compile at ${new Date()}`);
           callback();
@@ -116,7 +116,7 @@ const commonConfig = merge([
 
 const devConfig = merge([
   {
-    plugins: [new ForkTsCheckerWebpackPlugin()]
+    plugins: [new ForkTsCheckerWebpackPlugin()],
   },
   {
     output: {

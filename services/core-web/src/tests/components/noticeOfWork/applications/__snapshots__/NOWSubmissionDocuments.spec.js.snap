@@ -101,8 +101,7 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <ForwardRef(InternalTable)
-    align="left"
+  <CoreTable
     columns={
       Array [
         Object {
@@ -152,15 +151,14 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
       ]
     }
     dataSource={Array []}
-    expandRowByClick={true}
-    expandedRowRender={[Function]}
-    locale={
+    expandProps={
       Object {
-        "emptyText": "No Data Yet",
+        "expandedRowRender": [Function],
+        "recordDescription": "document details",
+        "rowExpandable": [Function],
+        "rowKey": [Function],
       }
     }
-    pagination={false}
-    recordType="document description"
     rowSelection={null}
   />
 </div>

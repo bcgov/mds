@@ -277,11 +277,8 @@ export class MineVarianceTable extends Component {
             : columns
         }
         dataSource={this.transformRowData(this.props.variances)}
-        tableProps={{
-          onChange: handleTableChange(this.props.handleVarianceSearch, this.props.params),
-          align: "left",
-          pagination: this.props.isPaginated,
-        }}
+        pagination={this.props.isPaginated}
+        onChange={handleTableChange(this.props.handleVarianceSearch, this.props.params)}
       />
     );
   }

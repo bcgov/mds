@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Popconfirm, Button, Tag } from "antd";
-import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
-import { some } from "lodash";
-import DocumentLink from "@/components/common/DocumentLink";
-import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
+import { documentNameColumn, removeFunctionColumn, uploadDateColumn } from "./DocumentColumns";
+import { renderTextColumn } from "./CoreTableCommonColumns";
+import { Button } from "antd";
+import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
@@ -34,6 +34,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
+  defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
   openModal: PropTypes.func.isRequired,
   view: PropTypes.string.isRequired,
 };
@@ -46,6 +47,7 @@ const defaultProps = {
   additionalColumnProps: [],
   documentColumns: null,
   documentParent: null,
+  defaultSortKeys: ["upload_date", "dated"], // keys to sort by when page loads
   view: "standard",
   canArchiveDocuments: false,
 };
@@ -72,108 +74,45 @@ const openArchiveModal = (event, props, documents) => {
   });
 };
 
-const withTag = (text, elem) => {
-  return (
-    <div className="inline-flex flex-between">
-      {elem}
-
-      <Tag>{text}</Tag>
-    </div>
-  );
-};
-
 export const DocumentTable = (props) => {
   const isMinimalView = props.view === "minimal";
+  const canDelete = !props.isViewOnly && props.removeDocument;
+  const canArchive =
+    !props.isViewOnly &&
+    props.canArchiveDocuments &&
+    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+
+  const archiveColumn = {
+    key: "archive",
+    render: (record) => {
+      const button = (
+        <Button
+          ghost
+          type="primary"
+          size="small"
+          onClick={(event) => openArchiveModal(event, props, [record])}
+        >
+          Archive
+        </Button>
+      );
+      return record?.mine_document_guid ? <div>{button}</div> : <div></div>;
+    },
+  };
 
   let columns = [
-    {
-      title: "Name",
-      key: "name",
-      dataIndex: "name",
-      sorter: !isMinimalView && nullableStringSorter("name"),
-      render: (text, record) => {
-        let content = record.name;
+    documentNameColumn("document_name", "File Name", isMinimalView),
+    renderTextColumn("category", "Category", !isMinimalView),
+    uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
+    uploadDateColumn("dated", "Dated", !isMinimalView),
+  ];
 
-        if (!isMinimalView) {
-          content = (
-            <div key={record.key} title="Name">
-              <DocumentLink
-                documentManagerGuid={record.document_manager_guid}
-                documentName={record.name}
-                truncateDocumentName={false}
-              />
-            </div>
-          );
-        }
+  if (canDelete) {
+    columns.push(removeFunctionColumn(props.removeDocument, props?.documentParent));
+  }
 
-        return record.is_archived ? withTag("Archived", content) : content;
-      },
-    },
-    {
-      title: "Dated",
-      key: "dated",
-      dataIndex: "dated",
-      sorter: !isMinimalView && dateSorter("dated"),
-      defaultSortOrder: "descend",
-      render: (text) => <div title="Dated">{formatDate(text)}</div>,
-    },
-    {
-      title: "Category",
-      key: "category",
-      dataIndex: "category",
-      sorter: !isMinimalView && nullableStringSorter("category"),
-      render: (text) => <div title="Category">{text}</div>,
-    },
-    {
-      title: "Uploaded",
-      key: "uploaded",
-      dataIndex: "uploaded",
-      sorter: !isMinimalView && dateSorter("uploaded"),
-      defaultSortOrder: "descend",
-      render: (text) => <div title="Uploaded">{formatDate(text)}</div>,
-    },
-    {
-      key: "remove",
-      className: props.isViewOnly || !props.removeDocument ? "column-hide" : "",
-      render: (text, record) => (
-        <div className={props.isViewOnly || !props.removeDocument ? "column-hide" : ""}>
-          <Popconfirm
-            placement="topLeft"
-            title={`Are you sure you want to delete ${record.name}?`}
-            onConfirm={(event) => props.removeDocument(event, record.key, props?.documentParent)}
-            okText="Delete"
-            cancelText="Cancel"
-          >
-            <Button ghost type="primary" size="small">
-              <img src={TRASHCAN} alt="Remove" />
-            </Button>
-          </Popconfirm>
-        </div>
-      ),
-    },
-    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
-      key: "archive",
-      className: props.isViewOnly || !props.canArchiveDocuments ? "column-hide" : "",
-      render: (text, record) => (
-        <div
-          className={
-            !record?.mine_document_guid || props.isViewOnly || !props.canArchiveDocuments
-              ? "column-hide"
-              : ""
-          }
-        >
-          <Button
-            ghost
-            type="primary"
-            size="small"
-            onClick={(event) => openArchiveModal(event, props, [record])}
-          >
-            Archive
-          </Button>
-        </div>
-      ),
-    },
-  ].filter(Boolean);
+  if (canArchive) {
+    columns.push(archiveColumn);
+  }
 
   if (!some(props.documents, "dated")) {
     columns = columns.filter((column) => column.key !== "dated");
@@ -193,15 +132,21 @@ export const DocumentTable = (props) => {
     });
   }
 
+  if (props.defaultSortKeys.length > 0) {
+    columns = columns.map((column) => {
+      const isDefaultSort = props.defaultSortKeys.includes(column.key);
+      return isDefaultSort ? { defaultSortOrder: "descend", ...column } : column;
+    });
+  }
+
+  const minimalProps = isMinimalView
+    ? { size: "small", rowClassName: "ant-table-row-minimal" }
+    : null;
   return (
-    <Table
-      pagination={false}
+    <CoreTable
       columns={props?.documentColumns ?? columns}
-      locale={{ emptyText: "No Data Yet" }}
       dataSource={props.documents}
-      showHeader={!isMinimalView}
-      size={isMinimalView ? "small" : undefined}
-      rowClassName={isMinimalView ? "ant-table-row-minimal" : undefined}
+      {...minimalProps}
     />
   );
 };

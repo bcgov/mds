@@ -1,5 +1,4 @@
 import React from "react";
-import { Table } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
@@ -9,6 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
+import CoreTable from "@/components/common/CoreTable";
 
 const draftAmendment = "DFT";
 
@@ -104,96 +104,83 @@ export const PermitsTable = (props) => {
     transformRowData(permit, props.permitStatusOptions)
   );
 
-  const amendmentHistory = (permit) => {
-    const expandedRowData = permit.permit_amendments
+  const getExpandedRowData = (permit) =>
+    permit.permit_amendments
       ? permit.permit_amendments.map((amendment, index) =>
           transformExpandedRowData(amendment, permit.permit_amendments.length - index)
         )
       : [];
 
-    const expandedColumns = [
-      {
-        title: "Amendment No.",
-        dataIndex: "amendmentNumber",
-        key: "amendmentNumber",
-        width: "30px",
-      },
-      { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
-      {
-        title: "Authorization End Date",
-        dataIndex: "authorizationEndDate",
-        key: "authorizationEndDate",
-        width: "200px",
-        render: (text) => <div title="Authorization End Date">{text}</div>,
-      },
-      { title: "Description", dataIndex: "description", key: "description" },
-      {
-        title: "Permit Package",
-        dataIndex: "permitPackage",
-        key: "permitPackage",
-        render: (text) => (
-          <div title="Permit Package">
-            {(text &&
-              text.length > 0 &&
-              text.map((file) => (
-                <LinkButton
-                  key={file.mine_document.document_manager_guid}
-                  onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                  title={file.mine_document.document_name}
-                >
-                  <p className="wrapped-text">
-                    {truncateFilename(file.mine_document.document_name)}
-                  </p>
-                </LinkButton>
-              ))) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
-        title: "Permit Files",
-        dataIndex: "documents",
-        key: "documents",
-        render: (text) => (
-          <div title="Permit Files">
-            {(text &&
-              text.length > 0 &&
-              text.map((file) => (
-                <LinkButton
-                  key={file.document_manager_guid}
-                  onClick={() => downloadFileFromDocumentManager(file)}
-                  title={file.document_name}
-                >
-                  <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
-                </LinkButton>
-              ))) ||
-              Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-    ];
-
-    return (
-      <Table
-        size="small"
-        pagination={false}
-        columns={expandedColumns}
-        dataSource={expandedRowData}
-        locale={{ emptyText: "This permit has no amendment data." }}
-      />
-    );
-  };
+  const expandedColumns = [
+    {
+      title: "Amendment No.",
+      dataIndex: "amendmentNumber",
+      key: "amendmentNumber",
+      width: "30px",
+    },
+    { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
+    {
+      title: "Authorization End Date",
+      dataIndex: "authorizationEndDate",
+      key: "authorizationEndDate",
+      width: "200px",
+      render: (text) => <div title="Authorization End Date">{text}</div>,
+    },
+    { title: "Description", dataIndex: "description", key: "description" },
+    {
+      title: "Permit Package",
+      dataIndex: "permitPackage",
+      key: "permitPackage",
+      render: (text) => (
+        <div title="Permit Package">
+          {(text &&
+            text.length > 0 &&
+            text.map((file) => (
+              <LinkButton
+                key={file.mine_document.document_manager_guid}
+                onClick={() => downloadFileFromDocumentManager(file.mine_document)}
+                title={file.mine_document.document_name}
+              >
+                <p className="wrapped-text">{truncateFilename(file.mine_document.document_name)}</p>
+              </LinkButton>
+            ))) ||
+            Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+    {
+      title: "Permit Files",
+      dataIndex: "documents",
+      key: "documents",
+      render: (text) => (
+        <div title="Permit Files">
+          {(text &&
+            text.length > 0 &&
+            text.map((file) => (
+              <LinkButton
+                key={file.document_manager_guid}
+                onClick={() => downloadFileFromDocumentManager(file)}
+                title={file.document_name}
+              >
+                <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
+              </LinkButton>
+            ))) ||
+            Strings.EMPTY_FIELD}
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <Table
-      size="small"
-      pagination={false}
+    <CoreTable
       loading={!props.isLoaded}
       columns={columns}
       dataSource={rowData}
-      expandedRowRender={amendmentHistory}
-      expandRowByClick
-      locale={{ emptyText: "This mine has no permit data." }}
+      emptyText="This mine has no permit data."
+      expandProps={{
+        getDataSource: getExpandedRowData,
+        subTableColumns: expandedColumns,
+      }}
     />
   );
 };

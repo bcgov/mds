@@ -2,6 +2,7 @@
 
 exports[`MineExplosivesPermitTable renders properly 1`] = `
 <CoreTable
+  classPrefix="explosives-permits"
   columns={
     Array [
       Object {
@@ -289,16 +290,34 @@ exports[`MineExplosivesPermitTable renders properly 1`] = `
       },
     ]
   }
-  recordType="document details"
-  tableProps={
+  expandProps={
     Object {
-      "align": "left",
-      "expandRowByClick": true,
-      "expandedRowKeys": Array [],
-      "expandedRowRender": [Function],
-      "onExpand": [MockFunction],
-      "pagination": false,
+      "getDataSource": [Function],
+      "recordDescription": "document details",
+      "rowExpandable": [Function],
+      "rowKey": [Function],
+      "subTableColumns": Array [
+        Object {
+          "dataIndex": "explosives_permit_document_type_code",
+          "key": "explosives_permit_document_type_code",
+          "render": [Function],
+          "title": "Category",
+        },
+        Object {
+          "dataIndex": "document_name",
+          "key": "document_name",
+          "render": [Function],
+          "title": "Document Name",
+        },
+        Object {
+          "dataIndex": "upload_date",
+          "key": "upload_date",
+          "render": [Function],
+          "title": "Date",
+        },
+      ],
     }
   }
+  rowKey={[Function]}
 />
 `;

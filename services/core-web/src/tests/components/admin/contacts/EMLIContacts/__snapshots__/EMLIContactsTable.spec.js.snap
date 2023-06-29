@@ -41,11 +41,14 @@ exports[`EMLIContactsTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "email",
+        "key": "email",
         "render": [Function],
+        "sorter": [Function],
         "title": "Email",
       },
       Object {
         "dataIndex": "phone_number",
+        "key": "phone_number",
         "render": [Function],
         "title": "Phone Number",
       },
@@ -70,12 +73,5 @@ exports[`EMLIContactsTable renders properly 1`] = `
   }
   condition={true}
   dataSource={Array []}
-  recordType="details"
-  tableProps={
-    Object {
-      "align": "left",
-      "pagination": false,
-    }
-  }
 />
 `;

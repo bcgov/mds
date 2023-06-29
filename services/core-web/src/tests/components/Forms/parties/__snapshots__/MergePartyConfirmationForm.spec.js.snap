@@ -286,14 +286,9 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           }
           condition={true}
           dataSource={Array []}
-          recordType="details"
-          tableProps={
+          scroll={
             Object {
-              "align": "center",
-              "pagination": false,
-              "scroll": Object {
-                "y": 500,
-              },
+              "y": 500,
             }
           }
         />

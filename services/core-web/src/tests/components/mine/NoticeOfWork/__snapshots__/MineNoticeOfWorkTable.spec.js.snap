@@ -6,22 +6,23 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "now_number",
+        "key": "now_number",
         "render": [Function],
-        "sortField": "now_number",
-        "sortOrder": "ascend",
-        "sorter": true,
+        "sortOrder": false,
+        "sorter": [Function],
         "title": "Number",
       },
       Object {
         "dataIndex": "notice_of_work_type_description",
+        "key": "notice_of_work_type_description",
         "render": [Function],
-        "sortField": "notice_of_work_type_description",
         "sortOrder": false,
-        "sorter": true,
+        "sorter": [Function],
         "title": "Type",
       },
       Object {
         "dataIndex": "now_application_status_description",
+        "key": "now_application_status_description",
         "render": [Function],
         "sortField": "now_application_status_description",
         "sortOrder": false,
@@ -30,6 +31,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "lead_inspector_name",
+        "key": "lead_inspector_name",
         "render": [Function],
         "sortField": "lead_inspector_name",
         "sortOrder": false,
@@ -38,6 +40,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "issuing_inspector_name",
+        "key": "issuing_inspector_name",
         "render": [Function],
         "sortField": "issuing_inspector_name",
         "sortOrder": false,
@@ -46,29 +49,29 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "received_date",
+        "key": "received_date",
         "render": [Function],
-        "sortField": "received_date",
         "sortOrder": false,
-        "sorter": true,
+        "sorter": [Function],
         "title": "Received",
       },
       Object {
         "dataIndex": "originating_system",
+        "key": "originating_system",
         "render": [Function],
-        "sortField": "originating_system",
         "sortOrder": false,
-        "sorter": true,
+        "sorter": [Function],
         "title": "Source",
       },
       Object {
         "dataIndex": "document",
-        "kay": "document",
+        "key": "document",
         "render": [Function],
         "sortOrder": false,
         "title": "Application",
       },
       Object {
-        "dataIndex": "operations",
+        "key": "operations",
         "render": [Function],
         "sortOrder": false,
       },
@@ -91,7 +94,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
         "now_application_status_description": "Approved",
         "now_number": 44,
         "originating_system": "N/A",
-        "received_date": "Aug 14 2019",
+        "received_date": "2019-08-14",
       },
       Object {
         "document": Object {},
@@ -108,17 +111,10 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
         "now_application_status_description": "Approved",
         "now_number": 52,
         "originating_system": "N/A",
-        "received_date": "Jul 21 2019",
+        "received_date": "2019-07-21",
       },
     ]
   }
-  recordType="details"
-  tableProps={
-    Object {
-      "align": "left",
-      "onChange": [Function],
-      "pagination": false,
-    }
-  }
+  onChange={[Function]}
 />
 `;

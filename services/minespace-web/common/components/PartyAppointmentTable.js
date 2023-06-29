@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Col, Row, Table, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Field, FieldArray, change } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -9,10 +9,9 @@ import {
   fetchPartyRelationships,
 } from "@common/actionCreators/partiesActionCreator";
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
-// import { getUserInfo } from "@/selectors/authenticationSelectors";
-
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
@@ -102,8 +101,8 @@ const PartyAppointmentTable = (props) => {
     },
     {
       title: "Date",
-      dataIndex: "dates",
-      render: (text, record) => (
+      key: "dates",
+      render: (record) => (
         <div title="Dates">
           {record.startDate} - {record.endDate}
         </div>
@@ -125,8 +124,8 @@ const PartyAppointmentTable = (props) => {
     },
     {
       title: "Ministry Acknowledged",
-      dataIndex: "ministryAcknowledged",
-      render: (ministryAcknowledged, record) => {
+      key: "ministryAcknowledged",
+      render: (record) => {
         return (
           <Field
             id={`${record.rowName}.mine_party_acknowledgement_status`}
@@ -188,12 +187,10 @@ const PartyAppointmentTable = (props) => {
         <FieldArray
           name="engineers_of_record"
           component={({ fields }) => (
-            <Table
-              align="left"
+            <CoreTable
               pagination={false}
               columns={columnsToDisplay}
               dataSource={transformRowData(fields || [])}
-              locale={{ emptyText: "No Data Yet" }}
             />
           )}
         />
@@ -211,7 +208,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       updatePartyRelationship,
       fetchPartyRelationships,
-      // getUserInfo,
       change,
     },
     dispatch

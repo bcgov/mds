@@ -19,34 +19,32 @@ exports[`AdminVerifiedMinesList renders properly 1`] = `
       Array [
         Object {
           "dataIndex": "mine_name",
+          "key": "mine_name",
           "render": [Function],
+          "sorter": [Function],
           "title": "Mine Name",
-          "width": 150,
         },
         Object {
           "dataIndex": "verifying_user",
+          "key": "verifying_user",
           "render": [Function],
+          "sorter": [Function],
           "title": "Last Verified By",
-          "width": 150,
         },
         Object {
-          "dataIndex": "formatted_timestamp",
+          "dataIndex": "verifying_timestamp",
+          "key": "verifying_timestamp",
           "render": [Function],
+          "sorter": [Function],
           "title": "Last Verified On",
-          "width": 150,
         },
       ]
     }
     condition={false}
     dataSource={Array []}
-    recordType="details"
-    tableProps={
+    scroll={
       Object {
-        "align": "center",
-        "pagination": false,
-        "scroll": Object {
-          "y": 500,
-        },
+        "y": 500,
       }
     }
   />

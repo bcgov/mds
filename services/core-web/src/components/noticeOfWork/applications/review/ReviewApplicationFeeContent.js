@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { isNil } from "lodash";
-import { Drawer, Button, Table, Alert } from "antd";
+import { Drawer, Button, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import { Field, change } from "redux-form";
@@ -19,6 +19,7 @@ import LinkButton from "@/components/common/buttons/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -197,22 +198,10 @@ export class ReviewApplicationFeeContent extends Component {
   DrawerContent = () => (
     <div>
       <h4>Table 1: Permit Fees for Placer Mines</h4>
-      <Table
-        columns={tableOneColumns}
-        dataSource={tableOneData}
-        bordered
-        size="small"
-        pagination={false}
-      />
+      <CoreTable columns={tableOneColumns} dataSource={tableOneData} bordered size="small" />
       <br />
       <h4>Table 2: Permit Fees for Pits and Quarries</h4>
-      <Table
-        columns={tableTwoColumns}
-        dataSource={tableTwoData}
-        bordered
-        size="small"
-        pagination={false}
-      />
+      <CoreTable columns={tableTwoColumns} dataSource={tableTwoData} bordered size="small" />
       <br />
       <a
         href="https://www.bclaws.ca/civix/document/id/complete/statreg/54_2015"

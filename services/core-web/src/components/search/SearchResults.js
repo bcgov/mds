@@ -151,6 +151,7 @@ export class SearchResults extends Component {
     }
   };
 
+  // eslint-disable-next-line react/require-render-return
   render = () => {
     const groupedSearchResults = [];
     Object.entries(this.props.searchResults).forEach((entry) => {
@@ -171,79 +172,72 @@ export class SearchResults extends Component {
 
     const results = this.props.searchTerms.map((t) => `"${t}"`).join(", ");
 
-    return (
-      this.state.hasSearchTerm && (
-        <div className="landing-page">
-          <div>
-            <div className="landing-page__header">
-              <h1 className="padding-sm--bottom">
-                {`${
-                  type_filter ? this.props.searchOptionsHash[type_filter] : "Search results"
-                } for ${results}`}
-              </h1>
-              <div>
-                {type_filter ? (
-                  <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
-                    <ArrowLeftOutlined className="padding-sm--right" />
-                    {`Back to all search results for ${results}`}
-                  </Link>
-                ) : (
-                  <p>
-                    <span className="padding-lg--right">Just show me:</span>
-                    {this.props.searchOptions.map((o) => (
-                      <span className="padding-lg" key={o.model_id}>
-                        <Link
-                          to={router.SEARCH_RESULTS.dynamicRoute({
-                            q: this.state.params.q,
-                            t: o.model_id,
-                          })}
-                        >
-                          {o.description}
-                        </Link>
-                      </span>
-                    ))}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="landing-page__content">
-              <div className="tab__content">
-                {groupedSearchResults.length === 0 && NoResults(this.props.searchTerms)}
-                <Row gutter={48}>
-                  {groupedSearchResults.map((group) => (
-                    <Col
-                      key={group.type}
-                      sm={24}
-                      lg={groupedSearchResults.length === 1 ? 24 : 12}
-                      className="padding-lg--top padding-xxl--bottom"
-                    >
-                      {TableForGroup(
-                        group,
-                        RegExp(`${this.props.searchTerms.join("|")}`, "i"),
-                        this.props.partyRelationshipTypeHash,
-                        this.state.params,
-                        type_filter
-                      )}
-                      {!type_filter && (
-                        <Link
-                          className="float-right"
-                          to={router.SEARCH_RESULTS.dynamicRoute({
-                            q: this.state.params.q,
-                            t: group.type,
-                          })}
-                        >
-                          See more search results for {this.props.searchOptionsHash[group.type]}
-                        </Link>
-                      )}
-                    </Col>
+    return this.state.hasSearchTerm ? (
+      <div className="landing-page">
+        <div>
+          <div className="landing-page__header">
+            <h1 className="padding-sm--bottom">
+              {`${
+                type_filter ? this.props.searchOptionsHash[type_filter] : "Search results"
+              } for ${results}`}
+            </h1>
+            <div>
+              {type_filter ? (
+                <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
+                  <ArrowLeftOutlined className="padding-sm--right" />
+                  {`Back to all search results for ${results}`}
+                </Link>
+              ) : (
+                <p>
+                  <span className="padding-lg--right">Just show me:</span>
+                  {this.props.searchOptions.map((o) => (
+                    <span className="padding-lg" key={o.model_id}>
+                      <Link
+                        to={router.SEARCH_RESULTS.dynamicRoute({
+                          q: this.state.params.q,
+                          t: o.model_id,
+                        })}
+                      >
+                        {o.description}
+                      </Link>
+                    </span>
                   ))}
-                </Row>
-                <CantFindIt />
-              </div>
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="landing-page__content">
+            <div className="tab__content">
+              {groupedSearchResults.length === 0 && NoResults(this.props.searchTerms)}
+              {groupedSearchResults.map((group) => (
+                <div className="padding-lg--top padding-xxl--bottom" key={group.type}>
+                  {TableForGroup(
+                    group,
+                    RegExp(`${this.props.searchTerms.join("|")}`, "i"),
+                    this.props.partyRelationshipTypeHash,
+                    this.state.params,
+                    type_filter
+                  )}
+                  {!type_filter && (
+                    <Link
+                      className="float-right"
+                      to={router.SEARCH_RESULTS.dynamicRoute({
+                        q: this.state.params.q,
+                        t: group.type,
+                      })}
+                    >
+                      See more search results for {this.props.searchOptionsHash[group.type]}
+                    </Link>
+                  )}
+                </div>
+              ))}
+              <CantFindIt />
             </div>
           </div>
         </div>
-      )
+      </div>
+    ) : (
+      <></>
     );
   };
 }

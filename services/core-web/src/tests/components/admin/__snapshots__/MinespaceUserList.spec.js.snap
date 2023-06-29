@@ -6,31 +6,24 @@ exports[`MinespaceUserList renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "email_or_username",
+        "key": "email_or_username",
         "render": [Function],
+        "sorter": [Function],
         "title": "Email/BCeID",
-        "width": 150,
       },
       Object {
         "dataIndex": "mineNames",
         "render": [Function],
         "title": "Mines",
-        "width": 150,
       },
       Object {
         "dataIndex": "delete",
         "render": [Function],
         "title": "",
-        "width": 150,
+        "width": 175,
       },
     ]
   }
   dataSource={Array []}
-  recordType="details"
-  tableProps={
-    Object {
-      "align": "center",
-      "pagination": false,
-    }
-  }
 />
 `;

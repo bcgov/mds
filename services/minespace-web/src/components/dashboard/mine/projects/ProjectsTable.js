@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import { dateSorter } from "@common/utils/helpers";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
@@ -78,13 +79,11 @@ export class ProjectsTable extends Component {
 
   render() {
     return (
-      <Table
-        size="small"
-        pagination={false}
+      <CoreTable
         loading={!this.props.isLoaded}
         columns={this.columns()}
         dataSource={this.transformRowData(this.props.projects)}
-        locale={{ emptyText: "This mine has no project data." }}
+        emptyText="This mine has no project data."
       />
     );
   }

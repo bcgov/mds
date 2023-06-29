@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProjectsTable renders properly 1`] = `
-<ForwardRef(InternalTable)
+<CoreTable
   columns={
     Array [
       Object {
@@ -68,13 +68,7 @@ exports[`ProjectsTable renders properly 1`] = `
       },
     ]
   }
+  emptyText="This mine has no project data."
   loading={true}
-  locale={
-    Object {
-      "emptyText": "This mine has no project data.",
-    }
-  }
-  pagination={false}
-  size="small"
 />
 `;

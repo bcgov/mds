@@ -33,8 +33,7 @@ exports[`NOWDocuments renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <ForwardRef(InternalTable)
-    align="left"
+  <CoreTable
     columns={
       Array [
         Object {
@@ -71,14 +70,16 @@ exports[`NOWDocuments renders properly 1`] = `
       }
     }
     dataSource={Array []}
-    expandRowByClick={false}
-    locale={
+    expandProps={
       Object {
-        "emptyText": "No Data Yet",
+        "expandedRowRender": undefined,
+        "recordDescription": "document details",
+        "rowExpandable": [Function],
+        "rowKey": [Function],
       }
     }
-    pagination={false}
     recordType="document description"
+    rowKey="key"
     rowSelection={null}
   />
 </div>

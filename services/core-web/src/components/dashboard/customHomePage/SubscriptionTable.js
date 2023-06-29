@@ -165,10 +165,6 @@ export class SubscriptionTable extends Component {
           this.props.mineTenureHash,
           this.props.mineCommodityOptionsHash
         )}
-        tableProps={{
-          align: "left",
-          pagination: false,
-        }}
       />
     );
   }

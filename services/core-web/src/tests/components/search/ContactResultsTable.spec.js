@@ -10,13 +10,14 @@ const setupReducerProps = () => {
   reducerProps.highlightRegex = RegExp(".*");
   reducerProps.query = MOCK.SEARCH_RESULTS.search_terms.join("|");
   reducerProps.searchResults = MOCK.PARTY_SEARCH_RESULTS;
+  reducerProps.partyRelationshipTypeHash = MOCK.PARTY_RELATIONSHIP_TYPE_HASH;
 };
 
 beforeEach(() => {
   setupReducerProps();
 });
 
-describe("MineResultsTable", () => {
+describe("ContactResultsTable", () => {
   it("renders properly", () => {
     const component = shallow(<ContactResultsTable {...reducerProps} />);
     expect(component).toMatchSnapshot();

@@ -138,9 +138,6 @@ export class ProjectDocumentsTab extends Component {
               {
                 ...doc,
                 key: doc.mine_document_guid,
-                name: doc.document_name,
-                category: null,
-                uploaded: doc.upload_date,
               },
               ...docs,
             ],

@@ -61,19 +61,20 @@ export class ReclamationInvoiceForm extends Component {
   };
 
   render() {
-    const documentTableRecords = (this.props.invoice.documents
-      ? this.props.invoice.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
-      : []
+    const documentTableRecords = (
+      this.props.invoice.documents
+        ? this.props.invoice.documents.filter(
+            (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+          )
+        : []
     ).reduce(
       (docs, doc) => [
         {
           key: doc.mine_document_guid,
           mine_document_guid: doc.mine_document_guid,
           document_manager_guid: doc.document_manager_guid,
-          name: doc.document_name,
-          uploaded: doc.upload_date,
+          document_name: doc.document_name,
+          upload_date: doc.upload_date,
         },
         ...docs,
       ],

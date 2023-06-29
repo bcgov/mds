@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Row, Table } from "antd";
+import { Button, Row } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { NOTICE_OF_DEPARTURE_STATUS, NOTICE_OF_DEPARTURE_TYPE } from "@common/constants/strings";
 import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/strings";
@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
 import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeEnum } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
+import CoreTable from "@/components/common/CoreTable";
 
 interface NoticeOfDepartureTableProps {
   data: INoticeOfDeparture[];
@@ -123,12 +124,10 @@ const NoticeOfDepartureTable: React.FC<NoticeOfDepartureTableProps> = (props) =>
     );
 
   return (
-    <Table
+    <CoreTable
       loading={!props.isLoaded}
       columns={columns}
       dataSource={transformRowData(props.data)}
-      pagination={false}
-      rowKey={(record) => record.key}
     />
   );
 };

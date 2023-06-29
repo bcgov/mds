@@ -2,6 +2,7 @@
 
 exports[`MineReportTable renders properly 1`] = `
 <CoreTable
+  classPrefix="mine-reports"
   columns={
     Array [
       Object {
@@ -252,13 +253,7 @@ exports[`MineReportTable renders properly 1`] = `
       },
     ]
   }
-  recordType="details"
-  tableProps={
-    Object {
-      "align": "left",
-      "onChange": [Function],
-      "pagination": false,
-    }
-  }
+  onChange={[Function]}
+  pagination={false}
 />
 `;

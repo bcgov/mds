@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
-import { Table, Menu, Dropdown, Button, Popconfirm } from "antd";
+import { Menu, Dropdown, Button, Popconfirm } from "antd";
 import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 
@@ -169,7 +169,7 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
-const columns = [
+const columns: ColumnsType<IPermit> = [
   {
     title: "Permit No.",
     dataIndex: "permitNo",
@@ -611,7 +611,7 @@ const transformChildRowData = (
 
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
   const amendmentHistory = (permit) => {
-    const childRowData = permit?.permit_amendments?.map((amendment, index) =>
+    return permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
         amendment,
         permit,
@@ -625,8 +625,6 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
         props.match.params.id
       )
     );
-
-    return <Table pagination={false} columns={childColumns} dataSource={childRowData} />;
   };
 
   const rowData = props.permits?.map((permit) =>
@@ -650,14 +648,12 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
       condition={props.isLoaded}
       dataSource={rowData}
       columns={columns}
-      recordType="amendment history"
-      tableProps={{
-        className: "nested-table",
-        rowClassName: "table-row-align-middle pointer fade-in",
-        align: "left",
-        pagination: false,
-        expandRowByClick: true,
-        expandedRowRender: amendmentHistory,
+      classPrefix="permits"
+      expandProps={{
+        rowKey: "permit_amendment_guid",
+        recordDescription: "amendment history",
+        getDataSource: amendmentHistory,
+        subTableColumns: childColumns,
         expandedRowKeys: props.expandedRowKeys,
         onExpand: props.onExpand,
       }}

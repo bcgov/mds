@@ -3,15 +3,15 @@ import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import CoreTable from "@/components/common/CoreTable";
+import { renderDateColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -59,7 +59,7 @@ const transformRowData = (applications) =>
       application.notice_of_work_type_description || Strings.EMPTY_FIELD,
     now_application_status_description:
       application.now_application_status_description || Strings.EMPTY_FIELD,
-    received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
+    received_date: application.received_date,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
     document:
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
@@ -84,23 +84,12 @@ export class MineNoticeOfWorkTable extends Component {
   };
 
   columns = () => [
-    {
-      title: "Number",
-      dataIndex: "now_number",
-      sortField: "now_number",
-      render: (text) => <div title="Number">{text}</div>,
-      sorter: true,
-    },
-    {
-      title: "Type",
-      dataIndex: "notice_of_work_type_description",
-      sortField: "notice_of_work_type_description",
-      render: (text) => <div title="Type">{text}</div>,
-      sorter: true,
-    },
+    renderTextColumn("now_number", "Number", true),
+    renderTextColumn("notice_of_work_type_description", "Type", true),
     {
       title: "Status",
       dataIndex: "now_application_status_description",
+      key: "now_application_status_description",
       sortField: "now_application_status_description",
       render: (text) => (
         <div title="Status">
@@ -112,6 +101,7 @@ export class MineNoticeOfWorkTable extends Component {
     {
       title: "Lead Inspector",
       dataIndex: "lead_inspector_name",
+      key: "lead_inspector_name",
       sortField: "lead_inspector_name",
       render: (text, record) =>
         (record.lead_inspector_party_guid && (
@@ -127,6 +117,7 @@ export class MineNoticeOfWorkTable extends Component {
     {
       title: "Issuing Inspector",
       dataIndex: "issuing_inspector_name",
+      key: "issuing_inspector_name",
       sortField: "issuing_inspector_name",
       render: (text, record) =>
         (record.issuing_inspector_party_guid && (
@@ -139,24 +130,12 @@ export class MineNoticeOfWorkTable extends Component {
         )) || <div title="Issuing Inspector">{text}</div>,
       sorter: true,
     },
-    {
-      title: "Received",
-      dataIndex: "received_date",
-      sortField: "received_date",
-      render: (text) => <div title="Received">{text}</div>,
-      sorter: true,
-    },
-    {
-      title: "Source",
-      dataIndex: "originating_system",
-      sortField: "originating_system",
-      render: (text) => <div title="Source">{text}</div>,
-      sorter: true,
-    },
+    renderDateColumn("received_date", "Received", true, null, Strings.EMPTY_FIELD),
+    renderTextColumn("originating_system", "Source", true),
     {
       title: "Application",
       dataIndex: "document",
-      kay: "document",
+      key: "document",
       render: (text, record) =>
         !isEmpty(text) ? (
           <div title="Application" className="cap-col-height">
@@ -174,8 +153,8 @@ export class MineNoticeOfWorkTable extends Component {
         ),
     },
     {
-      dataIndex: "operations",
-      render: (text, record) =>
+      key: "operations",
+      render: (record) =>
         record.key && (
           <div className="btn--middle flex">
             <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
@@ -203,11 +182,7 @@ export class MineNoticeOfWorkTable extends Component {
           this.props.sortDir
         )}
         dataSource={transformRowData(this.props.noticeOfWorkApplications)}
-        tableProps={{
-          align: "left",
-          pagination: false,
-          onChange: handleTableChange(this.props.handleSearch),
-        }}
+        onChange={handleTableChange(this.props.handleSearch)}
       />
     );
   }

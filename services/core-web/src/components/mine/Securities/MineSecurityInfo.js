@@ -68,7 +68,6 @@ const defaultProps = {
 
 export class MineSecurityInfo extends Component {
   state = {
-    expandedRowKeys: [],
     isBondLoaded: false,
     isInvoicesLoaded: false,
   };
@@ -241,14 +240,6 @@ export class MineSecurityInfo extends Component {
       .then(() => this.props.closeModal());
   };
 
-  onExpand = (expanded, record) =>
-    this.setState((prevState) => {
-      const expandedRowKeys = expanded
-        ? prevState.expandedRowKeys.concat(record.key)
-        : prevState.expandedRowKeys.filter((key) => key !== record.key);
-      return { expandedRowKeys };
-    });
-
   handleAddReclamationInvoice = (values, permitGuid) => {
     const payload = {
       reclamation_invoice: {
@@ -350,8 +341,6 @@ export class MineSecurityInfo extends Component {
               <MineBondTable
                 isLoaded={this.state.isBondLoaded}
                 permits={this.props.permits}
-                expandedRowKeys={this.state.expandedRowKeys}
-                onExpand={this.onExpand}
                 openAddBondModal={this.openAddBondModal}
                 bonds={this.props.bonds}
                 bondStatusOptionsHash={this.props.bondStatusOptionsHash}
@@ -376,8 +365,6 @@ export class MineSecurityInfo extends Component {
             <MineReclamationInvoiceTable
               isLoaded={this.state.isInvoicesLoaded}
               permits={this.props.permits}
-              expandedRowKeys={this.state.expandedRowKeys}
-              onExpand={this.onExpand}
               openAddBondModal={this.openAddBondModal}
               openAddReclamationInvoiceModal={this.openAddReclamationInvoiceModal}
               invoices={this.props.invoices}

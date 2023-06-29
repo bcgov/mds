@@ -20,7 +20,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       <h4>
         Table 1: Permit Fees for Placer Mines
       </h4>
-      <ForwardRef(InternalTable)
+      <CoreTable
         bordered={true}
         columns={
           Array [
@@ -77,14 +77,13 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
             },
           ]
         }
-        pagination={false}
         size="small"
       />
       <br />
       <h4>
         Table 2: Permit Fees for Pits and Quarries
       </h4>
-      <ForwardRef(InternalTable)
+      <CoreTable
         bordered={true}
         columns={
           Array [
@@ -162,7 +161,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
             },
           ]
         }
-        pagination={false}
         size="small"
       />
       <br />

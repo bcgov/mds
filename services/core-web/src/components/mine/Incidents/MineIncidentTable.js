@@ -383,12 +383,8 @@ const MineIncidentTable = (props) => {
           incidentStatusCodeHash,
           incidentCategoryCodeHash
         )}
-        tableProps={{
-          onChange: handleTableUpdate,
-          align: "left",
-          pagination: paginationOptions,
-          condition: isLoaded,
-        }}
+        onChange={handleTableUpdate}
+        pagination={paginationOptions}
       />
     </div>
   );

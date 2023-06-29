@@ -249,11 +249,7 @@ export const MergePartyConfirmationForm = (props) => {
               condition
               dataSource={transformRowData(props.roles)}
               columns={columns}
-              tableProps={{
-                align: "center",
-                pagination: false,
-                scroll: { y: 500 },
-              }}
+              scroll={{ y: 500 }}
             />
           </Col>
         </Row>

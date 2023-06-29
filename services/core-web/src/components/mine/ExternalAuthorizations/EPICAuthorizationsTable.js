@@ -32,7 +32,7 @@ const transformRowData = (projectInfo) => {
 };
 
 export class EPICAuthorizationsTable extends Component {
-  columns = () => [
+  columns = [
     {
       title: "Legislation Year",
       dataIndex: "project_legislation_year",
@@ -114,11 +114,7 @@ export class EPICAuthorizationsTable extends Component {
         <CoreTable
           condition={this.props.isLoaded}
           dataSource={transformRowData(this.props.data?.mine_info?.projects)}
-          columns={this.columns()}
-          tableProps={{
-            align: "left",
-            pagination: false,
-          }}
+          columns={this.columns}
         />
       </div>
     );

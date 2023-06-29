@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Table, Button } from "antd";
+import { Button } from "antd";
 import PropTypes from "prop-types";
 import { formatDateTimeTz, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -17,6 +17,7 @@ import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/
 import LinkButton from "@/components/common/LinkButton";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
@@ -161,15 +162,14 @@ export const IncidentsTable = (props) => {
   }, [pageData]);
 
   return (
-    <Table
-      size="small"
+    <CoreTable
       pagination={paginationOptions}
       onChange={handleTableUpdate}
       loading={!props.isLoaded}
       columns={columns}
       dataSource={formatIncidentData(props.data)}
       rowKey={(record) => record.mine_incident_guid}
-      locale={{ emptyText: "This mine has no incident data." }}
+      emptyText="This mine has no incident data."
     />
   );
 };

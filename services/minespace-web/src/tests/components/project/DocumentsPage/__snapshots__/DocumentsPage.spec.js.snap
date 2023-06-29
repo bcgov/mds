@@ -20,9 +20,10 @@ exports[`DocumentsPage renders properly 1`] = `
         Array [
           Object {
             "dataIndex": "upload_date",
+            "key": "upload_date",
             "render": [Function],
-            "sorter": [Function],
-            "title": "Upload Date",
+            "sorter": null,
+            "title": "Uploaded",
           },
         ]
       }

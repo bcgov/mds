@@ -196,9 +196,6 @@ export const NOWApplicationReviewsTable = (props) => {
         props.type,
         props.categoriesToShow
       )}
-      tableProps={{
-        pagination: false,
-      }}
     />
   );
 };

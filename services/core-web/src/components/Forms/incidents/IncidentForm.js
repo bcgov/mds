@@ -75,11 +75,7 @@ const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
 const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
 const INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD = "internal_ministry_documents";
 
-const documentColumns = [
-  documentNameColumn("document_name"),
-  uploadedByColumn("update_user"),
-  uploadDateColumn("upload_date"),
-];
+const documentColumns = [documentNameColumn(), uploadDateColumn(), uploadedByColumn()];
 
 const alertText = (updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
   let text = "";

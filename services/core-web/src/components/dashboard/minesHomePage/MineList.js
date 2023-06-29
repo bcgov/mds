@@ -6,10 +6,10 @@ import { Badge, Tooltip } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -207,17 +207,15 @@ export const MineList = (props) => (
   <CoreTable
     condition={props.isLoaded}
     columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+    rowKey="mine_guid"
+    classPrefix="mines"
     dataSource={transformRowData(
       props.mines,
       props.mineRegionHash,
       props.mineTenureHash,
       props.mineCommodityOptionsHash
     )}
-    tableProps={{
-      align: "left",
-      pagination: false,
-      onChange: handleTableChange(props.handleSearch, props.filters),
-    }}
+    onChange={handleTableChange(props.handleSearch, props.filters)}
   />
 );
 
