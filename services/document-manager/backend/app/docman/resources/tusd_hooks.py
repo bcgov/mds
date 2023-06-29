@@ -45,6 +45,7 @@ class TusdHooks(Resource):
             info_key = f'{key}.info'
             new_key = f'{Config.S3_PREFIX}{path}'
             doc_guid = data["Upload"]["MetaData"]["doc_guid"]
+            version_guid = data["Upload"]["MetaData"]["version_guid"]
             versionId = data["version"]["versionId"]
             versionTimestamp = data["version"]["timestamp"]
 
@@ -67,19 +68,15 @@ class TusdHooks(Resource):
             doc.update_user = 'mds'
             file_display_name = doc.file_display_name
 
-            db.session.add(doc)
             db.session.rollback()
-            db.session.commit()
+            db.session.add(doc)
 
-            new_version = DocumentVersion(
-                document_guid=doc_guid,
-                created_by='mds',
-                created_date=datetime.utcnow(),
-                object_store_version_id=versionId,
-                file_display_name=doc.file_display_name,
-                upload_completed_date=versionTimestamp
-            )
-            new_version.save()
+            version = DocumentVersion.find_by_id(version_guid)
+            version.object_store_version_id = versionId
+
+            db.session.add(version)
+
+            db.session.commit()
 
         except Exception as e:
             raise InternalServerError(f'Failed to update the document\'s object store path: {e}')

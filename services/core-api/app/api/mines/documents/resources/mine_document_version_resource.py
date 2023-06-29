@@ -1,6 +1,8 @@
 import decimal
 import uuid
 
+from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
+
 from flask import request
 from flask_restplus import Resource, reqparse, fields
 from datetime import datetime
@@ -17,8 +19,7 @@ from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
 
 
-class MineDocumentVersionListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+class MineDocumentVersionUploadResource(Resource, UserMixin):
 
     @api.doc(
         description='Request a document_manager_version_guid for uploading a document',
@@ -46,4 +47,45 @@ class MineDocumentVersionListResource(Resource, UserMixin):
             raise BadRequest('Cannot create new version of archived document')
 
         return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
-            request, mine)
+            request, mine_document)
+
+class MineDocumentVersionListResource(Resource, UserMixin):
+    parser = reqparse.RequestParser()
+    parser.add_argument(
+        'document_manager_version_guid',
+        type=str,
+        location='json',
+        required=True,
+        help='GUID of the document manager version to create a new MineDocumentVersion for')
+
+    @api.doc(
+        description='Creates a new document version for the givn MineDocument',
+        params={
+            'mine_guid': 'The GUID of the mine the document belongs to',
+            'mine_document_guid': 'The GUID of the MineDocument to request a new version for'
+        }
+    )
+    @api.response(200, 'Successfully requested new document manager version')
+    def post(self, mine_guid, mine_document_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+
+        if not mine:
+            raise NotFound('Mine not found.')
+
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+
+        if not mine_document:
+            raise NotFound('Mine document not found.')
+
+        if str(mine_document.mine_guid) != mine_guid:
+            raise BadRequest('Mine document not attached to Mine')
+
+        if mine_document.is_archived:
+            raise BadRequest('Cannot create new version of archived document')
+        
+        args = self.parser.parse_args()
+
+        return MineDocumentVersion.create(
+            mine_document=mine_document,
+            mine_document_version_guid=args.get('document_manager_version_guid'),
+        )

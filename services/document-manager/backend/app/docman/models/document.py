@@ -16,6 +16,7 @@ class Document(AuditMixin, Base):
     file_display_name = db.Column(db.String(255), nullable=False)
     path_display_name = db.Column(db.String(4096), nullable=False)
     object_store_path = db.Column(db.String)
+    
 
     versions = db.relationship('DocumentVersion', backref='document', lazy=True)
 

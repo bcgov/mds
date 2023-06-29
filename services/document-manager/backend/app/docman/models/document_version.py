@@ -13,6 +13,7 @@ class DocumentVersion(Base):
     document_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('document.document_guid'), nullable=False)
     created_by = db.Column(db.String(60), nullable=False)
     created_date = db.Column(db.DateTime, nullable=False)
+    upload_started_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     upload_completed_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     object_store_version_id = db.Column(db.Integer, nullable=False)
     file_display_name = db.Column(db.String(40), nullable=False)
@@ -26,6 +27,7 @@ class DocumentVersion(Base):
             'document_guid': str(self.document_guid),
             'created_by': self.created_by,
             'created_date': str(self.created_date),
+            'upload_started_date': str(self.upload_started_date) if self.upload_started_date else None,
             'upload_completed_date': str(self.upload_completed_date) if self.upload_completed_date else None,
             'object_store_version_id': self.object_store_version_id,
             'file_display_name': self.file_display_name

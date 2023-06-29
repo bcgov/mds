@@ -124,3 +124,13 @@ class DocumentManagerService():
             raise Exception('Request metadata missing filename')
 
         return metadata
+
+    @classmethod
+    def get_document_version(cls, request, document_manager_guid, document_manager_version_guid):
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/versions/{document_manager_version_guid}',
+            headers={key: value
+                        for (key, value) in request.headers if key != 'Host'},
+        )
+
+        return resp.json()

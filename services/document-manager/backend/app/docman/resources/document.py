@@ -7,7 +7,7 @@ from urllib.parse import urlparse, quote
 from wsgiref.handlers import format_date_time
 
 import requests
-from services.document-manager.backend.app.docman.models.document_version import DocumentVersion
+from app.docman.models.document_version import DocumentVersion
 from app.config import Config
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, \
     FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, \
@@ -194,7 +194,7 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
         # Get and validate the file path (not required if object store is enabled)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
@@ -277,6 +277,7 @@ class DocumentResource(Resource):
             document = Document.find_by_document_guid(document_guid)
             document.upload_completed_date = datetime.utcnow()
             document.save()
+
             cache.delete(FILE_UPLOAD_EXPIRY(document_guid))
             cache.delete(FILE_UPLOAD_SIZE(document_guid))
             cache.delete(FILE_UPLOAD_OFFSET(document_guid))
@@ -377,11 +378,16 @@ class DocumentResource(Resource):
         return document
 
 
-@api.route(f'/documents/<string:document_guid>/version')
-class DocumentVersionResource(Resource):
+@api.route(f'/documents/<string:document_guid>/versions')
+class DocumentVersionListResource(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'filename', type=str, required=False, help='File name + extension of the document.')
 
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self, document_guid):
+        print('hiiii')
+        print(document_guid)
         document = Document.query.filter_by(
             document_guid=document_guid).one_or_none()
 
@@ -427,8 +433,11 @@ class DocumentVersionResource(Resource):
                 document.full_storage_path.encode('utf-8')).decode('utf-8')
             doc_guid = base64.b64encode(
                 document_guid.encode('utf-8')).decode('utf-8')
+            
+            ver_guid = base64.b64encode(
+                version_guid.encode('utf-8')).decode('utf-8')
             upload_metadata = request.headers['Upload-Metadata']
-            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
+            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid},version_guid {ver_guid}'
 
             # Send the request
             resp = None
@@ -464,16 +473,16 @@ class DocumentVersionResource(Resource):
                       object_store_path, CACHE_TIMEOUT)
 
         # Else, create an empty file at this path in the file system
-        else:
-            try:
-                if not os.path.exists(folder):
-                    os.makedirs(folder)
-                with open(file_path, 'wb') as f:
-                    f.seek(file_size - 1)
-                    f.write(b'\0')
-            except IOError as e:
-                current_app.logger.error(e)
-                raise InternalServerError('Unable to create file')
+        # else:
+        #     try:
+        #         if not os.path.exists(folder):
+        #             os.makedirs(folder)
+        #         with open(file_path, 'wb') as f:
+        #             f.seek(file_size - 1)
+        #             f.write(b'\0')
+        #     except IOError as e:
+        #         current_app.logger.error(e)
+        #         raise InternalServerError('Unable to create file')
 
         # Cache data to be used in future PATCH requests
         upload_expiry = format_date_time(time.time() + CACHE_TIMEOUT)
@@ -481,11 +490,11 @@ class DocumentVersionResource(Resource):
                   upload_expiry, CACHE_TIMEOUT)
         cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
         cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_PATH(document_guid), document.full_storage_path, CACHE_TIMEOUT)
 
         # Create document record
         new_version = DocumentVersion(
-            document_guid=doc_guid,
+            document_guid=document.document_guid,
             created_by='mds',
             created_date=datetime.utcnow(),
             object_store_version_id=version_guid,
@@ -497,7 +506,7 @@ class DocumentVersionResource(Resource):
 
         # Create and send response
         response = make_response(
-            jsonify(document_manager_guid=document_guid), 201)
+            jsonify(document_manager_guid=document_guid, document_manager_version_guid=version_guid), 201)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
@@ -507,3 +516,7 @@ class DocumentVersionResource(Resource):
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
         response.autocorrect_location_header = False
         return response
+
+
+# @api.route(f'/documents/<string:document_guid>/versions/<string:document_version_guid>')
+# class DocumentVersionResource(Resource):
