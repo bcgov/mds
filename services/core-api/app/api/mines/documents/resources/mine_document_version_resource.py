@@ -1,6 +1,8 @@
 import decimal
 import uuid
 
+from app.api.mines.documents.dto import CREATE_DOCUMENT_VERSION
+
 from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
 
 from flask import request
@@ -15,7 +17,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VERSION_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
 
 
@@ -49,6 +51,7 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
         return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
             request, mine_document)
 
+
 class MineDocumentVersionListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
@@ -65,6 +68,8 @@ class MineDocumentVersionListResource(Resource, UserMixin):
             'mine_document_guid': 'The GUID of the MineDocument to request a new version for'
         }
     )
+    @api.expect(CREATE_DOCUMENT_VERSION)
+    @api.marshal_with(MINE_DOCUMENT_VERSION_MODEL)
     @api.response(200, 'Successfully requested new document manager version')
     def post(self, mine_guid, mine_document_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -82,10 +87,10 @@ class MineDocumentVersionListResource(Resource, UserMixin):
 
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')
-        
+
         args = self.parser.parse_args()
 
-        return MineDocumentVersion.create(
+        return MineDocumentVersion.create_from_docman_version(
             mine_document=mine_document,
-            mine_document_version_guid=args.get('document_manager_version_guid'),
+            document_manager_version_guid=args.get('document_manager_version_guid'),
         )

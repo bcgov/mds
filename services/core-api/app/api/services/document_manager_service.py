@@ -130,7 +130,7 @@ class DocumentManagerService():
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/versions/{document_manager_version_guid}',
             headers={key: value
-                        for (key, value) in request.headers if key != 'Host'},
+                     for (key, value) in request.headers if key != 'Host'},
         )
 
         return resp.json()

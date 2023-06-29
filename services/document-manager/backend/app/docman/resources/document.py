@@ -13,7 +13,7 @@ from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_
     FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, \
     FORBIDDEN_FILETYPES
 from app.docman.models.document import Document
-from app.docman.response_models import DOCUMENT_MODEL
+from app.docman.response_models import DOCUMENT_MODEL, DOCUMENT_VERSION_MODEL
 from app.extensions import api, cache
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
@@ -417,7 +417,7 @@ class DocumentVersionListResource(Resource):
             raise BadRequest('File type is forbidden')
 
         # Create the path string for this file
-        document_guid = document.document_guid
+        document_guid = str(document.document_guid)
         version_guid = str(uuid.uuid4())
 
         # If the object store is enabled, send the post request through to TUSD to the object store
@@ -433,7 +433,7 @@ class DocumentVersionListResource(Resource):
                 document.full_storage_path.encode('utf-8')).decode('utf-8')
             doc_guid = base64.b64encode(
                 document_guid.encode('utf-8')).decode('utf-8')
-            
+
             ver_guid = base64.b64encode(
                 version_guid.encode('utf-8')).decode('utf-8')
             upload_metadata = request.headers['Upload-Metadata']
@@ -490,7 +490,8 @@ class DocumentVersionListResource(Resource):
                   upload_expiry, CACHE_TIMEOUT)
         cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
         cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_PATH(document_guid), document.full_storage_path, CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_PATH(document_guid),
+                  document.full_storage_path, CACHE_TIMEOUT)
 
         # Create document record
         new_version = DocumentVersion(
@@ -518,5 +519,24 @@ class DocumentVersionListResource(Resource):
         return response
 
 
-# @api.route(f'/documents/<string:document_guid>/versions/<string:document_version_guid>')
-# class DocumentVersionResource(Resource):
+@api.route(f'/documents/<string:document_guid>/versions/<string:document_version_guid>')
+class DocumentVersionResource(Resource):
+
+    @api.doc(description='Returns the document version matching the given guid')
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT, GIS])
+    @api.marshal_with(DOCUMENT_VERSION_MODEL, code=200)
+    def get(self, document_guid, document_version_guid):
+        document = Document.find_by_document_guid(document_guid=document_guid)
+
+        if not document:
+            raise NotFound('Document not found')
+
+        document_version = DocumentVersion.find_by_id(document_version_guid)
+        if not document_version:
+            raise NotFound('Document version not found')
+
+        if document_version.document_guid != document.document_guid:
+            raise BadRequest(
+                'Document version does not belong to the given document')
+
+        return document_version

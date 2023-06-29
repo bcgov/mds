@@ -13,6 +13,17 @@ DOCUMENT_MODEL = api.model(
         'object_store_path': fields.String
     })
 
+DOCUMENT_VERSION_MODEL = api.model(
+    'DocumentVersion', {
+        'document_guid': fields.String,
+        'document_version_guid': fields.String,
+        'created_by': fields.String,
+        'upload_started_date': fields.DateTime,
+        'upload_completed_date': fields.DateTime,
+        'object_store_version_id': fields.String,
+        'file_display_name': fields.String,
+    })
+
 IMPORT_NOW_SUBMISSION_DOCUMENT = api.model(
     'ImportNowSubmissionDocument', {
         'import_now_submission_documents_job_id': fields.Integer,
