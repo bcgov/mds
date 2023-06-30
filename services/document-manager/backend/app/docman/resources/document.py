@@ -105,7 +105,7 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
         # Get and validate the file path (not required if object store is enabled)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))

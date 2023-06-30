@@ -16,7 +16,7 @@ from app.docman.models.document_version import DocumentVersion
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
-    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
         hook = request.headers.get('Hook-Name', None)
         if (hook is None):
