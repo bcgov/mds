@@ -1,4 +1,7 @@
-.ant-table-row-level-0.expandable-table-rows {
+.ant-table-row-level-0.no-sub-table-expandable-rows {
+    &:hover {
+        background: #f4f0f0;
+    }
 
     td:first-of-type,
     .file-history-container {
@@ -16,7 +19,7 @@
     }
 }
 
-.ant-table-row-level-1.expandable-table-rows>td {
+.ant-table-row-level-1.no-sub-table-expandable-rows>td {
     border: none;
 }
 
@@ -30,11 +33,11 @@ th.file-name-column {
 
     @media (min-width: 769px) {
         justify-content: space-between;
-        margin: 14px;
     }
 
     @media (max-width: 768px) {
         justify-content: flex-start;
+        margin-left: 0 !important;
     }
 }
 

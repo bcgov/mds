@@ -9,6 +9,7 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnType<any>[];
+  noSubTableExpandableRows?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
 
@@ -103,14 +104,26 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
         ...expandProps,
       }
     : null;
+
+  const noSubTableExpansionProps = expandProps
+    ? {
+        expandIcon: renderTableExpandIcon,
+        indentSize: 0,
+      }
+    : null;
+
   return condition ? (
     <Table
-      expandable={expansionProps}
+      expandable={expandProps?.noSubTableExpandableRows ? noSubTableExpansionProps : expansionProps}
       pagination={pagination}
       locale={{ emptyText }}
       className={`${tableClass} core-table`}
       tableLayout={tableLayout}
-      rowClassName={"fade-in"}
+      rowClassName={
+        expandProps?.noSubTableExpandableRows
+          ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
+          : "fade-in"
+      }
       {...tableProps}
       columns={columns}
     ></Table>

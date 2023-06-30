@@ -240,8 +240,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        expandable={true}
         isLoaded={false}
+        noSubTableExpandableRows={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -285,8 +285,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        expandable={true}
         isLoaded={false}
+        noSubTableExpandableRows={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -330,8 +330,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        expandable={true}
         isLoaded={false}
+        noSubTableExpandableRows={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -375,8 +375,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             "remove",
           ]
         }
-        expandable={true}
         isLoaded={false}
+        noSubTableExpandableRows={true}
         onArchivedDocuments={[Function]}
       />
     </div>

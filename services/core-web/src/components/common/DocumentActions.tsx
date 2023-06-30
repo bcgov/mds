@@ -8,7 +8,7 @@ import { openDocument, isDocumentOpenable } from "@/components/syncfusion/Docume
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 interface DocumentActionsProps {
-  document: { documentName: string, documentMangerGuid: string }
+  document: { documentName: string; documentMangerGuid: string };
   openDocument: (arg1: string, arg2: string) => any;
 }
 
@@ -16,19 +16,18 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
   const downloadOnClick = (document) =>
     document.documentMangerGuid
       ? downloadFileFromDocumentManager({
-        document_manager_guid: document.documentMangerGuid,
-        document_name: document.documentName,
-      })
+          document_manager_guid: document.documentMangerGuid,
+          document_name: document.documentName,
+        })
       : null;
 
-  const canOpenInDocumentViewer = (document) => document.documentMangerGuid && isDocumentOpenable(document.documentName);
-
+  const canOpenInDocumentViewer = (document) =>
+    document.documentMangerGuid && isDocumentOpenable(document.documentName);
 
   const openInDocumentViewerOnClick = (document) =>
     document.documentMangerGuid
       ? props.openDocument(document.documentMangerGuid, document.documentName)
       : null;
-
 
   const menu = (
     <Menu>
@@ -37,10 +36,11 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
           <button
             type="button"
             className="full add-permit-dropdown-button"
-            onClick={() => { openInDocumentViewerOnClick(props.document) }}>
-            <div>
-              Open in Document Viewer
-            </div>
+            onClick={() => {
+              openInDocumentViewerOnClick(props.document);
+            }}
+          >
+            <div>Open in Document Viewer</div>
           </button>
         </Menu.Item>
       )}
@@ -48,12 +48,12 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
         <button
           type="button"
           className="full add-permit-dropdown-button"
-          onClick={() => { downloadOnClick(props.document) }}>
-          <div>
-            Download File
-          </div>
+          onClick={() => {
+            downloadOnClick(props.document);
+          }}
+        >
+          <div>Download File</div>
         </button>
-
       </Menu.Item>
     </Menu>
   );
@@ -75,7 +75,7 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
       </Dropdown>
     </div>
   );
-}
+};
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
