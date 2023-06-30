@@ -16,7 +16,7 @@ from app.docman.models.document_version import DocumentVersion
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
         hook = request.headers.get('Hook-Name', None)
         if (hook is None):
@@ -49,7 +49,6 @@ class TusdHooks(Resource):
             version_guid = data["Upload"]["MetaData"].get("version_guid")
             versionId = data["version"]["versionId"]
             versionTimestamp = data["version"]["timestamp"]
-
             # If the path is in the key there is no need to move the file
             if (path in key):
                 return ('', 204)
@@ -75,6 +74,7 @@ class TusdHooks(Resource):
             if version_guid is not None:
                 version = DocumentVersion.find_by_id(version_guid)
                 version.object_store_version_id = versionId
+                version.upload_completed_date = datetime.utcnow()
 
                 db.session.add(version)
 

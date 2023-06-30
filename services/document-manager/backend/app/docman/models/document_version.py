@@ -10,12 +10,14 @@ from app.utils.models_mixins import Base
 class DocumentVersion(Base):
     __tablename__ = 'document_version'
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    document_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('document.document_guid'), nullable=False)
+    document_guid = db.Column(UUID(as_uuid=True), db.ForeignKey(
+        'document.document_guid'), nullable=False)
     created_by = db.Column(db.String(60), nullable=False)
     created_date = db.Column(db.DateTime, nullable=False)
-    upload_started_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
-    upload_completed_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
-    object_store_version_id = db.Column(db.Integer, nullable=False)
+    upload_started_date = db.Column(
+        db.DateTime, nullable=True, default=datetime.utcnow)
+    upload_completed_date = db.Column(db.DateTime, nullable=True)
+    object_store_version_id = db.Column(db.String(256), nullable=True)
     file_display_name = db.Column(db.String(40), nullable=False)
 
     def __repr__(self):

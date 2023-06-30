@@ -43,9 +43,6 @@ class ObjectStoreStorageService():
             for chunk in iter(lambda: result['Body'].read(1048576), b''):
                 yield chunk
 
-        print('hiiii')
-        print(Config.OBJECT_STORE_BUCKET, path, display_name)
-
         s3_response = self._client.get_object(
             Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
         resp = Response(

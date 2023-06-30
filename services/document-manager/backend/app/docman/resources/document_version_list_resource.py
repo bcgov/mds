@@ -30,6 +30,11 @@ class DocumentVersionListResource(Resource):
 
     # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self, document_guid):
+        """
+        Initiating a new Tusd document upload to the storage path of the 
+        original document, and creates a new DocumentVersion to 
+        keep a record of the new document version
+        """
         document = Document.query.filter_by(
             document_guid=document_guid).one_or_none()
 
@@ -51,10 +56,10 @@ class DocumentVersionListResource(Resource):
 
         # Create document record
         new_version = DocumentVersion(
+            id=version_guid,
             document_guid=document.document_guid,
             created_by='mds',
             created_date=datetime.utcnow(),
-            object_store_version_id=version_guid,
             file_display_name=filename,
             upload_started_date=datetime.utcnow(),
         )

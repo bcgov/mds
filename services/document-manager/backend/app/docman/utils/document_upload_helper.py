@@ -34,8 +34,11 @@ class DocumentUploadHelper:
             headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
 
             if version_guid is not None:
+                ver_guid = base64.b64encode(
+                    str(version_guid).encode('utf-8')).decode('utf-8')
+
                 headers['Upload-Metadata'] = headers['Upload-Metadata'] + \
-                    f',version_guid {version_guid}'
+                    f',version_guid {ver_guid}'
 
             # Send the request
             resp = None
@@ -105,6 +108,12 @@ class DocumentUploadHelper:
         response.headers['Upload-Expires'] = upload_expiry
         response.headers[
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
+        if version_guid is not None:
+            response.headers['Document-Version'] = version_guid
+            response.headers[
+                'Access-Control-Expose-Headers'] = response.headers[
+                'Access-Control-Expose-Headers'] + ',Document-Version'
+
         response.autocorrect_location_header = False
 
         return response, object_store_path

@@ -20,21 +20,24 @@ depends_on = None
 
 
 def upgrade():
-    op.create_unique_constraint('document_guid_unique', 'document', ['document_guid'])
+    op.create_unique_constraint(
+        'document_guid_unique', 'document', ['document_guid'])
     op.create_table(
         'document_version',
-        sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
-        sa.Column('document_guid', postgresql.UUID(as_uuid=True), sa.ForeignKey('document.document_guid'), nullable=False),
+        sa.Column('id', postgresql.UUID(as_uuid=True),
+                  primary_key=True, default=uuid.uuid4),
+        sa.Column('document_guid', postgresql.UUID(as_uuid=True),
+                  sa.ForeignKey('document.document_guid'), nullable=False),
         sa.Column('created_by', sa.String(length=60), nullable=False),
         sa.Column('created_date', sa.DateTime(), nullable=False),
-        sa.Column('upload_completed_date', sa.DateTime(), nullable=True, default=datetime.datetime.utcnow),
-        sa.Column('object_store_version_id', sa.String(), nullable=False),
+        sa.Column('upload_completed_date', sa.DateTime(),
+                  nullable=True, default=datetime.datetime.utcnow),
+        sa.Column('object_store_version_id', sa.String(), nullable=True),
         sa.Column('file_display_name', sa.String(length=40), nullable=False),
     )
-    
-    
-    op.add_column('document', sa.Column('created_by', sa.String(length=60), nullable=True))    
-        
+
+    op.add_column('document', sa.Column(
+        'created_by', sa.String(length=60), nullable=True))
 
 
 def downgrade():

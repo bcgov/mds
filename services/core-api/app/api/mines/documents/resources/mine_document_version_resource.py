@@ -62,7 +62,7 @@ class MineDocumentVersionListResource(Resource, UserMixin):
         help='GUID of the document manager version to create a new MineDocumentVersion for')
 
     @api.doc(
-        description='Creates a new document version for the givn MineDocument',
+        description='Creates a new document version for the given MineDocument',
         params={
             'mine_guid': 'The GUID of the mine the document belongs to',
             'mine_document_guid': 'The GUID of the MineDocument to request a new version for'

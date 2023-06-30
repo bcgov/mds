@@ -33,6 +33,10 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
         document_manager_version_guid,
         commit=True
     ):
+        """
+        Creates a new MineDocument version based on version data pulled from Docman
+        using the given document_manager_version_guid
+        """
         docman_version = DocumentManagerService.get_document_version(
             request=request,
             document_manager_guid=mine_document.document_manager_guid,
