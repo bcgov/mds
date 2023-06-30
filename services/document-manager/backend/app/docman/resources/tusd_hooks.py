@@ -63,13 +63,14 @@ class TusdHooks(Resource):
 
         # Update the document's object store path and create a new version
         try:
-            doc = Document.find_by_document_guid(doc_guid)
-            doc.object_store_path = new_key
-            doc.update_user = 'mds'
-            file_display_name = doc.file_display_name
-
             db.session.rollback()
-            db.session.add(doc)
+
+            if doc.object_store_path != new_key:
+                doc = Document.find_by_document_guid(doc_guid)
+                doc.object_store_path = new_key
+                doc.update_user = 'mds'
+
+                db.session.add(doc)
 
             if version_guid is not None:
                 version = DocumentVersion.find_by_id(version_guid)
