@@ -11,7 +11,7 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_PROJECT_SUMMARIES, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -31,6 +31,7 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
         }
     )
     @api.response(200, 'Successfully requested new document manager version')
+    @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     def post(self, mine_guid, mine_document_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
 
@@ -71,6 +72,7 @@ class MineDocumentVersionListResource(Resource, UserMixin):
     @api.expect(CREATE_DOCUMENT_VERSION)
     @api.marshal_with(MINE_DOCUMENT_VERSION_MODEL)
     @api.response(200, 'Successfully requested new document manager version')
+    @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     def post(self, mine_guid, mine_document_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
 

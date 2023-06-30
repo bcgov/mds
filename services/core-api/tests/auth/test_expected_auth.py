@@ -2,6 +2,7 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
+from app.api.mines.documents.resources.mine_document_version_resource import MineDocumentVersionListResource, MineDocumentVersionUploadResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
@@ -54,6 +55,7 @@ from app.api.projects.major_mine_application.resources.major_mine_application im
 from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
 
+
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
@@ -61,6 +63,9 @@ from app.api.now_applications.resources.now_application_document_resource import
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
+     (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineDocumentVersionListResource, "post", [MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
+     (MineDocumentVersionUploadResource, "post", [MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
      (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "post", [MINE_EDIT]),
