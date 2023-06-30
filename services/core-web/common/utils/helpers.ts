@@ -166,7 +166,7 @@ export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateS
 
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
-  option.props.children.toLowerCase().includes(input.toLowerCase());
+  option.children.toLowerCase().includes(input.toLowerCase());
 
 // function taken directly from redux-forms (https://redux-form.com/6.0.0-rc.1/examples/normalizing)
 // automatically adds dashes to phone number

@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
+import { nullableStringSorter } from "@common/utils/helpers";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
@@ -38,10 +39,12 @@ export const NewMinespaceUser = (props) => {
       <h3>Create Proponent</h3>
       {mines && (
         <AddMinespaceUser
-          mines={mines.map((mine) => ({
-            value: mine.mine_guid,
-            label: `${mine.mine_name} - ${mine.mine_no}`,
-          }))}
+          mines={mines
+            .map((mine) => ({
+              value: mine.mine_guid,
+              label: `${mine.mine_name} - ${mine.mine_no}`,
+            }))
+            .sort(nullableStringSorter("label"))}
           minespaceUserEmailHash={minespaceUserEmailHash}
           onSubmit={handleSubmit}
           handleChange={handleChange}

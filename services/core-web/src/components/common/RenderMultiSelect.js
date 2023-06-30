@@ -19,6 +19,7 @@ const propTypes = {
   filterOption: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   disabled: PropTypes.bool,
   onSearch: PropTypes.func,
+  isModal: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -29,45 +30,51 @@ const defaultProps = {
   meta: {},
   onSearch: () => {},
   filterOption: false,
+  isModal: false,
 };
 
-export const RenderMultiSelect = (props) => (
-  <div>
-    <Form.Item
-      label={props.label}
-      validateStatus={
-        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-      }
-      help={
-        props.meta.touched &&
-        ((props.meta.error && <span>{props.meta.error}</span>) ||
-          (props.meta.warning && <span>{props.meta.warning}</span>))
-      }
-    >
-      <Select
-        virtual={false}
-        disabled={!props.data || props.disabled}
-        mode="multiple"
-        size="small"
-        getPopupContainer={(trigger) => trigger.parentNode}
-        placeholder={props.placeholder}
-        id={props.id}
-        onSearch={props.onSearch}
-        value={props.input.value ? props.input.value : undefined}
-        onChange={props.input.onChange}
-        filterOption={props.filterOption || caseInsensitiveLabelFilter}
-        showArrow
+export const RenderMultiSelect = (props) => {
+  const extraProps = props.isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
+  return (
+    <div>
+      <Form.Item
+        label={props.label}
+        validateStatus={
+          props.meta.touched
+            ? (props.meta.error && "error") || (props.meta.warning && "warning")
+            : ""
+        }
+        help={
+          props.meta.touched &&
+          ((props.meta.error && <span>{props.meta.error}</span>) ||
+            (props.meta.warning && <span>{props.meta.warning}</span>))
+        }
       >
-        {props.data &&
-          props.data.map(({ value, label, tooltip }) => (
-            <Select.Option key={value} value={value} title={tooltip}>
-              {label}
-            </Select.Option>
-          ))}
-      </Select>
-    </Form.Item>
-  </div>
-);
+        <Select
+          virtual={false}
+          disabled={!props.data || props.disabled}
+          mode="multiple"
+          size="small"
+          placeholder={props.placeholder}
+          id={props.id}
+          onSearch={props.onSearch}
+          value={props.input.value ? props.input.value : undefined}
+          onChange={props.input.onChange}
+          filterOption={props.filterOption || caseInsensitiveLabelFilter}
+          showArrow
+          {...extraProps}
+        >
+          {props.data &&
+            props.data.map(({ value, label, tooltip }) => (
+              <Select.Option key={value} value={value} title={tooltip}>
+                {label}
+              </Select.Option>
+            ))}
+        </Select>
+      </Form.Item>
+    </div>
+  );
+};
 
 RenderMultiSelect.propTypes = propTypes;
 RenderMultiSelect.defaultProps = defaultProps;
