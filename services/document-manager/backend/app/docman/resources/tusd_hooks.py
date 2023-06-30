@@ -37,6 +37,7 @@ class TusdHooks(Resource):
         info_key = None
         new_key = None
         doc_guid = None
+        version_guid = None
 
         # Parse data
         try:
@@ -45,7 +46,7 @@ class TusdHooks(Resource):
             info_key = f'{key}.info'
             new_key = f'{Config.S3_PREFIX}{path}'
             doc_guid = data["Upload"]["MetaData"]["doc_guid"]
-            version_guid = data["Upload"]["MetaData"]["version_guid"]
+            version_guid = data["Upload"]["MetaData"].get("version_guid")
             versionId = data["version"]["versionId"]
             versionTimestamp = data["version"]["timestamp"]
 
@@ -71,15 +72,17 @@ class TusdHooks(Resource):
             db.session.rollback()
             db.session.add(doc)
 
-            version = DocumentVersion.find_by_id(version_guid)
-            version.object_store_version_id = versionId
+            if version_guid is not None:
+                version = DocumentVersion.find_by_id(version_guid)
+                version.object_store_version_id = versionId
 
-            db.session.add(version)
+                db.session.add(version)
 
             db.session.commit()
 
         except Exception as e:
-            raise InternalServerError(f'Failed to update the document\'s object store path: {e}')
+            raise InternalServerError(
+                f'Failed to update the document\'s object store path: {e}')
 
         # Delete the old file and its .info file
         try:

@@ -7,6 +7,7 @@ from urllib.parse import urlparse, quote
 from wsgiref.handlers import format_date_time
 
 import requests
+from app.docman.utils.document_upload_helper import DocumentUploadHelper
 from app.docman.models.document_version import DocumentVersion
 from app.config import Config
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, \
@@ -40,27 +41,8 @@ class DocumentListResource(Resource):
 
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
-        if request.headers.get('Tus-Resumable') is None:
-            raise BadRequest(
-                'Received file upload for unsupported file transfer protocol')
-
-        # Validate the file size
-        file_size = request.headers.get('Upload-Length')
-        if not file_size:
-            raise BadRequest('Received file upload of unspecified size')
-        file_size = int(file_size)
-        max_file_size = Config.MAX_CONTENT_LENGTH
-        if file_size > max_file_size:
-            raise RequestEntityTooLarge(
-                f'The maximum file upload size is {max_file_size / 1024 / 1024}MB.')
-
-        # Validate the file name and file type
-        data = self.parser.parse_args()
-        filename = data.get('filename') or request.headers.get('Filename')
-        if not filename:
-            raise BadRequest('File name cannot be empty')
-        if filename.endswith(FORBIDDEN_FILETYPES):
-            raise BadRequest('File type is forbidden')
+        file_size, data, filename = DocumentUploadHelper().parse_and_validate_uploaded_file(
+            self.parser.parse_args())
 
         # Create the path string for this file
         document_guid = str(uuid.uuid4())
@@ -72,71 +54,11 @@ class DocumentListResource(Resource):
             'pretty_folder') or request.headers.get('Pretty-Folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
-        # If the object store is enabled, send the post request through to TUSD to the object store
-        object_store_path = None
-        if Config.OBJECT_STORE_ENABLED:
-
-            # Add the path to be used in the post-finish tusd hook to set the correct object store path
-            headers = {key: value for (
-                key, value) in request.headers if key != 'Host'}
-            path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
-            doc_guid = base64.b64encode(
-                document_guid.encode('utf-8')).decode('utf-8')
-            upload_metadata = request.headers['Upload-Metadata']
-            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
-
-            # Send the request
-            resp = None
-            try:
-                resp = requests.post(url=Config.TUSD_URL,
-                                     headers=headers, data=request.data)
-            except Exception as e:
-                message = f'POST request to object store raised an exception:\n{e}'
-                current_app.logger.error(message)
-                raise InternalServerError(message)
-
-            # Validate the request
-            if resp.status_code != requests.codes.created:
-                message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
-                current_app.logger.error(
-                    f'POST resp.request:\n{resp.request.__dict__}')
-                current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(message)
-                if resp.status_code == requests.codes.not_found:
-                    raise NotFound(message)
-                raise BadGateway(message)
-
-            # Set object store upload data in cache
-            object_store_upload_resource = urlparse(
-                resp.headers['Location']).path.split('/')[-1]
-            object_store_path = Config.S3_PREFIX + \
-                object_store_upload_resource.split('+')[0]
-            cache.set(
-                OBJECT_STORE_UPLOAD_RESOURCE(
-                    document_guid), object_store_upload_resource,
-                CACHE_TIMEOUT)
-            cache.set(OBJECT_STORE_PATH(document_guid),
-                      object_store_path, CACHE_TIMEOUT)
-
-        # Else, create an empty file at this path in the file system
-        else:
-            try:
-                if not os.path.exists(folder):
-                    os.makedirs(folder)
-                with open(file_path, 'wb') as f:
-                    f.seek(file_size - 1)
-                    f.write(b'\0')
-            except IOError as e:
-                current_app.logger.error(e)
-                raise InternalServerError('Unable to create file')
-
-        # Cache data to be used in future PATCH requests
-        upload_expiry = format_date_time(time.time() + CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_EXPIRY(document_guid),
-                  upload_expiry, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
+        response, object_store_path = DocumentUploadHelper.initiate_document_upload(
+            document_guid=document_guid,
+            file_path=file_path,
+            folder=folder,
+            file_size=file_size)
 
         # Create document record
         document = Document(
@@ -148,17 +70,6 @@ class DocumentListResource(Resource):
             object_store_path=object_store_path)
         document.save()
 
-        # Create and send response
-        response = make_response(
-            jsonify(document_manager_guid=document_guid), 201)
-        response.headers['Tus-Resumable'] = TUS_API_VERSION
-        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
-        response.headers['Upload-Offset'] = 0
-        response.headers['Upload-Expires'] = upload_expiry
-        response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
-        response.autocorrect_location_header = False
         return response
 
     def get(self):
@@ -376,167 +287,3 @@ class DocumentResource(Resource):
         if not document:
             raise NotFound('Document not found')
         return document
-
-
-@api.route(f'/documents/<string:document_guid>/versions')
-class DocumentVersionListResource(Resource):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'filename', type=str, required=False, help='File name + extension of the document.')
-
-    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
-    def post(self, document_guid):
-        print('hiiii')
-        print(document_guid)
-        document = Document.query.filter_by(
-            document_guid=document_guid).one_or_none()
-
-        if not document:
-            raise NotFound('Document not found')
-
-        if request.headers.get('Tus-Resumable') is None:
-            raise BadRequest(
-                'Received file upload for unsupported file transfer protocol')
-
-        # Validate the file size
-        file_size = request.headers.get('Upload-Length')
-        if not file_size:
-            raise BadRequest('Received file upload of unspecified size')
-        file_size = int(file_size)
-        max_file_size = Config.MAX_CONTENT_LENGTH
-        if file_size > max_file_size:
-            raise RequestEntityTooLarge(
-                f'The maximum file upload size is {max_file_size / 1024 / 1024}MB.')
-
-        # Validate the file name and file type
-        data = self.parser.parse_args()
-        filename = data.get('filename') or request.headers.get('Filename')
-        if not filename:
-            raise BadRequest('File name cannot be empty')
-        if filename.endswith(FORBIDDEN_FILETYPES):
-            raise BadRequest('File type is forbidden')
-
-        # Create the path string for this file
-        document_guid = str(document.document_guid)
-        version_guid = str(uuid.uuid4())
-
-        # If the object store is enabled, send the post request through to TUSD to the object store
-        object_store_path = None
-        current_app.logger.debug(
-            'Document Store enabled: ' + str(Config.OBJECT_STORE_ENABLED))
-        if Config.OBJECT_STORE_ENABLED:
-
-            # Add the path to be used in the post-finish tusd hook to set the correct object store path
-            headers = {key: value for (
-                key, value) in request.headers if key != 'Host'}
-            path = base64.b64encode(
-                document.full_storage_path.encode('utf-8')).decode('utf-8')
-            doc_guid = base64.b64encode(
-                document_guid.encode('utf-8')).decode('utf-8')
-
-            ver_guid = base64.b64encode(
-                version_guid.encode('utf-8')).decode('utf-8')
-            upload_metadata = request.headers['Upload-Metadata']
-            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid},version_guid {ver_guid}'
-
-            # Send the request
-            resp = None
-            try:
-                resp = requests.post(url=Config.TUSD_URL,
-                                     headers=headers, data=request.data)
-            except Exception as e:
-                message = f'POST request to object store raised an exception:\n{e}'
-                current_app.logger.error(message)
-                raise InternalServerError(message)
-
-            # Validate the request
-            if resp.status_code != requests.codes.created:
-                message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
-                current_app.logger.error(
-                    f'POST resp.request:\n{resp.request.__dict__}')
-                current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(message)
-                if resp.status_code == requests.codes.not_found:
-                    raise NotFound(message)
-                raise BadGateway(message)
-
-            # Set object store upload data in cache
-            object_store_upload_resource = urlparse(
-                resp.headers['Location']).path.split('/')[-1]
-            object_store_path = Config.S3_PREFIX + \
-                object_store_upload_resource.split('+')[0]
-            cache.set(
-                OBJECT_STORE_UPLOAD_RESOURCE(
-                    document_guid), object_store_upload_resource,
-                CACHE_TIMEOUT)
-            cache.set(OBJECT_STORE_PATH(document_guid),
-                      object_store_path, CACHE_TIMEOUT)
-
-        # Else, create an empty file at this path in the file system
-        # else:
-        #     try:
-        #         if not os.path.exists(folder):
-        #             os.makedirs(folder)
-        #         with open(file_path, 'wb') as f:
-        #             f.seek(file_size - 1)
-        #             f.write(b'\0')
-        #     except IOError as e:
-        #         current_app.logger.error(e)
-        #         raise InternalServerError('Unable to create file')
-
-        # Cache data to be used in future PATCH requests
-        upload_expiry = format_date_time(time.time() + CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_EXPIRY(document_guid),
-                  upload_expiry, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_PATH(document_guid),
-                  document.full_storage_path, CACHE_TIMEOUT)
-
-        # Create document record
-        new_version = DocumentVersion(
-            document_guid=document.document_guid,
-            created_by='mds',
-            created_date=datetime.utcnow(),
-            object_store_version_id=version_guid,
-            file_display_name=filename,
-            upload_started_date=datetime.utcnow(),
-
-        )
-        new_version.save()
-
-        # Create and send response
-        response = make_response(
-            jsonify(document_manager_guid=document_guid, document_manager_version_guid=version_guid), 201)
-        response.headers['Tus-Resumable'] = TUS_API_VERSION
-        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
-        response.headers['Upload-Offset'] = 0
-        response.headers['Upload-Expires'] = upload_expiry
-        response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
-        response.autocorrect_location_header = False
-        return response
-
-
-@api.route(f'/documents/<string:document_guid>/versions/<string:document_version_guid>')
-class DocumentVersionResource(Resource):
-
-    @api.doc(description='Returns the document version matching the given guid')
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT, GIS])
-    @api.marshal_with(DOCUMENT_VERSION_MODEL, code=200)
-    def get(self, document_guid, document_version_guid):
-        document = Document.find_by_document_guid(document_guid=document_guid)
-
-        if not document:
-            raise NotFound('Document not found')
-
-        document_version = DocumentVersion.find_by_id(document_version_guid)
-        if not document_version:
-            raise NotFound('Document version not found')
-
-        if document_version.document_guid != document.document_guid:
-            raise BadRequest(
-                'Document version does not belong to the given document')
-
-        return document_version
