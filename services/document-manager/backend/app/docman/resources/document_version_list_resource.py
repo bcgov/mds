@@ -28,7 +28,7 @@ class DocumentVersionListResource(Resource):
     parser.add_argument(
         'filename', type=str, required=False, help='File name + extension of the document.')
 
-    # @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self, document_guid):
         """
         Initiating a new Tusd document upload to the storage path of the 
