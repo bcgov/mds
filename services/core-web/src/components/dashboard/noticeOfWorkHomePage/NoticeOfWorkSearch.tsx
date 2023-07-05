@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import NoticeOfWorkSearchForm from "@/components/Forms/noticeOfWork/NoticeOfWorkSearchForm";
 
 /**
- * @class NoticeOfWorkSearch supports searching for a filtered list of notice of Work applications.
+ * NoticeOfWorkSearch supports searching for a filtered list of notice of Work applications.
  */
 
 const propTypes = {
