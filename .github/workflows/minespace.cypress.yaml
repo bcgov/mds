@@ -1,0 +1,35 @@
+name: MINESPACE - Cypress Tests
+
+on:
+  pull_request:
+    paths:
+      - services/common/**
+      - services/minespace-web/**
+
+jobs:
+  tests-unit-frontend:
+    name: tests-cypress-minespace
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - uses: actions/cache@v3
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: mds-minespace
+          restore-keys: mds-minespace
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Common Package
+        run: cd services/common/ && yarn build
+
+      - name: Run cypress tests
+        run: cd services/minespace-web/ && yarn && yarn cypress run
