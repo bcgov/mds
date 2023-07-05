@@ -9,7 +9,7 @@ import {
   uploadDateColumn,
   uploadedByColumn,
 } from "./DocumentColumns";
-import { renderTextColumn, actionOperationsColumn } from "./CoreTableCommonColumns";
+import { renderTextColumn, documentActionOperationsColumn } from "./CoreTableCommonColumns";
 import { Button } from "antd";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
@@ -145,7 +145,7 @@ export const DocumentTable = (props) => {
         renderTextColumn("file_type", "File Type", !isMinimalView),
         uploadDateColumn("update_timestamp", "Last Modified"),
         uploadedByColumn("create_user", "Created By"),
-        actionOperationsColumn("", "operations"),
+        documentActionOperationsColumn("", "operations"),
       ]
     : [
         documentNameColumn("document_name", "File Name", isMinimalView),

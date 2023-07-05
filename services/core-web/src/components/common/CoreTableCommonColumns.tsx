@@ -173,7 +173,7 @@ export const renderTaggedColumn = (
   };
 };
 
-export const actionOperationsColumn = (title = "", dataIndex = "operations") => {
+export const documentActionOperationsColumn = (title = "", dataIndex = "operations") => {
   return {
     title,
     dataIndex,
