@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu, Button, MenuProps } from "antd";
 import { CARAT } from "@/constants/assets";
 import { DownloadOutlined, FileOutlined } from "@ant-design/icons";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
@@ -29,22 +29,26 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
       ? props.openDocument(document.documentMangerGuid, document.documentName)
       : null;
 
-  const menu = (
-    <Menu>
-      {canOpenInDocumentViewer(props.document) && (
-        <Menu.Item key="0" icon={<FileOutlined />}>
-          <button
-            type="button"
-            className="full add-permit-dropdown-button"
-            onClick={() => {
-              openInDocumentViewerOnClick(props.document);
-            }}
-          >
-            <div>Open in Document Viewer</div>
-          </button>
-        </Menu.Item>
-      )}
-      <Menu.Item key="1" icon={<DownloadOutlined />}>
+  const items: MenuProps["items"] = [
+    canOpenInDocumentViewer(props.document) && {
+      key: "0",
+      icon: <FileOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={() => {
+            openInDocumentViewerOnClick(props.document);
+          }}
+        >
+          <div>Open in Document Viewer</div>
+        </button>
+      ),
+    },
+    {
+      key: "1",
+      icon: <DownloadOutlined />,
+      label: (
         <button
           type="button"
           className="full add-permit-dropdown-button"
@@ -54,14 +58,13 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
         >
           <div>Download File</div>
         </button>
-      </Menu.Item>
-    </Menu>
-  );
+      ),
+    },
+  ];
 
   return (
     <div>
-      {/* @ts-ignore */}
-      <Dropdown overlay={menu} placement="bottomLeft">
+      <Dropdown menu={{ items }} placement="bottomLeft">
         {/* @ts-ignore */}
         <Button type="secondary" className="permit-table-button">
           Actions

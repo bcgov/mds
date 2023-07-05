@@ -134,7 +134,7 @@ export const renderDocumentLinkColumn = (
         >
           <DocumentLink
             documentManagerGuid={record[docManGuidIndex]}
-            documentName={record.document_name ?? text}
+            documentName={text}
             truncateDocumentName={false}
           />
         </div>
@@ -173,12 +173,9 @@ export const renderTaggedColumn = (
   };
 };
 
-export const documentActionOperationsColumn = (title = "", dataIndex = "operations") => {
+export const documentActionOperationsColumn = () => {
   return {
-    title,
-    dataIndex,
-    key: dataIndex,
-    render: (text: any, record: any) => {
+    render: (record: any) => {
       return (
         <DocumentActions
           openDocument

@@ -145,7 +145,7 @@ export const DocumentTable = (props) => {
         renderTextColumn("file_type", "File Type", !isMinimalView),
         uploadDateColumn("update_timestamp", "Last Modified"),
         uploadedByColumn("create_user", "Created By"),
-        documentActionOperationsColumn("", "operations"),
+        documentActionOperationsColumn(),
       ]
     : [
         documentNameColumn("document_name", "File Name", isMinimalView),

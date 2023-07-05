@@ -241,7 +241,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           ]
         }
         isLoaded={false}
-        noSubTableExpandableRows={true}
+        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -286,7 +286,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           ]
         }
         isLoaded={false}
-        noSubTableExpandableRows={true}
+        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -331,7 +331,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           ]
         }
         isLoaded={false}
-        noSubTableExpandableRows={true}
+        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
       />
     </div>
@@ -376,7 +376,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           ]
         }
         isLoaded={false}
-        noSubTableExpandableRows={true}
+        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
       />
     </div>
