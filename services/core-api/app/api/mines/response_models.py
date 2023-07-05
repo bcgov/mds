@@ -99,7 +99,7 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'document_manager_guid': fields.String,
         'document_manager_version_guid': fields.String,
         'document_name': fields.String,
-        'upload_date': fields.DateTime,
+        'upload_date': fields.String,
         'create_user': fields.String,
     })
 
@@ -109,7 +109,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
-        'upload_date': fields.DateTime,
+        'upload_date': fields.String,
         'create_user': fields.String,
         'is_archived': fields.Boolean,
         'archived_date': fields.DateTime,
