@@ -64,23 +64,6 @@ const defaultProps = {
   canArchiveDocuments: false,
 };
 
-const renderFileLocation = (documentTypeCode) => {
-  let location = "N/A";
-  switch (documentTypeCode) {
-    case "PRM":
-      location = "Primary Document";
-      break;
-    case "SPT":
-      location = "Spatial Component";
-      break;
-    case "SPR":
-      location = "Supporting Document";
-      break;
-  }
-
-  return location;
-};
-
 const renderFileType = (file) => {
   const index = file.lastIndexOf(".");
   return index === -1 ? "N/A" : file.substr(index);
@@ -89,7 +72,9 @@ const renderFileType = (file) => {
 const parseFiles = (versions, documentType) =>
   versions.map((version, index) => ({
     key: version.mine_document_version_guid,
-    file_location: renderFileLocation(documentType) || Strings.EMPTY_FIELD,
+    file_location:
+      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[documentType] ||
+      Strings.EMPTY_FIELD,
     file_type: renderFileType(version.document_name) || Strings.EMPTY_FIELD,
     number_of_versions: index === 0 ? versions.length - 1 : 0,
     ...version,
@@ -153,7 +138,7 @@ export const DocumentTable = (props) => {
     },
   };
 
-  let columns = props.noSubTableExpandableRows
+  let columns = props.matchChildColumnsToParent
     ? [
         documentNameColumn("document_name", "File Name"),
         renderTextColumn("file_location", "File Location", !isMinimalView),
@@ -169,7 +154,7 @@ export const DocumentTable = (props) => {
         uploadDateColumn("dated", "Dated", !isMinimalView),
       ];
 
-  const currentRowData = props.noSubTableExpandableRows
+  const currentRowData = props.matchChildColumnsToParent
     ? props.documents?.map((document) => {
         return transformRowData(document);
       })
@@ -211,13 +196,13 @@ export const DocumentTable = (props) => {
   const minimalProps = isMinimalView
     ? { size: "small", rowClassName: "ant-table-row-minimal" }
     : null;
-  return props.noSubTableExpandableRows ? (
+  return props.matchChildColumnsToParent ? (
     <CoreTable
       condition={props.isLoaded}
       dataSource={currentRowData}
       columns={columns}
       expandProps={{
-        noSubTableExpandableRows: props.noSubTableExpandableRows,
+        matchChildColumnsToParent: props.matchChildColumnsToParent,
         rowExpandable: (record) => record.number_of_versions > 0,
       }}
     />

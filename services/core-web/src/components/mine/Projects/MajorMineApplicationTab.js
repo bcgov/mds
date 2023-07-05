@@ -158,7 +158,7 @@ export class MajorMineApplicationTab extends Component {
           excludedColumnKeys={["dated", "category", "remove"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
           isLoaded={this.state.isLoaded}
-          noSubTableExpandableRows={true}
+          matchChildColumnsToParent={true}
         />
       </div>
     );

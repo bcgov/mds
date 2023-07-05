@@ -189,6 +189,12 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   SUPPORTING: "SPR",
 };
 
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
+  PRM: "Primary Document",
+  SPT: "Spatial Component",
+  SPR: "Supporting Document",
+};
+
 export const FACILITY_TYPES = [
   { value: "tailings_storage_facility", label: "Tailing Storage Facility" },
 ];
