@@ -3,22 +3,25 @@
 exports[`DocumentActions renders properly 1`] = `
 <div>
   <Dropdown
-    overlay={
-      <Menu>
-        <MenuItem
-          icon={<ForwardRef(DownloadOutlined) />}
-        >
-          <button
-            className="full add-permit-dropdown-button"
-            onClick={[Function]}
-            type="button"
-          >
-            <div>
-              Download File
-            </div>
-          </button>
-        </MenuItem>
-      </Menu>
+    menu={
+      Object {
+        "items": Array [
+          false,
+          Object {
+            "icon": <ForwardRef(DownloadOutlined) />,
+            "key": "1",
+            "label": <button
+              className="full add-permit-dropdown-button"
+              onClick={[Function]}
+              type="button"
+            >
+              <div>
+                Download File
+              </div>
+            </button>,
+          },
+        ],
+      }
     }
     placement="bottomLeft"
   >
