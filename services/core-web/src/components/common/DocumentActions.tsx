@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Dropdown, Menu, Button, MenuProps } from "antd";
+import { Dropdown, Button, MenuProps } from "antd";
 import { CARAT } from "@/constants/assets";
 import { DownloadOutlined, FileOutlined } from "@ant-design/icons";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
