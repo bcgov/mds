@@ -5,7 +5,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import { requiredList } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -21,6 +21,7 @@ const propTypes = {
 
 export const EditMinespaceUser = (props) => {
   const { mines, handleSubmit, handleChange, handleSearch } = props;
+  const isModal = true; // currently no instance where it's not in a modal
   return (
     <Form layout="vertical" onSubmit={handleSubmit}>
       <Col span={24}>
@@ -45,10 +46,11 @@ export const EditMinespaceUser = (props) => {
                 label="Mines*"
                 placeholder="Select the mines this user can access"
                 component={renderConfig.MULTI_SELECT}
-                data={mines}
+                data={mines.sort(nullableStringSorter("label"))}
                 onChange={handleChange}
                 onSearch={handleSearch}
                 validate={[requiredList]}
+                props={{ isModal }}
               />
             </Form.Item>
           </Col>
