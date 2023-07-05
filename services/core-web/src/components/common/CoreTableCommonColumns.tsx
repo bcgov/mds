@@ -74,16 +74,6 @@ export const renderHighlightedTextColumn = (
   };
 };
 
-const withTag = (text: string, elem: ReactNode) => {
-  return (
-    <div className="inline-flex flex-between">
-      {elem}
-
-      <Tag>{text}</Tag>
-    </div>
-  );
-};
-
 const documentWithTag = (record: any, elem: ReactNode, title: string) => {
   return (
     <div
@@ -148,7 +138,6 @@ export const renderDocumentLinkColumn = (
 export const renderTaggedColumn = (
   dataIndex: string,
   title: string,
-  tag = "",
   sortable = false,
   placeHolder = ""
 ) => {
@@ -165,9 +154,7 @@ export const renderTaggedColumn = (
           {text ?? placeHolder}
         </div>
       );
-      return tag !== "" || record.number_of_versions !== undefined
-        ? documentWithTag(record, content, title)
-        : withTag(tag, content);
+      return documentWithTag(record, content, title);
     },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
