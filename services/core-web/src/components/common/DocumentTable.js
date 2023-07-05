@@ -40,10 +40,8 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
-
   isLoaded: PropTypes.bool,
-  noSubTableExpandableRows: PropTypes.bool,
-
+  matchChildColumnsToParent: PropTypes.bool,
   defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
   openModal: PropTypes.func.isRequired,
   view: PropTypes.string.isRequired,
@@ -58,7 +56,7 @@ const defaultProps = {
   documentColumns: null,
   documentParent: null,
   isLoaded: false,
-  noSubTableExpandableRows: false,
+  matchChildColumnsToParent: false,
   defaultSortKeys: ["upload_date", "dated", "update_timestamp"], // keys to sort by when page loads
   view: "standard",
   canArchiveDocuments: false,
