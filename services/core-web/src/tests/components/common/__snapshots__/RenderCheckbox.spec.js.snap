@@ -6,7 +6,9 @@ exports[`RenderCheckbox renders properly 1`] = `
   validateStatus=""
 >
   <Checkbox
+    checked={false}
     id={1}
+    onChange={[Function]}
   />
 </FormItem>
 `;

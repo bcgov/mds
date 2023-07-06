@@ -22,16 +22,16 @@ exports[`NewMinespaceUser renders properly 1`] = `
     mines={
       Array [
         Object {
-          "label": "New Mine - BLAH6194",
-          "value": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+          "label": "Legit Mine - BLAH6734",
+          "value": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
         },
         Object {
           "label": "Mine Two - BLAH0502",
           "value": "89a65274-581d-4862-8630-99f5f7687089",
         },
         Object {
-          "label": "Legit Mine - BLAH6734",
-          "value": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+          "label": "New Mine - BLAH6194",
+          "value": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
         },
       ]
     }

@@ -45,12 +45,11 @@ const defaultAddPartyFormState = {
 };
 
 export class AddPartyComponentWrapper extends Component {
-  state = { isPerson: true, addingParty: false };
-
-  componentWillMount = () => {
-    // Form values are reset to default when mounted as the modal may have been closed with the form showing.
+  constructor(props) {
+    super(props);
+    this.state = { isPerson: true, addingParty: false };
     this.resetAddPartyForm();
-  };
+  }
 
   componentWillReceiveProps = (nextProps) => {
     if (
@@ -128,6 +127,7 @@ export class AddPartyComponentWrapper extends Component {
     this.setState({ isPerson: value.target.value });
   };
 
+  // eslint-disable-next-line react/require-render-return
   render = () => {
     const ChildComponent = this.props.content;
     return (
