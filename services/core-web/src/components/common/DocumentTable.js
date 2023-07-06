@@ -64,7 +64,7 @@ const defaultProps = {
 
 const renderFileType = (file) => {
   const index = file.lastIndexOf(".");
-  return index === -1 ? "N/A" : file.substr(index);
+  return index === -1 ? null : file.substr(index);
 };
 
 const parseFiles = (versions, documentType) =>
