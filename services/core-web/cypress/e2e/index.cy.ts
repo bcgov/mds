@@ -1,5 +1,5 @@
 describe("Home Page", () => {
-  const url = Cypress.env("url");
+  const url = Cypress.env("CYPRESS_TEST_URL");
   beforeEach(() => {
     cy.login();
   });
