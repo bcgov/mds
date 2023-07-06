@@ -1,26 +1,24 @@
-import base64
-import os
-import time
 import uuid
-from datetime import datetime
-from urllib.parse import urlparse, quote
-from wsgiref.handlers import format_date_time
-
+import os
 import requests
-from app.docman.utils.document_upload_helper import DocumentUploadHelper
-from app.docman.models.document_version import DocumentVersion
-from app.config import Config
-from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, \
-    FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, \
-    FORBIDDEN_FILETYPES
-from app.docman.models.document import Document
-from app.docman.response_models import DOCUMENT_MODEL, DOCUMENT_VERSION_MODEL
-from app.extensions import api, cache
+import base64
+import time
+
+from datetime import datetime
+from wsgiref.handlers import format_date_time
+from urllib.parse import urlparse, quote
 from app.services.object_store_storage_service import ObjectStoreStorageService
-from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
-from flask import request, current_app, send_file, make_response, jsonify
-from flask_restplus import Resource, reqparse
+
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
+from flask import request, current_app, send_file, make_response, jsonify
+from flask_restplus import Resource, reqparse, marshal_with
+
+from app.docman.models.document import Document
+from app.extensions import api, cache
+from app.docman.response_models import DOCUMENT_MODEL
+from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
+from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.config import Config
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -70,6 +68,16 @@ class DocumentListResource(Resource):
             object_store_path=object_store_path)
         document.save()
 
+        # Create and send response
+        response = make_response(jsonify(document_manager_guid=document_guid), 201)
+        response.headers['Tus-Resumable'] = TUS_API_VERSION
+        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
+        response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
+        response.headers['Upload-Offset'] = 0
+        response.headers['Upload-Expires'] = upload_expiry
+        response.headers[
+            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
+        response.autocorrect_location_header = False
         return response
 
     def get(self):
@@ -81,11 +89,9 @@ class DocumentListResource(Resource):
         if not document_guid:
             raise BadRequest('Valid token required for download')
 
-        document = Document.query.filter_by(
-            document_guid=document_guid).one_or_none()
+        document = Document.query.filter_by(document_guid=document_guid).one_or_none()
         if not document:
-            raise NotFound(
-                'Could not find the document corresponding to the token')
+            raise NotFound('Could not find the document corresponding to the token')
         if as_attachment is not None:
             as_attachment = True if as_attachment == 'true' else False
         else:
@@ -287,3 +293,15 @@ class DocumentResource(Resource):
         if not document:
             raise NotFound('Document not found')
         return document
+
+    @api.route('/documents/zip', methods=['POST'])
+    class DocumentZipResource(Resource):
+        @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+        def post(self):
+            document_guids = request.json.get('document_guids', [])
+            if not document_guids:
+                raise BadRequest('No document guids provided')
+
+            create_zip_task(False, document_guids)
+
+            return {'message': 'Zip creation task initiated'}, 202

@@ -54,3 +54,5 @@ gitops/tenant-gitops-4c2ba9
 .yarn/yarn.build.json
 
 .yarn/.DS_Store
+.vscode/settings.json
+services/document-manager/document-manager.iml

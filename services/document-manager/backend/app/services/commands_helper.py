@@ -15,7 +15,9 @@ from app.docman.models.import_now_submission_documents_job import ImportNowSubmi
 from app.tasks.celery import doc_job_result
 from app.tasks.transfer import transfer_docs
 from app.tasks.verify import verify_docs
+from app.tasks.create_zip import zip_docs
 from app.tasks.reorganize import reorganize_docs
+
 from app.tasks.import_now_submission_documents import import_now_submission_documents
 
 
@@ -158,3 +160,10 @@ def abort_task(task_id):
         headers={'Content-Type': 'application/json'})
 
     return json.loads(response.content)
+
+def create_zip_task(wait, doc_ids):
+    """Creates a task that zips documents."""
+    docs = Document.query.filter(Document.document_id.in_(doc_ids)).all()
+    if (len(docs) == 0):
+        return 'No documents are stored on the object store'
+    return start_job(wait, 'create_zip', docs, zip_docs)
