@@ -1,53 +1,43 @@
-import React from "react";
+import React, { FC } from "react";
 import { Input, Button, Badge } from "antd";
 import { isEmpty } from "lodash";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
-import { Link, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, useLocation, withRouter } from "react-router-dom";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import PropTypes from "prop-types";
 import {
   formatDate,
   optionsFilterLabelAndValue,
   optionsFilterLabelOnly,
 } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
-import { ColumnsType } from "antd/lib/table";
+import { INoticeOfWorkApplication, IOption } from "@mds/common";
+import { ColumnType } from "antd/es/table";
+import { SortOrder } from "antd/es/table/interface";
+import { NoWSearchParams } from "./NoticeOfWorkHomePage";
 
 /**
- * @class NoticeOfWorkTable - paginated list of notice of work applications
+ * NoticeOfWorkTable - paginated list of notice of work applications
  */
 
-const propTypes = {
-  handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
-  searchParams: PropTypes.objectOf(PropTypes.any).isRequired,
-  defaultParams: PropTypes.objectOf(PropTypes.any).isRequired,
-  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
-  applicationStatusOptions: CustomPropTypes.options.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
-  }).isRequired,
-};
-
-const defaultProps = {
-  sortField: undefined,
-  sortDir: undefined,
-  noticeOfWorkApplications: [],
-};
+interface NoticeOfWorkTableProps {
+  noticeOfWorkApplications: INoticeOfWorkApplication[];
+  isLoaded: boolean;
+  handleSearch: (searchParams: NoWSearchParams) => void;
+  sortField: string;
+  sortDir: string;
+  searchParams: NoWSearchParams;
+  defaultParams: NoWSearchParams;
+  mineRegionHash: object;
+  mineRegionOptions: IOption;
+  applicationTypeOptions: IOption;
+  applicationStatusOptions: IOption;
+}
 
 const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters, sorter) => {
-  console.log("table change!", sorter);
   const params = {
     ...tableFilters,
     ...filters,
@@ -65,17 +55,30 @@ const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters,
   updateNOWList(params);
 };
 
-const applySortIndicator = (_columns, field, dir) =>
-  _columns.map((column) => ({
-    ...column,
-    sortOrder: dir && column.key === field ? dir.concat("end") : false,
-  }));
+const applySortIndicator = (
+  columns: ColumnType<INoticeOfWorkApplication>[],
+  field: string,
+  dir: string
+): ColumnType<INoticeOfWorkApplication>[] =>
+  columns.map((column) => {
+    return {
+      ...column,
+      sortOrder: dir && column.key === field ? (dir.concat("end") as SortOrder) : null,
+    };
+  });
 
 const pageTitle = "Browse Notices of Work";
 
-export const NoticeOfWorkTable = (props) => {
-  let searchInput;
-  const ensureListValue = (value) => {
+const NoticeOfWorkTable: FC<RouteComponentProps & NoticeOfWorkTableProps> = ({
+  sortField,
+  sortDir,
+  noticeOfWorkApplications = [],
+  ...props
+}: NoticeOfWorkTableProps) => {
+  const location = useLocation();
+  let searchInput: string;
+
+  const ensureListValue = (value: string[] | string) => {
     if (Array.isArray(value)) {
       return value;
     }
@@ -85,19 +88,19 @@ export const NoticeOfWorkTable = (props) => {
     return [];
   };
 
-  const createLinkTo = (route, record) => {
+  const createLinkTo = (route, record: INoticeOfWorkApplication) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
         applicationPageFromRoute: {
-          route: props.location.pathname + props.location.search,
+          route: location.pathname + location.search,
           title: pageTitle,
         },
       },
     };
   };
 
-  const transformRowData = (applications) =>
+  const transformRowData = (applications: INoticeOfWorkApplication[]) =>
     applications.map((application) => ({
       key: application.now_application_guid,
       now_application_guid: application.now_application_guid,
@@ -130,7 +133,6 @@ export const NoticeOfWorkTable = (props) => {
       return (
         <div style={{ padding: 8 }}>
           <Input
-            className="hitara"
             id={field}
             ref={(node) => {
               searchInput = node && node?.input?.value;
@@ -172,12 +174,12 @@ export const NoticeOfWorkTable = (props) => {
         </div>
       );
     },
-    filterIcon: (filtered) => (
+    filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnType<INoticeOfWorkApplication>[] = [
     {
       title: "Number",
       key: "now_number",
@@ -330,19 +332,14 @@ export const NoticeOfWorkTable = (props) => {
     },
   ];
 
-  console.log("columns", columns);
-
   return (
     <CoreTable
       condition={props.isLoaded}
-      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+      columns={applySortIndicator(columns, sortField, sortDir)}
       onChange={handleTableChange(props.handleSearch, props.searchParams)}
-      dataSource={transformRowData(props.noticeOfWorkApplications)}
+      dataSource={transformRowData(noticeOfWorkApplications)}
     />
   );
 };
-
-NoticeOfWorkTable.propTypes = propTypes;
-NoticeOfWorkTable.defaultProps = defaultProps;
 
 export default withRouter(NoticeOfWorkTable);

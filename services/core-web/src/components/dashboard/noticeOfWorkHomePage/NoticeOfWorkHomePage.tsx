@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { bindActionCreators } from "redux";
+import { useLocation, useHistory } from "react-router-dom";
+import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
 import {
@@ -17,22 +16,39 @@ import {
   getNoticeOfWorkPageData,
 } from "@common/selectors/noticeOfWorkSelectors";
 import * as routes from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import { PageTracker } from "@common/utils/trackers";
+import { INoticeOfWorkApplication, IPageData, IOption } from "@mds/common";
+import { RootState } from "@/App";
 
-const propTypes = {
-  fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
-  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
-  pageData: CustomPropTypes.pageData.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
-  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
-  applicationStatusOptions: CustomPropTypes.options.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-};
+export interface NoWSearchParams {
+  page?: string;
+  per_page: string;
+  sort_field: string;
+  sort_dir: string;
+  mine_search: string;
+  now_number: string;
+  mine_name: string;
+  application_type: string;
+  originating_system: string[];
+  lead_inspector_name: string;
+  issuing_inspector_name: string;
+  now_application_status_description: string[];
+  notice_of_work_type_description: string[];
+  mine_region: string[];
+}
+
+interface NoticeOfWorkHomePageProps {
+  fetchNoticeOfWorkApplications: (params: NoWSearchParams) => Promise<INoticeOfWorkApplication>;
+  pageData: IPageData<INoticeOfWorkApplication>;
+  noticeOfWorkApplications: INoticeOfWorkApplication[];
+  mineRegionHash: object;
+  mineRegionOptions: IOption;
+  applicationTypeOptions: IOption;
+  applicationStatusOptions: IOption;
+}
 
 const defaultParams = {
   page: Strings.DEFAULT_PAGE,
@@ -51,27 +67,27 @@ const defaultParams = {
   mine_region: [],
 };
 
-export const NoticeOfWorkHomePage = (props) => {
+export const NoticeOfWorkHomePage = (props: NoticeOfWorkHomePageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const history = useHistory();
   const { search } = useLocation();
 
   const initialParams = queryString.parse(search);
-  console.log("initialParams", initialParams);
   const [params, setParams] = useState({ ...defaultParams, ...initialParams });
 
-  const renderDataFromURL = (newParams) => {
+  const renderDataFromURL = (newParams: string) => {
     const parsedParams = queryString.parse(newParams);
     props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
       setIsLoaded(true);
     });
   };
 
-  const onPageChange = (page, per_page) => {
+  const onPageChange = (page: number, per_page: number) => {
     const newParams = { ...params, page, per_page };
     setParams(newParams);
   };
 
-  const handleSearch = (searchParams) => {
+  const handleSearch = (searchParams: NoWSearchParams) => {
     const newParams = { ...searchParams, page: defaultParams.page };
     setParams(newParams);
   };
@@ -82,7 +98,7 @@ export const NoticeOfWorkHomePage = (props) => {
   }, [search]);
 
   useEffect(() => {
-    props.history.replace(routes.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(params));
+    history.replace(routes.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(params));
   }, [params]);
 
   return (
@@ -131,7 +147,7 @@ export const NoticeOfWorkHomePage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   pageData: getNoticeOfWorkPageData(state),
   mineRegionHash: getMineRegionHash(state),
@@ -140,14 +156,12 @@ const mapStateToProps = (state) => ({
   applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state, false),
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = (dispatch: Dispatch<Action>) =>
   bindActionCreators(
     {
       fetchNoticeOfWorkApplications,
     },
     dispatch
   );
-
-NoticeOfWorkHomePage.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage);
