@@ -3,14 +3,7 @@ import * as actionTypes from "../constants/actionTypes";
 import { PARTIES } from "../constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
 import { RootState } from "@/App";
-import {
-  IParty,
-  ItemMap,
-  IPartyAppt,
-  IPartiesPageData,
-  IAddPartyFormState,
-  IOption,
-} from "@mds/common";
+import { IParty, ItemMap, IPartyAppt, IPageData, IAddPartyFormState, IOption } from "@mds/common";
 
 /**
  * @file partiesReducer.js
@@ -23,7 +16,7 @@ interface PartiesState {
   partyIds: string[];
   partyRelationships: IPartyAppt[];
   allPartyRelationships: IPartyAppt[];
-  partyPageData: IPartiesPageData;
+  partyPageData: IPageData<IParty>;
   addPartyFormState: IAddPartyFormState;
   lastCreatedParty: IParty;
   inspectors: IPartyAppt[];

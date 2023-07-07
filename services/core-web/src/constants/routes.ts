@@ -243,7 +243,7 @@ export const INFORMATION_REQUIREMENTS_TABLE = {
 
 export const MINE_NOW_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/applications",
-  dynamicRoute: (id, params) =>
+  dynamicRoute: (id, params?) =>
     `/mine-dashboard/${id}/permits-and-approvals/applications?${queryString.stringify(params)}`,
   component: MineApplications,
 };
