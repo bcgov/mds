@@ -43,7 +43,7 @@ export const removeFunctionColumn = (
   return {
     key: "remove",
     render: (record) => (
-      <div align="right">
+      <div>
         <Popconfirm
           placement="topLeft"
           title={`Are you sure you want to delete ${record[documentNameColumnIndex]}?`}

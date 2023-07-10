@@ -5,7 +5,7 @@ import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import { ExpandableConfig } from "antd/lib/table/interface";
 
 interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
-  getDataSource: (record: T) => any[];
+  getDataSource?: (record: T) => any[];
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnType<any>[];

@@ -18,6 +18,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { SizeType } from "antd/lib/config-provider/SizeContext";
+import { ColumnType } from "antd/es/table";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
@@ -143,7 +145,7 @@ export const DocumentTable = (props) => {
     },
   };
 
-  let columns = props.matchChildColumnsToParent
+  let columns: ColumnType<any>[] = props.matchChildColumnsToParent
     ? [
         documentNameColumn("document_name", "File Name"),
         renderTextColumn("file_location", "File Location", !isMinimalView),
@@ -199,7 +201,7 @@ export const DocumentTable = (props) => {
   }
 
   const minimalProps = isMinimalView
-    ? { size: "small", rowClassName: "ant-table-row-minimal" }
+    ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
   return props.matchChildColumnsToParent ? (
     <CoreTable
