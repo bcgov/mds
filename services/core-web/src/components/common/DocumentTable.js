@@ -1,9 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
-import { documentNameColumn, removeFunctionColumn, uploadDateColumn } from "./DocumentColumns";
-import { renderTextColumn } from "./CoreTableCommonColumns";
+import {
+  documentNameColumn,
+  removeFunctionColumn,
+  uploadDateColumn,
+  uploadedByColumn,
+} from "./DocumentColumns";
+import { renderTextColumn, documentActionOperationsColumn } from "./CoreTableCommonColumns";
 import { Button } from "antd";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
@@ -34,6 +40,8 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   documentParent: PropTypes.string,
   documentColumns: PropTypes.arrayOf(PropTypes.object),
+  isLoaded: PropTypes.bool,
+  matchChildColumnsToParent: PropTypes.bool,
   defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
   openModal: PropTypes.func.isRequired,
   view: PropTypes.string.isRequired,
@@ -47,9 +55,38 @@ const defaultProps = {
   additionalColumnProps: [],
   documentColumns: null,
   documentParent: null,
-  defaultSortKeys: ["upload_date", "dated"], // keys to sort by when page loads
+  isLoaded: false,
+  matchChildColumnsToParent: false,
+  defaultSortKeys: ["upload_date", "dated", "update_timestamp"], // keys to sort by when page loads
   view: "standard",
   canArchiveDocuments: false,
+};
+
+const renderFileType = (file) => {
+  const index = file.lastIndexOf(".");
+  return index === -1 ? null : file.substr(index);
+};
+
+const parseFiles = (versions, documentType) =>
+  versions.map((version, index) => ({
+    key: version.mine_document_version_guid,
+    file_location:
+      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[documentType] ||
+      Strings.EMPTY_FIELD,
+    file_type: renderFileType(version.document_name) || Strings.EMPTY_FIELD,
+    number_of_versions: index === 0 ? versions.length - 1 : 0,
+    ...version,
+  }));
+
+const transformRowData = (document) => {
+  const files = parseFiles(document.versions, document.major_mine_application_document_type);
+  const currentFile = files[0];
+  const pastFiles = files.slice(1);
+
+  return {
+    ...currentFile,
+    children: pastFiles,
+  };
 };
 
 const openArchiveModal = (event, props, documents) => {
@@ -99,12 +136,27 @@ export const DocumentTable = (props) => {
     },
   };
 
-  let columns = [
-    documentNameColumn("document_name", "File Name", isMinimalView),
-    renderTextColumn("category", "Category", !isMinimalView),
-    uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
-    uploadDateColumn("dated", "Dated", !isMinimalView),
-  ];
+  let columns = props.matchChildColumnsToParent
+    ? [
+        documentNameColumn("document_name", "File Name"),
+        renderTextColumn("file_location", "File Location", !isMinimalView),
+        renderTextColumn("file_type", "File Type", !isMinimalView),
+        uploadDateColumn("update_timestamp", "Last Modified"),
+        uploadedByColumn("create_user", "Created By"),
+        documentActionOperationsColumn(),
+      ]
+    : [
+        documentNameColumn("document_name", "File Name", isMinimalView),
+        renderTextColumn("category", "Category", !isMinimalView),
+        uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
+        uploadDateColumn("dated", "Dated", !isMinimalView),
+      ];
+
+  const currentRowData = props.matchChildColumnsToParent
+    ? props.documents?.map((document) => {
+        return transformRowData(document);
+      })
+    : null;
 
   if (canDelete) {
     columns.push(removeFunctionColumn(props.removeDocument, props?.documentParent));
@@ -142,7 +194,17 @@ export const DocumentTable = (props) => {
   const minimalProps = isMinimalView
     ? { size: "small", rowClassName: "ant-table-row-minimal" }
     : null;
-  return (
+  return props.matchChildColumnsToParent ? (
+    <CoreTable
+      condition={props.isLoaded}
+      dataSource={currentRowData}
+      columns={columns}
+      expandProps={{
+        matchChildColumnsToParent: props.matchChildColumnsToParent,
+        rowExpandable: (record) => record.number_of_versions > 0,
+      }}
+    />
+  ) : (
     <CoreTable
       columns={props?.documentColumns ?? columns}
       dataSource={props.documents}

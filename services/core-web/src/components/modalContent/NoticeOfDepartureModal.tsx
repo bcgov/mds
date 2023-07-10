@@ -129,9 +129,8 @@ interface NoticeOfDepartureModalProps {
   change: (field: string, value: never) => void;
 }
 
-const NoticeOfDepartureModal: React.FC<
-  InjectedFormProps<ICreateNoD> & NoticeOfDepartureModalProps
-> = (props) => {
+const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
+  NoticeOfDepartureModalProps> = (props) => {
   const [statusOptions, setStatusOptions] = React.useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);

@@ -615,25 +615,23 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows &&
-              !this.props.isViewMode &&
-              !this.props.isRefConDocuments && (
-                <NOWActionWrapper
-                  permission={Permission.EDIT_PERMITS}
-                  tab={this.props.isAdminView ? "" : "REV"}
-                  allowAfterProcess={this.props.allowAfterProcess}
-                  ignoreDelay
+            {!this.props.selectedRows && !this.props.isViewMode && !this.props.isRefConDocuments && (
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={this.props.isAdminView ? "" : "REV"}
+                allowAfterProcess={this.props.allowAfterProcess}
+                ignoreDelay
+              >
+                <AddButton
+                  className="position-right"
+                  disabled={this.props.isViewMode}
+                  style={this.props.isAdminView ? { marginRight: "100px" } : {}}
+                  onClick={this.openAddDocumentModal}
                 >
-                  <AddButton
-                    className="position-right"
-                    disabled={this.props.isViewMode}
-                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                    onClick={this.openAddDocumentModal}
-                  >
-                    Add Document
-                  </AddButton>
-                </NOWActionWrapper>
-              )}
+                  Add Document
+                </AddButton>
+              </NOWActionWrapper>
+            )}
           </Col>
         </Row>
         <br />
@@ -675,10 +673,12 @@ export class NOWDocuments extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptionsHash:
-    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
-  noticeOfWorkApplicationDocumentTypeOptions:
-    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
+    state
+  ),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
 });

@@ -691,10 +691,12 @@ export const NOWSubmissionDocuments = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptions:
-    getDropdownNoticeOfWorkApplicationDocumentTypeOptions(state),
-  noticeOfWorkApplicationDocumentTypeOptionsHash:
-    getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
   noticeOfWork: getNoticeOfWork(state),
 });
 

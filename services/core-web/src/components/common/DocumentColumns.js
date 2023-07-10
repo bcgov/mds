@@ -15,7 +15,7 @@ export const documentNameColumn = (
   minimalView = false
 ) => {
   return minimalView
-    ? renderTaggedColumn(documentNameColumnIndex, title, "Archived")
+    ? renderTaggedColumn(documentNameColumnIndex, title)
     : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
 };
 

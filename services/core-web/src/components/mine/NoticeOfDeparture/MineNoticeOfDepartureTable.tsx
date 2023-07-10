@@ -28,8 +28,15 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const MineNoticeOfDepartureTable: React.FC<MineNoticeOfDepartureTableProps> = (props) => {
-  const { isDashboardView, isLoaded, isPaginated, sortField, sortDir, nods, openViewNodModal } =
-    props;
+  const {
+    isDashboardView,
+    isLoaded,
+    isPaginated,
+    sortField,
+    sortDir,
+    nods,
+    openViewNodModal,
+  } = props;
   const transformRowData = (baseNods) =>
     baseNods.map(
       ({

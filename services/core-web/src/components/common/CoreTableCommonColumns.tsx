@@ -3,7 +3,9 @@ import Highlight from "react-highlighter";
 import DocumentLink from "./DocumentLink";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
 import { ColumnType } from "antd/lib/table";
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import DocumentActions from "@/components/common/DocumentActions";
 
 export const renderTextColumn = (
   dataIndex: string,
@@ -72,11 +74,31 @@ export const renderHighlightedTextColumn = (
   };
 };
 
-const withTag = (text: string, elem: ReactNode) => {
+const documentWithTag = (record: any, elem: ReactNode, title: string) => {
   return (
-    <div className="inline-flex flex-between">
+    <div
+      className="inline-flex flex-between file-name-container"
+      style={!record.number_of_versions ? { marginLeft: "0" } : { marginLeft: "14px" }}
+      title={title}
+    >
       {elem}
-      <Tag>{text}</Tag>
+
+      <span className="file-history-container">
+        {record?.number_of_versions > 0 ? (
+          <span>
+            <Tooltip
+              title={`This file has ${record.number_of_versions} previous versions`}
+              placement="top"
+              mouseEnterDelay={1}
+            >
+              <Tag icon={<ClockCircleOutlined />} color="#5E46A1" className="file-version-amount">
+                {record.number_of_versions}
+              </Tag>
+            </Tooltip>
+          </span>
+        ) : null}
+        {record.showArchiveIndicator && record?.is_archived ? <Tag>{"Archived"}</Tag> : null}
+      </span>
     </div>
   );
 };
@@ -93,8 +115,13 @@ export const renderDocumentLinkColumn = (
     dataIndex,
     key: dataIndex,
     render: (text = "", record: any) => {
+      const recordWithArchiveIndicator = { ...record, showArchiveIndicator };
       const link = (
-        <div key={record.key ?? record[docManGuidIndex]} title={title}>
+        <div
+          key={record.key ?? record[docManGuidIndex]}
+          className={record.number_of_versions !== undefined ? "file-name-text" : ""}
+          style={record?.number_of_versions === 0 ? { marginLeft: "38px" } : {}}
+        >
           <DocumentLink
             documentManagerGuid={record[docManGuidIndex]}
             documentName={text}
@@ -102,7 +129,7 @@ export const renderDocumentLinkColumn = (
           />
         </div>
       );
-      return showArchiveIndicator && record.is_archived ? withTag("Archived", link) : link;
+      return documentWithTag(recordWithArchiveIndicator, link, title);
     },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
@@ -111,7 +138,6 @@ export const renderDocumentLinkColumn = (
 export const renderTaggedColumn = (
   dataIndex: string,
   title: string,
-  tag: string,
   sortable = false,
   placeHolder = ""
 ) => {
@@ -119,10 +145,33 @@ export const renderTaggedColumn = (
     title,
     dataIndex,
     key: dataIndex,
-    render: (text: any) => {
-      const content = <div title={title}>{text ?? placeHolder}</div>;
-      return withTag(tag, content);
+    render: (text: any, record: any) => {
+      const content = (
+        <div
+          className={record.number_of_versions !== undefined ? "file-name-text" : ""}
+          style={record?.number_of_versions === 0 ? { marginLeft: "38px" } : {}}
+        >
+          {text ?? placeHolder}
+        </div>
+      );
+      return documentWithTag(record, content, title);
     },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+  };
+};
+
+export const documentActionOperationsColumn = () => {
+  return {
+    render: (record: any) => {
+      return (
+        <DocumentActions
+          openDocument
+          document={{
+            documentName: record.document_name,
+            documentMangerGuid: record.document_manager_guid,
+          }}
+        />
+      );
+    },
   };
 };

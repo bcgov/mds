@@ -68,10 +68,14 @@ const menuOptions = [
 export class MajorMineApplicationTab extends Component {
   state = {
     fixedTop: false,
+    isLoaded: false,
   };
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData().then(() => {
+      this.setState({ isLoaded: true });
+    });
+
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
@@ -139,6 +143,10 @@ export class MajorMineApplicationTab extends Component {
                 document_name: doc.document_name,
                 category: null,
                 upload_date: doc.upload_date,
+                update_timestamp: doc.update_timestamp,
+                create_user: doc.create_user,
+                major_mine_application_document_type: doc.major_mine_application_document_type_code,
+                versions: doc.versions,
               },
               ...docs,
             ],
@@ -149,6 +157,8 @@ export class MajorMineApplicationTab extends Component {
           onArchivedDocuments={() => this.fetchData()}
           excludedColumnKeys={["dated", "category", "remove"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          isLoaded={this.state.isLoaded}
+          matchChildColumnsToParent={true}
         />
       </div>
     );
