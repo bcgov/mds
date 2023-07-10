@@ -50,7 +50,7 @@ Cypress.Commands.add("login", () => {
     "include",
     "cypress-keycloak-4c2ba9-dev.apps.silver.devops.gov.bc.ca"
   );
-  cy.get("#username").type("cypress");
-  cy.get("#password").type("cypress");
+  cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
+  cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));
   cy.get("#kc-login").click();
 });
