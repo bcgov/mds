@@ -298,6 +298,7 @@ class DocumentResource(Resource):
     class DocumentZipResource(Resource):
         @requires_any_of(DOCUMENT_UPLOAD_ROLES)
         def post(self):
+            from app.services.commands_helper import create_zip_task
             document_guids = request.json.get('document_guids', [])
             if not document_guids:
                 raise BadRequest('No document guids provided')

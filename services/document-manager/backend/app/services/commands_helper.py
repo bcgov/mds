@@ -165,5 +165,5 @@ def create_zip_task(wait, doc_ids):
     """Creates a task that zips documents."""
     docs = Document.query.filter(Document.document_id.in_(doc_ids)).all()
     if (len(docs) == 0):
-        return 'No documents are stored on the object store'
+        return 'No documents matching the passed ids are stored on the object store'
     return start_job(wait, 'create_zip', docs, zip_docs)
