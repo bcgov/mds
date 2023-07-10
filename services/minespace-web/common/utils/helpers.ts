@@ -6,7 +6,6 @@ import {
 } from "@common/constants/strings";
 import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
-/* eslint-disable */
 import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
@@ -46,10 +45,10 @@ export const createItemMap = <T>(array: T[], idField: string): ItemMap<T> => {
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
 export const createDropDownList = (
-  array,
-  labelField,
-  valueField,
-  isActiveField = false,
+  array: any[],
+  labelField: string,
+  valueField: string,
+  isActiveField: string | false = false,
   subType = null,
   labelFormatter = null,
   orderByAlphabetically = true
@@ -57,7 +56,6 @@ export const createDropDownList = (
   const options = array.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
-    // @ts-ignore
     isActive: isActiveField ? item[isActiveField] : true,
     subType: subType ? item[subType] : null,
   }));
@@ -324,6 +322,7 @@ const _flattenObject = (ob, isArrayItem = false) => {
     if (typeof ob[i] === "object") {
       flatObject = _flattenObject(ob[i], Array.isArray(ob[i]));
       for (const x in flatObject) {
+        // eslint-disable-next-line no-prototype-builtins
         if (!flatObject.hasOwnProperty(x)) {
           continue;
         }
@@ -337,7 +336,7 @@ const _flattenObject = (ob, isArrayItem = false) => {
 };
 
 const clean = (obj) => {
-  for (var propName in obj) {
+  for (const propName in obj) {
     if (obj[propName] === null || obj[propName] === undefined) {
       delete obj[propName];
     }
@@ -345,7 +344,7 @@ const clean = (obj) => {
 };
 
 const normalizeFlattenedArrayProperties = (obj) => {
-  for (var propName in obj) {
+  for (const propName in obj) {
     if (propName.includes(".[")) {
       const newKey = propName.replace(".[", "[");
       Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, propName));
@@ -381,6 +380,14 @@ export const renderLabel = (options, keyStr) =>
     ? options.find((item) => item.value === keyStr).label
     : "";
 
+const getDurationTextOrDefault = (duration, unit) => {
+  if (duration <= 0) {
+    return "";
+  }
+  unit = duration === 1 ? unit : unit + "s";
+  return `${duration} ${unit}`;
+};
+
 export const getDurationText = (startDate, endDate) => {
   const duration = moment.duration(moment(endDate).diff(moment(startDate)));
   const milliseconds = duration.asMilliseconds();
@@ -413,14 +420,6 @@ export const getDurationTextInDays = (duration) => {
   const daysText = getDurationTextOrDefault(days, "Day");
 
   return `${yearsText} ${monthsText} ${daysText}`;
-};
-
-const getDurationTextOrDefault = (duration, unit) => {
-  if (duration <= 0) {
-    return "";
-  }
-  unit = duration === 1 ? unit : unit + "s";
-  return `${duration} ${unit}`;
 };
 
 // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
@@ -546,7 +545,7 @@ export const formatBooleanToString = (value, defaultValue) => {
 
 export const formatUrlToUpperCaseString = (url) => {
   const stopWords = ["what", "which", "who", "and", "but"];
-  let urlArr = url.split("-");
+  const urlArr = url.split("-");
   return urlArr
     .map((word) => {
       return stopWords.includes(word) ? [word] : word.charAt(0).toUpperCase() + word.slice(1);
