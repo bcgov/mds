@@ -65,8 +65,7 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
   return (
     <div>
       <Dropdown menu={{ items }} placement="bottomLeft">
-        {/* @ts-ignore */}
-        <Button type="secondary" className="permit-table-button">
+        <Button className="permit-table-button">
           Actions
           <img
             className="padding-sm--right icon-svg-filter"

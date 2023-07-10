@@ -27,7 +27,6 @@ exports[`DocumentActions renders properly 1`] = `
   >
     <Button
       className="permit-table-button"
-      type="secondary"
     >
       Actions
       <img
