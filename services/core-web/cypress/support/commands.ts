@@ -26,8 +26,8 @@
 // eslint-disable-next-line consistent-return
 
 Cypress.Commands.add("login", () => {
-  const url = Cypress.env("CYPRESS_TEST_URL");
-  const environmentUrl = `${Cypress.env("CYPRESS_TEST_URL")}/env`;
+  const url = Cypress.env("CYPRESS_CORE_WEB_TEST_URL");
+  const environmentUrl = `${url}/env`;
 
   const response = {
     backend: Cypress.env("CYPRESS_BACKEND"),
@@ -46,7 +46,10 @@ Cypress.Commands.add("login", () => {
     req.reply(response);
   });
   cy.visit(url);
-  cy.url({ timeout: 10000 }).should("include", "localhost:8080");
+  cy.url({ timeout: 10000 }).should(
+    "include",
+    "cypress-keycloak-4c2ba9-dev.apps.silver.devops.gov.bc.ca"
+  );
   cy.get("#username").type("cypress");
   cy.get("#password").type("cypress");
   cy.get("#kc-login").click();
