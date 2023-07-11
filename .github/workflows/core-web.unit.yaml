@@ -37,13 +37,11 @@ jobs:
       - name: build-core-web
         run: cd services/core-web/ && yarn build
 
-      - name: start-core-web
-        needs: build-core-web
+      - name: start-core-web        
         run: cd services/core-web/ && yarn run http-server build -p 3000
       
-      - name: Run cypress tests
-        needs: start-core-web
-        run: cd services/core-web/ && yarn && yarn cypress run
+      - name: Run cypress tests        
+        run: cd services/core-web/ && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
