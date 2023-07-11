@@ -53,6 +53,8 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
           className="tab__content"
         >
           <withRouter(NoticeOfWorkTable)
+            applicationStatusOptions={Array []}
+            applicationTypeOptions={Array []}
             defaultParams={
               Object {
                 "application_type": "NOW",
@@ -73,6 +75,8 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             }
             handleSearch={[Function]}
             isLoaded={false}
+            mineRegionHash={Object {}}
+            mineRegionOptions={Object {}}
             noticeOfWorkApplications={
               Array [
                 Object {

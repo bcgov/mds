@@ -1,49 +1,41 @@
-import React, { Component } from "react";
+import React, { FC } from "react";
 import { Input, Button, Badge } from "antd";
 import { isEmpty } from "lodash";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
-import { Link, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, useLocation, withRouter } from "react-router-dom";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import PropTypes from "prop-types";
 import {
   formatDate,
   optionsFilterLabelAndValue,
   optionsFilterLabelOnly,
 } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
+import { INoticeOfWorkApplication, IOption } from "@mds/common";
+import { ColumnType } from "antd/es/table";
+import { SortOrder } from "antd/es/table/interface";
+import { NoWSearchParams } from "./NoticeOfWorkHomePage";
 
 /**
- * @class NoticeOfWorkTable - paginated list of notice of work applications
+ * NoticeOfWorkTable - paginated list of notice of work applications
  */
 
-const propTypes = {
-  handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
-  searchParams: PropTypes.objectOf(PropTypes.any).isRequired,
-  defaultParams: PropTypes.objectOf(PropTypes.any).isRequired,
-  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
-  applicationStatusOptions: CustomPropTypes.options.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
-  }).isRequired,
-};
-
-const defaultProps = {
-  sortField: undefined,
-  sortDir: undefined,
-  noticeOfWorkApplications: [],
-};
+interface NoticeOfWorkTableProps {
+  noticeOfWorkApplications: INoticeOfWorkApplication[];
+  isLoaded: boolean;
+  handleSearch: (searchParams: NoWSearchParams) => void;
+  sortField: string;
+  sortDir: string;
+  searchParams: NoWSearchParams;
+  defaultParams: NoWSearchParams;
+  mineRegionHash: object;
+  mineRegionOptions: IOption;
+  applicationTypeOptions: IOption;
+  applicationStatusOptions: IOption;
+}
 
 const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
@@ -63,16 +55,30 @@ const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters,
   updateNOWList(params);
 };
 
-const applySortIndicator = (_columns, field, dir) =>
-  _columns.map((column) => ({
-    ...column,
-    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
-  }));
+const applySortIndicator = (
+  columns: ColumnType<INoticeOfWorkApplication>[],
+  field: string,
+  dir: string
+): ColumnType<INoticeOfWorkApplication>[] =>
+  columns.map((column) => {
+    return {
+      ...column,
+      sortOrder: dir && column.key === field ? (dir.concat("end") as SortOrder) : null,
+    };
+  });
 
 const pageTitle = "Browse Notices of Work";
 
-export class NoticeOfWorkTable extends Component {
-  ensureListValue = (value) => {
+const NoticeOfWorkTable: FC<RouteComponentProps & NoticeOfWorkTableProps> = ({
+  sortField,
+  sortDir,
+  noticeOfWorkApplications = [],
+  ...props
+}: NoticeOfWorkTableProps) => {
+  const location = useLocation();
+  let searchInput: string;
+
+  const ensureListValue = (value: string[] | string) => {
     if (Array.isArray(value)) {
       return value;
     }
@@ -82,19 +88,19 @@ export class NoticeOfWorkTable extends Component {
     return [];
   };
 
-  createLinkTo = (route, record) => {
+  const createLinkTo = (route, record: INoticeOfWorkApplication) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
         applicationPageFromRoute: {
-          route: this.props.location.pathname + this.props.location.search,
+          route: location.pathname + location.search,
           title: pageTitle,
         },
       },
     };
   };
 
-  transformRowData = (applications) =>
+  const transformRowData = (applications: INoticeOfWorkApplication[]) =>
     applications.map((application) => ({
       key: application.now_application_guid,
       now_application_guid: application.now_application_guid,
@@ -102,7 +108,7 @@ export class NoticeOfWorkTable extends Component {
       mine_name: application.mine_name || Strings.EMPTY_FIELD,
       mine_guid: application.mine_guid,
       mine_region: application.mine_region
-        ? this.props.mineRegionHash[application.mine_region]
+        ? props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
       notice_of_work_type_description:
         application.notice_of_work_type_description || Strings.EMPTY_FIELD,
@@ -119,72 +125,75 @@ export class NoticeOfWorkTable extends Component {
       is_historic: application.is_historic,
     }));
 
-  filterProperties = (name, field) => ({
+  const filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
+      // undefined = nothing entered, but '' = user has cleared the text
+      const searchInputValue =
+        selectedKeys[0] !== undefined ? selectedKeys[0] : props.searchParams[field];
       return (
         <div style={{ padding: 8 }}>
           <Input
             id={field}
             ref={(node) => {
-              this.searchInput = node && node?.input?.value;
+              searchInput = node && node?.input?.value;
             }}
             placeholder={`Search ${name}`}
-            value={selectedKeys[0] || this.props.searchParams[field]}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            value={searchInputValue}
+            onChange={(e) => setSelectedKeys([e.target.value])}
             onPressEnter={() => {
-              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
+              props.handleSearch({ ...props.searchParams, [field]: searchInput });
             }}
-            style={{ width: 188, marginBottom: 8, display: "block" }}
+            style={{ marginBottom: 8 }}
             allowClear
           />
-          <Button
-            type="primary"
-            onClick={() => {
-              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
-            }}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => {
-              this.props.handleSearch({
-                ...this.props.searchParams,
-                [field]: this.props.defaultParams[field],
-              });
-            }}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
+          <div>
+            <Button
+              type="primary"
+              onClick={() => {
+                props.handleSearch({ ...props.searchParams, [field]: searchInput });
+              }}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90, marginRight: 8 }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => {
+                props.handleSearch({
+                  ...props.searchParams,
+                  [field]: props.defaultParams[field],
+                });
+              }}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+          </div>
         </div>
       );
     },
-    filterIcon: (filtered) => (
+    filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
 
-  columns = () => [
+  const columns: ColumnType<INoticeOfWorkApplication>[] = [
     {
       title: "Number",
       key: "now_number",
       dataIndex: "now_number",
-      sortField: "now_number",
       sorter: true,
-      ...this.filterProperties("Number", "now_number"),
+      ...filterProperties("Number", "now_number"),
       render: (text) => <div title="Number">{text}</div>,
     },
     {
       title: "Mine",
       key: "mine_name",
       dataIndex: "mine_name",
-      sortField: "mine_name",
       sorter: true,
-      ...this.filterProperties("Mine", "mine_name"),
+      ...filterProperties("Mine", "mine_name"),
       render: (text, record) =>
         (record.mine_guid && (
           <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mine_guid)} title="Mine">
@@ -196,10 +205,9 @@ export class NoticeOfWorkTable extends Component {
       title: "Region",
       key: "mine_region",
       dataIndex: "mine_region",
-      sortField: "mine_region",
       sorter: true,
-      filteredValue: this.ensureListValue(this.props.searchParams.mine_region),
-      filters: optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
+      filteredValue: ensureListValue(props.searchParams.mine_region),
+      filters: optionsFilterLabelAndValue(props.mineRegionOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
       render: (text) => <div title="Region">{text}</div>,
@@ -208,10 +216,9 @@ export class NoticeOfWorkTable extends Component {
       title: "Type",
       key: "notice_of_work_type_description",
       dataIndex: "notice_of_work_type_description",
-      sortField: "notice_of_work_type_description",
       sorter: true,
-      filteredValue: this.ensureListValue(this.props.searchParams.notice_of_work_type_description),
-      filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
+      filteredValue: ensureListValue(props.searchParams.notice_of_work_type_description),
+      filters: optionsFilterLabelOnly(props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
       render: (text) => <div title="Type">{text}</div>,
@@ -220,9 +227,8 @@ export class NoticeOfWorkTable extends Component {
       title: "Lead Inspector",
       key: "lead_inspector_name",
       dataIndex: "lead_inspector_name",
-      sortField: "lead_inspector_name",
       sorter: true,
-      ...this.filterProperties("Lead Inspector", "lead_inspector_name"),
+      ...filterProperties("Lead Inspector", "lead_inspector_name"),
       render: (text, record) =>
         (record.lead_inspector_party_guid && (
           <Link
@@ -237,9 +243,8 @@ export class NoticeOfWorkTable extends Component {
       title: "Issuing Inspector",
       key: "issuing_inspector_name",
       dataIndex: "issuing_inspector_name",
-      sortField: "issuing_inspector_name",
       sorter: true,
-      ...this.filterProperties("Issuing Inspector", "issuing_inspector_name"),
+      ...filterProperties("Issuing Inspector", "issuing_inspector_name"),
       render: (text, record) =>
         (record.issuing_inspector_party_guid && (
           <Link
@@ -254,12 +259,9 @@ export class NoticeOfWorkTable extends Component {
       title: "Status",
       key: "now_application_status_description",
       dataIndex: "now_application_status_description",
-      sortField: "now_application_status_description",
       sorter: true,
-      filteredValue: this.ensureListValue(
-        this.props.searchParams.now_application_status_description
-      ),
-      filters: optionsFilterLabelOnly(this.props.applicationStatusOptions).sort((a, b) =>
+      filteredValue: ensureListValue(props.searchParams.now_application_status_description),
+      filters: optionsFilterLabelOnly(props.applicationStatusOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
       render: (text) => (
@@ -272,17 +274,16 @@ export class NoticeOfWorkTable extends Component {
       title: "Received",
       key: "received_date",
       dataIndex: "received_date",
-      sortField: "received_date",
       sorter: true,
+      defaultSortOrder: "descend",
       render: (text) => <div title="Received">{text}</div>,
     },
     {
       title: "Source",
       key: "originating_system",
       dataIndex: "originating_system",
-      sortField: "originating_system",
       sorter: true,
-      filteredValue: this.ensureListValue(this.props.searchParams.originating_system),
+      filteredValue: ensureListValue(props.searchParams.originating_system),
       filters: [
         { text: "Core", value: "Core" },
         { text: "NROS", value: "NROS" },
@@ -294,7 +295,7 @@ export class NoticeOfWorkTable extends Component {
     {
       title: "Application",
       dataIndex: "document",
-      kay: "document",
+      key: "document",
       render: (text, record) =>
         !isEmpty(text) ? (
           <div title="Application" className="cap-col-height">
@@ -313,15 +314,15 @@ export class NoticeOfWorkTable extends Component {
     },
     {
       key: "operations",
-      render: (text, record) =>
+      render: (record) =>
         record.key && (
           <div className="btn--middle flex">
-            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+            <Link to={createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
               <Button type="primary" disabled={record.is_historic}>
                 Open
               </Button>
             </Link>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
+            <Link to={createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Button type="primary" size="small" ghost>
                 <EyeOutlined className="icon-lg icon-svg-filter" />
               </Button>
@@ -331,23 +332,14 @@ export class NoticeOfWorkTable extends Component {
     },
   ];
 
-  render() {
-    return (
-      <CoreTable
-        condition={this.props.isLoaded}
-        columns={applySortIndicator(
-          this.columns(this.props),
-          this.props.sortField,
-          this.props.sortDir
-        )}
-        onChange={handleTableChange(this.props.handleSearch, this.props.searchParams)}
-        dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
-      />
-    );
-  }
-}
-
-NoticeOfWorkTable.propTypes = propTypes;
-NoticeOfWorkTable.defaultProps = defaultProps;
+  return (
+    <CoreTable
+      condition={props.isLoaded}
+      columns={applySortIndicator(columns, sortField, sortDir)}
+      onChange={handleTableChange(props.handleSearch, props.searchParams)}
+      dataSource={transformRowData(noticeOfWorkApplications)}
+    />
+  );
+};
 
 export default withRouter(NoticeOfWorkTable);

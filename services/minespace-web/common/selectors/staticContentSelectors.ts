@@ -2,6 +2,7 @@ import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
 import { createLabelHash, createDropDownList, compareCodes } from "../utils/helpers";
+import { RootState } from "@/App";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -62,7 +63,8 @@ export const {
   getProjectDecisionPackageStatusCodes,
 } = staticContentReducer;
 
-const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
+const getVisibilityFilterOption = (_state, showActiveOnly: true | undefined = true) =>
+  showActiveOnly;
 
 const getOptions = (transformOptionsFunc, showActiveOnly) => {
   const options = transformOptionsFunc();
@@ -296,7 +298,7 @@ export const getIncidentCategoryCodeHash = createSelector(
   createLabelHash
 );
 
-const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+const formatComplianceCodeValueOrLabel = (code, showDescription = false) => {
   const { section, sub_section, paragraph, sub_paragraph, description } = code;
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
   const formattedParagraph = paragraph ? `.${paragraph}` : "";
@@ -531,11 +533,14 @@ export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
   createLabelHash
 );
 
+// Typescript issues with this file when called with (state, false). Simple solution is to use "as" (https://github.com/reduxjs/reselect/issues/459)
+// possibly related to it picking the wrong signature out of 97 overloads
+// for more info: https://github.com/reduxjs/reselect/issues/550 https://github.com/microsoft/TypeScript/issues/45147
 export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelectorWrapper(
   getNoticeOfWorkApplicationTypeOptions,
   createDropDownList,
   ["description", "notice_of_work_type_code", "active_ind"]
-);
+) as (state: RootState, showActiveOnly: boolean) => [];
 
 export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationTypeOptions],
