@@ -32,13 +32,14 @@ jobs:
         run: cd services/common/ && yarn build
 
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
-      
-      - name: start-common-package
-        run: cd services/common/ && yarn watch
+        run: cd services/core-web/ && yarn && yarn test 
+
+      - name: build-core-web
+        run: cd services/core-web/ && yarn build
 
       - name: start-core-web
-        run: cd services/core-web/ && yarn serve
+        needs: build-core-web
+        run: cd services/core-web/ && yarn run http-server build -p 3000
       
       - name: Run cypress tests
         needs: start-core-web
