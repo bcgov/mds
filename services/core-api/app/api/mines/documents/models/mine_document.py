@@ -93,7 +93,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'document_name': self.document_name,
             'upload_date': str(self.upload_date),
             'create_user': self.create_user,
-            'update_timestamp': self.update_timestamp
+            'update_timestamp': str(self.update_timestamp)
         }
 
         to_return = [current_version]
@@ -110,7 +110,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
                 'document_name': self.document_name,
                 'upload_date': str(self.upload_date),
                 'create_user': random.choice(users),
-                'update_timestamp': self.update_timestamp
+                'update_timestamp': str(self.update_timestamp)
             })
 
         return to_return
