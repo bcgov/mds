@@ -4,7 +4,7 @@ import io
 import json
 from tusclient import client
 
-from flask import Response, current_app
+from flask import Response, current_app, jsonify
 from flask_restplus import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
@@ -19,6 +19,34 @@ ALLOWED_DOCUMENT_CATEGORIES = [
 
 class DocumentManagerService():
     document_manager_document_resource_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
+
+    @classmethod
+    def validateFileNameAndInitializeFileUploadWithDocumentManager(cls, request, mine, document_category):
+        
+        metadata = cls._parse_request_metadata(request)
+        file_name = metadata.get('filename')
+        
+        url = f'{Config.DOCUMENT_MANAGER_URL}/document-search?document_name={file_name}'
+        
+        resp = requests.get(
+            url = url,
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            cookies=request.cookies)
+        
+        if resp.status_code == 404:
+          print(file_name, 'is a new file name and good to go')
+          return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
+        elif resp.status_code == 200: 
+          #TODO send archived info.
+          docman_resp =  resp.content
+          new_info = {"status" : "File already exist with the given name", "status_code": 409}
+          new_resp = json.loads(docman_resp)
+          new_resp.update(new_info)
+          resp.headers['Content-Length'] = str(len(json.dumps(new_resp)))
+          return Response(resp.content, 409, resp.headers.items())
+        else:
+          return resp
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):

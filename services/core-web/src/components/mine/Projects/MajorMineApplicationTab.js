@@ -18,6 +18,9 @@ import UpdateMajorMineAppStatusForm from "@/components/Forms/majorMineApplicatio
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import { Button } from "antd";
+import { modalConfig } from "@/components/modalContent/config";
+import { openModal, closeModal } from "@common/actions/modalActions";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -29,6 +32,8 @@ const propTypes = {
   majorMineAppStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   updateMajorMineApplication: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const menuOptions = [
@@ -93,6 +98,43 @@ export class MajorMineApplicationTab extends Component {
       .then(() => this.props.fetchProjectById(projectGuid));
   };
 
+  handleOpenModal = () => {
+    let content = modalConfig.UPLOAD_MAJOR_MINE_APPLICATION_DOCUMENT_MODAL;
+
+    return this.props.openModal({
+      props: {
+        title: "Upload Documents",
+        contentTitle: "Upload Documents",
+        instructions: "Please upload all relevant documentation below.",
+        projectGuid: this.props.project?.project_guid,
+        modalType: "upload-document",
+        closeModal: this.props.closeModal,
+        handleSubmit: this.handleUploadDocument,
+        afterClose: () => {},
+        // optionalProps,
+      },
+      content,
+    });
+  };
+
+  handleUploadDocument = (event, values, flags) => {
+    const payload = {
+      documents: values.map((doc) => {
+        this.checkFileExistance(doc.document_name);
+        return {
+          ...doc,
+          // project_decision_package_document_type_code,
+        };
+      }),
+      status_code: this.props.formValues?.status_code,
+    };
+    return this.props.closeModal();
+  };
+
+  checkFileExistance = (name) => {
+    console.log("FileName: ", name);
+  };
+
   renderDocumentSection = (
     sectionTitle,
     sectionHref,
@@ -109,7 +151,20 @@ export class MajorMineApplicationTab extends Component {
 
     return (
       <div id={sectionHref}>
-        {titleElement}
+        {
+          <div className="inline-flex between">
+            {titleElement}
+            {
+              <Button
+                type="primary"
+                style={{ justifyContent: "flex-end" }}
+                onClick={() => this.handleOpenModal()}
+              >
+                + Add Documents
+              </Button>
+            }
+          </div>
+        }
         <DocumentTable
           documents={sectionDocuments?.reduce(
             (docs, doc) => [
@@ -273,6 +328,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       updateMajorMineApplication,
       fetchProjectById,
+      openModal,
+      closeModal,
     },
     dispatch
   );

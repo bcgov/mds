@@ -29,5 +29,7 @@ class MajorMineApplicationDocumentUploadResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
+        resp = DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
             request, mine, 'major_mine_application')
+
+        return resp

@@ -14,6 +14,7 @@ import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
+import ErrorList from "antd/lib/form/ErrorList";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -75,12 +76,13 @@ class FileUpload extends React.Component {
               message: `Failed to upload ${file.name}: ${err}`,
               duration: 10,
             });
+            this.props.onError(file.name, err);
             error(err);
           },
           onProgress: (bytesUploaded, bytesTotal) => {
             progress(true, bytesUploaded, bytesTotal);
           },
-          onSuccess: () => {
+          onSuccess: (res) => {
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);

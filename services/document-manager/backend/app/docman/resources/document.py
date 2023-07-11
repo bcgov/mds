@@ -343,3 +343,15 @@ class DocumentResource(Resource):
         if not document:
             raise NotFound('Document not found')
         return document
+
+@api.route(f'/document-search')
+class DocumentSearchResource(Resource):
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    def get(self):
+      document_name = request.args.get('document_name')
+      document = Document.query.filter_by(file_display_name=document_name).first()
+  
+      if not document:
+        return {"status" : "not found"}, 404
+      else: 
+        return Document.json(document), 200
