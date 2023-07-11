@@ -15,19 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
-
-      - name: Login to OpenShift cluster
-        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      
       - name: Retrieve environment variables
         run: |
-          echo "CYPRESS_TEST_USER=${{ env.CYPRESS_TEST_USER }}"
+          echo "CYPRESS_TEST_USER=${{ secrets.CYPRESS_TEST_USER }}"
           echo "CYPRESS_TEST_PASSWORD=${{ secrets.CYPRESS_TEST_PASSWORD }}"
-          echo "CYPRESS_CORE_WEB_TEST_URL=${{ env.CYPRESS_CORE_WEB_TEST_URL }}"
-          echo "CYPRESS_BACKEND=${{ env.CYPRESS_BACKEND }}"
-          echo "CYPRESS_API_URL=${{ env.CYPRESS_API_URL }}"
-          echo "CYPRESS_KEYCLOAK_URL=${{ env.CYPRESS_KEYCLOAK_URL }}"
-          echo "CYPRESS_ENVIRONMENT=${{ env.CYPRESS_ENVIRONMENT }}"
-          echo "CYPRESS_DOC_MAN_URL=${{ env.CYPRESS_DOC_MAN_URL }}"
+          echo "CYPRESS_CORE_WEB_TEST_URL=${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}"
+          echo "CYPRESS_BACKEND=${{ secrets.CYPRESS_BACKEND }}"
+          echo "CYPRESS_API_URL=${{ secrets.CYPRESS_API_URL }}"
+          echo "CYPRESS_KEYCLOAK_URL=${{ secrets.CYPRESS_KEYCLOAK_URL }}"
+          echo "CYPRESS_ENVIRONMENT=${{ secrets.CYPRESS_ENVIRONMENT }}"
+          echo "CYPRESS_DOC_MAN_URL=${{ secrets.CYPRESS_DOC_MAN_URL }}"
 
       - uses: actions/cache@v3
         name: Cache yarn
