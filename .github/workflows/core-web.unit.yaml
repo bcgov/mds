@@ -39,8 +39,11 @@ jobs:
           cd services/core-web/
           NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
-      - name: Start core web and cypress tests    
-        run: cd services/core-web/ && yarn run http-server build -p 3000 && yarn cypress run
+      - name: start-core-web        
+        run: cd services/core-web/ && yarn run http-server build -p 3000 &
+      
+      - name: Run cypress tests        
+        run: cd services/core-web/ && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
