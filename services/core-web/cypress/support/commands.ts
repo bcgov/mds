@@ -33,12 +33,12 @@ Cypress.Commands.add("login", () => {
     backend: Cypress.env("CYPRESS_BACKEND"),
     apiUrl: Cypress.env("CYPRESS_API_URL"),
     docManUrl: Cypress.env("CYPRESS_DOC_MAN_URL"),
-    matomoUrl: Cypress.env("MATOMO_URL"),
-    filesystemProviderUrl: Cypress.env("FILESYSTEM_PROVIDER_URL"),
-    keycloak_clientId: Cypress.env("KEYCLOAK_CLIENT_ID"),
-    keycloak_resource: Cypress.env("KEYCLOAK_RESOURCE"),
+    matomoUrl: Cypress.env("CYPRESS_MATOMO_URL"),
+    filesystemProviderUrl: Cypress.env("CYPRESS_FILE_SYSTEM_PROVIDER_URL"),
+    keycloak_clientId: Cypress.env("CYPRESS_KEYCLOAK_CLIENT_ID"),
+    keycloak_resource: Cypress.env("CYPRESS_KEYCLOAK_RESOURCE"),
     keycloak_url: Cypress.env("CYPRESS_KEYCLOAK_URL"),
-    keycloak_idpHint: Cypress.env("KEYCLOAK_IDP_HINT"),
+    keycloak_idpHint: Cypress.env("CYPRESS_KEYCLOAK_IDP_HINT"),
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
   };
 
