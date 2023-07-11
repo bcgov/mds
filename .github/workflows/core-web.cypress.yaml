@@ -15,17 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
-      
-      - name: Retrieve environment variables
-        run: |
-          echo "CYPRESS_TEST_USER=${{ secrets.CYPRESS_TEST_USER }}"
-          echo "CYPRESS_TEST_PASSWORD=${{ secrets.CYPRESS_TEST_PASSWORD }}"
-          echo "CYPRESS_CORE_WEB_TEST_URL=${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}"
-          echo "CYPRESS_BACKEND=${{ secrets.CYPRESS_BACKEND }}"
-          echo "CYPRESS_API_URL=${{ secrets.CYPRESS_API_URL }}"
-          echo "CYPRESS_KEYCLOAK_URL=${{ secrets.CYPRESS_KEYCLOAK_URL }}"
-          echo "CYPRESS_ENVIRONMENT=${{ secrets.CYPRESS_ENVIRONMENT }}"
-          echo "CYPRESS_DOC_MAN_URL=${{ secrets.CYPRESS_DOC_MAN_URL }}"
 
       - uses: actions/cache@v3
         name: Cache yarn
@@ -46,3 +35,14 @@ jobs:
 
       - name: Run cypress tests
         run: cd services/core-web/ && yarn && yarn cypress run
+        env:
+          CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
+          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+          CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
+          CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
+          CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
+          CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
+          CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
+          CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
+          
+
