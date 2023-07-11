@@ -41,6 +41,7 @@ jobs:
         run: cd services/core-web/ && yarn serve
       
       - name: Run cypress tests
+        needs: start-core-web
         run: cd services/core-web/ && yarn && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
