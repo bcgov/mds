@@ -35,7 +35,9 @@ jobs:
         run: cd services/core-web/ && yarn && yarn test 
 
       - name: build-core-web
-        run: cd services/core-web/ && yarn build
+        run: |
+          cd services/core-web/
+          NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
       - name: start-core-web        
         run: cd services/core-web/ && yarn run http-server build -p 3000
