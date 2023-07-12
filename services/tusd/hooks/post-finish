@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# print a message to the tusd log
+echo "post-finish hook called"
+
+# Set the AWS credentials
+export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
+# Read the JSON-encoded object from stdin
+read -r stdin_data
+
+# Extract the Upload object from the JSON-encoded object
+upload=$(echo "$stdin_data" | jq -r '.Upload')
+
+# Extract all the HTTP headers from the JSON-encoded object
+headers=$(echo "$stdin_data" | jq -r '.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
+
+# Extract the ID and Size properties from the Upload object
+id=$(echo "$upload" | jq -r '.ID')
+size=$(echo "$upload" | jq -r '.Size')
+
+echo "Upload ID $id ($size bytes) finished"
+
+storageKey=$(echo "$upload" | jq -r '.Storage.Key')
+
+versions=$(aws s3api list-object-versions --bucket $S3_BUCKET_ID --prefix $storageKey --endpoint-url "https://$S3_ENDPOINT" --output json)
+
+# Retrieve the version number of the uploaded file and the last modified date
+version=$(echo "$versions" | jq -r --arg storageKey "$storageKey" '{ versionId: (.Versions[] | select(.Key == $storageKey and .IsLatest == true) | .VersionId), timestamp: (.Versions[] | select(.Key == $storageKey and .IsLatest == true) | .LastModified) }')
+
+aws_exit_code=$?
+if [ $aws_exit_code -ne 0 ]; then
+  echo "aws command failed with exit code $aws_exit_code"
+fi
+
+# Forward the request through the hooks-http option
+json_data=$(echo "{\"version\": $version, \"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
+curl -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks

@@ -23,8 +23,6 @@ class DocumentManagerService():
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
         metadata = cls._parse_request_metadata(request)
-        if not metadata or not metadata.get('filename'):
-            raise Exception('Request metadata missing filename')
 
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
@@ -35,6 +33,25 @@ class DocumentManagerService():
 
         resp = requests.post(
             url=cls.document_manager_document_resource_url,
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            data=data,
+            cookies=request.cookies)
+
+        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def initializeFileVersionUploadWithDocumentManager(cls, request, mine_document):
+        metadata = cls._parse_request_metadata(request)
+
+        data = {
+            'filename': metadata.get('filename')
+        }
+
+        version_url = f'{cls.document_manager_document_resource_url}/{mine_document.document_manager_guid}/versions'
+
+        resp = requests.post(
+            url=version_url,
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
@@ -103,4 +120,17 @@ class DocumentManagerService():
             (key, value) = key_value.split(' ')
             metadata[key] = base64.b64decode(value).decode('utf-8')
 
+        if not metadata or not metadata.get('filename'):
+            raise Exception('Request metadata missing filename')
+
         return metadata
+
+    @classmethod
+    def get_document_version(cls, request, document_manager_guid, document_manager_version_guid):
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/versions/{document_manager_version_guid}',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+        )
+
+        return resp.json()
