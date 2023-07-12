@@ -23,3 +23,7 @@
 .vimrc
 .nvimrc
 .tern-port
+
+# cypress
+/cypress/videos
+/cypress/screenshots
