@@ -6,8 +6,8 @@ import "@ant-design/compatible/assets/index.css";
 import { MAJOR_MINE_APPLICATION_DOCUMENTS } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
-import { Button, Modal } from "antd";
-import { YELLOW_HAZARD } from "@/constants/assets";
+import { Button, Modal, Popconfirm } from "antd";
+
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
@@ -43,7 +43,8 @@ export const MajorMineApplicationDocumentUpload = (props) => {
         <Field
           id="fileUpload"
           name="fileUpload"
-          component={FileUpload} //TODO pass a param to disable the notification
+          isNotificationDisabled={true}
+          component={FileUpload}
           uploadUrl={MAJOR_MINE_APPLICATION_DOCUMENTS(props.projectGuid)}
           acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
           onFileLoad={handleFileLoad}
@@ -58,22 +59,22 @@ export const MajorMineApplicationDocumentUpload = (props) => {
           onWaiting={() => {}}
         />
       </Form.Item>
-      <Modal visible={isModalVisible} onCancel={handleCloseModal} footer={null}>
-        <div className="display: flex">
-          <div className="image">
-            <img alt="hazard" className="padding-sm" src={YELLOW_HAZARD} width="30" />
+      <Popconfirm
+        visible={isModalVisible}
+        placement="right"
+        title={
+          <div>
+            <h4>File name already exists</h4>{" "}
+            <p>
+              <br />
+              {modalMessage}
+            </p>
           </div>
-          <div className="text">
-            <h4>File name already exists</h4>
-          </div>
-        </div>
-        <div>
-          <p>{modalMessage}</p>
-        </div>
-        <Button type="primary" onClick={handleCloseModal}>
-          Close
-        </Button>
-      </Modal>
+        }
+        onConfirm={handleCloseModal}
+        okText="Close"
+        cancelText=""
+      ></Popconfirm>
     </>
   );
 };

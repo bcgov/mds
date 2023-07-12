@@ -33,6 +33,7 @@ const propTypes = {
   onProcessFiles: PropTypes.func,
   onAbort: PropTypes.func,
   itemInsertLocation: PropTypes.func | PropTypes.string,
+  isNotificationDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -48,6 +49,7 @@ const defaultProps = {
   onProcessFiles: () => {},
   onAbort: () => {},
   itemInsertLocation: "before",
+  isNotificationDisabled: false,
   labelIdle:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br> \
   <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>',
@@ -72,10 +74,12 @@ class FileUpload extends React.Component {
           },
           headers: createRequestHeader().headers,
           onError: (err) => {
-            notification.error({
-              message: `Failed to upload ${file.name}: ${err}`,
-              duration: 10,
-            });
+            if (!this.props.isNotificationDisabled) {
+              notification.error({
+                message: `Failed to upload ${file.name}: ${err}`,
+                duration: 10,
+              });
+            }
             this.props.onError(file.name, err);
             error(err);
           },
