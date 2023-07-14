@@ -1,10 +1,8 @@
 import { createStore, applyMiddleware } from "redux";
-// import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { rootReducer } from "@/reducers/rootReducer";
 import configureStore from "@/store/configureStore";
 
-// const mockDevStore = createStore(rootReducer, applyMiddleware(thunk, logger));
 const mockDevStore = createStore(rootReducer, applyMiddleware(thunk));
 const mockProdStore = createStore(rootReducer, applyMiddleware(thunk));
 

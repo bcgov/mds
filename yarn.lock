@@ -2159,7 +2159,6 @@ __metadata:
     redux: 4.0.5
     redux-form: 8.2.6
     redux-form-input-masks: 2.0.1
-    redux-logger: 3.0.6
     redux-mock-store: 1.5.4
     redux-thunk: 2.3.0
     regenerator-runtime: 0.13.3
@@ -2314,7 +2313,6 @@ __metadata:
     redux: 4.0.5
     redux-form: 8.2.6
     redux-form-input-masks: 2.0.1
-    redux-logger: 3.0.6
     redux-mock-store: 1.5.4
     redux-thunk: 2.3.0
     regenerator-runtime: 0.13.3
@@ -8013,13 +8011,6 @@ __metadata:
   version: 0.7.0
   resolution: "dedent@npm:0.7.0"
   checksum: 87de191050d9a40dd70cad01159a0bcf05ecb59750951242070b6abf9569088684880d00ba92a955b4058804f16eeaf91d604f283929b4f614d181cd7ae633d2
-  languageName: node
-  linkType: hard
-
-"deep-diff@npm:^0.3.5":
-  version: 0.3.8
-  resolution: "deep-diff@npm:0.3.8"
-  checksum: 8a0fb6cbe468e50211836f8daa1c14798b2d7436bfbcb7d8eb0902e0d61bf1dfd48d5b9edd46a10596182b90ad25f87461b8e55111ff9257b6067ad0676f79c9
   languageName: node
   linkType: hard
 
@@ -19013,15 +19004,6 @@ __metadata:
     immutable:
       optional: true
   checksum: e35ed26c303b9016a89cdd43f23dac656d860d6442982bf6c68e625964cdbd95bf3476e315419352ec7cbccd9913077dae52a73281e258cd97155406d4560ff7
-  languageName: node
-  linkType: hard
-
-"redux-logger@npm:3.0.6":
-  version: 3.0.6
-  resolution: "redux-logger@npm:3.0.6"
-  dependencies:
-    deep-diff: ^0.3.5
-  checksum: c40f63c44c6475cf6374ae0eaa810d913f142614cb80692a0beacaf135c5dc3eb3e2cdd4296f01446ba48cb69b82e81363b84d829f1f6659382c991022a814ac
   languageName: node
   linkType: hard
 
