@@ -1,5 +1,5 @@
 Cypress.Commands.add("login", () => {
-  const url = Cypress.env("CYPRESS_CORE_WEB_TEST_URL");
+  const url = Cypress.env("CYPRESS_MINESPACE_WEB_TEST_URL");
   const environmentUrl = `${url}/env`;
   const commonVariables = "bceid";
 
@@ -25,7 +25,6 @@ Cypress.Commands.add("login", () => {
   });
 
   cy.visit(url);
-  cy.url({ timeout: 10000 }).should("include", "localhost");
   cy.contains("Log in with BCeID").click();
   cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
   cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));

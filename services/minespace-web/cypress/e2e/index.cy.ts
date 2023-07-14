@@ -1,5 +1,5 @@
 describe("Mines Page", () => {
-  const url = Cypress.env("CYPRESS_CORE_WEB_TEST_URL");
+  const url = Cypress.env("CYPRESS_MINESPACE_WEB_TEST_URL");
   beforeEach(() => {
     cy.login();
   });
