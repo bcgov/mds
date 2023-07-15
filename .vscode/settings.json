@@ -25,6 +25,6 @@
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/**"
   },
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.python"
   }
 }

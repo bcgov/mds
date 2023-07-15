@@ -299,10 +299,58 @@ class DocumentResource(Resource):
         @requires_any_of(DOCUMENT_UPLOAD_ROLES)
         def post(self):
             from app.services.commands_helper import create_zip_task
-            document_guids = request.json.get('document_guids', [])
-            if not document_guids:
+            mine_document_guids = request.json.get('mine_document_guids', [])
+            zip_file_name = request.json.get('zip_file_name', None)
+            
+            if not zip_file_name:
+                raise BadRequest('No file name provided')
+            
+            if not mine_document_guids:
                 raise BadRequest('No document guids provided')
 
-            create_zip_task(False, document_guids)
+            response = create_zip_task(zip_file_name, mine_document_guids)
 
-            return {'message': 'Zip creation task initiated'}, 202
+            return jsonify(response)
+        
+    @api.route('/documents/zip/<task_id>', methods=['GET'])
+    class ZipDocsProgressResource(Resource):
+        def get(self, task_id=None):
+            current_app.logger.info('Getting zip progress')
+            from app.tasks.celery import celery
+            
+            if not task_id:
+                raise BadRequest('No task id provided')
+            task = celery.AsyncResult(task_id)
+            
+            if not task:
+                raise BadRequest('No task found')
+            
+            current_app.logger.info(f'Zip task {task_id} is in state {task.state}')
+            if task.state == 'PENDING':
+                response = {
+                    'state': task.state,
+                    'progress': 0
+                }
+            elif task.state == 'SUCCESS':
+                response = {
+                    'state': task.state,
+                    'progress': 100
+                }
+            elif task.state == 'FAILURE':
+                response = {
+                    'state': task.state,
+                    'progress': 0,
+                    'error': str(task.result)
+                }
+            else:
+                upload_progress = task.info.get('UPLOADING_PROGRESS', {}).get('progress', 0)
+                zip_progress = task.info.get('ZIP_PROGRESS', {}).get('progress', 0)
+                download_progress = task.info.get('DOWNLOADING_PROGRESS', {}).get('progress', 0)
+                
+                total_progress = (upload_progress + zip_progress + download_progress) / 3
+                
+                response = {
+                    'state': task.state,
+                    'progress': total_progress,
+                }
+            return jsonify(response)

@@ -5,9 +5,9 @@ import requests
 import json
 from requests.auth import HTTPBasicAuth
 
-from flask import current_app
+from flask import current_app, Response
 from sqlalchemy import and_
-from celery import chord
+from celery import chord, current_task
 
 from app.docman.models.document import Document
 from app.config import Config
@@ -90,10 +90,11 @@ def get_unregistered_files(path):
     return unregistered
 
 
-def start_job(wait, job_type, docs, task):
+def start_job(wait, job_type, docs, task, zip_file_name=None):
     # Split the list of documents into chunks to perform on in parallel
     chunks = numpy.array_split(docs, 8)
     chunks = [x.tolist() for x in chunks if len(x) > 0]
+    current_app.logger.info(f'zip_file_name: {zip_file_name}')
 
     # Create a task for each chunk
     tasks = []
@@ -118,6 +119,21 @@ def start_job(wait, job_type, docs, task):
 
     return message
 
+def start_zip_job(job_type, docs, task, zip_file_name=None):
+    # TODO: FIND a way to return the id of the task with the response
+    tasks = []
+    job_id = str(uuid.uuid4())
+    doc_ids = [doc.document_id for doc in docs]
+    task_result = task.subtask((job_id, doc_ids, str(zip_file_name)))
+    tasks.append(task_result)
+    
+    callback = doc_job_result.subtask(kwargs={'job_type': job_type, 'job_id': job_id})
+    job = chord(tasks)(callback)
+  
+    message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be zipped'
+    response_data = {'job_id': job_id, 'message': message}
+    response = Response(json.dumps(response_data), content_type='application/json')
+    return response.data.decode('utf-8')
 
 def create_import_now_submission_documents(import_now_submission_documents_job_id):
     """Creates a job that imports a Notice of Work's submission documents to the object store."""
@@ -152,7 +168,6 @@ def apply_task_async(task_name, data):
 
     return json.loads(response.content)
 
-
 def abort_task(task_id):
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/abort/{task_id}',
@@ -161,9 +176,9 @@ def abort_task(task_id):
 
     return json.loads(response.content)
 
-def create_zip_task(wait, doc_ids):
+def create_zip_task(zip_file_name, mine_document_guids):
     """Creates a task that zips documents."""
-    docs = Document.query.filter(Document.document_id.in_(doc_ids)).all()
+    docs = Document.query.filter(Document.document_guid.in_(mine_document_guids)).all()
     if (len(docs) == 0):
         return 'No documents matching the passed ids are stored on the object store'
-    return start_job(wait, 'create_zip', docs, zip_docs)
+    return start_zip_job('create_zip', docs, zip_docs, zip_file_name)

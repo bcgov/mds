@@ -23,6 +23,8 @@ class DocumentManagerService():
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
         metadata = cls._parse_request_metadata(request)
+        if not metadata or not metadata.get('filename'):
+            raise Exception('Request metadata missing filename')
 
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
@@ -134,3 +136,23 @@ class DocumentManagerService():
         )
 
         return resp.json()
+
+    @classmethod
+    def initialize_document_zip(cls, request, mine_document_guids, zip_file_name):
+        resp = requests.post(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip',
+            headers={key: value
+                    for (key, value) in request.headers if key != 'Host'},
+            data=json.dumps({'mine_document_guids': mine_document_guids, 'zip_file_name': zip_file_name}))
+
+        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def poll_zip_progress(cls, request, task_id):
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip/{task_id}',
+            headers={key: value
+                    for (key, value) in request.headers if key != 'Host'})
+
+        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+

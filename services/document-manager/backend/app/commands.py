@@ -43,3 +43,10 @@ def register_commands(app):
         """Get files under the provided path that do not have a document record with it as its full_storage_path."""
         from app.services.commands_helper import get_unregistered_files
         print(get_unregistered_files(path))
+        
+    @app.cli.command()
+    @click.argument('wait', default=False)
+    def zip_files(wait):
+        """Zip documents."""
+        from app.services.commands_helper import create_zip_task
+        print(create_zip_task(wait))

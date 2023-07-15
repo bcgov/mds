@@ -4,6 +4,7 @@ import sys
 import threading
 import boto3
 import hashlib
+import zipfile
 
 from botocore.exceptions import ClientError
 from flask import send_file, Response, current_app
@@ -159,3 +160,29 @@ class ObjectStoreStorageService():
         digests = b''.join(m.digest() for m in md5s)
         digests_md5 = hashlib.md5(digests)
         return '{}-{}'.format(digests_md5.hexdigest(), len(md5s))
+
+    def write_file_to_zip(self, file_data, file_name, zip_file):
+        with zipfile.ZipFile(zip_file, mode='a', compression=zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr(file_name, file_data)
+
+    def download_files_and_write_to_zip(self, paths, zip_file, progress_callback=None, progress_total=None):
+        total_bytes_downloaded = 0
+        total_bytes_zipped = 0
+        for i, path in enumerate(paths):
+            s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
+            file_data = s3_response['Body'].read()
+            file_name = path.split('/')[-1]
+            self.write_file_to_zip(file_data, file_name, zip_file)
+            total_bytes_downloaded += len(file_data)
+            if progress_callback:
+                progress_callback("ZIP_PROGRESS", total_bytes_downloaded, progress_total)
+
+    def upload_zip_file(self, file_data, key, progress_callback=None, progress_total=None):
+        try:
+            self._client.upload_fileobj(
+                Fileobj=file_data,
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                Callback=progress_callback if progress_callback else None)
+        except ClientError as e:
+            raise Exception(f'Failed to upload the file: {e}')

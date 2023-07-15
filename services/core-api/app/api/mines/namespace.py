@@ -73,6 +73,8 @@ api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/arc
 api.add_resource(MineDocumentVersionUploadResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
 api.add_resource(MineDocumentVersionListResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
 
+api.add_resource(MineDocumentZipResource, '/<string:mine_guid>/documents/zip')
+api.add_resource(MineDocumentZipProgressResource, '/documents/zip/<string:task_id>')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 
