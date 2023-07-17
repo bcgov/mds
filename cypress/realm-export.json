@@ -1431,23 +1431,6 @@
         }
       },
       {
-        "id": "d5ad8261-a0b1-43f5-b11e-fa61f6113513",
-        "name": "rsa",
-        "providerId": "rsa",
-        "subComponents": {},
-        "config": {
-          "privateKey": ["**********"],
-          "keyUse": ["sig"],
-          "certificate": [
-            "MIIBmjCCAQMCBgGI3i8YTzANBgkqhkiG9w0BAQsFADATMREwDwYDVQQDDAhzdGFuZGFyZDAeFw0yMzA2MjExMzM4MjhaFw0zMzA2MjExMzQwMDhaMBMxETAPBgNVBAMMCHN0YW5kYXJkMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfn1nKQshOSj8xw44oC2klFWSNLmK3BnHONCJ1bZfq0EQ5gIfgtlvB+Px8Ya+VS3OnK7Cdi4iU1fxO9ktN6c6TjmmmFevk8wIwqLthmCSF3r+3+h4eddj7hucMsXWv05QUrCPoL6YUUz7Cgpz7ra24rpAmK5z7lsV+f3BEvXkrUQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAC2D6anHr6rtLR0OHe55W3tOTa7niMIBMW04qicZRJrhDwe8Dei1E/iTPHfjg2y63/5ZtlFWr1Rni62XHT40SHH59xOjyYP1i8ZUmkW2KWLhCMWyCH3N0NPpNaL2g1QJu1gQ1zKkTNLhZFKxaZN9tvECIIsXgVNRemymVqHIsKba"
-          ],
-          "active": ["true"],
-          "priority": ["120"],
-          "enabled": ["true"],
-          "algorithm": ["RS256"]
-        }
-      },
-      {
         "id": "ab442050-5e91-4784-9b81-4fd73f67ac5f",
         "name": "hmac-generated",
         "providerId": "hmac-generated",
