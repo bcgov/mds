@@ -55,6 +55,28 @@ yarn test:watch
 
 Then choose option 'i' and go through the failing snapshots case by case
 
+**Setup Cypress test**
+
+Add the following cypress related environment variables from env-example.
+
+CYPRESS_TEST_USER
+CYPRESS_TEST_PASSWORD
+CYPRESS_CORE_WEB_TEST_URL
+CYPRESS_BACKEND
+CYPRESS_API_URL
+CYPRESS_KEYCLOAK_URL
+CYPRESS_ENVIRONMENT
+CYPRESS_DOC_MAN_URL
+CYPRESS_MATOMO_URL
+CYPRESS_KEYCLOAK_CLIENT_ID
+CYPRESS_KEYCLOAK_RESOURCE
+CYPRESS_KEYCLOAK_IDP_HINT
+CYPRESS_FILE_SYSTEM_PROVIDER_URL
+
+run the command `docker-compose up -d keycloak`
+
+Navigate to `http://localhost:8080` to check if keycloak was successfully installed.
+
 ### Running
 
 - [react](https://reactjs.org/) : JS library to build single page apps
