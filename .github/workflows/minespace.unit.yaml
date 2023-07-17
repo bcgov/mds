@@ -36,7 +36,7 @@ jobs:
 
       - name: build-minespace-web
         run: |
-          cd services/core-web/
+          cd services/minespace-web/
           NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
       - name: start-minespace-web        
