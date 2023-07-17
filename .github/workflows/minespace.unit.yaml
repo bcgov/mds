@@ -40,10 +40,10 @@ jobs:
           NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
       - name: start-minespace-web        
-        run: cd services/core-web/ && yarn run http-server-spa build /index.html 3020 &
+        run: cd services/minespace-web/ && yarn run http-server-spa build /index.html 3020 &
       
       - name: Run cypress tests        
-        run: cd services/core-web/ && yarn cypress run
+        run: cd services/minespace-web/ && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
