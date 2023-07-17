@@ -5,6 +5,7 @@ import threading
 import boto3
 import hashlib
 import zipfile
+import time
 
 from botocore.exceptions import ClientError
 from flask import send_file, Response, current_app
@@ -165,24 +166,45 @@ class ObjectStoreStorageService():
         with zipfile.ZipFile(zip_file, mode='a', compression=zipfile.ZIP_DEFLATED) as zf:
             zf.writestr(file_name, file_data)
 
-    def download_files_and_write_to_zip(self, paths, zip_file, progress_callback=None, progress_total=None):
+    def download_files_and_write_to_zip(self, paths, zip_file, progress_callback=None):
         total_bytes_downloaded = 0
         total_bytes_zipped = 0
+        total_size = sum([self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)['ContentLength'] for path in paths])
         for i, path in enumerate(paths):
             s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
             file_data = s3_response['Body'].read()
+            total_bytes_downloaded += len(file_data)
             file_name = path.split('/')[-1]
             self.write_file_to_zip(file_data, file_name, zip_file)
-            total_bytes_downloaded += len(file_data)
+            total_bytes_zipped += s3_response['ContentLength']
+            time.sleep(4)
             if progress_callback:
-                progress_callback("ZIP_PROGRESS", total_bytes_downloaded, progress_total)
+                total_bytes_processed = total_bytes_downloaded + total_bytes_zipped
+                progress_callback("ZIP_PROGRESS", total_bytes_processed, total_size * 2)
 
-    def upload_zip_file(self, file_data, key, progress_callback=None, progress_total=None):
+    # def upload_zip_file(self, file_data, key, progress_callback=None):
+    #     try:
+    #         self._client.upload_fileobj(
+    #             Fileobj=file_data,
+    #             Bucket=Config.OBJECT_STORE_BUCKET,
+    #             Key=key,
+    #             Callback=progress_callback if progress_callback else None)
+    #     except ClientError as e:
+    #         raise Exception(f'Failed to upload the file: {e}')
+
+    def upload_zip_file(self, file_data, key, zip_docs):
+        progress = ProgressPercentage(key)
         try:
             self._client.upload_fileobj(
                 Fileobj=file_data,
                 Bucket=Config.OBJECT_STORE_BUCKET,
                 Key=key,
-                Callback=progress_callback if progress_callback else None)
+                Callback=progress)
         except ClientError as e:
             raise Exception(f'Failed to upload the file: {e}')
+
+        # Calculate the progress percentage and update the task state
+        progress_percentage = (progress._seen_so_far / progress._size) * 100
+        zip_docs.update_state(state='UPLOADING_ZIP', meta={'progress': progress_percentage})
+
+        return True, key

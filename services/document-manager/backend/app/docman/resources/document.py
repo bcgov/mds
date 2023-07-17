@@ -316,11 +316,11 @@ class DocumentResource(Resource):
     class ZipDocsProgressResource(Resource):
         def get(self, task_id=None):
             current_app.logger.info('Getting zip progress')
-            from app.tasks.celery import celery
+            from app.tasks.celery import get_task
             
             if not task_id:
                 raise BadRequest('No task id provided')
-            task = celery.AsyncResult(task_id)
+            task = get_task(task_id)
             
             if not task:
                 raise BadRequest('No task found')
@@ -343,14 +343,11 @@ class DocumentResource(Resource):
                     'error': str(task.result)
                 }
             else:
-                upload_progress = task.info.get('UPLOADING_PROGRESS', {}).get('progress', 0)
-                zip_progress = task.info.get('ZIP_PROGRESS', {}).get('progress', 0)
-                download_progress = task.info.get('DOWNLOADING_PROGRESS', {}).get('progress', 0)
-                
-                total_progress = (upload_progress + zip_progress + download_progress) / 3
-                
+                current_app.logger.info(f'task.info: {task.info}')
+                progress = task.info.get('progress', 0)                
+                                
                 response = {
                     'state': task.state,
-                    'progress': total_progress,
+                    'progress': progress,
                 }
             return jsonify(response)

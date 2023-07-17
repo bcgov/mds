@@ -145,8 +145,10 @@ class DocumentManagerService():
                     for (key, value) in request.headers if key != 'Host'},
             data=json.dumps({'mine_document_guids': mine_document_guids, 'zip_file_name': zip_file_name}))
 
-        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        current_app.logger.info(f'initialize_document_zip: {resp.content}')
 
+        return resp.json()
+    
     @classmethod
     def poll_zip_progress(cls, request, task_id):
         resp = requests.get(
@@ -154,5 +156,5 @@ class DocumentManagerService():
             headers={key: value
                     for (key, value) in request.headers if key != 'Host'})
 
-        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
-
+        return resp.json()
+    

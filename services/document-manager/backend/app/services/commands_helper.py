@@ -120,20 +120,18 @@ def start_job(wait, job_type, docs, task, zip_file_name=None):
     return message
 
 def start_zip_job(job_type, docs, task, zip_file_name=None):
-    # TODO: FIND a way to return the id of the task with the response
-    tasks = []
     job_id = str(uuid.uuid4())
-    doc_ids = [doc.document_id for doc in docs]
-    task_result = task.subtask((job_id, doc_ids, str(zip_file_name)))
-    tasks.append(task_result)
+    doc_ids = [doc.document_id for doc in docs]    
     
-    callback = doc_job_result.subtask(kwargs={'job_type': job_type, 'job_id': job_id})
-    job = chord(tasks)(callback)
+    # Create the task asynchronously
+    data = {"args": [job_id, doc_ids, str(zip_file_name)]}
+    async_response = apply_task_async(task.name, data)
+    current_app.logger.info(f'task_result: {async_response}')
   
     message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be zipped'
-    response_data = {'job_id': job_id, 'message': message}
+    response_data = {'task_id': async_response['task-id'], 'message': message}
     response = Response(json.dumps(response_data), content_type='application/json')
-    return response.data.decode('utf-8')
+    return json.loads(response.data.decode('utf-8'))
 
 def create_import_now_submission_documents(import_now_submission_documents_job_id):
     """Creates a job that imports a Notice of Work's submission documents to the object store."""
@@ -160,6 +158,7 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
 
 
 def apply_task_async(task_name, data):
+    current_app.logger.info(f'apply_task_async: {task_name}')
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
         auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),

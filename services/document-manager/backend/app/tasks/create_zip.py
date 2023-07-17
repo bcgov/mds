@@ -8,6 +8,7 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.tasks.celery import celery, doc_task_result
 from celery.utils.log import get_task_logger
 from app.docman.models.document import Document
+import time
 
 @celery.task()
 def zip_docs(zip_id, doc_ids, zip_file_name):
@@ -16,6 +17,8 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
         logger = get_task_logger(str(zip_id))
         docs = []
         docs = Document.query.filter(Document.document_id.in_(doc_ids)).all()
+        zip_progress = 0
+        upload_progress = 0
 
         if not docs or len(docs) == 0:
             raise Exception("No documents found")
@@ -24,8 +27,15 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
 
         # Define the progress callback functions
         def progress_callback(progress_type, current, total):
-            percent_complete = int(current / total * 100)
-            zip_docs.update_state(state=progress_type, meta={'progress': percent_complete})
+            nonlocal zip_progress
+            nonlocal upload_progress
+            if progress_type == 'ZIPPING_FILES':
+                zip_progress = current / total * 100
+            if progress_type == 'UPLOADING_ZIP':
+                upload_progress = current / total * 100
+                
+            overall_progress = (zip_progress + upload_progress) / 2
+            zip_docs.update_state(state=progress_type, meta={'progress': overall_progress})
 
         # Create a zip file object
         zip_file = io.BytesIO()
@@ -37,22 +47,20 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
             paths=file_paths,
             zip_file=zip_file,
             progress_callback=progress_callback,
-            progress_total=len(docs),
         )
 
         # Upload the zip data to the S3 bucket
         zip_data = zip_file.getvalue()
 
         def upload_progress_callback(bytes_uploaded):
-            progress_callback('UPLOADING_PROGRESS', bytes_uploaded, len(zip_data))
+            progress_callback('ZIPPING_FILES', bytes_uploaded, len(zip_data))
 
         new_key = f"{Config.S3_PREFIX}app/zipped_docs/{zip_file_name}"
 
         ObjectStoreStorageService().upload_zip_file(
             file_data=io.BytesIO(zip_data),
             key=new_key,
-            progress_callback=upload_progress_callback,
-            progress_total=len(zip_data),
+            zip_docs=zip_docs,
         )
 
         # Update the task state to indicate that the task is complete
@@ -91,7 +99,7 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
 
         # Determine the result of the zipping
         success = True
-        message = "All documents were successfully zipped"
+        message = "All documents were successfully zipped and uploaded"
         result = doc_task_result(
             job_id=zip_id,
             task_id=zip_docs.request.id,

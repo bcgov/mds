@@ -1,6 +1,8 @@
 import json
 
 from celery.utils.log import get_task_logger
+from celery.task.control import inspect
+from celery.result import AsyncResult
 
 from app import make_celery
 celery = make_celery()
@@ -61,3 +63,7 @@ def doc_task_result(job_id, task_id, chunk, success, message, success_docs, erro
         'errors': errors
     }
     return json.dumps(result)
+
+def get_task(task_id):
+    result = AsyncResult(task_id, app=celery)
+    return result

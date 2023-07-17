@@ -46,7 +46,7 @@ def register_commands(app):
         
     @app.cli.command()
     @click.argument('wait', default=False)
-    def zip_files(wait):
+    def zip_files(zip_file_name, mine_document_guids):
         """Zip documents."""
         from app.services.commands_helper import create_zip_task
-        print(create_zip_task(wait))
+        print(create_zip_task(zip_file_name, mine_document_guids))
