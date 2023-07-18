@@ -4,7 +4,9 @@ services:
 
   ####################### Keycloak for Cypress #######################
   keycloak:
-    image: jboss/keycloak
+    build:
+      context: ./cypress/.docker/keycloak
+      dockerfile: Dockerfile.test
     container_name: cypress-keycloak
     environment:
       DB_VENDOR: h2
@@ -16,9 +18,7 @@ services:
       KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
     volumes:
       - ./cypress/realm-export.json:/tmp/realm-export.json
-    build:
-      context: ./cypress/.docker/keycloak
-      dockerfile: Dockerfile.test
+      - ./cypress/create-user.sh:/tmp/create-user.sh    
     ports:
       - 8080:8080
   ####################### Open Telemetry #######################

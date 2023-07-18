@@ -621,18 +621,50 @@
           }
         },
         {
+          "id": "5702c34f-1b8f-41e4-bd22-f5211416265b",
+          "name": "BCEID Username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.value": "cypress",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "bceid_username",
+            "jsonType.label": "String",
+            "access.tokenResponse.claim": "false"
+          }
+        },
+        {
           "id": "9c6f483e-e41b-48ec-873d-44805c786adf",
           "name": "Client Roles",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-hardcoded-claim-mapper",
           "consentRequired": false,
           "config": {
-            "claim.value": "[ \"core_edit_requirements\",  \"c_mds_major_mines_administrative\",  \"core_edit_variances\",     \"digdag_admin\",     \"core_edit_investigations\",     \"docman_manager\",     \"core_edit_reports\",     \"core_edit_emli_contacts\",     \"cs_mds_geospatial\",     \"core_view_all\",     \"c_mds_users\",     \"cs_mds_tsf\",     \"core_close_permits\",     \"c_mds_permit_mines\",     \"c_mds_administrative_mines\",     \"c_mds_overlord\",     \"cs_mds_abandoned_mines\",     \"core_edit_securities\",     \"core_edit_project_decision_packages\",     \"core_edit_mines\",     \"core_geospatial\",     \"core_edit_historical_amendments\",     \"c_mds_health_safety\",     \"core_executive_view\",     \"idir\",     \"core_environmental_reports\",     \"c_idir\",     \"cs_mds_investigations\",     \"cs_mds_permit_template_conditions\",     \"core_edit_major_mine_applications\",     \"c_mds_super_admin\",     \"core_contact_admin\",     \"core_edit_permits\",     \"cs_mds_securities\",     \"core_edit_template_conditions\",     \"core_edit_do\",     \"core_edit_tsf\",     \"nris_view_all\",     \"core_edit_project_summaries\",     \"core_edit_incidents\",     \"core_edit_all\",     \"core_view_admin_route\",     \"core_edit_explosives_permits\",     \"core_edit_parties\",     \"core_edit_submissions\",     \"core_abandoned_mines\",     \"cs_mds_executive\",     \"core_edit_information_requirements_table\",     \"core_admin\"   ]",
+            "claim.value": "[ \"core_edit_requirements\",  \"c_mds_major_mines_administrative\",  \"core_edit_variances\",     \"digdag_admin\",     \"core_edit_investigations\",     \"docman_manager\",     \"core_edit_reports\",     \"core_edit_emli_contacts\",     \"cs_mds_geospatial\",     \"core_view_all\",     \"c_mds_users\",     \"cs_mds_tsf\",     \"core_close_permits\",     \"c_mds_permit_mines\",     \"c_mds_administrative_mines\",     \"c_mds_overlord\",     \"cs_mds_abandoned_mines\",     \"core_edit_securities\",     \"core_edit_project_decision_packages\",     \"core_edit_mines\",     \"core_geospatial\",     \"core_edit_historical_amendments\",     \"c_mds_health_safety\",     \"core_executive_view\",     \"idir\",     \"core_environmental_reports\",     \"c_idir\",     \"cs_mds_investigations\",     \"cs_mds_permit_template_conditions\",     \"core_edit_major_mine_applications\",     \"c_mds_super_admin\",     \"core_contact_admin\",     \"core_edit_permits\",     \"cs_mds_securities\",     \"core_edit_template_conditions\",     \"core_edit_do\",     \"core_edit_tsf\",     \"nris_view_all\",     \"core_edit_project_summaries\",     \"core_edit_incidents\",     \"core_edit_all\",     \"core_view_admin_route\",     \"core_edit_explosives_permits\",     \"core_edit_parties\",     \"core_edit_submissions\",     \"core_abandoned_mines\",     \"cs_mds_executive\",     \"core_edit_information_requirements_table\",     \"core_admin\" , \"mds_minespace_proponents\", \"c_mds_minespace_proponent\"  ]",
             "userinfo.token.claim": "true",
             "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "client_roles",
             "jsonType.label": "JSON",
+            "access.tokenResponse.claim": "false"
+          }
+        },
+        {
+          "id": "15b20023-0f46-4669-9902-28b891948363",
+          "name": "BCEID User GUID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.value": "CE2FAF7EE63C482097267AAF1DDB6FAC",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "bceid_user_guid",
+            "jsonType.label": "String",
             "access.tokenResponse.claim": "false"
           }
         },

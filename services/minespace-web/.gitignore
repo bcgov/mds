@@ -17,3 +17,7 @@
 # Editor settings
 .vscode/*
 .vimrc
+
+# cypress
+/cypress/videos
+/cypress/screenshots
