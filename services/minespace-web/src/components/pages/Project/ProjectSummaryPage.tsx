@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
@@ -13,7 +13,6 @@ import {
 } from "redux-form";
 import { Row, Col, Typography, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
   getProjectSummary,
@@ -40,39 +39,40 @@ import {
   ADD_PROJECT_SUMMARY,
   EDIT_PROJECT,
 } from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
 import ProjectSummaryForm from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
+import { IMine, IProjectSummary, IProject } from "@mds/common";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
-const propTypes = {
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  projectSummary: CustomPropTypes.projectSummary.isRequired,
-  project: CustomPropTypes.project.isRequired,
-  fetchProjectById: PropTypes.func.isRequired,
-  createProjectSummary: PropTypes.func.isRequired,
-  updateProjectSummary: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
-  updateProject: PropTypes.func.isRequired,
-  clearProjectSummary: PropTypes.func.isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  submit: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  formValueSelector: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  getFormSyncErrors: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  touch: PropTypes.func.isRequired,
-  formErrors: PropTypes.objectOf(PropTypes.string),
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  projectSummaryAuthorizationTypesArray: PropTypes.arrayOf(PropTypes.any).isRequired,
-  anyTouched: PropTypes.bool,
-  formattedProjectSummary: PropTypes.objectOf(PropTypes.any).isRequired,
-  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
-};
+interface ProjectSummaryPageProps {
+  mines: Partial<IMine>[];
+  projectSummary: Partial<IProjectSummary>;
+  project: Partial<IProject>;
+  fetchProjectById: ActionCreator<typeof fetchProjectById>;
+  createProjectSummary: ActionCreator<typeof createProjectSummary>;
+  updateProjectSummary: ActionCreator<typeof updateProjectSummary>;
+  fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
+  updateProject: ActionCreator<typeof updateProject>;
+  clearProjectSummary: () => any;
+  projectSummaryDocumentTypesHash: Record<string, string>;
+  submit: (arg1?: string) => any;
+  formValueSelector: (arg1: string, arg2?: any) => any;
+  getFormSyncErrors: (arg1: string) => any;
+  reset: (arg1: string) => any;
+  touch: (arg1?: string, arg2?: any) => any;
+  formErrors: Record<string, string>;
+  formValues: any;
+  projectSummaryAuthorizationTypesArray: any[];
+  anyTouched: boolean;
+  formattedProjectSummary: any;
+  location: Record<any, string>;
+}
 
-const defaultProps = {
-  formErrors: {},
-  anyTouched: false,
-};
+interface IParams {
+  mineGuid?: string;
+  projectGuid?: string;
+  projectSummaryGuid?: string;
+  tab?: any;
+}
 
 const tabs = [
   "basic-information",
@@ -82,7 +82,7 @@ const tabs = [
   "document-upload",
 ];
 
-export const ProjectSummaryPage = (props) => {
+export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   const {
     mines,
     formattedProjectSummary,
@@ -103,7 +103,8 @@ export const ProjectSummaryPage = (props) => {
     updateProjectSummary,
     updateProject,
   } = props;
-  const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams();
+
+  const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const history = useHistory();
@@ -129,7 +130,7 @@ export const ProjectSummaryPage = (props) => {
   }, []);
 
   const handleTransformPayload = (values) => {
-    let payloadValues = {};
+    let payloadValues: any = {};
     const updatedAuthorizations = [];
     Object.keys(values).forEach((key) => {
       // Pull out form properties from request object that match known authorization types
@@ -185,7 +186,9 @@ export const ProjectSummaryPage = (props) => {
         );
       })
       .then(() => {
-        handleFetchData();
+        return handleFetchData();
+      })
+      .then(() => {
         setIsLoaded(true);
       });
   };
@@ -253,7 +256,7 @@ export const ProjectSummaryPage = (props) => {
     ? `Edit project description - ${projectSummary?.project_summary_title}`
     : `New project description for ${mineName}`;
 
-  let initialValues = isEditMode
+  const initialValues = isEditMode
     ? { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required }
     : {};
 
@@ -339,8 +342,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-ProjectSummaryPage.propTypes = propTypes;
-ProjectSummaryPage.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummaryPage);
