@@ -26,28 +26,27 @@
 // eslint-disable-next-line consistent-return
 
 Cypress.Commands.add("login", () => {
-  const url = Cypress.env("url");
-  const environmentUrl = Cypress.env("environmentUrl");
+  const url = Cypress.env("CYPRESS_CORE_WEB_TEST_URL");
+  const environmentUrl = `${url}/env`;
 
   const response = {
-    backend: Cypress.env("backend"),
-    apiUrl: Cypress.env("apiUrl"),
-    docManUrl: Cypress.env("docManUrl"),
-    matomoUrl: Cypress.env("matomoUrl"),
-    filesystemProviderUrl: Cypress.env("filesystemProviderUrl"),
-    keycloak_clientId: Cypress.env("keycloakClientId"),
-    keycloak_resource: Cypress.env("keycloakResource"),
-    keycloak_url: Cypress.env("keyCloakUrl"),
-    keycloak_idpHint: Cypress.env("keyCloakIDPHint"),
-    environment: Cypress.env("environment"),
+    backend: Cypress.env("CYPRESS_BACKEND"),
+    apiUrl: Cypress.env("CYPRESS_API_URL"),
+    docManUrl: Cypress.env("CYPRESS_DOC_MAN_URL"),
+    matomoUrl: Cypress.env("CYPRESS_MATOMO_URL"),
+    filesystemProviderUrl: Cypress.env("CYPRESS_FILE_SYSTEM_PROVIDER_URL"),
+    keycloak_clientId: Cypress.env("CYPRESS_KEYCLOAK_CLIENT_ID"),
+    keycloak_resource: Cypress.env("CYPRESS_KEYCLOAK_RESOURCE"),
+    keycloak_url: Cypress.env("CYPRESS_KEYCLOAK_URL"),
+    keycloak_idpHint: Cypress.env("CYPRESS_KEYCLOAK_IDP_HINT"),
+    environment: Cypress.env("CYPRESS_ENVIRONMENT"),
   };
 
   cy.intercept("GET", environmentUrl, (req) => {
     req.reply(response);
   });
   cy.visit(url);
-  cy.url({ timeout: 10000 }).should("include", "localhost:8080");
-  cy.get("#username").type("cypress");
-  cy.get("#password").type("cypress");
+  cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
+  cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));
   cy.get("#kc-login").click();
 });

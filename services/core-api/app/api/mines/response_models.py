@@ -101,7 +101,7 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'document_name': fields.String,
         'upload_date': fields.String,
         'create_user': fields.String,
-        'update_timestamp': fields.DateTime
+        'update_timestamp': fields.String
     })
 
 MINE_DOCUMENT_MODEL = api.model(

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Field, reduxForm } from "redux-form";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
@@ -16,30 +16,27 @@ const propTypes = {
 };
 
 // this should be stateful once fully implemented
-// eslint-disable-next-line react/prefer-stateless-function
-export class NoticeOfWorkSearchForm extends Component {
-  render() {
-    return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Row gutter={6}>
-          <Col md={24} xs={24}>
-            <Field
-              id="mine_search"
-              name="mine_search"
-              component={renderConfig.FIELD}
-              placeholder="Search by mine name or number"
-            />
-          </Col>
-        </Row>
-        <div className="right center-mobile">
-          <Button className="full-mobile" type="primary" htmlType="submit">
-            <SearchOutlined />
-          </Button>
-        </div>
-      </Form>
-    );
-  }
-}
+export const NoticeOfWorkSearchForm = (props) => {
+  return (
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Row gutter={6}>
+        <Col md={24} xs={24}>
+          <Field
+            id="mine_search"
+            name="mine_search"
+            component={renderConfig.FIELD}
+            placeholder="Search by mine name or number"
+          />
+        </Col>
+      </Row>
+      <div className="right center-mobile">
+        <Button className="full-mobile" type="primary" htmlType="submit">
+          <SearchOutlined />
+        </Button>
+      </div>
+    </Form>
+  );
+};
 
 NoticeOfWorkSearchForm.propTypes = propTypes;
 

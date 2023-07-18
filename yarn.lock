@@ -2113,6 +2113,7 @@ __metadata:
     hard-source-webpack-plugin: 0.13.1
     hoist-non-react-statics: 3.3.1
     html-webpack-plugin: 3.2.0
+    http-server-spa: 1.3.0
     iframe-resizer: 4.2.9
     image-webpack-loader: 8.1.0
     jest: 24.8.0
@@ -2158,7 +2159,6 @@ __metadata:
     redux: 4.0.5
     redux-form: 8.2.6
     redux-form-input-masks: 2.0.1
-    redux-logger: 3.0.6
     redux-mock-store: 1.5.4
     redux-thunk: 2.3.0
     regenerator-runtime: 0.13.3
@@ -2253,6 +2253,7 @@ __metadata:
     cross-env: 5.2.1
     css-loader: 3.4.2
     cssnano: 4.1.10
+    cypress: 12.13.0
     dotenv: 8.2.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.14.0
@@ -2275,6 +2276,7 @@ __metadata:
     hard-source-webpack-plugin: 0.13.1
     hoist-non-react-statics: 3.3.1
     html-webpack-plugin: 3.2.0
+    http-server-spa: 1.3.0
     image-webpack-loader: 8.1.0
     jest: 24.8.0
     jest-canvas-mock: 2.1.0
@@ -2313,7 +2315,6 @@ __metadata:
     redux: 4.0.5
     redux-form: 8.2.6
     redux-form-input-masks: 2.0.1
-    redux-logger: 3.0.6
     redux-mock-store: 1.5.4
     redux-thunk: 2.3.0
     regenerator-runtime: 0.13.3
@@ -8015,13 +8016,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-diff@npm:^0.3.5":
-  version: 0.3.8
-  resolution: "deep-diff@npm:0.3.8"
-  checksum: 8a0fb6cbe468e50211836f8daa1c14798b2d7436bfbcb7d8eb0902e0d61bf1dfd48d5b9edd46a10596182b90ad25f87461b8e55111ff9257b6067ad0676f79c9
-  languageName: node
-  linkType: hard
-
 "deep-equal@npm:^1.0.1":
   version: 1.1.1
   resolution: "deep-equal@npm:1.1.1"
@@ -11679,6 +11673,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"http-server-spa@npm:1.3.0":
+  version: 1.3.0
+  resolution: "http-server-spa@npm:1.3.0"
+  dependencies:
+    mime: ^1.3.4
+  bin:
+    http-server-spa: ./server.js
+  checksum: 32499a669b9602a8fea5de145ee47dcebd69d16698796ee95a6d144238495e841d97bdf742e69d29ef17ea216d7995c69b105762bbc66a0a27164ef9b5767cc4
+  languageName: node
+  linkType: hard
+
 "http-signature@npm:~1.2.0":
   version: 1.2.0
   resolution: "http-signature@npm:1.2.0"
@@ -15033,7 +15038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:1.6.0, mime@npm:^1.4.1":
+"mime@npm:1.6.0, mime@npm:^1.3.4, mime@npm:^1.4.1":
   version: 1.6.0
   resolution: "mime@npm:1.6.0"
   bin:
@@ -19001,15 +19006,6 @@ __metadata:
     immutable:
       optional: true
   checksum: e35ed26c303b9016a89cdd43f23dac656d860d6442982bf6c68e625964cdbd95bf3476e315419352ec7cbccd9913077dae52a73281e258cd97155406d4560ff7
-  languageName: node
-  linkType: hard
-
-"redux-logger@npm:3.0.6":
-  version: 3.0.6
-  resolution: "redux-logger@npm:3.0.6"
-  dependencies:
-    deep-diff: ^0.3.5
-  checksum: c40f63c44c6475cf6374ae0eaa810d913f142614cb80692a0beacaf135c5dc3eb3e2cdd4296f01446ba48cb69b82e81363b84d829f1f6659382c991022a814ac
   languageName: node
   linkType: hard
 
