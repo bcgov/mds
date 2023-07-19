@@ -28,6 +28,20 @@ class ProgressPercentage(object):
                              (self._filename, percentage, self._seen_so_far, self._size))
             sys.stdout.flush()
 
+class ZipUploadProgressPercentage(object):
+    def __init__(self, total_size, save_progress_to_state):
+        self._seen_so_far = 0
+        self._total_size = total_size
+        self._percentage_complete = 0
+        self._save_progress_to_state = save_progress_to_state
+
+    def __call__(self, bytes_amount):
+        self._save_progress_to_state(self._seen_so_far + bytes_amount, self._total_size)
+        self._seen_so_far += bytes_amount
+        self._percentage_complete = (self._seen_so_far / self._total_size) * 100
+
+    def get_percentage_complete(self):
+        return self._percentage_complete
 
 class ObjectStoreStorageService():
     _client = None
@@ -166,45 +180,56 @@ class ObjectStoreStorageService():
         with zipfile.ZipFile(zip_file, mode='a', compression=zipfile.ZIP_DEFLATED) as zf:
             zf.writestr(file_name, file_data)
 
-    def download_files_and_write_to_zip(self, paths, zip_file, progress_callback=None):
+    def download_files_and_write_to_zip(self, paths, pretty_paths, zip_file, progress_callback=None):
+        # Get the total size of all the files to download
+        total_size = sum([self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)['ContentLength'] for path in paths])
+
+        # Download each file and write it to the zip file
         total_bytes_downloaded = 0
         total_bytes_zipped = 0
-        total_size = sum([self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)['ContentLength'] for path in paths])
         for i, path in enumerate(paths):
+            # Download the file from S3
             s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
             file_data = s3_response['Body'].read()
             total_bytes_downloaded += len(file_data)
-            file_name = path.split('/')[-1]
-            self.write_file_to_zip(file_data, file_name, zip_file)
+
+            # Get the pretty path for the file and use it to create the zip path
+            pretty_path = pretty_paths[i]
+            pretty_path = pretty_path.replace('/app/document_uploads', '', 1)
+            folder_structure, file_name = os.path.split(pretty_path)
+            zip_path = os.path.join(folder_structure, file_name)
+
+            # Write the file to the zip file
+            self.write_file_to_zip(file_data, zip_path, zip_file)
             total_bytes_zipped += s3_response['ContentLength']
-            time.sleep(4)
+
+            # Call the progress callback if provided
             if progress_callback:
                 total_bytes_processed = total_bytes_downloaded + total_bytes_zipped
-                progress_callback("ZIP_PROGRESS", total_bytes_processed, total_size * 2)
+                progress_callback("ZIPPING_FILES", total_bytes_processed, total_size * 2)
 
-    # def upload_zip_file(self, file_data, key, progress_callback=None):
-    #     try:
-    #         self._client.upload_fileobj(
-    #             Fileobj=file_data,
-    #             Bucket=Config.OBJECT_STORE_BUCKET,
-    #             Key=key,
-    #             Callback=progress_callback if progress_callback else None)
-    #     except ClientError as e:
-    #         raise Exception(f'Failed to upload the file: {e}')
-
-    def upload_zip_file(self, file_data, key, zip_docs):
-        progress = ProgressPercentage(key)
+    def upload_zip_file(self, file_data, key, file_size, progress_callback=None):
         try:
+            def save_progress_to_state(bytes_uploaded, total_bytes):
+                progress_callback('UPLOADING_ZIP', bytes_uploaded, total_bytes)
+
+            zip_upload_progress_callback = ZipUploadProgressPercentage(file_size, save_progress_to_state)
+            transfer_config = boto3.s3.transfer.TransferConfig(
+                multipart_threshold=1024 * 25,
+                multipart_chunksize=1024 * 25,
+                use_threads=False
+            )
             self._client.upload_fileobj(
                 Fileobj=file_data,
                 Bucket=Config.OBJECT_STORE_BUCKET,
                 Key=key,
-                Callback=progress)
+                Config=transfer_config,
+                Callback=zip_upload_progress_callback
+            )
+
+            while zip_upload_progress_callback.get_percentage_complete() < 100:
+                time.sleep(1)
+
+            return True
         except ClientError as e:
             raise Exception(f'Failed to upload the file: {e}')
-
-        # Calculate the progress percentage and update the task state
-        progress_percentage = (progress._seen_so_far / progress._size) * 100
-        zip_docs.update_state(state='UPLOADING_ZIP', meta={'progress': progress_percentage})
-
-        return True, key

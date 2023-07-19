@@ -3,6 +3,7 @@ import os
 import requests
 import base64
 import time
+import json
 
 from datetime import datetime
 from wsgiref.handlers import format_date_time
@@ -315,7 +316,6 @@ class DocumentResource(Resource):
     @api.route('/documents/zip/<task_id>', methods=['GET'])
     class ZipDocsProgressResource(Resource):
         def get(self, task_id=None):
-            current_app.logger.info('Getting zip progress')
             from app.tasks.celery import get_task
             
             if not task_id:
@@ -325,16 +325,18 @@ class DocumentResource(Resource):
             if not task:
                 raise BadRequest('No task found')
             
-            current_app.logger.info(f'Zip task {task_id} is in state {task.state}')
             if task.state == 'PENDING':
                 response = {
                     'state': task.state,
                     'progress': 0
                 }
             elif task.state == 'SUCCESS':
+                success_docs = json.loads(task.info).get('success_docs', '[]')
+                # success_docs = task.info.get('success_docs', [])
                 response = {
                     'state': task.state,
-                    'progress': 100
+                    'progress': 100,
+                    'success_docs': success_docs,
                 }
             elif task.state == 'FAILURE':
                 response = {
@@ -343,7 +345,6 @@ class DocumentResource(Resource):
                     'error': str(task.result)
                 }
             else:
-                current_app.logger.info(f'task.info: {task.info}')
                 progress = task.info.get('progress', 0)                
                                 
                 response = {

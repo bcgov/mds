@@ -1,6 +1,7 @@
 import io
 import os
 import uuid
+import threading
 from datetime import datetime
 from app.config import Config
 from app.extensions import db
@@ -13,8 +14,8 @@ import time
 @celery.task()
 def zip_docs(zip_id, doc_ids, zip_file_name):
 
-    try:
-        logger = get_task_logger(str(zip_id))
+    try:        
+        # Retrieve the documents to be zipped
         docs = []
         docs = Document.query.filter(Document.document_id.in_(doc_ids)).all()
         zip_progress = 0
@@ -23,28 +24,39 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
         if not docs or len(docs) == 0:
             raise Exception("No documents found")
 
-        logger.info(f"Zipping {len(docs)} documents...")
-
-        # Define the progress callback functions
+        # Define function to update the task state with the progress
         def progress_callback(progress_type, current, total):
             nonlocal zip_progress
             nonlocal upload_progress
+            
+            # Update the zip progress if zipping files
             if progress_type == 'ZIPPING_FILES':
                 zip_progress = current / total * 100
+                
+             # Update the upload progress if uploading the zip file
             if progress_type == 'UPLOADING_ZIP':
                 upload_progress = current / total * 100
                 
-            overall_progress = (zip_progress + upload_progress) / 2
+            # Calculate the overall progress as the average of the zip and upload progress
+            overall_progress = round((zip_progress + upload_progress) / 2)
+            
+            # Update the task state with the overall progress
             zip_docs.update_state(state=progress_type, meta={'progress': overall_progress})
 
         # Create a zip file object
         zip_file = io.BytesIO()
         file_paths = []
+        pretty_paths = []
+        
+        # Add each document's object store path and display name to the list of file paths and pretty paths
         for doc in docs:
             file_paths.append(doc.object_store_path)
-
+            pretty_paths.append(doc.path_display_name)
+          
+        # Download the files and write them to the zip file
         ObjectStoreStorageService().download_files_and_write_to_zip(
             paths=file_paths,
+            pretty_paths=pretty_paths,
             zip_file=zip_file,
             progress_callback=progress_callback,
         )
@@ -52,50 +64,40 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
         # Upload the zip data to the S3 bucket
         zip_data = zip_file.getvalue()
 
-        def upload_progress_callback(bytes_uploaded):
-            progress_callback('ZIPPING_FILES', bytes_uploaded, len(zip_data))
-
+        # Create a new key for saving the zip file to the S3 bucket
         new_key = f"{Config.S3_PREFIX}app/zipped_docs/{zip_file_name}"
-
+        
+        zip_file_size = len(zip_data)
+          
+        # Upload the zip file to the S3 bucket
         ObjectStoreStorageService().upload_zip_file(
             file_data=io.BytesIO(zip_data),
             key=new_key,
-            zip_docs=zip_docs,
+            file_size=zip_file_size,
+            progress_callback=progress_callback
         )
 
-        # Update the task state to indicate that the task is complete
-        zip_docs.update_state(state='SUCCESS', meta={'progress': 100})
+        # Create a document record for the zip file
+        base_folder = "/app/zipped_docs/"
+        pretty_path = os.path.join(base_folder, zip_file_name)
+        document_guid = str(uuid.uuid4())
+        object_store_path = os.path.join(Config.S3_PREFIX, pretty_path)
 
-        # Check if a Document object already exists for the zipped file
-        existing_document = Document.query.filter_by(object_store_path=new_key).first()
-        if existing_document:
-            # If a Document object already exists, update its metadata and commit the changes
-            existing_document.upload_completed_date = datetime.utcnow()
-            existing_document.update_user = "system"
-            existing_document.update_timestamp = datetime.utcnow()
-            db.session.commit()
-        else:
-            # If a Document object does not already exist, create a new one and save it to the database
-            base_folder = "app/zipped_docs/"
-            pretty_path = os.path.join(base_folder, zip_file_name)
-            document_guid = str(uuid.uuid4())
-            object_store_path = os.path.join(Config.S3_PREFIX, pretty_path)
+        document = Document(
+            document_guid=document_guid,
+            full_storage_path=object_store_path,
+            upload_started_date=datetime.utcnow(),
+            upload_completed_date=datetime.utcnow(),
+            path_display_name=pretty_path,
+            file_display_name=zip_file_name,
+            object_store_path=new_key,
+            create_user="system",
+            update_user="system",
+            update_timestamp=datetime.utcnow(),
+        )
 
-            document = Document(
-                document_guid=document_guid,
-                full_storage_path=object_store_path,
-                upload_started_date=datetime.utcnow(),
-                upload_completed_date=datetime.utcnow(),
-                path_display_name=pretty_path,
-                file_display_name=zip_file_name,
-                object_store_path=new_key,
-                create_user="system",
-                update_user="system",
-                update_timestamp=datetime.utcnow(),
-            )
-
-            db.session.add(document)
-            db.session.commit()
+        db.session.add(document)
+        db.session.commit()
 
         # Determine the result of the zipping
         success = True
@@ -106,9 +108,9 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
             chunk=None,
             success=success,
             message=message,
-            success_docs=doc_ids,
+            success_docs=[document_guid],
             errors=[],
-            doc_ids=doc_ids,
+            doc_ids=[doc_ids],
         )
 
     except Exception as e:
