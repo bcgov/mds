@@ -73,24 +73,6 @@ exports.loadJS = ({ include, exclude } = {}) => ({
           target: 'es2016'
         }
       },
-
-
-      // {
-      //   test: /\.js$/,
-      //   include,
-      //   exclude,
-      //   use: [
-      //     {
-      //       loader: "thread-loader",
-      //       options: {
-      //         workers: 1,
-      //         workerParallelJobs: 50,
-      //         workerNodeArgs: ["--max-old-space-size=3072"],
-      //       },
-      //     },
-      //     { loader: "babel-loader?cacheDirectory" },
-      //   ],
-      // },
     ],
   },
 });
@@ -108,24 +90,6 @@ exports.loadTS = ({ include, exclude } = {}) => ({
           target: 'es2016'
         }
       }
-
-      // {
-      //   test: /\.tsx?$/,
-      //   include,
-      //   exclude,
-      //   loader: [
-      //     {
-      //       loader: "thread-loader",
-      //       options: {
-      //         workers: 1,
-      //         workerParallelJobs: 50,
-      //         workerNodeArgs: ["--max-old-space-size=3072"],
-      //       },
-      //     },
-      //     "babel-loader?cacheDirectory",
-      //     "ts-loader",
-      //   ],
-      // },
     ],
   },
 });
@@ -141,7 +105,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "thread-loader",
           "style-loader",
           "css-loader",
-          // postCSSLoader,
+          postCSSLoader,
           {
             loader: "sass-loader",
             options: {
@@ -160,7 +124,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         use: [
           "style-loader",
           "css-loader",
-          // postCSSLoader,
+          postCSSLoader,
           {
             loader: "less-loader",
             options: {
@@ -206,7 +170,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
-          // postCSSLoader,
+          postCSSLoader,
           {
             loader: "sass-loader",
             options: {

@@ -17,8 +17,7 @@ const PORT = process.env.PORT || 3000;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
 const smp = new SpeedMeasurePlugin({
-  // outputFormat: "humanVerbose",
-  // granularLoaderData: true,
+  disable: !process.env.MEASURE_SPEED,
 });
 
 const PATHS = {
@@ -73,32 +72,6 @@ const commonConfig = merge([
     devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
-    },
-    module: {
-      rules: [
-        // {
-        //   test: /\.[[jt]sx?$/,
-        //   exclude: /node_modules/,
-        //   loader: 'esbuild-loader',
-        //   options: {
-        //     target: 'es2016'
-        //   }
-        // }
-        // {
-        //   test: /\.tsx?$/,
-        //   exclude: /node_modules/,
-        //   use: [
-        //     "babel-loader?cacheDirectory",
-        //     {
-        //       loader: "ts-loader",
-        //       options: {
-        //         transpileOnly: true,
-        //       },
-        //     },
-        //   ],
-        // },
-        // { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader?cacheDirectory" },
-      ],
     },
     plugins: [
       //new webpack.optimize.ModuleConcatenationPlugin(),
@@ -155,6 +128,8 @@ const devConfig = merge([
   }),
   {
     watchOptions: {
+      // Increase file change poll interval to reduce
+      // CPU usage on some operating systems.
       poll: 2500,
       ignored: /node_modules/
     }
