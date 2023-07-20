@@ -120,15 +120,21 @@ def start_job(wait, job_type, docs, task, zip_file_name=None):
     return message
 
 def start_zip_job(job_type, docs, task, zip_file_name=None):
+    """
+        Starts a new job to zip the given documents asynchronously.
+    """
     job_id = str(uuid.uuid4())
     doc_ids = [doc.document_id for doc in docs]    
     
-    # Create the task asynchronously
+    # Create the arguments for the task
     data = {"args": [job_id, doc_ids, str(zip_file_name)]}
+    
+    # Start the task
     async_response = apply_task_async(task.name, data)
-    current_app.logger.info(f'task_result: {async_response}')
   
     message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be zipped'
+    
+    # Create the response to indicate the task was started
     response_data = {'task_id': async_response['task-id'], 'message': message}
     response = Response(json.dumps(response_data), content_type='application/json')
     return json.loads(response.data.decode('utf-8'))

@@ -27,16 +27,26 @@ class ProgressPercentage(object):
             sys.stdout.write('\r%s: %.2f%% (%s / %s)' %
                              (self._filename, percentage, self._seen_so_far, self._size))
             sys.stdout.flush()
-
+            
 class ZipUploadProgressPercentage(object):
-    def __init__(self, total_size, save_progress_to_state):
+    """
+    A callback class for tracking the progress of a file upload to S3.
+
+    This class is designed to be passed as a callback in a boto3 upload_fileobj function.
+    It tracks the progress of the upload and saves the progress to a state object.
+
+    Args:
+        total_size (int): The total size of the file being uploaded.
+        progress_callback (callable): A function to update the state of a celery task with the progress of the upload.
+    """
+    def __init__(self, total_size, progress_callback):
         self._seen_so_far = 0
         self._total_size = total_size
         self._percentage_complete = 0
-        self._save_progress_to_state = save_progress_to_state
+        self._progress_callback = progress_callback
 
     def __call__(self, bytes_amount):
-        self._save_progress_to_state(self._seen_so_far + bytes_amount, self._total_size)
+        self._progress_callback('UPLOADING_ZIP', self._seen_so_far + bytes_amount, self._total_size)
         self._seen_so_far += bytes_amount
         self._percentage_complete = (self._seen_so_far / self._total_size) * 100
 
@@ -59,15 +69,13 @@ class ObjectStoreStorageService():
             for chunk in iter(lambda: result['Body'].read(1048576), b''):
                 yield chunk
 
-        s3_response = self._client.get_object(
-            Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
+        s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
         resp = Response(
             generate(s3_response),
             mimetype='application/pdf' if '.pdf' in display_name.lower() else 'application/zip',
             headers={
                 'Content-Disposition':
-                ('attachment; ' if as_attachment else '') +
-                ('filename=' + display_name)
+                    ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
             })
         return resp
 
@@ -98,8 +106,7 @@ class ObjectStoreStorageService():
         s3_etag = self.s3_etag(key)
         fs_etag = fs_etag if fs_etag else self.calculate_s3_etag(filename)
         if (s3_etag != fs_etag):
-            raise Exception(
-                'ETag of the uploaded file and local file do not match!')
+            raise Exception('ETag of the uploaded file and local file do not match!')
 
         return True, key
 
@@ -125,16 +132,14 @@ class ObjectStoreStorageService():
 
     def copy_file(self, source_key, key):
         copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': source_key}
-        self._client.copy(CopySource=copy_source,
-                          Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        self._client.copy(CopySource=copy_source, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
 
     def delete_file(self, key):
         self._client.delete_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
 
     def file_exists(self, key):
         try:
-            self._client.head_object(
-                Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+            self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
             return True
         except ClientError as e:
             if (int(e.response['Error']['Code']) == 404):
@@ -183,7 +188,7 @@ class ObjectStoreStorageService():
     def download_files_and_write_to_zip(self, paths, pretty_paths, zip_file, progress_callback=None):
         # Get the total size of all the files to download
         total_size = sum([self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)['ContentLength'] for path in paths])
-
+        
         # Download each file and write it to the zip file
         total_bytes_downloaded = 0
         total_bytes_zipped = 0
@@ -208,17 +213,28 @@ class ObjectStoreStorageService():
                 total_bytes_processed = total_bytes_downloaded + total_bytes_zipped
                 progress_callback("ZIPPING_FILES", total_bytes_processed, total_size * 2)
 
-    def upload_zip_file(self, file_data, key, file_size, progress_callback=None):
+    def upload_zip_file(self, file_data, key, file_size, progress_callback):
+        """
+            Uploads a zip file to the S3 bucket.
+            args:
+            file_data (file): The zip file data to upload.
+            key (str): The key to use for the uploaded file.
+            file_size (int): The size of the file in bytes.
+            progress_callback (callable): A function to update the state of a celery task with the progress of the upload.
+        """
         try:
-            def save_progress_to_state(bytes_uploaded, total_bytes):
-                progress_callback('UPLOADING_ZIP', bytes_uploaded, total_bytes)
 
-            zip_upload_progress_callback = ZipUploadProgressPercentage(file_size, save_progress_to_state)
+            # Create a callback for tracking the progress of the upload
+            zip_upload_progress_callback = ZipUploadProgressPercentage(total_size=file_size, progress_callback=progress_callback)
+
+            # Create a transfer config for the upload - forcing the us of a single thread is to avoid boto3 marking the task as complete before the callback has finished.
             transfer_config = boto3.s3.transfer.TransferConfig(
                 multipart_threshold=1024 * 25,
                 multipart_chunksize=1024 * 25,
                 use_threads=False
             )
+
+            # Upload the zip file to the S3 bucket
             self._client.upload_fileobj(
                 Fileobj=file_data,
                 Bucket=Config.OBJECT_STORE_BUCKET,
@@ -227,9 +243,10 @@ class ObjectStoreStorageService():
                 Callback=zip_upload_progress_callback
             )
 
+            # Wait for the upload to complete
             while zip_upload_progress_callback.get_percentage_complete() < 100:
                 time.sleep(1)
-
+            
             return True
         except ClientError as e:
             raise Exception(f'Failed to upload the file: {e}')
