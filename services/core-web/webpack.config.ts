@@ -60,6 +60,7 @@ if (dotenv.parsed) {
   });
 }
 
+// Preload loaders to speed up build
 threadLoader.warmup({}, [
   'style-loader',
   'css-loader',
