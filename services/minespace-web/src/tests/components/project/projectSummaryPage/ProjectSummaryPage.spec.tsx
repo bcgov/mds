@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { ProjectSummaryPage } from "@/components/pages/Project/ProjectSummaryPage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
+const props: any = {};
+const dispatchProps: any = {};
 
 const setupProps = () => {
   props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;

@@ -8,21 +8,36 @@ import * as projectActions from "../actions/projectActions";
 import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import {
+  ICreateProjectSummary,
+  IProjectSummary,
+  IProject,
+  IInformationRequirementsTable,
+  IFileInfo,
+  ICreateMajorMinesApplication,
+  IMajorMinesApplication,
+  IProjectDecisionPackage,
+  IProjectPageData,
+} from "@mds/common";
+import { AppThunk } from "@/store/appThunk.type";
+import { AxiosResponse } from "axios";
 
 export const createProjectSummary = (
   { mineGuid },
-  payload,
+  payload: Partial<ICreateProjectSummary>,
   message = "Successfully created a new project description"
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IProjectSummary>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(null),
+      ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(),
       { ...payload, mine_guid: mineGuid },
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IProjectSummary>) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
@@ -37,9 +52,11 @@ export const createProjectSummary = (
 
 export const updateProjectSummary = (
   { projectGuid, projectSummaryGuid },
-  payload,
+  payload: IProjectSummary,
   message = "Successfully updated project description"
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IProjectSummary>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
@@ -48,7 +65,7 @@ export const updateProjectSummary = (
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IProjectSummary>) => {
       notification.success({
         message,
         duration: 10,
@@ -66,15 +83,15 @@ export const updateProjectSummary = (
 
 export const updateProject = (
   { projectGuid },
-  payload,
+  payload: Partial<IProjectSummary>,
   message = "Successfully updated project.",
   showSuccessMessage = true
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IProject>>> => (dispatch): Promise<AxiosResponse<IProject>> => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IProject>) => {
       if (showSuccessMessage) {
         notification.success({
           message,
@@ -92,7 +109,7 @@ export const updateProject = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
+export const fetchProjectSummariesByMine = ({ mineGuid }): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -108,7 +125,10 @@ export const fetchProjectSummariesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dispatch) => {
+export const fetchProjectSummaryById = (
+  projectGuid: string,
+  projectSummaryGuid: string
+): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -128,19 +148,19 @@ export const fetchProjectSummaryById = (projectGuid, projectSummaryGuid) => (dis
 };
 
 export const removeDocumentFromProjectSummary = (
-  projectGuid,
-  projectSummaryGuid,
-  mineDocumentGuid
-) => (dispatch) => {
+  projectGuid: string,
+  projectSummaryGuid: string,
+  mineDocumentGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-      API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
+        API.PROJECT_SUMMARY_DOCUMENT(projectGuid, projectSummaryGuid, mineDocumentGuid),
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted project description document.",
         duration: 10,
@@ -155,7 +175,7 @@ export const removeDocumentFromProjectSummary = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectSummaries = (payload) => (dispatch) => {
+export const fetchProjectSummaries = (payload: any): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -168,7 +188,7 @@ export const fetchProjectSummaries = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectsByMine = ({ mineGuid }) => (dispatch) => {
+export const fetchProjectsByMine = ({ mineGuid }): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROJECTS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -181,12 +201,14 @@ export const fetchProjectsByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectById = (projectGuid) => (dispatch) => {
+export const fetchProjectById = (
+  projectGuid: string
+): AppThunk<Promise<AxiosResponse<IProject>>> => (dispatch): Promise<AxiosResponse<IProject>> => {
   dispatch(request(reducerTypes.GET_PROJECT));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IProject>) => {
       dispatch(success(reducerTypes.GET_PROJECT));
       dispatch(projectActions.storeProject(response.data));
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
@@ -208,8 +230,8 @@ export const fetchProjectById = (projectGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjects = (params) => (dispatch) => {
-  const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
+export const fetchProjects = (params: IProjectPageData): AppThunk => (dispatch) => {
+  const defaultParams = params || Strings.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_PROJECTS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -222,7 +244,10 @@ export const fetchProjects = (params) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch) => {
+export const deleteProjectSummary = (
+  mineGuid: string,
+  projectSummaryGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(request(reducerTypes.DELETE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
@@ -230,7 +255,7 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
       `${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY(mineGuid, projectSummaryGuid)}`,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted project description.",
         duration: 10,
@@ -245,22 +270,26 @@ export const deleteProjectSummary = (mineGuid, projectSummaryGuid) => (dispatch)
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createInformationRequirementsTable = (projectGuid, file, documentGuid) => (
+export const createInformationRequirementsTable = (
+  projectGuid: string,
+  file: IFileInfo,
+  documentGuid: string
+): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
   dispatch
-) => {
+): Promise<AxiosResponse<IInformationRequirementsTable[]>> => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("document_guid", documentGuid);
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios({ suppressErrorNotification: true })
+  return CustomAxios({ errorToastMessage: "", suppressErrorNotification: true })
     .post(
       ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLES(projectGuid),
       formData,
       createRequestHeader(customContentType)
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IInformationRequirementsTable[]>) => {
       dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
@@ -272,11 +301,13 @@ export const createInformationRequirementsTable = (projectGuid, file, documentGu
 };
 
 export const updateInformationRequirementsTableByFile = (
-  projectGuid,
-  informationRequirementsTableGuid,
-  file,
-  documentGuid
-) => (dispatch) => {
+  projectGuid: string,
+  informationRequirementsTableGuid: string,
+  file: IFileInfo,
+  documentGuid: string
+): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IInformationRequirementsTable[]>> => {
   const formData = new FormData();
   formData.append("file", file);
   if (documentGuid) {
@@ -285,14 +316,14 @@ export const updateInformationRequirementsTableByFile = (
   const customContentType = { "Content-Type": "multipart/form-data" };
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
-  return CustomAxios({ suppressErrorNotification: true })
+  return CustomAxios({ errorToastMessage: "", suppressErrorNotification: true })
     .put(
       ENVIRONMENT.apiUrl +
-      API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
       formData,
       createRequestHeader(customContentType)
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IInformationRequirementsTable[]>) => {
       dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
@@ -305,19 +336,21 @@ export const updateInformationRequirementsTableByFile = (
 
 export const updateInformationRequirementsTable = (
   { projectGuid, informationRequirementsTableGuid },
-  payload,
+  payload: Partial<IInformationRequirementsTable>,
   message = "Successfully updated information requirements table"
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable>>> => (
+  dispatch
+): Promise<AxiosResponse<IInformationRequirementsTable>> => {
   dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
   dispatch(showLoading());
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl +
-      API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
+        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IInformationRequirementsTable>) => {
       notification.success({
         message,
         duration: 10,
@@ -332,7 +365,7 @@ export const updateInformationRequirementsTable = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchRequirements = () => (dispatch) => {
+export const fetchRequirements = (): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_REQUIREMENTS));
   dispatch(showLoading());
   return CustomAxios()
@@ -345,23 +378,23 @@ export const fetchRequirements = () => (dispatch) => {
       dispatch(error(reducerTypes.GET_REQUIREMENTS));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const removeDocumentFromInformationRequirementsTable = (
-  projectGuid,
-  irtGuid,
-  mineDocumentGuid
-) => (dispatch) => {
+  projectGuid: string,
+  irtGuid: string,
+  mineDocumentGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-      API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
+        API.INFORMATION_REQUIREMENTS_TABLE_DOCUMENT(projectGuid, irtGuid, mineDocumentGuid),
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted information requirements table document.",
         duration: 10,
@@ -378,9 +411,11 @@ export const removeDocumentFromInformationRequirementsTable = (
 
 export const createMajorMineApplication = (
   { projectGuid },
-  payload,
+  payload: ICreateMajorMinesApplication,
   message = "Successfully created a new major mine application"
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IMajorMinesApplication>>> => (
+  dispatch
+): Promise<AxiosResponse<IMajorMinesApplication>> => {
   dispatch(request(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -389,7 +424,7 @@ export const createMajorMineApplication = (
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IMajorMinesApplication>) => {
       if (message) {
         notification.success({
           message,
@@ -408,9 +443,11 @@ export const createMajorMineApplication = (
 
 export const updateMajorMineApplication = (
   { projectGuid, majorMineApplicationGuid },
-  payload,
+  payload: IMajorMinesApplication,
   message = "Successfully updated major mine application"
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IMajorMinesApplication>>> => (
+  dispatch
+): Promise<AxiosResponse<IMajorMinesApplication>> => {
   dispatch(request(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -419,7 +456,7 @@ export const updateMajorMineApplication = (
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IMajorMinesApplication>) => {
       if (message) {
         notification.success({
           message,
@@ -437,23 +474,23 @@ export const updateMajorMineApplication = (
 };
 
 export const removeDocumentFromMajorMineApplication = (
-  projectGuid,
-  majorMineApplicationGuid,
-  mineDocumentGuid
-) => (dispatch) => {
+  projectGuid: string,
+  majorMineApplicationGuid: string,
+  mineDocumentGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-      API.MAJOR_MINE_APPLICATION_DOCUMENT(
-        projectGuid,
-        majorMineApplicationGuid,
-        mineDocumentGuid
-      ),
+        API.MAJOR_MINE_APPLICATION_DOCUMENT(
+          projectGuid,
+          majorMineApplicationGuid,
+          mineDocumentGuid
+        ),
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted major mine application document.",
         duration: 10,
@@ -470,9 +507,11 @@ export const removeDocumentFromMajorMineApplication = (
 
 export const createProjectDecisionPackage = (
   { projectGuid },
-  payload,
+  payload: Partial<IProjectDecisionPackage>,
   message = "Successfully created a new project decision package."
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IProjectDecisionPackage>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectDecisionPackage>> => {
   dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
   dispatch(showLoading());
   return CustomAxios()
@@ -481,7 +520,7 @@ export const createProjectDecisionPackage = (
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IProjectDecisionPackage>) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
       return response;
@@ -495,9 +534,11 @@ export const createProjectDecisionPackage = (
 
 export const updateProjectDecisionPackage = (
   { projectGuid, projectDecisionPackageGuid },
-  payload,
+  payload: Partial<IProjectDecisionPackage>,
   message = "Successfully updated decision package."
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IProjectDecisionPackage>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectDecisionPackage>> => {
   dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
   dispatch(showLoading());
   return CustomAxios()
@@ -506,7 +547,7 @@ export const updateProjectDecisionPackage = (
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IProjectDecisionPackage>) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
       return response;
@@ -519,23 +560,23 @@ export const updateProjectDecisionPackage = (
 };
 
 export const removeDocumentFromProjectDecisionPackage = (
-  projectGuid,
-  projectDecisionPackageGuid,
-  mineDocumentGuid
-) => (dispatch) => {
+  projectGuid: string,
+  projectDecisionPackageGuid: string,
+  mineDocumentGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
-      API.PROJECT_DECISION_PACKAGE_DOCUMENT(
-        projectGuid,
-        projectDecisionPackageGuid,
-        mineDocumentGuid
-      ),
+        API.PROJECT_DECISION_PACKAGE_DOCUMENT(
+          projectGuid,
+          projectDecisionPackageGuid,
+          mineDocumentGuid
+        ),
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted decision package document.",
         duration: 10,
