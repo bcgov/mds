@@ -2,9 +2,12 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const merge = require("webpack-merge");
+const { merge } = require('webpack-merge');
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const threadLoader = require('thread-loader');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
 const DEVELOPMENT = "development";
@@ -13,6 +16,10 @@ const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || 3000;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
+const smp = new SpeedMeasurePlugin({
+  // outputFormat: "humanVerbose",
+  // granularLoaderData: true,
+});
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -38,7 +45,7 @@ const PATH_ALIASES = {
   "@common": PATHS.commonPackage,
 };
 
-const envFile = {};
+const envFile: any = {};
 // @ts-ignore
 envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
@@ -54,6 +61,13 @@ if (dotenv.parsed) {
   });
 }
 
+threadLoader.warmup({}, [
+  'style-loader',
+  'css-loader',
+  'sass-loader',
+  MiniCssExtractPlugin.loader
+])
+
 const commonConfig = merge([
   {
     devtool: "inline-source-map",
@@ -62,20 +76,28 @@ const commonConfig = merge([
     },
     module: {
       rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          use: [
-            "babel-loader?cacheDirectory",
-            {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-              },
-            },
-          ],
-        },
-        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader?cacheDirectory" },
+        // {
+        //   test: /\.[[jt]sx?$/,
+        //   exclude: /node_modules/,
+        //   loader: 'esbuild-loader',
+        //   options: {
+        //     target: 'es2016'
+        //   }
+        // }
+        // {
+        //   test: /\.tsx?$/,
+        //   exclude: /node_modules/,
+        //   use: [
+        //     "babel-loader?cacheDirectory",
+        //     {
+        //       loader: "ts-loader",
+        //       options: {
+        //         transpileOnly: true,
+        //       },
+        //     },
+        //   ],
+        // },
+        // { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader?cacheDirectory" },
       ],
     },
     plugins: [
@@ -83,13 +105,6 @@ const commonConfig = merge([
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
-      // Adding timestamp to builds
-      function() {
-        this.plugin("watch-run", (watching, callback) => {
-          console.log(`Begin compile at ${new Date()}`);
-          callback();
-        });
-      },
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
@@ -138,6 +153,12 @@ const devConfig = merge([
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
   }),
+  {
+    watchOptions: {
+      poll: 2500,
+      ignored: /node_modules/
+    }
+  }
 ]);
 
 const prodConfig = merge([
@@ -197,12 +218,13 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
-module.exports = (mode) => {
+module.exports = () => {
+  const mode = process.env.NODE_ENV;
   if (mode === PRODUCTION) {
     return merge(commonConfig, prodConfig, { mode });
   }
 
   if (mode === DEVELOPMENT) {
-    return merge(commonConfig, devConfig, { mode });
+    return smp.wrap(merge(commonConfig, devConfig, { mode }));
   }
 };
