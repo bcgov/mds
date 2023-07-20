@@ -119,8 +119,6 @@ const openArchiveModal = (event, props, documents) => {
 };
 
 export const DocumentTable = (props) => {
-  console.log("inside documentTable");
-  console.log(props);
   const isMinimalView = props.view === "minimal";
   const canDelete = !props.isViewOnly && props.removeDocument;
   const canArchive =
