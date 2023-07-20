@@ -11,29 +11,38 @@ const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-const ManifestPlugin = require("webpack-manifest-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: () => [autoprefixer],
+    postcssOptions: {
+      plugins: () => [autoprefixer],
+    }
   },
 };
 
 exports.devServer = ({ host, port } = {}) => ({
+  cache: {
+    type: 'filesystem'
+  },
+  stats: {
+    warningsFilter: [/Serializing big strings/],
+  },
   devServer: {
     historyApiFallback: true,
-    stats: "errors-only",
     host,
     port,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
     },
-    overlay: {
-      errors: true,
-      warnings: true,
+    client: {
+      overlay: {
+        errors: false,
+        warnings: false,
+      },
     },
   },
 });
@@ -41,22 +50,47 @@ exports.devServer = ({ host, port } = {}) => ({
 exports.loadJS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
+
       {
-        test: /\.js$/,
+        test: /\.[[t]sx?$/,
         include,
         exclude,
-        loader: [
-          {
-            loader: "thread-loader",
-            options: {
-              workers: 1,
-              workerParallelJobs: 50,
-              workerNodeArgs: ["--max-old-space-size=3072"],
-            },
-          },
-          "babel-loader?cacheDirectory",
-        ],
+
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2016'
+        }
       },
+      {
+        test: /\.[[j]sx?$/,
+        include,
+        exclude,
+
+        loader: 'esbuild-loader',
+        options: {
+          /// Treat .js files as `.jsx` files
+          loader: 'jsx',
+          target: 'es2016'
+        }
+      },
+
+
+      // {
+      //   test: /\.js$/,
+      //   include,
+      //   exclude,
+      //   use: [
+      //     {
+      //       loader: "thread-loader",
+      //       options: {
+      //         workers: 1,
+      //         workerParallelJobs: 50,
+      //         workerNodeArgs: ["--max-old-space-size=3072"],
+      //       },
+      //     },
+      //     { loader: "babel-loader?cacheDirectory" },
+      //   ],
+      // },
     ],
   },
 });
@@ -65,22 +99,33 @@ exports.loadTS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.[ts]x?$/,
         include,
         exclude,
-        loader: [
-          {
-            loader: "thread-loader",
-            options: {
-              workers: 1,
-              workerParallelJobs: 50,
-              workerNodeArgs: ["--max-old-space-size=3072"],
-            },
-          },
-          "babel-loader?cacheDirectory",
-          "ts-loader",
-        ],
-      },
+
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2016'
+        }
+      }
+
+      // {
+      //   test: /\.tsx?$/,
+      //   include,
+      //   exclude,
+      //   loader: [
+      //     {
+      //       loader: "thread-loader",
+      //       options: {
+      //         workers: 1,
+      //         workerParallelJobs: 50,
+      //         workerNodeArgs: ["--max-old-space-size=3072"],
+      //       },
+      //     },
+      //     "babel-loader?cacheDirectory",
+      //     "ts-loader",
+      //   ],
+      // },
     ],
   },
 });
@@ -93,9 +138,10 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         include,
         exclude,
         use: [
+          "thread-loader",
           "style-loader",
           "css-loader",
-          postCSSLoader,
+          // postCSSLoader,
           {
             loader: "sass-loader",
             options: {
@@ -114,7 +160,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         use: [
           "style-loader",
           "css-loader",
-          postCSSLoader,
+          // postCSSLoader,
           {
             loader: "less-loader",
             options: {
@@ -156,10 +202,11 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
         include,
         exclude,
         use: [
+          "thread-loader",
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
-          postCSSLoader,
+          // postCSSLoader,
           {
             loader: "sass-loader",
             options: {
@@ -295,7 +342,6 @@ exports.bundleOptimization = ({ options } = {}) => ({
     splitChunks: options,
     minimizer: [
       new TerserPlugin({
-        cache: true,
         parallel: true,
         terserOptions: {
           compress: false,
@@ -334,12 +380,14 @@ exports.clean = () => ({
 });
 
 exports.copy = (from, to) => ({
-  plugins: [new CopyWebpackPlugin([{ from, to, ignore: ["*.html"] }])],
+  plugins: [new CopyWebpackPlugin({
+    patterns: [{ from, to, globOptions: { ignore: ["*.html"] } }]
+  })],
 });
 
 exports.extractManifest = () => ({
   plugins: [
-    new ManifestPlugin({
+    new WebpackManifestPlugin({
       fileName: "asset-manifest.json",
     }),
   ],
