@@ -25,6 +25,7 @@ const postCSSLoader = {
 
 exports.devServer = ({ host, port } = {}) => ({
   cache: {
+    // Persist cache to filesystem to speed up consecutive builds.
     type: 'filesystem'
   },
   stats: {
