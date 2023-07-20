@@ -67,21 +67,28 @@ const renderFileType = (file) => {
   return index === -1 ? null : file.substr(index);
 };
 
-const parseFiles = (versions, documentType) =>
-  versions.map((version, index) => ({
+const parseVersions = (versions, documentType) =>
+  versions.map((version) => ({
     key: version.mine_document_version_guid,
     file_location:
       Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[documentType] ||
       Strings.EMPTY_FIELD,
     file_type: renderFileType(version.document_name) || Strings.EMPTY_FIELD,
-    number_of_versions: index === 0 ? versions.length - 1 : 0,
     ...version,
   }));
 
 const transformRowData = (document) => {
-  const files = parseFiles(document.versions, document.major_mine_application_document_type);
-  const currentFile = files[0];
-  const pastFiles = files.slice(1);
+  const pastFiles = parseVersions(document.versions, document.major_mine_application_document_type);
+  const currentFile = {
+    key: document.key,
+    file_location:
+      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[
+        document.major_mine_application_document_type
+      ] || Strings.EMPTY_FIELD,
+    file_type: renderFileType(document.document_name) || Strings.EMPTY_FIELD,
+    number_of_versions: document?.versions?.length,
+    ...document,
+  };
 
   return {
     ...currentFile,
