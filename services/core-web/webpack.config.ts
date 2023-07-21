@@ -147,7 +147,6 @@ const prodConfig = merge([
     },
   },
   parts.clean(),
-  parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
@@ -182,13 +181,12 @@ const prodConfig = merge([
         },
       },
     },
-  }),
-  parts.CSSOptimization({
-    discardComments: {
-      removeAll: true,
-    },
-    zindex: false,
-    safe: true,
+    cssOptions: {
+      zindex: false,
+      discardComments: {
+        removeAll: true,
+      }
+    }
   }),
   parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
