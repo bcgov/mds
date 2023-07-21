@@ -31,18 +31,21 @@ jobs:
       - name: Build Common Package
         run: cd services/common/ && yarn build
 
+      - name: Validate webpack conf
+        run: cd services/core-web/ && npx webpack configtest webpack.config.ts
+
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test 
+        run: cd services/core-web/ && yarn && yarn test
 
       - name: build-core-web
         run: |
           cd services/core-web/
           NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
-      - name: start-core-web        
+      - name: start-core-web
         run: cd services/core-web/ && yarn run http-server-spa build /index.html 3000 &
-      
-      - name: Run cypress tests        
+
+      - name: Run cypress tests
         run: cd services/core-web/ && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
