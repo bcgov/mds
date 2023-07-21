@@ -26,5 +26,5 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found')
 
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'project_summaries')
+        return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
+            request, mine, project_guid, 'project_summaries')

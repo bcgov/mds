@@ -9,6 +9,7 @@ from flask_restplus import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -19,6 +20,22 @@ ALLOWED_DOCUMENT_CATEGORIES = [
 
 class DocumentManagerService():
     document_manager_document_resource_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
+    
+    @classmethod
+    def validateFileNameAndInitializeFileUploadWithDocumentManager(cls, request, mine, project_guid,document_category):
+
+        metadata = cls._parse_request_metadata(request)
+        file_name = metadata.get('filename')
+        mine_document = MineDocumentSearchUtil.find_by_document_name_and_project_guid(file_name, project_guid)
+
+        if not mine_document: # No existing file found in this application hence continuing the file uploading
+          return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
+        elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
+            content = f'{{"description" : "File already exist with the given name: {file_name}. Replace with the new version", "status_code": 409, "status": "ARCHIVED_FILE_EXIST"}}'
+            return Response(content, 409)
+        else: # The found file with the same name in this application is not archived.
+            content = f'{{"description" : "Archived file already exist with the given name: {file_name}", "status_code": 409, "status": "REPLACEABLE_FILE_EXIST"}}'
+            return Response(content, 409, content_type='application/json')
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
