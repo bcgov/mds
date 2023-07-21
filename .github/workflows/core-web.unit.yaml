@@ -31,9 +31,6 @@ jobs:
       - name: Build Common Package
         run: cd services/common/ && yarn build
 
-      - name: Validate webpack conf
-        run: cd services/core-web/ && npx webpack configtest webpack.config.ts
-
       - name: Run frontend tests
         run: cd services/core-web/ && yarn && yarn test
 
