@@ -81,8 +81,10 @@ export class ProjectPage extends Component {
     let filters = { project_guid: this.props?.project?.project_guid, is_archived: true };
     if (activeTab == "major-mine-application") {
       filters = {
-        major_mine_application_guid: this.props?.project?.major_mine_application
-          ?.major_mine_application_guid,
+        ...(this.props?.project?.major_mine_application?.major_mine_application_guid && {
+          major_mine_application_guid: this.props?.project?.major_mine_application
+            ?.major_mine_application_guid,
+        }),
         is_archived: true,
       };
     }

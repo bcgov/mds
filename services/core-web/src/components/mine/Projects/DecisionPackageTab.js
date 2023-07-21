@@ -73,10 +73,12 @@ export class DecisionPackageTab extends Component {
   handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
     const project = await this.props.fetchProjectById(projectGuid);
-
     await this.props.fetchMineDocuments(project.mine_guid, {
       is_archived: true,
-      project_decision_package_guid: project.project_decision_package.project_decision_package_guid,
+      ...(project?.project_decision_package?.project_decision_package_guid && {
+        project_decision_package_guid:
+          project?.project_decision_package?.project_decision_package_guid,
+      }),
     });
   };
 

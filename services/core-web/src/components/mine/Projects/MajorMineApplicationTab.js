@@ -85,7 +85,9 @@ export class MajorMineApplicationTab extends Component {
     const project = await this.props.fetchProjectById(projectGuid);
     this.props.fetchMineDocuments(project.mine_guid, {
       is_archived: true,
-      major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
+      ...(project?.major_mine_application?.major_mine_application_guid && {
+        major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
+      }),
     });
   }
 
