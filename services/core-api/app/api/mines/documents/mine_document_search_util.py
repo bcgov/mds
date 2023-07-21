@@ -72,7 +72,6 @@ class MineDocumentSearchUtil():
         """
         Find Mine Documents by the document_name and the project_guid.
         """
-        project_guid=None
         query = db.session.query(MineDocument)
         
         if project_guid is not None:
