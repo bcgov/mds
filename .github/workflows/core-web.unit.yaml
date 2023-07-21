@@ -14,12 +14,12 @@ jobs:
       - uses: actions/checkout@v3
         name: checkout
 
-      - uses: actions/cache@v3
-        name: Cache yarn
-        with:
-          path: ./.yarn/cache
-          key: mds-core-web
-          restore-keys: mds-core-web
+      # - uses: actions/cache@v3
+      #   name: Cache yarn
+      #   with:
+      #     path: ./.yarn/cache
+      #     key: mds-core-web
+      #     restore-keys: mds-core-web
 
       - uses: actions/setup-node@v2
         with:
@@ -29,21 +29,20 @@ jobs:
         run: yarn
 
       - name: Build Common Package
-        run: cd services/common/ && yarn build
+        run: yarn workspace @mds/common build
 
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
+        run: yarn workspace @mds/core-web test
 
       - name: build-core-web
         run: |
-          cd services/core-web/
-          NODE_OPTIONS=--max-old-space-size=8096 yarn build
+          NODE_OPTIONS=--max-old-space-size=8096 yarn workspace @mds/core-web build
 
       - name: start-core-web
-        run: cd services/core-web/ && yarn run http-server-spa build /index.html 3000 &
+        run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
 
       - name: Run cypress tests
-        run: cd services/core-web/ && yarn cypress run
+        run: yarn workspace @mds/core-web cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
