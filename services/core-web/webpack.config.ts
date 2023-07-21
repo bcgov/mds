@@ -2,11 +2,11 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const { merge } = require('webpack-merge');
+const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const threadLoader = require('thread-loader');
+const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
@@ -61,12 +61,7 @@ if (dotenv.parsed) {
 }
 
 // Preload loaders to speed up build
-threadLoader.warmup({}, [
-  'style-loader',
-  'css-loader',
-  'sass-loader',
-  MiniCssExtractPlugin.loader
-])
+threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
 
 const commonConfig = merge([
   {
@@ -132,9 +127,9 @@ const devConfig = merge([
       // Increase file change poll interval to reduce
       // CPU usage on some operating systems.
       poll: 2500,
-      ignored: /node_modules/
-    }
-  }
+      ignored: /node_modules/,
+    },
+  },
 ]);
 
 const prodConfig = merge([
@@ -185,15 +180,15 @@ const prodConfig = merge([
       zindex: false,
       discardComments: {
         removeAll: true,
-      }
-    }
+      },
+    },
   }),
   parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
 module.exports = () => {
-  const mode = process.env.NODE_ENV;
+  const mode = process.env.NODE_ENV || "production";
   if (mode === PRODUCTION) {
     return merge(commonConfig, prodConfig, { mode });
   }
