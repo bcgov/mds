@@ -5,11 +5,10 @@ const cssnano = require("cssnano");
 const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-// const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -302,7 +301,7 @@ exports.generateSourceMaps = ({ type } = {}) => ({
   devtool: type,
 });
 
-exports.bundleOptimization = ({ options } = {}) => ({
+exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
   optimization: {
     splitChunks: options,
     minimizer: [
@@ -312,18 +311,16 @@ exports.bundleOptimization = ({ options } = {}) => ({
           compress: false,
         },
       }),
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: [
+            'default',
+            cssOptions
+          ]
+        }
+      })
     ],
   },
-});
-
-exports.CSSOptimization = ({ options } = {}) => ({
-  plugins: [
-    new OptimizeCSSAssetsPlugin({
-      cssProcessor: cssnano,
-      cssProcessorOptions: options,
-      canPrint: false,
-    }),
-  ],
 });
 
 exports.setEnvironmentVariable = (dotenv = {}) => ({
