@@ -39,6 +39,8 @@ const propTypes = {
   beforeAddFile: PropTypes.func,
   beforeDropFile: PropTypes.func,
   itemInsertLocation: PropTypes.func | PropTypes.string,
+  notificationDisabledStatusCodes: PropTypes.arrayOf(PropTypes.number),
+  onFileReplace: PropTypes.func,
 };
 
 const defaultProps = {
@@ -59,14 +61,19 @@ const defaultProps = {
   beforeAddFile: () => {},
   beforeDropFile: () => {},
   itemInsertLocation: "before",
+  notificationDisabledStatusCodes: [],
+  onFileReplace: () => {},
 };
 
 class FileUpload extends React.Component {
   constructor(props) {
+    console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR");
     super(props);
+    this.pondRef = React.createRef();
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
+        console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR 73");
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -78,16 +85,41 @@ class FileUpload extends React.Component {
           },
           headers: createRequestHeader().headers,
           onError: (err) => {
-            notification.error({
-              message: `Failed to upload ${file.name}: ${err}`,
-              duration: 10,
-            });
+            console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR 86", err.originalRequest.response);
+            err.response = JSON.parse(err.originalRequest.response);
+            err.originalRequest = err.originalRequest;
+
+            console.log("FILE_UPLOAD - err.response.status_code : ", err.response.status_code);
+            console.log(
+              "FILE_UPLOAD - this.props.notificationDisabledStatusCodes : ",
+              this.props.notificationDisabledStatusCodes
+            );
+
+            if (
+              !(
+                this.props.notificationDisabledStatusCodes.length &&
+                this.props.notificationDisabledStatusCodes.includes(err.response.status_code)
+              )
+            ) {
+              console.log("Notifications enbaled....");
+              notification.error({
+                message: `Failed to upload ${file.name}: ${err}`,
+                duration: 10,
+              });
+            } else {
+              // remove else
+              console.log("notification disabled\n", this.props.notificationDisabledStatusCodes);
+            }
+
+            this.props.onError(file.name, err);
             error(err);
           },
           onProgress: (bytesUploaded, bytesTotal) => {
+            console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR 108");
             progress(true, bytesUploaded, bytesTotal);
           },
           onSuccess: async () => {
+            console.log(">>>>>>>>>  >>>>>>>>CONSTRUCTOR 112");
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
@@ -116,8 +148,10 @@ class FileUpload extends React.Component {
           },
         });
         upload.start();
+        console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR 141");
         return {
           abort: () => {
+            console.log(">>>>>>>>>>>>>>>>>CONSTRUCTOR 144");
             upload.abort();
             abort();
           },
@@ -126,6 +160,16 @@ class FileUpload extends React.Component {
     };
   }
 
+  childFunction = () => {
+    console.log("C-___________________________________hild function is called!");
+  };
+
+  startFileUpload = () => {
+    console.log(".............STARTFILEUPLOAD");
+    // const inputRef = this.inputRef;
+    // inputRef.current.click(); // This will trigger the file input click event to open the file dialog
+  };
+
   render() {
     const fileValidateTypeLabelExpectedTypesMap = invert(this.props.acceptedFileTypesMap);
     const acceptedFileTypes = uniq(Object.values(this.props.acceptedFileTypesMap));
@@ -133,6 +177,7 @@ class FileUpload extends React.Component {
     return (
       <div>
         <FilePond
+          ref={this.pondRef}
           beforeAddFile={this.props.beforeAddFile}
           beforeDropFile={this.props.beforeDropFile}
           server={this.server}
@@ -152,6 +197,7 @@ class FileUpload extends React.Component {
           itemInsertLocation={this.props?.itemInsertLocation}
           credits={null}
           fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+          onFileReplace={this.server.process.start}
           fileValidateTypeDetectType={(source, type) =>
             new Promise((resolve, reject) => {
               // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.

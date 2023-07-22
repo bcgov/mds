@@ -22,7 +22,7 @@ class DocumentManagerService():
     document_manager_document_resource_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
     
     @classmethod
-    def validateFileNameAndInitializeFileUploadWithDocumentManager(cls, request, mine, project_guid,document_category):
+    def validateFileNameAndInitializeFileUploadWithDocumentManager(cls, request, mine, project_guid, document_category):
 
         metadata = cls._parse_request_metadata(request)
         file_name = metadata.get('filename')
