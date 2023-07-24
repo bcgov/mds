@@ -40,7 +40,7 @@ jobs:
       - name: build-core-web
         run: |
           cd services/core-web
-          NODE_OPTIONS=--max-old-space-size=8096 yarn build -v
+          NODE_OPTIONS=--max-old-space-size=7072 yarn build -v
 
       - name: start-core-web
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
