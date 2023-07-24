@@ -22,6 +22,15 @@ const postCSSLoader = {
   },
 };
 
+const threadLoader = {
+  loader: 'thread-loader',
+  options: {
+    workers: 1,
+    workerParallelJobs: 50,
+    workerNodeArgs: ["--max-old-space-size=3072"],
+  }
+}
+
 exports.devServer = ({ host, port } = {}) => ({
   cache: {
     // Persist cache to filesystem to speed up consecutive builds.
@@ -102,7 +111,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         include,
         exclude,
         use: [
-          "thread-loader",
+          threadLoader,
           "style-loader",
           "css-loader",
           postCSSLoader,
@@ -166,7 +175,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
         include,
         exclude,
         use: [
-          "thread-loader",
+          threadLoader,
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
