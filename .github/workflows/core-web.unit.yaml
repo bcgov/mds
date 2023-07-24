@@ -36,7 +36,7 @@ jobs:
 
       - name: build-core-web
         run: |
-          NODE_OPTIONS=--max-old-space-size=6072 yarn workspace @mds/core-web build
+          NODE_OPTIONS=--max-old-space-size=8072 yarn workspace @mds/core-web build
 
       - name: start-core-web
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
