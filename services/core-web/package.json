@@ -169,7 +169,7 @@
   "scripts": {
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --watch --hot --env development",
     "vfs": "webpack configtest ./webpack.config.ts",
-    "build": "webpack --env production --stats verbose",
+    "build": "webpack --env production",
     "ci-test": "cross-env CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --update-snapshot --runInBand --coverage",
     "lint": "eslint ./src",
     "lint:file": "eslint",
