@@ -31,8 +31,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Build Common Package
-        run: yarn workspace @mds/common build
+      # - name: Build Common Package
+      #   run: yarn workspace @mds/common build
 
       # - name: Run frontend tests
       #   run: yarn workspace @mds/core-web test
@@ -40,7 +40,7 @@ jobs:
       - name: build-core-web
         run: |
           cd services/core-web
-          NODE_OPTIONS=--max-old-space-size=7072 yarn build -v
+          NODE_OPTIONS=--max-old-space-size=8096 yarn run build
 
       - name: start-core-web
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
