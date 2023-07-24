@@ -53,7 +53,7 @@ jobs:
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh docman dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGOCD_JWT }}
+        run: ./gitops/watch-deployment.sh docman dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ vars.ARGOCD_SERVER }} ${{ secrets.ARGOCD_JWT }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
