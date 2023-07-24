@@ -5,6 +5,8 @@ TARGET_APP=${1?"Enter App Name !"}
 ENV=${2?"Enter ENV Name !"}
 GIT_SHA=${3?"Enter GIT SHA of commit!"}
 DISCORD_DEPLOYMENT_WEBHOOK=${4?"Enter DISCORD_DEPLOYMENT_WEBHOOK!"}
+export ARGOCD_SERVER=${5?"Enter ARGOCD_SERVER!"}
+export ARGOCD_AUTH_TOKEN=${6?"Enter ARGOCD_AUTH_TOKEN!"}
 
 REPO_LOCATION=$(git rev-parse --show-toplevel)
 
@@ -22,13 +24,10 @@ echo "Current Revision of $TARGET_APP is $CURRENT_REVISION"
 
 echo -e "\n"
 echo "Watching for new revision of $TARGET_APP to be rolled out"
-echo "Polling to watch rollout to achieve the target revision of $TARGET_REVISION"
+echo "Waiting for $TARGET_APP to sync and be in healthy state"
 
-until [ $CURRENT_REVISION == $TARGET_REVISION ]; do
-    sleep 2
-    CURRENT_REVISION=$(get_revision)
-    echo "Refreshing the revision of $TARGET_APP, currently $CURRENT_REVISION, waiting for $TARGET_REVISION"
-done
+argocd app sync $TARGET_APP
+argocd app wait $TARGET_APP
 
 echo "Target Revision is achieved $CURRENT_REVISION"
 
