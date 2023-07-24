@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, TableProps, Tooltip } from "antd";
-import { ColumnType } from "antd/es/table";
+import { ColumnsType } from "antd/es/table";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import { ExpandableConfig } from "antd/lib/table/interface";
 
@@ -8,13 +8,13 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   getDataSource?: (record: T) => any[];
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
-  subTableColumns?: ColumnType<any>[];
+  subTableColumns?: ColumnsType<any>;
   matchChildColumnsToParent?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
 
 interface CoreTableProps<T> extends TableProps<T> {
-  columns: ColumnType<T>[];
+  columns: ColumnsType<T>;
   dataSource: T[];
   condition?: boolean;
   rowKey?: string | ((record: T) => string | number); // defaults to "key"
@@ -94,29 +94,26 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
     );
   };
 
-  const expansionProps = expandProps
-    ? {
-        rowExpandable:
-          expandProps.rowExpandable ?? ((record) => expandProps.getDataSource(record).length > 0),
-        expandIcon: renderTableExpandIcon,
-        expandRowByClick: true,
-        expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
-        ...expandProps,
-      }
-    : null;
-
-  const matchChildColumnsToParentProps = expandProps
-    ? {
-        expandIcon: renderTableExpandIcon,
-        indentSize: 0,
-      }
-    : null;
+  const getExpansionProps = () => {
+    if (expandProps) {
+      return expandProps.matchChildColumnsToParent
+        ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
+        : {
+            rowExpandable:
+              expandProps.rowExpandable ??
+              ((record) => expandProps.getDataSource(record).length > 0),
+            expandIcon: renderTableExpandIcon,
+            expandRowByClick: true,
+            expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
+            ...expandProps,
+          };
+    }
+    return { showExpandColumn: false };
+  };
 
   return condition ? (
     <Table
-      expandable={
-        expandProps?.matchChildColumnsToParent ? matchChildColumnsToParentProps : expansionProps
-      }
+      expandable={getExpansionProps()}
       pagination={pagination}
       locale={{ emptyText }}
       className={`${tableClass} core-table`}
@@ -126,8 +123,8 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
           ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
           : "fade-in"
       }
-      {...tableProps}
       columns={columns}
+      {...tableProps}
     ></Table>
   ) : (
     <Table

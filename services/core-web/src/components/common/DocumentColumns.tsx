@@ -1,13 +1,108 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import * as Strings from "@common/constants/strings";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Tag, Tooltip } from "antd";
+import { ColumnType } from "antd/lib/table";
 import { TRASHCAN } from "@/constants/assets";
-import {
-  renderDateColumn,
-  renderDocumentLinkColumn,
-  renderTaggedColumn,
-  renderTextColumn,
-} from "./CoreTableCommonColumns";
+import { renderDateColumn, renderTextColumn } from "./CoreTableCommonColumns";
+import { MineDocument } from "@/models/document";
+import { nullableStringSorter } from "@common/utils/helpers";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import DocumentLink from "./DocumentLink";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+
+const documentWithTag = (
+  record: MineDocument,
+  elem: ReactNode,
+  title: string,
+  showVersions = true
+) => {
+  return (
+    <div
+      className="inline-flex flex-between file-name-container"
+      style={
+        showVersions && record.number_prev_versions === 0
+          ? { marginLeft: "38px" }
+          : { marginLeft: "14px" }
+      }
+      title={title}
+    >
+      {elem}
+
+      <span className="file-history-container">
+        {record.number_prev_versions > 0 ? (
+          <span>
+            <Tooltip
+              title={`This file has ${record.number_prev_versions} previous versions`}
+              placement="top"
+              mouseEnterDelay={1}
+            >
+              <Tag icon={<ClockCircleOutlined />} color="#5E46A1" className="file-version-amount">
+                {record.number_prev_versions}
+              </Tag>
+            </Tooltip>
+          </span>
+        ) : null}
+        {record.is_archived ? <Tag>{"Archived"}</Tag> : null}
+      </span>
+    </div>
+  );
+};
+
+export const renderTaggedColumn = (
+  dataIndex: string,
+  title: string,
+  sortable = false,
+  placeHolder = ""
+) => {
+  return {
+    title,
+    dataIndex,
+    key: dataIndex,
+    render: (text: any, record: MineDocument) => {
+      const content = (
+        <div
+          className={record.number_prev_versions !== undefined ? "file-name-text" : ""}
+          style={record?.number_prev_versions === 0 ? { marginLeft: "38px" } : {}}
+        >
+          {text ?? placeHolder}
+        </div>
+      );
+      return documentWithTag(record, content, title);
+    },
+    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+  };
+};
+
+export const renderDocumentLinkColumn = (
+  dataIndex: string,
+  title = "File Name",
+  sortable = true,
+  showVersions = true,
+  docManGuidIndex = "document_manager_guid"
+): ColumnType<MineDocument> => {
+  return {
+    title,
+    dataIndex,
+    key: dataIndex,
+    render: (text = "", record: MineDocument) => {
+      const link = (
+        <div
+          key={record.key ?? record[docManGuidIndex]}
+          className={record.number_prev_versions !== undefined ? "file-name-text" : ""}
+          style={showVersions && record?.number_prev_versions === 0 ? { marginLeft: "38px" } : {}}
+        >
+          <DocumentLink
+            documentManagerGuid={record[docManGuidIndex]}
+            documentName={text}
+            truncateDocumentName={false}
+          />
+        </div>
+      );
+      return documentWithTag(record, link, title, showVersions);
+    },
+    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+  };
+};
 
 export const documentNameColumn = (
   documentNameColumnIndex = "document_name",
@@ -16,7 +111,24 @@ export const documentNameColumn = (
 ) => {
   return minimalView
     ? renderTaggedColumn(documentNameColumnIndex, title)
-    : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
+    : renderDocumentLinkColumn(documentNameColumnIndex, title, true, false);
+};
+
+export const documentNameColumnNew = (
+  dataIndex = "document_name",
+  title = "File Name",
+  sortable = true
+) => {
+  return {
+    title,
+    dataIndex,
+    key: dataIndex,
+    render: (text: string, record: MineDocument) => {
+      const docLink = <a onClick={() => downloadFileFromDocumentManager(record)}>{text}</a>;
+      return documentWithTag(record, docLink, "File Name");
+    },
+    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+  };
 };
 
 export const uploadDateColumn = (

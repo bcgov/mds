@@ -22,6 +22,8 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { MajorMineApplicationDocument } from "@/models/document";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -136,31 +138,20 @@ export class MajorMineApplicationTab extends Component {
       <div id={sectionHref}>
         {titleElement}
         <DocumentTable
-          documents={sectionDocuments?.reduce(
-            (docs, doc) => [
-              {
-                key: doc.mine_document_guid,
-                mine_document_guid: doc.mine_document_guid,
-                document_manager_guid: doc.document_manager_guid,
-                document_name: doc.document_name,
-                category: null,
-                upload_date: doc.upload_date,
-                update_timestamp: doc.update_timestamp,
-                create_user: doc.create_user,
-                major_mine_application_document_type: doc.major_mine_application_document_type_code,
-                versions: doc.versions,
-              },
-              ...docs,
-            ],
-            []
-          )}
+          documents={sectionDocuments}
           canArchiveDocuments={true}
-          archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
           onArchivedDocuments={() => this.fetchData()}
-          excludedColumnKeys={["dated", "category", "remove"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          additionalColumns={[
+            renderCategoryColumn(
+              "major_mine_application_document_type_code",
+              "File Location",
+              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
+              true
+            ),
+          ]}
           isLoaded={this.state.isLoaded}
-          matchChildColumnsToParent={true}
+          showVersionHistory={true}
         />
       </div>
     );
@@ -178,6 +169,10 @@ export class MajorMineApplicationTab extends Component {
     const updateDate = formatDate(major_mine_application?.update_timestamp);
 
     const primaryContact = contacts?.find((c) => c.is_primary) || {};
+
+    let documents = this.props.project.major_mine_application.documents;
+
+    documents = documents.map((doc) => new MajorMineApplicationDocument(doc));
 
     return (
       <>
@@ -265,27 +260,24 @@ export class MajorMineApplicationTab extends Component {
           {this.renderDocumentSection(
             "Primary Documents",
             "primary-documents",
-            this.props.project.major_mine_application?.documents?.filter(
-              (doc) => doc.major_mine_application_document_type_code === "PRM"
-            ) || [],
+            documents.filter((doc) => doc.major_mine_application_document_type_code === "PRM") ||
+              [],
             true
           )}
           <br />
           {this.renderDocumentSection(
             "Spatial Components",
             "spatial-components",
-            this.props.project.major_mine_application?.documents?.filter(
-              (doc) => doc.major_mine_application_document_type_code === "SPT"
-            ) || [],
+            documents.filter((doc) => doc.major_mine_application_document_type_code === "SPT") ||
+              [],
             true
           )}
           <br />
           {this.renderDocumentSection(
             "Supporting Documents",
             "supporting-documents",
-            this.props.project.major_mine_application?.documents?.filter(
-              (doc) => doc.major_mine_application_document_type_code === "SPR"
-            ) || [],
+            documents.filter((doc) => doc.major_mine_application_document_type_code === "SPR") ||
+              [],
             true
           )}
           <br />

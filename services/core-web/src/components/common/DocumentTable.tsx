@@ -1,16 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
+  documentNameColumnNew,
   removeFunctionColumn,
   uploadDateColumn,
   uploadedByColumn,
 } from "./DocumentColumns";
-import { renderTextColumn, documentActionOperationsColumn } from "./CoreTableCommonColumns";
-import { Button } from "antd";
+import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
@@ -19,173 +16,182 @@ import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
-import { ColumnType } from "antd/es/table";
+import { ColumnType, ColumnsType } from "antd/es/table";
+import { FileOperations, MineDocument } from "@/models/document";
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  FileOutlined,
+  InboxOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
+import { openDocument } from "../syncfusion/DocumentViewer";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
-const propTypes = {
-  documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
-  isViewOnly: PropTypes.bool,
-  // eslint-disable-next-line react/no-unused-prop-types
-  removeDocument: PropTypes.func,
-  archiveMineDocuments: PropTypes.func,
-  archiveDocumentsArgs: PropTypes.shape({
-    mineGuid: PropTypes.string,
-  }),
-  onArchivedDocuments: PropTypes.func,
-  canArchiveDocuments: PropTypes.bool,
-  excludedColumnKeys: PropTypes.arrayOf(PropTypes.string),
-  additionalColumnProps: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string,
-      colProps: PropTypes.objectOf(PropTypes.string),
-    })
-  ),
-  // eslint-disable-next-line react/no-unused-prop-types
-  documentParent: PropTypes.string,
-  documentColumns: PropTypes.arrayOf(PropTypes.object),
-  isLoaded: PropTypes.bool,
-  matchChildColumnsToParent: PropTypes.bool,
-  defaultSortKeys: PropTypes.arrayOf(PropTypes.string),
-  openModal: PropTypes.func.isRequired,
-  view: PropTypes.string.isRequired,
-};
+interface DocumentTableProps {
+  documents: MineDocument[];
+  isLoaded: boolean;
+  isViewOnly: boolean;
+  canArchiveDocuments: boolean;
+  showVersionHistory: boolean;
+  documentParent: string;
+  view: string;
+  openModal: (arg) => void; //PropTypes.func
+  openDocument: any;
+  closeModal: () => void;
+  removeDocument: (event, doc_guid: string, mine_guid: string) => void; // void?
+  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
+  onArchivedDocuments: (docs?: MineDocument[]) => void;
+  documentColumns: ColumnType<unknown>[]; // any?
+  additionalColumns: ColumnType<MineDocument>[];
+  defaultSortKeys: string[];
+  excludedColumnKeys: string[];
+  additionalColumnProps: { key: string; colProps: any }[]; //{key: string, colProps: any}//colProps: PropTypes.objectOf(PropTypes.string)
+  fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
+}
 
-const defaultProps = {
-  documents: [],
-  isViewOnly: false,
-  removeDocument: () => {},
-  excludedColumnKeys: [],
-  additionalColumnProps: [],
-  documentColumns: null,
-  documentParent: null,
-  isLoaded: false,
-  matchChildColumnsToParent: false,
-  defaultSortKeys: ["upload_date", "dated", "update_timestamp"], // keys to sort by when page loads
-  view: "standard",
-  canArchiveDocuments: false,
-};
-
-const renderFileType = (file) => {
-  const index = file.lastIndexOf(".");
-  return index === -1 ? null : file.substr(index);
-};
-
-const parseVersions = (versions, documentType) =>
-  versions.map((version) => ({
-    key: version.mine_document_version_guid,
-    file_location:
-      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[documentType] ||
-      Strings.EMPTY_FIELD,
-    file_type: renderFileType(version.document_name) || Strings.EMPTY_FIELD,
-    ...version,
-  }));
-
-const transformRowData = (document) => {
-  const pastFiles = parseVersions(document.versions, document.major_mine_application_document_type);
-  const currentFile = {
-    key: document.key,
-    file_location:
-      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION[
-        document.major_mine_application_document_type
-      ] || Strings.EMPTY_FIELD,
-    file_type: renderFileType(document.document_name) || Strings.EMPTY_FIELD,
-    number_of_versions: document?.versions?.length,
-    ...document,
+export const DocumentTable = ({
+  isViewOnly = false,
+  excludedColumnKeys = [],
+  additionalColumnProps = [],
+  documentColumns = null,
+  additionalColumns = [],
+  documentParent = null,
+  isLoaded = true,
+  showVersionHistory = false,
+  defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
+  view = "standard",
+  canArchiveDocuments = false,
+  openModal,
+  closeModal,
+  removeDocument,
+  openDocument,
+  ...props
+}: DocumentTableProps) => {
+  const allowedTableActions = {
+    [FileOperations.View]: true,
+    [FileOperations.Download]: true,
+    [FileOperations.Replace]: !isViewOnly,
+    [FileOperations.Archive]:
+      !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
+    [FileOperations.Delete]: !isViewOnly && removeDocument !== undefined,
   };
 
-  return {
-    ...currentFile,
-    children: pastFiles,
+  const isMinimalView = view === "minimal";
+
+  const parseDocuments = (docs: any[]): MineDocument[] => {
+    if (docs.length && docs[0] instanceof MineDocument) {
+      return docs;
+    }
+    return docs.map((doc) => new MineDocument(doc));
   };
-};
+  const documents = parseDocuments(props.documents ?? []);
 
-const openArchiveModal = (event, props, documents) => {
-  event.preventDefault();
-
-  props.openModal({
-    props: {
-      title: `Archive ${documents?.length > 1 ? "Multiple Files" : "File"}`,
-      closeModal: props.closeModal,
-      handleSubmit: async () => {
-        await props.archiveMineDocuments(
-          props.archiveDocumentsArgs.mineGuid,
-          documents.map((d) => d.mine_document_guid)
-        );
-        if (props.onArchivedDocuments) {
-          props.onArchivedDocuments(documents);
-        }
+  const openArchiveModal = (event, documents: MineDocument[]) => {
+    const mineGuid = documents[0].mine_guid;
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Archive ${documents?.length > 1 ? "Multiple Files" : "File"}`,
+        closeModal: closeModal,
+        handleSubmit: async () => {
+          await props.archiveMineDocuments(
+            mineGuid,
+            documents.map((d) => d.mine_document_guid)
+          );
+          if (props.onArchivedDocuments) {
+            props.onArchivedDocuments(documents);
+          }
+        },
+        documents,
       },
-      documents,
-    },
-    content: modalConfig.ARCHIVE_DOCUMENT,
-  });
-};
-
-export const DocumentTable = (props) => {
-  const isMinimalView = props.view === "minimal";
-  const canDelete = !props.isViewOnly && props.removeDocument;
-  const canArchive =
-    !props.isViewOnly &&
-    props.canArchiveDocuments &&
-    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
-
-  const archiveColumn = {
-    key: "archive",
-    render: (record) => {
-      const button = (
-        <Button
-          ghost
-          type="primary"
-          size="small"
-          onClick={(event) => openArchiveModal(event, props, [record])}
-        >
-          Archive
-        </Button>
-      );
-      return record?.mine_document_guid ? <div>{button}</div> : <div></div>;
-    },
+      content: modalConfig.ARCHIVE_DOCUMENT,
+    });
   };
 
-  let columns: ColumnType<any>[] = props.matchChildColumnsToParent
-    ? [
-        documentNameColumn("document_name", "File Name"),
-        renderTextColumn("file_location", "File Location", !isMinimalView),
-        renderTextColumn("file_type", "File Type", !isMinimalView),
-        uploadDateColumn("update_timestamp", "Last Modified"),
-        uploadedByColumn("create_user", "Created By"),
-        documentActionOperationsColumn(),
-      ]
-    : [
-        documentNameColumn("document_name", "File Name", isMinimalView),
-        renderTextColumn("category", "Category", !isMinimalView),
-        uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
-        uploadDateColumn("dated", "Dated", !isMinimalView),
-      ];
+  const actions = [
+    {
+      key: "view",
+      label: FileOperations.View,
+      icon: <FileOutlined />,
+      clickFunction: (_event, record: MineDocument) =>
+        openDocument(record.document_manager_guid, record.mine_document_guid),
+    },
+    {
+      key: "download",
+      label: FileOperations.Download,
+      icon: <DownloadOutlined />,
+      clickFunction: (_event, record: MineDocument) => {
+        return downloadFileFromDocumentManager(record);
+      },
+    },
+    {
+      key: "replace",
+      label: FileOperations.Replace,
+      icon: <SyncOutlined />,
+      clickFunction: (_event, _record: MineDocument) => alert("Not implemented"),
+    },
+    {
+      key: "archive",
+      label: FileOperations.Archive,
+      icon: <InboxOutlined />,
+      clickFunction: (event, record: MineDocument) => openArchiveModal(event, [record]),
+    },
+    {
+      key: "delete",
+      label: FileOperations.Delete,
+      icon: <DeleteOutlined />,
+      // PopConfirm does not work in either the function or label field here- currently no confirmation!
+      clickFunction: (event, record: MineDocument) =>
+        removeDocument(event, record.key, documentParent),
+    },
+  ].filter((action) => allowedTableActions[action.label]);
 
-  const currentRowData = props.matchChildColumnsToParent
-    ? props.documents?.map((document) => {
-        return transformRowData(document);
-      })
-    : null;
+  // document tables that don't yet have MineRecord, actions, archive, versions functionality
+  const oldGetColumns = () => {
+    const canDelete = !isViewOnly && removeDocument;
+    let columns = [
+      documentNameColumn("document_name", "File Name", isMinimalView),
+      renderTextColumn("category", "Category", !isMinimalView),
+      uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
+      uploadDateColumn("dated", "Dated", !isMinimalView),
+    ];
+    if (canDelete) {
+      columns.push(removeFunctionColumn(removeDocument, documentParent));
+    }
+    if (!some(documents, "dated")) {
+      columns = columns.filter((column) => column.key !== "dated");
+    }
 
-  if (canDelete) {
-    columns.push(removeFunctionColumn(props.removeDocument, props?.documentParent));
-  }
+    if (excludedColumnKeys?.length > 0) {
+      columns = columns.filter((column) => !excludedColumnKeys.includes(column.key.toString()));
+    }
+    return columns;
+  };
 
-  if (canArchive) {
-    columns.push(archiveColumn);
-  }
+  const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
+    const allowedDocumentActions: string[] = record.allowed_actions;
+    return tableActions.filter((action) => allowedDocumentActions.includes(action.label));
+  };
 
-  if (!some(props.documents, "dated")) {
-    columns = columns.filter((column) => column.key !== "dated");
-  }
+  const newGetColumns = (): ColumnsType<MineDocument> => {
+    const columns: ColumnsType<MineDocument> = [
+      documentNameColumnNew(),
+      ...additionalColumns,
+      renderTextColumn("file_type", "File Type", !isMinimalView),
+      uploadDateColumn("update_timestamp", "Last Modified"),
+      uploadedByColumn("create_user", "Created By"),
+    ];
+    if (actions.length) {
+      columns.push(renderActionsColumn(actions, filterActions));
+    }
+    return columns;
+  };
 
-  if (props?.excludedColumnKeys?.length > 0) {
-    columns = columns.filter((column) => !props.excludedColumnKeys.includes(column.key));
-  }
+  let columns: ColumnsType<MineDocument> = showVersionHistory ? newGetColumns() : oldGetColumns();
 
-  if (props?.additionalColumnProps?.length > 0) {
-    // eslint-disable-next-line no-unused-expressions
-    props?.additionalColumnProps.forEach((addColumn) => {
+  if (additionalColumnProps?.length > 0) {
+    additionalColumnProps.forEach((addColumn) => {
       const columnIndex = columns.findIndex((column) => addColumn?.key === column.key);
       if (columnIndex >= 0) {
         columns[columnIndex] = { ...columns[columnIndex], ...addColumn?.colProps };
@@ -193,9 +199,9 @@ export const DocumentTable = (props) => {
     });
   }
 
-  if (props.defaultSortKeys.length > 0) {
+  if (defaultSortKeys.length > 0) {
     columns = columns.map((column) => {
-      const isDefaultSort = props.defaultSortKeys.includes(column.key);
+      const isDefaultSort = defaultSortKeys.includes(column.key.toString());
       return isDefaultSort ? { defaultSortOrder: "descend", ...column } : column;
     });
   }
@@ -203,34 +209,30 @@ export const DocumentTable = (props) => {
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
-  return props.matchChildColumnsToParent ? (
+  return showVersionHistory ? (
     <CoreTable
-      condition={props.isLoaded}
-      dataSource={currentRowData}
+      condition={isLoaded}
+      dataSource={documents}
       columns={columns}
       expandProps={{
-        matchChildColumnsToParent: props.matchChildColumnsToParent,
-        rowExpandable: (record) => record.number_of_versions > 0,
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        rowExpandable: (record) => record.number_prev_versions > 0,
       }}
     />
   ) : (
-    <CoreTable
-      columns={props?.documentColumns ?? columns}
-      dataSource={props.documents}
-      {...minimalProps}
-    />
+    <CoreTable columns={documentColumns ?? columns} dataSource={documents} {...minimalProps} />
   );
 };
 
-DocumentTable.propTypes = propTypes;
-DocumentTable.defaultProps = defaultProps;
-
+// eslint-disable-next-line @typescript-eslint/no-shadow
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       openModal,
       closeModal,
       archiveMineDocuments,
+      openDocument,
     },
     dispatch
   );
