@@ -42,7 +42,10 @@ export class ProjectStagesTable extends Component {
         if (text === "STATUS") {
           label = text;
         } else {
-          label = record.key ? `[${record.stage_status_hash[text]}]` || "N/A" : "[Not Started]";
+          label =
+            record.key && record.stage_status?.toUpperCase() === "SUB"
+              ? `[${record.stage_status_hash[text]}]` || "N/A"
+              : "[Not submitted]";
         }
         return (
           <div title="Stage Status">
