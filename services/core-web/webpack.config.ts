@@ -166,6 +166,9 @@ const prodConfig = merge([
       },
     },
   }),
+  parts.generateSourceMaps({
+    type: "source-map",
+  }),
   parts.bundleOptimization({
     options: {
       cacheGroups: {
