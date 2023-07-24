@@ -111,7 +111,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         include,
         exclude,
         use: [
-          threadLoader,
+          // threadLoader,
           "style-loader",
           "css-loader",
           postCSSLoader,
@@ -175,7 +175,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
         include,
         exclude,
         use: [
-          threadLoader,
+          // threadLoader,
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",

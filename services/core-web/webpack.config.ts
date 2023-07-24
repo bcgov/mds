@@ -61,7 +61,7 @@ if (dotenv.parsed) {
 }
 
 // Preload loaders to speed up build
-threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
+// threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
 
 const commonConfig = merge([
   {
