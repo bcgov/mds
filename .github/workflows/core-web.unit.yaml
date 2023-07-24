@@ -62,4 +62,4 @@ jobs:
         if: always()
         with:
           name: cypress-recording
-          path: cypress/videos
+          path: services/core-web/cypress/videos
