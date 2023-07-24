@@ -57,3 +57,9 @@ jobs:
           CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
           CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
           CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
+      - name: Upload cypress video
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-recording
+          path: cypress/videos
