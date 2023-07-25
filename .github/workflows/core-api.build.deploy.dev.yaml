@@ -66,11 +66,26 @@ jobs:
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
+      - uses: clowdhaus/argo-cd-action/@main
+        env:
+          # Only required for first step in job where API is called
+          # All subsequent setps in a job will not re-download the CLI
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          command: version
+          options: --client
+      - uses: clowdhaus/argo-cd-action/@main
+        # CLI has already been downloaded in prior step, no call to GitHub API
+        with:
+          command: version
+          options: --client
       - name: Setup ArgoCD CLI
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
-        uses: imajeetyadav/argocd-cli@v1
+        uses: clowdhaus/argo-cd-action/@main
         with:
-          version: v2.7.8
+          version: 2.6.7
+          command: version
+          options: --client
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification

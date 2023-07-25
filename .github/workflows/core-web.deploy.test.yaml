@@ -45,9 +45,11 @@ jobs:
           oc: "4.7"
       - name: Setup ArgoCD CLI
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
-        uses: imajeetyadav/argocd-cli@v1
+        uses: clowdhaus/argo-cd-action/@main
         with:
-          version: v2.7.8
+          version: 2.6.7
+          command: version
+          options: --client
       - name: oc login
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
