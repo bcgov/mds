@@ -53,7 +53,7 @@ export class MineDocument {
 
   public allowed_actions: FileOperations[];
 
-  constructor(jsonObject: object) {
+  constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
     this.document_manager_guid = jsonObject.document_manager_guid;
@@ -69,11 +69,11 @@ export class MineDocument {
     this.setCalculatedProperties(jsonObject);
   }
 
-  protected makeChild(params: object, _constructorArgs: object) {
+  protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
   }
 
-  protected setCalculatedProperties(jsonObject: object) {
+  protected setCalculatedProperties(jsonObject: any) {
     this.key = this.is_latest_version
       ? this.mine_document_guid
       : jsonObject.document_manager_version_guid;
@@ -118,13 +118,13 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   public versions: MajorMineApplicationDocument[];
 
-  constructor(jsonObject: object) {
+  constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
   }
 
-  protected makeChild(params: object, constructorArgs: object) {
+  protected makeChild(params: any, constructorArgs: any) {
     return new MajorMineApplicationDocument({
       ...params,
       major_mine_application_document_type_code:
