@@ -1,3 +1,5 @@
+import { USER_ROLES } from "@mds/common";
+
 export enum FileOperations {
   View = "Open in document viewer",
   Download = "Download file",
@@ -52,18 +54,18 @@ export class MineDocument {
   public allowed_actions: FileOperations[];
 
   constructor(jsonObject: object) {
-    this.mine_document_guid = jsonObject["mine_document_guid"];
-    this.mine_guid = jsonObject["mine_guid"];
-    this.document_manager_guid = jsonObject["document_manager_guid"];
-    this.document_name = jsonObject["document_name"];
-    this.create_user = jsonObject["create_user"];
-    this.upload_date = jsonObject["upload_date"];
-    this.update_timestamp = jsonObject["update_timestamp"];
-    this.category = jsonObject["category"];
-    this.is_archived = jsonObject["is_archived"] ?? false;
-    this.archived_by = jsonObject["archived_by"];
-    this.archived_date = jsonObject["archived_date"];
-    this.is_latest_version = jsonObject["is_latest_version"] ?? true;
+    this.mine_document_guid = jsonObject.mine_document_guid;
+    this.mine_guid = jsonObject.mine_guid;
+    this.document_manager_guid = jsonObject.document_manager_guid;
+    this.document_name = jsonObject.document_name;
+    this.create_user = jsonObject.create_user;
+    this.upload_date = jsonObject.upload_date;
+    this.update_timestamp = jsonObject.update_timestamp;
+    this.category = jsonObject.category;
+    this.is_archived = jsonObject.is_archived ?? false;
+    this.archived_by = jsonObject.archived_by;
+    this.archived_date = jsonObject.archived_date;
+    this.is_latest_version = jsonObject.is_latest_version ?? true;
     this.setCalculatedProperties(jsonObject);
   }
 
@@ -74,10 +76,10 @@ export class MineDocument {
   protected setCalculatedProperties(jsonObject: object) {
     this.key = this.is_latest_version
       ? this.mine_document_guid
-      : jsonObject["document_manager_version_guid"];
+      : jsonObject.document_manager_version_guid;
     this.file_type = this.getFileType();
 
-    const versions = jsonObject["versions"] ?? [];
+    const versions = jsonObject.versions ?? [];
     if (this.is_latest_version && versions.length) {
       this.number_prev_versions = versions.length - 1;
       this.versions = versions
@@ -87,8 +89,7 @@ export class MineDocument {
       this.number_prev_versions = 0;
       this.versions = [];
     }
-
-    this.allowed_actions = this.getAllowedActions(jsonObject["user_roles"] ?? []);
+    this.setAllowedActions(jsonObject.user_roles);
   }
 
   public getFileType() {
@@ -96,13 +97,18 @@ export class MineDocument {
     return index === -1 ? null : this.document_name.substring(index).toLocaleLowerCase();
   }
 
+  public setAllowedActions(userRoles: string[] = []) {
+    this.allowed_actions = this.getAllowedActions(userRoles).filter(Boolean);
+  }
+
   public getAllowedActions(_userRoles: string[] = []) {
+    const canModify = this.is_latest_version && !this.is_archived;
     return [
       FileOperations.View,
       FileOperations.Download,
-      this.is_latest_version && FileOperations.Replace,
-      this.is_latest_version && FileOperations.Archive,
-      this.is_latest_version && FileOperations.Delete,
+      canModify && FileOperations.Replace,
+      canModify && FileOperations.Archive,
+      canModify && FileOperations.Delete,
     ];
   }
 }
@@ -115,20 +121,28 @@ export class MajorMineApplicationDocument extends MineDocument {
   constructor(jsonObject: object) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
-      jsonObject["major_mine_application_document_type_code"];
+      jsonObject.major_mine_application_document_type_code;
   }
 
   protected makeChild(params: object, constructorArgs: object) {
     return new MajorMineApplicationDocument({
       ...params,
       major_mine_application_document_type_code:
-        constructorArgs["major_mine_application_document_type_code"],
+        constructorArgs.major_mine_application_document_type_code,
     });
   }
 
-  public getAllowedActions(_userRoles: string[] = []) {
+  public getAllowedActions(userRoles: string[] = []) {
     const allowedActions = super.getAllowedActions();
 
-    return allowedActions;
+    const canModifyRoles = [
+      USER_ROLES.role_edit_major_mine_applications,
+      USER_ROLES.role_minespace_proponent,
+    ];
+    const canModify = userRoles.some((role) => canModifyRoles.includes(role));
+
+    return allowedActions.filter(
+      (action) => canModify || [FileOperations.View, FileOperations.Download].includes(action)
+    );
   }
 }

@@ -27,6 +27,7 @@ import {
 } from "@ant-design/icons";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -48,6 +49,7 @@ interface DocumentTableProps {
   excludedColumnKeys: string[];
   additionalColumnProps: { key: string; colProps: any }[]; //{key: string, colProps: any}//colProps: PropTypes.objectOf(PropTypes.string)
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
+  userRoles: string[];
 }
 
 export const DocumentTable = ({
@@ -77,13 +79,19 @@ export const DocumentTable = ({
     [FileOperations.Delete]: !isViewOnly && removeDocument !== undefined,
   };
 
-  const isMinimalView = view === "minimal";
+  const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
+    let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
-      return docs;
+      parsedDocs = docs;
+    } else {
+      parsedDocs = docs.map((doc) => new MineDocument(doc));
     }
-    return docs.map((doc) => new MineDocument(doc));
+    return parsedDocs.map((doc) => {
+      doc.setAllowedActions(props.userRoles);
+      return doc;
+    });
   };
   const documents = parseDocuments(props.documents ?? []);
 
@@ -225,6 +233,10 @@ export const DocumentTable = ({
   );
 };
 
+const mapStateToProps = (state) => ({
+  userRoles: getUserAccessData(state),
+});
+
 // eslint-disable-next-line @typescript-eslint/no-shadow
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -237,4 +249,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(null, mapDispatchToProps)(DocumentTable);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentTable);
