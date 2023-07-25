@@ -16,6 +16,8 @@ from app.api.mines.documents.mine_document_search_util import MineDocumentSearch
 
 from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL
 
+from app.api.services.document_manager_service import DocumentManagerService
+
 
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
@@ -126,3 +128,61 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         MineDocument.mark_as_archived_many(mine_document_guids)
 
         return None, 204
+
+class MineDocumentZipResource(Resource, UserMixin):
+    parser = reqparse.RequestParser()
+
+    parser.add_argument(
+        'mine_document_guids',
+        type=list,
+        help='Mine Document GUIDs',
+        location='json',
+        required=True
+    )
+    
+    parser.add_argument(
+        'zip_file_name',
+        type=str,
+        help='The name for the zipped file',
+        location='json',
+        required=False
+    )
+    
+    api.doc(
+        description='Initializes the zipping of the given mine documents and returns an id for the file to be watched.')
+    
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.expect(ARCHIVE_MINE_DOCUMENT)
+    @api.response(200, 'Successfully initialized zipping of documents')
+    def post(self, mine_guid):        
+        mine = Mine.find_by_mine_guid(mine_guid)
+
+        if not mine:
+            raise NotFound('Mine not found.')
+        
+        args = self.parser.parse_args()
+        mine_document_guids = args.get('mine_document_guids')
+        zip_file_name = args.get('zip_file_name')
+        
+        if not zip_file_name:
+            zip_file_name = f'{mine.mine_no}_{datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")}.zip'
+        
+        if not mine_document_guids:
+            raise BadRequest('No document guids provided')
+
+        return DocumentManagerService.initialize_document_zip(request, mine_document_guids, zip_file_name)
+    
+    
+class MineDocumentZipProgressResource(Resource, UserMixin):
+    api.doc(
+        'Returns the progress of the zipping of the given mine documents.',
+        )
+    
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    def get(self, task_id):
+        
+        if not task_id:
+            raise BadRequest('No task id provided')
+                
+        return DocumentManagerService.poll_zip_progress(request, task_id)
+    
