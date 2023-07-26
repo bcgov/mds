@@ -71,16 +71,6 @@ class DocumentListResource(Resource):
             object_store_path=object_store_path)
         document.save()
 
-        # Create and send response
-        response = make_response(jsonify(document_manager_guid=document_guid), 201)
-        response.headers['Tus-Resumable'] = TUS_API_VERSION
-        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
-        response.headers['Upload-Offset'] = 0
-        response.headers['Upload-Expires'] = upload_expiry
-        response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
-        response.autocorrect_location_header = False
         return response
 
     def get(self):
