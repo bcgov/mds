@@ -7,16 +7,14 @@ import {
   NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS,
 } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { Alert, Form, Typography, Modal, Table, Divider, Popconfirm } from "antd";
-// import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
-import { getUserInfo, isProponent } from "@/selectors/authenticationSelectors";
+import { Alert, Typography, Modal, Table, Divider, Popconfirm } from "antd";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
   params: PropTypes.objectOf(PropTypes.string).isRequired,
-  //   fetchUserMineInfo: PropTypes.func.isRequired,
 };
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
@@ -90,11 +88,13 @@ export const ProjectSummaryFileUpload = (props) => {
             notificationDisabledStatusCodes.includes(e.response.status_code)
           ) {
             if (e.response.status === "ARCHIVED_FILE_EXIST") {
+              setShouldAbortUpload(false);
               let message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
               setArchivedFileModalMessage(message);
               setIsArchivedFileModalVisible(true);
             }
             if (e.response.status === "REPLACEABLE_FILE_EXIST") {
+              setShouldAbortUpload(false);
               let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
               setRelaplaceableFileModalMessage(message);
               setRelaplaceableFileModalVisible(true);

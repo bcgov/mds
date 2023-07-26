@@ -74,7 +74,6 @@ const defaultProps = {
 class FileUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.pondRef = React.createRef();
 
     this.state = {
       file: null,
@@ -88,6 +87,7 @@ class FileUpload extends React.Component {
         let fileToUpload = this.state.file ? this.state.file : file;
         let progressFn = this.state.progress ? this.state.progress : progress;
         let loadFn = this.state.load ? this.state.load : load;
+
         const upload = new tus.Upload(fileToUpload, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -161,10 +161,8 @@ class FileUpload extends React.Component {
           },
         });
         upload.start();
-        this.setState({ upload: upload });
         return {
           abort: () => {
-            console.log("________________________ on return statement abort:.......");
             upload.abort();
             abort();
           },
@@ -179,15 +177,10 @@ class FileUpload extends React.Component {
       this.server.process();
     }
     if (prevProps.shouldAbortUpload !== this.props.shouldAbortUpload) {
-      console.log("________________this.props.onAborti() calling.....");
-      this.state.upload.abort();
+      if (this.props.shouldAbortUpload) {
+        this.filepond.removeFile();
+      }
     }
-  }
-
-  handleAbortFileUpload() {
-    console.log("...................., handleAbortFileUpload");
-    // this.props.onAbort();
-    this.state.upload.abort();
   }
 
   render() {
@@ -197,7 +190,7 @@ class FileUpload extends React.Component {
     return (
       <div>
         <FilePond
-          ref={this.pondRef}
+          ref={(ref) => (this.filepond = ref)}
           beforeAddFile={this.props.beforeAddFile}
           beforeDropFile={this.props.beforeDropFile}
           server={this.server}
@@ -211,7 +204,6 @@ class FileUpload extends React.Component {
           allowReorder={this.props.allowReorder}
           labelIdle={this.props.labelIdle}
           onprocessfileabort={this.props.onAbort}
-          // onprocessfileabort={handleAbortFileUpload}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
