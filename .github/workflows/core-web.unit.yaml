@@ -25,27 +25,25 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Upgrade yarn
-        run: npm install -g yarn
-
       - name: Install Dependencies
-        run: yarn install
+        run: yarn
 
       - name: Build Common Package
-        run: yarn workspace @mds/common build
+        run: cd services/common/ && yarn build
 
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
+        run: cd services/core-web/ && yarn && yarn test 
 
       - name: build-core-web
         run: |
-          NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
+          cd services/core-web/
+          NODE_OPTIONS=--max-old-space-size=8096 yarn build
 
-      - name: start-core-web
-        run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
-
-      - name: Run cypress tests
-        run: yarn workspace @mds/core-web cypress run
+      - name: start-core-web        
+        run: cd services/core-web/ && yarn run http-server-spa build /index.html 3000 &
+      
+      - name: Run cypress tests        
+        run: cd services/core-web/ && yarn cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
@@ -60,9 +58,3 @@ jobs:
           CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
           CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
           CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
-      - name: Upload cypress video
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: cypress-recording
-          path: services/core-web/cypress/videos
