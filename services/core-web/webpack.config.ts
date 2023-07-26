@@ -60,9 +60,6 @@ if (dotenv.parsed) {
   });
 }
 
-// Preload loaders to speed up build
-// threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
-
 const commonConfig = merge([
   {
     devtool: "inline-source-map",
@@ -165,9 +162,6 @@ const prodConfig = merge([
         speed: 4,
       },
     },
-  }),
-  parts.generateSourceMaps({
-    type: "source-map",
   }),
   parts.bundleOptimization({
     options: {
