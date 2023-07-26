@@ -67,7 +67,9 @@ export const DocumentTable = ({
   canArchiveDocuments = false,
   openModal,
   closeModal,
-  removeDocument,
+  removeDocument = (arg1, arg2, arg3) => {
+    console.log("remove doc called", arg1, arg2, arg3);
+  },
   openDocument,
   ...props
 }: DocumentTableProps) => {
@@ -120,6 +122,21 @@ export const DocumentTable = ({
     });
   };
 
+  const openDeleteModal = (event, documents: MineDocument[]) => {
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Delete ${documents?.length > 1 ? "Multiple Files" : "File"}`,
+        closeModal: closeModal,
+        handleSubmit: async () => {
+          documents.forEach((record) => removeDocument(event, record.key, documentParent));
+        },
+        documents,
+      },
+      content: modalConfig.DELETE_DOCUMENT,
+    });
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -153,9 +170,8 @@ export const DocumentTable = ({
       key: "delete",
       label: FileOperations.Delete,
       icon: <DeleteOutlined />,
-      // PopConfirm does not work in either the function or label field here- currently no confirmation!
-      clickFunction: (event, record: MineDocument) =>
-        removeDocument(event, record.key, documentParent),
+      // PopConfirm does not work in either the function or label field here
+      clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
 
