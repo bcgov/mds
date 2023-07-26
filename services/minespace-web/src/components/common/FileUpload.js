@@ -43,6 +43,7 @@ const propTypes = {
   shouldReplaceFile: PropTypes.bool,
   replaceFileUploadUrl: PropTypes.string,
   file: PropTypes.object,
+  shouldAbortUpload: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -67,6 +68,7 @@ const defaultProps = {
   shouldReplaceFile: false,
   replaceFileUploadUrl: "",
   file: null,
+  shouldAbortUpload: false,
 };
 
 class FileUpload extends React.Component {
@@ -159,8 +161,10 @@ class FileUpload extends React.Component {
           },
         });
         upload.start();
+        this.setState({ upload: upload });
         return {
           abort: () => {
+            console.log("________________________ on return statement abort:.......");
             upload.abort();
             abort();
           },
@@ -174,6 +178,16 @@ class FileUpload extends React.Component {
       this.props.uploadUrl = this.props.replaceFileUploadUrl;
       this.server.process();
     }
+    if (prevProps.shouldAbortUpload !== this.props.shouldAbortUpload) {
+      console.log("________________this.props.onAborti() calling.....");
+      this.state.upload.abort();
+    }
+  }
+
+  handleAbortFileUpload() {
+    console.log("...................., handleAbortFileUpload");
+    // this.props.onAbort();
+    this.state.upload.abort();
   }
 
   render() {
@@ -197,6 +211,7 @@ class FileUpload extends React.Component {
           allowReorder={this.props.allowReorder}
           labelIdle={this.props.labelIdle}
           onprocessfileabort={this.props.onAbort}
+          // onprocessfileabort={handleAbortFileUpload}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}

@@ -1,20 +1,22 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
+import { useSelector } from "react-redux";
 import {
   PROJECT_SUMMARY_DOCUMENTS,
   NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS,
 } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { Alert, Form, Typography, Modal, Table, Divider, Popconfirm } from "antd";
-import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
+// import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
+import { getUserInfo, isProponent } from "@/selectors/authenticationSelectors";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
   params: PropTypes.objectOf(PropTypes.string).isRequired,
-  fetchUserMineInfo: PropTypes.func.isRequired,
+  //   fetchUserMineInfo: PropTypes.func.isRequired,
 };
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
@@ -30,10 +32,14 @@ export const ProjectSummaryFileUpload = (props) => {
   const [mineDocumentGuid, setMineDocumentGuid] = useState(null);
   const [mineGuid, setMineGuid] = useState(null);
   const [fileDetails, setFileDetails] = useState(null);
+  const [shouldAbortUpload, setShouldAbortUpload] = useState(false);
+
+  const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
     setIsArchivedFileModalVisible(false);
     setRelaplaceableFileModalVisible(false);
+    setShouldAbortUpload(true);
   };
 
   const childRef = useRef(null);
@@ -56,6 +62,10 @@ export const ProjectSummaryFileUpload = (props) => {
     { dataIndex: "uploader" },
   ];
 
+  function getFileExtension(fileName) {
+    return fileName ? "." + fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase() : null;
+  }
+
   return (
     <>
       <Field
@@ -70,6 +80,7 @@ export const ProjectSummaryFileUpload = (props) => {
         onFileLoad={props.onFileLoad}
         onRemoveFile={props.onRemoveFile}
         notificationDisabledStatusCodes={notificationDisabledStatusCodes}
+        shouldAbortUpload={shouldAbortUpload}
         allowRevert
         allowMultiple
         onError={(filename, e) => {
@@ -117,6 +128,7 @@ export const ProjectSummaryFileUpload = (props) => {
           </div>
         }
         onConfirm={handleCloseModal}
+        onCancel={handleCloseModal}
         okText="Close"
         cancelText=""
       ></Popconfirm>
@@ -151,7 +163,7 @@ export const ProjectSummaryFileUpload = (props) => {
             dataSource={[
               {
                 fileName: fileDetails?.file_name ?? "-",
-                fileType: fileDetails?.file_type ?? "-",
+                fileType: getFileExtension(fileDetails?.file_name) ?? "-",
                 date: fileDetails?.update_timestamp ?? "-",
                 uploader: fileDetails?.update_user ?? "-",
               },
@@ -168,13 +180,13 @@ export const ProjectSummaryFileUpload = (props) => {
             dataSource={[
               {
                 fileName: fileDetails?.file_name ?? "-",
-                fileType: "File Type",
+                fileType: getFileExtension(fileDetails?.file_name) ?? "-",
                 date: new Date().toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "2-digit",
                 }),
-                uploader: "user@bceid",
+                uploader: userInfo.preferred_username,
               },
             ]}
             columns={columns}
