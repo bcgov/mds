@@ -23,6 +23,8 @@ class DocumentManagerService():
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
         metadata = cls._parse_request_metadata(request)
+        if not metadata or not metadata.get('filename'):
+            raise Exception('Request metadata missing filename')
 
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
@@ -134,3 +136,45 @@ class DocumentManagerService():
         )
 
         return resp.json()
+
+    @classmethod
+    def initialize_document_zip(cls, request, mine_document_guids, zip_file_name):
+        """
+        Initializes a document zip operation by sending a POST request to the Document Manager API.
+
+        :param request: The Flask request object.
+        :param mine_document_guids: A list of document GUIDs to include in the zip file.
+        :param zip_file_name: The name to give the zip file (this will default to the mine number and the dateTime if not provided).
+        :return: A JSON object containing the following keys:
+            - "message": A message indicating that a create_zip job has been added to the task queue.
+            - "task_id": The ID of the create_zip job that was added to the task queue.
+        """
+        resp = requests.post(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip',
+            headers={key: value
+                    for (key, value) in request.headers if key != 'Host'},
+            data=json.dumps({'mine_document_guids': mine_document_guids, 'zip_file_name': zip_file_name}))
+
+        current_app.logger.info(f'initialize_document_zip: {resp.content}')
+
+        return resp.json()
+    
+    @classmethod
+    def poll_zip_progress(cls, request, task_id):
+        """
+        Polls the Document Manager API for the progress of a document zip operation.
+
+        :param request: The Flask request object.
+        :param task_id: The ID of the zip task to poll.
+        :return: The JSON response from the Document Manager API, which includes:
+            - The progress of the zip operation
+            - The current state of the operation
+            - If successful, the newly created document_guid
+        """
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip/{task_id}',
+            headers={key: value
+                    for (key, value) in request.headers if key != 'Host'})
+
+        return resp.json()
+    

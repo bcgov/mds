@@ -4,7 +4,7 @@
   "files.trimFinalNewlines": true,
   "editor.renderWhitespace": "none",
   "editor.formatOnSave": true,
-  "python.formatting.provider": "autopep8",
+  "python.formatting.provider": "none",
   "python.formatting.yapfArgs": [
     "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
   ],
@@ -23,5 +23,8 @@
   "cSpell.words": ["idir"],
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/**"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
   }
 }

@@ -25,3 +25,5 @@ boto3==1.13.14
 celery==4.4.6
 numpy==1.19.2
 flower
+
+zipstream==1.1.4
