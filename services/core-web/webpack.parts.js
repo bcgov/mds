@@ -5,53 +5,35 @@ const cssnano = require("cssnano");
 const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+// const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
-const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
+const ManifestPlugin = require("webpack-manifest-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
   options: {
-    postcssOptions: {
-      plugins: () => [autoprefixer],
-    }
+    plugins: () => [autoprefixer],
   },
 };
 
-const threadLoader = {
-  loader: 'thread-loader',
-  options: {
-    workers: 1,
-    workerParallelJobs: 50,
-    workerNodeArgs: ["--max-old-space-size=3072"],
-  }
-}
-
 exports.devServer = ({ host, port } = {}) => ({
-  cache: {
-    // Persist cache to filesystem to speed up consecutive builds.
-    type: 'filesystem'
-  },
-  stats: {
-    warningsFilter: [/Serializing big strings/],
-  },
   devServer: {
     historyApiFallback: true,
+    stats: "errors-only",
     host,
     port,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
     },
-    client: {
-      overlay: {
-        errors: false,
-        warnings: false,
-      },
+    overlay: {
+      errors: true,
+      warnings: true,
     },
   },
 });
@@ -59,28 +41,21 @@ exports.devServer = ({ host, port } = {}) => ({
 exports.loadJS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
-
       {
-        test: /\.[[t]sx?$/,
+        test: /\.js$/,
         include,
         exclude,
-
-        loader: 'esbuild-loader',
-        options: {
-          target: 'es2016'
-        }
-      },
-      {
-        test: /\.[[j]sx?$/,
-        include,
-        exclude,
-
-        loader: 'esbuild-loader',
-        options: {
-          /// Treat .js files as `.jsx` files
-          loader: 'jsx',
-          target: 'es2016'
-        }
+        loader: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 1,
+              workerParallelJobs: 50,
+              workerNodeArgs: ["--max-old-space-size=3072"],
+            },
+          },
+          "babel-loader?cacheDirectory",
+        ],
       },
     ],
   },
@@ -90,15 +65,22 @@ exports.loadTS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.[ts]x?$/,
+        test: /\.tsx?$/,
         include,
         exclude,
-
-        loader: 'esbuild-loader',
-        options: {
-          target: 'es2016'
-        }
-      }
+        loader: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 1,
+              workerParallelJobs: 50,
+              workerNodeArgs: ["--max-old-space-size=3072"],
+            },
+          },
+          "babel-loader?cacheDirectory",
+          "ts-loader",
+        ],
+      },
     ],
   },
 });
@@ -308,26 +290,29 @@ exports.generateSourceMaps = ({ type } = {}) => ({
   devtool: type,
 });
 
-exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
+exports.bundleOptimization = ({ options } = {}) => ({
   optimization: {
     splitChunks: options,
     minimizer: [
       new TerserPlugin({
+        cache: true,
         parallel: true,
         terserOptions: {
           compress: false,
         },
       }),
-      new CssMinimizerPlugin({
-        minimizerOptions: {
-          preset: [
-            'default',
-            cssOptions
-          ]
-        }
-      })
     ],
   },
+});
+
+exports.CSSOptimization = ({ options } = {}) => ({
+  plugins: [
+    new OptimizeCSSAssetsPlugin({
+      cssProcessor: cssnano,
+      cssProcessorOptions: options,
+      canPrint: false,
+    }),
+  ],
 });
 
 exports.setEnvironmentVariable = (dotenv = {}) => ({
@@ -349,14 +334,12 @@ exports.clean = () => ({
 });
 
 exports.copy = (from, to) => ({
-  plugins: [new CopyWebpackPlugin({
-    patterns: [{ from, to, globOptions: { ignore: ["*.html"] } }]
-  })],
+  plugins: [new CopyWebpackPlugin([{ from, to, ignore: ["*.html"] }])],
 });
 
 exports.extractManifest = () => ({
   plugins: [
-    new WebpackManifestPlugin({
+    new ManifestPlugin({
       fileName: "asset-manifest.json",
     }),
   ],
