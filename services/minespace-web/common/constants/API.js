@@ -136,7 +136,7 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents?${queryString.stringify(
     { mine_guid: mineGuid }
   )}`;
-//New version upload
+//New file version upload
 export const NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
 export const PROJECT_SUMMARY_DOCUMENT = (
