@@ -9,9 +9,10 @@ import { bindActionCreators } from "redux";
 import { DOCUMENT, EXCEL, IMAGE } from "@common/constants/fileTypes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
+import { uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
@@ -56,7 +57,7 @@ export class DocumentUpload extends Component {
       projectSummaryGuid: this.props.initialValues.project_summary_guid,
     };
     const documentColumns = [
-      categoryColumn(
+      renderCategoryColumn(
         "project_summary_document_type_code",
         this.props.projectSummaryDocumentTypesHash
       ),

@@ -23,7 +23,7 @@ import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import { MajorMineApplicationDocument } from "@/models/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -141,7 +141,7 @@ export class MajorMineApplicationTab extends Component {
           documents={sectionDocuments}
           canArchiveDocuments={true}
           onArchivedDocuments={() => this.fetchData()}
-          additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          additionalColumnProps={[{ key: "document_name", colProps: { width: "80%" } }]}
           additionalColumns={[
             renderCategoryColumn(
               "major_mine_application_document_type_code",

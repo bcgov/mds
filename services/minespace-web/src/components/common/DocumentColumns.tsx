@@ -2,13 +2,12 @@ import React, { ReactNode } from "react";
 import * as Strings from "@common/constants/strings";
 import { Button, Popconfirm, Tag, Tooltip } from "antd";
 import { ColumnType } from "antd/lib/table";
-import { TRASHCAN } from "@/constants/assets";
 import { renderDateColumn, renderTextColumn } from "./CoreTableCommonColumns";
+import { MineDocument } from "@common/models/documents/document";
 import { nullableStringSorter } from "@common/utils/helpers";
-import { ClockCircleOutlined } from "@ant-design/icons";
+import { ClockCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import DocumentLink from "./DocumentLink";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { MineDocument } from "@common/models/documents/document";
 
 const documentWithTag = (
   record: MineDocument,
@@ -164,7 +163,8 @@ export const removeFunctionColumn = (
           cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
-            <img src={TRASHCAN} alt="remove" style={{ width: "24px" }} />
+            <DeleteOutlined className="violet" />
+            {/* <img src={TRASHCAN} alt="remove" style={{ width: "24px" }} /> */}
           </Button>
         </Popconfirm>
       </div>

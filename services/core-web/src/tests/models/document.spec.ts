@@ -1,4 +1,8 @@
-import { FileOperations, MajorMineApplicationDocument, MineDocument } from "@/models/document";
+import {
+  FileOperations,
+  MajorMineApplicationDocument,
+  MineDocument,
+} from "@common/models/documents/document";
 
 // Document model testing
 

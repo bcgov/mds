@@ -16,6 +16,7 @@ import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineAp
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -74,13 +75,18 @@ export const MajorMineApplicationReviewSubmit = (props) => {
 
   const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
-  const primaryDocuments = project.major_mine_application?.documents?.filter(
+  const documents =
+    project.major_mine_application?.documents?.map((doc) => {
+      return new MajorMineApplicationDocument(doc);
+    }) ?? [];
+
+  const primaryDocuments = documents.filter(
     (d) => d.major_mine_application_document_type_code === "PRM"
   );
-  const spatialDocuments = project.major_mine_application?.documents?.filter(
+  const spatialDocuments = documents.filter(
     (d) => d.major_mine_application_document_type_code === "SPT"
   );
-  const supportDocuments = project.major_mine_application?.documents?.filter(
+  const supportDocuments = documents.filter(
     (d) => d.major_mine_application_document_type_code === "SPR"
   );
   const documentColumns = [uploadDateColumn("upload_date")];
@@ -150,19 +156,19 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             deletePermission
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
-            archiveDocumentsArgs={{ mineGuid: props.project?.mine_guid }}
+            showVersionHistory={true}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
             documents={spatialDocuments}
-            documentColumns={documentColumns}
+            // documentColumns={documentColumns}
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
             deletePermission
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
-            archiveDocumentsArgs={{ mineGuid: props.project?.mine_guid }}
+            showVersionHistory={true}
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
@@ -174,7 +180,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             deletePermission
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
-            archiveDocumentsArgs={{ mineGuid: props.project?.mine_guid }}
+            showVersionHistory={true}
           />
 
           <ArchivedDocumentsSection

@@ -69,6 +69,7 @@ export class MineDocument {
     this.setCalculatedProperties(jsonObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
   }
@@ -101,6 +102,7 @@ export class MineDocument {
     this.allowed_actions = this.getAllowedActions(userRoles).filter(Boolean);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public getAllowedActions(_userRoles: string[] = []) {
     const canModify = this.is_latest_version && !this.is_archived;
     return [

@@ -27,7 +27,7 @@ import {
 } from "@ant-design/icons";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -49,7 +49,7 @@ interface DocumentTableProps {
   excludedColumnKeys: string[];
   additionalColumnProps: { key: string; colProps: any }[]; //{key: string, colProps: any}//colProps: PropTypes.objectOf(PropTypes.string)
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
-  userRoles: string[];
+  userInfo: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -90,7 +90,9 @@ export const DocumentTable = ({
       parsedDocs = docs.map((doc) => new MineDocument(doc));
     }
     return parsedDocs.map((doc) => {
-      doc.setAllowedActions(props.userRoles);
+      // TODO: getUserAccessData is broken, but the correct function to use here
+      const { client_roles } = props.userInfo;
+      doc.setAllowedActions(client_roles);
       return doc;
     });
   };
@@ -226,7 +228,6 @@ export const DocumentTable = ({
       columns={columns}
       expandProps={{
         childrenColumnName: "versions",
-        recordDescription: "version",
         matchChildColumnsToParent: true,
         rowExpandable: (record) => record.number_prev_versions > 0,
       }}
@@ -237,7 +238,7 @@ export const DocumentTable = ({
 };
 
 const mapStateToProps = (state) => ({
-  userRoles: getUserAccessData(state),
+  userInfo: getUserInfo(state),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-shadow

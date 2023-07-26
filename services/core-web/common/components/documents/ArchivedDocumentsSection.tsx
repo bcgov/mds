@@ -3,7 +3,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { MineDocument } from "@/models/document";
+import { MineDocument } from "@common/models/documents/document";
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];

@@ -19,7 +19,7 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { MajorMineApplicationDocument } from "@/models/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   match: PropTypes.shape({
