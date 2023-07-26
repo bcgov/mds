@@ -34,8 +34,8 @@ jobs:
       - name: Build Common Package
         run: yarn workspace @mds/common build
 
-      # - name: Run frontend tests
-      #   run: yarn workspace @mds/core-web test
+      - name: Run frontend tests
+        run: yarn workspace @mds/core-web test
 
       - name: build-core-web
         run: |
@@ -46,20 +46,20 @@ jobs:
 
       - name: Run cypress tests
         run: yarn workspace @mds/core-web cypress run
-        env:
-          CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
-          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
-          CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
-          CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
-          CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
-          CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
-          CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
-          CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
-          CYPRESS_FILE_SYSTEM_PROVIDER_URL: ${{ secrets.CYPRESS_FILE_SYSTEM_PROVIDER_URL }}
-          CYPRESS_MATOMO_URL: ${{ secrets.CYPRESS_MATOMO_URL }}
-          CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
-          CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
-          CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
+        # env:
+        #   CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
+        #   CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+        #   CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
+        #   CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
+        #   CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
+        #   CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
+        #   CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
+        #   CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
+        #   CYPRESS_FILE_SYSTEM_PROVIDER_URL: ${{ secrets.CYPRESS_FILE_SYSTEM_PROVIDER_URL }}
+        #   CYPRESS_MATOMO_URL: ${{ secrets.CYPRESS_MATOMO_URL }}
+        #   CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
+        #   CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
+        #   CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
       - name: Upload cypress video
         uses: actions/upload-artifact@v3
         if: always()
