@@ -138,7 +138,7 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
   )}`;
 //New version upload
 export const NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
-  `mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
+  `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
 export const PROJECT_SUMMARY_DOCUMENT = (
   projectGuid,
   projectSummaryGuid,

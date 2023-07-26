@@ -80,20 +80,17 @@ class MineDocumentSearchUtil():
             psdx_alias = aliased(ProjectSummaryDocumentXref)
             ps_alias = aliased(ProjectSummary)
             p_alias = aliased(Project)
-
-            # Define the ON clause explicitly
-            on_clause = md_alias.mine_document_guid == psdx_alias.mine_document_guid
-
+            
             query = query\
                 .select_from(md_alias)\
-                .join(psdx_alias, on_clause)\
+                .with_entities(md_alias.document_name, md_alias.mine_document_guid, p_alias.project_guid, md_alias.is_archived, \
+                    md_alias.mine_guid, md_alias.document_class, md_alias.update_timestamp, md_alias.update_user)\
                 .filter(md_alias.document_name == document_name, md_alias.deleted_ind == False)\
-                .join(ps_alias, ps_alias.project_summary_id == psdx_alias.project_summary_id)\
+                .join(psdx_alias, psdx_alias.mine_document_guid == md_alias.mine_document_guid)\
+                .join(ps_alias, psdx_alias.project_summary_id == ps_alias.project_summary_id)\
                 .join(p_alias, p_alias.project_guid == ps_alias.project_guid)\
                 .filter(p_alias.project_guid == project_guid)
-
-            resp = query.first()
-            
-            return resp
+                
+            return query.first()
         
         raise ValueError("Missing 'project_guid', This is required to continue the file upload process.")

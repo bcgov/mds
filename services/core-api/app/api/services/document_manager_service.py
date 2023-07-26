@@ -31,10 +31,16 @@ class DocumentManagerService():
         if not mine_document: # No existing file found in this application hence continuing the file uploading
           return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
         elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
-            content = f'{{"description" : "File already exist with the given name: {file_name}. Replace with the new version", "status_code": 409, "status": "ARCHIVED_FILE_EXIST"}}'
+            content = f'{{"description" : "Archived file already exist with the given name: {file_name}", "status_code": 409, \
+                "status": "ARCHIVED_FILE_EXIST", "file_name": "{file_name}", "mine_guid": "{mine_document.mine_guid}", \
+                    "file_type": "{mine_document.document_class}", "update_timestamp": "{mine_document.update_timestamp}", "update_user": "{mine_document.update_user}", \
+                        "mine_document_guid": "{mine_document.mine_document_guid}"}}'
             return Response(content, 409)
         else: # The found file with the same name in this application is not archived.
-            content = f'{{"description" : "Archived file already exist with the given name: {file_name}", "status_code": 409, "status": "REPLACEABLE_FILE_EXIST"}}'
+            content = f'{{"description" : "File already exist with the given name: {file_name}. Replace with the new version", \
+                "status_code": 409, "status": "REPLACEABLE_FILE_EXIST", "file_name": "{file_name}", "mine_guid": "{mine_document.mine_guid}", \
+                    "file_type": "{mine_document.document_class}", "update_timestamp": "{mine_document.update_timestamp}", "update_user": "{mine_document.update_user}", \
+                        "mine_document_guid": "{mine_document.mine_document_guid}"}}'
             return Response(content, 409, content_type='application/json')
 
     @classmethod
