@@ -67,7 +67,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
 
         loader: 'esbuild-loader',
         options: {
-          target: 'es2016'
+          target: 'es2015'
         }
       },
       {
@@ -79,7 +79,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         options: {
           /// Treat .js files as `.jsx` files
           loader: 'jsx',
-          target: 'es2016'
+          target: 'es2015'
         }
       },
     ],
@@ -96,7 +96,7 @@ exports.loadTS = ({ include, exclude } = {}) => ({
 
         loader: 'esbuild-loader',
         options: {
-          target: 'es2016'
+          target: 'es2015'
         }
       }
     ],
