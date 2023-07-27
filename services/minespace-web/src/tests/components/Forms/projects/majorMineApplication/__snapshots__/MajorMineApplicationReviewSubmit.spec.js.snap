@@ -79,10 +79,16 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Primary Document
       </ForwardRef>
       <Connect(DocumentTable)
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         deletePayload={
@@ -92,20 +98,11 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         deletePermission={true}
-        documentColumns={
-          Array [
-            Object {
-              "dataIndex": "upload_date",
-              "key": "upload_date",
-              "render": [Function],
-              "sorter": null,
-              "title": "Uploaded",
-            },
-          ]
-        }
         documentParent="Major Mine Application"
+        documents={Array []}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
       <ForwardRef
         level={4}
@@ -113,10 +110,16 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Spatial Components
       </ForwardRef>
       <Connect(DocumentTable)
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         deletePayload={
@@ -126,20 +129,11 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         deletePermission={true}
-        documentColumns={
-          Array [
-            Object {
-              "dataIndex": "upload_date",
-              "key": "upload_date",
-              "render": [Function],
-              "sorter": null,
-              "title": "Uploaded",
-            },
-          ]
-        }
         documentParent="Major Mine Application"
+        documents={Array []}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
       <ForwardRef
         level={4}
@@ -147,10 +141,16 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Supporting Documents
       </ForwardRef>
       <Connect(DocumentTable)
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         deletePayload={
@@ -160,29 +160,27 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
           }
         }
         deletePermission={true}
-        documentColumns={
-          Array [
-            Object {
-              "dataIndex": "upload_date",
-              "key": "upload_date",
-              "render": [Function],
-              "sorter": null,
-              "title": "Uploaded",
-            },
-          ]
-        }
         documentParent="Major Mine Application"
+        documents={Array []}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
       <ArchivedDocumentsSection
         documentColumns={
           Array [
             Object {
+              "dataIndex": "document_name",
+              "key": "document_name",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Name",
+            },
+            Object {
               "dataIndex": "upload_date",
               "key": "upload_date",
               "render": [Function],
-              "sorter": null,
+              "sorter": [Function],
               "title": "Uploaded",
             },
           ]

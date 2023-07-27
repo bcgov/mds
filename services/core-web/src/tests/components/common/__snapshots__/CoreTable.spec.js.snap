@@ -5,7 +5,11 @@ exports[`CoreTable renders properly 1`] = `
   className=" core-table"
   columns={Array []}
   dataSource={Object {}}
-  expandable={null}
+  expandable={
+    Object {
+      "showExpandColumn": false,
+    }
+  }
   locale={
     Object {
       "emptyText": "No Data Yet",

@@ -1,3 +1,4 @@
+import { USER_ROLES } from "@common/constants/environment";
 import {
   FileOperations,
   MajorMineApplicationDocument,
@@ -59,7 +60,7 @@ describe("MineDocument model", () => {
     expect(childKeys).not.toContain(latestVersionKey);
   });
   it("Base document model with no previous versions", () => {
-    const docData = mockDocumentData;
+    const docData = { ...mockDocumentData };
     delete docData.versions;
 
     const mineDocumentRecord = new MineDocument(docData);
@@ -76,7 +77,7 @@ describe("MineDocument model", () => {
   it("Base document model permissions", () => {
     const mineDocumentRecord = new MineDocument(mockDocumentData);
 
-    const permissions = mineDocumentRecord.getAllowedActions();
+    const permissions = mineDocumentRecord.allowed_actions;
     const expectedPermissions = [
       FileOperations.View,
       FileOperations.Download,
@@ -87,9 +88,7 @@ describe("MineDocument model", () => {
     expect(permissions).toEqual(expectedPermissions);
 
     // previous versions can only be viewed or downloaded
-    expect(mineDocumentRecord).toEqual({});
-    expect(mineDocumentRecord.versions).toEqual({});
-    const previousVersionPermissions = mineDocumentRecord.versions[0].getAllowedActions();
+    const previousVersionPermissions = mineDocumentRecord.versions[0].allowed_actions;
     const expectedPrevPermissions = [FileOperations.View, FileOperations.Download];
     expect(previousVersionPermissions).toEqual(expectedPrevPermissions);
   });
@@ -104,5 +103,26 @@ describe("MajorMineApplicationDocument model", () => {
     expect(typeof appDocRecord).toEqual(typeof prevVersion);
     expect(appDocRecord.major_mine_application_document_type_code).toEqual(docTypeCode);
     expect(prevVersion.major_mine_application_document_type_code).toEqual(docTypeCode);
+  });
+
+  it("MajorMineApplicationDocument permissions", () => {
+    const appDocRecord = new MajorMineApplicationDocument(mockDocumentData);
+
+    const canViewActions = [FileOperations.View, FileOperations.Download].sort();
+    const canModifyActions = [
+      FileOperations.Replace,
+      FileOperations.Archive,
+      FileOperations.Delete,
+      ...canViewActions,
+    ].sort();
+
+    appDocRecord.setAllowedActions([USER_ROLES.role_minespace_proponent]);
+    expect(canModifyActions).toEqual(appDocRecord.allowed_actions.sort());
+
+    appDocRecord.setAllowedActions([USER_ROLES.role_edit_major_mine_applications]);
+    expect(canModifyActions).toEqual(appDocRecord.allowed_actions.sort());
+
+    appDocRecord.setAllowedActions([]);
+    expect(canViewActions).toEqual(appDocRecord.allowed_actions.sort());
   });
 });
