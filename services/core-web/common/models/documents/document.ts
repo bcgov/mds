@@ -51,7 +51,7 @@ export class MineDocument {
 
   public number_prev_versions: number;
 
-  public versions: MineDocument[]; // all versions, including latest
+  public versions: MineDocument[]; // all previous versions, not including latest
 
   public allowed_actions: FileOperations[];
 
