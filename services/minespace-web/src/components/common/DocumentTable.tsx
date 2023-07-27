@@ -36,17 +36,17 @@ interface DocumentTableProps {
   showVersionHistory: boolean;
   documentParent: string;
   view: string;
-  openModal: (arg) => void; //PropTypes.func
+  openModal: (arg) => void;
   openDocument: any;
   closeModal: () => void;
-  removeDocument: (event, doc_guid: string, mine_guid: string) => void; // void?
+  removeDocument: (event, doc_guid: string, mine_guid: string) => void;
   archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
-  documentColumns: ColumnType<unknown>[]; // any?
+  documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
   defaultSortKeys: string[];
   excludedColumnKeys: string[];
-  additionalColumnProps: { key: string; colProps: any }[]; //{key: string, colProps: any}//colProps: PropTypes.objectOf(PropTypes.string)
+  additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userInfo: any;
 }
