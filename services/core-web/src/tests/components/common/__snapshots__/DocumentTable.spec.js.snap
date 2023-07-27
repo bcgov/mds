@@ -26,6 +26,10 @@ exports[`DocumentTable renders properly 1`] = `
         "sorter": [Function],
         "title": "Uploaded",
       },
+      Object {
+        "key": "actions",
+        "render": [Function],
+      },
     ]
   }
   dataSource={Array []}

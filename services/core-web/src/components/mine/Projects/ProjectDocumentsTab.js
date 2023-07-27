@@ -19,6 +19,7 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -37,10 +38,14 @@ const propTypes = {
 export class ProjectDocumentsTab extends Component {
   state = {
     fixedTop: false,
+    isLoaded: false,
   };
 
   componentDidMount() {
-    this.handleFetchData();
+    this.handleFetchData().then(() => {
+      this.setState({ isLoaded: true });
+    });
+
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
@@ -133,23 +138,14 @@ export class ProjectDocumentsTab extends Component {
       <div id={sectionHref}>
         {titleElement}
         <DocumentTable
-          documents={sectionDocuments?.reduce(
-            (docs, doc) => [
-              {
-                ...doc,
-                key: doc.mine_document_guid,
-              },
-              ...docs,
-            ],
-            []
-          )}
-          documentParent={documentParent}
-          removeDocument={this.handleDeleteDocument}
+          documents={sectionDocuments.map((doc) => new MajorMineApplicationDocument(doc))}
           canArchiveDocuments={true}
           onArchivedDocuments={() => this.handleFetchData()}
-          archiveDocumentsArgs={{ mineGuid: this.props?.project?.mine_guid }}
-          excludedColumnKeys={["dated", "category"]}
           additionalColumnProps={[{ key: "name", colProps: { width: "80%" } }]}
+          documentParent={documentParent}
+          removeDocument={this.handleDeleteDocument}
+          showVersionHistory={true}
+          isLoaded={this.state.isLoaded}
         />
       </div>
     );

@@ -16,17 +16,6 @@ exports[`DocumentsPage renders properly 1`] = `
   >
     <Connect(DocumentTable)
       canArchiveDocuments={true}
-      documentColumns={
-        Array [
-          Object {
-            "dataIndex": "upload_date",
-            "key": "upload_date",
-            "render": [Function],
-            "sorter": null,
-            "title": "Uploaded",
-          },
-        ]
-      }
       documentParent="mockTitle"
       documents={
         Array [
@@ -62,6 +51,7 @@ exports[`DocumentsPage renders properly 1`] = `
           },
         ]
       }
+      showVersionHistory={true}
     />
   </Col>
 </Row>

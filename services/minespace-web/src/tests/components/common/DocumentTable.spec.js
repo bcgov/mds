@@ -10,6 +10,7 @@ const setupProps = () => {
   props.isViewOnly = true;
   props.documents = MOCK.VARIANCE.documents;
   props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
+  props.userInfo = { client_roles: ["mds_minespace_proponents"] };
 };
 
 const setupDispatchProps = () => {

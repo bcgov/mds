@@ -1,12 +1,12 @@
 import React from "react";
 import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
-import { IMineDocument } from "@mds/common";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { MineDocument } from "@common/models/documents/document";
 
 interface ArchivedDocumentsSectionProps {
-  documents: IMineDocument;
+  documents: MineDocument[];
   documentColumns: any;
   titleLevel?: 1 | 2 | 3 | 4 | 5;
 }
@@ -15,12 +15,6 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
   if (!isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)) {
     return <></>;
   }
-
-  const docs = props.documents.map((d) => {
-    d.name = d.document_name;
-
-    return d;
-  });
 
   return (
     <div id="archived-documents">
@@ -33,7 +27,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       </Typography.Paragraph>
       <DocumentTable
         documentColumns={props.documentColumns}
-        documents={docs}
+        documents={props.documents}
         excludedColumnKeys={["archive", "remove"]}
       />
     </div>

@@ -37,6 +37,13 @@ exports[`DocumentUpload renders properly 1`] = `
       documentColumns={
         Array [
           Object {
+            "dataIndex": "document_name",
+            "key": "document_name",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "File Name",
+          },
+          Object {
             "dataIndex": "project_summary_document_type_code",
             "key": "project_summary_document_type_code",
             "render": [Function],
@@ -46,12 +53,13 @@ exports[`DocumentUpload renders properly 1`] = `
             "dataIndex": "upload_date",
             "key": "upload_date",
             "render": [Function],
-            "sorter": null,
+            "sorter": [Function],
             "title": "Uploaded",
           },
         ]
       }
       documentParent="project summary"
+      documents={Array []}
     />
     <Field
       acceptedFileTypesMap={
