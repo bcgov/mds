@@ -10,7 +10,7 @@ COPY . .
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Install Dependencies
-RUN yarn
+RUN yarn install
 
 # Build Common Package
 RUN yarn workspace @mds/common build
