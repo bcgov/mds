@@ -26,7 +26,7 @@ echo -e "\n"
 echo "Watching for new revision of $TARGET_APP to be rolled out"
 echo "Waiting for $TARGET_APP to sync and be in healthy state"
 
-argocd login
+argocd login $ARGO_SERVER --core
 argocd app sync $TARGET_APP
 argocd app wait $TARGET_APP
 
