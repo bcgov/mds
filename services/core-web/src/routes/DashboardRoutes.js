@@ -22,7 +22,7 @@ const DashboardRoutes = () => {
       />
       <Route exact path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
 
-      {...exportedRoutes.map(({ route, component }) => (
+      {exportedRoutes.map(({ route, component }) => (
         <Route exact path={route} component={component} />
       ))}
       <Route component={PageNotFound} />
