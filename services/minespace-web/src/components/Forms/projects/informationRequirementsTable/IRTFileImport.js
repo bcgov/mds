@@ -26,6 +26,8 @@ import {
   renderTextColumn,
 } from "@/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
+import { documentNameColumn } from "@/components/common/DocumentColumns";
+import { MineDocument } from "@common/models/documents/document";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -68,14 +70,24 @@ export class IRTFileImport extends Component {
 
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
+    const documents = this.props.project?.information_requirements_table?.documents.map(
+      (doc) =>
+        new MineDocument({
+          ...doc,
+          category: doc.information_requirements_table_document_type_code,
+        })
+    );
     const documentColumns = [
+      documentNameColumn(),
       renderCategoryColumn(
-        "information_requirements_table_document_type_code",
+        "category",
+        "Category",
         this.props.informationRequirementsTableDocumentTypesHash
       ),
       renderDateColumn("upload_date", "Date/Time", true, formatDateTime),
       renderTextColumn("create_user", "Imported By"),
     ];
+
     return (
       <>
         <Row>
@@ -105,7 +117,7 @@ export class IRTFileImport extends Component {
             </Typography.Paragraph>
             <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
               <DocumentTable
-                documents={this.props.project?.information_requirements_table?.documents}
+                documents={documents}
                 documentParent="Information Requirements Table"
                 documentColumns={documentColumns}
               />

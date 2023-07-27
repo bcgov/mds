@@ -33,7 +33,7 @@ const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocument
         documents={props.documents}
         view="minimal"
         uploadDateIndex="upload_date"
-        excludedColumnKeys={["archive", "remove", "category"]}
+        excludedColumnKeys={["actions", "category"]}
       />
 
       <div className="ant-modal-footer">

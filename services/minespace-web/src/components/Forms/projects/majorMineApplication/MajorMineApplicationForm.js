@@ -18,7 +18,7 @@ import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
@@ -64,6 +64,7 @@ export class MajorMineApplicationForm extends Component {
       document_name: fileName,
       document_manager_guid,
       major_mine_application_document_type_code: documentTypeCode,
+      mine_guid: this.props.project?.mine_guid,
     });
     return this.props.change(
       documentTypeField,
@@ -104,7 +105,7 @@ export class MajorMineApplicationForm extends Component {
   };
 
   render() {
-    const documentColumns = [uploadDateColumn("upload_date")];
+    const documentColumns = [documentNameColumn(), uploadDateColumn()];
     const primaryDocuments = this.uniqueDocs(
       this.props.primary_documents,
       this.props.project?.major_mine_application?.documents,
@@ -120,6 +121,7 @@ export class MajorMineApplicationForm extends Component {
       this.props.project?.major_mine_application?.documents,
       "SPR"
     );
+
     return (
       <div>
         <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -199,7 +201,6 @@ export class MajorMineApplicationForm extends Component {
               documentParent="Major Mine Application"
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
 
@@ -246,7 +247,6 @@ export class MajorMineApplicationForm extends Component {
               documentParent="Major Mine Application"
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
           <br />
@@ -300,7 +300,6 @@ export class MajorMineApplicationForm extends Component {
               documentColumns={documentColumns}
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
             />
           )}
 

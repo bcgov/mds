@@ -32,7 +32,11 @@ import { closeModal, openModal } from "@common/actions/modalActions";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
-import { uploadDateColumn, uploadedByColumn } from "@/components/common/DocumentColumns";
+import {
+  documentNameColumn,
+  uploadDateColumn,
+  uploadedByColumn,
+} from "@/components/common/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";
@@ -78,10 +82,7 @@ const defaultProps = {
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_notification_documents";
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
 
-const documentColumns = [
-  uploadDateColumn("upload_date"),
-  uploadedByColumn("Uploaded By", "update_user"),
-];
+const documentColumns = [documentNameColumn(), uploadDateColumn(), uploadedByColumn()];
 
 const retrieveIncidentDetailsDynamicValidation = (childProps) => {
   const { formValues } = childProps;
@@ -913,6 +914,7 @@ export const IncidentForm = (props) => {
         document_name: fileName,
         document_manager_guid,
         mine_incident_document_type_code: documentTypeCode,
+        mine_guid: formValues.mine_guid,
       },
     ];
     setUploadedFiles(updatedUploadedFiles);

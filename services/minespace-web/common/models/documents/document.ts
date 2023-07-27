@@ -28,6 +28,8 @@ export class MineDocument {
 
   public create_user: string;
 
+  public update_user: string;
+
   public upload_date: string;
 
   public update_timestamp: string;
@@ -59,6 +61,7 @@ export class MineDocument {
     this.document_manager_guid = jsonObject.document_manager_guid;
     this.document_name = jsonObject.document_name;
     this.create_user = jsonObject.create_user;
+    this.update_user = jsonObject.update_user;
     this.upload_date = jsonObject.upload_date;
     this.update_timestamp = jsonObject.update_timestamp;
     this.category = jsonObject.category;
@@ -106,7 +109,7 @@ export class MineDocument {
   public getAllowedActions(_userRoles: string[] = []) {
     const canModify = this.is_latest_version && !this.is_archived;
     return [
-      FileOperations.View,
+      this.file_type === ".pdf" && FileOperations.View,
       FileOperations.Download,
       canModify && FileOperations.Replace,
       canModify && FileOperations.Archive,

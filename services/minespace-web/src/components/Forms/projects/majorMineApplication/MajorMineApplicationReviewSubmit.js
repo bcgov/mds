@@ -10,13 +10,14 @@ import {
   fetchProjectById,
 } from "@common/actionCreators/projectActionCreator";
 import DocumentTable from "@/components/common/DocumentTable";
-import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -89,7 +90,16 @@ export const MajorMineApplicationReviewSubmit = (props) => {
   const supportDocuments = documents.filter(
     (d) => d.major_mine_application_document_type_code === "SPR"
   );
-  const documentColumns = [uploadDateColumn("upload_date")];
+  const documentColumns = [documentNameColumn(), uploadDateColumn()];
+
+  const additionalColumns = [
+    renderCategoryColumn(
+      "major_mine_application_document_type_code",
+      "File Location",
+      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
+      true
+    ),
+  ];
 
   const columnStyleConfig = tabbedView ? { style: { maxWidth: "67%", margin: "0 auto" } } : {};
 
@@ -149,7 +159,6 @@ export const MajorMineApplicationReviewSubmit = (props) => {
           <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
             documents={primaryDocuments}
-            documentColumns={documentColumns}
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
@@ -157,11 +166,11 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            additionalColumns={additionalColumns}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
             documents={spatialDocuments}
-            // documentColumns={documentColumns}
             documentParent="Major Mine Application"
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
@@ -169,18 +178,19 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            additionalColumns={additionalColumns}
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
             documents={supportDocuments}
             documentParent="Major Mine Application"
-            documentColumns={documentColumns}
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
             deletePermission
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            additionalColumns={additionalColumns}
           />
 
           <ArchivedDocumentsSection

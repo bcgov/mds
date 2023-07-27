@@ -9,10 +9,11 @@ import { bindActionCreators } from "redux";
 import { DOCUMENT, EXCEL, IMAGE } from "@common/constants/fileTypes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { MineDocument } from "@common/models/documents/document";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,
@@ -56,12 +57,18 @@ export class DocumentUpload extends Component {
       projectGuid: this.props.initialValues.project_guid,
       projectSummaryGuid: this.props.initialValues.project_summary_guid,
     };
+    const documents =
+      this.props.initialValues?.documents?.map(
+        (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
+      ) ?? [];
     const documentColumns = [
+      documentNameColumn(),
       renderCategoryColumn(
         "project_summary_document_type_code",
+        "Category",
         this.props.projectSummaryDocumentTypesHash
       ),
-      uploadDateColumn("upload_date"),
+      uploadDateColumn(),
     ];
     return (
       <>
@@ -80,7 +87,7 @@ export class DocumentUpload extends Component {
           </Row>
           {this.props.isEditMode && (
             <DocumentTable
-              documents={this.props.initialValues?.documents}
+              documents={documents}
               documentParent="project summary"
               documentColumns={documentColumns}
             />

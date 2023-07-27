@@ -3,7 +3,6 @@ import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
   documentNameColumnNew,
-  removeFunctionColumn,
   uploadDateColumn,
   uploadedByColumn,
 } from "./DocumentColumns";
@@ -67,9 +66,7 @@ export const DocumentTable = ({
   canArchiveDocuments = false,
   openModal,
   closeModal,
-  removeDocument = (arg1, arg2, arg3) => {
-    console.log("remove doc called", arg1, arg2, arg3);
-  },
+  removeDocument,
   openDocument,
   ...props
 }: DocumentTableProps) => {
@@ -93,45 +90,45 @@ export const DocumentTable = ({
     }
     return parsedDocs.map((doc) => {
       // TODO: getUserAccessData is broken, but the correct function to use here
-      const { client_roles } = props.userInfo;
+      const { client_roles = [] } = props.userInfo;
       doc.setAllowedActions(client_roles);
       return doc;
     });
   };
   const documents = parseDocuments(props.documents ?? []);
 
-  const openArchiveModal = (event, documents: MineDocument[]) => {
-    const mineGuid = documents[0].mine_guid;
+  const openArchiveModal = (event, docs: MineDocument[]) => {
+    const mineGuid = docs[0].mine_guid;
     event.preventDefault();
     openModal({
       props: {
-        title: `Archive ${documents?.length > 1 ? "Multiple Files" : "File"}`,
+        title: `Archive ${docs?.length > 1 ? "Multiple Files" : "File"}`,
         closeModal: closeModal,
         handleSubmit: async () => {
           await props.archiveMineDocuments(
             mineGuid,
-            documents.map((d) => d.mine_document_guid)
+            docs.map((d) => d.mine_document_guid)
           );
           if (props.onArchivedDocuments) {
-            props.onArchivedDocuments(documents);
+            props.onArchivedDocuments(docs);
           }
         },
-        documents,
+        docs,
       },
       content: modalConfig.ARCHIVE_DOCUMENT,
     });
   };
 
-  const openDeleteModal = (event, documents: MineDocument[]) => {
+  const openDeleteModal = (event, docs: MineDocument[]) => {
     event.preventDefault();
     openModal({
       props: {
-        title: `Delete ${documents?.length > 1 ? "Multiple Files" : "File"}`,
+        title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
         closeModal: closeModal,
         handleSubmit: async () => {
-          documents.forEach((record) => removeDocument(event, record.key, documentParent));
+          docs.forEach((record) => removeDocument(event, record.key, documentParent));
         },
-        documents,
+        docs,
       },
       content: modalConfig.DELETE_DOCUMENT,
     });
@@ -175,17 +172,21 @@ export const DocumentTable = ({
     },
   ].filter((action) => allowedTableActions[action.label]);
 
+  const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
+    const allowedDocumentActions: string[] = record.allowed_actions;
+    return tableActions.filter((action) => allowedDocumentActions.includes(action.label));
+  };
+
   // document tables that don't yet have MineRecord, actions, archive, versions functionality
   const oldGetColumns = () => {
-    const canDelete = !isViewOnly && removeDocument;
-    let columns = [
+    let columns = documentColumns ?? [
       documentNameColumn("document_name", "File Name", isMinimalView),
       renderTextColumn("category", "Category", !isMinimalView),
       uploadDateColumn("upload_date", "Uploaded", !isMinimalView),
       uploadDateColumn("dated", "Dated", !isMinimalView),
     ];
-    if (canDelete) {
-      columns.push(removeFunctionColumn(removeDocument, documentParent));
+    if (actions.length > 0 && !columns.some((column) => column.key === "actions")) {
+      columns.push(renderActionsColumn(actions, filterActions));
     }
     if (!some(documents, "dated")) {
       columns = columns.filter((column) => column.key !== "dated");
@@ -195,11 +196,6 @@ export const DocumentTable = ({
       columns = columns.filter((column) => !excludedColumnKeys.includes(column.key.toString()));
     }
     return columns;
-  };
-
-  const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
-    const allowedDocumentActions: string[] = record.allowed_actions;
-    return tableActions.filter((action) => allowedDocumentActions.includes(action.label));
   };
 
   const newGetColumns = (): ColumnsType<MineDocument> => {
@@ -245,11 +241,12 @@ export const DocumentTable = ({
       expandProps={{
         childrenColumnName: "versions",
         matchChildColumnsToParent: true,
+        recordDescription: "version history",
         rowExpandable: (record) => record.number_prev_versions > 0,
       }}
     />
   ) : (
-    <CoreTable columns={documentColumns ?? columns} dataSource={documents} {...minimalProps} />
+    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
   );
 };
 

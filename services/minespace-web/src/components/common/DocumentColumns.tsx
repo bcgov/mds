@@ -35,7 +35,7 @@ const documentWithTag = (
               placement="top"
               mouseEnterDelay={1}
             >
-              <Tag icon={<ClockCircleOutlined />} color="#5E46A1" className="file-version-amount">
+              <Tag icon={<ClockCircleOutlined />} className="file-version-amount">
                 {record.number_prev_versions}
               </Tag>
             </Tooltip>
