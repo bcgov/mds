@@ -22,8 +22,8 @@ const notificationDisabledStatusCodes = [409]; // Define the notification disabl
 export const ProjectSummaryFileUpload = (props) => {
   const [archivedFileModalMessage, setArchivedFileModalMessage] = useState("");
   const [isArchivedFileModalVisible, setIsArchivedFileModalVisible] = useState(false);
-  const [relaplaceableFileModalMessage, setRelaplaceableFileModalMessage] = useState("");
-  const [isRelaplaceableFileModalVisible, setRelaplaceableFileModalVisible] = useState(false);
+  const [replaceableFileModalMessage, setReplaceableFileModalMessage] = useState("");
+  const [isReplaceableFileModalVisible, setReplaceableFileModalVisible] = useState(false);
   const [fileName, setFileName] = useState("");
   const [shouldReplaceFile, setShouldReplaceFile] = useState(false);
   const [replaceFileUploadUrl, setReplaceFileUploadUrl] = useState(false);
@@ -36,14 +36,12 @@ export const ProjectSummaryFileUpload = (props) => {
 
   const handleCloseModal = () => {
     setIsArchivedFileModalVisible(false);
-    setRelaplaceableFileModalVisible(false);
+    setReplaceableFileModalVisible(false);
     setShouldAbortUpload(true);
   };
 
-  const childRef = useRef(null);
-
   const handleNewVersionSubmit = () => {
-    setRelaplaceableFileModalVisible(false);
+    setReplaceableFileModalVisible(false);
     setReplaceFileUploadUrl(
       NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
         mineGuid: props.params.mineGuid,
@@ -67,7 +65,6 @@ export const ProjectSummaryFileUpload = (props) => {
   return (
     <>
       <Field
-        ref={childRef}
         id="fileUpload"
         name="fileUpload"
         component={FileUpload}
@@ -96,8 +93,8 @@ export const ProjectSummaryFileUpload = (props) => {
             if (e.response.status === "REPLACEABLE_FILE_EXIST") {
               setShouldAbortUpload(false);
               let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
-              setRelaplaceableFileModalMessage(message);
-              setRelaplaceableFileModalVisible(true);
+              setReplaceableFileModalMessage(message);
+              setReplaceableFileModalVisible(true);
               setMineGuid(e.response.mine_guid);
               setMineDocumentGuid(e.response.mine_document_guid);
 
@@ -135,7 +132,7 @@ export const ProjectSummaryFileUpload = (props) => {
 
       <Modal
         title=""
-        open={isRelaplaceableFileModalVisible}
+        open={isReplaceableFileModalVisible}
         onOk={handleNewVersionSubmit}
         onCancel={handleCloseModal}
         okText="Yes, replace"
@@ -153,7 +150,7 @@ export const ProjectSummaryFileUpload = (props) => {
               message="File Already exists"
               showIcon
               type="warning"
-              description={relaplaceableFileModalMessage}
+              description={replaceableFileModalMessage}
             />
           </Typography.Paragraph>
           <Typography.Text title="Original Doc">

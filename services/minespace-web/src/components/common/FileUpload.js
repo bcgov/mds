@@ -84,9 +84,9 @@ class FileUpload extends React.Component {
         if (file) {
           this.setState({ file: file, progress: progress, load: load });
         }
-        let fileToUpload = this.state.file ? this.state.file : file;
-        let progressFn = this.state.progress ? this.state.progress : progress;
-        let loadFn = this.state.load ? this.state.load : load;
+        const fileToUpload = this.state.file ? this.state.file : file;
+        const progressFn = this.state.progress ? this.state.progress : progress;
+        const loadFn = this.state.load ? this.state.load : load;
 
         const upload = new tus.Upload(fileToUpload, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
@@ -115,11 +115,6 @@ class FileUpload extends React.Component {
                   }: ${err}`,
                   duration: 10,
                 });
-              } else {
-                console.log(
-                  "notification disabled for status code(s):",
-                  this.props.notificationDisabledStatusCodes
-                );
               }
               this.props.onError(file && fileToUpload.name ? fileToUpload.name : "", err);
             } catch (err) {
