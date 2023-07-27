@@ -8,7 +8,7 @@ from app.api.projects.project.models.project import Project
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-from sqlalchemy import or_
+from sqlalchemy import desc, or_
 from app.extensions import db, api
 from sqlalchemy.orm import aliased
 
@@ -72,25 +72,16 @@ class MineDocumentSearchUtil():
         """
         Find Mine Documents by the document_name and the project_guid.
         """
-        query = db.session.query(MineDocument)
+        qy = db.session.query(MineDocument).filter_by(document_name=document_name, deleted_ind=False)
         
         if project_guid is not None:
-            # Create aliases for the joined tables
-            md_alias = aliased(MineDocument)
-            psdx_alias = aliased(ProjectSummaryDocumentXref)
-            ps_alias = aliased(ProjectSummary)
-            p_alias = aliased(Project)
+            qy = qy\
+                .join(ProjectSummaryDocumentXref)\
+                .join(ProjectSummary)\
+                .join(Project)\
+                .filter(Project.project_guid == project_guid)\
+                .order_by(desc(MineDocument.update_timestamp))
             
-            query = query\
-                .select_from(md_alias)\
-                .with_entities(md_alias.document_name, md_alias.mine_document_guid, p_alias.project_guid, md_alias.is_archived, \
-                    md_alias.mine_guid, md_alias.document_class, md_alias.update_timestamp, md_alias.update_user)\
-                .filter(md_alias.document_name == document_name, md_alias.deleted_ind == False)\
-                .join(psdx_alias, psdx_alias.mine_document_guid == md_alias.mine_document_guid)\
-                .join(ps_alias, psdx_alias.project_summary_id == ps_alias.project_summary_id)\
-                .join(p_alias, p_alias.project_guid == ps_alias.project_guid)\
-                .filter(p_alias.project_guid == project_guid)
-                
-            return query.first()
+            return qy.first()
         
         raise ValueError("Missing 'project_guid', This is required to continue the file upload process.")
