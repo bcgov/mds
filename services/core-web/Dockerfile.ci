@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy all files to the working directory
 COPY . .
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=6144"
 
 # Install Dependencies
 RUN yarn install
