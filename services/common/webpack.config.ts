@@ -5,7 +5,8 @@ const pkg = require("./package.json");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeExternals = require("webpack-node-externals");
 
-module.exports = (mode) => {
+module.exports = (opts) => {
+  const mode = opts.development ? "development" : "production";
   console.log(`\n============= Webpack Mode : ${mode} =============\n`);
   return {
     mode,
@@ -19,29 +20,30 @@ module.exports = (mode) => {
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
     },
+    watchOptions: {
+      // Increase file change poll interval to reduce
+      // CPU usage on some operating systems.
+      poll: 2500,
+      ignored: /node_modules/,
+    },
     module: {
       rules: [
         {
-          test: /\.(ts|tsx)$/,
+          test: /\.[[t]sx?$/,
           exclude: /node_modules/,
-          use: [
-            {
-              loader: "babel-loader",
-            },
-            {
-              loader: "ts-loader",
-              options: {
-                configFile: "tsconfig.json",
-                transpileOnly: false,
-              },
-            },
-          ],
+          loader: "esbuild-loader",
+          options: {
+            target: "es2015",
+          },
         },
         {
-          test: /\.(js|jsx)$/,
+          test: /\.[[j]sx?$/,
           exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
+          loader: "esbuild-loader",
+          options: {
+            /// Treat .js files as `.jsx` files
+            loader: "jsx",
+            target: "es2015",
           },
         },
         {
