@@ -83,7 +83,7 @@ jobs:
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: clowdhaus/argo-cd-action/@main
         with:
-          version: 2.7.9
+          version: 2.6.7
           command: version
           options: --client
       - name: oc login
