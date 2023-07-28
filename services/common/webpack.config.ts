@@ -14,7 +14,6 @@ module.exports = (opts) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "index.js",
-      library: pkg.name,
       libraryTarget: "commonjs2",
     },
     resolve: {
@@ -34,6 +33,8 @@ module.exports = (opts) => {
           loader: "esbuild-loader",
           options: {
             target: "es2015",
+            tsconfig: "./tsconfig.json",
+            minify: false,
           },
         },
         {
@@ -44,6 +45,7 @@ module.exports = (opts) => {
             /// Treat .js files as `.jsx` files
             loader: "jsx",
             target: "es2015",
+            minify: false,
           },
         },
         {
