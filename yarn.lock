@@ -9507,9 +9507,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.431":
-  version: 1.4.474
-  resolution: "electron-to-chromium@npm:1.4.474"
-  checksum: 16e55823064dfa6f64088a3d5124c0c5c2a577c981a35e58199a2baa6a237b4d9505ddf406d4c8761cabdf6f7b347013a57a887883781dfb04d1940f8be379b0
+  version: 1.4.476
+  resolution: "electron-to-chromium@npm:1.4.476"
+  checksum: 0b769c3b85bf4f28f58bf1c61caf14e7d5ef50e7e8250fc7594e81f4213e2c928f650a68edb8f0580e1f479b4548f34ca2096f661d44faf5de8141593d31a9b6
   languageName: node
   linkType: hard
 
@@ -9637,12 +9637,12 @@ __metadata:
   linkType: hard
 
 "enquirer@npm:^2.3.5, enquirer@npm:^2.3.6":
-  version: 2.4.0
-  resolution: "enquirer@npm:2.4.0"
+  version: 2.4.1
+  resolution: "enquirer@npm:2.4.1"
   dependencies:
     ansi-colors: ^4.1.1
     strip-ansi: ^6.0.1
-  checksum: bbdecde92679ed847c751dc5337ff39ce0c32d85e76fb2e47245e831e9cc7f84c12bd35b70f7b1de9b9e1c730d90cccd04201e69f1ecf7986a7a70d8d39349db
+  checksum: f080f11a74209647dbf347a7c6a83c8a47ae1ebf1e75073a808bc1088eb780aa54075bfecd1bcdb3e3c724520edb8e6ee05da031529436b421b71066fcc48cb5
   languageName: node
   linkType: hard
 
@@ -10368,9 +10368,9 @@ __metadata:
   linkType: hard
 
 "eslint-visitor-keys@npm:^3.3.0":
-  version: 3.4.1
-  resolution: "eslint-visitor-keys@npm:3.4.1"
-  checksum: f05121d868202736b97de7d750847a328fcfa8593b031c95ea89425333db59676ac087fa905eba438d0a3c5769632f828187e0c1a0d271832a2153c1d3661c2c
+  version: 3.4.2
+  resolution: "eslint-visitor-keys@npm:3.4.2"
+  checksum: 9e0e7e4aaea705c097ae37c97410e5f167d4d2193be2edcb1f0760762ede3df01545e4820ae314f42dcec687745f2c6dcaf6d83575c4a2a241eb0c8517d724f2
   languageName: node
   linkType: hard
 
