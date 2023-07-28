@@ -83,13 +83,15 @@ jobs:
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: clowdhaus/argo-cd-action/@main
         with:
-          version: 2.6.7
+          version: 2.7.9
           command: version
           options: --client
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: argocd login
+        run: argocd login --token=${{ secrets.ARGO_CD_CLI_JWT }} --server=${{ secrets.ARGOCD_SERVER }}
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
+        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
