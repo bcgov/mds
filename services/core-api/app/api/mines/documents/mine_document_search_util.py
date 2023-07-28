@@ -4,11 +4,13 @@ from app.api.projects.project_decision_package.models.project_decision_package i
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project.models.project import Project
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-from sqlalchemy import or_
+from sqlalchemy import desc, or_
 from app.extensions import db, api
+from sqlalchemy.orm import aliased
 
 
 class MineDocumentSearchUtil():
@@ -64,3 +66,22 @@ class MineDocumentSearchUtil():
                 .filter(ProjectDecisionPackage.project_decision_package_guid == project_decision_package_guid)
 
         return qy.all()
+
+    @classmethod
+    def find_by_document_name_and_project_guid(cls, document_name, project_guid=None):
+        """
+        Find Mine Documents by the document_name and the project_guid.
+        """
+        qy = db.session.query(MineDocument).filter_by(document_name=document_name, deleted_ind=False)
+        
+        if project_guid is not None:
+            qy = qy\
+                .join(ProjectSummaryDocumentXref)\
+                .join(ProjectSummary)\
+                .join(Project)\
+                .filter(Project.project_guid == project_guid)\
+                .order_by(desc(MineDocument.update_timestamp))
+            
+            return qy.first()
+        
+        raise ValueError("Missing 'project_guid', This is required to continue the file upload process.")

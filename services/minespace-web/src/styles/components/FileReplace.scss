@@ -1,0 +1,23 @@
+.new-file-replace-table {
+  .ant-table-tbody > tr.ant-table-row > td {
+    border-bottom: none;
+  }
+}
+      
+.new-file-replace-modal {
+  .ant-modal-body {
+    padding-bottom: 24px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 24px;
+  }
+  .ant-modal-footer {
+    padding: 24px;
+  }
+  .ant-table-cell {
+    width: 20%;
+  }
+  .ant-table-row td:first-child {
+    width: 40%;
+  }
+}
