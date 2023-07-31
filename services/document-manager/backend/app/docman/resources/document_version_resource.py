@@ -4,7 +4,7 @@ from app.docman.models.document import Document
 from app.docman.response_models import DOCUMENT_VERSION_MODEL
 from app.extensions import api
 from app.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, GIS
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
 

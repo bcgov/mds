@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 DOCUMENT_MODEL = api.model(
     'Document', {

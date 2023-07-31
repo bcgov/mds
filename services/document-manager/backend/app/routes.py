@@ -1,6 +1,6 @@
 from flask_jwt_oidc.exceptions import AuthError
 from flask import current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from app.extensions import api
 from app.config import Config
