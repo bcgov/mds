@@ -10,7 +10,6 @@ WORKDIR /app
 
 # Install the requirements
 COPY requirements.txt .
-RUN pip install -U setuptools
 
 RUN pip install --no-cache-dir -r requirements.txt
 
