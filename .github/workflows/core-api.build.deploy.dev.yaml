@@ -72,10 +72,8 @@ jobs:
           version: v2.7.9 # optional
       - name: oc login
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-      - name: argocd login
-        run: argocd login ${{ secrets.ARGOCD_SERVER }} --auth-token ${{ secrets.ARGO_CD_CLI_JWT }} --grpc-web --insecure
       - name: Notification
-        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+        run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
