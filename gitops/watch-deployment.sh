@@ -26,8 +26,9 @@ echo -e "\n"
 echo "Watching for new revision of $TARGET_APP to be rolled out"
 echo "Waiting for $TARGET_APP to sync and be in healthy state"
 
-argocd app sync $TARGET_APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
-argocd app wait $TARGET_APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+APP="mds-$TARGET_APP-$ENV"
+argocd app sync $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+argocd app wait $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
 
 echo "Target Revision is achieved $CURRENT_REVISION"
 
