@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import { Radio } from "antd";
@@ -13,7 +13,7 @@ const propTypes = {
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
-  customOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  customOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 };
 
 const defaultProps = {
@@ -23,12 +23,15 @@ const defaultProps = {
 
 const RenderRadioButtons = (props) => {
   const { meta, label, disabled, input, id, customOptions } = props;
-  const radioValue = typeof input.value !== "undefined" ? input.value.toString() : "";
 
   const options = customOptions ?? [
-    { label: "Yes", value: "true" },
-    { label: "No", value: "false" },
+    { label: "Yes", value: true },
+    { label: "No", value: false },
   ];
+
+  const handleRadioChange = (e) => {
+    input.onChange(e.target.value);
+  };
 
   return (
     <Form.Item
@@ -42,9 +45,8 @@ const RenderRadioButtons = (props) => {
       <Radio.Group
         disabled={disabled}
         name={input.name}
-        {...input}
-        value={radioValue}
-        defaultValue={radioValue}
+        value={input.value}
+        onChange={handleRadioChange}
         id={id}
         options={options}
       />
