@@ -26,24 +26,23 @@ jobs:
           node-version: 14.x
 
       - name: Install Dependencies
-        run: yarn
+        run: yarn install
 
       - name: Build Common Package
-        run: cd services/common/ && yarn build
+        run: yarn workspace @mds/common build
 
       - name: Run minespace tests
-        run: cd services/minespace-web/ && yarn && yarn test
+        run: yarn workspace @mds/minespace-web test
 
       - name: build-minespace-web
         run: |
-          cd services/minespace-web/
-          NODE_OPTIONS=--max-old-space-size=8096 yarn build
+          NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/minespace-web build
 
-      - name: start-minespace-web        
-        run: cd services/minespace-web/ && yarn run http-server-spa build /index.html 3020 &
-      
-      - name: Run cypress tests        
-        run: cd services/minespace-web/ && yarn cypress run
+      - name: start-minespace-web
+        run: yarn workspace @mds/minespace-web run http-server-spa build /index.html 3020 &
+
+      - name: Run cypress tests
+        run: yarn workspace @mds/minespace-web cypress run
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
@@ -58,3 +57,10 @@ jobs:
           CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
           CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
           CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
+
+      - name: Upload cypress video
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-recording
+          path: services/core-web/cypress/videos

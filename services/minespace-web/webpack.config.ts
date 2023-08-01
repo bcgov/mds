@@ -2,9 +2,12 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const threadLoader = require('thread-loader');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
 
@@ -14,6 +17,10 @@ const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || 3020;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
+
+const smp = new SpeedMeasurePlugin({
+  disable: !process.env.MEASURE_SPEED,
+});
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -38,7 +45,7 @@ const PATH_ALIASES = {
   // Put your aliases here
 };
 
-const envFile = {};
+const envFile: any = {};
 
 // @ts-ignore
 envFile.BASE_PATH = JSON.stringify("");
@@ -55,43 +62,23 @@ if (dotenv.parsed) {
   });
 }
 
+threadLoader.warmup({}, [
+  'style-loader',
+  'css-loader',
+  'sass-loader',
+  MiniCssExtractPlugin.loader
+]);
+
 const commonConfig = merge([
   {
     devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
     },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          use: [
-            { loader: "babel-loader" },
-            {
-              loader: "ts-loader",
-              options: {
-                configFile: "tsconfig.json",
-                transpileOnly: false,
-              },
-            },
-          ],
-        },
-        { test: /\.jsx?$/, exclude: /node_modules/, use: "babel-loader" },
-      ],
-    },
     plugins: [
-      // new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
-      // Adding timestamp to builds
-      function () {
-        this.plugin("watch-run", (watching, callback) => {
-          console.log(`Begin compile at ${new Date()}`);
-          callback();
-        });
-      },
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
@@ -114,6 +101,14 @@ const commonConfig = merge([
     include: path.join(PATHS.src, "assets", "downloads"),
     exclude: undefined,
   }),
+  {
+    watchOptions: {
+      // Increase file change poll interval to reduce
+      // CPU usage on some operating systems.
+      poll: 2500,
+      ignored: /node_modules/
+    }
+  }
 ]);
 
 const devConfig = merge([
@@ -139,6 +134,14 @@ const devConfig = merge([
     imageLoaderOptions: undefined,
     include: undefined,
   }),
+  {
+    watchOptions: {
+      // Increase file change poll interval to reduce
+      // CPU usage on some operating systems.
+      poll: 2500,
+      ignored: /node_modules/,
+    },
+  }
 ]);
 
 const prodConfig = merge([
@@ -151,7 +154,6 @@ const prodConfig = merge([
     },
   },
   parts.clean(),
-  parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     include: undefined,
@@ -188,24 +190,24 @@ const prodConfig = merge([
         },
       },
     },
-  }),
-  parts.CSSOptimization({
-    discardComments: {
-      removeAll: true,
+    cssOptions: {
+      zindex: false,
+      discardComments: {
+        removeAll: true,
+      },
     },
-    zindex: false,
-    safe: true,
   }),
   parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
-module.exports = (mode) => {
+module.exports = () => {
+  const mode = process.env.NODE_ENV || "production";
   if (mode === PRODUCTION) {
     return merge(commonConfig, prodConfig, { mode });
   }
 
   if (mode === DEVELOPMENT) {
-    return merge(commonConfig, devConfig, { mode });
+    return smp.wrap(merge(commonConfig, devConfig, { mode }));
   }
 };
