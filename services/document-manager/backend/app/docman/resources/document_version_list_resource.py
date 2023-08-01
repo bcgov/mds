@@ -16,7 +16,7 @@ from app.docman.models.document import Document
 from app.extensions import api, cache
 from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from flask import request, current_app, make_response, jsonify
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, InternalServerError, BadGateway
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
