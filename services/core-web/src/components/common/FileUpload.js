@@ -9,7 +9,7 @@ import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import tus from "tus-js-client";
+import * as tus from "tus-js-client";
 import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
@@ -69,7 +69,14 @@ class FileUpload extends React.Component {
             filename: file.name,
             filetype: file.type || APPLICATION_OCTET_STREAM,
           },
-          headers: createRequestHeader().headers,
+          onBeforeRequest: (req) => {
+            // Set authorization header on each request to make use
+            // of the new token in case of a token refresh was performed
+            var xhr = req.getUnderlyingObject();
+            const { headers } = createRequestHeader();
+
+            xhr.setRequestHeader("Authorization", headers.Authorization);
+          },
           onError: (err) => {
             notification.error({
               message: `Failed to upload ${file.name}: ${err}`,

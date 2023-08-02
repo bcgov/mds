@@ -91,7 +91,7 @@
     "styled-components": "5.2.0",
     "test-reducer-package": "1.0.14",
     "ts-loader": "8.4.0",
-    "tus-js-client": "1.8.0",
+    "tus-js-client": "3.1.0",
     "uuid": "8.3.1"
   },
   "devDependencies": {
