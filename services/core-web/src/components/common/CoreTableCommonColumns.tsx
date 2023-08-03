@@ -1,11 +1,9 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
-import DocumentLink from "./DocumentLink";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
 import { ColumnType } from "antd/lib/table";
-import { Tag, Tooltip } from "antd";
-import { ClockCircleOutlined } from "@ant-design/icons";
-import DocumentActions from "@/components/common/DocumentActions";
+import { Button, Dropdown } from "antd";
+import { CARAT } from "@/constants/assets";
 
 export const renderTextColumn = (
   dataIndex: string,
@@ -74,103 +72,57 @@ export const renderHighlightedTextColumn = (
   };
 };
 
-const documentWithTag = (record: any, elem: ReactNode, title: string) => {
-  return (
-    <div
-      className="inline-flex flex-between file-name-container"
-      style={!record.number_of_versions ? { marginLeft: "0" } : { marginLeft: "14px" }}
-      title={title}
-    >
-      {elem}
+export interface ITableAction {
+  key: string;
+  label: string;
+  clickFunction: (event, record) => any;
+  icon?: ReactNode;
+}
 
-      <span className="file-history-container">
-        {record?.number_of_versions > 0 ? (
-          <span>
-            <Tooltip
-              title={`This file has ${record.number_of_versions} previous versions`}
-              placement="top"
-              mouseEnterDelay={1}
-            >
-              <Tag icon={<ClockCircleOutlined />} color="#5E46A1" className="file-version-amount">
-                {record.number_of_versions}
-              </Tag>
-            </Tooltip>
-          </span>
-        ) : null}
-        {record.showArchiveIndicator && record?.is_archived ? <Tag>{"Archived"}</Tag> : null}
-      </span>
-    </div>
-  );
-};
-
-export const renderDocumentLinkColumn = (
-  dataIndex: string,
-  title = "File Name",
-  sortable = true,
-  docManGuidIndex = "document_manager_guid",
-  showArchiveIndicator = true
-): ColumnType<any> => {
-  return {
-    title,
-    dataIndex,
-    key: dataIndex,
-    render: (text = "", record: any) => {
-      const recordWithArchiveIndicator = { ...record, showArchiveIndicator };
-      const link = (
-        <div
-          key={record.key ?? record[docManGuidIndex]}
-          className={record.number_of_versions !== undefined ? "file-name-text" : ""}
-          style={record?.number_of_versions === 0 ? { marginLeft: "38px" } : {}}
-        >
-          <DocumentLink
-            documentManagerGuid={record[docManGuidIndex]}
-            documentName={text}
-            truncateDocumentName={false}
-          />
-        </div>
-      );
-      return documentWithTag(recordWithArchiveIndicator, link, title);
-    },
-    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
-  };
-};
-
-export const renderTaggedColumn = (
-  dataIndex: string,
-  title: string,
-  sortable = false,
-  placeHolder = ""
+export const renderActionsColumn = (
+  actions: ITableAction[],
+  recordActionsFilter: (record, actions) => ITableAction[],
+  text = "Actions",
+  classPrefix = "",
+  dropdownAltText = "Menu"
 ) => {
-  return {
-    title,
-    dataIndex,
-    key: dataIndex,
-    render: (text: any, record: any) => {
-      const content = (
-        <div
-          className={record.number_of_versions !== undefined ? "file-name-text" : ""}
-          style={record?.number_of_versions === 0 ? { marginLeft: "38px" } : {}}
-        >
-          {text ?? placeHolder}
-        </div>
-      );
-      return documentWithTag(record, content, title);
-    },
-    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
-  };
-};
+  const labelClass = classPrefix ? `${classPrefix}-dropdown-button` : "actions-dropdown-button";
 
-export const documentActionOperationsColumn = () => {
   return {
-    render: (record: any) => {
+    key: "actions",
+    render: (record) => {
+      const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
+      const items = filteredActions.map((action) => {
+        return {
+          key: action.key,
+          icon: action.icon,
+          label: (
+            <button
+              type="button"
+              className={`full ${labelClass}`}
+              onClick={(event) => action.clickFunction(event, record)}
+            >
+              <div>{action.label}</div>
+            </button>
+          ),
+        };
+      });
+
       return (
-        <DocumentActions
-          openDocument
-          document={{
-            documentName: record.document_name,
-            documentMangerGuid: record.document_manager_guid,
-          }}
-        />
+        <div>
+          <Dropdown menu={{ items }} placement="bottomLeft">
+            {/* // TODO: change button classname to something generic */}
+            <Button className="permit-table-button">
+              {text}
+              <img
+                className="padding-sm--right icon-svg-filter"
+                src={CARAT}
+                alt={dropdownAltText}
+                style={{ paddingLeft: "5px" }}
+              />
+            </Button>
+          </Dropdown>
+        </div>
       );
     },
   };

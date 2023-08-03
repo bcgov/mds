@@ -36,11 +36,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="project-description"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Project Description"
               />
             </div>
@@ -48,11 +43,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="information-requirements-table"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Information Requirements Table"
               />
             </div>
@@ -60,11 +50,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="major-mine-application"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Major Mine Application"
               />
             </div>
@@ -72,10 +57,17 @@ exports[`DocumentsTab renders properly 1`] = `
               documentColumns={
                 Array [
                   Object {
+                    "dataIndex": "document_name",
+                    "key": "document_name",
+                    "render": [Function],
+                    "sorter": [Function],
+                    "title": "File Name",
+                  },
+                  Object {
                     "dataIndex": "upload_date",
                     "key": "upload_date",
                     "render": [Function],
-                    "sorter": null,
+                    "sorter": [Function],
                     "title": "Uploaded",
                   },
                 ]
@@ -98,11 +90,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="project-description"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Project Description"
               />
             </div>
@@ -110,11 +97,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="information-requirements-table"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Information Requirements Table"
               />
             </div>
@@ -122,11 +104,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="major-mine-application"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Major Mine Application"
               />
             </div>
@@ -134,10 +111,17 @@ exports[`DocumentsTab renders properly 1`] = `
               documentColumns={
                 Array [
                   Object {
+                    "dataIndex": "document_name",
+                    "key": "document_name",
+                    "render": [Function],
+                    "sorter": [Function],
+                    "title": "File Name",
+                  },
+                  Object {
                     "dataIndex": "upload_date",
                     "key": "upload_date",
                     "render": [Function],
-                    "sorter": null,
+                    "sorter": [Function],
                     "title": "Uploaded",
                   },
                 ]
@@ -160,11 +144,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="project-description"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Project Description"
               />
             </div>
@@ -172,11 +151,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="information-requirements-table"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Information Requirements Table"
               />
             </div>
@@ -184,11 +158,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="major-mine-application"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Major Mine Application"
               />
             </div>
@@ -196,10 +165,17 @@ exports[`DocumentsTab renders properly 1`] = `
               documentColumns={
                 Array [
                   Object {
+                    "dataIndex": "document_name",
+                    "key": "document_name",
+                    "render": [Function],
+                    "sorter": [Function],
+                    "title": "File Name",
+                  },
+                  Object {
                     "dataIndex": "upload_date",
                     "key": "upload_date",
                     "render": [Function],
-                    "sorter": null,
+                    "sorter": [Function],
                     "title": "Uploaded",
                   },
                 ]
@@ -222,11 +198,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="project-description"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Project Description"
               />
             </div>
@@ -234,11 +205,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="information-requirements-table"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Information Requirements Table"
               />
             </div>
@@ -246,11 +212,6 @@ exports[`DocumentsTab renders properly 1`] = `
               id="major-mine-application"
             >
               <withRouter(DocumentsPage)
-                archiveDocumentsArgs={
-                  Object {
-                    "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-                  }
-                }
                 title="Major Mine Application"
               />
             </div>
@@ -258,10 +219,17 @@ exports[`DocumentsTab renders properly 1`] = `
               documentColumns={
                 Array [
                   Object {
+                    "dataIndex": "document_name",
+                    "key": "document_name",
+                    "render": [Function],
+                    "sorter": [Function],
+                    "title": "File Name",
+                  },
+                  Object {
                     "dataIndex": "upload_date",
                     "key": "upload_date",
                     "render": [Function],
-                    "sorter": null,
+                    "sorter": [Function],
                     "title": "Uploaded",
                   },
                 ]

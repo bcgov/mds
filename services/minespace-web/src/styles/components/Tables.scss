@@ -15,6 +15,17 @@
   display: none;
 }
 
+// actions menu
+
+.actions-dropdown-button {
+  border: none;
+  background: transparent;
+}
+
+.ant-dropdown-menu-item-icon {
+  font-size: 16px;
+}
+
 @include screen-md {
   .ant-table table {
     min-width: 100%;

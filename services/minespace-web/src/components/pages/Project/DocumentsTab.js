@@ -11,7 +11,7 @@ import customPropTypes from "@/customPropTypes";
 import DocumentsPage from "./DocumentsPage";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { uploadDateColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import { Feature, isFeatureEnabled } from "@mds/common";
 
 const propTypes = {
@@ -67,15 +67,13 @@ export class DocumentsTab extends Component {
   };
 
   render() {
-    const documentColumns = [uploadDateColumn("upload_date")];
-
+    const documentColumns = [documentNameColumn(), uploadDateColumn()];
     const renderAllDocuments = (docs) => (
       <Row>
         <Col span={24}>
           <div id="project-description">
             <DocumentsPage
               onArchivedDocuments={this.props.refreshData}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
               title={formatUrlToUpperCaseString(tabs[0])}
               documents={docs[0]}
             />
@@ -83,7 +81,6 @@ export class DocumentsTab extends Component {
           <div id="information-requirements-table">
             <DocumentsPage
               onArchivedDocuments={this.props.refreshData}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
               title={formatUrlToUpperCaseString(tabs[1])}
               documents={docs[1]}
             />
@@ -91,7 +88,6 @@ export class DocumentsTab extends Component {
           <div id="major-mine-application">
             <DocumentsPage
               onArchivedDocuments={this.props.refreshData}
-              archiveDocumentsArgs={{ mineGuid: this.props.project?.mine_guid }}
               title={formatUrlToUpperCaseString(tabs[2])}
               documents={docs[2]}
             />

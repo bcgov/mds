@@ -2,15 +2,15 @@ import React, { FC } from "react";
 
 import DocumentTable from "@/components/common/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
-import { IMineDocument } from "@mds/common";
+import { MineDocument } from "@common/models/documents/document";
 
-interface ArchiveDocumentModalProps {
-  documents: IMineDocument[];
-  handleSubmit(documents: IMineDocument[]): Promise<void>;
+interface DeleteDocumentModalProps {
+  documents: MineDocument[];
+  handleSubmit(documents: MineDocument[]): Promise<void>;
   closeModal(): void;
 }
 
-const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocumentModalProps) => {
+const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocumentModalProps) => {
   return (
     <Form
       layout="vertical"
@@ -18,15 +18,15 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
     >
       <Typography.Paragraph>
         <Alert
-          message="Archived files are not reviewed as part of the submission"
+          message="Deleted files are not reviewed as part of the submission"
           showIcon
           type="warning"
-          description="By archiving this file, you are archiving all of its previous versions. This action cannot be undone, you can find the file in Archived Documents."
+          description="By deleting this file, you are deleting all of its previous versions. This action cannot be undone."
         />
       </Typography.Paragraph>
 
       <Typography.Paragraph strong>
-        You&apos;re about to archive the following file{props.documents?.length > 1 ? "s" : ""}:
+        You&apos;re about to delete the following file{props.documents?.length > 1 ? "s" : ""}:
       </Typography.Paragraph>
 
       <DocumentTable
@@ -41,11 +41,11 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
           Cancel
         </Button>
         <Button className="full-mobile" type="primary" htmlType="submit">
-          Archive
+          Delete
         </Button>
       </div>
     </Form>
   );
 };
 
-export default ArchiveDocumentModal;
+export default DeleteDocumentModal;

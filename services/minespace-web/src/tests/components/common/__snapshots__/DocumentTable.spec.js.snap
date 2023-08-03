@@ -1,44 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
-<div>
-  <CoreTable
-    columns={
-      Array [
-        Object {
-          "dataIndex": "document_name",
-          "key": "document_name",
-          "render": [Function],
-          "title": "File Name",
-        },
-        Object {
-          "dataIndex": "category",
-          "key": "category",
-          "render": [Function],
-          "title": "Category",
-        },
-        Object {
-          "dataIndex": "upload_date",
-          "key": "upload_date",
-          "render": [Function],
-          "sorter": null,
-          "title": "Uploaded",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "created_at": "2019-05-02",
-          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-          "document_name": "test.pdf",
-          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-        },
-      ]
-    }
-    emptyText="This undefined does not contain any documents."
-    rowKey={[Function]}
-  />
-</div>
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "document_name",
+        "key": "document_name",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "File Name",
+      },
+      Object {
+        "dataIndex": "category",
+        "key": "category",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Category",
+      },
+      Object {
+        "dataIndex": "upload_date",
+        "defaultSortOrder": "descend",
+        "key": "upload_date",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Uploaded",
+      },
+      Object {
+        "key": "actions",
+        "render": [Function],
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      MineDocument {
+        "allowed_actions": Array [
+          "Open in document viewer",
+          "Download file",
+          "Replace file",
+          "Archive file",
+          "Delete",
+        ],
+        "archived_by": undefined,
+        "archived_date": undefined,
+        "category": undefined,
+        "create_user": undefined,
+        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+        "document_name": "test.pdf",
+        "file_type": ".pdf",
+        "is_archived": false,
+        "is_latest_version": true,
+        "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+        "number_prev_versions": 0,
+        "update_timestamp": undefined,
+        "update_user": undefined,
+        "upload_date": undefined,
+        "versions": Array [],
+      },
+    ]
+  }
+/>
 `;

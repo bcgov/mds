@@ -4,8 +4,10 @@ import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import { categoryColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import * as Strings from "@/constants/strings";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { MineDocument } from "@common/models/documents/document";
 
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
@@ -16,9 +18,18 @@ const propTypes = {
 };
 
 export const VarianceDetails = (props) => {
+  const documents = props.variance.documents.map(
+    (doc) =>
+      new MineDocument({
+        ...doc,
+        category: doc.variance_document_category_code,
+        upload_date: doc.created_at,
+      })
+  );
   const documentColumns = [
-    categoryColumn("variance_document_category_code", props.documentCategoryOptionsHash),
-    uploadDateColumn("created_at"),
+    documentNameColumn(),
+    renderCategoryColumn("category", "Category", props.documentCategoryOptionsHash),
+    uploadDateColumn(),
   ];
   const getActiveStatus = () => {
     if (props.variance.expiry_date) {
@@ -61,7 +72,7 @@ export const VarianceDetails = (props) => {
         </Descriptions.Item>
       </Descriptions>
       <DocumentTable
-        documents={props.variance.documents}
+        documents={documents}
         documentParent="variance"
         documentColumns={documentColumns}
       />

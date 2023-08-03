@@ -68,22 +68,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
-        }
         canArchiveDocuments={true}
         documentParent="project summary"
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-          ]
-        }
+        isLoaded={false}
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -106,22 +97,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
-        }
         canArchiveDocuments={true}
         documentParent="irt"
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-          ]
-        }
+        isLoaded={false}
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -156,22 +138,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
-        }
         canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-          ]
-        }
+        isLoaded={false}
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -200,22 +173,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
-        }
         canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-          ]
-        }
+        isLoaded={false}
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -244,22 +208,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
-        }
         canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-          ]
-        }
+        isLoaded={false}
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />

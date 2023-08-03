@@ -36,11 +36,7 @@ import {
 } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import CoreTable from "@/components/common/CoreTable";
-import {
-  renderDateColumn,
-  renderDocumentLinkColumn,
-  renderTextColumn,
-} from "../common/CoreTableCommonColumns";
+import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
@@ -48,6 +44,7 @@ import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import * as Permission from "@/constants/permissions";
+import { renderDocumentLinkColumn } from "../common/DocumentColumns";
 
 interface renderContactsProps {
   fields: INoDContactInterface[];
@@ -231,7 +228,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
 
   const fileColumns = (isSortable: boolean) => {
     return [
-      renderDocumentLinkColumn("document_name", "File Name", isSortable),
+      renderDocumentLinkColumn("document_name", "File Name", isSortable, false),
       renderTextColumn("document_category", "Category", isSortable, EMPTY_FIELD),
       renderDateColumn("create_timestamp", "Uploaded", isSortable, null, EMPTY_FIELD),
       ...(disabled

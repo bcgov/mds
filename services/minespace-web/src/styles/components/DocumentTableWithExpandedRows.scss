@@ -1,0 +1,59 @@
+.ant-table-row-level-0.no-sub-table-expandable-rows {
+    &:hover {
+        background: #BBBBBB;
+    }
+
+    td:first-of-type,
+    .file-history-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    &>td {
+        border-bottom: none;
+        border-top: 1px solid #BBBBBB;
+    }
+
+    &:nth-last-child(1)>td {
+        border-bottom: 1px solid #BBBBBB;
+    }
+}
+
+.ant-table-row-level-1.no-sub-table-expandable-rows>td {
+    border: none;
+}
+
+th.file-name-column {
+    text-indent: 35px;
+}
+
+.file-name-container {
+    align-items: center;
+    flex-basis: 90%;
+
+    @media (min-width: 769px) {
+        justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+        margin-left: 0 !important;
+    }
+}
+
+.file-name-text {
+    @media (min-width: 769px) {
+        width: 60%;
+    }
+
+    @media (max-width: 768px) {
+        margin-left: 0 !important;
+    }
+}
+
+.file-version-amount {
+    color: white;
+    margin-left: 5px;
+    background-color: $gov-blue;
+}

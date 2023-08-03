@@ -1,8 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
-import DocumentLink from "./DocumentLink";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
 import { ColumnType } from "antd/lib/table";
+import { Button, Dropdown } from "antd";
+import { CaretDownOutlined } from "@ant-design/icons";
 
 export const renderTextColumn = (
   dataIndex: string,
@@ -71,25 +72,53 @@ export const renderHighlightedTextColumn = (
   };
 };
 
-export const renderDocumentLinkColumn = (
-  dataIndex: string,
-  title = "File Name",
-  sortable = true,
-  docManGuidIndex = "document_manager_guid"
-): ColumnType<any> => {
+export interface ITableAction {
+  key: string;
+  label: string;
+  clickFunction: (event, record) => any;
+  icon?: ReactNode;
+}
+
+export const renderActionsColumn = (
+  actions: ITableAction[],
+  recordActionsFilter: (record, actions) => ITableAction[],
+  text = "Actions",
+  classPrefix = "",
+  dropdownAltText = "Menu"
+) => {
+  const labelClass = classPrefix ? `${classPrefix}-dropdown-button` : "actions-dropdown-button";
+
   return {
-    title,
-    dataIndex,
-    key: dataIndex,
-    render: (text = "", record: any) => (
-      <div key={record.key ?? record[docManGuidIndex]} title={title}>
-        <DocumentLink
-          documentManagerGuid={record[docManGuidIndex]}
-          documentName={text}
-          truncateDocumentName={false}
-        />
-      </div>
-    ),
-    ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+    key: "actions",
+    render: (record) => {
+      const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
+      const items = filteredActions.map((action) => {
+        return {
+          key: action.key,
+          icon: action.icon,
+          label: (
+            <button
+              type="button"
+              className={`full ${labelClass}`}
+              onClick={(event) => action.clickFunction(event, record)}
+            >
+              <div>{action.label}</div>
+            </button>
+          ),
+        };
+      });
+
+      return (
+        <div>
+          <Dropdown menu={{ items }} placement="bottomLeft">
+            {/* // TODO: change button classname to something generic */}
+            <Button className="permit-table-button">
+              {text}
+              <CaretDownOutlined alt={dropdownAltText} />
+            </Button>
+          </Dropdown>
+        </div>
+      );
+    },
   };
 };

@@ -111,6 +111,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'document_manager_guid': fields.String,
         'document_name': fields.String,
         'upload_date': fields.String,
+        'update_timestamp': fields.String,
         'create_user': fields.String,
         'is_archived': fields.Boolean,
         'archived_date': fields.String,

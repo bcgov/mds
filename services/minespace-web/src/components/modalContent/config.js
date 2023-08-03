@@ -14,6 +14,7 @@ import ImportIRTErrorModal from "@/components/modalContent/informationRequiremen
 import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
 import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
+import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -21,6 +22,7 @@ export const modalConfig = {
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   ARCHIVE_DOCUMENT: ArchiveDocumentModal,
+  DELETE_DOCUMENT: DeleteDocumentModal,
   EDIT_VARIANCE: EditVarianceModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_INCIDENT: AddIncidentModal,

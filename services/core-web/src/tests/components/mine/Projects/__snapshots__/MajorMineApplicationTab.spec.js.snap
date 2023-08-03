@@ -222,27 +222,26 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               "colProps": Object {
                 "width": "80%",
               },
-              "key": "name",
+              "key": "document_name",
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-            "remove",
-          ]
-        }
         isLoaded={false}
-        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -267,27 +266,26 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               "colProps": Object {
                 "width": "80%",
               },
-              "key": "name",
+              "key": "document_name",
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-            "remove",
-          ]
-        }
         isLoaded={false}
-        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -312,27 +310,26 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               "colProps": Object {
                 "width": "80%",
               },
-              "key": "name",
+              "key": "document_name",
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-            "remove",
-          ]
-        }
         isLoaded={false}
-        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -357,27 +354,26 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               "colProps": Object {
                 "width": "80%",
               },
-              "key": "name",
+              "key": "document_name",
             },
           ]
         }
-        archiveDocumentsArgs={
-          Object {
-            "mineGuid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          }
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "major_mine_application_document_type_code",
+              "key": "major_mine_application_document_type_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Location",
+            },
+          ]
         }
         canArchiveDocuments={true}
         documents={Array []}
-        excludedColumnKeys={
-          Array [
-            "dated",
-            "category",
-            "remove",
-          ]
-        }
         isLoaded={false}
-        matchChildColumnsToParent={true}
         onArchivedDocuments={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
