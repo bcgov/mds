@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
-
+from sqlalchemy import func
 
 class MineAlert(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_alert"
@@ -56,3 +56,14 @@ class MineAlert(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).all()
+    
+    @classmethod
+    def find_all_mine_alerts(cls, page, per_page):
+        query = cls.query.filter_by(deleted_ind=False).order_by(cls.create_timestamp.desc())
+
+        if (page):
+            result = query.paginate(page, per_page, error_out=False)
+            return dict([('total', result.total), ('records', result.items)])
+
+        result = query.all()
+        return dict([('total', len(result)), ('records', result)])

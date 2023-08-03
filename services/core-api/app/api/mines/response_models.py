@@ -537,6 +537,11 @@ MINE_ALERT_MODEL = api.model(
     }
 )
 
+GLOBAL_MINE_ALERT_MODEL = api.model('global_mine_alerts', {
+    'records': fields.List(fields.Nested(MINE_ALERT_MODEL)),
+    'total': fields.Integer
+})
+
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
     'created_at': fields.Date,
     'variance_document_category_code': fields.String
