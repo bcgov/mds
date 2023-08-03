@@ -1,7 +1,6 @@
 import json
 
 from celery.utils.log import get_task_logger
-from celery.task.control import inspect
 from celery.result import AsyncResult
 
 from app import make_celery

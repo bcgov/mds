@@ -14,7 +14,7 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
 from flask import request, current_app, send_file, make_response, jsonify
-from flask_restplus import Resource, reqparse, marshal_with
+from flask_restx import Resource, reqparse, marshal_with
 
 from app.docman.models.document import Document
 from app.extensions import api, cache

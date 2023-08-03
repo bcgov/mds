@@ -1,5 +1,5 @@
 from flask import current_app, make_response, jsonify, request
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
 import json

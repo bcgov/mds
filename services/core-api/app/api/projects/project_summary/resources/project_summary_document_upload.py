@@ -7,7 +7,7 @@ from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPAC
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine.models.mine import Mine
 from app.api.services.document_manager_service import DocumentManagerService
-
+from app.config import Config
 
 class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
     @api.doc(
@@ -26,5 +26,10 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found')
 
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'project_summaries')
+        if Config.ENVIRONMENT_NAME != 'prod':
+             # TODO: Remove the ENV check and else part when 5273 is ready to go live
+            return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
+                request, mine, project_guid, 'project_summaries')
+        else:
+            return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, 'project_summaries')
+    

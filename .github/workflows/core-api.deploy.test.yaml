@@ -47,12 +47,16 @@ jobs:
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+        with:
+          version: v2.7.9 # optional
       - name: oc login
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
-        run: ./gitops/watch-deployment.sh core-api test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }}
+        run: ./gitops/watch-deployment.sh core-api test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
     runs-on: ubuntu-20.04
