@@ -8,7 +8,7 @@ import { invert, uniq } from "lodash";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import tus from "tus-js-client";
+import * as tus from "tus-js-client";
 import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@common/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
@@ -39,6 +39,11 @@ const propTypes = {
   beforeAddFile: PropTypes.func,
   beforeDropFile: PropTypes.func,
   itemInsertLocation: PropTypes.func | PropTypes.string,
+  notificationDisabledStatusCodes: PropTypes.arrayOf(PropTypes.number),
+  shouldReplaceFile: PropTypes.bool,
+  replaceFileUploadUrl: PropTypes.string,
+  file: PropTypes.object,
+  shouldAbortUpload: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -59,38 +64,82 @@ const defaultProps = {
   beforeAddFile: () => {},
   beforeDropFile: () => {},
   itemInsertLocation: "before",
+  notificationDisabledStatusCodes: [],
+  shouldReplaceFile: false,
+  replaceFileUploadUrl: "",
+  file: null,
+  shouldAbortUpload: false,
 };
 
 class FileUpload extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      file: null,
+    };
+
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
-        const upload = new tus.Upload(file, {
+        if (file) {
+          this.setState({ file: file, progress: progress, load: load });
+        }
+        const fileToUpload = this.state.file ? this.state.file : file;
+        const progressFn = this.state.progress ? this.state.progress : progress;
+        const loadFn = this.state.load ? this.state.load : load;
+
+        const upload = new tus.Upload(fileToUpload, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
           removeFingerprintOnSuccess: true,
           chunkSize: this.props.chunkSize,
           metadata: {
-            filename: file.name,
-            filetype: file.type || APPLICATION_OCTET_STREAM,
+            filename: fileToUpload.name,
+            filetype: fileToUpload.type || APPLICATION_OCTET_STREAM,
           },
-          headers: createRequestHeader().headers,
+          onBeforeRequest: (req) => {
+            // Set authorization header on each request to make use
+            // of the new token in case of a token refresh was performed
+            var xhr = req.getUnderlyingObject();
+            const { headers } = createRequestHeader();
+
+            xhr.setRequestHeader("Authorization", headers.Authorization);
+          },
           onError: (err) => {
-            notification.error({
-              message: `Failed to upload ${file.name}: ${err}`,
-              duration: 10,
-            });
-            error(err);
+            try {
+              err.response = JSON.parse(err.originalRequest.response);
+              err.originalRequest = err.originalRequest;
+
+              if (
+                !(
+                  this.props.notificationDisabledStatusCodes.length &&
+                  this.props.notificationDisabledStatusCodes.includes(err.response.status_code)
+                )
+              ) {
+                notification.error({
+                  message: `Failed to upload ${
+                    file && fileToUpload.name ? fileToUpload.name : ""
+                  }: ${err}`,
+                  duration: 10,
+                });
+              }
+              if (this.props.onError) {
+                this.props.onError(file && fileToUpload.name ? fileToUpload.name : "", err);
+              }
+            } catch (err) {
+              notification.error({
+                message: `Failed to upload the file: ${err}`,
+                duration: 10,
+              });
+            }
           },
           onProgress: (bytesUploaded, bytesTotal) => {
-            progress(true, bytesUploaded, bytesTotal);
+            progressFn(true, bytesUploaded, bytesTotal);
           },
           onSuccess: async () => {
             const documentGuid = upload.url.split("/").pop();
-            load(documentGuid);
-            this.props.onFileLoad(file.name, documentGuid);
+            loadFn(documentGuid);
+            this.props.onFileLoad(fileToUpload.name, documentGuid);
             // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
             if (this.props?.afterSuccess?.action) {
               try {
@@ -126,6 +175,18 @@ class FileUpload extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.shouldReplaceFile !== this.props.shouldReplaceFile) {
+      this.props.uploadUrl = this.props.replaceFileUploadUrl;
+      this.server.process();
+    }
+    if (prevProps.shouldAbortUpload !== this.props.shouldAbortUpload) {
+      if (this.props.shouldAbortUpload) {
+        this.filepond.removeFile();
+      }
+    }
+  }
+
   render() {
     const fileValidateTypeLabelExpectedTypesMap = invert(this.props.acceptedFileTypesMap);
     const acceptedFileTypes = uniq(Object.values(this.props.acceptedFileTypesMap));
@@ -133,6 +194,7 @@ class FileUpload extends React.Component {
     return (
       <div>
         <FilePond
+          ref={(ref) => (this.filepond = ref)}
           beforeAddFile={this.props.beforeAddFile}
           beforeDropFile={this.props.beforeDropFile}
           server={this.server}

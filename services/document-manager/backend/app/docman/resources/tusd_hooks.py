@@ -4,7 +4,7 @@ from datetime import datetime
 
 from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from app.extensions import api, db
 from app.config import Config
@@ -65,8 +65,8 @@ class TusdHooks(Resource):
         try:
             db.session.rollback()
 
+            doc = Document.find_by_document_guid(doc_guid)
             if doc.object_store_path != new_key:
-                doc = Document.find_by_document_guid(doc_guid)
                 doc.object_store_path = new_key
                 doc.update_user = 'mds'
 

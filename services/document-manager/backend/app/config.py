@@ -10,7 +10,7 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
 

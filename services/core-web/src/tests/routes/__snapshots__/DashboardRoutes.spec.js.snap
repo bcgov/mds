@@ -34,6 +34,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
+    exact={true}
     path="/admin/dashboard"
   />
   <Route
@@ -664,15 +665,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
-  />
-  <Route
-    exact={true}
-  />
-  <Route
-    exact={true}
-  />
-  <Route
-    exact={true}
   />
   <Route
     component={[Function]}

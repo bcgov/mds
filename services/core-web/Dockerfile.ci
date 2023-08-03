@@ -1,4 +1,4 @@
-FROM node:14.8.0 as builder
+FROM node:14.21.3 as builder
 
 # Create working directory
 RUN mkdir /app
@@ -7,10 +7,10 @@ WORKDIR /app
 # Copy all files to the working directory
 COPY . .
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=6144"
 
 # Install Dependencies
-RUN yarn
+RUN yarn install
 
 # Build Common Package
 RUN yarn workspace @mds/common build
@@ -27,7 +27,7 @@ RUN rm -rf /app/node_modules
 # Multi Stage Build: Node JS Runtime - App Runner 
 # --------------------------------------------------------#
 
-FROM node:14.8.0-alpine as runner
+FROM node:14.21.3-alpine as runner
 
 WORKDIR /app
 
