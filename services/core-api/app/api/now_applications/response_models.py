@@ -612,8 +612,6 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Boolean,
         'is_first_year_of_multi':
         fields.Boolean,
-        'mine_purpose':
-        fields.String,
         'ats_authorization_number':
         fields.Integer,
         'ats_project_number':
