@@ -540,7 +540,7 @@ export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelectorWrapp
   getNoticeOfWorkApplicationTypeOptions,
   createDropDownList,
   ["description", "notice_of_work_type_code", "active_ind"]
-) as (state: RootState, showActiveOnly?: boolean) => [];
+) as (state: RootState, showActiveOnly: boolean) => [];
 
 export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationTypeOptions],
