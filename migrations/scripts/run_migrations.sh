@@ -17,7 +17,7 @@ fi
 export PATH="$FLYWAY_HOME:$PATH"
 
 # Run migrations for mds database
-flyway migrate
+flyway -validateMigrationNaming=true migrate
 
 # Run migrations for mds_test database
 if [ "$PLATFORM" != "K8S" ]; then

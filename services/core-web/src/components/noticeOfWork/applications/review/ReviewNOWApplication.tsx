@@ -1,8 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
+import { Field, reduxForm, FormSection, formValueSelector, InjectedFormProps } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Row, Col } from "antd";
@@ -28,7 +27,6 @@ import {
 import * as Strings from "@common/constants/strings";
 import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
-import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -49,49 +47,51 @@ import ReclamationSummary from "./activities/ReclamationSummary";
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
  */
 
-const propTypes = {
-  isViewMode: PropTypes.bool.isRequired,
-  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
-  now_application_guid: PropTypes.string.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  filtered_submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
-  regionDropdownOptions: CustomPropTypes.options.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  noticeOfWorkType: PropTypes.string.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  permitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
-  initialValues: CustomPropTypes.importedNOWApplication.isRequired,
-  proposedTonnage: PropTypes.number.isRequired,
-  adjustedTonnage: PropTypes.number.isRequired,
-  proposedStartDate: PropTypes.string.isRequired,
-  proposedAuthorizationEndDate: PropTypes.string.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isPreLaunch: PropTypes.bool.isRequired,
-  isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
-  editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
-  typeOfApplication: PropTypes.string.isRequired,
-  applicationPermitType: PropTypes.string.isRequired,
-  surfaceDisturbance: PropTypes.bool.isRequired,
-  isOnPrivateLand: PropTypes.bool.isRequired,
-  activitiesInPark: PropTypes.bool.isRequired,
-  lieutenantGovernorAuthorization: PropTypes.bool.isRequired,
-  archaeologySitesAffected: PropTypes.bool.isRequired,
-  sharedInfoWithFn: PropTypes.bool.isRequired,
-  acknowledgedUNDRIP: PropTypes.bool.isRequired,
-  culturalHeritageSites: PropTypes.bool.isRequired,
-  appliedLicenceOccupation: PropTypes.bool.isRequired,
-  isOnCrownLand: PropTypes.bool.isRequired,
-  hasLicenceOfOccupation: PropTypes.bool.isRequired,
-  isAccessGated: PropTypes.bool.isRequired,
-};
+interface ReviewNOWApplicationProps {
+  isViewMode: boolean;
+  contacts: any[];
+  reclamationSummary: any[];
+  now_application_guid: string;
+  documents: any[];
+  filtered_submission_documents: any[];
+  importNowSubmissionDocumentsJob: any;
+  regionDropdownOptions: any;
+  applicationTypeOptions: any;
+  noticeOfWorkType: string;
+  renderOriginalValues: any;
+  noticeOfWork: any;
+  permitTypeHash: any;
+  regionHash: any;
+  applicationTypeOptionsHash: any;
+  permitTypeOptions: any;
+  initialValues: any;
+  proposedTonnage: number;
+  adjustedTonnage: number;
+  proposedStartDate: string;
+  proposedAuthorizationEndDate: string;
+  userRoles: string[];
+  isPreLaunch: boolean;
+  isNoticeOfWorkTypeDisabled: boolean;
+  editableApplicationTypeOptions: any;
+  typeOfApplication: string;
+  applicationPermitType: string;
+  surfaceDisturbance: boolean;
+  isOnPrivateLand: boolean;
+  activitiesInPark: boolean;
+  lieutenantGovernorAuthorization: boolean;
+  archaeologySitesAffected: boolean;
+  sharedInfoWithFn: boolean;
+  acknowledgedUNDRIP: boolean;
+  culturalHeritageSites: boolean;
+  appliedLicenceOccupation: boolean;
+  isOnCrownLand: boolean;
+  hasLicenceOfOccupation: boolean;
+  isAccessGated: boolean;
+}
 
-export const ReviewNOWApplication = (props) => {
+export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicationProps> = (
+  props
+) => {
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
   const renderCodeValues = (codeHash, value) => {
@@ -216,6 +216,14 @@ export const ReviewNOWApplication = (props) => {
             validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
+          <div className="field-title">Life of the Mine</div>
+          <Field
+            id="term_of_application"
+            name="term_of_application"
+            component={RenderField}
+            disabled
+          />
+
           <div className="field-title">
             Proposed Annual Maximum Tonnage
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
@@ -244,6 +252,20 @@ export const ReviewNOWApplication = (props) => {
 
   const renderPermitType = () => (
     <Row gutter={16}>
+      <Col span={24}>
+        <div className="field-title">First year of multi-year, area based application?</div>
+        <Field
+          id="is_first_year_of_multi"
+          name="is_first_year_of_multi"
+          component={RenderRadioButtons}
+          disabled={props.isViewMode}
+          validate={[requiredRadioButton]}
+          data={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
+        />
+      </Col>
       <Col md={12} sm={24}>
         <div className="field-title">
           Permit Type
@@ -1533,7 +1555,6 @@ export const ReviewNOWApplication = (props) => {
   );
 };
 
-ReviewNOWApplication.propTypes = propTypes;
 const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 
 export default compose(

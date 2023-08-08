@@ -254,6 +254,22 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     <div
       className="field-title"
     >
+      Years Sought for Authorization to Complete this Work
+    </div>
+    <Field
+      component={[Function]}
+      disabled={true}
+      id="term_of_application"
+      name="term_of_application"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
+    <div
+      className="field-title"
+    >
       Proposed Annual Maximum Tonnage
       <CoreTooltip
         iconColor="#5e46a1"
