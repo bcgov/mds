@@ -61,6 +61,7 @@ class NOWApplication(Base, AuditMixin):
     proponent_submitted_permit_number = db.Column(db.String)
     annual_summary_submitted = db.Column(db.Boolean)
     is_first_year_of_multi = db.Column(db.Boolean)
+    mine_purpose = db.Column(db.String)
     ats_authorization_number = db.Column(db.Numeric)
     ats_project_number = db.Column(db.Numeric)
     unreclaimed_disturbance_previous_year = db.Column(db.Numeric)

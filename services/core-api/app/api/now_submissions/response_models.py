@@ -441,7 +441,6 @@ APPLICATION = api.model(
         'sandgrvqrydescription': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'bedrockexcavation': fields.String,
-        'hassurfacedisturbanceoutsidetenure': fields.String,
         'proposedactivites': fields.String,
         'applicant': fields.Nested(CLIENT),
         'submitter': fields.Nested(CLIENT),
