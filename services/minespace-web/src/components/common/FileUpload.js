@@ -97,7 +97,14 @@ class FileUpload extends React.Component {
             filename: fileToUpload.name,
             filetype: fileToUpload.type || APPLICATION_OCTET_STREAM,
           },
-          headers: createRequestHeader().headers,
+          onBeforeRequest: (req) => {
+            // Set authorization header on each request to make use
+            // of the new token in case of a token refresh was performed
+            var xhr = req.getUnderlyingObject();
+            const { headers } = createRequestHeader();
+
+            xhr.setRequestHeader("Authorization", headers.Authorization);
+          },
           onError: (err) => {
             try {
               err.response = JSON.parse(err.originalRequest.response);
@@ -116,7 +123,9 @@ class FileUpload extends React.Component {
                   duration: 10,
                 });
               }
-              this.props.onError(file && fileToUpload.name ? fileToUpload.name : "", err);
+              if (this.props.onError) {
+                this.props.onError(file && fileToUpload.name ? fileToUpload.name : "", err);
+              }
             } catch (err) {
               notification.error({
                 message: `Failed to upload the file: ${err}`,
