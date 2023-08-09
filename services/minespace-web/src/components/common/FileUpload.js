@@ -107,7 +107,7 @@ class FileUpload extends React.Component {
           },
           onError: (err) => {
             try {
-              err.response = JSON.parse(err.originalRequest.response);
+              err.response = JSON.parse(err.originalRequest.getUnderlyingObject().response);
               err.originalRequest = err.originalRequest;
 
               if (
