@@ -14,9 +14,6 @@ from .helper import Api
 def JWT_ROLE_CALLBACK(jwt_dict):
     return (jwt_dict.get('client_roles') or [])
 
-def JWT_ROLE_CALLBACK_V1(jwt_dict):
-        return (jwt_dict['realm_access']['roles'])
-
 def get_jwt_by_audience(aud):
     audience_jwt_map = {
         'JWT_OIDC_AUDIENCE': jwtv2,
