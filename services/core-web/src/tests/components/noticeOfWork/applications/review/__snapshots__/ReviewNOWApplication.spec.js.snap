@@ -329,6 +329,38 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         gutter={16}
       >
         <Col
+          span={24}
+        >
+          <div
+            className="field-title"
+          >
+            First year of multi-year, area based application?
+          </div>
+          <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "Yes",
+                  "value": true,
+                },
+                Object {
+                  "label": "No",
+                  "value": false,
+                },
+              ]
+            }
+            disabled={true}
+            id="is_first_year_of_multi"
+            name="is_first_year_of_multi"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </Col>
+        <Col
           md={12}
           sm={24}
         >
@@ -519,6 +551,17 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   [Function],
                 ]
               }
+            />
+            <div
+              className="field-title"
+            >
+              Life of the Mine
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="term_of_application"
+              name="term_of_application"
             />
             <div
               className="field-title"
