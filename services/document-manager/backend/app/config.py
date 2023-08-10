@@ -34,7 +34,7 @@ class Config(object):
                                                     CACHE_REDIS_PORT)
 
     # Celery settings
-    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_RESULT_BACKEND =  f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
 
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
