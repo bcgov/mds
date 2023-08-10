@@ -10,7 +10,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
-from app.api.mines.response_models import MINE_ALERT_MODEL, GLOBAL_MINE_ALERT_MODEL
+from app.api.mines.response_models import MINE_ALERT_MODEL, PAGINATED_GLOBAL_MINE_ALERT_LIST
 
 class MineAlertListResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -143,7 +143,7 @@ class MineAlertResource(Resource, UserMixin):
 class GlobalMineAlertListResource(Resource, UserMixin):
 
     @api.doc(description='Retrive a list of alerts for all mines')
-    @api.marshal_with(GLOBAL_MINE_ALERT_MODEL, envelope='records', code=200)
+    @api.marshal_with(PAGINATED_GLOBAL_MINE_ALERT_LIST, code=200)
     @requires_role_view_all
     def get(self):
         parser = reqparse.RequestParser()
@@ -155,6 +155,14 @@ class GlobalMineAlertListResource(Resource, UserMixin):
         page = args.get('page')
         per_page = args.get('per_page') if args.get('per_page') else 10  # default per page is 10
 
-        resp = MineAlert.find_all_mine_alerts(page, per_page)
+        records, pagination_details = MineAlert.find_all_mine_alerts(page, per_page)
 
-        return resp, 200
+        if not records:
+            raise BadRequest('Unable to fetch global alerts.')
+        return {
+            'records': records.all(),
+            'current_page': pagination_details.page_number,
+            'total_pages': pagination_details.num_pages,
+            'items_per_page': pagination_details.page_size,
+            'total': pagination_details.total_results,
+        }
