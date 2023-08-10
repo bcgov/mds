@@ -177,7 +177,7 @@
     "format:check-all": "prettier --config ../../.prettierrc.json src/*.{js,ts,jsx,tsx} && prettier  --config ../../.prettierrc.json src/*.js src/**/*.{js,ts,jsx,tsx} && prettier  --config ../../.prettierrc.json src/*.js src/**/**/*.{js,ts,jsx,tsx}",
     "format:write": "prettier --config ../../.prettierrc.json --write",
     "format:write-all": "prettier --config ../../.prettierrc.json src/*.{js,ts,jsx,tsx} --write && prettier --config ../../.prettierrc.json src/**/*.{js,ts,jsx,tsx} --write && prettier --config ../../.prettierrc.json src/**/**/*.{js,ts,jsx,tsx} --write",
-    "test": "jest --env=jsdom --runInBand --updateSnapshot",
+    "test": "jest --env=jsdom --runInBand",
     "test:coverage": "jest --env=jsdom --runInBand src -- --testResultsProcessor=jest-junit --coverage",
     "test:updateAll": "jest --env=jsdom --runInBand -u --",
     "test:watch": "jest --env=jsdom --runInBand -- src --watch"
