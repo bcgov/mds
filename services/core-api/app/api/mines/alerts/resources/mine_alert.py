@@ -157,8 +157,6 @@ class GlobalMineAlertListResource(Resource, UserMixin):
 
         records, pagination_details = MineAlert.find_all_mine_alerts(page, per_page)
 
-        if not records:
-            raise BadRequest('Unable to fetch global alerts.')
         return {
             'records': records.all(),
             'current_page': pagination_details.page_number,
