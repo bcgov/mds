@@ -2,67 +2,52 @@
 
 exports[`AdminNavigation renders properly 1`] = `
 <Menu
+  className="item-menu"
+  items={
+    Array [
+      Object {
+        "children": Array [
+          Object {
+            "key": "verified",
+            "label": <ForwardRef
+              to="/admin/dashboard/mine-verification/verified"
+            >
+              Verified Mines
+            </ForwardRef>,
+          },
+          Object {
+            "key": "unverified",
+            "label": <ForwardRef
+              to="/admin/dashboard/mine-verification/unverified"
+            >
+              UnVerified Mines
+            </ForwardRef>,
+          },
+        ],
+        "icon": <ForwardRef(DownOutlined) />,
+        "id": "",
+        "key": "submenu-mine-verification",
+        "label": "Mine Verification",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "key": "users",
+            "label": <ForwardRef
+              to="/admin/dashboard/manage-minespace/users"
+            >
+              Users
+            </ForwardRef>,
+          },
+        ],
+        "icon": <ForwardRef(DownOutlined) />,
+        "id": "",
+        "key": "submenu-manage-minespace",
+        "label": "MineSpace Management",
+      },
+    ]
+  }
   mode="horizontal"
   selectedKeys={Array []}
->
-  <SubMenu
-    id=""
-    title={
-      <span>
-        Mine Verification
-        <ForwardRef(DownOutlined)
-          className="padding-sm--left"
-        />
-      </span>
-    }
-  >
-    <Menu
-      className="sub-menu"
-    >
-      <MenuItem
-        key="verified"
-      >
-        <Link
-          to="/admin/dashboard/mine-verification/verified"
-        >
-          Verified Mines
-        </Link>
-      </MenuItem>
-      <MenuItem
-        key="unverified"
-      >
-        <Link
-          to="/admin/dashboard/mine-verification/unverified"
-        >
-          UnVerified Mines
-        </Link>
-      </MenuItem>
-    </Menu>
-  </SubMenu>
-  <SubMenu
-    id=""
-    title={
-      <span>
-        MineSpace Management
-        <ForwardRef(DownOutlined)
-          className="padding-sm--left"
-        />
-      </span>
-    }
-  >
-    <Menu
-      className="sub-menu"
-    >
-      <MenuItem
-        key="users"
-      >
-        <Link
-          to="/admin/dashboard/manage-minespace/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-    </Menu>
-  </SubMenu>
-</Menu>
+/>
 `;

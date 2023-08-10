@@ -34,7 +34,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    exact={true}
     path="/admin/dashboard"
   />
   <Route
@@ -48,11 +47,13 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/"
     path="/"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/home/"
     path="/home/"
   />
   <Route
@@ -66,6 +67,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/my-dashboard/"
     path="/my-dashboard/"
   />
   <Route
@@ -79,6 +81,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/logout-confirmed/"
     path="/logout-confirmed/"
   />
   <Route
@@ -92,6 +95,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/mines"
     path="/dashboard/mines"
   />
   <Route
@@ -105,6 +109,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/contacts"
     path="/dashboard/contacts"
   />
   <Route
@@ -118,6 +123,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/"
     path="/mine-dashboard/:id/"
   />
   <Route
@@ -131,6 +137,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/mine-information/contacts"
     path="/mine-dashboard/:id/mine-information/contacts"
   />
   <Route
@@ -144,6 +151,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/mine-information/general"
     path="/mine-dashboard/:id/mine-information/general"
   />
   <Route
@@ -157,6 +165,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/mine-information/mms-archive"
     path="/mine-dashboard/:id/mine-information/mms-archive"
   />
   <Route
@@ -170,6 +179,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/permits"
     path="/mine-dashboard/:id/permits-and-approvals/permits"
   />
   <Route
@@ -183,6 +193,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/securities"
     path="/mine-dashboard/:id/permits-and-approvals/securities"
   />
   <Route
@@ -196,6 +207,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/variances"
     path="/mine-dashboard/:id/permits-and-approvals/variances"
   />
   <Route
@@ -209,6 +221,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
     path="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
   />
   <Route
@@ -222,6 +235,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
     path="/mine-dashboard/:id/permits-and-approvals/notices-of-departure"
   />
   <Route
@@ -235,6 +249,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/pre-applications"
     path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
   />
   <Route
@@ -248,6 +263,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mines/:mineGuid/project-description/new"
     path="/mines/:mineGuid/project-description/new"
   />
   <Route
@@ -261,6 +277,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
     path="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
   />
   <Route
@@ -274,26 +291,31 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/pre-applications/:projectGuid/:tab"
     path="/pre-applications/:projectGuid/:tab"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
     path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/pre-applications/:projectGuid/final-app"
     path="/pre-applications/:projectGuid/final-app"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/pre-applications/:projectGuid/documents"
     path="/pre-applications/:projectGuid/documents"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/pre-applications/:projectGuid/project-decision-package"
     path="/pre-applications/:projectGuid/project-decision-package"
   />
   <Route
@@ -307,6 +329,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
     path="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
   />
   <Route
@@ -320,21 +343,25 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/applications"
     path="/mine-dashboard/:id/permits-and-approvals/applications"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/tailings"
     path="/mine-dashboard/:id/permits-and-approvals/tailings"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
     path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
     path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
   />
   <Route
@@ -348,26 +375,31 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/external-authorizations"
     path="/mine-dashboard/:id/external-authorizations"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:id/oversight/incidents-and-investigations"
     path="/mine-dashboard/:id/oversight/incidents-and-investigations"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mines/:mineGuid/incidents/:mineIncidentGuid/edit"
     path="/mines/:mineGuid/incidents/:mineIncidentGuid/edit"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mines/:mineGuid/incidents/:mineIncidentGuid"
     path="/mines/:mineGuid/incidents/:mineIncidentGuid"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mines/:mineGuid/new-incident"
     path="/mines/:mineGuid/new-incident"
   />
   <Route
@@ -381,6 +413,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/oversight/inspections-and-audits"
     path="/mine-dashboard/:id/oversight/inspections-and-audits"
   />
   <Route
@@ -394,6 +427,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/reports/code-required-reports"
     path="/mine-dashboard/:id/reports/code-required-reports"
   />
   <Route
@@ -407,11 +441,13 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/mine-dashboard/:id/reports/permit-required-reports"
     path="/mine-dashboard/:id/reports/permit-required-reports"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:id/reports/tailings-reports"
     path="/mine-dashboard/:id/reports/tailings-reports"
   />
   <Route
@@ -425,6 +461,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/:id/profile"
     path="/dashboard/:id/profile"
   />
   <Route
@@ -438,11 +475,13 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/:id/history/:typeCode"
     path="/dashboard/:id/history/:typeCode"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/dashboard/reporting/general"
     path="/dashboard/reporting/general"
   />
   <Route
@@ -456,6 +495,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/variance"
     path="/dashboard/reporting/variance"
   />
   <Route
@@ -469,6 +509,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/incidents"
     path="/dashboard/reporting/incidents"
   />
   <Route
@@ -482,6 +523,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/reports"
     path="/dashboard/reporting/reports"
   />
   <Route
@@ -495,6 +537,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/executive-reporting"
     path="/dashboard/reporting/executive-reporting"
   />
   <Route
@@ -508,6 +551,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/dashboard"
     path="/admin/dashboard"
   />
   <Route
@@ -521,6 +565,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/permit-condition-management/:type"
     path="/admin/permit-condition-management/:type"
   />
   <Route
@@ -534,6 +579,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/minespace-emli-contact-management"
     path="/admin/minespace-emli-contact-management"
   />
   <Route
@@ -547,6 +593,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/dashboard/mine-verification/:type"
     path="/admin/dashboard/mine-verification/:type"
   />
   <Route
@@ -560,6 +607,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/dashboard/manage-minespace/users"
     path="/admin/dashboard/manage-minespace/users"
   />
   <Route
@@ -573,6 +621,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/admin/contact-management/:tab"
     path="/admin/contact-management/:tab"
   />
   <Route
@@ -586,6 +635,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/search"
     path="/search"
   />
   <Route
@@ -599,6 +649,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/notice-of-work"
     path="/dashboard/reporting/notice-of-work"
   />
   <Route
@@ -612,6 +663,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/notice-of-work/app/:id/:tab"
     path="/dashboard/notice-of-work/app/:id/:tab"
   />
   <Route
@@ -625,6 +677,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/reporting/major-project"
     path="/dashboard/reporting/major-project"
   />
   <Route
@@ -638,6 +691,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/administrative-amendment/app/:id/:tab"
     path="/dashboard/administrative-amendment/app/:id/:tab"
   />
   <Route
@@ -651,6 +705,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/dashboard/view-notice-of-work/app/:id/:tab"
     path="/dashboard/view-notice-of-work/app/:id/:tab"
   />
   <Route
@@ -664,16 +719,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    key="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
     path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
     path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
   />
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
     path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
   />
   <Route
