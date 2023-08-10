@@ -42,7 +42,7 @@ interface DocumentTableProps {
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
   archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
-  documentColumns: ColumnType<unknown>[]; // any?
+  documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
   defaultSortKeys: string[];
   excludedColumnKeys: string[];
@@ -111,7 +111,7 @@ export const DocumentTable = ({
             props.onArchivedDocuments(docs);
           }
         },
-        docs,
+        documents: docs,
       },
       content: modalConfig.ARCHIVE_DOCUMENT,
     });
@@ -126,7 +126,7 @@ export const DocumentTable = ({
         handleSubmit: async () => {
           docs.forEach((record) => removeDocument(event, record.key, documentParent));
         },
-        docs,
+        documents: docs,
       },
       content: modalConfig.DELETE_DOCUMENT,
     });
