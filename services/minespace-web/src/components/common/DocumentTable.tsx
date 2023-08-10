@@ -93,7 +93,6 @@ export const DocumentTable = ({
       const { client_roles = [] } = props.userInfo;
       doc.setAllowedActions(client_roles);
       return doc;
-      return doc;
     });
   };
   const documents = parseDocuments(props.documents ?? []);
