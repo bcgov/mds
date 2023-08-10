@@ -40,8 +40,6 @@ db = SQLAlchemy()
 
 # Gold SSO
 jwtv2 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
-# Existing Keycloak for integration clients
-jwtv1 = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_V1'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_V1'), None, None, False, False, None, JWT_ROLE_CALLBACK_V1, None)
 
 # Gold SSO - Register Config Per Integration Client: 
 
@@ -64,16 +62,17 @@ test_config = TestConfig()
 jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
 
 def getJwtManager():
-    kc_realms = 'oidc.gov.bc.ca'
+    legacy_token_issuer = 'oidc.gov.bc.ca'
     auth_header = jwt.get_token_auth_header()
     token = jwt_jose.get_unverified_claims(auth_header)
 
     iss = token.get('iss')
     aud = token.get('aud')
 
-    if kc_realms in iss:
+    if legacy_token_issuer in iss:
         print(f"\n **Client from oidc.gov.bc.ca Detected - Client ID: {aud}\n")
-        return jwtv1
+        raise AuthError({'code': 'auth_fail',
+                    'description': 'Token issuer oidc.gov.bc.ca is no longer supported. Please contact the mds team.'}, 401)
 
     if iss in test_config.JWT_OIDC_TEST_ISSUER:
         jwt_result = jwt
