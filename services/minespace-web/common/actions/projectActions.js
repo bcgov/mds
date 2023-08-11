@@ -75,3 +75,8 @@ export const storeProjectViewAllTable = (payload) => ({
 export const clearProjectViewAllTable = () => ({
   type: actionTypes.CLEAR_PROJECT_VIEW_ALL_TABLE,
 });
+
+export const postNewDocumentVersion = (payload) => ({
+  type: actionTypes.POST_NEW_DOCUMENT_VERSION,
+  payload,
+});

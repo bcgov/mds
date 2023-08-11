@@ -1,5 +1,6 @@
 import random
 import uuid
+import json
 from app.api.services.document_manager_service import DocumentManagerService
 from flask import request
 
@@ -51,7 +52,20 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
 
         new_version.save(commit=commit)
 
-        return new_version
+        return new_version.json(mine_document.mine_guid, mine_document.document_manager_guid)
 
     def __repr__(self):
         return '<MineDocumentVersion %r>' % self.mine_document_guid
+
+    def json(self, mine_guid=None, document_manager_guid=None):
+        return {
+            'mine_document_version_guid': str(self.mine_document_version_guid),
+            'mine_document_guid': str(self.mine_document_guid),
+            'document_manager_version_guid': str(self.document_manager_version_guid),
+            'upload_date': str(self.upload_date),
+            'document_name': str(self.document_name),
+            'create_user': str(self.create_user),
+            'update_timestamp': str(self.update_timestamp),
+            'mine_guid': str(mine_guid) if mine_guid else None,
+            'document_manager_guid': str(document_manager_guid) if document_manager_guid else None,
+        }
