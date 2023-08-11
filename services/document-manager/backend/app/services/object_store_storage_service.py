@@ -277,7 +277,7 @@ class ObjectStoreStorageService():
 
             def contents(path):
                 # Generator to read the file in chunks from S3
-                for chunk in self.__download_in_chunks(path, total_size):
+                for chunk in self.__download_in_chunks(path):
                     yield chunk
 
             # Return a generator with tuples of file parameters for each file
@@ -286,7 +286,7 @@ class ObjectStoreStorageService():
                 for document_path, pretty_path in zip(document_paths, pretty_paths)
             )
 
-        def __to_file_like_obj(iterable):
+        def to_file_like_obj(iterable):
             # Converts an iterator to a file-like object
 
             chunk = b''
@@ -321,9 +321,8 @@ class ObjectStoreStorageService():
 
         # Generator for zipped chunks including metadata
         zipped_chunks = stream_zip(local_files())
-
         # Convert the generator to a file-like object
-        zipped_chunks_obj = __to_file_like_obj(zipped_chunks)
+        zipped_chunks_obj = to_file_like_obj(zipped_chunks)
 
         # Get the total size of the zip file
         zip_upload_progress_callback = ZipUploadProgressPercentage(total_size=total_size,

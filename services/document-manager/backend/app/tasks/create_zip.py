@@ -7,9 +7,8 @@ from app.config import Config
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.tasks.celery import celery, doc_task_result
-from celery.utils.log import get_task_logger
 from app.docman.models.document import Document
-import time
+
 
 @celery.task()
 def zip_docs(zip_id, doc_ids, zip_file_name):
@@ -43,42 +42,19 @@ def zip_docs(zip_id, doc_ids, zip_file_name):
             # Update the task state with the overall progress
             zip_docs.update_state(state=progress_type, meta={'progress': overall_progress})
 
-        # Create a zip file object
-        zip_file = io.BytesIO()
         file_paths = []
         pretty_paths = []
-        
+
         # Add each document's object store path and display name to the list of file paths and pretty paths
         for doc in docs:
             file_paths.append(doc.object_store_path)
-            pretty_paths.append(doc.path_display_name)
-          
-        # Download the files and write them to the zip file
-        # ObjectStoreStorageService().download_files_and_write_to_zip(
-        #     paths=file_paths,
-        #     pretty_paths=pretty_paths,
-        #     zip_file=zip_file,
-        #     progress_callback=progress_callback,
-        # )
-
-        # Upload the zip data to the S3 bucket
-        # zip_data = zip_file.getvalue()
+            pretty_paths.append(doc.file_display_name)
 
         # Create a new key for saving the zip file to the S3 bucket
         new_key = f"{Config.S3_PREFIX}app/zipped_docs/{zip_file_name}"
-        
-        # zip_file_size = len(zip_data)
-          
-        # Upload the zip file to the S3 bucket
-        # ObjectStoreStorageService().upload_zip_file(
-        #     file_data=io.BytesIO(zip_data),
-        #     key=new_key,
-        #     file_size=zip_file_size,
-        #     progress_callback=progress_callback
-        # )
-
+        # Create and Upload the zip file to the S3 bucket
         ObjectStoreStorageService().create_zip_and_upload(
-            key=zip_file,
+            key=new_key,
             document_paths=file_paths,
             pretty_paths=pretty_paths,
             progress_callback=progress_callback,
