@@ -54,6 +54,7 @@ from app.api.projects.information_requirements_table.resources.requirements impo
 from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
 from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
+from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResource
 
 
 @pytest.mark.parametrize(
@@ -158,7 +159,8 @@ from app.api.now_applications.resources.now_application_document_resource import
      (MajorMineApplicationResource, 'put', [MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS]),
      (ProjectDecisionPackageResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (ProjectDecisionPackageResource, 'put', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
-     (ProjectDecisionPackageListResource, 'post', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES])])
+     (ProjectDecisionPackageListResource, 'post', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
+     (GlobalMineAlertListResource, 'get', [VIEW_ALL])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
