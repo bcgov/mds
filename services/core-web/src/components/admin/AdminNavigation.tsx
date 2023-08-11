@@ -1,17 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 
-const propTypes = {
-  activeButton: PropTypes.string.isRequired,
-  openSubMenuKey: PropTypes.arrayOf(PropTypes.string).isRequired,
+interface AdminNavigationProps {
+  activeButton: string,
+  openSubMenuKey: string[],
 };
 
-export const AdminNavigation = (props) => {
+const AdminNavigation: FC<AdminNavigationProps> = (props: AdminNavigationProps) => {
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");
 
   const items = [
@@ -58,5 +57,4 @@ export const AdminNavigation = (props) => {
   );
 };
 
-AdminNavigation.propTypes = propTypes;
 export default AdminNavigation;
