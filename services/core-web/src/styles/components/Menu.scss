@@ -1,0 +1,48 @@
+// item-menu has been added as a class to indicate which menus have been updated to use items instead of children
+// using items instead of children places the icon on the left, instead of the right
+// the following moves it back to the right
+// the item-menu class should be able to be removed down the road.
+ul.ant-menu.item-menu > li, ul.ant-menu.item-menu > li > div.ant-menu-submenu-title {
+    display: flex;
+    align-items: center;
+
+    .ant-menu-item-icon {
+        order: 1;
+    }
+
+    .ant-menu-title-content {
+        margin-left: 0;
+        margin-right: 5px;
+    }
+}
+
+// new ant-generated classnames
+// the custom rules ".ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected" produces conflicts
+// dealt with by "li.ant-menu-item.ant-menu-item-selected"
+div.ant-menu-submenu > ul.ant-menu-sub {
+        a, li.ant-menu-item-selected > span.ant-menu-title-content > a,
+        link {
+            color: unset !important;
+            text-decoration: none;
+
+            &:hover {
+                color: $pure-white;
+            }
+        }
+
+        background-color: $light-grey;
+
+        li, li.ant-menu-item.ant-menu-item-selected {
+            background-color: transparent;
+            color: $darkest-grey;
+
+            .ant-menu-title-content {
+                transition: none;
+            }
+
+            &:hover {
+                    color: $pure-white;
+                    background-color: $violet;
+                }
+        }        
+    }
