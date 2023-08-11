@@ -10,7 +10,7 @@ interface AdminNavigationProps {
   openSubMenuKey: string[],
 };
 
-const AdminNavigation: FC<AdminNavigationProps> = (props: AdminNavigationProps) => {
+const AdminNavigation: FC<AdminNavigationProps> = (props) => {
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");
 
   const items = [
