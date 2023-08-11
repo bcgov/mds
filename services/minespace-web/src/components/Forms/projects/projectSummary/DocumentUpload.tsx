@@ -70,7 +70,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
     document_manager_guid: string,
     version?: { document_manager_version_guid: string; document_manager_guid: string }
   ) => {
-    if (version) {
+    if (version.document_manager_version_guid) {
       const ConnectedVersion = props.postNewDocumentVersion({
         mineGuid: initialValues.mine_guid,
         mineDocumentGuid: version.document_manager_guid,
