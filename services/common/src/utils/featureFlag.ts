@@ -2,10 +2,12 @@ import { detectProdEnvironment as IN_PROD } from "./environmentUtils";
 
 export enum Feature {
   MAJOR_PROJECT_ARCHIVE_FILE,
+  DOCUMENTS_REPLACE_FILE,
 }
 
 const Flags = {
   [Feature.MAJOR_PROJECT_ARCHIVE_FILE]: !IN_PROD(),
+  [Feature.DOCUMENTS_REPLACE_FILE]: false, //!IN_PROD(),
 };
 
 /**

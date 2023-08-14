@@ -26,6 +26,7 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found')
 
+        # FEATURE FLAG: DOCUMENTS_REPLACE_FILE
         if Config.ENVIRONMENT_NAME != 'prod':
              # TODO: Remove the ENV check and else part when 5273 is ready to go live
             return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
