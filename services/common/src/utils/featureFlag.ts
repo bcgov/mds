@@ -7,7 +7,7 @@ export enum Feature {
 
 const Flags = {
   [Feature.MAJOR_PROJECT_ARCHIVE_FILE]: !IN_PROD(),
-  [Feature.DOCUMENTS_REPLACE_FILE]: false, //!IN_PROD(),
+  [Feature.DOCUMENTS_REPLACE_FILE]: !IN_PROD(),
 };
 
 /**
