@@ -77,6 +77,5 @@ module.exports = {
     "@typescript-eslint/default-param-last": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-children-prop": 0,
-    "@typescript-eslint/no-unused-expressions": 0,
   },
 };
