@@ -29,6 +29,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
         documentColumns={props.documentColumns}
         documents={props.documents}
         excludedColumnKeys={["archive", "remove"]}
+        showVersionHistory={true}
       />
     </div>
   );
