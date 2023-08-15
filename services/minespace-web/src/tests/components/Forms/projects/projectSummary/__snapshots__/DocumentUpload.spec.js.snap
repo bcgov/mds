@@ -7,8 +7,7 @@ exports[`DocumentUpload renders properly 1`] = `
   >
     Document Upload
   </ForwardRef>
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     label="Attach your project description file(s) here."
   >
     <Row
@@ -91,7 +90,12 @@ exports[`DocumentUpload renders properly 1`] = `
           "projectSummaryGuid": undefined,
         }
       }
+      props={
+        Object {
+          "documents": Object {},
+        }
+      }
     />
-  </FormItem>
+  </InternalFormItem>
 </Fragment>
 `;

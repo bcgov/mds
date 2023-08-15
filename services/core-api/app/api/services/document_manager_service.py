@@ -79,7 +79,7 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def initializeFileVersionUploadWithDocumentManager(cls, request, mine_document):
@@ -98,7 +98,7 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
