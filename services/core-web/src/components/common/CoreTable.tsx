@@ -124,13 +124,9 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
           ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
           : "fade-in"
       }
-      {...(expandProps?.showVersionHistory && tableProps?.rowSelection
-        ? {
-            rowSelection: { ...tableProps.rowSelection },
-          }
-        : {})}
       columns={columns}
       {...tableProps}
+      dataSource={tableProps.dataSource}
     ></Table>
   ) : (
     <Table

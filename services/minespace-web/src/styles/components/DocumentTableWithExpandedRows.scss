@@ -7,16 +7,16 @@
     td.ant-table-cell-with-append {
         display: flex;
         align-items: center;
-        min-height: 83px;
+        min-height: 84px;
     }
 
     &>td {
         border-bottom: none;
-        border-top: 1px solid #f0f0f0;
+        border-top: 1px solid #BBBBBB;
     }
 
     &:nth-last-child(1)>td {
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #BBBBBB;
     }
 }
 
@@ -51,4 +51,5 @@
 .file-version-amount {
     color: white;
     margin-left: 5px;
+    background-color: $gov-blue;
 }

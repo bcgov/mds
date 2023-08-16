@@ -438,10 +438,14 @@ export const DocumentTable = ({
         condition={isLoaded}
         dataSource={documents}
         columns={columns}
-        rowSelection={{
-          type: "checkbox",
-          ...rowSelectionObject,
-        }}
+        {...(showVersionHistory
+          ? {
+              rowSelection: {
+                type: "checkbox",
+                ...rowSelectionObject,
+              },
+            }
+          : {})}
         expandProps={{
           childrenColumnName: "versions",
           showVersionHistory,
