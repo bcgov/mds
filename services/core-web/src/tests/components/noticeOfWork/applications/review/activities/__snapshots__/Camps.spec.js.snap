@@ -33,7 +33,7 @@ exports[`Camps renders properly 1`] = `
         Object {
           "component": [Function],
           "minRows": 1,
-          "title": "Number of Sructures",
+          "title": "Number of Structures",
           "validate": Array [
             [Function],
             [Function],
