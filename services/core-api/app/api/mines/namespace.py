@@ -2,7 +2,7 @@ from flask_restplus import Namespace
 
 from app.api.mines.documents.resources.mine_document_version_resource import MineDocumentVersionListResource, MineDocumentVersionUploadResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
-from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource, MineDocumentArchiveResource,MineDocumentZipResource, MineDocumentZipProgressResource
+from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource, MineDocumentArchiveResource, ZipResource, ZipProgressResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
@@ -73,8 +73,8 @@ api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/arc
 api.add_resource(MineDocumentVersionUploadResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
 api.add_resource(MineDocumentVersionListResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
 
-api.add_resource(MineDocumentZipResource, '/<string:mine_guid>/documents/zip')
-api.add_resource(MineDocumentZipProgressResource, '/documents/zip/<string:task_id>')
+api.add_resource(ZipResource, '/<string:mine_guid>/documents/zip')
+api.add_resource(ZipProgressResource, '/documents/zip/<string:task_id>')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 

@@ -48,6 +48,11 @@ export const clearMajorMinesApplication = (payload) => ({
   payload,
 });
 
+export const storeDocumentCompressionProgress = (payload) => ({
+  type: actionTypes.STORE_DOCUMENT_COMPRESSION_PROGRESS,
+  payload,
+});
+
 export const storeRequirements = (payload) => ({
   type: actionTypes.STORE_REQUIREMENTS,
   payload,

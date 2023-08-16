@@ -1,12 +1,13 @@
 .ant-table-row-level-0.no-sub-table-expandable-rows {
-    &:hover {
-        background: #f4f0f0;
-    }
-
-    td:first-of-type,
     .file-history-container {
         display: flex;
         align-items: center;
+    }
+
+    td.ant-table-cell-with-append {
+        display: flex;
+        align-items: center;
+        min-height: 83px;
     }
 
     &>td {
@@ -21,10 +22,6 @@
 
 .ant-table-row-level-1.no-sub-table-expandable-rows>td {
     border: none;
-}
-
-th.file-name-column {
-    text-indent: 35px;
 }
 
 .file-name-container {

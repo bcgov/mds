@@ -20,6 +20,7 @@ const baseExpectedValue = {
   requirements: [],
   majorMinesApplication: {},
   projectDecisionPackage: {},
+  documentCompressionProgress: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference

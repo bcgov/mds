@@ -123,6 +123,9 @@ ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {
     'mine_document_guids': fields.List(fields.String)
 })
 
+DOCUMENT_MANAGER_ZIP = api.model('DOCUMENT_MANAGER_ZIP', {
+    'document_manager_guids': fields.List(fields.String)
+})
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {

@@ -2,14 +2,14 @@ import React from "react";
 import { Table, TableProps, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
-import { ExpandableConfig } from "antd/lib/table/interface";
+import { ExpandableConfig, TableRowSelection } from "antd/lib/table/interface";
 
 interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   getDataSource?: (record: T) => any[];
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnsType<any>;
-  matchChildColumnsToParent?: boolean;
+  showVersionHistory?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
 
@@ -21,6 +21,7 @@ interface CoreTableProps<T> extends TableProps<T> {
   classPrefix?: string;
   emptyText?: string;
   expandProps?: CoreTableExpandConfig<any> | null;
+  rowSelection?: TableRowSelection<any>;
 }
 
 const CoreTable = <T,>(props: CoreTableProps<T>) => {
@@ -96,7 +97,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
 
   const getExpansionProps = () => {
     if (expandProps) {
-      return expandProps.matchChildColumnsToParent
+      return expandProps.showVersionHistory
         ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
         : {
             rowExpandable:
@@ -119,10 +120,15 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       className={`${tableClass} core-table`}
       tableLayout={tableLayout}
       rowClassName={
-        expandProps?.matchChildColumnsToParent
+        expandProps?.showVersionHistory
           ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
           : "fade-in"
       }
+      {...(expandProps?.showVersionHistory && tableProps?.rowSelection
+        ? {
+            rowSelection: { ...tableProps.rowSelection },
+          }
+        : {})}
       columns={columns}
       {...tableProps}
     ></Table>

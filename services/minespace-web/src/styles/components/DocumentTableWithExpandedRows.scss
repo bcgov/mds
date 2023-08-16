@@ -1,31 +1,27 @@
 .ant-table-row-level-0.no-sub-table-expandable-rows {
-    &:hover {
-        background: #BBBBBB;
-    }
-
-    td:first-of-type,
     .file-history-container {
         display: flex;
         align-items: center;
-        height: 100%;
+    }
+
+    td.ant-table-cell-with-append {
+        display: flex;
+        align-items: center;
+        min-height: 83px;
     }
 
     &>td {
         border-bottom: none;
-        border-top: 1px solid #BBBBBB;
+        border-top: 1px solid #f0f0f0;
     }
 
     &:nth-last-child(1)>td {
-        border-bottom: 1px solid #BBBBBB;
+        border-bottom: 1px solid #f0f0f0;
     }
 }
 
 .ant-table-row-level-1.no-sub-table-expandable-rows>td {
     border: none;
-}
-
-th.file-name-column {
-    text-indent: 35px;
 }
 
 .file-name-container {
@@ -55,5 +51,4 @@ th.file-name-column {
 .file-version-amount {
     color: white;
     margin-left: 5px;
-    background-color: $gov-blue;
 }

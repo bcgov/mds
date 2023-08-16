@@ -152,6 +152,7 @@ export class MajorMineApplicationTab extends Component {
           ]}
           isLoaded={this.state.isLoaded}
           showVersionHistory={true}
+          project={this.props.project}
         />
       </div>
     );

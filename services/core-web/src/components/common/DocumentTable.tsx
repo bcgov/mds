@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -27,6 +27,15 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { Dropdown, Button, MenuProps, Modal, Typography, notification, Progress } from "antd";
+import { DownOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { USER_ROLES } from "@common/constants/environment";
+import {
+  documentsCompression,
+  pollDocumentsCompressionProgress,
+} from "@common/actionCreators/projectActionCreator";
+import { ActionCreator } from "@/interfaces/actionCreator";
+import { IProject } from "@mds/common";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -49,6 +58,11 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
+  project?: IProject;
+  documentsCompression: ActionCreator<typeof documentsCompression>;
+  pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
+  handleRowSelectionChange: (arg1: any[]) => any;
+  startFilesCompression: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -70,6 +84,17 @@ export const DocumentTable = ({
   openDocument,
   ...props
 }: DocumentTableProps) => {
+  const [rowSelection, setRowSelection] = useState([]);
+  const [isBeginCompressionModalVisible, setBeginCompressionModalVisible] = useState(false);
+  const [isReadyForDownloadModalVisible, setReadyForDownloadModalVisible] = useState(false);
+  const [isCompressionProgressVisible, setCompressionProgressVisible] = useState(false);
+  const [compressionProgress, setCompressionProgress] = useState(0);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
+  const [notificationTopPosition, setNotificationTopPosition] = useState(0);
+  const [documentManagerGuid, setDocumentManagerGuid] = useState("");
+
+  const progressRef = useRef(false);
+
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
@@ -205,7 +230,7 @@ export const DocumentTable = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
     }
     return columns;
   };
@@ -231,18 +256,200 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
+
+  const handleRowSelectionChange = (value) => {
+    if (documentTypeCode === "") {
+      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
+    }
+
+    const documentManagerGuids = value
+      .filter((row) => row.versions !== undefined)
+      .map((filteredRows) => filteredRows.document_manager_guid);
+    setRowSelection(documentManagerGuids);
+  };
+
+  const handleCloseCompressionNotification = () => {
+    progressRef.current = false;
+    setReadyForDownloadModalVisible(false);
+    notification.close(documentTypeCode);
+    setCompressionProgressVisible(false);
+    setCompressionProgress(0);
+  };
+
+  const startFilesCompression = () => {
+    setBeginCompressionModalVisible(false);
+    notification.warning({
+      key: documentTypeCode,
+      className: `progressNotification-${documentTypeCode}`,
+      message: "Compressing...",
+      description: "Preparing files for download",
+      duration: 0,
+      placement: "topRight",
+      onClose: handleCloseCompressionNotification,
+      top: 85,
+    });
+    props.documentsCompression(props.project.mine_guid, rowSelection).then((response) => {
+      const taskId = response.data && response.data.task_id ? response.data.task_id : null;
+      if (!taskId) {
+        setTimeout(() => {
+          notification.warning({
+            key: documentTypeCode,
+            className: `progressNotification-${documentTypeCode}`,
+            message: "Error starting file compression",
+            description: "An invalid task id was provided",
+            duration: 10,
+            placement: "topRight",
+            onClose: handleCloseCompressionNotification,
+            top: 85,
+          });
+        }, 2000);
+      } else {
+        const documentTypeIdentifier = `.progressNotification-${documentTypeCode}`;
+        const notificationElement = document.querySelector(documentTypeIdentifier);
+        const notificationPosition = notificationElement.getBoundingClientRect();
+        setNotificationTopPosition(notificationPosition.top);
+        progressRef.current = true;
+        setCompressionProgressVisible(true);
+        const poll = async () => {
+          const { data } = await props.pollDocumentsCompressionProgress(taskId);
+          if (data.progress) {
+            setCompressionProgress(data.progress);
+          }
+
+          if (data.state !== "SUCCESS" && progressRef.current) {
+            setTimeout(poll, 2000);
+          } else {
+            setDocumentManagerGuid(data.success_docs[0]);
+            setReadyForDownloadModalVisible(true);
+          }
+        };
+
+        poll();
+      }
+    });
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <DownloadOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={() => {
+            setBeginCompressionModalVisible(true);
+          }}
+        >
+          <div>Download File(s)</div>
+        </button>
+      ),
+    },
+  ];
+
+  const rowSelectionObject = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
+
   return showVersionHistory ? (
-    <CoreTable
-      condition={isLoaded}
-      dataSource={documents}
-      columns={columns}
-      expandProps={{
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      }}
-    />
+    <div>
+      <div style={{ float: "right" }}>
+        {props.userRoles.includes(USER_ROLES.role_edit_major_mine_applications) ? (
+          <Dropdown
+            menu={{ items }}
+            placement="bottomLeft"
+            disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+          >
+            <Button className="ant-btn ant-btn-primary">
+              Action
+              <DownOutlined />
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button
+            className="ant-btn ant-btn-primary"
+            disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+            onClick={() => {
+              setBeginCompressionModalVisible(true);
+            }}
+          >
+            <div>Download</div>
+          </Button>
+        )}
+      </div>
+      <Modal
+        title=""
+        open={isBeginCompressionModalVisible}
+        onOk={startFilesCompression}
+        onCancel={() => setBeginCompressionModalVisible(false)}
+        okText="Continue"
+        cancelText="Cancel"
+        width={500}
+        style={{ padding: "40px" }}
+      >
+        <Typography.Paragraph strong>Download selected documents</Typography.Paragraph>
+        <Typography.Paragraph style={{ fontSize: "90%" }}>
+          Archived files and previous versions will not be downloaded. To download them you must go
+          to the archived documents view or download them individually.
+        </Typography.Paragraph>
+      </Modal>
+      {isCompressionProgressVisible && (
+        <Progress
+          percent={compressionProgress}
+          showInfo={false}
+          strokeColor={"#5e46a1"}
+          strokeLinecap={"square"}
+          trailColor="#d9d9d9"
+          style={{
+            width: "384px",
+            position: "fixed",
+            zIndex: 1005,
+            top: `${notificationTopPosition - 10}px`,
+            right: "0px",
+            bottom: "auto",
+            marginRight: "24px",
+          }}
+        />
+      )}
+      <Modal
+        title=""
+        open={isReadyForDownloadModalVisible}
+        onOk={() => downloadFileFromDocumentManager({ document_manager_guid: documentManagerGuid })}
+        onCancel={handleCloseCompressionNotification}
+        okText="Download"
+        cancelText="Cancel"
+        width={500}
+        bodyStyle={{ minHeight: "150px" }}
+        style={{ padding: "40px" }}
+      >
+        <Typography.Paragraph strong>
+          <CheckCircleOutlined
+            style={{ color: "#45a766", fontSize: "20px", marginRight: "10px" }}
+          />
+          Files ready for download
+        </Typography.Paragraph>
+        <Typography.Paragraph style={{ fontSize: "90%", marginLeft: "30px" }}>
+          {props.project?.project_title} selected documents are ready for download.
+        </Typography.Paragraph>
+      </Modal>
+      <CoreTable
+        condition={isLoaded}
+        dataSource={documents}
+        columns={columns}
+        rowSelection={{
+          type: "checkbox",
+          ...rowSelectionObject,
+        }}
+        expandProps={{
+          childrenColumnName: "versions",
+          showVersionHistory,
+          recordDescription: "version history",
+          rowExpandable: (record) => record.number_prev_versions > 0,
+        }}
+      />
+    </div>
   ) : (
     <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
   );
@@ -260,6 +467,8 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       archiveMineDocuments,
       openDocument,
+      documentsCompression,
+      pollDocumentsCompressionProgress,
     },
     dispatch
   );

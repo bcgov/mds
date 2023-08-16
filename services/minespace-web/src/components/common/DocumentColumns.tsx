@@ -13,16 +13,12 @@ const documentWithTag = (
   record: MineDocument,
   elem: ReactNode,
   title: string,
-  showVersions = true
+  showVersions = false
 ) => {
   return (
     <div
       className="inline-flex flex-between file-name-container"
-      style={
-        showVersions && record.number_prev_versions === 0
-          ? { marginLeft: "38px" }
-          : { marginLeft: "14px" }
-      }
+      style={showVersions && record.number_prev_versions === 0 ? { marginLeft: "38px" } : {}}
       title={title}
     >
       {elem}
@@ -59,10 +55,7 @@ export const renderTaggedColumn = (
     key: dataIndex,
     render: (text: any, record: MineDocument) => {
       const content = (
-        <div
-          className={record.number_prev_versions !== undefined ? "file-name-text" : ""}
-          style={record?.number_prev_versions === 0 ? { marginLeft: "38px" } : {}}
-        >
+        <div className={record.number_prev_versions !== undefined ? "file-name-text" : ""}>
           {text ?? placeHolder}
         </div>
       );
@@ -76,7 +69,6 @@ export const renderDocumentLinkColumn = (
   dataIndex: string,
   title = "File Name",
   sortable = true,
-  showVersions = true,
   docManGuidIndex = "document_manager_guid"
 ): ColumnType<MineDocument> => {
   return {
@@ -88,7 +80,6 @@ export const renderDocumentLinkColumn = (
         <div
           key={record.key ?? record[docManGuidIndex]}
           className={record.number_prev_versions !== undefined ? "file-name-text" : ""}
-          style={showVersions && record?.number_prev_versions === 0 ? { marginLeft: "38px" } : {}}
         >
           <DocumentLink
             documentManagerGuid={record[docManGuidIndex]}
@@ -97,7 +88,7 @@ export const renderDocumentLinkColumn = (
           />
         </div>
       );
-      return documentWithTag(record, link, title, showVersions);
+      return documentWithTag(record, link, title);
     },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
@@ -110,21 +101,31 @@ export const documentNameColumn = (
 ) => {
   return minimalView
     ? renderTaggedColumn(documentNameColumnIndex, title)
-    : renderDocumentLinkColumn(documentNameColumnIndex, title, true, false);
+    : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
 };
 
 export const documentNameColumnNew = (
   dataIndex = "document_name",
   title = "File Name",
-  sortable = true
+  sortable = true,
+  showVersions = true
 ) => {
   return {
-    title,
+    title: showVersions && <span style={{ marginLeft: "38px" }}>{title}</span>,
     dataIndex,
     key: dataIndex,
     render: (text: string, record: MineDocument) => {
-      const docLink = <a onClick={() => downloadFileFromDocumentManager(record)}>{text}</a>;
-      return documentWithTag(record, docLink, "File Name");
+      const docLink = (
+        <a
+          style={
+            record?.number_prev_versions > 0 && !record?.is_archived ? { marginLeft: "14px" } : {}
+          }
+          onClick={() => downloadFileFromDocumentManager(record)}
+        >
+          {text}
+        </a>
+      );
+      return documentWithTag(record, docLink, "File Name", showVersions);
     },
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };

@@ -18,6 +18,8 @@ import {
   IMajorMinesApplication,
   IProjectDecisionPackage,
   IProjectPageData,
+  IDocumentZipTask,
+  IDocumentZipProgress,
 } from "@mds/common";
 import { AppThunk } from "@/store/appThunk.type";
 import { AxiosResponse } from "axios";
@@ -500,6 +502,55 @@ export const removeDocumentFromMajorMineApplication = (
     })
     .catch((err) => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const documentsCompression = (
+  mineGuid: string,
+  documentManagerGuids: string[]
+): AppThunk<Promise<AxiosResponse<IDocumentZipTask>>> => (
+  dispatch
+): Promise<AxiosResponse<IDocumentZipTask>> => {
+  dispatch(request(reducerTypes.DOCUMENTS_COMPRESSION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.DOCUMENTS_COMPRESSION(mineGuid)}`,
+      { document_manager_guids: documentManagerGuids },
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IDocumentZipTask>) => {
+      dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const pollDocumentsCompressionProgress = (
+  taskId: string
+): AppThunk<Promise<AxiosResponse<IDocumentZipProgress>>> => (
+  dispatch
+): Promise<AxiosResponse<IDocumentZipProgress>> => {
+  dispatch(request(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.POLL_DOCUMENTS_COMPRESSION_PROGRESS(taskId)}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IDocumentZipProgress>) => {
+      dispatch(success(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(projectActions.storeDocumentCompressionProgress(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
