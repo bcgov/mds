@@ -4,11 +4,12 @@ import { Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { MineDocument } from "@common/models/documents/document";
-
+import { ColumnType } from "antd/es/table";
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];
   documentColumns: any;
   titleLevel?: 1 | 2 | 3 | 4 | 5;
+  additionalColumns?: ColumnType<MineDocument>[];
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
@@ -30,6 +31,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
         documents={props.documents}
         excludedColumnKeys={["archive", "remove"]}
         showVersionHistory={true}
+        additionalColumns={props?.additionalColumns}
       />
     </div>
   );

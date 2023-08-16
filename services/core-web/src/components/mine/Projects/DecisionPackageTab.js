@@ -158,6 +158,7 @@ export class DecisionPackageTab extends Component {
           archiveDocumentsArgs={{ mineGuid: project?.mine_guid }}
           onArchivedDocuments={this.handleFetchData}
           removeDocument={this.handleDeleteDocument}
+          showVersionHistory={true}
         />
       </div>
     );
@@ -198,7 +199,7 @@ export class DecisionPackageTab extends Component {
         modalType,
         closeModal: this.props.closeModal,
         handleSubmit: submitHandler,
-        afterClose: () => {},
+        afterClose: () => { },
         optionalProps,
       },
       content,

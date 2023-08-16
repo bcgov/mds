@@ -158,7 +158,14 @@ export class MajorMineApplicationTab extends Component {
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection documents={this.props.mineDocuments} />;
+    return <ArchivedDocumentsSection documents={this.props.mineDocuments} additionalColumns={[
+      renderCategoryColumn(
+        "major_mine_application_document_type_code",
+        "File Location",
+        Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
+        true
+      ),
+    ]} />;
   };
 
   render() {
@@ -261,7 +268,7 @@ export class MajorMineApplicationTab extends Component {
             "Primary Documents",
             "primary-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "PRM") ||
-              [],
+            [],
             true
           )}
           <br />
@@ -269,7 +276,7 @@ export class MajorMineApplicationTab extends Component {
             "Spatial Components",
             "spatial-components",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPT") ||
-              [],
+            [],
             true
           )}
           <br />
@@ -277,7 +284,7 @@ export class MajorMineApplicationTab extends Component {
             "Supporting Documents",
             "supporting-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPR") ||
-              [],
+            [],
             true
           )}
           <br />
