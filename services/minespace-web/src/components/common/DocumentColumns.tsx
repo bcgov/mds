@@ -111,7 +111,7 @@ export const documentNameColumnNew = (
   showVersions = true
 ) => {
   return {
-    title: showVersions && <span style={{ marginLeft: "38px" }}>{title}</span>,
+    title: showVersions ? <span style={{ marginLeft: "38px" }}>{title}</span> : title,
     dataIndex,
     key: dataIndex,
     render: (text: string, record: MineDocument) => {
