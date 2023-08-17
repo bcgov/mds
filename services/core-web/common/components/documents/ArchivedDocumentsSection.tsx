@@ -10,6 +10,7 @@ interface ArchivedDocumentsSectionProps {
   documents: MajorMineApplicationDocument[];
   documentColumns: any;
   titleLevel?: 1 | 2 | 3 | 4 | 5;
+  archivedDocuments: MajorMineApplicationDocument[];
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
@@ -18,13 +19,13 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
   }
 
   const parseArchivedDocuments = () => {
-    return props.documents.map(obj => ({
+    return props.archivedDocuments.map(obj => ({
       ...obj,
       key: obj.mine_document_guid,
-      major_mine_application_document_type_code: 'SPT',
+      major_mine_application_document_type_code: props.documents.filter((data) => data.document_name === obj.document_name)[0].major_mine_application_document_type_code,
       versions: obj.versions.map(version => ({
         ...version,
-        major_mine_application_document_type_code: 'SPT'
+        major_mine_application_document_type_code: obj.major_mine_application_document_type_code
       }))
     }));
   };
