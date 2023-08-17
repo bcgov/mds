@@ -126,7 +126,6 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       }
       columns={columns}
       {...tableProps}
-      dataSource={tableProps.dataSource}
     ></Table>
   ) : (
     <Table

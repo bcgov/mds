@@ -25,7 +25,7 @@ const documentWithTag = (
       {elem}
 
       <span className="file-history-container">
-        {record.number_prev_versions > 0 ? (
+        {showVersions && record.number_prev_versions > 0 ? (
           <span>
             <Tooltip
               title={`This file has ${record.number_prev_versions} previous versions`}

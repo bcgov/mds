@@ -9,7 +9,7 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnsType<any>;
-  matchChildColumnsToParent?: boolean;
+  showVersionHistory?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
 
@@ -64,7 +64,10 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
             placement="right"
             mouseEnterDelay={1}
           >
-            <MinusSquareFilled className="icon-lg--lightgrey" />
+            <MinusSquareFilled
+              style={{ fontSize: "24px", color: "#ded9d9" }}
+              className="icon-lg--lightgrey"
+            />
           </Tooltip>
         ) : (
           <Tooltip
@@ -72,7 +75,10 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
             placement="right"
             mouseEnterDelay={1}
           >
-            <PlusSquareFilled className="icon-lg--lightgrey" />
+            <PlusSquareFilled
+              style={{ fontSize: "24px", color: "#ded9d9" }}
+              className="icon-lg--lightgrey"
+            />
           </Tooltip>
         )}
       </a>
@@ -96,7 +102,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
 
   const getExpansionProps = () => {
     if (expandProps) {
-      return expandProps.matchChildColumnsToParent
+      return expandProps.showVersionHistory
         ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
         : {
             rowExpandable:
@@ -119,7 +125,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       className={`${tableClass} core-table`}
       tableLayout={tableLayout}
       rowClassName={
-        expandProps?.matchChildColumnsToParent
+        expandProps?.showVersionHistory
           ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
           : "fade-in"
       }

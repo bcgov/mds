@@ -24,14 +24,18 @@ const documentWithTag = (
       {elem}
 
       <span className="file-history-container">
-        {record.number_prev_versions > 0 ? (
+        {showVersions && record.number_prev_versions > 0 ? (
           <span>
             <Tooltip
               title={`This file has ${record.number_prev_versions} previous versions`}
               placement="top"
               mouseEnterDelay={1}
             >
-              <Tag icon={<ClockCircleOutlined />} className="file-version-amount">
+              <Tag
+                icon={<ClockCircleOutlined />}
+                style={{ border: "none" }}
+                className="file-version-amount"
+              >
                 {record.number_prev_versions}
               </Tag>
             </Tooltip>
@@ -55,7 +59,7 @@ export const renderTaggedColumn = (
     key: dataIndex,
     render: (text: any, record: MineDocument) => {
       const content = (
-        <div className={record.number_prev_versions !== undefined ? "file-name-text" : ""}>
+        <div className={record.number_prev_versions !== 0 ? "file-name-text" : ""}>
           {text ?? placeHolder}
         </div>
       );
@@ -79,7 +83,7 @@ export const renderDocumentLinkColumn = (
       const link = (
         <div
           key={record.key ?? record[docManGuidIndex]}
-          className={record.number_prev_versions !== undefined ? "file-name-text" : ""}
+          className={record.number_prev_versions !== 0 ? "file-name-text" : ""}
         >
           <DocumentLink
             documentManagerGuid={record[docManGuidIndex]}
