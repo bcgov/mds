@@ -82,14 +82,13 @@ export class MajorMineApplicationTab extends Component {
     this.handleScroll();
   }
 
+
   async fetchData() {
     const { projectGuid } = this.props.match.params;
     const project = await this.props.fetchProjectById(projectGuid);
     this.props.fetchMineDocuments(project.mine_guid, {
       is_archived: true,
-      ...(project?.major_mine_application?.major_mine_application_guid && {
-        major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
-      }),
+      project_guid: projectGuid,
     });
   }
 
@@ -133,7 +132,6 @@ export class MajorMineApplicationTab extends Component {
     ) : (
       <Typography.Title level={4}>{sectionTitle}</Typography.Title>
     );
-
     return (
       <div id={sectionHref}>
         {titleElement}
@@ -158,14 +156,7 @@ export class MajorMineApplicationTab extends Component {
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection documents={this.props.mineDocuments} additionalColumns={[
-      renderCategoryColumn(
-        "major_mine_application_document_type_code",
-        "File Location",
-        Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-        true
-      ),
-    ]} />;
+    return <ArchivedDocumentsSection documents={this.props.mineDocuments} />;
   };
 
   render() {

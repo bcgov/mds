@@ -20,6 +20,8 @@ import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import * as Strings from "@common/constants/strings";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -102,7 +104,6 @@ export class ProjectDocumentsTab extends Component {
           )
           .then(() => this.props.fetchProjectById(projectGuid));
       default:
-        return () => {};
     }
   };
 
@@ -146,6 +147,14 @@ export class ProjectDocumentsTab extends Component {
           removeDocument={this.handleDeleteDocument}
           showVersionHistory={true}
           isLoaded={this.state.isLoaded}
+          additionalColumns={[
+            renderCategoryColumn(
+              "major_mine_application_document_type_code",
+              "File Location",
+              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
+              true
+            ),
+          ]}
         />
       </div>
     );
