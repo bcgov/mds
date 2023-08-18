@@ -43,14 +43,29 @@ export class ProjectDocumentsTab extends Component {
     isLoaded: false,
   };
 
+  allDocuments = [];
+
   componentDidMount() {
     this.handleFetchData().then(() => {
       this.setState({ isLoaded: true });
     });
 
+    this.mergeAllDocuments(this.props.project.major_mine_application?.documents);
+    this.mergeAllDocuments(this.props.project.project_summary?.documents);
+    this.mergeAllDocuments(this.props.project.information_requirements_table?.documents);
+    // console.log('alldocs', this.allDocuments);
+    // console.log('major_mine_application', this.props.project.major_mine_application?.documents);
+    // console.log('project_summary', this.props.project.project_summary?.documents);
+    // console.log('information_requirements_table', this.props.project.information_requirements_table?.documents);
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
+
+  mergeAllDocuments = (documents) => {
+    if (documents) {
+      this.allDocuments.push(...documents);
+    }
+  };
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -160,13 +175,11 @@ export class ProjectDocumentsTab extends Component {
     );
   };
 
-  mergeMineApplicationDocuments = (documents) => {};
-
   renderArchivedDocumentsSection = (archivedDocuments) => {
     return (
       <ArchivedDocumentsSection
         archivedDocuments={archivedDocuments}
-        documents={this.props.project.major_mine_application?.documents}
+        documents={this.allDocuments}
       />
     );
   };

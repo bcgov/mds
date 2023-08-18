@@ -104,6 +104,11 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'update_timestamp': fields.String
     })
 
+MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
+    'MajorMineApplicationDocumentXref', {
+        'major_mine_application_document_type_code': fields.String
+    })
+
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -116,7 +121,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,
-        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL))
+        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
+        'mine_document_location_code': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {

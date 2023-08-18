@@ -37,6 +37,11 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_by = db.Column(db.String(60))
 
     versions = db.relationship('MineDocumentVersion', lazy='joined')
+    mine_document_location_code = db.relationship(
+        'MajorMineApplicationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+    )
 
     mine_name = association_proxy('mine', 'mine_name')
 

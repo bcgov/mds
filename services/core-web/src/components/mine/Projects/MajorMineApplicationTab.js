@@ -156,7 +156,9 @@ export class MajorMineApplicationTab extends Component {
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection archivedDocuments={this.props.mineDocuments} documents={this.props.project.major_mine_application.documents} />;
+    return <ArchivedDocumentsSection
+      archivedDocuments={this.props.mineDocuments}
+      documents={this.props.project.major_mine_application.documents} />;
   };
 
   render() {

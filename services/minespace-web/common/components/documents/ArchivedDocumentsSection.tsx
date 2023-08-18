@@ -44,7 +44,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       <DocumentTable
         documentColumns={props.documentColumns}
         documents={
-          props.documents
+          props.archivedDocuments
             ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc))
             : []
         }

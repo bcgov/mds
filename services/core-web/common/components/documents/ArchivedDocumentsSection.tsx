@@ -19,12 +19,14 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
   }
 
   const parseArchivedDocuments = () => {
+    console.log('archivedDocs', props.archivedDocuments);
+    console.log('documents', props.documents);
     return props.archivedDocuments.map((obj) => ({
       ...obj,
       key: obj.mine_document_guid,
-      major_mine_application_document_type_code: props.documents.filter(
+      major_mine_application_document_type_code: props.documents?.filter(
         (data) => data.document_name === obj.document_name
-      )[0].major_mine_application_document_type_code,
+      )[0]?.major_mine_application_document_type_code,
       versions: obj.versions.map((version) => ({
         ...version,
         major_mine_application_document_type_code: obj.major_mine_application_document_type_code,
