@@ -41,7 +41,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       </Typography.Paragraph>
       <DocumentTable
         documentColumns={props.documentColumns}
-        documents={props.documents ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc)) : []}
+        documents={props.archivedDocuments ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc)) : []}
         excludedColumnKeys={["archive", "remove"]}
         showVersionHistory={true}
         additionalColumns={[
