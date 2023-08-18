@@ -160,12 +160,15 @@ export class ProjectDocumentsTab extends Component {
     );
   };
 
-  mergeMineApplicationDocuments = (documents) => {
-
-  }
+  mergeMineApplicationDocuments = (documents) => {};
 
   renderArchivedDocumentsSection = (archivedDocuments) => {
-    return <ArchivedDocumentsSection archivedDocuments={archivedDocuments} documents={this.props.project.major_mine_application?.documents} />;
+    return (
+      <ArchivedDocumentsSection
+        archivedDocuments={archivedDocuments}
+        documents={this.props.project.major_mine_application?.documents}
+      />
+    );
   };
 
   render() {

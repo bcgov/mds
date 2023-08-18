@@ -19,14 +19,16 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
   }
 
   const parseArchivedDocuments = () => {
-    return props.archivedDocuments.map(obj => ({
+    return props.archivedDocuments.map((obj) => ({
       ...obj,
       key: obj.mine_document_guid,
-      major_mine_application_document_type_code: props.documents.filter((data) => data.document_name === obj.document_name)[0].major_mine_application_document_type_code,
-      versions: obj.versions.map(version => ({
+      major_mine_application_document_type_code: props.documents.filter(
+        (data) => data.document_name === obj.document_name
+      )[0].major_mine_application_document_type_code,
+      versions: obj.versions.map((version) => ({
         ...version,
-        major_mine_application_document_type_code: obj.major_mine_application_document_type_code
-      }))
+        major_mine_application_document_type_code: obj.major_mine_application_document_type_code,
+      })),
     }));
   };
 
@@ -41,7 +43,11 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       </Typography.Paragraph>
       <DocumentTable
         documentColumns={props.documentColumns}
-        documents={props.documents ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc)) : []}
+        documents={
+          props.documents
+            ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc))
+            : []
+        }
         excludedColumnKeys={["archive", "remove"]}
         showVersionHistory={true}
         additionalColumns={[
