@@ -19,6 +19,7 @@ import {
   PRE_APPLICATIONS,
   PROJECTS,
   VIEW_MINE_INCIDENT,
+  DOCUMENT_MANAGEMENT,
 } from "@/constants/routes";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
@@ -136,6 +137,10 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
             .mine_tailings_storage_facility_guid,
           notification.notification_document.metadata.mine.mine_guid,
           "qualified-person"
+        );
+      case "DocumentManagement":
+        return DOCUMENT_MANAGEMENT.dynamicRoute(
+          notification.notification_document.metadata.entity_guid
         );
       default:
         return null;

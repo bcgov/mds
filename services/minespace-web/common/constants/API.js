@@ -29,7 +29,8 @@ export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
 export const MINE_DOCUMENTS = (mine_guid, params = {}) =>
   `/mines/${mine_guid}/documents?${queryString.stringify(params)}`;
-export const ARCHIVE_MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents/archive`;
+export const ARCHIVE_MINE_DOCUMENTS = (mine_guid, projectGuid) =>
+  `/mines/${mine_guid}/documents/archive?${queryString.stringify({ project_guid: projectGuid })}`;
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = (mineGuid) => `/mines/${mineGuid}/mine-types`;
@@ -137,8 +138,15 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
     { mine_guid: mineGuid }
   )}`;
 //New file version upload
-export const NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
-  `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
+export const NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS = ({
+  mineGuid,
+  mineDocumentGuid,
+  projectGuid,
+}) =>
+  `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload?${queryString.stringify({
+    project_guid: projectGuid,
+  })}`;
+
 export const PROJECT_SUMMARY_DOCUMENT = (
   projectGuid,
   projectSummaryGuid,

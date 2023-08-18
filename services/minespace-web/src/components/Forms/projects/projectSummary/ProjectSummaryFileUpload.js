@@ -46,6 +46,7 @@ export const ProjectSummaryFileUpload = (props) => {
       NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
         mineGuid: props.params.mineGuid,
         mineDocumentGuid: mineDocumentGuid,
+        projectGuid: props.params.projectGuid,
       })
     );
     setShouldReplaceFile(true);

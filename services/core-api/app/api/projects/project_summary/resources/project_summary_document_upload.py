@@ -31,5 +31,5 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
             return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
                 request, mine, project_guid, 'project_summaries')
         else:
-            return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, 'project_summaries')
+            return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, 'project_summaries', project_guid)
     

@@ -21,6 +21,13 @@ from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VER
 from app.api.services.document_manager_service import DocumentManagerService
 
 
+from app.api.activity.utils import trigger_notification
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.projects.project.models.project import Project
+from app.api.activity.utils import ActivityRecipients
+
+from app.config import Config
+
 class MineDocumentVersionUploadResource(Resource, UserMixin):
 
     @api.doc(
@@ -33,6 +40,7 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
     @api.response(200, 'Successfully requested new document manager version')
     @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     def post(self, mine_guid, mine_document_guid):
+        project_guid = request.args.get('project_guid', type=str)
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -49,8 +57,15 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')
 
-        return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
+        resp = DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
             request, mine_document)
+        project_name = Project.find_by_project_guid(project_guid)
+
+        if resp:
+            trigger_notification(f'File(s) in project {project_name} has been updated for mine {mine.mine_name}.',
+                  ActivityType.file_version_replaced, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True)
+
+        return resp
 
 
 class MineDocumentVersionListResource(Resource, UserMixin):

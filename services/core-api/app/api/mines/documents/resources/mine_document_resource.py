@@ -19,6 +19,12 @@ from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_M
 from app.api.services.document_manager_service import DocumentManagerService
 
 
+from app.api.activity.utils import trigger_notification
+from app.api.activity.models.activity_notification import ActivityType
+
+from app.api.activity.utils import ActivityRecipients
+from app.api.projects.project.models.project import Project
+
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
@@ -105,6 +111,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     @api.expect(ARCHIVE_MINE_DOCUMENT)
     @api.response(204, 'Successfully archived documents')
     def patch(self, mine_guid):
+        project_guid = request.args.get('project_guid', type=str)
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -126,7 +133,10 @@ class MineDocumentArchiveResource(Resource, UserMixin):
                 raise BadRequest('Document not attached to mine')
 
         MineDocument.mark_as_archived_many(mine_document_guids)
+        project_name = Project.find_by_project_guid(project_guid)
 
+        trigger_notification(f'File(s) in project {project_name} has been updated for mine {mine.mine_name}.',
+                  ActivityType.file_version_replaced, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True)
         return None, 204
 
 class MineDocumentZipResource(Resource, UserMixin):
