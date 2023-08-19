@@ -1,5 +1,6 @@
 import random
 import uuid
+
 from app.api.utils.include.user_info import User
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -37,9 +38,10 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_by = db.Column(db.String(60))
 
     versions = db.relationship('MineDocumentVersion', lazy='joined')
-    mine_document_location_code = db.relationship(
+    major_mine_application_document_xref = db.relationship(
         'MajorMineApplicationDocumentXref',
         lazy='select',
+        uselist=False,
         primaryjoin='and_(MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
     )
 

@@ -122,7 +122,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'archived_date': fields.String,
         'archived_by': fields.String,
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
-        'mine_document_location_code': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
+        'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {

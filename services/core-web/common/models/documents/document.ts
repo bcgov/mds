@@ -119,6 +119,7 @@ export class MineDocument {
 }
 
 export class MajorMineApplicationDocument extends MineDocument {
+  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
   public major_mine_application_document_type_code: string;
 
   public versions: MajorMineApplicationDocument[];
