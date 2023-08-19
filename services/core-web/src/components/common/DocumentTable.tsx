@@ -35,12 +35,17 @@ interface DocumentTableProps {
   canArchiveDocuments: boolean;
   showVersionHistory: boolean;
   documentParent: string;
+  projectGuid: string;
   view: string;
   openModal: (arg) => void;
   openDocument: any;
   closeModal: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
+  archiveMineDocuments: (
+    mineGuid: string,
+    mineDocumentGuids: string[],
+    projectGuid: string
+  ) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
   documentColumns: ColumnType<unknown>[]; // any?
   additionalColumns: ColumnType<MineDocument>[];
@@ -94,6 +99,7 @@ export const DocumentTable = ({
     });
   };
   const documents = parseDocuments(props.documents ?? []);
+  const projectGuid = props.projectGuid;
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -105,7 +111,8 @@ export const DocumentTable = ({
         handleSubmit: async () => {
           await props.archiveMineDocuments(
             mineGuid,
-            docs.map((d) => d.mine_document_guid)
+            docs.map((d) => d.mine_document_guid),
+            projectGuid
           );
           if (props.onArchivedDocuments) {
             props.onArchivedDocuments(docs);
@@ -159,7 +166,8 @@ export const DocumentTable = ({
       key: "archive",
       label: FileOperations.Archive,
       icon: <InboxOutlined />,
-      clickFunction: (event, record: MineDocument) => openArchiveModal(event, [record]),
+      clickFunction: (event, record: MineDocument, projectGuid: string) =>
+        openArchiveModal(event, [record]),
     },
     {
       key: "delete",

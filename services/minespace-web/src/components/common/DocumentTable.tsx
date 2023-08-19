@@ -169,7 +169,7 @@ export const DocumentTable = ({
       label: FileOperations.Archive,
       icon: <InboxOutlined />,
       clickFunction: (event, record: MineDocument, projectGuid: string) =>
-        openArchiveModal(event, [record], projectGuid),
+        openArchiveModal(event, [record]),
     },
     {
       key: "delete",

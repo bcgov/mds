@@ -14,6 +14,7 @@ from app.api.utils.include.user_info import User
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from datetime import datetime, timedelta
 
 
 def validate_document(document):
@@ -108,6 +109,9 @@ class ActivityType(str, Enum):
     ir_table_submitted = 'ir_table_submitted'
     major_mine_app_submitted = 'major_mine_app_submitted'
     major_mine_desc_submitted = 'major_mine_desc_submitted'
+    file_version_updated = 'file_version_updated'
+    new_file_uploaded = 'new_file_uploaded'
+    file_archived = 'file_archived'
 
     def __str__(self):
         return self.value
@@ -130,6 +134,7 @@ class ActivityNotification(AuditMixin, Base):
     notification_read = db.Column(db.Boolean(), nullable=False, default=False)
     notification_recipient = db.Column(db.String(60), nullable=False)
     idempotency_key = db.Column(db.String(120), nullable=True)
+    create_timestamp = db.Column(db.DateTime, nullable=False)
 
     @classmethod
     def create(cls, notification_recipient, notification_document, commit=False):
@@ -138,7 +143,7 @@ class ActivityNotification(AuditMixin, Base):
         return new_activity.save(commit)
 
     @classmethod
-    def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True, recipients=ActivityRecipients.all_users):
+    def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True, recipients=ActivityRecipients.all_users, renotify_period_minutes=-1):
         MinespaceUserMineTable = table(MinespaceUserMine.__tablename__, column('mine_guid'), column('user_id'))
         MinespaceUserTable = table(MinespaceUser.__tablename__, column('email_or_username'), column('user_id'))
         SubscriptionTable = table(Subscription.__tablename__, column('mine_guid'), column('user_name'))
@@ -161,7 +166,18 @@ class ActivityNotification(AuditMixin, Base):
             .with_entities(cls.notification_recipient) \
             .filter_by(idempotency_key=idempotency_key) \
             .all()] if idempotency_key else []
-        
+
+        if(renotify_period_minutes > 0):
+          # Calculate the datetime that was renotify_period_minutes minutes ago
+          renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
+          # Filter to retrived unread records for renotifying
+          unread_renotify_query = cls.query.with_entities(cls.notification_recipient)\
+                .filter_by(notification_read=False)\
+                .filter(cls.create_timestamp < renotify_timestamp)\
+                .order_by(cls.create_timestamp)
+
+        unread_renotify_users = [res[0] for res in unread_renotify_query.all()]
+
         notifications = []
 
         for user in users:
@@ -169,6 +185,11 @@ class ActivityNotification(AuditMixin, Base):
             formatted_user_name = user.replace('idir\\', '')
 
             if formatted_user_name not in already_sent_notification_recipients:
+                notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
+                notifications.append(notification)
+                continue
+
+            if formatted_user_name in unread_renotify_users:
                 notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
                 notifications.append(notification)
 

@@ -135,8 +135,9 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         MineDocument.mark_as_archived_many(mine_document_guids)
         project_name = Project.find_by_project_guid(project_guid)
 
+        renotifiy_hours = 24
         trigger_notification(f'File(s) in project {project_name} has been updated for mine {mine.mine_name}.',
-                  ActivityType.file_version_replaced, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True)
+                  ActivityType.file_archived, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)
         return None, 204
 
 class MineDocumentZipResource(Resource, UserMixin):

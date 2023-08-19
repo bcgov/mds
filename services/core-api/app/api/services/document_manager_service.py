@@ -95,8 +95,9 @@ class DocumentManagerService():
             project = Project.find_by_project_guid(project_guid)
 
             if resp:
+                renotify_hours = 24
                 trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                    ActivityType.file_uploaded, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True)
+                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return resp
 

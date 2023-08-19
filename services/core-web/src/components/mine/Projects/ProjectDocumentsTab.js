@@ -133,6 +133,7 @@ export class ProjectDocumentsTab extends Component {
       "major-mine-application": "major mine application",
     };
     documentParent = documentParents?.[formattedSectionHref];
+    const { projectGuid } = this.props.match?.params;
 
     return (
       <div id={sectionHref}>
@@ -146,6 +147,7 @@ export class ProjectDocumentsTab extends Component {
           removeDocument={this.handleDeleteDocument}
           showVersionHistory={true}
           isLoaded={this.state.isLoaded}
+          projectGuid={projectGuid}
         />
       </div>
     );
