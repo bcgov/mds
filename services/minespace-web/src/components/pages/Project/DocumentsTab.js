@@ -95,9 +95,8 @@ export class DocumentsTab extends Component {
 
           <ArchivedDocumentsSection
             titleLevel={3}
-            archivedDocuments={this.props.mineDocuments}
             documentColumns={documentColumns}
-            documents={this.allDocuments}
+            documents={this.props.mineDocuments}
           />
         </Col>
       </Row>

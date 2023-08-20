@@ -164,6 +164,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
         }
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -216,6 +217,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
         }
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <br />
@@ -308,6 +310,7 @@ exports[`DecisionPackageTab renders properly 1`] = `
         }
         onArchivedDocuments={[Function]}
         removeDocument={[Function]}
+        showVersionHistory={true}
       />
     </div>
     <ArchivedDocumentsSection />
