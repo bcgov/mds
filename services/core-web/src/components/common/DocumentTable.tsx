@@ -306,45 +306,62 @@ export const DocumentTable = ({
       .map((filteredRows) => filteredRows.document_manager_guid);
 
     setProjectTitle(rowSelection[0].project_title);
-    props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
-      const taskId = response.data && response.data.task_id ? response.data.task_id : null;
-      if (!taskId) {
-        setTimeout(() => {
-          notification.warning({
-            key: documentTypeCode,
-            className: `progressNotification-${documentTypeCode}`,
-            message: "Error starting file compression",
-            description: "An invalid task id was provided",
-            duration: 10,
-            placement: "topRight",
-            onClose: handleCloseCompressionNotification,
-            top: 85,
-          });
-        }, 2000);
-      } else {
-        const documentTypeIdentifier = `.progressNotification-${documentTypeCode}`;
-        const notificationElement = document.querySelector(documentTypeIdentifier);
-        const notificationPosition = notificationElement.getBoundingClientRect();
-        setNotificationTopPosition(notificationPosition.top);
-        progressRef.current = true;
-        setCompressionProgressVisible(true);
-        const poll = async () => {
-          const { data } = await props.pollDocumentsCompressionProgress(taskId);
-          if (data.progress) {
-            setCompressionProgress(data.progress);
-          }
+    if (documentManagerGuids.length === 0) {
+      setTimeout(() => {
+        notification.warning({
+          key: documentTypeCode,
+          className: `progressNotification-${documentTypeCode}`,
+          message: "Error starting file compression",
+          description:
+            "Only archived files or previous document versions were selected. To download \
+          them you must go to the archived documents view or download them individually.",
+          duration: 15,
+          placement: "topRight",
+          onClose: handleCloseCompressionNotification,
+          top: 85,
+        });
+      }, 2000);
+    } else {
+      props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
+        const taskId = response.data && response.data.task_id ? response.data.task_id : null;
+        if (!taskId) {
+          setTimeout(() => {
+            notification.warning({
+              key: documentTypeCode,
+              className: `progressNotification-${documentTypeCode}`,
+              message: "Error starting file compression",
+              description: "An invalid task id was provided",
+              duration: 10,
+              placement: "topRight",
+              onClose: handleCloseCompressionNotification,
+              top: 85,
+            });
+          }, 2000);
+        } else {
+          const documentTypeIdentifier = `.progressNotification-${documentTypeCode}`;
+          const notificationElement = document.querySelector(documentTypeIdentifier);
+          const notificationPosition = notificationElement.getBoundingClientRect();
+          setNotificationTopPosition(notificationPosition.top);
+          progressRef.current = true;
+          setCompressionProgressVisible(true);
+          const poll = async () => {
+            const { data } = await props.pollDocumentsCompressionProgress(taskId);
+            if (data.progress) {
+              setCompressionProgress(data.progress);
+            }
 
-          if (data.state !== "SUCCESS" && progressRef.current) {
-            setTimeout(poll, 2000);
-          } else {
-            setFileToDownload(data.success_docs[0]);
-            setReadyForDownloadModalVisible(true);
-          }
-        };
+            if (data.state !== "SUCCESS" && progressRef.current) {
+              setTimeout(poll, 2000);
+            } else {
+              setFileToDownload(data.success_docs[0]);
+              setReadyForDownloadModalVisible(true);
+            }
+          };
 
-        poll();
-      }
-    });
+          poll();
+        }
+      });
+    }
   };
 
   const items: MenuProps["items"] = [
