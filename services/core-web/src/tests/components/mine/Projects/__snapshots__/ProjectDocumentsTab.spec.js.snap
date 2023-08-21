@@ -68,17 +68,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documentParent="project summary"
         documents={Array []}
@@ -105,17 +94,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "width": "80%",
               },
               "key": "name",
-            },
-          ]
-        }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
             },
           ]
         }
@@ -160,17 +138,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
@@ -206,17 +173,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documentParent="major mine application"
         documents={Array []}
@@ -249,17 +205,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "width": "80%",
               },
               "key": "name",
-            },
-          ]
-        }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
             },
           ]
         }

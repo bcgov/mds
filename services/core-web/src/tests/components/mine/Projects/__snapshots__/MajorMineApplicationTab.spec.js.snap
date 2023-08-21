@@ -226,17 +226,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
         isLoaded={false}
@@ -267,17 +256,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "width": "80%",
               },
               "key": "document_name",
-            },
-          ]
-        }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
             },
           ]
         }
@@ -314,17 +292,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
         isLoaded={false}
@@ -355,17 +322,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "width": "80%",
               },
               "key": "document_name",
-            },
-          ]
-        }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
             },
           ]
         }
