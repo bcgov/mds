@@ -84,6 +84,7 @@ describe("MineDocument model", () => {
       FileOperations.Replace,
       FileOperations.Archive,
       FileOperations.Delete,
+      FileOperations.MultiSelect,
     ];
     expect(permissions).toEqual(expectedPermissions);
 
@@ -112,6 +113,7 @@ describe("MajorMineApplicationDocument model", () => {
     const canModifyActions = [
       FileOperations.Replace,
       FileOperations.Archive,
+      FileOperations.MultiSelect,
       FileOperations.Delete,
       ...canViewActions,
     ].sort();

@@ -239,26 +239,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
-        project={
-          Object {
-            "contacts": Array [],
-            "information_requirements_table": Object {
-              "documents": Array [],
-            },
-            "major_mine_application": Object {
-              "documents": Array [],
-            },
-            "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-            "mine_name": "Sample Mine",
-            "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
-            "project_summary": Object {
-              "documents": Array [],
-            },
-            "project_title": "Test Project Title",
-          }
-        }
         showVersionHistory={true}
       />
     </div>
@@ -301,26 +284,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
-        project={
-          Object {
-            "contacts": Array [],
-            "information_requirements_table": Object {
-              "documents": Array [],
-            },
-            "major_mine_application": Object {
-              "documents": Array [],
-            },
-            "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-            "mine_name": "Sample Mine",
-            "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
-            "project_summary": Object {
-              "documents": Array [],
-            },
-            "project_title": "Test Project Title",
-          }
-        }
         showVersionHistory={true}
       />
     </div>
@@ -363,26 +329,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
-        project={
-          Object {
-            "contacts": Array [],
-            "information_requirements_table": Object {
-              "documents": Array [],
-            },
-            "major_mine_application": Object {
-              "documents": Array [],
-            },
-            "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-            "mine_name": "Sample Mine",
-            "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
-            "project_summary": Object {
-              "documents": Array [],
-            },
-            "project_title": "Test Project Title",
-          }
-        }
         showVersionHistory={true}
       />
     </div>
@@ -425,26 +374,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
-        project={
-          Object {
-            "contacts": Array [],
-            "information_requirements_table": Object {
-              "documents": Array [],
-            },
-            "major_mine_application": Object {
-              "documents": Array [],
-            },
-            "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-            "mine_name": "Sample Mine",
-            "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
-            "project_summary": Object {
-              "documents": Array [],
-            },
-            "project_title": "Test Project Title",
-          }
-        }
         showVersionHistory={true}
       />
     </div>

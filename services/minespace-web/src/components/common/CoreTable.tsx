@@ -9,7 +9,7 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnsType<any>;
-  showVersionHistory?: boolean;
+  matchChildColumnsToParent?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
 
@@ -102,7 +102,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
 
   const getExpansionProps = () => {
     if (expandProps) {
-      return expandProps.showVersionHistory
+      return expandProps.matchChildColumnsToParent
         ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
         : {
             rowExpandable:
@@ -125,7 +125,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       className={`${tableClass} core-table`}
       tableLayout={tableLayout}
       rowClassName={
-        expandProps?.showVersionHistory
+        expandProps?.matchChildColumnsToParent
           ? "table-row-align-middle no-sub-table-expandable-rows fade-in"
           : "fade-in"
       }

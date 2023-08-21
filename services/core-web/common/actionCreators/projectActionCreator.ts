@@ -509,7 +509,7 @@ export const removeDocumentFromMajorMineApplication = (
 
 export const documentsCompression = (
   mineGuid: string,
-  documentManagerGuids: string[]
+  documentManagerGuids: string[] = []
 ): AppThunk<Promise<AxiosResponse<IDocumentZipTask>>> => (
   dispatch
 ): Promise<AxiosResponse<IDocumentZipTask>> => {

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -9,6 +9,9 @@ import {
 import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import BeginCompressionModal from "@/components/modalContent/BeginCompressionModal";
+import CompressedFilesDownloadModal from "../modalContent/CompressedFilesDownloadModal";
+import CompressionNotificationProgressBar from "./CompressionNotificationProgressBar";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -27,15 +30,14 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { Dropdown, Button, MenuProps, Modal, Typography, notification, Progress } from "antd";
-import { DownOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { Dropdown, Button, MenuProps, notification, Progress } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { USER_ROLES } from "@common/constants/environment";
 import {
   documentsCompression,
   pollDocumentsCompressionProgress,
 } from "@common/actionCreators/projectActionCreator";
 import { ActionCreator } from "@/interfaces/actionCreator";
-import { IProject } from "@mds/common";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -43,6 +45,7 @@ interface DocumentTableProps {
   isViewOnly: boolean;
   canArchiveDocuments: boolean;
   showVersionHistory: boolean;
+  enableBulkActions: boolean;
   documentParent: string;
   view: string;
   openModal: (arg) => void;
@@ -58,10 +61,9 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
-  project?: IProject;
   documentsCompression: ActionCreator<typeof documentsCompression>;
   pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
-  handleRowSelectionChange: (arg1: any[]) => any;
+  handleRowSelectionChange: (arg1: MineDocument[]) => void;
   startFilesCompression: () => void;
 }
 
@@ -75,6 +77,7 @@ export const DocumentTable = ({
   documentParent = null,
   isLoaded = true,
   showVersionHistory = false,
+  enableBulkActions = false,
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
@@ -91,7 +94,9 @@ export const DocumentTable = ({
   const [compressionProgress, setCompressionProgress] = useState(0);
   const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [notificationTopPosition, setNotificationTopPosition] = useState(0);
-  const [documentManagerGuid, setDocumentManagerGuid] = useState("");
+  const [fileToDownload, setFileToDownload] = useState("");
+  const [projectTitle, setProjectTitle] = useState("");
+  const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
 
   const progressRef = useRef(false);
 
@@ -118,7 +123,16 @@ export const DocumentTable = ({
       return doc;
     });
   };
+
   const documents = parseDocuments(props.documents ?? []);
+
+  useEffect(() => {
+    const isMultiSelect = documents.every((doc) =>
+      doc.allowed_actions.find((a) => a === "MultiSelect")
+    );
+
+    setDocumentsCanBulkDropDown(isMultiSelect);
+  }, []);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -262,10 +276,7 @@ export const DocumentTable = ({
       setDocumentTypeCode(value[0].major_mine_application_document_type_code);
     }
 
-    const documentManagerGuids = value
-      .filter((row) => row.versions !== undefined)
-      .map((filteredRows) => filteredRows.document_manager_guid);
-    setRowSelection(documentManagerGuids);
+    setRowSelection(value);
   };
 
   const handleCloseCompressionNotification = () => {
@@ -288,7 +299,14 @@ export const DocumentTable = ({
       onClose: handleCloseCompressionNotification,
       top: 85,
     });
-    props.documentsCompression(props.project.mine_guid, rowSelection).then((response) => {
+
+    const mineGuid = rowSelection[0].mine_guid;
+    const documentManagerGuids = rowSelection
+      .filter((row) => row.is_latest_version)
+      .map((filteredRows) => filteredRows.document_manager_guid);
+
+    setProjectTitle(rowSelection[0].project_title);
+    props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
       const taskId = response.data && response.data.task_id ? response.data.task_id : null;
       if (!taskId) {
         setTimeout(() => {
@@ -319,7 +337,7 @@ export const DocumentTable = ({
           if (data.state !== "SUCCESS" && progressRef.current) {
             setTimeout(poll, 2000);
           } else {
-            setDocumentManagerGuid(data.success_docs[0]);
+            setFileToDownload(data.success_docs[0]);
             setReadyForDownloadModalVisible(true);
           }
         };
@@ -353,109 +371,89 @@ export const DocumentTable = ({
     },
   };
 
-  return showVersionHistory ? (
+  return (
     <div>
-      <div style={{ float: "right" }}>
-        {props.userRoles.includes(USER_ROLES.role_edit_major_mine_applications) ? (
-          <Dropdown
-            menu={{ items }}
-            placement="bottomLeft"
-            disabled={rowSelection.length === 0 || isCompressionProgressVisible}
-          >
-            <Button className="ant-btn ant-btn-primary">
-              Action
-              <DownOutlined />
+      {enableBulkActions && (
+        <div style={{ float: "right" }}>
+          {documentsCanBulkDropDown ? (
+            <Dropdown
+              menu={{ items }}
+              placement="bottomLeft"
+              disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+            >
+              <Button className="ant-btn ant-btn-primary">
+                Action
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          ) : (
+            <Button
+              className="ant-btn ant-btn-primary"
+              disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+              onClick={() => {
+                setBeginCompressionModalVisible(true);
+              }}
+            >
+              <div>Download</div>
             </Button>
-          </Dropdown>
-        ) : (
-          <Button
-            className="ant-btn ant-btn-primary"
-            disabled={rowSelection.length === 0 || isCompressionProgressVisible}
-            onClick={() => {
-              setBeginCompressionModalVisible(true);
+          )}
+        </div>
+      )}
+      {showVersionHistory ? (
+        <div>
+          <BeginCompressionModal
+            isModalVisible={isBeginCompressionModalVisible}
+            filesCompression={startFilesCompression}
+            setModalVisible={setBeginCompressionModalVisible}
+          />
+          {isCompressionProgressVisible && (
+            <CompressionNotificationProgressBar
+              compressionProgress={compressionProgress}
+              notificationTopPosition={notificationTopPosition}
+            />
+          )}
+          <CompressedFilesDownloadModal
+            isModalVisible={isReadyForDownloadModalVisible}
+            closeCompressNotification={handleCloseCompressionNotification}
+            documentManagerGuid={fileToDownload}
+            projectTitle={projectTitle}
+          />
+          <CoreTable
+            condition={isLoaded}
+            dataSource={documents}
+            columns={columns}
+            {...(enableBulkActions
+              ? {
+                  rowSelection: {
+                    type: "checkbox",
+                    ...rowSelectionObject,
+                  },
+                }
+              : {})}
+            expandProps={{
+              childrenColumnName: "versions",
+              matchChildColumnsToParent: true,
+              recordDescription: "version history",
+              rowExpandable: (record) => record.number_prev_versions > 0,
             }}
-          >
-            <div>Download</div>
-          </Button>
-        )}
-      </div>
-      <Modal
-        title=""
-        open={isBeginCompressionModalVisible}
-        onOk={startFilesCompression}
-        onCancel={() => setBeginCompressionModalVisible(false)}
-        okText="Continue"
-        cancelText="Cancel"
-        width={500}
-        style={{ padding: "40px" }}
-      >
-        <Typography.Paragraph strong>Download selected documents</Typography.Paragraph>
-        <Typography.Paragraph style={{ fontSize: "90%" }}>
-          Archived files and previous versions will not be downloaded. To download them you must go
-          to the archived documents view or download them individually.
-        </Typography.Paragraph>
-      </Modal>
-      {isCompressionProgressVisible && (
-        <Progress
-          percent={compressionProgress}
-          showInfo={false}
-          strokeColor={"#5e46a1"}
-          strokeLinecap={"square"}
-          trailColor="#d9d9d9"
-          style={{
-            width: "384px",
-            position: "fixed",
-            zIndex: 1005,
-            top: `${notificationTopPosition - 10}px`,
-            right: "0px",
-            bottom: "auto",
-            marginRight: "24px",
-          }}
+          />
+        </div>
+      ) : (
+        <CoreTable
+          columns={columns}
+          {...(enableBulkActions
+            ? {
+                rowSelection: {
+                  type: "checkbox",
+                  ...rowSelectionObject,
+                },
+              }
+            : {})}
+          dataSource={documents}
+          {...minimalProps}
         />
       )}
-      <Modal
-        title=""
-        open={isReadyForDownloadModalVisible}
-        onOk={() => downloadFileFromDocumentManager({ document_manager_guid: documentManagerGuid })}
-        onCancel={handleCloseCompressionNotification}
-        okText="Download"
-        cancelText="Cancel"
-        width={500}
-        bodyStyle={{ minHeight: "150px" }}
-        style={{ padding: "40px" }}
-      >
-        <Typography.Paragraph strong>
-          <CheckCircleOutlined
-            style={{ color: "#45a766", fontSize: "20px", marginRight: "10px" }}
-          />
-          Files ready for download
-        </Typography.Paragraph>
-        <Typography.Paragraph style={{ fontSize: "90%", marginLeft: "30px" }}>
-          {props.project?.project_title} selected documents are ready for download.
-        </Typography.Paragraph>
-      </Modal>
-      <CoreTable
-        condition={isLoaded}
-        dataSource={documents}
-        columns={columns}
-        {...(showVersionHistory
-          ? {
-              rowSelection: {
-                type: "checkbox",
-                ...rowSelectionObject,
-              },
-            }
-          : {})}
-        expandProps={{
-          childrenColumnName: "versions",
-          showVersionHistory,
-          recordDescription: "version history",
-          rowExpandable: (record) => record.number_prev_versions > 0,
-        }}
-      />
     </div>
-  ) : (
-    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
   );
 };
 

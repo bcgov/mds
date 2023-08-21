@@ -152,7 +152,7 @@ export class MajorMineApplicationTab extends Component {
           ]}
           isLoaded={this.state.isLoaded}
           showVersionHistory={true}
-          project={this.props.project}
+          enableBulkActions={true}
         />
       </div>
     );
@@ -172,8 +172,13 @@ export class MajorMineApplicationTab extends Component {
     const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
     let documents = this.props.project.major_mine_application.documents;
-
-    documents = documents.map((doc) => new MajorMineApplicationDocument(doc));
+    documents = documents.map(
+      (doc) =>
+        new MajorMineApplicationDocument({
+          ...doc,
+          project_title: this.props.project.project_title,
+        })
+    );
 
     return (
       <>

@@ -240,7 +240,7 @@ export const DocumentTable = ({
       columns={columns}
       expandProps={{
         childrenColumnName: "versions",
-        showVersionHistory,
+        matchChildColumnsToParent: true,
         recordDescription: "version history",
         rowExpandable: (record) => record.number_prev_versions > 0,
       }}

@@ -1,37 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "document_name",
-        "key": "document_name",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "File Name",
-      },
-      Object {
-        "dataIndex": "category",
-        "key": "category",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Category",
-      },
-      Object {
-        "dataIndex": "upload_date",
-        "defaultSortOrder": "descend",
-        "key": "upload_date",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Uploaded",
-      },
-      Object {
-        "key": "actions",
-        "render": [Function],
-      },
-    ]
-  }
-  dataSource={Array []}
-/>
+<div>
+  <CoreTable
+    columns={
+      Array [
+        Object {
+          "dataIndex": "document_name",
+          "key": "document_name",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "File Name",
+        },
+        Object {
+          "dataIndex": "category",
+          "key": "category",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Category",
+        },
+        Object {
+          "dataIndex": "upload_date",
+          "defaultSortOrder": "descend",
+          "key": "upload_date",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Uploaded",
+        },
+        Object {
+          "key": "actions",
+          "render": [Function],
+        },
+      ]
+    }
+    dataSource={Array []}
+  />
+</div>
 `;
