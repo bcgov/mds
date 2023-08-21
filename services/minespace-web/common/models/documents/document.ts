@@ -123,7 +123,9 @@ export class MajorMineApplicationDocument extends MineDocument {
   public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
   public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
   public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
+
   public major_mine_application_document_type_code: string;
+  public file_location_code: string;
 
   public versions: MajorMineApplicationDocument[];
 
@@ -131,11 +133,13 @@ export class MajorMineApplicationDocument extends MineDocument {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
+    this.file_location_code = jsonObject.file_location_code;
   }
 
   protected makeChild(params: any, constructorArgs: any) {
     return new MajorMineApplicationDocument({
       ...params,
+      file_location_code: constructorArgs.file_location_code,
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
     });

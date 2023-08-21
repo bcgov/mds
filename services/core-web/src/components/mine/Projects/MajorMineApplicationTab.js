@@ -140,14 +140,6 @@ export class MajorMineApplicationTab extends Component {
           canArchiveDocuments={true}
           onArchivedDocuments={() => this.fetchData()}
           additionalColumnProps={[{ key: "document_name", colProps: { width: "80%" } }]}
-          additionalColumns={[
-            renderCategoryColumn(
-              "major_mine_application_document_type_code",
-              "File Location",
-              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-              true
-            ),
-          ]}
           isLoaded={this.state.isLoaded}
           showVersionHistory={true}
         />

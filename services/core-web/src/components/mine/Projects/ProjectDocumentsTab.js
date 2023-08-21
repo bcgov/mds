@@ -155,14 +155,6 @@ export class ProjectDocumentsTab extends Component {
           removeDocument={this.handleDeleteDocument}
           showVersionHistory={true}
           isLoaded={this.state.isLoaded}
-          additionalColumns={[
-            renderCategoryColumn(
-              "major_mine_application_document_type_code",
-              "File Location",
-              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-              true
-            ),
-          ]}
         />
       </div>
     );

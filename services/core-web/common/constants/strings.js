@@ -187,13 +187,65 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   PRIMARY: "PRM",
   SPATIAL: "SPT",
   SUPPORTING: "SPR",
-  ARCHIVED: "ARC",
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
   PRM: "Primary Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
+  GENERAL: "general",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE = {
+  GENRAL: "GEN",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION = {
+  GEN: "General",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE = {
+  DECISION: "decision_package",
+  ADDITIONAL: "additional_government",
+  INTERNAL: "internal_ministry",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_CODE = {
+  DECISION: "DEC",
+  ADDITIONAL: "ADG",
+  INTERNAL: "INM",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_CODE_LOCATION = {
+  DCP: "Decision Package",
+  ADG: "Additional Government",
+  INM: "Internal Ministry",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE = {
+  TEMPLATE: "template",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE = {
+  TEMPLATE: "TEM",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE_LOCATION = {
+  TEM: "Template",
+};
+
+export const FILE_LOCATION_TYPE_CODE_LOCATION = {
+  PRM: "Primary Document",
+  SPT: "Spatial Component",
+  SPR: "Supporting Document",
+  GEN: "General",
+  DCP: "Decision Package",
+  ADG: "Additional Government",
+  INM: "Internal Ministry",
+  TEM: "Template",
 };
 
 export const FACILITY_TYPES = [
