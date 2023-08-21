@@ -63,6 +63,7 @@ exports[`VarianceDetails renders properly 1`] = `
             "Replace file",
             "Archive file",
             "Delete",
+            "MultiSelect",
           ],
           "archived_by": undefined,
           "archived_date": undefined,
