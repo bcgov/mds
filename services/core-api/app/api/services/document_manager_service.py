@@ -89,7 +89,7 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        resp = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        resp = Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
         if Config.ENVIRONMENT_NAME != 'prod':
             project = Project.find_by_project_guid(project_guid)
