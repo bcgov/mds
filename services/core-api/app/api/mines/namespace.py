@@ -50,7 +50,7 @@ from app.api.mines.work_information.resources.work_information_list import MineW
 from app.api.mines.work_information.resources.work_information import MineWorkInformationResource
 from app.api.mines.external_authorizations.resources.epic_resource import EPICResource
 from app.api.notice_of_departure.resources.notice_of_departure_document import MineNoticeOfDepartureNewDocumentUploadResource
-from app.api.mines.alerts.resources.mine_alert import MineAlertListResource, MineAlertResource
+from app.api.mines.alerts.resources.mine_alert import MineAlertListResource, MineAlertResource, GlobalMineAlertListResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -194,3 +194,4 @@ api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_
 
 api.add_resource(MineAlertListResource, '/<string:mine_guid>/alerts')
 api.add_resource(MineAlertResource, '/<string:mine_guid>/alerts/<string:mine_alert_guid>')
+api.add_resource(GlobalMineAlertListResource, '/global-alerts')

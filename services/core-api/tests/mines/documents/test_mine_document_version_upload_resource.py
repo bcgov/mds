@@ -52,7 +52,10 @@ class TestMineDocumentVersionUploadResource:
         assert post_resp.status_code == 200
 
         # The response is double-encoded. Manually make it into a valid json for test purposes
-        post_data = json.loads(post_resp.data.decode("utf-8").replace("b'", "").replace("}'", "}"))
+        post_data = json.loads(post_resp.data.decode("utf-8").replace("b'", "").replace("'", "\""))
+
+        # post_data_dict = str_to_dict(post_data)
+        assert isinstance(post_data, dict)
 
         assert post_data['document_manager_guid'] == docman_doc_guid
         assert post_data['document_manager_version_guid'] == docman_version_guid

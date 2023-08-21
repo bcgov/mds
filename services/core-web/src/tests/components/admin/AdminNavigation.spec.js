@@ -1,11 +1,11 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AdminNavigation } from "@/components/admin/AdminNavigation";
+import AdminNavigation from "@/components/admin/AdminNavigation";
 
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupProps = () => {
   props.activeButton = "verified";

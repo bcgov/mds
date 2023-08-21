@@ -3,8 +3,10 @@
 . ~/nvm/nvm.sh
 
 echo "+\n++ Assign Node Version ...\n+"
+nvm install
 nvm use 
 node -v
+yarn install
 make be &
 cd services/common && yarn watch &
 cd services/core-web && yarn serve &

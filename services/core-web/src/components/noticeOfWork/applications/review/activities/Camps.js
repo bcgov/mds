@@ -49,7 +49,7 @@ export const Camps = (props) => {
             validate: props.isPreLaunch ? [number] : [number, required],
           },
           {
-            title: "Number of Sructures",
+            title: "Number of Structures",
             value: "number_structures",
             component: RenderField,
             minRows: 1,

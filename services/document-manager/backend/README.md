@@ -34,7 +34,7 @@ A. OS Level Installation
 - [Pip](https://pypi.org/project/pip/)
 - [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 
-1. Create a virtual environment with python 3.6 and activate it
+1. Create a virtual environment with python 3.11 and activate it
 
 ```
 virtualenv -p python3.6 .venv

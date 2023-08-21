@@ -192,12 +192,11 @@ Other reasons:
 
 In order to handle the above cases, we have a jwt-manager implementation that works with multiple OIDC audiences and configurations.
 
-core-api currently works with the following sso providers.
+core-api currently works with the following sso providers:
 
 1. Gold SSO - [All Environments](https://bcgov.github.io/sso-requests/my-dashboard/integrations)
-2. Silver SSO - [Test](https://test.oidc.gov.bc.ca/auth/admin/mds/console/#/realms/mds) and [Production](https://oidc.gov.bc.ca/auth/admin/mds/console/#/realms/mds)
 
-Both Gold and Silver SSO is based off [Keycloack IDM](https://www.keycloak.org/)
+The gold SSO is based off [Keycloack IDM](https://www.keycloak.org/)
 
 The SSO login is used for authentication and role assignments for all of MDS users.
 

@@ -120,7 +120,7 @@ export const DocumentTable = ({
             props.onArchivedDocuments(docs);
           }
         },
-        docs,
+        documents: docs,
       },
       content: modalConfig.ARCHIVE_DOCUMENT,
     });
@@ -135,7 +135,7 @@ export const DocumentTable = ({
         handleSubmit: async () => {
           docs.forEach((record) => removeDocument(event, record.key, documentParent));
         },
-        docs,
+        documents: docs,
       },
       content: modalConfig.DELETE_DOCUMENT,
     });
