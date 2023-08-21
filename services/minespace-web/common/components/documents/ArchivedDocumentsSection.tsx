@@ -22,6 +22,9 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       ...obj,
       key: obj.mine_document_guid,
       major_mine_application_document_type_code: obj.major_mine_application_document_xref.major_mine_application_document_type_code,
+      project_summary_document_type_code: obj.project_summary_document_xref.project_summary_document_type_code,
+      project_decision_package_document_type_code: obj.project_decision_package_document_xref.project_decision_package_document_type_code,
+      information_requirements_table_document_type_code: obj.information_requirements_table_document_xref.information_requirements_table_document_type_code,
       versions: obj.versions.map((version) => ({
         ...version,
         key: obj.mine_document_guid,

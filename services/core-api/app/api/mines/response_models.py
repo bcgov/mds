@@ -109,6 +109,21 @@ MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
         'major_mine_application_document_type_code': fields.String
     })
 
+PROJECT_SUMMARY_DOCUMENT_XREF_MODEL = api.model(
+    'ProjectSummaryDocumentXref', {
+        'project_summary_document_type_code': fields.String
+    })
+
+PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL = api.model(
+    'ProjectDecisionPackageDocumentXref', {
+        'project_decision_package_document_type_code': fields.String
+    })
+
+INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL = api.model(
+    'InformationRequirementsTableDocumentXref', {
+        'information_requirements_table_document_type_code': fields.String
+    })
+
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -123,6 +138,9 @@ MINE_DOCUMENT_MODEL = api.model(
         'archived_by': fields.String,
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
         'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
+        'project_summary_document_xref': fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),
+        'project_decision_package_document_xref': fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL),
+        'information_requirements_table_document_xref': fields.Nested(INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL),
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {
