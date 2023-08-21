@@ -6,6 +6,7 @@ export enum FileOperations {
   Replace = "Replace file",
   Archive = "Archive file",
   Delete = "Delete",
+  MultiSelect = "MultiSelect",
 }
 
 /* 
@@ -114,6 +115,7 @@ export class MineDocument {
       canModify && FileOperations.Replace,
       canModify && FileOperations.Archive,
       canModify && FileOperations.Delete,
+      canModify && FileOperations.MultiSelect,
     ];
   }
 }
@@ -123,10 +125,13 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   public versions: MajorMineApplicationDocument[];
 
+  public project_title: string;
+
   constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
+    this.project_title = jsonObject.project_title;
   }
 
   protected makeChild(params: any, constructorArgs: any) {
