@@ -28,7 +28,9 @@ def get_jwt_by_audience(aud):
     }
 
     for audience_env, jwt_value in audience_jwt_map.items():
-        if os.environ.get(audience_env) in aud:
+        token_audience = os.environ.get(audience_env)
+
+        if token_audience and token_audience in aud:
             return jwt_value
 
     return None

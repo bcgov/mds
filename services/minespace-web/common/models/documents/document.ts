@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES, Feature, isFeatureEnabled } from "@mds/common";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -111,7 +111,7 @@ export class MineDocument {
     return [
       this.file_type === ".pdf" && FileOperations.View,
       FileOperations.Download,
-      canModify && FileOperations.Replace,
+      isFeatureEnabled(Feature.DOCUMENTS_REPLACE_FILE) && canModify && FileOperations.Replace,
       canModify && FileOperations.Archive,
       canModify && FileOperations.Delete,
     ];

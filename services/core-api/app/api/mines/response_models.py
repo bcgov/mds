@@ -694,6 +694,10 @@ PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),
 })
 
+PAGINATED_GLOBAL_MINE_ALERT_LIST = api.inherit('GlobalMineAlertList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(MINE_ALERT_MODEL)),
+})
+
 ORDER_DOCUMENT_MODEL = api.model(
     'MineComplianceOrderDocument', {
         "external_id": fields.String,

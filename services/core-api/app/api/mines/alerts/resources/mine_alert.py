@@ -1,4 +1,4 @@
-from flask_restplus import Resource, inputs
+from flask_restplus import Resource, inputs, reqparse
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import timedelta, datetime as dt, timezone
 
@@ -10,7 +10,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
-from app.api.mines.response_models import MINE_ALERT_MODEL
+from app.api.mines.response_models import MINE_ALERT_MODEL, PAGINATED_GLOBAL_MINE_ALERT_LIST
 
 class MineAlertListResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -138,3 +138,29 @@ class MineAlertResource(Resource, UserMixin):
         alert.save()
 
         return ('', 204)
+
+
+class GlobalMineAlertListResource(Resource, UserMixin):
+
+    @api.doc(description='Retrive a list of alerts for all mines')
+    @api.marshal_with(PAGINATED_GLOBAL_MINE_ALERT_LIST, code=200)
+    @requires_role_view_all
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            'page', type=int, help='page for pagination', location='args', store_missing=False)
+        parser.add_argument(
+            'per_page', type=int, help='records per page', location='args', store_missing=False)
+        args = parser.parse_args()
+        page = args.get('page')
+        per_page = args.get('per_page') if args.get('per_page') else 10  # default per page is 10
+
+        records, pagination_details = MineAlert.find_all_mine_alerts(page, per_page)
+
+        return {
+            'records': records.all(),
+            'current_page': pagination_details.page_number,
+            'total_pages': pagination_details.num_pages,
+            'items_per_page': pagination_details.page_size,
+            'total': pagination_details.total_results,
+        }

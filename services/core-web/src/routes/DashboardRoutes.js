@@ -4,8 +4,7 @@ import * as routes from "@/constants/routes";
 import PageNotFound from "@/components/common/PageNotFound";
 
 const DashboardRoutes = () => {
-  const exportedRoutes = Object.values(routes)
-    .filter(r => r.route && r.component);
+  const exportedRoutes = Object.values(routes).filter((r) => r.route && r.component);
 
   return (
     <Switch>
@@ -20,10 +19,10 @@ const DashboardRoutes = () => {
         path={routes.ADMIN_DASHBOARD.route}
         render={() => <Redirect to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("verified")} />}
       />
-      <Route exact path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
+      <Route path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
 
       {exportedRoutes.map(({ route, component }) => (
-        <Route exact path={route} component={component} />
+        <Route exact path={route} component={component} key={route} />
       ))}
       <Route component={PageNotFound} />
     </Switch>
