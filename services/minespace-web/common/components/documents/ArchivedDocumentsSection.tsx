@@ -21,14 +21,14 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
     return props.documents.map((obj) => ({
       ...obj,
       key: obj.mine_document_guid,
-      file_location_code: obj.major_mine_application_document_xref.major_mine_application_document_type_code
+      file_location_type_code: obj.major_mine_application_document_xref.major_mine_application_document_type_code
         || obj.project_summary_document_xref.project_summary_document_type_code
         || obj.project_decision_package_document_xref.project_decision_package_document_type_code
         || obj.information_requirements_table_document_xref.information_requirements_table_document_type_code,
       versions: obj.versions.map((version) => ({
         ...version,
         key: obj.mine_document_guid,
-        file_location_code: obj.file_location_code,
+        file_location_type_code: obj.file_location_type_code,
       })),
     }));
   };
@@ -45,7 +45,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
       <DocumentTable
         documentColumns={props.documentColumns}
         documents={
-          props.documents
+          props.documents && props.documents.length > 0
             ? parseArchivedDocuments().map((doc) => new MajorMineApplicationDocument(doc))
             : []
         }
@@ -53,7 +53,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
         showVersionHistory={true}
         additionalColumns={[
           renderCategoryColumn(
-            "file_location_code",
+            "file_location_type_code",
             "File Location",
             Strings.FILE_LOCATION_TYPE_CODE_LOCATION,
             true
