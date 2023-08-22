@@ -73,6 +73,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         documents={Array []}
         isLoaded={false}
         onArchivedDocuments={[Function]}
+        projectGuid="1234-4567-xwqy"
         removeDocument={[Function]}
         showVersionHistory={true}
       />
@@ -102,6 +103,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         documents={Array []}
         isLoaded={false}
         onArchivedDocuments={[Function]}
+        projectGuid="1234-4567-xwqy"
         removeDocument={[Function]}
         showVersionHistory={true}
       />
@@ -143,6 +145,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         documents={Array []}
         isLoaded={false}
         onArchivedDocuments={[Function]}
+        projectGuid="1234-4567-xwqy"
         removeDocument={[Function]}
         showVersionHistory={true}
       />
@@ -178,6 +181,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         documents={Array []}
         isLoaded={false}
         onArchivedDocuments={[Function]}
+        projectGuid="1234-4567-xwqy"
         removeDocument={[Function]}
         showVersionHistory={true}
       />
@@ -213,6 +217,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         documents={Array []}
         isLoaded={false}
         onArchivedDocuments={[Function]}
+        projectGuid="1234-4567-xwqy"
         removeDocument={[Function]}
         showVersionHistory={true}
       />

@@ -53,11 +53,11 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
-    handleModalClose && handleModalClose();
+    handleModalClose?.();
   };
 
   const handleNewVersionSubmit = () => {
-    handleModalSubmit && handleModalSubmit();
+    handleModalSubmit?.();
   };
 
   const columns = [
@@ -89,7 +89,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
       );
 
       if (existingDocument) {
-        let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+        const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
         setReplaceableFileModalMessage(message);
         setReplaceableFileModalVisible(true);
         setMineGuid(existingDocument.mine_guid);
@@ -120,6 +120,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
               NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
                 mineGuid: props.params.mineGuid,
                 mineDocumentGuid: existingDocument.mine_document_guid,
+                projectGuid: props.params.projectGuid,
               })
             );
             // Resolve the promise with true (proceed with upload)
@@ -155,7 +156,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     if (responseBody) {
       const jsonString = responseBody.replace(/'/g, '"');
 
-      let obj = JSON.parse(jsonString);
+      const obj = JSON.parse(jsonString);
       if (obj && obj.document_manager_version_guid) {
         setVersion(obj.document_manager_version_guid);
       }
@@ -196,13 +197,13 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
             ) {
               if (e.response.status === "ARCHIVED_FILE_EXIST") {
                 setShouldAbortUpload(false);
-                let message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
+                const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
                 setArchivedFileModalMessage(message);
                 setIsArchivedFileModalVisible(true);
               }
               if (e.response.status === "REPLACEABLE_FILE_EXIST") {
                 setShouldAbortUpload(false);
-                let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+                const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
                 setReplaceableFileModalMessage(message);
                 setReplaceableFileModalVisible(true);
                 setMineGuid(e.response.mine_guid);

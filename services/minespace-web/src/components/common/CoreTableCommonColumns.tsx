@@ -75,7 +75,7 @@ export const renderHighlightedTextColumn = (
 export interface ITableAction {
   key: string;
   label: string;
-  clickFunction: (event, record) => any;
+  clickFunction: (event, record, projectGuid?) => any;
   icon?: ReactNode;
 }
 
