@@ -167,6 +167,7 @@ class ActivityNotification(AuditMixin, Base):
             .filter_by(idempotency_key=idempotency_key) \
             .all()] if idempotency_key else []
 
+        unread_renotify_users = []
         if(renotify_period_minutes > 0):
           # Calculate the datetime that was renotify_period_minutes minutes ago
           renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
@@ -176,7 +177,7 @@ class ActivityNotification(AuditMixin, Base):
                 .filter(cls.create_timestamp < renotify_timestamp)\
                 .order_by(cls.create_timestamp)
 
-        unread_renotify_users = [res[0] for res in unread_renotify_query.all()]
+          unread_renotify_users = [res[0] for res in unread_renotify_query.all()]
 
         notifications = []
 
