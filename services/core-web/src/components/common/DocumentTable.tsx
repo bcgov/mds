@@ -166,8 +166,7 @@ export const DocumentTable = ({
       key: "archive",
       label: FileOperations.Archive,
       icon: <InboxOutlined />,
-      clickFunction: (event, record: MineDocument, projectGuid: string) =>
-        openArchiveModal(event, [record]),
+      clickFunction: (event, record: MineDocument) => openArchiveModal(event, [record]),
     },
     {
       key: "delete",
