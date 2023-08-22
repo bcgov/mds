@@ -15,14 +15,9 @@ export const CompressionNotificationProgressBar: FC<CompressionNotificationProgr
     strokeColor={"#5e46a1"}
     strokeLinecap={"square"}
     trailColor="#d9d9d9"
+    className="compressionProgressBar"
     style={{
-      width: "384px",
-      position: "fixed",
-      zIndex: 1005,
       top: `${props.notificationTopPosition - 10}px`,
-      right: "0px",
-      bottom: "auto",
-      marginRight: "24px",
     }}
   />
 );

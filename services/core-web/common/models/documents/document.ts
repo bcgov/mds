@@ -6,7 +6,6 @@ export enum FileOperations {
   Replace = "Replace file",
   Archive = "Archive file",
   Delete = "Delete",
-  MultiSelect = "MultiSelect",
 }
 
 /* 
@@ -115,7 +114,6 @@ export class MineDocument {
       canModify && FileOperations.Replace,
       canModify && FileOperations.Archive,
       canModify && FileOperations.Delete,
-      canModify && FileOperations.MultiSelect,
     ];
   }
 }

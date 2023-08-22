@@ -148,8 +148,6 @@ export const PROJECT_SUMMARY_DOCUMENT = (
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents/${mineDocumentGuid}?${queryString.stringify(
     params
   )}`;
-export const DOCUMENTS_COMPRESSION = (mineGuid) => `/mines/${mineGuid}/documents/zip`;
-export const POLL_DOCUMENTS_COMPRESSION_PROGRESS = (taskId) => `/mines/documents/zip/${taskId}`;
 export const DECISION_PACKAGE = () => `/`;
 export const MAJOR_PROJECT_DASHBOARD = (params = {}) =>
   `/projects/dashboard?${queryString.stringify(params)}`;

@@ -64,10 +64,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
             placement="right"
             mouseEnterDelay={1}
           >
-            <MinusSquareFilled
-              style={{ fontSize: "24px", color: "#ded9d9" }}
-              className="icon-lg--lightgrey"
-            />
+            <MinusSquareFilled className="icon-lg--lightgrey" />
           </Tooltip>
         ) : (
           <Tooltip
@@ -75,10 +72,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
             placement="right"
             mouseEnterDelay={1}
           >
-            <PlusSquareFilled
-              style={{ fontSize: "24px", color: "#ded9d9" }}
-              className="icon-lg--lightgrey"
-            />
+            <PlusSquareFilled className="icon-lg--lightgrey" />
           </Tooltip>
         )}
       </a>

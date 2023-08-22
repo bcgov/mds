@@ -2,19 +2,14 @@
 
 exports[`CompressionNotificationProgressBar renders properly 1`] = `
 <Progress
+  className="compressionProgressBar"
   percent={0}
   showInfo={false}
   strokeColor="#5e46a1"
   strokeLinecap="square"
   style={
     Object {
-      "bottom": "auto",
-      "marginRight": "24px",
-      "position": "fixed",
-      "right": "0px",
       "top": "-10px",
-      "width": "384px",
-      "zIndex": 1005,
     }
   }
   trailColor="#d9d9d9"

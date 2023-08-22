@@ -12,7 +12,6 @@ const initialState = {
   requirements: [],
   majorMinesApplication: {},
   projectDecisionPackage: {},
-  documentCompressionProgress: {},
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -78,11 +77,6 @@ export const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         majorMinesApplication: {},
-      };
-    case actionTypes.STORE_DOCUMENT_COMPRESSION_PROGRESS:
-      return {
-        ...state,
-        documentCompressionProgress: {},
       };
     case actionTypes.STORE_PROJECT_DECISION_PACKAGE:
       return {

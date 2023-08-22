@@ -7,7 +7,7 @@ interface CompressedFilesDownloadModalProps {
   isModalVisible: boolean;
   closeCompressNotification: () => void;
   documentManagerGuid: string;
-  projectTitle: string;
+  entityTitle: string;
 }
 
 export const CompressedFilesDownloadModal: FC<CompressedFilesDownloadModalProps> = (props) => (
@@ -30,7 +30,7 @@ export const CompressedFilesDownloadModal: FC<CompressedFilesDownloadModalProps>
       Files ready for download
     </Typography.Paragraph>
     <Typography.Paragraph style={{ fontSize: "90%", marginLeft: "30px" }}>
-      {props.projectTitle} selected documents are ready for download.
+      {props.entityTitle} selected documents are ready for download.
     </Typography.Paragraph>
   </Modal>
 );

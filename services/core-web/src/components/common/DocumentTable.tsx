@@ -30,13 +30,12 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { Dropdown, Button, MenuProps, notification, Progress } from "antd";
+import { Dropdown, Button, MenuProps, notification } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { USER_ROLES } from "@common/constants/environment";
 import {
   documentsCompression,
   pollDocumentsCompressionProgress,
-} from "@common/actionCreators/projectActionCreator";
+} from "@/actionCreators/documentActionCreator";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface DocumentTableProps {
@@ -95,7 +94,7 @@ export const DocumentTable = ({
   const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [notificationTopPosition, setNotificationTopPosition] = useState(0);
   const [fileToDownload, setFileToDownload] = useState("");
-  const [projectTitle, setProjectTitle] = useState("");
+  const [entityTitle, setEntityTitle] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
 
   const progressRef = useRef(false);
@@ -127,11 +126,11 @@ export const DocumentTable = ({
   const documents = parseDocuments(props.documents ?? []);
 
   useEffect(() => {
-    const isMultiSelect = documents.every((doc) =>
-      doc.allowed_actions.find((a) => a === "MultiSelect")
+    const isBulkArchive = documents.every((doc) =>
+      doc.allowed_actions.find((a) => a === "Archive file")
     );
 
-    setDocumentsCanBulkDropDown(isMultiSelect);
+    setDocumentsCanBulkDropDown(isBulkArchive);
   }, []);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
@@ -305,7 +304,7 @@ export const DocumentTable = ({
       .filter((row) => row.is_latest_version)
       .map((filteredRows) => filteredRows.document_manager_guid);
 
-    setProjectTitle(rowSelection[0].project_title);
+    setEntityTitle(rowSelection[0].project_title);
     if (documentManagerGuids.length === 0) {
       setTimeout(() => {
         notification.warning({
@@ -388,35 +387,55 @@ export const DocumentTable = ({
     },
   };
 
-  return (
-    <div>
-      {enableBulkActions && (
-        <div style={{ float: "right" }}>
-          {documentsCanBulkDropDown ? (
-            <Dropdown
-              menu={{ items }}
-              placement="bottomLeft"
-              disabled={rowSelection.length === 0 || isCompressionProgressVisible}
-            >
-              <Button className="ant-btn ant-btn-primary">
-                Action
-                <DownOutlined />
-              </Button>
-            </Dropdown>
-          ) : (
-            <Button
-              className="ant-btn ant-btn-primary"
-              disabled={rowSelection.length === 0 || isCompressionProgressVisible}
-              onClick={() => {
-                setBeginCompressionModalVisible(true);
-              }}
-            >
-              <div>Download</div>
-            </Button>
-          )}
-        </div>
-      )}
-      {showVersionHistory ? (
+  const renderBulkActions = () => {
+    let element = (
+      <Button
+        className="ant-btn ant-btn-primary"
+        disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+        onClick={() => {
+          setBeginCompressionModalVisible(true);
+        }}
+      >
+        <div>Download</div>
+      </Button>
+    );
+    if (documentsCanBulkDropDown) {
+      element = (
+        <Dropdown
+          menu={{ items }}
+          placement="bottomLeft"
+          disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+        >
+          <Button className="ant-btn ant-btn-primary">
+            Action
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+  };
+
+  const renderCoreTable = () => {
+    let element = (
+      <CoreTable
+        columns={columns}
+        {...(enableBulkActions
+          ? {
+              rowSelection: {
+                type: "checkbox",
+                ...rowSelectionObject,
+              },
+            }
+          : {})}
+        dataSource={documents}
+        {...minimalProps}
+      />
+    );
+
+    if (showVersionHistory) {
+      element = (
         <div>
           <BeginCompressionModal
             isModalVisible={isBeginCompressionModalVisible}
@@ -433,7 +452,7 @@ export const DocumentTable = ({
             isModalVisible={isReadyForDownloadModalVisible}
             closeCompressNotification={handleCloseCompressionNotification}
             documentManagerGuid={fileToDownload}
-            projectTitle={projectTitle}
+            entityTitle={entityTitle}
           />
           <CoreTable
             condition={isLoaded}
@@ -455,21 +474,16 @@ export const DocumentTable = ({
             }}
           />
         </div>
-      ) : (
-        <CoreTable
-          columns={columns}
-          {...(enableBulkActions
-            ? {
-                rowSelection: {
-                  type: "checkbox",
-                  ...rowSelectionObject,
-                },
-              }
-            : {})}
-          dataSource={documents}
-          {...minimalProps}
-        />
-      )}
+      );
+    }
+
+    return element;
+  };
+
+  return (
+    <div>
+      {renderBulkActions()}
+      {renderCoreTable()}
     </div>
   );
 };
