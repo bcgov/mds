@@ -146,7 +146,6 @@ export const NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS = ({
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload?${queryString.stringify({
     project_guid: projectGuid,
   })}`;
-
 export const PROJECT_SUMMARY_DOCUMENT = (
   projectGuid,
   projectSummaryGuid,
