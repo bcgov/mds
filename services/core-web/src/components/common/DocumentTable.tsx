@@ -127,7 +127,7 @@ export const DocumentTable = ({
 
   useEffect(() => {
     const isBulkArchive = documents.every((doc) =>
-      doc.allowed_actions.find((a) => a === "Archive file")
+      doc.allowed_actions.find((a) => a === FileOperations.Archive)
     );
 
     setDocumentsCanBulkDropDown(isBulkArchive);
@@ -304,7 +304,7 @@ export const DocumentTable = ({
       .filter((row) => row.is_latest_version)
       .map((filteredRows) => filteredRows.document_manager_guid);
 
-    setEntityTitle(rowSelection[0].project_title);
+    setEntityTitle(rowSelection[0].entity_title);
     if (documentManagerGuids.length === 0) {
       setTimeout(() => {
         notification.warning({

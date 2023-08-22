@@ -123,13 +123,13 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   public versions: MajorMineApplicationDocument[];
 
-  public project_title: string;
+  public entity_title: string;
 
   constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
-    this.project_title = jsonObject.project_title;
+    this.entity_title = jsonObject.project_title;
   }
 
   protected makeChild(params: any, constructorArgs: any) {
