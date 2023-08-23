@@ -7,7 +7,7 @@ from cerberus import Validator
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy import func
+from sqlalchemy import func, or_, and_
 from app.extensions import db
 from sqlalchemy.sql import table, column
 from app.api.utils.include.user_info import User
@@ -167,17 +167,30 @@ class ActivityNotification(AuditMixin, Base):
             .filter_by(idempotency_key=idempotency_key) \
             .all()] if idempotency_key else []
 
-        unread_renotify_users = []
+        unread_renotify_and_read_notify_users = []
         if(renotify_period_minutes > 0):
           # Calculate the datetime that was renotify_period_minutes minutes ago
           renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
-          # Filter to retrived unread records for renotifying
-          unread_renotify_query = cls.query.with_entities(cls.notification_recipient)\
+          # Filter to retrived unread records for renotifying and notify for read user if the same activity type
+          unread_renotify_and_read_notify_query = cls.query.with_entities(cls.notification_recipient)\
                 .filter_by(notification_read=False)\
-                .filter(cls.create_timestamp < renotify_timestamp)\
+                .filter(
+                  or_(
+                    and_(
+                      cls.notification_read==False,
+                      cls.activity_type == activity_type,
+                      cls.create_timestamp < renotify_timestamp
+                    ),
+                    and_(
+                      cls.notification_read==True,
+                      cls.activity_type == activity_type,
+                      cls.create_timestamp >= renotify_timestamp
+                    )
+                  )
+                )\
                 .order_by(cls.create_timestamp)
 
-          unread_renotify_users = [res[0] for res in unread_renotify_query.all()]
+          unread_renotify_and_read_notify_users = [res[0] for res in unread_renotify_and_read_notify_query.all()]
 
         notifications = []
 
@@ -190,7 +203,7 @@ class ActivityNotification(AuditMixin, Base):
                 notifications.append(notification)
                 continue
 
-            if formatted_user_name in unread_renotify_users:
+            if formatted_user_name in unread_renotify_and_read_notify_users:
                 notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
                 notifications.append(notification)
 
