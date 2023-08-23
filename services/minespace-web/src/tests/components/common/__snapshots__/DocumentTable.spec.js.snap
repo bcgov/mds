@@ -45,7 +45,6 @@ exports[`DocumentTable renders properly 1`] = `
         "archived_by": undefined,
         "archived_date": undefined,
         "category": undefined,
-        "category_code": undefined,
         "create_user": undefined,
         "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
         "document_name": "test.pdf",

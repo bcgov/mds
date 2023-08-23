@@ -57,14 +57,6 @@ export class MineDocument {
 
   public category_code: string;
 
-  public project_summary_document_xref: { project_summary_document_type_code: string };
-
-  public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
-
-  public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
-
-  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
-
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -79,26 +71,8 @@ export class MineDocument {
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
     this.is_latest_version = jsonObject.is_latest_version ?? true;
-    this.category_code = this.determineCategoryCode(jsonObject);
     this.setCalculatedProperties(jsonObject);
   }
-
-  private determineCategoryCode(jsonObject: any): string | undefined {
-    const {
-      project_summary_document_xref,
-      project_decision_package_document_xref,
-      information_requirements_table_document_xref,
-      major_mine_application_document_xref,
-    } = jsonObject;
-
-    return (
-      project_summary_document_xref?.project_summary_document_type_code
-      ?? project_decision_package_document_xref?.project_decision_package_document_type_code
-      ?? information_requirements_table_document_xref?.information_requirements_table_document_type_code
-      ?? major_mine_application_document_xref?.major_mine_application_document_type_code
-    );
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
@@ -116,12 +90,7 @@ export class MineDocument {
       this.versions = versions
         .slice(1)
         .map((version: MineDocument) => this.makeChild({
-          ...version, is_latest_version: false, key: this.mine_document_guid,
-          document_manager_guid: jsonObject.document_manager_guid,
-          project_summary_document_xref: jsonObject.project_summary_document_xref,
-          project_decision_package_document_xref: jsonObject.project_decision_package_document_xref,
-          information_requirements_table_document_xref: jsonObject.information_requirements_table_document_xref,
-          major_mine_application_document_type_code: jsonObject.major_mine_application_document_type_code,
+          ...version, is_latest_version: false
         }, jsonObject));
     } else {
       this.number_prev_versions = 0;
@@ -154,6 +123,11 @@ export class MineDocument {
 
 export class MajorMineApplicationDocument extends MineDocument {
 
+  public project_summary_document_xref: { project_summary_document_type_code: string };
+  public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
+  public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
+  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
+
   public major_mine_application_document_type_code: string;
   public versions: MajorMineApplicationDocument[];
 
@@ -161,15 +135,60 @@ export class MajorMineApplicationDocument extends MineDocument {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
+    this.category_code = this.determineCategoryCode(jsonObject);
+    this.setCalculatedProperties(jsonObject);
+  }
+
+  protected determineCategoryCode(jsonObject: any): string | undefined {
+    const {
+      project_summary_document_xref,
+      project_decision_package_document_xref,
+      information_requirements_table_document_xref,
+      major_mine_application_document_xref,
+    } = jsonObject;
+
+    return (
+      project_summary_document_xref?.project_summary_document_type_code
+      ?? project_decision_package_document_xref?.project_decision_package_document_type_code
+      ?? information_requirements_table_document_xref?.information_requirements_table_document_type_code
+      ?? major_mine_application_document_xref?.major_mine_application_document_type_code
+    );
   }
 
   protected makeChild(params: any, constructorArgs: any) {
-
     return new MajorMineApplicationDocument({
       ...params,
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
     });
+  }
+
+  protected setCalculatedProperties(jsonObject: any) {
+    this.key = this.is_latest_version
+      ? this.mine_document_guid
+      : jsonObject.document_manager_version_guid;
+    this.file_type = this.getFileType();
+
+    const versions = jsonObject.versions ?? [];
+    if (this.is_latest_version && versions.length) {
+      this.number_prev_versions = versions.length - 1;
+      this.versions = versions
+        .slice(1)
+        .map((version: MajorMineApplicationDocument) => this.makeChild({
+          ...version,
+          is_latest_version: false,
+          key: this.mine_document_guid,
+          document_manager_guid: jsonObject.document_manager_guid,
+          project_summary_document_xref: jsonObject.project_summary_document_xref,
+          project_decision_package_document_xref: jsonObject.project_decision_package_document_xref,
+          information_requirements_table_document_xref: jsonObject.information_requirements_table_document_xref,
+          major_mine_application_document_type_code: jsonObject.major_mine_application_document_type_code,
+        }, jsonObject));
+    } else {
+      this.number_prev_versions = 0;
+      this.versions = [];
+    }
+    this.setAllowedActions(jsonObject.user_roles);
   }
 
   public getAllowedActions(userRoles: string[] = []) {

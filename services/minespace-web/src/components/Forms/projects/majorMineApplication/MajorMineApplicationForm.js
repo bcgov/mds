@@ -25,7 +25,7 @@ import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMin
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { MineDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
 
@@ -317,7 +317,7 @@ export class MajorMineApplicationForm extends Component {
             ]}
             documentColumns={documentColumns}
             documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
-              ? this.props.mineDocuments.map((doc) => new MineDocument(doc)) : []}
+              ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
           />
         </Form>
       </div>

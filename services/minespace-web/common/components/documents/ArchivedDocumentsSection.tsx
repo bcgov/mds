@@ -3,14 +3,14 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { MineDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { ColumnType } from "antd/es/table";
 
 interface ArchivedDocumentsSectionProps {
-  documents: MineDocument[];
+  documents: MajorMineApplicationDocument[];
   documentColumns: any;
   titleLevel?: 1 | 2 | 3 | 4 | 5;
-  additionalColumns?: ColumnType<MineDocument>[];
+  additionalColumns?: ColumnType<MajorMineApplicationDocument>[];
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {

@@ -16,7 +16,7 @@ import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineAp
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
-import { MineDocument, MajorMineApplicationDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
@@ -191,7 +191,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
               ),
             ]}
             documents={props.mineDocuments && props.mineDocuments.length > 0
-              ? props.mineDocuments.map((doc) => new MineDocument(doc)) : []}
+              ? props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
             documentColumns={documentColumns}
           />
         </Col>

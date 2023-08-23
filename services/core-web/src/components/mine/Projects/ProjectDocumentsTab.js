@@ -19,7 +19,7 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { MajorMineApplicationDocument, MineDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
 
@@ -172,7 +172,7 @@ export class ProjectDocumentsTab extends Component {
           ),
         ]}
         documents={archivedDocuments && archivedDocuments.length > 0
-          ? archivedDocuments.map((doc) => new MineDocument(doc)) : []}
+          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
       />
     );
   };

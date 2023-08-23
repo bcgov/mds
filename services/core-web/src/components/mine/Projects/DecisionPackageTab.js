@@ -29,7 +29,7 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
-import { MineDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -137,7 +137,7 @@ export class DecisionPackageTab extends Component {
           ),
         ]}
         documents={archivedDocuments && archivedDocuments.length > 0
-          ? archivedDocuments.map((doc) => new MineDocument(doc)) : []}
+          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
       />
     );
   };
