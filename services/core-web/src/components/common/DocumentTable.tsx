@@ -363,7 +363,7 @@ export const DocumentTable = ({
     }
   };
 
-  const items: MenuProps["items"] = [
+  const bulkItems: MenuProps["items"] = [
     {
       key: "0",
       icon: <DownloadOutlined />,
@@ -402,7 +402,7 @@ export const DocumentTable = ({
     if (documentsCanBulkDropDown) {
       element = (
         <Dropdown
-          menu={{ items }}
+          menu={{ items: bulkItems }}
           placement="bottomLeft"
           disabled={rowSelection.length === 0 || isCompressionProgressVisible}
         >
