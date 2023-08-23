@@ -167,13 +167,15 @@ class ActivityNotification(AuditMixin, Base):
             .filter_by(idempotency_key=idempotency_key) \
             .all()] if idempotency_key else []
 
+        validated_notification_document = validate_document(document)
         unread_renotify_and_read_notify_users = []
         if(renotify_period_minutes > 0):
           # Calculate the datetime that was renotify_period_minutes minutes ago
           renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
+
           # Filter to retrived unread records for renotifying and notify for read user if the same activity type
           unread_renotify_and_read_notify_query = cls.query.with_entities(cls.notification_recipient)\
-                .filter_by(notification_read=False)\
+                .filter_by(notification_document = validated_notification_document)\
                 .filter(
                   or_(
                     and_(
@@ -184,10 +186,18 @@ class ActivityNotification(AuditMixin, Base):
                     and_(
                       cls.notification_read==True,
                       cls.activity_type == activity_type,
-                      cls.create_timestamp >= renotify_timestamp
+                      cls.create_timestamp >= renotify_timestamp,
+                      (
+                        cls.query.with_entities(cls.notification_recipient)\
+                        .filter(
+                            cls.notification_read == False,
+                            cls.activity_type == activity_type,
+                            cls.create_timestamp >= renotify_timestamp,
+                            cls.notification_document == validated_notification_document)
+                        ).count() == 0
+                      )
                     )
-                  )
-                )\
+                  )\
                 .order_by(cls.create_timestamp)
 
           unread_renotify_and_read_notify_users = [res[0] for res in unread_renotify_and_read_notify_query.all()]
@@ -195,15 +205,11 @@ class ActivityNotification(AuditMixin, Base):
         notifications = []
 
         for user in users:
-            validated_notification_document = validate_document(document)
+
             formatted_user_name = user.replace('idir\\', '')
 
-            if formatted_user_name not in already_sent_notification_recipients:
-                notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
-                notifications.append(notification)
-                continue
-
-            if formatted_user_name in unread_renotify_and_read_notify_users:
+            if formatted_user_name not in already_sent_notification_recipients and \
+              formatted_user_name in unread_renotify_and_read_notify_users:
                 notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
                 notifications.append(notification)
 
