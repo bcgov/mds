@@ -22,8 +22,9 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { MajorMineApplicationDocument, MineDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import { MajorMineApplicationDocument } from "@common/models/documents/document";
+
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -149,8 +150,17 @@ export class MajorMineApplicationTab extends Component {
 
   renderArchivedDocuments = () => {
     return <ArchivedDocumentsSection
-      documents={this.props.mineDocuments}
-    />;
+      additionalColumns={[
+        renderCategoryColumn(
+          "category_code",
+          "Category",
+          Strings.CATEGORY_CODE,
+          true
+        ),
+      ]}
+      documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
+        ? this.props.mineDocuments.map((doc) => new MineDocument(doc)) : []}
+    />
   };
 
   render() {

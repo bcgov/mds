@@ -313,7 +313,20 @@ exports[`DecisionPackageTab renders properly 1`] = `
         showVersionHistory={true}
       />
     </div>
-    <ArchivedDocumentsSection />
+    <ArchivedDocumentsSection
+      additionalColumns={
+        Array [
+          Object {
+            "dataIndex": "category_code",
+            "key": "category_code",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Category",
+          },
+        ]
+      }
+      documents={Array []}
+    />
   </div>
 </Fragment>
 `;

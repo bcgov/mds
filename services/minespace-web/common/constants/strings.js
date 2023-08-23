@@ -237,7 +237,7 @@ export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE_LOCATION = {
   TEM: "Template",
 };
 
-export const FILE_LOCATION_TYPE_CODE_LOCATION = {
+export const CATEGORY_CODE = {
   PRM: "Primary Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",

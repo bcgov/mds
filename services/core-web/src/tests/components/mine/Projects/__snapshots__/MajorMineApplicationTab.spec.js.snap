@@ -333,7 +333,20 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       />
     </div>
     <br />
-    <ArchivedDocumentsSection />
+    <ArchivedDocumentsSection
+      additionalColumns={
+        Array [
+          Object {
+            "dataIndex": "category_code",
+            "key": "category_code",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Category",
+          },
+        ]
+      }
+      documents={Array []}
+    />
   </div>
 </Fragment>
 `;

@@ -27,6 +27,9 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import * as Strings from "@common/constants/strings";
+import { MineDocument } from "@common/models/documents/document";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -123,7 +126,20 @@ export class DecisionPackageTab extends Component {
   };
 
   renderArchivedDocumentsSection = (archivedDocuments) => {
-    return <ArchivedDocumentsSection documents={archivedDocuments}></ArchivedDocumentsSection>;
+    return (
+      <ArchivedDocumentsSection
+        additionalColumns={[
+          renderCategoryColumn(
+            "category_code",
+            "Category",
+            Strings.CATEGORY_CODE,
+            true
+          ),
+        ]}
+        documents={archivedDocuments && archivedDocuments.length > 0
+          ? archivedDocuments.map((doc) => new MineDocument(doc)) : []}
+      />
+    );
   };
 
   renderDocumentSection = (project, sectionTitle, sectionHref, sectionText, sectionDocuments) => {
