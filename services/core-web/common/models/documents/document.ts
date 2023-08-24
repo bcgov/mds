@@ -18,6 +18,8 @@ by the table should be *set* to the specific object, cannot expect to be able to
 include "user_roles" property in the json used in the constructor to set allowed actions based on the user
 */
 export class MineDocument {
+  public category_code: string;
+
   public mine_document_guid: string;
 
   public mine_guid: string;
@@ -55,8 +57,6 @@ export class MineDocument {
 
   public allowed_actions: FileOperations[];
 
-  public category_code: string;
-
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -90,7 +90,8 @@ export class MineDocument {
       this.versions = versions
         .slice(1)
         .map((version: MineDocument) => this.makeChild({
-          ...version, is_latest_version: false
+          ...version, is_latest_version: false,
+          document_manager_guid: this.document_manager_guid,
         }, jsonObject));
     } else {
       this.number_prev_versions = 0;
@@ -136,7 +137,6 @@ export class MajorMineApplicationDocument extends MineDocument {
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
     this.category_code = this.determineCategoryCode(jsonObject);
-    this.setCalculatedProperties(jsonObject);
   }
 
   protected determineCategoryCode(jsonObject: any): string | undefined {
@@ -160,35 +160,11 @@ export class MajorMineApplicationDocument extends MineDocument {
       ...params,
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
+      project_summary_document_xref: constructorArgs.project_summary_document_xref,
+      project_decision_package_document_xref: constructorArgs.project_decision_package_document_xref,
+      information_requirements_table_document_xref: constructorArgs.information_requirements_table_document_xref,
+      major_mine_application_document_xref: constructorArgs.major_mine_application_document_xref,
     });
-  }
-
-  protected setCalculatedProperties(jsonObject: any) {
-    this.key = this.is_latest_version
-      ? this.mine_document_guid
-      : jsonObject.document_manager_version_guid;
-    this.file_type = this.getFileType();
-
-    const versions = jsonObject.versions ?? [];
-    if (this.is_latest_version && versions.length) {
-      this.number_prev_versions = versions.length - 1;
-      this.versions = versions
-        .slice(1)
-        .map((version: MajorMineApplicationDocument) => this.makeChild({
-          ...version,
-          is_latest_version: false,
-          key: this.mine_document_guid,
-          document_manager_guid: jsonObject.document_manager_guid,
-          project_summary_document_xref: jsonObject.project_summary_document_xref,
-          project_decision_package_document_xref: jsonObject.project_decision_package_document_xref,
-          information_requirements_table_document_xref: jsonObject.information_requirements_table_document_xref,
-          major_mine_application_document_type_code: jsonObject.major_mine_application_document_type_code,
-        }, jsonObject));
-    } else {
-      this.number_prev_versions = 0;
-      this.versions = [];
-    }
-    this.setAllowedActions(jsonObject.user_roles);
   }
 
   public getAllowedActions(userRoles: string[] = []) {
