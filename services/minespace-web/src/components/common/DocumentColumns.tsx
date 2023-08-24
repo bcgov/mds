@@ -121,9 +121,7 @@ export const documentNameColumnNew = (
     render: (text: string, record: MineDocument) => {
       const docLink = (
         <a
-          style={
-            record?.number_prev_versions > 0 && !record?.is_archived ? { marginLeft: "14px" } : {}
-          }
+          style={record?.number_prev_versions > 0 ? { marginLeft: "14px" } : {}}
           onClick={() => downloadFileFromDocumentManager(record)}
         >
           {text}
