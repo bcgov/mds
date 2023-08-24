@@ -7,7 +7,7 @@ from cerberus import Validator
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy import func, or_, and_
+from sqlalchemy import func, and_
 from app.extensions import db
 from sqlalchemy.sql import table, column
 from app.api.utils.include.user_info import User
@@ -168,39 +168,38 @@ class ActivityNotification(AuditMixin, Base):
             .all()] if idempotency_key else []
 
         validated_notification_document = validate_document(document)
-        unread_renotify_and_read_notify_users = []
+        unread_notifications_user_list = []
+        expired_unread_notification_user_list = []
         if(renotify_period_minutes > 0):
           # Calculate the datetime that was renotify_period_minutes minutes ago
           renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
 
           # Filter to retrived unread records for renotifying and notify for read user if the same activity type
-          unread_renotify_and_read_notify_query = cls.query.with_entities(cls.notification_recipient)\
+          expired_unread_notification_query = cls.query.with_entities(cls.notification_recipient)\
                 .filter_by(notification_document = validated_notification_document)\
                 .filter(
-                  or_(
-                    and_(
-                      cls.notification_read==False,
+                  and_(
                       cls.activity_type == activity_type,
-                      cls.create_timestamp < renotify_timestamp
-                    ),
-                    and_(
-                      cls.notification_read==True,
-                      cls.activity_type == activity_type,
-                      cls.create_timestamp >= renotify_timestamp,
-                      (
-                        cls.query.with_entities(cls.notification_recipient)\
-                        .filter(
-                            cls.notification_read == False,
-                            cls.activity_type == activity_type,
-                            cls.create_timestamp >= renotify_timestamp,
-                            cls.notification_document == validated_notification_document)
-                        ).count() == 0
-                      )
-                    )
-                  )\
-                .order_by(cls.create_timestamp)
+                      cls.create_timestamp < renotify_timestamp,
+                      cls.notification_read == False
+                  )
+                )\
+                .order_by(cls.notification_recipient)
 
-          unread_renotify_and_read_notify_users = [res[0] for res in unread_renotify_and_read_notify_query.all()]
+          expired_unread_notification_user_list = [res[0] for res in expired_unread_notification_query.all()]
+
+          unread_notifications_query = cls.query.with_entities(cls.notification_recipient)\
+                .filter_by(notification_document = validated_notification_document)\
+                .filter(
+                      and_(
+                        cls.activity_type == activity_type,
+                        cls.create_timestamp >= renotify_timestamp,
+                        cls.notification_read == False
+                      )
+                )\
+                .order_by(cls.notification_recipient)
+
+          unread_notifications_user_list = [res[0] for res in unread_notifications_query.all()]
 
         notifications = []
 
@@ -208,8 +207,15 @@ class ActivityNotification(AuditMixin, Base):
 
             formatted_user_name = user.replace('idir\\', '')
 
-            if formatted_user_name not in already_sent_notification_recipients and \
-              formatted_user_name in unread_renotify_and_read_notify_users:
+            if(renotify_period_minutes < 0):
+              # If renotify period is not set or mines value idempotency_key usecase is considered
+              if formatted_user_name not in already_sent_notification_recipients:
+                  notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
+                  notifications.append(notification)
+
+            else:
+              # Considering the renotify_expiration period flow.
+              if (formatted_user_name in expired_unread_notification_user_list) or (formatted_user_name not in unread_notifications_user_list):
                 notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)
                 notifications.append(notification)
 
@@ -218,7 +224,7 @@ class ActivityNotification(AuditMixin, Base):
 
             if commit:
                 db.session.commit()
-        
+
         return notifications
 
     @classmethod

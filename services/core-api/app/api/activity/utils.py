@@ -14,7 +14,7 @@ def trigger_notification(message, activity_type, mine, entity_name, entity_guid,
     :param idempotency_key: String that should determine whether or not a user has already received the given notifciation. If triggering a notification for the same user with the same idempotency_key, the second notification will not be sent.
     :param recipients: Send notification to all user types, or only recipients on Minespace or Core - ActivityRecipients
     :param commit: Whether or not to commit the transaction on success, or leave it up to the caller
-    :param renotify_period_minutes: Renotify (if the previous notification is not read) period in minutes, this will be ignored if not set or any minus values provided.
+    :param renotify_period_minutes: Renotify (if the previous notification is not read) period in minutes, this will be ignored if not set or any minus values provided. If this is set to a positive value, then idempotency_key is not considered and notifications will not be sent before the expiration time for the notification activity with the same values.
     """
 
     document = {
