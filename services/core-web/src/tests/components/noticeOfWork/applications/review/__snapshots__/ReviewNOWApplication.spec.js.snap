@@ -212,6 +212,38 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <div
               className="field-title"
             >
+              This mine is proposed for:
+            </div>
+            <Field
+              component={[Function]}
+              customOptions={
+                Array [
+                  Object {
+                    "label": "Exploration Activities",
+                    "value": "Exploration Activities",
+                  },
+                  Object {
+                    "label": "Production Mining",
+                    "value": "Production Mining",
+                  },
+                  Object {
+                    "label": "Both",
+                    "value": "Both",
+                  },
+                ]
+              }
+              disabled={true}
+              id="mine_purpose"
+              name="mine_purpose"
+            />
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+          >
+            <div
+              className="field-title"
+            >
               Permit Number
               <NOWOriginalValueTooltip
                 isVisible={true}
@@ -304,6 +336,22 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <div
               className="field-title"
             >
+              Life of the Mine
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="term_of_application"
+              name="term_of_application"
+            />
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+          >
+            <div
+              className="field-title"
+            >
               ATS Project Number
               <NOWOriginalValueTooltip
                 isVisible={true}
@@ -329,32 +377,22 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         gutter={16}
       >
         <Col
-          span={24}
+          md={12}
+          sm={24}
         >
           <div
             className="field-title"
           >
-            First year of multi-year, area based application?
+            Years sought for authorization to complete this work
           </div>
           <Field
             component={[Function]}
-            data={
-              Array [
-                Object {
-                  "label": "Yes",
-                  "value": true,
-                },
-                Object {
-                  "label": "No",
-                  "value": false,
-                },
-              ]
-            }
             disabled={true}
-            id="is_first_year_of_multi"
-            name="is_first_year_of_multi"
+            id="term_of_application"
+            name="term_of_application"
             validate={
               Array [
+                [Function],
                 [Function],
               ]
             }
@@ -379,6 +417,39 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             disabled={true}
             id="application_permit_type_code"
             name="application_permit_type_code"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </Col>
+        <Col
+          md={12}
+          sm={24}
+        >
+          <div
+            className="field-title"
+          >
+            First year of multi-year, area based application?
+          </div>
+          <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "Yes",
+                  "value": true,
+                },
+                Object {
+                  "label": "No",
+                  "value": false,
+                },
+              ]
+            }
+            disabled={true}
+            id="is_first_year_of_multi"
+            name="is_first_year_of_multi"
             validate={
               Array [
                 [Function],
@@ -551,17 +622,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   [Function],
                 ]
               }
-            />
-            <div
-              className="field-title"
-            >
-              Life of the Mine
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="term_of_application"
-              name="term_of_application"
             />
             <div
               className="field-title"
