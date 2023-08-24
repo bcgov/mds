@@ -2,6 +2,13 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <div>
+  <Connect(DocumentCompression)
+    compressionInProgress={[Function]}
+    documentType=""
+    isCompressionModalVisible={false}
+    rows={Array []}
+    setCompressionModalVisible={[Function]}
+  />
   <CoreTable
     columns={
       Array [

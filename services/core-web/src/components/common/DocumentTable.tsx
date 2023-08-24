@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -9,9 +9,7 @@ import {
 import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
-import BeginCompressionModal from "@/components/modalContent/BeginCompressionModal";
-import CompressedFilesDownloadModal from "../modalContent/CompressedFilesDownloadModal";
-import CompressionNotificationProgressBar from "./CompressionNotificationProgressBar";
+import DocumentCompression from "./DocumentCompression";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -30,13 +28,8 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { Dropdown, Button, MenuProps, notification } from "antd";
+import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import {
-  documentsCompression,
-  pollDocumentsCompressionProgress,
-} from "@/actionCreators/documentActionCreator";
-import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -60,10 +53,7 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
-  documentsCompression: ActionCreator<typeof documentsCompression>;
-  pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
   handleRowSelectionChange: (arg1: MineDocument[]) => void;
-  startFilesCompression: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -87,17 +77,10 @@ export const DocumentTable = ({
   ...props
 }: DocumentTableProps) => {
   const [rowSelection, setRowSelection] = useState([]);
-  const [isBeginCompressionModalVisible, setBeginCompressionModalVisible] = useState(false);
-  const [isReadyForDownloadModalVisible, setReadyForDownloadModalVisible] = useState(false);
-  const [isCompressionProgressVisible, setCompressionProgressVisible] = useState(false);
-  const [compressionProgress, setCompressionProgress] = useState(0);
+  const [isCompressionModal, setCompressionModal] = useState(false);
+  const [isCompressionInProgress, setCompressionInProgress] = useState(false);
   const [documentTypeCode, setDocumentTypeCode] = useState("");
-  const [notificationTopPosition, setNotificationTopPosition] = useState(0);
-  const [fileToDownload, setFileToDownload] = useState("");
-  const [entityTitle, setEntityTitle] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
-
-  const progressRef = useRef(false);
 
   const allowedTableActions = {
     [FileOperations.View]: true,
@@ -278,91 +261,6 @@ export const DocumentTable = ({
     setRowSelection(value);
   };
 
-  const handleCloseCompressionNotification = () => {
-    progressRef.current = false;
-    setReadyForDownloadModalVisible(false);
-    notification.close(documentTypeCode);
-    setCompressionProgressVisible(false);
-    setCompressionProgress(0);
-  };
-
-  const startFilesCompression = () => {
-    setBeginCompressionModalVisible(false);
-    notification.warning({
-      key: documentTypeCode,
-      className: `progressNotification-${documentTypeCode}`,
-      message: "Compressing...",
-      description: "Preparing files for download",
-      duration: 0,
-      placement: "topRight",
-      onClose: handleCloseCompressionNotification,
-      top: 85,
-    });
-
-    const mineGuid = rowSelection[0].mine_guid;
-    const documentManagerGuids = rowSelection
-      .filter((row) => row.is_latest_version)
-      .map((filteredRows) => filteredRows.document_manager_guid);
-
-    setEntityTitle(rowSelection[0].entity_title);
-    if (documentManagerGuids.length === 0) {
-      setTimeout(() => {
-        notification.warning({
-          key: documentTypeCode,
-          className: `progressNotification-${documentTypeCode}`,
-          message: "Error starting file compression",
-          description:
-            "Only archived files or previous document versions were selected. To download \
-          them you must go to the archived documents view or download them individually.",
-          duration: 15,
-          placement: "topRight",
-          onClose: handleCloseCompressionNotification,
-          top: 85,
-        });
-      }, 2000);
-    } else {
-      props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
-        const taskId = response.data && response.data.task_id ? response.data.task_id : null;
-        if (!taskId) {
-          setTimeout(() => {
-            notification.warning({
-              key: documentTypeCode,
-              className: `progressNotification-${documentTypeCode}`,
-              message: "Error starting file compression",
-              description: "An invalid task id was provided",
-              duration: 10,
-              placement: "topRight",
-              onClose: handleCloseCompressionNotification,
-              top: 85,
-            });
-          }, 2000);
-        } else {
-          const documentTypeIdentifier = `.progressNotification-${documentTypeCode}`;
-          const notificationElement = document.querySelector(documentTypeIdentifier);
-          const notificationPosition = notificationElement.getBoundingClientRect();
-          setNotificationTopPosition(notificationPosition.top);
-          progressRef.current = true;
-          setCompressionProgressVisible(true);
-          const poll = async () => {
-            const { data } = await props.pollDocumentsCompressionProgress(taskId);
-            if (data.progress) {
-              setCompressionProgress(data.progress);
-            }
-
-            if (data.state !== "SUCCESS" && progressRef.current) {
-              setTimeout(poll, 2000);
-            } else {
-              setFileToDownload(data.success_docs[0]);
-              setReadyForDownloadModalVisible(true);
-            }
-          };
-
-          poll();
-        }
-      });
-    }
-  };
-
   const bulkItems: MenuProps["items"] = [
     {
       key: "0",
@@ -372,7 +270,7 @@ export const DocumentTable = ({
           type="button"
           className="full add-permit-dropdown-button"
           onClick={() => {
-            setBeginCompressionModalVisible(true);
+            setCompressionModal(true);
           }}
         >
           <div>Download File(s)</div>
@@ -391,9 +289,9 @@ export const DocumentTable = ({
     let element = (
       <Button
         className="ant-btn ant-btn-primary"
-        disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+        disabled={rowSelection.length === 0 || isCompressionInProgress}
         onClick={() => {
-          setBeginCompressionModalVisible(true);
+          setCompressionModal(true);
         }}
       >
         <div>Download</div>
@@ -404,7 +302,7 @@ export const DocumentTable = ({
         <Dropdown
           menu={{ items: bulkItems }}
           placement="bottomLeft"
-          disabled={rowSelection.length === 0 || isCompressionProgressVisible}
+          disabled={rowSelection.length === 0 || isCompressionInProgress}
         >
           <Button className="ant-btn ant-btn-primary">
             Action
@@ -437,23 +335,6 @@ export const DocumentTable = ({
     if (showVersionHistory) {
       element = (
         <div>
-          <BeginCompressionModal
-            isModalVisible={isBeginCompressionModalVisible}
-            filesCompression={startFilesCompression}
-            setModalVisible={setBeginCompressionModalVisible}
-          />
-          {isCompressionProgressVisible && (
-            <CompressionNotificationProgressBar
-              compressionProgress={compressionProgress}
-              notificationTopPosition={notificationTopPosition}
-            />
-          )}
-          <CompressedFilesDownloadModal
-            isModalVisible={isReadyForDownloadModalVisible}
-            closeCompressNotification={handleCloseCompressionNotification}
-            documentManagerGuid={fileToDownload}
-            entityTitle={entityTitle}
-          />
           <CoreTable
             condition={isLoaded}
             dataSource={documents}
@@ -482,6 +363,13 @@ export const DocumentTable = ({
 
   return (
     <div>
+      <DocumentCompression
+        documentType={documentTypeCode}
+        rows={rowSelection}
+        setCompressionModalVisible={setCompressionModal}
+        isCompressionModalVisible={isCompressionModal}
+        compressionInProgress={setCompressionInProgress}
+      />
       {renderBulkActions()}
       {renderCoreTable()}
     </div>
@@ -500,8 +388,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       archiveMineDocuments,
       openDocument,
-      documentsCompression,
-      pollDocumentsCompressionProgress,
     },
     dispatch
   );

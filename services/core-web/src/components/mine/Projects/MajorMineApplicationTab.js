@@ -21,9 +21,12 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -71,6 +74,7 @@ export class MajorMineApplicationTab extends Component {
   state = {
     fixedTop: false,
     isLoaded: false,
+    isCompressionModal: false,
   };
 
   componentDidMount() {
@@ -260,6 +264,26 @@ export class MajorMineApplicationTab extends Component {
             </Col>
           </Row>
           <br />
+          <DocumentCompression
+            documentType={"all"}
+            rows={documents}
+            setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
+            isCompressionModalVisible={this.state.isCompressionModal}
+          />
+          <Button
+            style={{ float: "right" }}
+            className="ant-btn ant-btn-primary"
+            onClick={() => {
+              this.setState({
+                isCompressionModal: true,
+              });
+            }}
+          >
+            <div>
+              <DownloadOutlined />
+              &nbsp; Download All Application Files
+            </div>
+          </Button>
           <Typography.Title level={4} id="major-mine-application">
             Application Files
           </Typography.Title>

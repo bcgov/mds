@@ -3,14 +3,15 @@ import { Modal, Typography } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
-interface CompressedFilesDownloadModalProps {
+interface DocumentCompressedDownloadModalProps {
   isModalVisible: boolean;
   closeCompressNotification: () => void;
   documentManagerGuid: string;
   entityTitle: string;
 }
-
-export const CompressedFilesDownloadModal: FC<CompressedFilesDownloadModalProps> = (props) => (
+export const DocumentCompressedDownloadModal: FC<DocumentCompressedDownloadModalProps> = (
+  props
+) => (
   <Modal
     title=""
     open={props.isModalVisible}
@@ -35,4 +36,4 @@ export const CompressedFilesDownloadModal: FC<CompressedFilesDownloadModalProps>
   </Modal>
 );
 
-export default CompressedFilesDownloadModal;
+export default DocumentCompressedDownloadModal;

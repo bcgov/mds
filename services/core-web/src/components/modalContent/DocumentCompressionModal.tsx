@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { Modal, Typography } from "antd";
 
-interface BeginCompressionModalProps {
+interface DocumentCompressionModalProps {
   isModalVisible: boolean;
   filesCompression: () => void;
   setModalVisible: (arg1: boolean) => void;
 }
 
-export const BeginCompressionModal: FC<BeginCompressionModalProps> = (props) => (
+export const DocumentCompressionModal: FC<DocumentCompressionModalProps> = (props) => (
   <Modal
     title=""
     open={props.isModalVisible}
@@ -26,4 +26,4 @@ export const BeginCompressionModal: FC<BeginCompressionModalProps> = (props) => 
   </Modal>
 );
 
-export default BeginCompressionModal;
+export default DocumentCompressionModal;
