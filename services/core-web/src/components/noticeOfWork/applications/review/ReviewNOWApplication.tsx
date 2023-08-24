@@ -377,8 +377,8 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
               component={RenderRadioButtons}
               disabled={props.isViewMode}
               customOptions={[
-                { label: "Exploration Activities", value: "Exploration" },
-                { label: "Production Mining", value: "Production" },
+                { label: "Exploration Activities", value: "Exploration Activities" },
+                { label: "Production Mining", value: "Production Mining" },
                 { label: "Both", value: "Both" },
               ]}
             />
