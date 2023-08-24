@@ -1,3 +1,4 @@
+
 from app.api.utils.include.user_info import User
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
@@ -31,6 +32,31 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_by = db.Column(db.String(60))
 
     versions = db.relationship('MineDocumentVersion', lazy='joined')
+
+    major_mine_application_document_xref = db.relationship(
+        'MajorMineApplicationDocumentXref',
+        lazy='select',
+        uselist=False,
+        primaryjoin='and_(MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+    )
+    project_summary_document_xref = db.relationship(
+        'ProjectSummaryDocumentXref',
+        lazy='select',
+        uselist=False,
+        primaryjoin='and_(ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+    )
+    project_decision_package_document_xref = db.relationship(
+        'ProjectDecisionPackageDocumentXref',
+        lazy='select',
+        uselist=False,
+        primaryjoin='and_(ProjectDecisionPackageDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+    )
+    information_requirements_table_document_xref = db.relationship(
+        'InformationRequirementsTableDocumentXref',
+        lazy='select',
+        uselist=False,
+        primaryjoin='and_(InformationRequirementsTableDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+    )
 
     mine_name = association_proxy('mine', 'mine_name')
 

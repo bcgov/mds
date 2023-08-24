@@ -23,8 +23,9 @@ import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
@@ -86,14 +87,13 @@ export class MajorMineApplicationTab extends Component {
     this.handleScroll();
   }
 
+
   async fetchData() {
     const { projectGuid } = this.props.match.params;
     const project = await this.props.fetchProjectById(projectGuid);
     this.props.fetchMineDocuments(project.mine_guid, {
       is_archived: true,
-      ...(project?.major_mine_application?.major_mine_application_guid && {
-        major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
-      }),
+      project_guid: projectGuid,
     });
   }
 
@@ -137,7 +137,6 @@ export class MajorMineApplicationTab extends Component {
     ) : (
       <Typography.Title level={4}>{sectionTitle}</Typography.Title>
     );
-
     return (
       <div id={sectionHref}>
         {titleElement}
@@ -146,14 +145,6 @@ export class MajorMineApplicationTab extends Component {
           canArchiveDocuments={true}
           onArchivedDocuments={() => this.fetchData()}
           additionalColumnProps={[{ key: "document_name", colProps: { width: "80%" } }]}
-          additionalColumns={[
-            renderCategoryColumn(
-              "major_mine_application_document_type_code",
-              "File Location",
-              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-              true
-            ),
-          ]}
           isLoaded={this.state.isLoaded}
           showVersionHistory={true}
           enableBulkActions={true}
@@ -163,7 +154,18 @@ export class MajorMineApplicationTab extends Component {
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection documents={this.props.mineDocuments} />;
+    return <ArchivedDocumentsSection
+      additionalColumns={[
+        renderCategoryColumn(
+          "category_code",
+          "Category",
+          Strings.CATEGORY_CODE,
+          true
+        ),
+      ]}
+      documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
+        ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+    />
   };
 
   render() {
@@ -291,7 +293,7 @@ export class MajorMineApplicationTab extends Component {
             "Primary Documents",
             "primary-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "PRM") ||
-              [],
+            [],
             true
           )}
           <br />
@@ -299,7 +301,7 @@ export class MajorMineApplicationTab extends Component {
             "Spatial Components",
             "spatial-components",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPT") ||
-              [],
+            [],
             true
           )}
           <br />
@@ -307,7 +309,7 @@ export class MajorMineApplicationTab extends Component {
             "Supporting Documents",
             "supporting-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPR") ||
-              [],
+            [],
             true
           )}
           <br />

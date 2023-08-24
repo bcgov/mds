@@ -246,17 +246,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
         enableBulkActions={true}
@@ -288,17 +277,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 "width": "80%",
               },
               "key": "document_name",
-            },
-          ]
-        }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
             },
           ]
         }
@@ -336,17 +314,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
         enableBulkActions={true}
@@ -381,17 +348,6 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
         enableBulkActions={true}
@@ -401,7 +357,20 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       />
     </div>
     <br />
-    <ArchivedDocumentsSection />
+    <ArchivedDocumentsSection
+      additionalColumns={
+        Array [
+          Object {
+            "dataIndex": "category_code",
+            "key": "category_code",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Category",
+          },
+        ]
+      }
+      documents={Array []}
+    />
   </div>
 </Fragment>
 `;
