@@ -343,6 +343,13 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               disabled={true}
               id="term_of_application"
               name="term_of_application"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                  [Function],
+                ]
+              }
             />
           </Col>
           <Col
@@ -392,6 +399,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             name="term_of_application"
             validate={
               Array [
+                [Function],
+                [Function],
+                [Function],
                 [Function],
                 [Function],
               ]

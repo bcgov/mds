@@ -23,6 +23,9 @@ import {
   requiredRadioButton,
   validateSelectOptions,
   number,
+  min,
+  max,
+  wholeNumber,
 } from "@common/utils/Validate";
 import * as Strings from "@common/constants/strings";
 import { USER_ROLES } from "@mds/common";
@@ -251,7 +254,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
           name="term_of_application"
           component={RenderField}
           disabled={props.isViewMode}
-          validate={[required, number]}
+          validate={[required, number, min(1), max(99), wholeNumber]}
         />
       </Col>
       <Col md={12} sm={24}>
@@ -470,6 +473,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
               name="term_of_application"
               component={RenderField}
               disabled
+              validate={[min(1), max(99), wholeNumber]}
             />
           </Col>
           <Col md={12} sm={24}>
