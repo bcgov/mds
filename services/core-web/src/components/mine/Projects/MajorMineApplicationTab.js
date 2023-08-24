@@ -180,7 +180,7 @@ export class MajorMineApplicationTab extends Component {
       (doc) =>
         new MajorMineApplicationDocument({
           ...doc,
-          project_title: this.props.project.project_title,
+          entity_title: this.props.project.project_title,
         })
     );
 
