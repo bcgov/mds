@@ -155,8 +155,8 @@ export class MajorMineApplicationTab extends Component {
             ),
           ]}
           isLoaded={this.state.isLoaded}
-          showVersionHistory={true}
-          enableBulkActions={true}
+          showVersionHistory={false}
+          enableBulkActions={false}
         />
       </div>
     );
