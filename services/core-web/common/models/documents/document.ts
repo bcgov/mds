@@ -71,7 +71,7 @@ export class MineDocument {
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
     this.is_latest_version = jsonObject.is_latest_version ?? true;
-    this.entity_title = jsonObject.project_title;
+    this.entity_title = jsonObject.project_title ?? "";
     this.setCalculatedProperties(jsonObject);
   }
 
