@@ -228,7 +228,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
 
   const fileColumns = (isSortable: boolean) => {
     return [
-      renderDocumentLinkColumn("document_name", "File Name", isSortable, false),
+      renderDocumentLinkColumn("document_name", "File Name", isSortable),
       renderTextColumn("document_category", "Category", isSortable, EMPTY_FIELD),
       renderDateColumn("create_timestamp", "Uploaded", isSortable, null, EMPTY_FIELD),
       ...(disabled

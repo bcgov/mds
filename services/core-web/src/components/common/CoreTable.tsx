@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableProps, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
-import { ExpandableConfig } from "antd/lib/table/interface";
+import { ExpandableConfig, TableRowSelection } from "antd/lib/table/interface";
 
 interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   getDataSource?: (record: T) => any[];
@@ -21,6 +21,7 @@ interface CoreTableProps<T> extends TableProps<T> {
   classPrefix?: string;
   emptyText?: string;
   expandProps?: CoreTableExpandConfig<any> | null;
+  rowSelection?: TableRowSelection<any>;
 }
 
 const CoreTable = <T,>(props: CoreTableProps<T>) => {

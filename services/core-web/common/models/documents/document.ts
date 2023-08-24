@@ -55,6 +55,8 @@ export class MineDocument {
 
   public allowed_actions: FileOperations[];
 
+  public entity_title: string;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -69,6 +71,7 @@ export class MineDocument {
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
     this.is_latest_version = jsonObject.is_latest_version ?? true;
+    this.entity_title = jsonObject.entity_title ?? "";
     this.setCalculatedProperties(jsonObject);
   }
 

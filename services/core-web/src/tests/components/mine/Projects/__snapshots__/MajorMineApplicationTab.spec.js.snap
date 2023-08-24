@@ -195,6 +195,26 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       </Col>
     </Row>
     <br />
+    <Connect(DocumentCompression)
+      documentType="all"
+      isCompressionModalVisible={false}
+      rows={Array []}
+      setCompressionModalVisible={[Function]}
+    />
+    <Button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "float": "right",
+        }
+      }
+    >
+      <div>
+        <ForwardRef(DownloadOutlined) />
+          Download All Application Files
+      </div>
+    </Button>
     <ForwardRef
       id="major-mine-application"
       level={4}
@@ -239,6 +259,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -283,6 +304,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -327,6 +349,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -371,6 +394,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}

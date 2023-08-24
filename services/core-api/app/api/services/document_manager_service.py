@@ -177,12 +177,12 @@ class DocumentManagerService():
         return resp.json()
 
     @classmethod
-    def initialize_document_zip(cls, request, mine_document_guids, zip_file_name):
+    def initialize_document_zip(cls, request, document_manager_guids, zip_file_name):
         """
         Initializes a document zip operation by sending a POST request to the Document Manager API.
 
         :param request: The Flask request object.
-        :param mine_document_guids: A list of document GUIDs to include in the zip file.
+        :param document_manager_guids: A list of document GUIDs to include in the zip file.
         :param zip_file_name: The name to give the zip file (this will default to the mine number and the dateTime if not provided).
         :return: A JSON object containing the following keys:
             - "message": A message indicating that a create_zip job has been added to the task queue.
@@ -192,7 +192,7 @@ class DocumentManagerService():
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip',
             headers={key: value
                     for (key, value) in request.headers if key != 'Host'},
-            data=json.dumps({'mine_document_guids': mine_document_guids, 'zip_file_name': zip_file_name}))
+            data=json.dumps({'document_manager_guids': document_manager_guids, 'zip_file_name': zip_file_name}))
 
         current_app.logger.info(f'initialize_document_zip: {resp.content}')
 

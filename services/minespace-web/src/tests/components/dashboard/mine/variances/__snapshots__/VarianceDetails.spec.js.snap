@@ -70,6 +70,7 @@ exports[`VarianceDetails renders properly 1`] = `
           "create_user": undefined,
           "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
           "document_name": "test.pdf",
+          "entity_title": "",
           "file_type": ".pdf",
           "is_archived": false,
           "is_latest_version": true,

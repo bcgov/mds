@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompressionNotificationProgressBar renders properly 1`] = `
+<Progress
+  className="compressionProgressBar"
+  percent={0}
+  showInfo={false}
+  strokeColor="#5e46a1"
+  strokeLinecap="square"
+  style={
+    Object {
+      "top": "-10px",
+    }
+  }
+  trailColor="#d9d9d9"
+/>
+`;

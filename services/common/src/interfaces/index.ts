@@ -25,3 +25,5 @@ export * from "./activity";
 export * from "./complianceArticle.interface";
 export * from "./user";
 export * from "./projects";
+export * from "./documentZipTask.interface";
+export * from "./documentZipProgress.interface";
