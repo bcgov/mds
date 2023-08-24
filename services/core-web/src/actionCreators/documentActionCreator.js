@@ -204,3 +204,45 @@ export const generateExplosivesPermitDocument = (
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+// Document Compression/Zipping
+
+export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatch) => {
+  dispatch(request(reducerTypes.DOCUMENTS_COMPRESSION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.DOCUMENTS_COMPRESSION(mineGuid)}`,
+      { document_manager_guids: documentManagerGuids },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
+  dispatch(request(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.POLL_DOCUMENTS_COMPRESSION_PROGRESS(taskId)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(documentActions.storeDocumentCompressionProgress(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

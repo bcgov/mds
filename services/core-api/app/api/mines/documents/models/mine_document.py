@@ -1,18 +1,12 @@
-import random
-import uuid
 
 from app.api.utils.include.user_info import User
-
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from datetime import datetime
 from marshmallow import fields
-from app.config import Config
-
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class MineDocument(SoftDeleteMixin, AuditMixin, Base):

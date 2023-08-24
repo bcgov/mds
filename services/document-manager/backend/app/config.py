@@ -34,7 +34,7 @@ class Config(object):
                                                     CACHE_REDIS_PORT)
 
     # Celery settings
-    CELERY_RESULT_BACKEND =  f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_RESULT_BACKEND = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
 
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
@@ -88,7 +88,7 @@ class TestConfig(Config):
     CACHE_TYPE = "null"
 
     DB_NAME = os.environ.get('DB_NAME_TEST', 'db_name_test')
-    DB_URL = f"postgres://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     JWT_OIDC_TEST_MODE = True

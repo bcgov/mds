@@ -257,14 +257,6 @@ export const ReviewApplicationFeeContent: FC<ReviewApplicationFeeContentProps> =
           component={RenderField}
           disabled
         />
-        <div className="field-title">Years Sought for Authorization to Complete this Work</div>
-        <Field
-          id="term_of_application"
-          name="term_of_application"
-          component={RenderField}
-          validate={[number]}
-          disabled={isViewMode || !isAdmin}
-        />
         <div className="field-title">
           Proposed Annual Maximum Tonnage
           {isPreLaunch && <NOWFieldOriginTooltip />}

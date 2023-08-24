@@ -292,16 +292,16 @@ class DocumentResource(Resource):
         @requires_any_of(DOCUMENT_UPLOAD_ROLES)
         def post(self):
             from app.services.commands_helper import create_zip_task
-            mine_document_guids = request.json.get('mine_document_guids', [])
+            document_manager_guids = request.json.get('document_manager_guids', [])
             zip_file_name = request.json.get('zip_file_name', None)
             
             if not zip_file_name:
                 raise BadRequest('No file name provided')
-            
-            if not mine_document_guids:
+
+            if not document_manager_guids:
                 raise BadRequest('No document guids provided')
 
-            response = create_zip_task(zip_file_name, mine_document_guids)
+            response = create_zip_task(zip_file_name, document_manager_guids)
 
             return jsonify(response)
         
@@ -324,7 +324,6 @@ class DocumentResource(Resource):
                 }
             elif task.state == 'SUCCESS':
                 success_docs = json.loads(task.info).get('success_docs', '[]')
-                # success_docs = task.info.get('success_docs', [])
                 response = {
                     'state': task.state,
                     'progress': 100,

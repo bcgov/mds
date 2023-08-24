@@ -181,9 +181,9 @@ def abort_task(task_id):
 
     return json.loads(response.content)
 
-def create_zip_task(zip_file_name, mine_document_guids):
+def create_zip_task(zip_file_name, document_manager_guids):
     """Creates a task that zips documents."""
-    docs = Document.query.filter(Document.document_guid.in_(mine_document_guids)).all()
+    docs = Document.query.filter(Document.document_guid.in_(document_manager_guids)).all()
     if (len(docs) == 0):
         return 'No documents matching the passed ids are stored on the object store'
     return start_zip_job('create_zip', docs, zip_docs, zip_file_name)

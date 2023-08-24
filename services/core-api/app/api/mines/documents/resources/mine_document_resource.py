@@ -14,7 +14,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 
-from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL, DOCUMENT_MANAGER_ZIP
 
 from app.api.services.document_manager_service import DocumentManagerService
 
@@ -129,13 +129,13 @@ class MineDocumentArchiveResource(Resource, UserMixin):
 
         return None, 204
 
-class MineDocumentZipResource(Resource, UserMixin):
+class ZipResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
-        'mine_document_guids',
+        'document_manager_guids',
         type=list,
-        help='Mine Document GUIDs',
+        help='Document Manager GUIDs',
         location='json',
         required=True
     )
@@ -152,7 +152,7 @@ class MineDocumentZipResource(Resource, UserMixin):
         description='Initializes the zipping of the given mine documents and returns an id for the file to be watched.')
     
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    @api.expect(ARCHIVE_MINE_DOCUMENT)
+    @api.expect(DOCUMENT_MANAGER_ZIP)
     @api.response(200, 'Successfully initialized zipping of documents')
     def post(self, mine_guid):        
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -161,19 +161,20 @@ class MineDocumentZipResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
         
         args = self.parser.parse_args()
-        mine_document_guids = args.get('mine_document_guids')
+       
+        document_manager_guids = args.get('document_manager_guids')
         zip_file_name = args.get('zip_file_name')
         
         if not zip_file_name:
             zip_file_name = f'{mine.mine_no}_{datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")}.zip'
-        
-        if not mine_document_guids:
+
+        if not document_manager_guids:
             raise BadRequest('No document guids provided')
 
-        return DocumentManagerService.initialize_document_zip(request, mine_document_guids, zip_file_name)
+        return DocumentManagerService.initialize_document_zip(request, document_manager_guids, zip_file_name)
     
     
-class MineDocumentZipProgressResource(Resource, UserMixin):
+class ZipProgressResource(Resource, UserMixin):
     api.doc(
         'Returns the progress of the zipping of the given mine documents.',
         )
