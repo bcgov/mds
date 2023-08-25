@@ -176,7 +176,7 @@ export class MajorMineApplicationTab extends Component {
 
     const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
-    let documents = this.props.project.major_mine_application.documents;
+    let documents = this.props.project?.major_mine_application?.documents ?? [];
     documents = documents.map(
       (doc) =>
         new MajorMineApplicationDocument({
