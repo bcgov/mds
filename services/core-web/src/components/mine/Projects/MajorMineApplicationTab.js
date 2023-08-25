@@ -87,7 +87,6 @@ export class MajorMineApplicationTab extends Component {
     this.handleScroll();
   }
 
-
   async fetchData() {
     const { projectGuid } = this.props.match.params;
     const project = await this.props.fetchProjectById(projectGuid);
@@ -154,18 +153,18 @@ export class MajorMineApplicationTab extends Component {
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection
-      additionalColumns={[
-        renderCategoryColumn(
-          "category_code",
-          "Category",
-          Strings.CATEGORY_CODE,
-          true
-        ),
-      ]}
-      documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
-        ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
-    />
+    return (
+      <ArchivedDocumentsSection
+        additionalColumns={[
+          renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
+        ]}
+        documents={
+          this.props.mineDocuments && this.props.mineDocuments.length > 0
+            ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+            : []
+        }
+      />
+    );
   };
 
   render() {
@@ -274,6 +273,7 @@ export class MajorMineApplicationTab extends Component {
           />
           <Button
             style={{ float: "right" }}
+            disabled={documents.length === 0}
             className="ant-btn ant-btn-primary"
             onClick={() => {
               this.setState({
@@ -293,7 +293,7 @@ export class MajorMineApplicationTab extends Component {
             "Primary Documents",
             "primary-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "PRM") ||
-            [],
+              [],
             true
           )}
           <br />
@@ -301,7 +301,7 @@ export class MajorMineApplicationTab extends Component {
             "Spatial Components",
             "spatial-components",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPT") ||
-            [],
+              [],
             true
           )}
           <br />
@@ -309,7 +309,7 @@ export class MajorMineApplicationTab extends Component {
             "Supporting Documents",
             "supporting-documents",
             documents.filter((doc) => doc.major_mine_application_document_type_code === "SPR") ||
-            [],
+              [],
             true
           )}
           <br />

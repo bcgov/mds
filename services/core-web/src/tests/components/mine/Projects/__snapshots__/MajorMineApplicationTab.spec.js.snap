@@ -203,6 +203,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     />
     <Button
       className="ant-btn ant-btn-primary"
+      disabled={true}
       onClick={[Function]}
       style={
         Object {
