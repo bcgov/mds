@@ -266,6 +266,17 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       uploadType="supporting_document"
     />
     <ArchivedDocumentsSection
+      additionalColumns={
+        Array [
+          Object {
+            "dataIndex": "category_code",
+            "key": "category_code",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Category",
+          },
+        ]
+      }
       documentColumns={
         Array [
           Object {
@@ -284,6 +295,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           },
         ]
       }
+      documents={Array []}
     />
   </Form>
 </div>

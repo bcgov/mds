@@ -85,7 +85,9 @@ class FileUpload extends React.Component {
         if (file) {
           this.setState({ file: file, progress: progress, load: load });
         }
-        const uploadUrl = this.props.shouldReplaceFile ? this.props.replaceFileUploadUrl : this.props.uploadUrl;
+        const uploadUrl = this.props.shouldReplaceFile
+          ? this.props.replaceFileUploadUrl
+          : this.props.uploadUrl;
         const fileToUpload = this.state.file ? this.state.file : file;
         const progressFn = this.state.progress ? this.state.progress : progress;
         const loadFn = this.state.load ? this.state.load : load;
@@ -113,14 +115,14 @@ class FileUpload extends React.Component {
               err.originalRequest = err.originalRequest;
 
               if (
-                  !(
-                      this.props.notificationDisabledStatusCodes.length &&
-                      this.props.notificationDisabledStatusCodes.includes(err.response.status_code)
-                  )
+                !(
+                  this.props.notificationDisabledStatusCodes.length &&
+                  this.props.notificationDisabledStatusCodes.includes(err.response.status_code)
+                )
               ) {
                 notification.error({
                   message: `Failed to upload ${
-                      file && fileToUpload.name ? fileToUpload.name : ""
+                    file && fileToUpload.name ? fileToUpload.name : ""
                   }: ${err}`,
                   duration: 10,
                 });
@@ -148,16 +150,16 @@ class FileUpload extends React.Component {
               try {
                 if (this.props.afterSuccess?.irtGuid) {
                   await this.props.afterSuccess.action[1](
-                      this.props.afterSuccess?.projectGuid,
-                      this.props.afterSuccess?.irtGuid,
-                      file,
-                      documentGuid
+                    this.props.afterSuccess?.projectGuid,
+                    this.props.afterSuccess?.irtGuid,
+                    file,
+                    documentGuid
                   );
                 } else {
                   await this.props.afterSuccess.action[0](
-                      this.props.afterSuccess?.projectGuid,
-                      file,
-                      documentGuid
+                    this.props.afterSuccess?.projectGuid,
+                    file,
+                    documentGuid
                   );
                 }
                 this.props.importIsSuccessful(true);
@@ -194,45 +196,45 @@ class FileUpload extends React.Component {
     const acceptedFileTypes = uniq(Object.values(this.props.acceptedFileTypesMap));
 
     return (
-        <div>
-          <FilePond
-              ref={(ref) => (this.filepond = ref)}
-              beforeAddFile={this.props.beforeAddFile}
-              beforeDropFile={this.props.beforeDropFile}
-              server={this.server}
-              name="file"
-              maxFiles={this.props.maxFiles}
-              allowRevert={this.props.allowRevert}
-              onremovefile={this.props.onRemoveFile}
-              allowMultiple={this.props.allowMultiple}
-              onaddfilestart={this.props.addFileStart}
-              onprocessfiles={this.props.onprocessfiles}
-              allowReorder={this.props.allowReorder}
-              labelIdle={this.props.labelIdle}
-              onprocessfileabort={this.props.onAbort}
-              maxFileSize={this.props.maxFileSize}
-              allowFileTypeValidation={acceptedFileTypes.length > 0}
-              acceptedFileTypes={acceptedFileTypes}
-              itemInsertLocation={this.props?.itemInsertLocation}
-              credits={null}
-              fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
-              fileValidateTypeDetectType={(source, type) =>
-                  new Promise((resolve, reject) => {
-                    // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
-                    if (!type) {
-                      const exts = source.name.split(".");
-                      const ext = exts && exts.length > 0 && `.${exts.pop()}`;
-                      if (ext && ext in this.props.acceptedFileTypesMap) {
-                        type = this.props.acceptedFileTypesMap[ext];
-                      } else {
-                        reject(type);
-                      }
-                    }
-                    resolve(type);
-                  })
+      <div>
+        <FilePond
+          ref={(ref) => (this.filepond = ref)}
+          beforeAddFile={this.props.beforeAddFile}
+          beforeDropFile={this.props.beforeDropFile}
+          server={this.server}
+          name="file"
+          maxFiles={this.props.maxFiles}
+          allowRevert={this.props.allowRevert}
+          onremovefile={this.props.onRemoveFile}
+          allowMultiple={this.props.allowMultiple}
+          onaddfilestart={this.props.addFileStart}
+          onprocessfiles={this.props.onprocessfiles}
+          allowReorder={this.props.allowReorder}
+          labelIdle={this.props.labelIdle}
+          onprocessfileabort={this.props.onAbort}
+          maxFileSize={this.props.maxFileSize}
+          allowFileTypeValidation={acceptedFileTypes.length > 0}
+          acceptedFileTypes={acceptedFileTypes}
+          itemInsertLocation={this.props?.itemInsertLocation}
+          credits={null}
+          fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+          fileValidateTypeDetectType={(source, type) =>
+            new Promise((resolve, reject) => {
+              // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
+              if (!type) {
+                const exts = source.name.split(".");
+                const ext = exts && exts.length > 0 && `.${exts.pop()}`;
+                if (ext && ext in this.props.acceptedFileTypesMap) {
+                  type = this.props.acceptedFileTypesMap[ext];
+                } else {
+                  reject(type);
+                }
               }
-          />
-        </div>
+              resolve(type);
+            })
+          }
+        />
+      </div>
     );
   }
 }

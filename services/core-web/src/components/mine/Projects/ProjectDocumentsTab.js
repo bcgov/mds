@@ -20,6 +20,8 @@ import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import * as Strings from "@common/constants/strings";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -41,6 +43,8 @@ export class ProjectDocumentsTab extends Component {
     isLoaded: false,
   };
 
+  allDocuments = [];
+
   componentDidMount() {
     this.handleFetchData().then(() => {
       this.setState({ isLoaded: true });
@@ -49,6 +53,12 @@ export class ProjectDocumentsTab extends Component {
     window.addEventListener("scroll", this.handleScroll);
     this.handleScroll();
   }
+
+  mergeAllDocuments = (documents) => {
+    if (documents) {
+      this.allDocuments.push(...documents);
+    }
+  };
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -102,7 +112,6 @@ export class ProjectDocumentsTab extends Component {
           )
           .then(() => this.props.fetchProjectById(projectGuid));
       default:
-        return () => {};
     }
   };
 
@@ -152,7 +161,20 @@ export class ProjectDocumentsTab extends Component {
   };
 
   renderArchivedDocumentsSection = (archivedDocuments) => {
-    return <ArchivedDocumentsSection documents={archivedDocuments} />;
+    return (
+      <ArchivedDocumentsSection
+        additionalColumns={[
+          renderCategoryColumn(
+            "category_code",
+            "Category",
+            Strings.CATEGORY_CODE,
+            true
+          ),
+        ]}
+        documents={archivedDocuments && archivedDocuments.length > 0
+          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+      />
+    );
   };
 
   render() {

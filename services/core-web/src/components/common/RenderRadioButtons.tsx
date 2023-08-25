@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import { Radio } from "antd";
+import React, { FC } from "react";
+import { Form, Radio } from "antd";
 
 /**
  * @class RenderRadioButtons - Ant Design `Radio` component used for boolean values in redux-form.
  */
-
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  disabled: PropTypes.bool,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  customOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-};
 
 const defaultProps = {
   disabled: false,
   customOptions: null,
 };
 
-const RenderRadioButtons = (props) => {
+interface RenderRadioButtonsProps {
+  id: string | number;
+  label: string;
+  meta: any;
+  disabled: boolean;
+  input: any;
+  customOptions: { label: string; value: any }[];
+}
+
+const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
   const { meta, label, disabled, input, id, customOptions } = props;
 
   const options = customOptions ?? [
@@ -47,14 +45,13 @@ const RenderRadioButtons = (props) => {
         name={input.name}
         value={input.value}
         onChange={handleRadioChange}
-        id={id}
+        id={id as string}
         options={options}
       />
     </Form.Item>
   );
 };
 
-RenderRadioButtons.propTypes = propTypes;
 RenderRadioButtons.defaultProps = defaultProps;
 
 export default RenderRadioButtons;

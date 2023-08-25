@@ -103,6 +103,7 @@ export class ProjectSummaryDocumentUpload extends Component {
             archiveDocumentsArgs={{ mineGuid: fileUploadParams.mineGuid }}
             onArchivedDocuments={this.props.onArchivedDocuments}
             isViewOnly={!(this.props.isEditMode || this.props.isNewProject)}
+            showVersionHistory={true}
           />
           {(this.props.isEditMode || this.props.isNewProject) && (
             <Field

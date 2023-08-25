@@ -92,15 +92,6 @@ export const MajorMineApplicationReviewSubmit = (props) => {
   );
   const documentColumns = [documentNameColumn(), uploadDateColumn()];
 
-  const additionalColumns = [
-    renderCategoryColumn(
-      "major_mine_application_document_type_code",
-      "File Location",
-      Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-      true
-    ),
-  ];
-
   const columnStyleConfig = tabbedView ? { style: { maxWidth: "67%", margin: "0 auto" } } : {};
 
   return (
@@ -166,7 +157,6 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
-            additionalColumns={additionalColumns}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
@@ -178,7 +168,6 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
-            additionalColumns={additionalColumns}
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
@@ -190,11 +179,19 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
-            additionalColumns={additionalColumns}
           />
 
           <ArchivedDocumentsSection
-            documents={props.mineDocuments}
+            additionalColumns={[
+              renderCategoryColumn(
+                "category_code",
+                "Category",
+                Strings.CATEGORY_CODE,
+                true
+              ),
+            ]}
+            documents={props.mineDocuments && props.mineDocuments.length > 0
+              ? props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
             documentColumns={documentColumns}
           />
         </Col>

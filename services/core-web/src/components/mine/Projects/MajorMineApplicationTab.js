@@ -21,9 +21,13 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature, isFeatureEnabled } from "@mds/common";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -71,6 +75,7 @@ export class MajorMineApplicationTab extends Component {
   state = {
     fixedTop: false,
     isLoaded: false,
+    isCompressionModal: false,
   };
 
   componentDidMount() {
@@ -87,9 +92,7 @@ export class MajorMineApplicationTab extends Component {
     const project = await this.props.fetchProjectById(projectGuid);
     this.props.fetchMineDocuments(project.mine_guid, {
       is_archived: true,
-      ...(project?.major_mine_application?.major_mine_application_guid && {
-        major_mine_application_guid: project?.major_mine_application?.major_mine_application_guid,
-      }),
+      project_guid: projectGuid,
     });
   }
 
@@ -133,7 +136,6 @@ export class MajorMineApplicationTab extends Component {
     ) : (
       <Typography.Title level={4}>{sectionTitle}</Typography.Title>
     );
-
     return (
       <div id={sectionHref}>
         {titleElement}
@@ -142,23 +144,27 @@ export class MajorMineApplicationTab extends Component {
           canArchiveDocuments={true}
           onArchivedDocuments={() => this.fetchData()}
           additionalColumnProps={[{ key: "document_name", colProps: { width: "80%" } }]}
-          additionalColumns={[
-            renderCategoryColumn(
-              "major_mine_application_document_type_code",
-              "File Location",
-              Strings.MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION,
-              true
-            ),
-          ]}
           isLoaded={this.state.isLoaded}
           showVersionHistory={true}
+          enableBulkActions={true}
         />
       </div>
     );
   };
 
   renderArchivedDocuments = () => {
-    return <ArchivedDocumentsSection documents={this.props.mineDocuments} />;
+    return (
+      <ArchivedDocumentsSection
+        additionalColumns={[
+          renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
+        ]}
+        documents={
+          this.props.mineDocuments && this.props.mineDocuments.length > 0
+            ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+            : []
+        }
+      />
+    );
   };
 
   render() {
@@ -170,9 +176,14 @@ export class MajorMineApplicationTab extends Component {
 
     const primaryContact = contacts?.find((c) => c.is_primary) || {};
 
-    let documents = this.props.project.major_mine_application.documents;
-
-    documents = documents.map((doc) => new MajorMineApplicationDocument(doc));
+    let documents = this.props.project?.major_mine_application?.documents ?? [];
+    documents = documents.map(
+      (doc) =>
+        new MajorMineApplicationDocument({
+          ...doc,
+          entity_title: this.props.project.project_title,
+        })
+    );
 
     return (
       <>
@@ -254,6 +265,27 @@ export class MajorMineApplicationTab extends Component {
             </Col>
           </Row>
           <br />
+          <DocumentCompression
+            documentType={"all"}
+            rows={documents}
+            setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
+            isCompressionModalVisible={this.state.isCompressionModal}
+          />
+          <Button
+            style={{ float: "right" }}
+            disabled={documents.length === 0}
+            className="ant-btn ant-btn-primary"
+            onClick={() => {
+              this.setState({
+                isCompressionModal: true,
+              });
+            }}
+          >
+            <div>
+              <DownloadOutlined />
+              &nbsp; Download All Application Files
+            </div>
+          </Button>
           <Typography.Title level={4} id="major-mine-application">
             Application Files
           </Typography.Title>

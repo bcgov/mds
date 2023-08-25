@@ -104,6 +104,26 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'update_timestamp': fields.String
     })
 
+MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
+    'MajorMineApplicationDocumentXref', {
+        'major_mine_application_document_type_code': fields.String
+    })
+
+PROJECT_SUMMARY_DOCUMENT_XREF_MODEL = api.model(
+    'ProjectSummaryDocumentXref', {
+        'project_summary_document_type_code': fields.String
+    })
+
+PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL = api.model(
+    'ProjectDecisionPackageDocumentXref', {
+        'project_decision_package_document_type_code': fields.String
+    })
+
+INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL = api.model(
+    'InformationRequirementsTableDocumentXref', {
+        'information_requirements_table_document_type_code': fields.String
+    })
+
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -116,13 +136,20 @@ MINE_DOCUMENT_MODEL = api.model(
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,
-        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL))
+        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
+        'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
+        'project_summary_document_xref': fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),
+        'project_decision_package_document_xref': fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL),
+        'information_requirements_table_document_xref': fields.Nested(INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL),
     })
 
 ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {
     'mine_document_guids': fields.List(fields.String)
 })
 
+DOCUMENT_MANAGER_ZIP = api.model('DOCUMENT_MANAGER_ZIP', {
+    'document_manager_guids': fields.List(fields.String)
+})
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
