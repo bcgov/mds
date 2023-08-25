@@ -615,7 +615,7 @@ export const postNewDocumentVersion = ({
     )
     .then((response: AxiosResponse<IProjectSummary>) => {
       notification.success({
-        message: "Successfully sent new document version",
+        message: "Successfully created new document version",
         duration: 10,
       });
       dispatch(success(reducerTypes.POST_NEW_DOCUMENT_VERSION));

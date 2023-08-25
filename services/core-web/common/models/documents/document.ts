@@ -89,13 +89,12 @@ export class MineDocument {
 
     const versions = jsonObject.versions ?? [];
     if (this.is_latest_version && versions.length) {
-      this.number_prev_versions = versions.length - 1;
+      this.number_prev_versions = versions.length;
       this.versions = versions
-        .slice(1)
         .map((version: MineDocument) => this.makeChild({
           ...version, is_latest_version: false,
           document_manager_guid: this.document_manager_guid,
-        }, jsonObject));
+        }, jsonObject)).reverse();
     } else {
       this.number_prev_versions = 0;
       this.versions = [];

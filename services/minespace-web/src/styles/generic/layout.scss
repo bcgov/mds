@@ -194,6 +194,10 @@
   &--left {
     margin-left: $default-margin-lg;
   }
+  &--y {
+    margin-top: $default-margin-lg;
+    margin-bottom: $default-margin-lg;
+  }
 }
 
 .margin-xlarge {

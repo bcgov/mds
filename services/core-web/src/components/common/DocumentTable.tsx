@@ -46,6 +46,7 @@ interface DocumentTableProps {
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
   archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
+  onReplaceDocument: (document: MineDocument) => void;
   documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
   defaultSortKeys: string[];
@@ -106,7 +107,7 @@ export const DocumentTable = ({
     });
   };
 
-  const documents = parseDocuments(props.documents ?? []);
+  const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
 
   useEffect(() => {
     const isBulkArchive = documents.every((doc) =>
@@ -153,6 +154,24 @@ export const DocumentTable = ({
     });
   };
 
+  const openReplaceModal = (event, doc: MineDocument) => {
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Replace File`,
+        closeModal: closeModal,
+        handleSubmit: async (document: MineDocument) => {
+          const newDocuments = documents.map((d) =>
+            d.mine_document_guid === document.mine_document_guid ? document : d
+          );
+          setDocuments(newDocuments);
+        },
+        document: doc,
+      },
+      content: modalConfig.REPLACE_DOCUMENT,
+    });
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -174,7 +193,7 @@ export const DocumentTable = ({
       key: "replace",
       label: FileOperations.Replace,
       icon: <SyncOutlined />,
-      clickFunction: (_event, _record: MineDocument) => alert("Not implemented"),
+      clickFunction: (_event, _record: MineDocument) => openReplaceModal(_event, _record),
     },
     {
       key: "archive",
