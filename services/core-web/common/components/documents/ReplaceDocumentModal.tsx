@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 
-import { Alert, Button, Col, Form, Row, Typography } from "antd";
+import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
 import { MineDocument } from "@common/models/documents/document";
 import { formatDate } from "@common/utils/helpers";
 import FileUpload from "@/components/common/FileUpload";
@@ -54,6 +54,10 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     return new Promise((resolve) => {
       setDisableReplace(true);
       if (`.${file.fileExtension}` !== document.file_type) {
+        notification.error({
+          message: "The selected file type does not match the original document",
+          duration: 10,
+        });
         return resolve(false);
       }
       setUpdatedDocument(
@@ -69,8 +73,8 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   };
 
   const onRemoveFile = (err, fileItem) => {
+    setUpdatedDocument(document);
     setDisableReplace(true);
-    console.log(err, fileItem);
   };
 
   const handleReplaceSubmit = async () => {
@@ -89,18 +93,6 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
       props.handleSubmit(newDocument).then(props.closeModal);
     }
   };
-
-  useEffect(() => {
-    if (document) {
-      console.log("document", document);
-      console.log(
-        NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
-          mineGuid: document.mine_guid,
-          mineDocumentGuid: document.mine_document_guid,
-        })
-      );
-    }
-  }, [document]);
 
   return (
     <Form layout="vertical" onFinish={() => props.handleSubmit(document).then(props.closeModal)}>

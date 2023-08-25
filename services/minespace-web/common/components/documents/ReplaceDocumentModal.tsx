@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 
-import { Alert, Button, Col, Form, Row, Typography } from "antd";
+import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
 import { MineDocument } from "@common/models/documents/document";
 import { formatDate } from "@common/utils/helpers";
 import FileUpload from "@/components/common/FileUpload";
@@ -54,6 +54,10 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     return new Promise((resolve) => {
       setDisableReplace(true);
       if (`.${file.fileExtension}` !== document.file_type) {
+        notification.error({
+          message: "The selected file type does not match the original document",
+          duration: 10,
+        });
         return resolve(false);
       }
       setUpdatedDocument(
@@ -69,8 +73,8 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   };
 
   const onRemoveFile = (err, fileItem) => {
+    setUpdatedDocument(document);
     setDisableReplace(true);
-    console.log(err, fileItem);
   };
 
   const handleReplaceSubmit = async () => {
@@ -90,17 +94,6 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (document) {
-      console.log(
-        NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
-          mineGuid: document.mine_guid,
-          mineDocumentGuid: document.mine_document_guid,
-        })
-      );
-    }
-  }, [document]);
-
   return (
     <Form layout="vertical" onFinish={() => props.handleSubmit(document).then(props.closeModal)}>
       <Alert
@@ -109,10 +102,10 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         type="warning"
         description="The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file."
       />
-      <Typography.Paragraph strong className="margin-large--y">
+      <Typography.Paragraph strong className="margin-large--top">
         Original Document
       </Typography.Paragraph>
-      <Row justify="space-between" className="padding-md--sides padding-sm--y margin-large--y">
+      <Row justify="space-between" className="padding-md--sides padding-sm--y">
         <Col span={10}>
           <Typography.Text>{document.document_name}</Typography.Text>
         </Col>
@@ -126,9 +119,6 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           <Typography.Text>{document.update_user ?? document.create_user}</Typography.Text>
         </Col>
       </Row>
-      <Typography.Paragraph strong className="margin-large--top">
-        Upload new file
-      </Typography.Paragraph>
 
       <FileUpload
         id="fileUpload"
