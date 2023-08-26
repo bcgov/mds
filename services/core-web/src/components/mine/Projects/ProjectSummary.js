@@ -91,6 +91,7 @@ export class ProjectSummary extends Component {
     fixedTop: false,
     isValid: true,
     activeTab: "project-descriptions",
+    uploadedDocuments: [],
   };
 
   componentDidMount() {
@@ -125,7 +126,7 @@ export class ProjectSummary extends Component {
       return this.props
         .fetchProjectById(projectGuid)
         .then((res) => {
-          this.setState({ isLoaded: true, isValid: true, isNewProject: false });
+          this.setState({ isLoaded: true, isValid: true, isNewProject: false, uploadedDocuments: res.project_summary.documents });
           this.props.fetchMineDocuments(res.mine_guid, {
             project_summary_guid: projectSummaryGuid,
             is_archived: true,
@@ -166,7 +167,18 @@ export class ProjectSummary extends Component {
     return null;
   };
 
-  handleTransformPayload = (values) => {
+  removeUploadedDocument = (payload, uploadedDocuments) => {
+    if (Array.isArray(payload.documents)) {
+      const uploadedGUIDs = new Set(uploadedDocuments.map(doc => doc.document_manager_guid));
+      payload.documents = payload.documents.filter(doc =>
+        !uploadedGUIDs.has(doc.document_manager_guid)
+      );
+    }
+    return payload;
+  }
+
+  handleTransformPayload = (payload) => {
+    let values = this.removeUploadedDocument(payload, this.state.uploadedDocuments);
     let payloadValues = {};
     const updatedAuthorizations = [];
     // eslint-disable-next-line array-callback-return
@@ -237,13 +249,14 @@ export class ProjectSummary extends Component {
         this.handleTransformPayload({ ...this.props.formValues }),
         message
       )
-      .then(() =>
+      .then(() => {
         this.props.updateProject(
           { projectGuid },
           { mrc_review_required, contacts, project_lead_party_guid },
           "Successfully updated project.",
           false
         )
+      }
       )
       .then(() => {
         this.handleFetchData(this.props.match.params);
@@ -315,11 +328,10 @@ export class ProjectSummary extends Component {
                   : "New Project Description"}
                 <span className="padding-sm--left">
                   <Tag
-                    title={`Mine: ${
-                      this.props.formattedProjectSummary.mine_name
-                        ? this.props.formattedProjectSummary.mine_name
-                        : this.props.match?.params?.mineGuid
-                    }`}
+                    title={`Mine: ${this.props.formattedProjectSummary.mine_name
+                      ? this.props.formattedProjectSummary.mine_name
+                      : this.props.match?.params?.mineGuid
+                      }`}
                   >
                     <Link
                       style={{ textDecoration: "none" }}
@@ -398,23 +410,23 @@ export class ProjectSummary extends Component {
                       initialValues={
                         !this.state.isNewProject
                           ? {
-                              ...this.props.formattedProjectSummary,
-                              mrc_review_required: this.props.project.mrc_review_required,
-                            }
+                            ...this.props.formattedProjectSummary,
+                            mrc_review_required: this.props.project.mrc_review_required,
+                          }
                           : {
-                              contacts: [
-                                {
-                                  is_primary: true,
-                                  name: null,
-                                  job_title: null,
-                                  company_name: null,
-                                  email: null,
-                                  phone_number: null,
-                                  phone_extension: null,
-                                },
-                              ],
-                              documents: [],
-                            }
+                            contacts: [
+                              {
+                                is_primary: true,
+                                name: null,
+                                job_title: null,
+                                company_name: null,
+                                email: null,
+                                phone_number: null,
+                                phone_extension: null,
+                              },
+                            ],
+                            documents: [],
+                          }
                       }
                       reset={this.props.reset}
                       handleSaveData={this.handleSaveData}
@@ -456,7 +468,7 @@ const mapStateToProps = (state) => {
     ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
-    onSubmit: () => {},
+    onSubmit: () => { },
   };
 };
 
