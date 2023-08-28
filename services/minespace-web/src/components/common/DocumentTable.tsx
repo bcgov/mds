@@ -49,6 +49,7 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userInfo: any;
+  replaceAlertMessage?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -68,6 +69,8 @@ export const DocumentTable = ({
   closeModal,
   removeDocument,
   openDocument,
+  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
+
   ...props
 }: DocumentTableProps) => {
   const allowedTableActions = {
@@ -148,6 +151,7 @@ export const DocumentTable = ({
           setDocuments(newDocuments);
         },
         document: doc,
+        alertMessage: replaceAlertMessage,
       },
       content: modalConfig.REPLACE_DOCUMENT,
     });

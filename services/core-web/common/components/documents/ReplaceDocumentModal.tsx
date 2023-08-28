@@ -4,25 +4,26 @@ import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
 import { MineDocument } from "@common/models/documents/document";
 import { formatDate } from "@common/utils/helpers";
 import FileUpload from "@/components/common/FileUpload";
-import { NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS } from "@common/constants/API";
+import { NEW_VERSION_DOCUMENTS } from "@common/constants/API";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { HttpRequest, HttpResponse } from "tus-js-client";
 import { IMAGE, DOCUMENT, EXCEL } from "@common/constants/fileTypes";
-import { postNewDocumentVersion } from "@common/actionCreators/projectActionCreator";
+import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common";
 import { FilePondFile } from "filepond";
 
 interface ReplaceDocumentModalProps {
   document: MineDocument;
   postNewDocumentVersion: ActionCreator<typeof postNewDocumentVersion>;
+  alertMessage: string;
   handleSubmit(document: MineDocument): Promise<void>;
   closeModal(): void;
 }
 
 const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
-  const { document } = props;
+  const { document, alertMessage } = props;
 
   const [versionGuid, setVersionGuid] = useState<string>();
   const [disableReplace, setDisableReplace] = useState<boolean>(true);
@@ -96,12 +97,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
 
   return (
     <Form layout="vertical" onFinish={() => props.handleSubmit(document).then(props.closeModal)}>
-      <Alert
-        message=""
-        showIcon
-        type="warning"
-        description="The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file."
-      />
+      <Alert message="" showIcon type="warning" description={alertMessage} />
       <Typography.Paragraph strong className="margin-large--top">
         Original Document
       </Typography.Paragraph>
@@ -124,7 +120,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         id="fileUpload"
         name="fileUpload"
         component={FileUpload}
-        uploadUrl={NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
+        uploadUrl={NEW_VERSION_DOCUMENTS({
           mineGuid: document.mine_guid,
           mineDocumentGuid: document.mine_document_guid,
         })}
