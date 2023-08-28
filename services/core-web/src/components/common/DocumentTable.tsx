@@ -35,17 +35,12 @@ interface DocumentTableProps {
   canArchiveDocuments: boolean;
   showVersionHistory: boolean;
   documentParent: string;
-  projectGuid: string;
   view: string;
   openModal: (arg) => void;
   openDocument: any;
   closeModal: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (
-    mineGuid: string,
-    mineDocumentGuids: string[],
-    projectGuid: string
-  ) => void;
+  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
   documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
@@ -99,7 +94,6 @@ export const DocumentTable = ({
     });
   };
   const documents = parseDocuments(props.documents ?? []);
-  const projectGuid = props.projectGuid;
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -111,8 +105,7 @@ export const DocumentTable = ({
         handleSubmit: async () => {
           await props.archiveMineDocuments(
             mineGuid,
-            docs.map((d) => d.mine_document_guid),
-            projectGuid
+            docs.map((d) => d.mine_document_guid)
           );
           if (props.onArchivedDocuments) {
             props.onArchivedDocuments(docs);

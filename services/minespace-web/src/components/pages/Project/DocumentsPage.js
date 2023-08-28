@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Typography } from "antd";
 import { withRouter } from "react-router-dom";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
@@ -11,8 +11,6 @@ const propTypes = {
 };
 
 export const DocumentsPage = (props) => {
-  const { projectGuid } = props.match.params;
-
   return (
     <Row>
       <Col span={24}>
@@ -25,7 +23,6 @@ export const DocumentsPage = (props) => {
           canArchiveDocuments={true}
           onArchivedDocuments={props.onArchivedDocuments}
           showVersionHistory={true}
-          projectGuid={projectGuid}
         />
       </Col>
     </Row>

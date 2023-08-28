@@ -7,7 +7,6 @@ const props = {};
 
 const setupProps = () => {
   props.title = "mockTitle";
-  props.match = { params: { projectGuid: "MockProjectGuid" } };
   props.documents = [
     ...MOCK.PROJECT_SUMMARY.documents,
     ...MOCK.INFORMATION_REQUIREMENTS_TABLE.documents,

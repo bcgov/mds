@@ -120,7 +120,6 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
               NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
                 mineGuid: props.params.mineGuid,
                 mineDocumentGuid: existingDocument.mine_document_guid,
-                projectGuid: props.params.projectGuid,
               })
             );
             // Resolve the promise with true (proceed with upload)

@@ -244,16 +244,14 @@ export const fetchMineDocuments = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const archiveMineDocuments = (
-  mineGuid: string,
-  mineDocumentGuids: string[],
-  projectGuid: string
-) => (dispatch) => {
+export const archiveMineDocuments = (mineGuid: string, mineDocumentGuids: string[]) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.ARCHIVE_MINE_DOCUMENTS));
   dispatch(showLoading());
   return CustomAxios()
     .patch(
-      `${ENVIRONMENT.apiUrl}${API.ARCHIVE_MINE_DOCUMENTS(mineGuid, projectGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.ARCHIVE_MINE_DOCUMENTS(mineGuid)}`,
       { mine_document_guids: mineDocumentGuids },
       createRequestHeader()
     )

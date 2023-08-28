@@ -51,7 +51,6 @@ exports[`DocumentsPage renders properly 1`] = `
           },
         ]
       }
-      projectGuid="MockProjectGuid"
       showVersionHistory={true}
     />
   </Col>
