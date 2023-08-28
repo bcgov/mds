@@ -16,7 +16,7 @@ class ProjectsSearchUtil():
         """
         Find Project by the mine_document_guid.
         """
-        
+
         qy = db.session.query(Project)
 
         if mine_document_guid is not None:
