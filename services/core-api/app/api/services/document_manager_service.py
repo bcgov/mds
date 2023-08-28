@@ -10,12 +10,6 @@ from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
-from app.api.projects.project.models.project import Project
-
-from app.api.activity.utils import trigger_notification
-from app.api.activity.models.activity_notification import ActivityType
-from app.api.activity.utils import ActivityRecipients
-
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -37,7 +31,7 @@ class DocumentManagerService():
         resp = None
 
         if not mine_document: # No existing file found in this application hence continuing the file uploading
-          resp = DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category, project_guid)
+          resp = DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
 
         elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
             content = {
@@ -70,7 +64,7 @@ class DocumentManagerService():
         return resp
 
     @classmethod
-    def initializeFileUploadWithDocumentManager(cls, request, mine, document_category, project_guid):
+    def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
         metadata = cls._parse_request_metadata(request)
         if not metadata or not metadata.get('filename'):
             raise Exception('Request metadata missing filename')
@@ -89,17 +83,7 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        resp = Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
-
-        if Config.ENVIRONMENT_NAME != 'prod':
-            project = Project.find_by_project_guid(project_guid)
-
-            if resp:
-                renotify_hours = 24
-                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
-
-        return resp
+        return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def initializeFileVersionUploadWithDocumentManager(cls, request, mine_document):

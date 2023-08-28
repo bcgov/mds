@@ -12,7 +12,12 @@ from app.api.services.email_service import EmailService
 from app.api.projects.project.models.project import Project
 from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.mine.models.mine import Mine
 
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.projects.project.projects_search_util import ProjectsSearchUtil
+from app.api.activity.utils import trigger_notification
+from app.api.activity.utils import ActivityRecipients
 
 class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'major_mine_application'
@@ -154,6 +159,14 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
 
         if add_to_session:
             self.save(commit=False)
+
+            if len(documents) > 0:
+                if Config.ENVIRONMENT_NAME != 'prod':
+                    project = ProjectsSearchUtil.find_by_mine_document_guid(documents[0].get('mine_document_guid'))
+                    renotify_hours = 24
+                    mine = Mine.find_by_mine_guid(project.mine_guid)
+                    trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                        ActivityType.new_file_uploaded, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return self
 

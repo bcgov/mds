@@ -25,7 +25,7 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.projects.project.models.project import Project
 from app.api.activity.utils import ActivityRecipients
-
+from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.config import Config
 
 class MineDocumentVersionUploadResource(Resource, UserMixin):
@@ -40,7 +40,7 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
     @api.response(200, 'Successfully requested new document manager version')
     @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     def post(self, mine_guid, mine_document_guid):
-        project_guid = request.args.get('project_guid', type=str)
+        project_guid = request.args.get('project_guid', type=str) #___________remove project_guid
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -57,17 +57,8 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')
 
-        resp = DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
             request, mine_document)
-        project_name = Project.find_by_project_guid(project_guid)
-
-        if resp:
-            renotify_hours = 24
-            trigger_notification(f'File(s) in project {project_name} has been updated for mine {mine.mine_name}.',
-                  ActivityType.file_version_updated, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
-
-        return resp
-
 
 class MineDocumentVersionListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -108,7 +99,16 @@ class MineDocumentVersionListResource(Resource, UserMixin):
 
         args = self.parser.parse_args()
 
-        return MineDocumentVersion.create_from_docman_version(
+        resp = MineDocumentVersion.create_from_docman_version(
             mine_document=mine_document,
             document_manager_version_guid=args.get('document_manager_version_guid'),
         )
+
+        project = ProjectsSearchUtil.find_by_mine_document_guid(mine_document_guid)
+
+        if resp:
+            renotify_hours = 24
+            trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                  ActivityType.file_version_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+
+        return resp

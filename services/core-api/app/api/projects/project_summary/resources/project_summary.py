@@ -14,6 +14,12 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
+from app.api.projects.project.projects_search_util import ProjectsSearchUtil
+from app.api.activity.utils import trigger_notification
+from app.api.activity.utils import ActivityRecipients
+
+from app.config import Config
+
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
@@ -161,6 +167,13 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('project_lead_party_guid'), data.get('mrc_review_required', False),
             data.get('contacts', []))
         project.save()
+
+        if len(data.get('documents')) > 0:
+            if Config.ENVIRONMENT_NAME != 'prod':
+                project = Project.find_by_project_guid(project_guid)
+                renotify_hours = 24
+                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return project_summary
 

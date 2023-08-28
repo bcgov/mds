@@ -10,6 +10,11 @@ from app.api.projects.project.models.project import Project
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.projects.project.projects_search_util import ProjectsSearchUtil
+from app.api.activity.utils import trigger_notification
+from app.api.activity.utils import ActivityRecipients
+from app.api.mines.mine.models.mine import Mine
 
 class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "information_requirements_table"
@@ -85,6 +90,8 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
     def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
+        mine_doc = None
+        project = None
         if import_file and document_guid:
             self.status_code = 'DFT'
             for requirement in self.requirements:
@@ -136,6 +143,14 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         if add_to_session:
             self.save()
+
+        if mine_doc and project:
+            if Config.ENVIRONMENT_NAME != 'prod':
+                renotify_hours = 24
+                mine = Mine.find_by_mine_guid(mine_doc.mine_guid)
+
+                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine_doc.mine_name}.',
+                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return self
 
