@@ -26,7 +26,7 @@ Cypress.Commands.add("login", () => {
 
   cy.visit(url);
   cy.contains("Log in with BCeID").click();
-  cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
-  cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));
-  cy.get("#kc-login").click();
+  // cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
+  // cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));
+  // cy.get("#kc-login").click();
 });
