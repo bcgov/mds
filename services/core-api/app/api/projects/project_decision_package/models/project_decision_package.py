@@ -137,7 +137,7 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
                     renotify_hours = 24
                     mine = Mine.find_by_mine_guid(project.mine_guid)
                     trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                        ActivityType.new_file_uploaded, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+                        ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return self
 

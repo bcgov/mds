@@ -23,6 +23,7 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import ActivityRecipients
+from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.api.projects.project.models.project import Project
 
 class MineDocumentListResource(Resource, UserMixin):
@@ -111,7 +112,6 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     @api.expect(ARCHIVE_MINE_DOCUMENT)
     @api.response(204, 'Successfully archived documents')
     def patch(self, mine_guid):
-        project_guid = request.args.get('project_guid', type=str)
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -133,11 +133,13 @@ class MineDocumentArchiveResource(Resource, UserMixin):
                 raise BadRequest('Document not attached to mine')
 
         MineDocument.mark_as_archived_many(mine_document_guids)
-        project_name = Project.find_by_project_guid(project_guid)
 
-        renotifiy_hours = 24
-        trigger_notification(f'File(s) in project {project_name} has been updated for mine {mine.mine_name}.',
-                  ActivityType.file_archived, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)
+        if len(mine_document_guids) > 0:
+            project = ProjectsSearchUtil.find_by_mine_document_guid(mine_document_guids[0])
+            renotifiy_hours = 24
+            trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                    ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)
+
         return None, 204
 
 class MineDocumentZipResource(Resource, UserMixin):

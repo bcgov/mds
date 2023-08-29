@@ -173,7 +173,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                 project = Project.find_by_project_guid(project_guid)
                 renotify_hours = 24
                 trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+                    ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return project_summary
 

@@ -150,7 +150,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                 mine = Mine.find_by_mine_guid(mine_doc.mine_guid)
 
                 trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine_doc.mine_name}.',
-                    ActivityType.new_file_uploaded, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+                    ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return self
 

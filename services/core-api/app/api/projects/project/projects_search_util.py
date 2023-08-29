@@ -20,13 +20,10 @@ class ProjectsSearchUtil():
         qy = db.session.query(Project)
 
         if mine_document_guid is not None:
-
             prjquery = qy\
-                .select_from(ProjectSummaryDocumentXref)\
-                .join(ProjectSummary, ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
-                .join(Project, Project.project_guid == ProjectSummary.project_guid)\
-                .join(MineDocument, MineDocument.mine_guid == ProjectSummary.mine_guid)\
-                .filter(MineDocument.mine_document_guid == mine_document_guid)
+                .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
+                .filter(ProjectSummary.project_guid == Project.project_guid)\
+                .filter(ProjectSummaryDocumentXref.mine_document_guid == mine_document_guid)
             return prjquery.first()
 
         raise ValueError("Missing 'mine_document_guid'")

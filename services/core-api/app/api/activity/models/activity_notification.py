@@ -109,9 +109,7 @@ class ActivityType(str, Enum):
     ir_table_submitted = 'ir_table_submitted'
     major_mine_app_submitted = 'major_mine_app_submitted'
     major_mine_desc_submitted = 'major_mine_desc_submitted'
-    file_version_updated = 'file_version_updated'
-    new_file_uploaded = 'new_file_uploaded'
-    file_archived = 'file_archived'
+    mine_project_documents_updated = 'mine_project_documents_updated'
 
     def __str__(self):
         return self.value
