@@ -79,17 +79,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Primary Document
       </ForwardRef>
       <Connect(DocumentTable)
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         deletePayload={
           Object {
@@ -110,17 +99,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Spatial Components
       </ForwardRef>
       <Connect(DocumentTable)
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         deletePayload={
           Object {
@@ -141,17 +119,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         Supporting Documents
       </ForwardRef>
       <Connect(DocumentTable)
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         deletePayload={
           Object {
@@ -167,6 +134,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         showVersionHistory={true}
       />
       <ArchivedDocumentsSection
+        additionalColumns={
+          Array [
+            Object {
+              "dataIndex": "category_code",
+              "key": "category_code",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Category",
+            },
+          ]
+        }
         documentColumns={
           Array [
             Object {
@@ -185,6 +163,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
             },
           ]
         }
+        documents={Array []}
       />
     </Col>
     <Col

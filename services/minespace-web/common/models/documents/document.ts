@@ -18,6 +18,8 @@ by the table should be *set* to the specific object, cannot expect to be able to
 include "user_roles" property in the json used in the constructor to set allowed actions based on the user
 */
 export class MineDocument {
+  public category_code: string;
+
   public mine_document_guid: string;
 
   public mine_guid: string;
@@ -55,6 +57,8 @@ export class MineDocument {
 
   public allowed_actions: FileOperations[];
 
+  public entity_title: string;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -69,9 +73,9 @@ export class MineDocument {
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
     this.is_latest_version = jsonObject.is_latest_version ?? true;
+    this.entity_title = jsonObject.entity_title ?? "";
     this.setCalculatedProperties(jsonObject);
   }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
@@ -88,7 +92,10 @@ export class MineDocument {
       this.number_prev_versions = versions.length - 1;
       this.versions = versions
         .slice(1)
-        .map((version) => this.makeChild({ ...version, is_latest_version: false }, jsonObject));
+        .map((version: MineDocument) => this.makeChild({
+          ...version, is_latest_version: false,
+          document_manager_guid: this.document_manager_guid,
+        }, jsonObject));
     } else {
       this.number_prev_versions = 0;
       this.versions = [];
@@ -119,14 +126,36 @@ export class MineDocument {
 }
 
 export class MajorMineApplicationDocument extends MineDocument {
-  public major_mine_application_document_type_code: string;
 
+  public project_summary_document_xref: { project_summary_document_type_code: string };
+  public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
+  public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
+  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
+
+  public major_mine_application_document_type_code: string;
   public versions: MajorMineApplicationDocument[];
 
   constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
+    this.category_code = this.determineCategoryCode(jsonObject);
+  }
+
+  protected determineCategoryCode(jsonObject: any): string | undefined {
+    const {
+      project_summary_document_xref,
+      project_decision_package_document_xref,
+      information_requirements_table_document_xref,
+      major_mine_application_document_xref,
+    } = jsonObject;
+
+    return (
+      project_summary_document_xref?.project_summary_document_type_code
+      ?? project_decision_package_document_xref?.project_decision_package_document_type_code
+      ?? information_requirements_table_document_xref?.information_requirements_table_document_type_code
+      ?? major_mine_application_document_xref?.major_mine_application_document_type_code
+    );
   }
 
   protected makeChild(params: any, constructorArgs: any) {
@@ -134,6 +163,10 @@ export class MajorMineApplicationDocument extends MineDocument {
       ...params,
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
+      project_summary_document_xref: constructorArgs.project_summary_document_xref,
+      project_decision_package_document_xref: constructorArgs.project_decision_package_document_xref,
+      information_requirements_table_document_xref: constructorArgs.information_requirements_table_document_xref,
+      major_mine_application_document_xref: constructorArgs.major_mine_application_document_xref,
     });
   }
 

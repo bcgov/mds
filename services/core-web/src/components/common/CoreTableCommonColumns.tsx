@@ -50,7 +50,7 @@ export const renderCategoryColumn = (
     title,
     dataIndex,
     key: dataIndex,
-    render: (text) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
+    render: (text: string) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };
 };
@@ -82,6 +82,7 @@ export interface ITableAction {
 export const renderActionsColumn = (
   actions: ITableAction[],
   recordActionsFilter: (record, actions) => ITableAction[],
+  isRowSelected = false,
   text = "Actions",
   classPrefix = "",
   dropdownAltText = "Menu"
@@ -110,7 +111,7 @@ export const renderActionsColumn = (
 
       return (
         <div>
-          <Dropdown menu={{ items }} placement="bottomLeft">
+          <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
             {/* // TODO: change button classname to something generic */}
             <Button className="permit-table-button">
               {text}

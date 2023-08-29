@@ -1,13 +1,19 @@
 .ant-table-row-level-0.no-sub-table-expandable-rows {
-    &:hover {
-        background: #BBBBBB;
-    }
-
-    td:first-of-type,
     .file-history-container {
         display: flex;
         align-items: center;
-        height: 100%;
+    }
+
+    .anticon-minus-square,
+    .anticon-plus-square {
+        font-size: 24px;
+        color: #ded9d9;
+    }
+
+    td.ant-table-cell-with-append {
+        display: flex;
+        align-items: center;
+        min-height: 84px;
     }
 
     &>td {
@@ -22,10 +28,6 @@
 
 .ant-table-row-level-1.no-sub-table-expandable-rows>td {
     border: none;
-}
-
-th.file-name-column {
-    text-indent: 35px;
 }
 
 .file-name-container {

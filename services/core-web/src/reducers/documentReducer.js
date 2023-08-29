@@ -1,8 +1,12 @@
-import { STORE_DOCUMENT_CONTEXT_TEMPLATE } from "@/constants/actionTypes";
+import {
+  STORE_DOCUMENT_CONTEXT_TEMPLATE,
+  STORE_DOCUMENT_COMPRESSION_PROGRESS,
+} from "@/constants/actionTypes";
 import { DOCUMENTS } from "@/constants/reducerTypes";
 
 const initialState = {
   contextTemplate: {},
+  documentCompressionProgress: {},
 };
 
 const documentReducer = (state = initialState, action) => {
@@ -11,6 +15,11 @@ const documentReducer = (state = initialState, action) => {
       return {
         ...state,
         contextTemplate: action.payload,
+      };
+    case STORE_DOCUMENT_COMPRESSION_PROGRESS:
+      return {
+        ...state,
+        documentCompressionProgress: {},
       };
     default:
       return state;

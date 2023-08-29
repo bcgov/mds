@@ -23,6 +23,9 @@ import {
   requiredRadioButton,
   validateSelectOptions,
   number,
+  min,
+  max,
+  wholeNumber,
 } from "@common/utils/Validate";
 import * as Strings from "@common/constants/strings";
 import { USER_ROLES } from "@mds/common";
@@ -216,14 +219,6 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
-          <div className="field-title">Life of the Mine</div>
-          <Field
-            id="term_of_application"
-            name="term_of_application"
-            component={RenderField}
-            disabled
-          />
-
           <div className="field-title">
             Proposed Annual Maximum Tonnage
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
@@ -252,18 +247,14 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
 
   const renderPermitType = () => (
     <Row gutter={16}>
-      <Col span={24}>
-        <div className="field-title">First year of multi-year, area based application?</div>
+      <Col md={12} sm={24}>
+        <div className="field-title">Years sought for authorization to complete this work</div>
         <Field
-          id="is_first_year_of_multi"
-          name="is_first_year_of_multi"
-          component={RenderRadioButtons}
+          id="term_of_application"
+          name="term_of_application"
+          component={RenderField}
           disabled={props.isViewMode}
-          validate={[requiredRadioButton]}
-          data={[
-            { value: true, label: "Yes" },
-            { value: false, label: "No" },
-          ]}
+          validate={[required, number, min(1), max(99), wholeNumber]}
         />
       </Col>
       <Col md={12} sm={24}>
@@ -284,6 +275,20 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
           data={props.permitTypeOptions}
           disabled={props.isViewMode}
           validate={[validateSelectOptions(props.permitTypeOptions)]}
+        />
+      </Col>
+      <Col md={12} sm={24}>
+        <div className="field-title">First year of multi-year, area based application?</div>
+        <Field
+          id="is_first_year_of_multi"
+          name="is_first_year_of_multi"
+          component={RenderRadioButtons}
+          disabled={props.isViewMode}
+          validate={[requiredRadioButton]}
+          data={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
         />
       </Col>
       <Col md={12} sm={24}>
@@ -368,6 +373,20 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             />
           </Col>
           <Col md={12} sm={24}>
+            <div className="field-title">This mine is proposed for:</div>
+            <Field
+              id="mine_purpose"
+              name="mine_purpose"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+              customOptions={[
+                { label: "Exploration Activities", value: "Exploration Activities" },
+                { label: "Production Mining", value: "Production Mining" },
+                { label: "Both", value: "Both" },
+              ]}
+            />
+          </Col>
+          <Col md={12} sm={24}>
             {props.typeOfApplication !== "New Permit" && (
               <>
                 <div className="field-title">
@@ -445,6 +464,16 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
               name="now_tracking_number"
               component={RenderField}
               disabled
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            <div className="field-title">Life of the Mine</div>
+            <Field
+              id="term_of_application"
+              name="term_of_application"
+              component={RenderField}
+              disabled
+              validate={[min(1), max(99), wholeNumber]}
             />
           </Col>
           <Col md={12} sm={24}>

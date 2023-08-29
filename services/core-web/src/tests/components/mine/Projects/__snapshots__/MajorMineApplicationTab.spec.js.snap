@@ -195,6 +195,27 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       </Col>
     </Row>
     <br />
+    <Connect(DocumentCompression)
+      documentType="all"
+      isCompressionModalVisible={false}
+      rows={Array []}
+      setCompressionModalVisible={[Function]}
+    />
+    <Button
+      className="ant-btn ant-btn-primary"
+      disabled={true}
+      onClick={[Function]}
+      style={
+        Object {
+          "float": "right",
+        }
+      }
+    >
+      <div>
+        <ForwardRef(DownloadOutlined) />
+          Download All Application Files
+      </div>
+    </Button>
     <ForwardRef
       id="major-mine-application"
       level={4}
@@ -226,19 +247,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -270,19 +281,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -314,19 +315,9 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
@@ -358,26 +349,29 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             },
           ]
         }
-        additionalColumns={
-          Array [
-            Object {
-              "dataIndex": "major_mine_application_document_type_code",
-              "key": "major_mine_application_document_type_code",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "File Location",
-            },
-          ]
-        }
         canArchiveDocuments={true}
         documents={Array []}
+        enableBulkActions={true}
         isLoaded={false}
         onArchivedDocuments={[Function]}
         showVersionHistory={true}
       />
     </div>
     <br />
-    <ArchivedDocumentsSection />
+    <ArchivedDocumentsSection
+      additionalColumns={
+        Array [
+          Object {
+            "dataIndex": "category_code",
+            "key": "category_code",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Category",
+          },
+        ]
+      }
+      documents={Array []}
+    />
   </div>
 </Fragment>
 `;

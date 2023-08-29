@@ -239,6 +239,8 @@ h5.ant-typography,
   border: none !important;
   border-radius: 0 !important;
   margin-bottom: 16px;
+  line-height: 3;
+  white-space: nowrap;
 
   .ant-table-content {
     overflow-x: auto;

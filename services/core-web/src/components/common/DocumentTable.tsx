@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -9,6 +9,7 @@ import {
 import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@common/actions/modalActions";
+import DocumentCompression from "./DocumentCompression";
 import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -27,6 +28,8 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { Dropdown, Button, MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -34,6 +37,7 @@ interface DocumentTableProps {
   isViewOnly: boolean;
   canArchiveDocuments: boolean;
   showVersionHistory: boolean;
+  enableBulkActions: boolean;
   documentParent: string;
   view: string;
   openModal: (arg) => void;
@@ -49,6 +53,7 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
+  handleRowSelectionChange: (arg1: MineDocument[]) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -61,6 +66,7 @@ export const DocumentTable = ({
   documentParent = null,
   isLoaded = true,
   showVersionHistory = false,
+  enableBulkActions = false,
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
@@ -70,6 +76,12 @@ export const DocumentTable = ({
   openDocument,
   ...props
 }: DocumentTableProps) => {
+  const [rowSelection, setRowSelection] = useState([]);
+  const [isCompressionModal, setCompressionModal] = useState(false);
+  const [isCompressionInProgress, setCompressionInProgress] = useState(false);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
+  const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
+
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
@@ -93,7 +105,16 @@ export const DocumentTable = ({
       return doc;
     });
   };
+
   const documents = parseDocuments(props.documents ?? []);
+
+  useEffect(() => {
+    const isBulkArchive = documents.every((doc) =>
+      doc.allowed_actions.find((a) => a === FileOperations.Archive)
+    );
+
+    setDocumentsCanBulkDropDown(isBulkArchive);
+  }, []);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -205,7 +226,7 @@ export const DocumentTable = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
     }
     return columns;
   };
@@ -231,20 +252,127 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
-  return showVersionHistory ? (
-    <CoreTable
-      condition={isLoaded}
-      dataSource={documents}
-      columns={columns}
-      expandProps={{
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      }}
-    />
-  ) : (
-    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
+
+  const handleRowSelectionChange = (value) => {
+    if (documentTypeCode === "") {
+      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
+    }
+
+    setRowSelection(value);
+  };
+
+  const bulkItems: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <DownloadOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={() => {
+            setCompressionModal(true);
+          }}
+        >
+          <div>Download File(s)</div>
+        </button>
+      ),
+    },
+  ];
+
+  const rowSelectionObject = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
+
+  const renderBulkActions = () => {
+    let element = (
+      <Button
+        className="ant-btn ant-btn-primary"
+        disabled={rowSelection.length === 0 || isCompressionInProgress}
+        onClick={() => {
+          setCompressionModal(true);
+        }}
+      >
+        <div>Download</div>
+      </Button>
+    );
+    if (documentsCanBulkDropDown) {
+      element = (
+        <Dropdown
+          menu={{ items: bulkItems }}
+          placement="bottomLeft"
+          disabled={rowSelection.length === 0 || isCompressionInProgress}
+        >
+          <Button className="ant-btn ant-btn-primary">
+            Action
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+  };
+
+  const renderCoreTable = () => {
+    let element = (
+      <CoreTable
+        columns={columns}
+        {...(enableBulkActions
+          ? {
+              rowSelection: {
+                type: "checkbox",
+                ...rowSelectionObject,
+              },
+            }
+          : {})}
+        dataSource={documents}
+        {...minimalProps}
+      />
+    );
+
+    if (showVersionHistory) {
+      element = (
+        <div>
+          <CoreTable
+            condition={isLoaded}
+            dataSource={documents}
+            columns={columns}
+            {...(enableBulkActions
+              ? {
+                  rowSelection: {
+                    type: "checkbox",
+                    ...rowSelectionObject,
+                  },
+                }
+              : {})}
+            expandProps={{
+              childrenColumnName: "versions",
+              matchChildColumnsToParent: true,
+              recordDescription: "version history",
+              rowExpandable: (record) => record.number_prev_versions > 0,
+            }}
+          />
+        </div>
+      );
+    }
+
+    return element;
+  };
+
+  return (
+    <div>
+      <DocumentCompression
+        documentType={documentTypeCode}
+        rows={rowSelection}
+        setCompressionModalVisible={setCompressionModal}
+        isCompressionModalVisible={isCompressionModal}
+        compressionInProgress={setCompressionInProgress}
+      />
+      {renderBulkActions()}
+      {renderCoreTable()}
+    </div>
   );
 };
 

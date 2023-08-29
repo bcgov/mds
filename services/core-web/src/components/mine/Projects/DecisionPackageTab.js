@@ -27,6 +27,9 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature, isFeatureEnabled } from "@mds/common";
+import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import * as Strings from "@common/constants/strings";
+import { MajorMineApplicationDocument } from "@common/models/documents/document";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -123,7 +126,20 @@ export class DecisionPackageTab extends Component {
   };
 
   renderArchivedDocumentsSection = (archivedDocuments) => {
-    return <ArchivedDocumentsSection documents={archivedDocuments}></ArchivedDocumentsSection>;
+    return (
+      <ArchivedDocumentsSection
+        additionalColumns={[
+          renderCategoryColumn(
+            "category_code",
+            "Category",
+            Strings.CATEGORY_CODE,
+            true
+          ),
+        ]}
+        documents={archivedDocuments && archivedDocuments.length > 0
+          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+      />
+    );
   };
 
   renderDocumentSection = (project, sectionTitle, sectionHref, sectionText, sectionDocuments) => {
@@ -158,6 +174,7 @@ export class DecisionPackageTab extends Component {
           archiveDocumentsArgs={{ mineGuid: project?.mine_guid }}
           onArchivedDocuments={this.handleFetchData}
           removeDocument={this.handleDeleteDocument}
+          showVersionHistory={true}
         />
       </div>
     );
@@ -198,7 +215,7 @@ export class DecisionPackageTab extends Component {
         modalType,
         closeModal: this.props.closeModal,
         handleSubmit: submitHandler,
-        afterClose: () => {},
+        afterClose: () => { },
         optionalProps,
       },
       content,
