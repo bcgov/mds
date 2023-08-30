@@ -2,10 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
-import {
-  NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS,
-  PROJECT_SUMMARY_DOCUMENTS,
-} from "@common/constants/API";
+import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -53,10 +50,12 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     handleModalClose && handleModalClose();
   };
 
   const handleNewVersionSubmit = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     handleModalSubmit && handleModalSubmit();
   };
 
@@ -89,7 +88,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
       );
 
       if (existingDocument) {
-        let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+        const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
         setReplaceableFileModalMessage(message);
         setReplaceableFileModalVisible(true);
         setMineGuid(existingDocument.mine_guid);
@@ -117,7 +116,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
           return () => {
             setReplaceableFileModalVisible(false);
             setUploadUrl(
-              NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
+              NEW_VERSION_DOCUMENTS({
                 mineGuid: props.params.mineGuid,
                 mineDocumentGuid: existingDocument.mine_document_guid,
               })
@@ -155,7 +154,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     if (responseBody) {
       const jsonString = responseBody.replace(/'/g, '"');
 
-      let obj = JSON.parse(jsonString);
+      const obj = JSON.parse(jsonString);
       if (obj && obj.document_manager_version_guid) {
         setVersion(obj.document_manager_version_guid);
       }
@@ -196,13 +195,13 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
             ) {
               if (e.response.status === "ARCHIVED_FILE_EXIST") {
                 setShouldAbortUpload(false);
-                let message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
+                const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
                 setArchivedFileModalMessage(message);
                 setIsArchivedFileModalVisible(true);
               }
               if (e.response.status === "REPLACEABLE_FILE_EXIST") {
                 setShouldAbortUpload(false);
-                let message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+                const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
                 setReplaceableFileModalMessage(message);
                 setReplaceableFileModalVisible(true);
                 setMineGuid(e.response.mine_guid);

@@ -16,7 +16,7 @@ import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns
 import { MineDocument } from "@common/models/documents/document";
 import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";
-import { postNewDocumentVersion } from "@common/actionCreators/projectActionCreator";
+import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 const propTypes = {
