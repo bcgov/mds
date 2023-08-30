@@ -3,7 +3,6 @@ import * as actionTypes from "../constants/actionTypes";
 
 const initialState = {
   mineAlerts: [],
-  globalMineAlerts: [],
 };
 
 export const mineAlertReducer = (state = initialState, action) => {
@@ -12,11 +11,6 @@ export const mineAlertReducer = (state = initialState, action) => {
       return {
         ...state,
         mineAlerts: action.payload.records,
-      };
-    case actionTypes.STORE_GLOBAL_MINE_ALERTS:
-      return {
-        ...state,
-        globalMineAlerts: action.payload.records,
       };
     default:
       return state;
@@ -28,6 +22,5 @@ const mineAlertReducerObject = {
 };
 
 export const getMineAlerts = (state) => state[MINE_ALERTS].mineAlerts;
-export const getGlobalMineAlerts = (state) => state[MINE_ALERTS].globalMineAlerts;
 
 export default mineAlertReducerObject;
