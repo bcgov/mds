@@ -108,6 +108,18 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
 
             if (data.state !== "SUCCESS" && progressRef.current) {
               setTimeout(poll, 2000);
+            } else if (data.state === "SUCCESS" && data?.error.length > 0) {
+              setProgressBarVisible(false);
+              notification.warning({
+                key: props.documentType,
+                className: `progressNotification-${props.documentType}`,
+                message: "Error compressing files",
+                description: "Unable to retrieve files",
+                duration: 10,
+                placement: "topRight",
+                onClose: handleCloseCompressionNotification,
+                top: 85,
+              });
             } else {
               setFileToDownload(data.success_docs[0]);
               setDownloadModalVisible(true);

@@ -324,10 +324,12 @@ class DocumentResource(Resource):
                 }
             elif task.state == 'SUCCESS':
                 success_docs = json.loads(task.info).get('success_docs', '[]')
+                error = json.loads(task.info).get('errors', '[]')
                 response = {
                     'state': task.state,
                     'progress': 100,
                     'success_docs': success_docs,
+                    'error': error
                 }
             elif task.state == 'FAILURE':
                 response = {

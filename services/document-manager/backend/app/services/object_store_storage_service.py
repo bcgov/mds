@@ -72,16 +72,19 @@ class ObjectStoreStorageService():
         def generate(result):
             for chunk in iter(lambda: result['Body'].read(1048576), b''):
                 yield chunk
-
-        s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
-        resp = Response(
+        try:
+            s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
+            resp = Response(
             generate(s3_response),
             mimetype='application/pdf' if '.pdf' in display_name.lower() else 'application/zip',
             headers={
                 'Content-Disposition':
                     ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
             })
-        return resp
+            
+            return resp
+        except ClientError as e:
+            raise Exception(f'Failed to download the file: {e}')
 
     def upload_file(self, filename, progress=False):
         key = f'{Config.S3_PREFIX}{filename[1:]}'
