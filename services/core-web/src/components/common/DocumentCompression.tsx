@@ -42,18 +42,22 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
     setCompressionProgress(0);
   };
 
-  const startFilesCompression = () => {
-    props.setCompressionModalVisible(false);
+  const displayCompressionNotification = (message, description, duration) => {
     notification.warning({
       key: props.documentType,
       className: `progressNotification-${props.documentType}`,
-      message: "Compressing...",
-      description: "Preparing files for download",
-      duration: 0,
+      message,
+      description,
+      duration,
       placement: "topRight",
       onClose: handleCloseCompressionNotification,
       top: 85,
     });
+  };
+
+  const startFilesCompression = () => {
+    props.setCompressionModalVisible(false);
+    displayCompressionNotification("Compressing...", "Preparing files for download", 0);
 
     const mineGuid = props.rows[0].mine_guid;
     const documentManagerGuids = props.rows
@@ -63,34 +67,22 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
     setEntityTitle(props.rows[0].entity_title);
     if (documentManagerGuids.length === 0) {
       setTimeout(() => {
-        notification.warning({
-          key: props.documentType,
-          className: `progressNotification-${props.documentType}`,
-          message: "Error starting file compression",
-          description:
-            "Only archived files or previous document versions were selected. To download \
-              them you must go to the archived documents view or download them individually.",
-          duration: 15,
-          placement: "topRight",
-          onClose: handleCloseCompressionNotification,
-          top: 85,
-        });
+        const description =
+          "Only archived files or previous document versions were selected. To download \
+        them you must go to the archived documents view or download them individually.";
+
+        displayCompressionNotification("Error starting file compression", description, 15);
       }, 2000);
     } else {
       props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
         const taskId = response.data && response.data.task_id ? response.data.task_id : null;
         if (!taskId) {
           setTimeout(() => {
-            notification.warning({
-              key: props.documentType,
-              className: `progressNotification-${props.documentType}`,
-              message: "Error starting file compression",
-              description: "An invalid task id was provided",
-              duration: 10,
-              placement: "topRight",
-              onClose: handleCloseCompressionNotification,
-              top: 85,
-            });
+            displayCompressionNotification(
+              "Error starting file compression",
+              "An invalid task id was provided",
+              10
+            );
           }, 2000);
         } else {
           const documentTypeIdentifier = `.progressNotification-${props.documentType}`;
@@ -110,16 +102,11 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
               setTimeout(poll, 2000);
             } else if (data.state === "SUCCESS" && data?.error.length > 0) {
               setProgressBarVisible(false);
-              notification.warning({
-                key: props.documentType,
-                className: `progressNotification-${props.documentType}`,
-                message: "Error compressing files",
-                description: "Unable to retrieve files",
-                duration: 10,
-                placement: "topRight",
-                onClose: handleCloseCompressionNotification,
-                top: 85,
-              });
+              displayCompressionNotification(
+                "Error compressing files",
+                "Unable to retrieve files",
+                10
+              );
             } else {
               setFileToDownload(data.success_docs[0]);
               setDownloadModalVisible(true);
