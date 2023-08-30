@@ -6,11 +6,6 @@ export const storeMineAlerts = (payload) => ({
   payload,
 });
 
-export const storeGlobalMineAlerts = (payload) => ({
-  type: ActionTypes.STORE_GLOBAL_MINE_ALERTS,
-  payload,
-});
-
 export const clearMineAlert = () => ({
   type: ActionTypes.CLEAR_MINE_ALERT,
 });
