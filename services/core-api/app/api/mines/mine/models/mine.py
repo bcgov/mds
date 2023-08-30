@@ -56,7 +56,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.update_timestamp)',
-        lazy='joined')
+        lazy='selectin')
 
     # Almost always used, but faster to use selectin to load related data
     _permit_identities = db.relationship(
