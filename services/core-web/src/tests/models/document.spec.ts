@@ -50,7 +50,7 @@ describe("MineDocument model", () => {
   it("Base document model versions", () => {
     const mineDocumentRecord = new MineDocument(mockDocumentData);
 
-    const expectedNumPreviousVersions = mockDocumentData.versions.length - 1;
+    const expectedNumPreviousVersions = mockDocumentData.versions.length;
     expect(mineDocumentRecord.number_prev_versions).toEqual(expectedNumPreviousVersions);
     expect(mineDocumentRecord.versions.length).toEqual(expectedNumPreviousVersions);
     expect(typeof mineDocumentRecord).toEqual(typeof mineDocumentRecord.versions[0]);

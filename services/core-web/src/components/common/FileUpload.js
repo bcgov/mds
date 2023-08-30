@@ -32,6 +32,9 @@ const propTypes = {
   onProcessFiles: PropTypes.func,
   onAbort: PropTypes.func,
   itemInsertLocation: PropTypes.func | PropTypes.string,
+  onAfterResponse: PropTypes.func,
+  beforeAddFile: PropTypes.func,
+  beforeDropFile: PropTypes.func,
 };
 
 const defaultProps = {
@@ -50,6 +53,9 @@ const defaultProps = {
   labelIdle:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br> \
   <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>',
+  onAfterResponse: () => {},
+  beforeAddFile: () => {},
+  beforeDropFile: () => {},
 };
 
 class FileUpload extends React.Component {
@@ -87,6 +93,7 @@ class FileUpload extends React.Component {
           onProgress: (bytesUploaded, bytesTotal) => {
             progress(true, bytesUploaded, bytesTotal);
           },
+          onAfterResponse: this.props.onAfterResponse,
           onSuccess: () => {
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
@@ -144,6 +151,8 @@ class FileUpload extends React.Component {
         <FilePond
           server={this.server}
           name="file"
+          beforeDropFile={this.props.beforeDropFile}
+          beforeAddFile={this.props.beforeAddFile}
           allowRevert={this.props.allowRevert}
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}

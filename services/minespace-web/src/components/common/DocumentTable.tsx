@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -49,6 +49,7 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userInfo: any;
+  replaceAlertMessage?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -68,6 +69,8 @@ export const DocumentTable = ({
   closeModal,
   removeDocument,
   openDocument,
+  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
+
   ...props
 }: DocumentTableProps) => {
   const allowedTableActions = {
@@ -95,7 +98,8 @@ export const DocumentTable = ({
       return doc;
     });
   };
-  const documents = parseDocuments(props.documents ?? []);
+
+  const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents));
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -134,6 +138,25 @@ export const DocumentTable = ({
     });
   };
 
+  const openReplaceModal = (event, doc: MineDocument) => {
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Replace File`,
+        closeModal: closeModal,
+        handleSubmit: async (document: MineDocument) => {
+          const newDocuments = documents.map((d) =>
+            d.mine_document_guid === document.mine_document_guid ? document : d
+          );
+          setDocuments(newDocuments);
+        },
+        document: doc,
+        alertMessage: replaceAlertMessage,
+      },
+      content: modalConfig.REPLACE_DOCUMENT,
+    });
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -155,7 +178,7 @@ export const DocumentTable = ({
       key: "replace",
       label: FileOperations.Replace,
       icon: <SyncOutlined />,
-      clickFunction: (_event, _record: MineDocument) => alert("Not implemented"),
+      clickFunction: (_event, _record: MineDocument) => openReplaceModal(_event, _record),
     },
     {
       key: "archive",
