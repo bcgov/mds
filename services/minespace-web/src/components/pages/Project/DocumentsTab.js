@@ -48,9 +48,18 @@ export class DocumentsTab extends Component {
 
   componentDidMount() {
     this.handleFetchData();
-    this.allDocuments.push(this.props.project?.project_summary?.documents);
-    this.allDocuments.push(this.props.project?.information_requirements_table?.documents);
-    this.allDocuments.push(this.props.project?.major_mine_application?.documents);
+    const projectSummaryDocs = this.props.project?.project_summary?.documents?.map(
+      (doc) => new MajorMineApplicationDocument(doc)
+    );
+    const informationReqDocs = this.props.project?.information_requirements_table?.documents?.map(
+      (doc) => new MajorMineApplicationDocument(doc)
+    );
+    const majorMineDocs = this.props.project?.major_mine_application?.documents?.map(
+      (doc) => new MajorMineApplicationDocument(doc)
+    );
+    this.allDocuments.push(projectSummaryDocs);
+    this.allDocuments.push(informationReqDocs);
+    this.allDocuments.push(majorMineDocs);
   }
 
   handleFetchData = () => {
@@ -99,16 +108,14 @@ export class DocumentsTab extends Component {
           <ArchivedDocumentsSection
             titleLevel={3}
             additionalColumns={[
-              renderCategoryColumn(
-                "category_code",
-                "Category",
-                Strings.CATEGORY_CODE,
-                true
-              ),
+              renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
             ]}
             documentColumns={documentColumns}
-            documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
-              ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+            documents={
+              this.props.mineDocuments && this.props.mineDocuments.length > 0
+                ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+                : []
+            }
           />
         </Col>
       </Row>

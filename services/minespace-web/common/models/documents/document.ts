@@ -8,6 +8,10 @@ export enum FileOperations {
   Delete = "Delete",
 }
 
+export enum EntityType {
+  Project = "PROJECT",
+}
+
 /* 
 A base class for Mine Documents
 
@@ -59,6 +63,8 @@ export class MineDocument {
 
   public entity_title: string;
 
+  public entity_type: string;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -75,7 +81,9 @@ export class MineDocument {
     this.is_latest_version = jsonObject.is_latest_version ?? true;
     this.entity_title = jsonObject.entity_title ?? "";
     this.setCalculatedProperties(jsonObject);
+    this.entity_type = jsonObject.entity_type ?? "";
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
@@ -90,12 +98,16 @@ export class MineDocument {
     const versions = jsonObject.versions ?? [];
     if (this.is_latest_version && versions.length) {
       this.number_prev_versions = versions.length - 1;
-      this.versions = versions
-        .slice(1)
-        .map((version: MineDocument) => this.makeChild({
-          ...version, is_latest_version: false,
-          document_manager_guid: this.document_manager_guid,
-        }, jsonObject));
+      this.versions = versions.slice(1).map((version: MineDocument) =>
+        this.makeChild(
+          {
+            ...version,
+            is_latest_version: false,
+            document_manager_guid: this.document_manager_guid,
+          },
+          jsonObject
+        )
+      );
     } else {
       this.number_prev_versions = 0;
       this.versions = [];
@@ -126,13 +138,22 @@ export class MineDocument {
 }
 
 export class MajorMineApplicationDocument extends MineDocument {
-
   public project_summary_document_xref: { project_summary_document_type_code: string };
-  public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
-  public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
-  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
+
+  public project_decision_package_document_xref: {
+    project_decision_package_document_type_code: string;
+  };
+
+  public information_requirements_table_document_xref: {
+    information_requirements_table_document_type_code: string;
+  };
+
+  public major_mine_application_document_xref: {
+    major_mine_application_document_type_code: string;
+  };
 
   public major_mine_application_document_type_code: string;
+
   public versions: MajorMineApplicationDocument[];
 
   constructor(jsonObject: any) {
@@ -140,6 +161,7 @@ export class MajorMineApplicationDocument extends MineDocument {
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
     this.category_code = this.determineCategoryCode(jsonObject);
+    this.entity_type = EntityType.Project;
   }
 
   protected determineCategoryCode(jsonObject: any): string | undefined {
@@ -151,10 +173,10 @@ export class MajorMineApplicationDocument extends MineDocument {
     } = jsonObject;
 
     return (
-      project_summary_document_xref?.project_summary_document_type_code
-      ?? project_decision_package_document_xref?.project_decision_package_document_type_code
-      ?? information_requirements_table_document_xref?.information_requirements_table_document_type_code
-      ?? major_mine_application_document_xref?.major_mine_application_document_type_code
+      project_summary_document_xref?.project_summary_document_type_code ??
+      project_decision_package_document_xref?.project_decision_package_document_type_code ??
+      information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
+      major_mine_application_document_xref?.major_mine_application_document_type_code
     );
   }
 
@@ -164,8 +186,10 @@ export class MajorMineApplicationDocument extends MineDocument {
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
       project_summary_document_xref: constructorArgs.project_summary_document_xref,
-      project_decision_package_document_xref: constructorArgs.project_decision_package_document_xref,
-      information_requirements_table_document_xref: constructorArgs.information_requirements_table_document_xref,
+      project_decision_package_document_xref:
+        constructorArgs.project_decision_package_document_xref,
+      information_requirements_table_document_xref:
+        constructorArgs.information_requirements_table_document_xref,
       major_mine_application_document_xref: constructorArgs.major_mine_application_document_xref,
     });
   }

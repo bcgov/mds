@@ -112,6 +112,8 @@ class MineDocumentArchiveResource(Resource, UserMixin):
     @api.expect(ARCHIVE_MINE_DOCUMENT)
     @api.response(204, 'Successfully archived documents')
     def patch(self, mine_guid):
+        entity_type = request.args.get('entity_type', None)
+        PROJECT_ENTITY_TYPE = "PROJECT"
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
@@ -134,7 +136,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
 
         MineDocument.mark_as_archived_many(mine_document_guids)
 
-        if len(mine_document_guids) > 0:
+        if entity_type is not None and entity_type == PROJECT_ENTITY_TYPE and len(mine_document_guids) > 0:
             project = ProjectsSearchUtil.find_by_mine_document_guid(mine_document_guids[0])
             renotifiy_hours = 24
             trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
