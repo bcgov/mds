@@ -1,4 +1,4 @@
-import { USER_ROLES, Feature, isFeatureEnabled } from "@mds/common";
+import { Feature, USER_ROLES, isFeatureEnabled } from "@mds/common";
 
 export enum FileOperations {
   View = "Open in document viewer",
