@@ -121,30 +121,30 @@ export class MineDocument {
 
   protected setCalculatedProperties(jsonObject: any) {
     this.key = this.is_latest_version
-        ? this.mine_document_guid
-        : jsonObject.document_manager_version_guid;
+      ? this.mine_document_guid
+      : jsonObject.document_manager_version_guid;
     this.file_type = this.getFileType();
 
     const versions = jsonObject.versions ?? [];
     if (this.is_latest_version && versions.length) {
       this.number_prev_versions = versions.length;
       this.versions = versions
-          .map((version: MineDocument) =>
-              this.makeChild(
-                  {
-                    ...version,
-                    is_latest_version: false,
-                    mine_document_guid: this.mine_document_guid,
-                    document_manager_guid: this.document_manager_guid,
-                    allowed_actions: [
-                      this.file_type === ".pdf" && FileOperations.View,
-                      FileOperations.Download,
-                    ],
-                  },
-                  jsonObject
-              )
+        .map((version: MineDocument) =>
+          this.makeChild(
+            {
+              ...version,
+              is_latest_version: false,
+              mine_document_guid: this.mine_document_guid,
+              document_manager_guid: this.document_manager_guid,
+              allowed_actions: [
+                this.file_type === ".pdf" && FileOperations.View,
+                FileOperations.Download,
+              ],
+            },
+            jsonObject
           )
-          .reverse();
+        )
+        .reverse();
     } else {
       this.number_prev_versions = 0;
       this.versions = [];
@@ -194,7 +194,7 @@ export class MajorMineApplicationDocument extends MineDocument {
   constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
-        jsonObject.major_mine_application_document_type_code;
+      jsonObject.major_mine_application_document_type_code;
     this.category_code = this.determineCategoryCode(jsonObject);
   }
 
@@ -207,10 +207,10 @@ export class MajorMineApplicationDocument extends MineDocument {
     } = jsonObject;
 
     return (
-        project_summary_document_xref?.project_summary_document_type_code ??
-        project_decision_package_document_xref?.project_decision_package_document_type_code ??
-        information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
-        major_mine_application_document_xref?.major_mine_application_document_type_code
+      project_summary_document_xref?.project_summary_document_type_code ??
+      project_decision_package_document_xref?.project_decision_package_document_type_code ??
+      information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
+      major_mine_application_document_xref?.major_mine_application_document_type_code
     );
   }
 
@@ -224,7 +224,7 @@ export class MajorMineApplicationDocument extends MineDocument {
     const canModify = userRoles.some((role) => canModifyRoles.includes(role));
 
     return allowedActions.filter(
-        (action) => canModify || [FileOperations.View, FileOperations.Download].includes(action)
+      (action) => canModify || [FileOperations.View, FileOperations.Download].includes(action)
     );
   }
 }
