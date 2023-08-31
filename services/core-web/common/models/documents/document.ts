@@ -43,7 +43,7 @@ export class MineDocumentVersion {
   }
 }
 
-/* 
+/*
 A base class for Mine Documents
 
 There is an issue with antd where sorting a table that has children (ie matchChildColumnsToParent)
