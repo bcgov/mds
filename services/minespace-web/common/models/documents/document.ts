@@ -27,6 +27,8 @@ export class MineDocumentVersion {
 
   public update_timestamp: string;
 
+  public allowed_actions: FileOperations[];
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_document_version_guid = jsonObject.mine_document_version_guid;
@@ -37,6 +39,7 @@ export class MineDocumentVersion {
     this.upload_date = jsonObject.upload_date;
     this.create_user = jsonObject.create_user;
     this.update_timestamp = jsonObject.update_timestamp;
+    this.allowed_actions = jsonObject.allowed_actions;
   }
 }
 
@@ -133,6 +136,10 @@ export class MineDocument {
               is_latest_version: false,
               mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,
+              allowed_actions: [
+                this.file_type === ".pdf" && FileOperations.View,
+                FileOperations.Download,
+              ],
             },
             jsonObject
           )

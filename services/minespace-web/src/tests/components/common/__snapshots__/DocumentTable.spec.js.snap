@@ -32,5 +32,37 @@ exports[`DocumentTable renders properly 1`] = `
       },
     ]
   }
+  dataSource={
+    Array [
+      MineDocument {
+        "allowed_actions": Array [
+          "Open in document viewer",
+          "Download file",
+          "Replace file",
+          "Archive file",
+          "Delete",
+        ],
+        "archived_by": undefined,
+        "archived_date": undefined,
+        "category": undefined,
+        "create_user": undefined,
+        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+        "document_manager_version_guid": undefined,
+        "document_name": "test.pdf",
+        "entity_title": "",
+        "file_type": ".pdf",
+        "is_archived": false,
+        "is_latest_version": true,
+        "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+        "number_prev_versions": 0,
+        "update_timestamp": undefined,
+        "update_user": undefined,
+        "upload_date": undefined,
+        "versions": Array [],
+      },
+    ]
+  }
 />
 `;

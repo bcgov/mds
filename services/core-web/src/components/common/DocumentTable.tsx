@@ -215,6 +215,7 @@ export const DocumentTable = ({
 
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
+    console.log("record", record);
     return tableActions.filter((action) => allowedDocumentActions.includes(action.label));
   };
 
