@@ -215,6 +215,7 @@ class DocumentManagerService():
             - The progress of the zip operation
             - The current state of the operation
             - If successful, the newly created document_guid
+            - An array of errors, empty if none
         """
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip/{task_id}',
