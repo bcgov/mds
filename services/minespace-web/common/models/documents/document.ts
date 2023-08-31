@@ -164,6 +164,7 @@ export class MineDocument {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected getAllowedActions(_userRoles: string[] = []) {
     const canModify = this.is_latest_version && !this.is_archived;
+    if (!this.mine_document_guid) return [];
     return [
       this.file_type === ".pdf" && FileOperations.View,
       FileOperations.Download,

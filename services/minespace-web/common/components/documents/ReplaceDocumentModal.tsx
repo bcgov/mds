@@ -9,7 +9,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { HttpRequest, HttpResponse } from "tus-js-client";
-import { IMAGE, DOCUMENT, EXCEL } from "@common/constants/fileTypes";
+import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
 import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common";
 import { FilePondFile } from "filepond";
@@ -33,6 +33,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     ...DOCUMENT,
     ...EXCEL,
     ...IMAGE,
+    ...SPATIAL,
   };
 
   const onFileLoad = async (fileName: string, document_manager_guid: string) => {
