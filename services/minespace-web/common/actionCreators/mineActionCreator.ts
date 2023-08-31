@@ -253,7 +253,7 @@ export const archiveMineDocuments = (
   dispatch(showLoading());
   return CustomAxios()
     .patch(
-      `${ENVIRONMENT.apiUrl}${API.ARCHIVE_MINE_DOCUMENTS(mineGuid, entityType)}`,
+      `${ENVIRONMENT.apiUrl}${API.ARCHIVE_MINE_DOCUMENTS(mineGuid)}`,
       { mine_document_guids: mineDocumentGuids },
       createRequestHeader()
     )
