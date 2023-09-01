@@ -58,6 +58,7 @@ import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
+import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -67,6 +68,7 @@ export const modalConfig = {
   MERGE_PARTY_CONFIRMATION: MergePartyConfirmationModal,
   ARCHIVE_DOCUMENT: ArchiveDocumentModal,
   DELETE_DOCUMENT: DeleteDocumentModal,
+  REPLACE_DOCUMENT: ReplaceDocumentModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,

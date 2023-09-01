@@ -10,6 +10,7 @@ from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
+from app.api.mines.documents.models.mine_document import MineDocument
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -93,6 +94,7 @@ class DocumentManagerService():
             'filename': metadata.get('filename')
         }
 
+
         version_url = f'{cls.document_manager_document_resource_url}/{mine_document.document_manager_guid}/versions'
 
         resp = requests.post(
@@ -101,6 +103,10 @@ class DocumentManagerService():
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
             cookies=request.cookies)
+
+        if resp.status_code == 201:
+            mine_document.document_name = metadata.get('filename')
+            mine_document.save()
 
         return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
@@ -213,6 +219,7 @@ class DocumentManagerService():
             - The progress of the zip operation
             - The current state of the operation
             - If successful, the newly created document_guid
+            - An array of errors, empty if none
         """
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip/{task_id}',

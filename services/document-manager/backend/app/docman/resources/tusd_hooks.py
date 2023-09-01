@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from datetime import datetime
 
@@ -47,8 +48,8 @@ class TusdHooks(Resource):
             new_key = f'{Config.S3_PREFIX}{path}'
             doc_guid = data["Upload"]["MetaData"]["doc_guid"]
             version_guid = data["Upload"]["MetaData"].get("version_guid")
-            versionId = data["version"]["versionId"]
-            versionTimestamp = data["version"]["timestamp"]
+            versions = data["versions"]
+
             # If the path is in the key there is no need to move the file
             if (path in key):
                 return ('', 204)
@@ -72,12 +73,23 @@ class TusdHooks(Resource):
 
                 db.session.add(doc)
 
-            if version_guid is not None:
-                version = DocumentVersion.find_by_id(version_guid)
-                version.object_store_version_id = versionId
-                version.upload_completed_date = datetime.utcnow()
+            # update the record of the previous version
+            if len(versions) >= 2:
+                # versions are sorted in descending order by last modified, so the second latest is at index 1
+                previous_version_data = versions[1]
 
-                db.session.add(version)
+                # get the versionId of the second latest version
+                previous_version_id = previous_version_data["versionId"]
+
+                # find the corresponding DocumentVersion record
+                if version_guid is None:
+                    previous_version = DocumentVersion.find_by_id(version_guid)
+
+                    if previous_version is not None:
+                        previous_version.object_store_version_id = previous_version_id
+                        previous_version.upload_completed_date = datetime.utcnow()
+
+                        db.session.add(previous_version)
 
             db.session.commit()
 

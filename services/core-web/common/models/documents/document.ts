@@ -76,6 +76,7 @@ export class MineDocument {
     this.entity_title = jsonObject.entity_title ?? "";
     this.setCalculatedProperties(jsonObject);
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
     return new MineDocument(params);
@@ -89,13 +90,19 @@ export class MineDocument {
 
     const versions = jsonObject.versions ?? [];
     if (this.is_latest_version && versions.length) {
-      this.number_prev_versions = versions.length - 1;
+      this.number_prev_versions = versions.length;
       this.versions = versions
-        .slice(1)
-        .map((version: MineDocument) => this.makeChild({
-          ...version, is_latest_version: false,
-          document_manager_guid: this.document_manager_guid,
-        }, jsonObject));
+        .map((version: MineDocument) =>
+          this.makeChild(
+            {
+              ...version,
+              is_latest_version: false,
+              document_manager_guid: this.document_manager_guid,
+            },
+            jsonObject
+          )
+        )
+        .reverse();
     } else {
       this.number_prev_versions = 0;
       this.versions = [];
@@ -126,13 +133,22 @@ export class MineDocument {
 }
 
 export class MajorMineApplicationDocument extends MineDocument {
-
   public project_summary_document_xref: { project_summary_document_type_code: string };
-  public project_decision_package_document_xref: { project_decision_package_document_type_code: string };
-  public information_requirements_table_document_xref: { information_requirements_table_document_type_code: string };
-  public major_mine_application_document_xref: { major_mine_application_document_type_code: string };
+
+  public project_decision_package_document_xref: {
+    project_decision_package_document_type_code: string;
+  };
+
+  public information_requirements_table_document_xref: {
+    information_requirements_table_document_type_code: string;
+  };
+
+  public major_mine_application_document_xref: {
+    major_mine_application_document_type_code: string;
+  };
 
   public major_mine_application_document_type_code: string;
+
   public versions: MajorMineApplicationDocument[];
 
   constructor(jsonObject: any) {
@@ -151,10 +167,10 @@ export class MajorMineApplicationDocument extends MineDocument {
     } = jsonObject;
 
     return (
-      project_summary_document_xref?.project_summary_document_type_code
-      ?? project_decision_package_document_xref?.project_decision_package_document_type_code
-      ?? information_requirements_table_document_xref?.information_requirements_table_document_type_code
-      ?? major_mine_application_document_xref?.major_mine_application_document_type_code
+      project_summary_document_xref?.project_summary_document_type_code ??
+      project_decision_package_document_xref?.project_decision_package_document_type_code ??
+      information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
+      major_mine_application_document_xref?.major_mine_application_document_type_code
     );
   }
 
@@ -164,8 +180,10 @@ export class MajorMineApplicationDocument extends MineDocument {
       major_mine_application_document_type_code:
         constructorArgs.major_mine_application_document_type_code,
       project_summary_document_xref: constructorArgs.project_summary_document_xref,
-      project_decision_package_document_xref: constructorArgs.project_decision_package_document_xref,
-      information_requirements_table_document_xref: constructorArgs.information_requirements_table_document_xref,
+      project_decision_package_document_xref:
+        constructorArgs.project_decision_package_document_xref,
+      information_requirements_table_document_xref:
+        constructorArgs.information_requirements_table_document_xref,
       major_mine_application_document_xref: constructorArgs.major_mine_application_document_xref,
     });
   }

@@ -308,6 +308,11 @@ html {
     padding-bottom: $default-padding-sm;
   }
 
+  &--y {
+    padding-top: $default-padding-sm;
+    padding-bottom: $default-padding-sm;
+  }
+
   padding: $default-padding-sm;
 }
 
@@ -333,6 +338,11 @@ html {
   &--sides {
     padding-left: $default-padding-md;
     padding-right: $default-padding-md;
+
+    &--y {
+      padding-top: $default-padding-md;
+      padding-bottom: $default-padding-md;
+    }
 
     @include tablet {
       padding: 0;
@@ -366,6 +376,11 @@ html {
     @include tablet {
       padding: 0;
     }
+  }
+
+  &--y {
+    margin-top: $default-margin-lg;
+    margin-bottom: $default-margin-lg;
   }
 }
 
@@ -430,7 +445,10 @@ html {
     margin-bottom: $default-margin-md !important;
   }
 
-  margin: $default-margin-md;
+  &--y {
+    margin-top: $default-margin-md !important;
+    margin-bottom: $default-margin-md !important;
+  }
 }
 
 .margin-large {

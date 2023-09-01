@@ -80,6 +80,10 @@
   &--bottom {
     padding-bottom: $default-padding-sm;
   }
+  &--y {
+    padding-top: $default-padding-sm;
+    padding-bottom: $default-padding-sm;
+  }
   padding: $default-padding-sm;
 }
 
@@ -193,6 +197,10 @@
   }
   &--left {
     margin-left: $default-margin-lg;
+  }
+  &--y {
+    margin-top: $default-margin-lg;
+    margin-bottom: $default-margin-lg;
   }
 }
 

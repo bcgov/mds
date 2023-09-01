@@ -2,10 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
-import {
-  NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS,
-  PROJECT_SUMMARY_DOCUMENTS,
-} from "@common/constants/API";
+import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -53,11 +50,13 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
-    handleModalClose?.();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    handleModalClose && handleModalClose();
   };
 
   const handleNewVersionSubmit = () => {
-    handleModalSubmit?.();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    handleModalSubmit && handleModalSubmit();
   };
 
   const columns = [
@@ -117,7 +116,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
           return () => {
             setReplaceableFileModalVisible(false);
             setUploadUrl(
-              NEW_VERSION_PROJECT_SUMMARY_DOCUMENTS({
+              NEW_VERSION_DOCUMENTS({
                 mineGuid: props.params.mineGuid,
                 mineDocumentGuid: existingDocument.mine_document_guid,
               })
