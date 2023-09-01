@@ -40,7 +40,7 @@ interface DocumentTableProps {
   openDocument: any;
   closeModal: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[], entityType: string) => void;
+  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
   documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
@@ -111,7 +111,6 @@ export const DocumentTable = ({
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
     event.preventDefault();
-    const entityType = docs[0].entity_type;
     openModal({
       props: {
         title: `Archive ${docs?.length > 1 ? "Multiple Files" : "File"}`,
@@ -119,8 +118,7 @@ export const DocumentTable = ({
         handleSubmit: async () => {
           await props.archiveMineDocuments(
             mineGuid,
-            docs.map((d) => d.mine_document_guid),
-            entityType
+            docs.map((d) => d.mine_document_guid)
           );
           if (props.onArchivedDocuments) {
             props.onArchivedDocuments(docs);
