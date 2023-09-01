@@ -244,11 +244,9 @@ export const fetchMineDocuments = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const archiveMineDocuments = (
-  mineGuid: string,
-  mineDocumentGuids: string[],
-  entityType: string
-) => (dispatch) => {
+export const archiveMineDocuments = (mineGuid: string, mineDocumentGuids: string[]) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.ARCHIVE_MINE_DOCUMENTS));
   dispatch(showLoading());
   return CustomAxios()

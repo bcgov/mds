@@ -8,10 +8,6 @@ export enum FileOperations {
   Delete = "Delete",
 }
 
-export enum EntityType {
-  Project = "PROJECT",
-}
-
 /* 
 A base class for Mine Documents
 
@@ -63,8 +59,6 @@ export class MineDocument {
 
   public entity_title: string;
 
-  public entity_type: string;
-
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -81,7 +75,6 @@ export class MineDocument {
     this.is_latest_version = jsonObject.is_latest_version ?? true;
     this.entity_title = jsonObject.entity_title ?? "";
     this.setCalculatedProperties(jsonObject);
-    this.entity_type = jsonObject.entity_type ?? "";
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -163,7 +156,6 @@ export class MajorMineApplicationDocument extends MineDocument {
     this.major_mine_application_document_type_code =
       jsonObject.major_mine_application_document_type_code;
     this.category_code = this.determineCategoryCode(jsonObject);
-    this.entity_type = EntityType.Project;
   }
 
   protected determineCategoryCode(jsonObject: any): string | undefined {
