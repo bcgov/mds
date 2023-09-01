@@ -73,6 +73,21 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(MajorMineApplication)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(MajorMineApplication.major_mine_application_id == MajorMineApplicationDocumentXref.major_mine_application_id)\
+                    .filter(MajorMineApplicationDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
+
     def send_mma_submit_email(self):
         recipients = [contact.email for contact in self.project.contacts]
         primary_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "PRM"]

@@ -71,6 +71,21 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(ProjectDecisionPackage)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(ProjectDecisionPackage.project_decision_package_id == ProjectDecisionPackageDocumentXref.project_decision_package_id)\
+                    .filter(ProjectDecisionPackageDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
+
+    @classmethod
     def create(cls,
                project,
                status_code,

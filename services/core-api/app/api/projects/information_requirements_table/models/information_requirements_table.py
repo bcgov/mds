@@ -67,6 +67,21 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(InformationRequirementsTable)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(InformationRequirementsTable.irt_id == InformationRequirementsTableDocumentXref.irt_id)\
+                    .filter(InformationRequirementsTableDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
+
     def send_irt_submit_email(self):
         project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email

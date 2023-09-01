@@ -2,6 +2,11 @@ import decimal
 import uuid
 
 from flask import request
+from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
+from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
+
 from flask_restplus import Resource, reqparse, fields
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
@@ -135,16 +140,26 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         MineDocument.mark_as_archived_many(mine_document_guids)
 
         if len(mine_document_guids) > 0:
+            project = None
             doc = documents[0]
+            mine_document_guid = doc.mine_document_guid
+            isNotifiableDoc = False
+
+            if doc.major_mine_application_document_xref:
+                project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
+                isNotifiableDoc = True
+            elif doc.project_summary_document_xref:
+                project = ProjectSummary.find_by_mine_document_guid(mine_document_guid).project
+                isNotifiableDoc = True
+            elif doc.project_decision_package_document_xref:
+                project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
+                isNotifiableDoc = True
+            elif doc.information_requirements_table_document_xref:
+                project = InformationRequirementsTable.find_by_mine_document_guid(mine_document_guid).project
+                isNotifiableDoc = True
 
             # If one of the *xref value is not None that means the notification should be sent.
-            isNotifiableDoc = any([doc.major_mine_application_document_xref,
-                doc.project_summary_document_xref,
-                doc.project_decision_package_document_xref,
-                doc.information_requirements_table_document_xref])
-
             if isNotifiableDoc:
-                project = ProjectsSearchUtil.find_by_mine_document_guid(mine_document_guids[0])
                 renotifiy_hours = 24
                 trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
                         ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)

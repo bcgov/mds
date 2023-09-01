@@ -14,7 +14,7 @@ class ProjectsSearchUtil():
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
         """
-        Find Project by the mine_document_guid.
+        Find Project by the mine_document_guid, specific to ProjectSummary documents.
         """
 
         qy = db.session.query(Project)

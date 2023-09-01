@@ -138,6 +138,21 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_guid=project_guid, deleted_ind=False).all()
 
     @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(ProjectSummary)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
+                    .filter(ProjectSummaryDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
+
+    @classmethod
     def create(cls,
                project,
                mine,
