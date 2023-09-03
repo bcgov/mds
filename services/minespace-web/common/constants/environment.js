@@ -20,6 +20,8 @@ export const ENVIRONMENT = {
   matomoUrl: "<MATOMO_URL>",
   filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
   environment: "<ENV>",
+  flagsmithUrl: "<FLAGSMITH_URL>",
+  flagsmithKey: "<FLAGSMITH_KEY>",
 };
 
 export const KEYCLOAK = {

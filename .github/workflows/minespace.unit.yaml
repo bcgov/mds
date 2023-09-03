@@ -57,6 +57,8 @@ jobs:
           CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
           CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
           CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
+          FLAGSMITH_URL: ${{ secrets.FLAGSMITH_URL }}
+          FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }}
 
       - name: Upload cypress video
         uses: actions/upload-artifact@v3

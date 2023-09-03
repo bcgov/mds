@@ -43,9 +43,9 @@ import {
   getEngineersOfRecordOptions,
   getQualifiedPersons,
 } from "@common/selectors/partiesSelectors";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
 import { ICreateTSF, IMine, ActionCreator } from "@mds/common";
+import { Feature } from "@mds/common";
+import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 
 interface TailingsSummaryPageProps {
   form: string;
@@ -330,7 +330,6 @@ export default compose(
     destroyOnUnmount: true,
     onSubmit: () => {},
   })
-  // FEATURE FLAG: TSF
-)(
-  withRouter(AuthorizationGuard(Permission.IN_TESTING)(TailingsSummaryPage)) as any
-) as FC<TailingsSummaryPageProps>;
+)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any) as FC<
+  TailingsSummaryPageProps
+>;
