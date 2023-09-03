@@ -62,7 +62,8 @@ export class ProjectPage extends Component {
           }
           return null;
         })
-        .then(({ data }) => {
+        .then((response) => {
+          const { data = {} } = response || { data: {} };
           this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
           this.setState({
             isLoaded: true,
@@ -79,7 +80,7 @@ export class ProjectPage extends Component {
 
   fetchArchivedDocuments(activeTab = this.state.activeTab) {
     let filters = { project_guid: this.props?.project?.project_guid, is_archived: true };
-    if (activeTab == "major-mine-application") {
+    if (activeTab === "major-mine-application") {
       filters = {
         ...(this.props?.project?.major_mine_application?.major_mine_application_guid && {
           major_mine_application_guid: this.props?.project?.major_mine_application

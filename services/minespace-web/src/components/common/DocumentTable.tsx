@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -85,6 +85,7 @@ export const DocumentTable = ({
   const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
+    if (!docs) return [];
     let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
       parsedDocs = docs;
@@ -99,7 +100,13 @@ export const DocumentTable = ({
     });
   };
 
-  const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents));
+  const [documents, setDocuments] = useState<MineDocument[]>();
+
+  useEffect(() => {
+    if (props.documents) {
+      setDocuments(parseDocuments(props.documents));
+    }
+  }, [props.documents]);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
