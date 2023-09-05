@@ -1,4 +1,4 @@
-import { USER_ROLES, Feature, isFeatureEnabled } from "@mds/common";
+import { Feature, USER_ROLES, isFeatureEnabled } from "@mds/common";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -8,7 +8,42 @@ export enum FileOperations {
   Delete = "Delete",
 }
 
-/* 
+export class MineDocumentVersion {
+  public mine_document_guid: string;
+
+  public mine_document_version_guid: string;
+
+  public mine_guid: string;
+
+  public document_manager_guid: string;
+
+  public document_manager_version_guid: string;
+
+  public document_name: string;
+
+  public upload_date: string;
+
+  public create_user: string;
+
+  public update_timestamp: string;
+
+  public allowed_actions: FileOperations[];
+
+  constructor(jsonObject: any) {
+    this.mine_document_guid = jsonObject.mine_document_guid;
+    this.mine_document_version_guid = jsonObject.mine_document_version_guid;
+    this.mine_guid = jsonObject.mine_guid;
+    this.document_manager_guid = jsonObject.document_manager_guid;
+    this.document_manager_version_guid = jsonObject.document_manager_version_guid;
+    this.document_name = jsonObject.document_name;
+    this.upload_date = jsonObject.upload_date;
+    this.create_user = jsonObject.create_user;
+    this.update_timestamp = jsonObject.update_timestamp;
+    this.allowed_actions = jsonObject.allowed_actions;
+  }
+}
+
+/*
 A base class for Mine Documents
 
 There is an issue with antd where sorting a table that has children (ie matchChildColumnsToParent)
@@ -53,11 +88,13 @@ export class MineDocument {
 
   public number_prev_versions: number;
 
-  public versions: MineDocument[]; // all previous file versions, not including latest
+  public versions: MineDocumentVersion[]; // all previous file versions, not including latest
 
   public allowed_actions: FileOperations[];
 
   public entity_title: string;
+
+  public document_manager_version_guid?: string;
 
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
@@ -74,12 +111,12 @@ export class MineDocument {
     this.archived_date = jsonObject.archived_date;
     this.is_latest_version = jsonObject.is_latest_version ?? true;
     this.entity_title = jsonObject.entity_title ?? "";
+    this.document_manager_version_guid = jsonObject.document_manager_version_guid ?? undefined;
     this.setCalculatedProperties(jsonObject);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected makeChild(params: any, _constructorArgs: any) {
-    return new MineDocument(params);
+    return new MineDocumentVersion(params);
   }
 
   protected setCalculatedProperties(jsonObject: any) {
@@ -97,7 +134,9 @@ export class MineDocument {
             {
               ...version,
               is_latest_version: false,
+              mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,
+              allowed_actions: this.getAllowedActions(jsonObject.user_roles, false).filter(Boolean),
             },
             jsonObject
           )
@@ -120,8 +159,12 @@ export class MineDocument {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected getAllowedActions(_userRoles: string[] = []) {
-    const canModify = this.is_latest_version && !this.is_archived;
+  protected getAllowedActions(
+    _userRoles: string[] = [],
+    is_latest_version: boolean = this.is_latest_version
+  ) {
+    const canModify = is_latest_version && !this.is_archived;
+    if (!this.mine_document_guid) return [];
     return [
       this.file_type === ".pdf" && FileOperations.View,
       FileOperations.Download,
@@ -149,8 +192,6 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   public major_mine_application_document_type_code: string;
 
-  public versions: MajorMineApplicationDocument[];
-
   constructor(jsonObject: any) {
     super(jsonObject);
     this.major_mine_application_document_type_code =
@@ -172,20 +213,6 @@ export class MajorMineApplicationDocument extends MineDocument {
       information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
       major_mine_application_document_xref?.major_mine_application_document_type_code
     );
-  }
-
-  protected makeChild(params: any, constructorArgs: any) {
-    return new MajorMineApplicationDocument({
-      ...params,
-      major_mine_application_document_type_code:
-        constructorArgs.major_mine_application_document_type_code,
-      project_summary_document_xref: constructorArgs.project_summary_document_xref,
-      project_decision_package_document_xref:
-        constructorArgs.project_decision_package_document_xref,
-      information_requirements_table_document_xref:
-        constructorArgs.information_requirements_table_document_xref,
-      major_mine_application_document_xref: constructorArgs.major_mine_application_document_xref,
-    });
   }
 
   public getAllowedActions(userRoles: string[] = []) {

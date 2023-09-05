@@ -111,18 +111,20 @@ export const renderActionsColumn = (
 
       return (
         <div>
-          <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
-            {/* // TODO: change button classname to something generic */}
-            <Button className="permit-table-button">
-              {text}
-              <img
-                className="padding-sm--right icon-svg-filter"
-                src={CARAT}
-                alt={dropdownAltText}
-                style={{ paddingLeft: "5px" }}
-              />
-            </Button>
-          </Dropdown>
+          {items.length > 0 && (
+            <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
+              {/* // TODO: change button classname to something generic */}
+              <Button className="permit-table-button">
+                {text}
+                <img
+                  className="padding-sm--right icon-svg-filter"
+                  src={CARAT}
+                  alt={dropdownAltText}
+                  style={{ paddingLeft: "5px" }}
+                />
+              </Button>
+            </Dropdown>
+          )}
         </div>
       );
     },
