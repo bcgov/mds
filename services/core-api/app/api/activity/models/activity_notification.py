@@ -132,7 +132,7 @@ class ActivityNotification(AuditMixin, Base):
     notification_read = db.Column(db.Boolean(), nullable=False, default=False)
     notification_recipient = db.Column(db.String(60), nullable=False)
     idempotency_key = db.Column(db.String(120), nullable=True)
-    create_timestamp = db.Column(db.DateTime, nullable=False)
+    create_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
     @classmethod
     def create(cls, notification_recipient, notification_document, commit=False):
