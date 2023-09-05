@@ -304,7 +304,7 @@ export const DocumentTable = ({
       ),
     },
     {
-      key: "0",
+      key: "1",
       icon: <DeleteOutlined />,
       label: (
         <button
