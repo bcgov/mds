@@ -136,10 +136,7 @@ export class MineDocument {
               is_latest_version: false,
               mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,
-              allowed_actions: [
-                this.file_type === ".pdf" && FileOperations.View,
-                FileOperations.Download,
-              ],
+              allowed_actions: this.getAllowedActions(jsonObject.user_roles, false).filter(Boolean),
             },
             jsonObject
           )
@@ -162,8 +159,11 @@ export class MineDocument {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected getAllowedActions(_userRoles: string[] = []) {
-    const canModify = this.is_latest_version && !this.is_archived;
+  protected getAllowedActions(
+    _userRoles: string[] = [],
+    is_latest_version: boolean = this.is_latest_version
+  ) {
+    const canModify = is_latest_version && !this.is_archived;
     if (!this.mine_document_guid) return [];
     return [
       this.file_type === ".pdf" && FileOperations.View,
