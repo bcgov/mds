@@ -40,7 +40,6 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
     @api.response(200, 'Successfully requested new document manager version')
     @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     def post(self, mine_guid, mine_document_guid):
-        project_guid = request.args.get('project_guid', type=str) #___________remove project_guid
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
