@@ -303,6 +303,21 @@ export const DocumentTable = ({
         </button>
       ),
     },
+    {
+      key: "0",
+      icon: <DeleteOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
   ];
 
   const rowSelectionObject = {
