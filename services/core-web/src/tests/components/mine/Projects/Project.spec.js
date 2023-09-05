@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { Project } from "@/components/mine/Projects/Project";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 const dispatchProps = {};
@@ -26,7 +27,16 @@ beforeEach(() => {
 
 describe("Project", () => {
   it("renders properly", () => {
-    const component = shallow(<Project {...dispatchProps} {...props} />);
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <Project {...dispatchProps} {...props} />
+      </FeatureFlagContext.Provider>
+    );
+
     expect(component).toMatchSnapshot();
   });
 });
