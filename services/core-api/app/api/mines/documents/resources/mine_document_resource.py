@@ -28,7 +28,6 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import ActivityRecipients
-from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.api.projects.project.models.project import Project
 
 class MineDocumentListResource(Resource, UserMixin):

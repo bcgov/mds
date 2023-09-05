@@ -15,7 +15,6 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 
 from app.api.activity.models.activity_notification import ActivityType
-from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.api.activity.utils import trigger_notification
 from app.api.activity.utils import ActivityRecipients
 
@@ -177,7 +176,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
 
             if len(documents) > 0:
                 if Config.ENVIRONMENT_NAME != 'prod':
-                    project = ProjectsSearchUtil.find_by_mine_document_guid(documents[0].get('mine_document_guid'))
+                    mine_document_guid = documents[0].mine_document_guid
+                    project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
                     renotify_hours = 24
                     mine = Mine.find_by_mine_guid(project.mine_guid)
                     trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',

@@ -14,7 +14,6 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
-from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.api.activity.utils import trigger_notification
 from app.api.activity.utils import ActivityRecipients
 

@@ -11,7 +11,6 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.api.activity.models.activity_notification import ActivityType
-from app.api.projects.project.projects_search_util import ProjectsSearchUtil
 from app.api.activity.utils import trigger_notification
 from app.api.activity.utils import ActivityRecipients
 from app.api.mines.mine.models.mine import Mine

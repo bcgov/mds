@@ -20,14 +20,6 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VERSION_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
 
-
-from app.api.activity.utils import trigger_notification
-from app.api.activity.models.activity_notification import ActivityType
-from app.api.projects.project.models.project import Project
-from app.api.activity.utils import ActivityRecipients
-from app.api.projects.project.projects_search_util import ProjectsSearchUtil
-from app.config import Config
-
 class MineDocumentVersionUploadResource(Resource, UserMixin):
 
     @api.doc(
