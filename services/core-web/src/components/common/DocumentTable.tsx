@@ -119,6 +119,10 @@ export const DocumentTable = ({
     setDocumentsCanBulkDropDown(isBulkArchive);
   }, []);
 
+  useEffect(() => {
+    setDocuments(parseDocuments(props.documents ?? []));
+  }, [props.documents]);
+
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
     event.preventDefault();
