@@ -82,7 +82,8 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
     });
 };
 
-export const downloadFileFromDocumentManager = ({ document_manager_guid, document_name = "" }) => {
+export const downloadFileFromDocumentManager = (props) => {
+  const { document_manager_guid, document_name = "", document_manager_version_guid } = props;
   if (!document_manager_guid) {
     throw new Error("Must provide document_manager_guid");
   }
@@ -94,7 +95,12 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
     )
     .then((response) => {
       const token = { token: response.data.token_guid };
-      const url = `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
+      let url = `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
+
+      if (document_manager_version_guid) {
+        url = `${url}&document_manager_version_guid=${document_manager_version_guid}`;
+      }
+
       if (document_name.toLowerCase().includes(".pdf")) {
         window.open(url, "_blank");
       } else {

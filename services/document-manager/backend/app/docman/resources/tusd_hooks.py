@@ -48,7 +48,7 @@ class TusdHooks(Resource):
             new_key = f'{Config.S3_PREFIX}{path}'
             doc_guid = data["Upload"]["MetaData"]["doc_guid"]
             version_guid = data["Upload"]["MetaData"].get("version_guid")
-            versions = data["versions"]
+            versions = data["versions"] if "versions" in data else []
 
             # If the path is in the key there is no need to move the file
             if (path in key):
@@ -74,15 +74,18 @@ class TusdHooks(Resource):
                 db.session.add(doc)
 
             # update the record of the previous version
-            if len(versions) >= 2:
-                # versions are sorted in descending order by last modified, so the second latest is at index 1
-                previous_version_data = versions[1]
+            if len(versions) >= 1:
+                # Sort the versions
+                versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
-                # get the versionId of the second latest version
-                previous_version_id = previous_version_data["versionId"]
+                # create a version record for the previous version
+                previous_version_data = versions[0]
+
+                # get the versionId of the previous version
+                previous_version_id = previous_version_data["VersionId"]
 
                 # find the corresponding DocumentVersion record
-                if version_guid is None:
+                if version_guid is not None:
                     previous_version = DocumentVersion.find_by_id(version_guid)
 
                     if previous_version is not None:
