@@ -120,7 +120,9 @@ export const DocumentTable = ({
   }, []);
 
   useEffect(() => {
-    setDocuments(parseDocuments(props.documents ?? []));
+    if (props.documents) {
+      setDocuments(parseDocuments(props.documents ?? []));
+    }
   }, [props.documents]);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
