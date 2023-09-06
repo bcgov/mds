@@ -13,18 +13,16 @@ services:
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: keycloak
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
       KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
     volumes:
       - ./cypress/realm-export.json:/tmp/realm-export.json
-      - ./cypress/create-user.sh:/tmp/create-user.sh    
+      - ./cypress/keycloak-users.json:/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json
     ports:
       - 8080:8080
   ####################### Open Telemetry #######################
   otelcollector:
     image: otel/opentelemetry-collector
-    command: [--config=/etc/otel-collector-config.yaml]
+    command: [ --config=/etc/otel-collector-config.yaml ]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
@@ -38,7 +36,7 @@ services:
 
   ####################### Jaeger Tracing #######################
 
-  jaeger: 
+  jaeger:
     image: "jaegertracing/all-in-one:latest"
     container_name: mds_jaeger
     environment:

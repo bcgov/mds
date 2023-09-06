@@ -77,10 +77,682 @@
         "clientRole": false,
         "containerId": "standard",
         "attributes": {}
+      },
+      {
+        "id": "843c6927-c3d7-493a-8aed-7ea7d69bfdc7",
+        "name": "test",
+        "description": "test",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "standard",
+        "attributes": {}
+      },
+      {
+        "id": "efab39b2-ace6-4fa8-bfa1-28353a36f8a4",
+        "name": "minespace-proponents",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "standard",
+        "attributes": {}
       }
     ],
     "client": {
-      "mines-digital-services-mds-public-client-4414": [],
+      "mines-digital-services-mds-public-client-4414": [
+        {
+          "id": "42cf611c-191b-4e14-8f5f-55a38ae3a200",
+          "name": "core_full_permissions",
+          "composite": true,
+          "clientRole": true,
+          "composites": {
+            "client": {
+              "mines-digital-services-mds-public-client-4414": [
+                "idir",
+                "core_edit_parties",
+                "core_edit_all",
+                "core_edit_do",
+                "core_abandoned_mines",
+                "core_contact_admin",
+                "core_view_all",
+                "core_edit_mines",
+                "core_edit_investigations",
+                "core_edit_variances",
+                "core_environmental_reports",
+                "core_edit_permits",
+                "nris_view_all",
+                "core_edit_reports",
+                "core_edit_submissions",
+                "core_close_permits",
+                "core_edit_securities",
+                "core_geospatial",
+                "mds_regional_mines",
+                "mds_users"
+              ]
+            }
+          },
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "90bc8f24-afc0-45bc-a447-98b03dccf36c",
+          "name": "Abandoned Mines",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "0b57ce9e-4d1e-4bce-b663-8ab456b63113",
+          "name": "Administrative Users",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "e5bf7ce6-d215-42d0-893b-bd46e4e5ddfc",
+          "name": "Chief Inspector",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "c51a6a3d-53cb-4ac7-84ef-6331c79bca05",
+          "name": "c_idir",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "7b4edb0e-2633-4745-ba58-11c8ebc721a4",
+          "name": "c_mds_administrative_mines",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "e12ec537-2f45-465f-b263-24e3bdcb99e2",
+          "name": "c_mds_health_safety",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "84d67524-ee2c-4497-80da-5d2bb7eabddc",
+          "name": "c_mds_major_mines_administrative",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "cdc3198c-104a-4140-bee6-241e772775b0",
+          "name": "c_mds_minespace_proponent",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "591629b1-2ce8-462e-b16a-207355848d05",
+          "name": "c_mds_overlord",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "6a63a15a-608c-4419-ba66-b63ce1a067e4",
+          "name": "c_mds_permit_mines",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "b24fcd96-29d7-47bc-8c1b-0617010730eb",
+          "name": "c_mds_super_admin",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "8c0adee6-15dd-45e5-b1be-a2f572151b82",
+          "name": "c_mds_users",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "13bc2e02-1808-47e5-a0f1-d0040e778875",
+          "name": "Compliance and Enforcement",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "2b95ad29-6acb-42fb-9b52-7ded6bc9e559",
+          "name": "core_abandoned_mines",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "a8142173-fb8e-4d16-8ddf-ad024413dc6d",
+          "name": "core_admin",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "96678724-2a9a-48d8-b5e3-0a3d4b0a211b",
+          "name": "Core Application Admins",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "e2ae22a2-bfb5-40a1-9724-33694eb03969",
+          "name": "core_close_permits",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "6e70b7d2-9de9-4ab0-a3f3-2e713ce78834",
+          "name": "core_contact_admin",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "a3bd254d-fd83-41fa-a772-b747b2bde033",
+          "name": "core_edit_all",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "9a20a7d2-c283-4afc-b070-c7073b77254e",
+          "name": "core_edit_do",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "a5743860-95fd-4c4d-b4ef-9528ce0eeb9c",
+          "name": "core_edit_emli_contacts",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "e246559a-31fc-4733-8a38-2516e1ba34c7",
+          "name": "core_edit_explosives_permits",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "bcec5e73-da59-45ad-a623-b187f3e6b7c4",
+          "name": "core_edit_historical_amendments",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "81cf215e-931e-4d7b-b20f-fd3418601539",
+          "name": "core_edit_incidents",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "b1146179-11ce-491b-960e-920e06c5de80",
+          "name": "core_edit_information_requirements_table",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "47d75281-35b0-462c-84be-6bf71622f2c2",
+          "name": "core_edit_investigations",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "1af19945-9896-4461-ba38-e404adad8d5f",
+          "name": "core_edit_major_mine_applications",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "22ef4ca4-c042-4ea6-a514-0122fdefb212",
+          "name": "core_edit_mines",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "7543d298-2fd9-4981-9f39-dd7e17cf8247",
+          "name": "core_edit_now_dates",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "0b7e2afd-36c2-4185-ad16-2917f8784a27",
+          "name": "core_edit_parties",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "734ba38f-d16c-4428-90a9-97fa3046ea3a",
+          "name": "core_edit_permits",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "787994f8-f4d8-406c-9246-dfa0cddd8144",
+          "name": "core_edit_project_decision_packages",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "c1896bc0-aed9-4ece-8695-bb88abb66d9c",
+          "name": "core_edit_project_summaries",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "70798993-5fac-4562-a933-addab2a2a25e",
+          "name": "core_edit_reports",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "fa00345d-8cec-423d-b52b-cf9a720a5869",
+          "name": "core_edit_requirements",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "014f553b-8033-41be-a6dc-183b966e0fbe",
+          "name": "core_edit_securities",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "90cfd31d-f5cb-425f-adde-96420f12abb9",
+          "name": "core_edit_submissions",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "9cb6450a-9082-4401-95c0-e37b37521875",
+          "name": "core_edit_template_conditions",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "7c0a30d7-4ad1-4779-b65f-025424886ab8",
+          "name": "core_edit_tsf",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "b0a419a8-0f84-41ad-91e9-db5da9f0f8bd",
+          "name": "core_edit_variances",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "2fcc452b-d0be-49c8-ada5-976f90e61e0d",
+          "name": "core_environmental_reports",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "984aad27-efcb-48d0-b205-0df5a8ec6305",
+          "name": "core_executive_view",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d03087f0-3040-477b-8a34-2ae78d8f83fe",
+          "name": "core_geospatial",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d09bde70-094a-4254-8b9e-4b0fa08a6fd0",
+          "name": "core_view_admin_route",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "762175ee-71ee-4db2-9d13-d108f5b0085e",
+          "name": "core_view_all",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "bd0672b1-13a6-4523-be2c-819dd0f4288e",
+          "name": "cs_mds_abandoned_mines",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "1693eee1-5563-4c85-a454-83ffcc61bea0",
+          "name": "cs_mds_executive",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "8383493a-4d4c-4be5-8d0d-7ae0464fe20b",
+          "name": "cs_mds_geospatial",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "36191105-17e8-4b6c-b161-5fc2f46cb8f8",
+          "name": "cs_mds_investigations",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "128ee0ef-825c-42ea-803c-5e25584b8490",
+          "name": "cs_mds_maa",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "df6a63c9-a3e0-4cd9-ad87-201e03bda7b7",
+          "name": "cs_mds_permit_template_conditions",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "59cf816c-91fd-4c1c-8628-c176dd354d38",
+          "name": "cs_mds_securities",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "2f74533d-3395-467a-82bb-a58b7f85ce69",
+          "name": "cs_mds_tsf",
+          "description": "",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "f7ab39d1-2a42-4bee-a69a-09eb6da16567",
+          "name": "Data Cleanup Team",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "314682c8-9524-4593-bf24-b2400ada6bc5",
+          "name": "digdag_admin",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "915689e8-f0f3-4158-bb7e-78bd3bc869de",
+          "name": "docman_manager",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "fd23ca74-c92d-4d38-ba1b-8777f26943c0",
+          "name": "Executive",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "080efcc2-8703-4402-af61-ec781f88074d",
+          "name": "Geospatial",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "0a2446da-c5c3-4387-aeb6-95592f2dd24b",
+          "name": "Health and Safety",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "6e7f042c-9fa5-48dd-98cc-cc0694d37580",
+          "name": "idir",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "c61e5b2a-cf19-41ba-bf2d-c27fe48c0063",
+          "name": "Major Mines Permitting",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "4df24573-db7c-4226-93a6-59fe6004ed8e",
+          "name": "mds_abandoned_mines",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "3abdf0fe-df6d-4db4-a0cf-634353379d4e",
+          "name": "mds_administrative_users",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "f273d639-0da6-4b41-83e9-a9929924084b",
+          "name": "mds_application_admins",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d809e19e-d1db-439e-836f-cf7a456291a4",
+          "name": "mds_chief_inspector",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "83a72c79-af53-483d-a505-64671c2415c2",
+          "name": "mds_compliance_enforcement",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "59307092-39f0-4cdc-8667-c3f2f4e39506",
+          "name": "mds_data_cleanup",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "61e26928-43fd-4cae-a541-50dd4ede1061",
+          "name": "mds_executive",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "438b117c-9449-4af4-b3a5-ce7eade1a808",
+          "name": "mds_geospatial",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "fc7b6656-00dd-41a8-9214-38b1bef48726",
+          "name": "mds_health_safety",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "662a5ca0-23d7-4dc5-9580-d8466d7d5b0a",
+          "name": "MDS Keycloak Realm Admin",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "721b79e2-b85e-478c-9b8b-3cd1470cccb3",
+          "name": "mds_major_mines",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "066db406-b1e9-4174-b6c7-6bf00d3ac838",
+          "name": "mds_minespace_proponents",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "9e59d9b2-a561-46c6-b83a-697e9c441081",
+          "name": "mds_regional_mines",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "ca496211-8984-42f4-8276-d760a032de72",
+          "name": "mds_securities",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d1827258-d8cb-41c8-9da3-d0bb9afd1c83",
+          "name": "mds_users",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "b6c2c198-a83e-44ce-a4e8-178a3bac68a9",
+          "name": "Mineral Titles",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "941a3536-3dca-45e0-a57c-54479416b726",
+          "name": "minespace-proponent",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "50560b5e-92bb-4967-ad23-1b8f4eb1259b",
+          "name": "nris_view_all",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "39af470d-41d2-4629-a99e-fd5f3977ddbf",
+          "name": "offline_access",
+          "description": "",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d1419d36-b472-43fa-bfda-bf43388ab0bd",
+          "name": "Regional Mines Permitting",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "f529bb23-c65e-4950-93e4-da756bcba0ff",
+          "name": "Securities",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "5d515d2a-1e82-462d-b5dd-4da285e8b4f7",
+          "name": "Senior Permitting Inspector",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "c372f528-7286-4636-8313-d6cd2eb9ce99",
+          "name": "TestComp",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "2fcf3ada-bc53-4d68-b5eb-040a9afc1203",
+          "name": "uma_authorization",
+          "description": "",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        },
+        {
+          "id": "d19d7ccc-12ba-48a5-8548-fe398d8adf90",
+          "name": "View Only Role",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "38bf108d-56a4-46a3-9929-feaa6fca039a"
+        }
+      ],
       "realm-management": [
         {
           "id": "7134fd47-17ee-4b78-803c-308f4c9a0bff",
@@ -637,22 +1309,6 @@
           }
         },
         {
-          "id": "9c6f483e-e41b-48ec-873d-44805c786adf",
-          "name": "Client Roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-hardcoded-claim-mapper",
-          "consentRequired": false,
-          "config": {
-            "claim.value": "[ \"core_edit_requirements\",  \"c_mds_major_mines_administrative\",  \"core_edit_variances\",     \"digdag_admin\",     \"core_edit_investigations\",     \"docman_manager\",     \"core_edit_reports\",     \"core_edit_emli_contacts\",     \"cs_mds_geospatial\",     \"core_view_all\",     \"c_mds_users\",     \"cs_mds_tsf\",     \"core_close_permits\",     \"c_mds_permit_mines\",     \"c_mds_administrative_mines\",     \"c_mds_overlord\",     \"cs_mds_abandoned_mines\",     \"core_edit_securities\",     \"core_edit_project_decision_packages\",     \"core_edit_mines\",     \"core_geospatial\",     \"core_edit_historical_amendments\",     \"c_mds_health_safety\",     \"core_executive_view\",     \"idir\",     \"core_environmental_reports\",     \"c_idir\",     \"cs_mds_investigations\",     \"cs_mds_permit_template_conditions\",     \"core_edit_major_mine_applications\",     \"c_mds_super_admin\",     \"core_contact_admin\",     \"core_edit_permits\",     \"cs_mds_securities\",     \"core_edit_template_conditions\",     \"core_edit_do\",     \"core_edit_tsf\",     \"nris_view_all\",     \"core_edit_project_summaries\",     \"core_edit_incidents\",     \"core_edit_all\",     \"core_view_admin_route\",     \"core_edit_explosives_permits\",     \"core_edit_parties\",     \"core_edit_submissions\",     \"core_abandoned_mines\",     \"cs_mds_executive\",     \"core_edit_information_requirements_table\",     \"core_admin\" , \"mds_minespace_proponents\", \"c_mds_minespace_proponent\"  ]",
-            "userinfo.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "client_roles",
-            "jsonType.label": "JSON",
-            "access.tokenResponse.claim": "false"
-          }
-        },
-        {
           "id": "15b20023-0f46-4669-9902-28b891948363",
           "name": "BCEID User GUID",
           "protocol": "openid-connect",
@@ -682,6 +1338,22 @@
             "claim.name": "idir_username",
             "jsonType.label": "String",
             "access.tokenResponse.claim": "false"
+          }
+        },
+        {
+          "id": "bce938f2-659c-454b-b466-2b449540aa65",
+          "name": "client_roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-script-based-protocol-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_roles",
+            "jsonType.label": "String",
+            "script": "var roles = [];\nvar client = keycloakSession.getContext().getClient();\nuser.getRoleMappings().forEach(function(roleModel) {\n    roles.push(roleModel.getName());\n    \n    isComposite = roleModel.isComposite();\n    if (isComposite) {\n        roleModel.getComposites().forEach(function(child) {\n           roles.push(child.getName()); \n        });\n    }\n});\n\ntoken.setOtherClaims(\"client_roles\", Java.to(roles, \"java.lang.String[]\")); \n"
           }
         }
       ],
@@ -810,6 +1482,7 @@
           "consentRequired": false,
           "config": {
             "multivalued": "true",
+            "userinfo.token.claim": "true",
             "user.attribute": "foo",
             "id.token.claim": "true",
             "access.token.claim": "true",
@@ -1352,14 +2025,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-usermodel-attribute-mapper",
-            "saml-user-attribute-mapper",
+            "oidc-full-name-mapper",
+            "oidc-address-mapper",
+            "oidc-usermodel-property-mapper",
             "oidc-sha256-pairwise-sub-mapper",
             "saml-role-list-mapper",
-            "saml-user-property-mapper",
-            "oidc-address-mapper",
-            "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "saml-user-attribute-mapper",
+            "saml-user-property-mapper"
           ]
         }
       },
@@ -1379,14 +2052,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-role-list-mapper",
             "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper",
-            "oidc-address-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
             "saml-user-attribute-mapper",
+            "oidc-usermodel-attribute-mapper",
             "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "oidc-usermodel-property-mapper",
+            "saml-role-list-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-address-mapper"
           ]
         }
       },
@@ -1446,7 +2119,7 @@
   "supportedLocales": [],
   "authenticationFlows": [
     {
-      "id": "1be9572f-0e03-410e-bbdd-73cad9ca0d69",
+      "id": "f47484cc-61a6-4586-ae74-83affdee93e3",
       "alias": "Account verification options",
       "description": "Method with which to verity the existing account",
       "providerId": "basic-flow",
@@ -1472,7 +2145,7 @@
       ]
     },
     {
-      "id": "d16152cf-8525-496f-98f7-5be571a85870",
+      "id": "7ed42790-649f-4b79-a664-0389821e7383",
       "alias": "Authentication Options",
       "description": "Authentication options.",
       "providerId": "basic-flow",
@@ -1506,7 +2179,7 @@
       ]
     },
     {
-      "id": "b895ba21-6a4c-4b06-b7cd-23e077d6d4c5",
+      "id": "f769a011-d7ac-4aa3-bdce-0bc06199e10e",
       "alias": "Browser - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -1532,7 +2205,7 @@
       ]
     },
     {
-      "id": "588610ba-3408-498f-89db-c77771cdc004",
+      "id": "fc883dd5-1e5b-459d-8860-fb08543e4091",
       "alias": "Direct Grant - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -1558,7 +2231,7 @@
       ]
     },
     {
-      "id": "8bf34836-b608-4587-8c3a-85df241a6643",
+      "id": "b29bd1e0-3f36-4223-9e28-5d439e11354a",
       "alias": "First broker login - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -1584,7 +2257,7 @@
       ]
     },
     {
-      "id": "9305c48a-4826-4603-9381-59c5ba07aaf5",
+      "id": "de9ad702-77ac-422e-ac03-4122b140a854",
       "alias": "Handle Existing Account",
       "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
       "providerId": "basic-flow",
@@ -1610,7 +2283,7 @@
       ]
     },
     {
-      "id": "6da7b9a8-686c-4d95-9c82-a310f8aef05e",
+      "id": "7830fff5-5562-40f4-8771-953cd8150185",
       "alias": "Reset - Conditional OTP",
       "description": "Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.",
       "providerId": "basic-flow",
@@ -1636,7 +2309,7 @@
       ]
     },
     {
-      "id": "e111b380-4895-4ad9-acf5-bd50fb2a0132",
+      "id": "87b74d53-c929-4c9c-9b90-3bbb5da1d93b",
       "alias": "User creation or linking",
       "description": "Flow for the existing/non-existing user alternatives",
       "providerId": "basic-flow",
@@ -1663,7 +2336,7 @@
       ]
     },
     {
-      "id": "51f3ec2e-8b31-41db-a12a-6e8c081624a6",
+      "id": "4957acd0-e129-405c-829c-2e75a476db0f",
       "alias": "Verify Existing Account by Re-authentication",
       "description": "Reauthentication of existing account",
       "providerId": "basic-flow",
@@ -1689,7 +2362,7 @@
       ]
     },
     {
-      "id": "b4ddfac3-da61-41f9-83a1-f2d76cd842b4",
+      "id": "0961c312-54ef-461f-b3bd-dacc232ee648",
       "alias": "browser",
       "description": "browser based authentication",
       "providerId": "basic-flow",
@@ -1731,7 +2404,7 @@
       ]
     },
     {
-      "id": "db7c9ea5-c05b-403e-b1bb-7d36ab25935b",
+      "id": "fbf6c150-7b35-4b7a-819e-fe580e3c4e69",
       "alias": "clients",
       "description": "Base authentication for clients",
       "providerId": "client-flow",
@@ -1773,7 +2446,7 @@
       ]
     },
     {
-      "id": "8ddd55a0-1b03-47f9-8a14-f578d64c7226",
+      "id": "65dbb518-8db8-4d77-8ac7-db3ad679a22a",
       "alias": "direct grant",
       "description": "OpenID Connect Resource Owner Grant",
       "providerId": "basic-flow",
@@ -1807,7 +2480,7 @@
       ]
     },
     {
-      "id": "6d1e98b1-05a6-4d2f-b1a6-224c33a7b059",
+      "id": "4fabd63c-b905-4d17-9d13-0ef733d660cc",
       "alias": "docker auth",
       "description": "Used by Docker clients to authenticate against the IDP",
       "providerId": "basic-flow",
@@ -1825,7 +2498,7 @@
       ]
     },
     {
-      "id": "1332b1a1-b052-469c-9cad-a434942a9003",
+      "id": "40229e8d-d80e-4d1f-ae28-73d73ee0888f",
       "alias": "first broker login",
       "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
       "providerId": "basic-flow",
@@ -1852,7 +2525,7 @@
       ]
     },
     {
-      "id": "93b8887e-dab2-41ab-8b97-eb87edc16240",
+      "id": "7f1aebbd-154d-4dd7-bd26-4857b5cc3144",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
       "providerId": "basic-flow",
@@ -1878,7 +2551,7 @@
       ]
     },
     {
-      "id": "865b1078-7a9a-473d-a88c-2857843d5899",
+      "id": "d6b0772d-67c6-48cf-a0d4-1927e266f8e1",
       "alias": "http challenge",
       "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
       "providerId": "basic-flow",
@@ -1904,7 +2577,7 @@
       ]
     },
     {
-      "id": "3fcb3b9d-f5dd-4575-b2d8-33fb78beb485",
+      "id": "0fb625a4-8ae9-4519-a49b-4e66d268af27",
       "alias": "registration",
       "description": "registration flow",
       "providerId": "basic-flow",
@@ -1923,7 +2596,7 @@
       ]
     },
     {
-      "id": "4d9019c6-12f0-4dea-a0f0-c428d47662cc",
+      "id": "fbaa0754-2de7-4628-bfd0-b58451ef951d",
       "alias": "registration form",
       "description": "registration form",
       "providerId": "form-flow",
@@ -1965,7 +2638,7 @@
       ]
     },
     {
-      "id": "51f0b55b-0903-411c-a406-12b07f7df5d6",
+      "id": "b5729235-b343-4fe9-9e20-c4b4fd295422",
       "alias": "reset credentials",
       "description": "Reset credentials for a user if they forgot their password or something",
       "providerId": "basic-flow",
@@ -2007,7 +2680,7 @@
       ]
     },
     {
-      "id": "c5f69fb6-439d-4ef0-9916-ae4fdf7bda12",
+      "id": "5e58b0e3-4393-4501-88ef-727872e9f51c",
       "alias": "saml ecp",
       "description": "SAML ECP Profile Authentication Flow",
       "providerId": "basic-flow",
@@ -2027,14 +2700,14 @@
   ],
   "authenticatorConfig": [
     {
-      "id": "f14d2919-2752-4e39-aba7-7b2916444944",
+      "id": "4ff3b0ff-da31-43fd-a612-cfe7c88e825f",
       "alias": "create unique user config",
       "config": {
         "require.password.update.after.registration": "false"
       }
     },
     {
-      "id": "5d7dc296-e53c-46b9-9eb0-951f8ff12b70",
+      "id": "67f59d39-b231-4072-88a0-99bc3a6e4412",
       "alias": "review profile config",
       "config": {
         "update.profile.on.first.login": "missing"
@@ -2117,8 +2790,8 @@
     "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
     "oauth2DeviceCodeLifespan": "600",
-    "oauth2DevicePollingInterval": "5",
     "clientOfflineSessionMaxLifespan": "0",
+    "oauth2DevicePollingInterval": "5",
     "clientSessionIdleTimeout": "0",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",

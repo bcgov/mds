@@ -1,0 +1,102 @@
+[
+  {
+    "realm": "standard",
+    "users": [
+      {
+        "id": "af681d51-6743-4fca-9256-f5321cbc0aa7",
+        "createdTimestamp": 1694039547332,
+        "username": "core-admin",
+        "enabled": true,
+        "totp": false,
+        "emailVerified": true,
+        "firstName": "Core",
+        "lastName": "Admin",
+        "email": "core-admin@test.com",
+        "credentials": [
+          {
+            "id": "dd804794-da47-4e22-9002-8348d3f3c88b",
+            "type": "password",
+            "createdDate": 1694039559771,
+            "secretData": "{\"value\":\"4LWFMxw/d5QvImqB7CqBqcDiQsHX4OpofdKY1KrQeEjkSurpZ9IMQdZlUEBRgwo72UoEUBAGcWaQqb/OX+SobQ==\",\"salt\":\"1D5LE38kE0GTDFk/RiwtNQ==\",\"additionalParameters\":{}}",
+            "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+          }
+        ],
+        "disableableCredentialTypes": [],
+        "requiredActions": [],
+        "realmRoles": ["default-roles-standard"],
+        "clientRoles": {
+          "mines-digital-services-mds-public-client-4414": ["core_full_permissions"]
+        },
+        "notBefore": 0,
+        "groups": []
+      },
+      {
+        "id": "b5926a8d-77fb-40c0-abb2-b6553f8d18b0",
+        "createdTimestamp": 1694038644677,
+        "username": "cypress",
+        "enabled": true,
+        "totp": false,
+        "emailVerified": false,
+        "credentials": [
+          {
+            "id": "8bd4c0b4-e88e-4781-9555-8f309611a8c0",
+            "type": "password",
+            "createdDate": 1694038644679,
+            "secretData": "{\"value\":\"uAFvxNs1DnDzJjw1grmTXf2eHuGvSvhVFb6FO5KFiRk3TVOKJiElyUOnIPfY7MkQqLmDzz07vZDT6bA4rGrdfg==\",\"salt\":\"CEBW6iCFT3oUnlHMXXbX9Q==\",\"additionalParameters\":{}}",
+            "credentialData": "{\"hashIterations\":100000,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+          }
+        ],
+        "disableableCredentialTypes": [],
+        "requiredActions": [],
+        "realmRoles": ["default-roles-standard"],
+        "clientRoles": {
+          "realm-management": ["realm-admin"]
+        },
+        "notBefore": 0,
+        "groups": []
+      },
+      {
+        "id": "ac1d6a5a-a5d7-408c-bded-b0e1083c4e10",
+        "createdTimestamp": 1694039605259,
+        "username": "minespace-admin",
+        "enabled": true,
+        "totp": false,
+        "emailVerified": true,
+        "firstName": "Minespace",
+        "lastName": "Admin",
+        "email": "minespace-admin@test.com",
+        "credentials": [
+          {
+            "id": "71697b2e-9a0f-4f8a-bed1-a33bdf8e8878",
+            "type": "password",
+            "createdDate": 1694039616200,
+            "secretData": "{\"value\":\"71oOAyXN6CxPvUlG/cIv3zY7ooNoBwl3suUOWsCdXXa2njc742Y9jh9reyFMh91kpLUb7QjOwSrNto0IfApveQ==\",\"salt\":\"nX4JDNMl7TJJiBl1QnAy0A==\",\"additionalParameters\":{}}",
+            "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+          }
+        ],
+        "disableableCredentialTypes": [],
+        "requiredActions": [],
+        "realmRoles": ["default-roles-standard"],
+        "notBefore": 0,
+        "groups": []
+      }
+    ]
+  },
+  {
+    "realm": "master",
+    "users": [
+      {
+        "username": "admin",
+        "enabled": true,
+        "credentials": [
+          {
+            "type": "password",
+            "secretData": "{\"value\":\"Z/M7RTDFBxVsok3CZZZJwiqHMaa4ZphBiA+JDX7q1SyjYO0gJT90oEAF0rMEf/p7lCwk+PhtXGwikYI7r9RoYA==\",\"salt\":\"eBsK+PLekGRUJbvGdos+cA==\",\"additionalParameters\":{}}",
+            "credentialData": "{\"hashIterations\":100000,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+          }
+        ],
+        "realmRoles": ["admin"]
+      }
+    ]
+  }
+]
