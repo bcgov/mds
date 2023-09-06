@@ -13,7 +13,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
 import { FileOperations, MineDocument } from "@common/models/documents/document";
@@ -27,6 +27,7 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -77,6 +78,8 @@ export const DocumentTable = ({
 
   ...props
 }: DocumentTableProps) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,

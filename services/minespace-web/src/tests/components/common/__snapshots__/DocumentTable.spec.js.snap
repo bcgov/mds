@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
+<DocumentTable
 <div>
+  documentCategoryOptionsHash={
   <CoreTable
     columns={
       Array [
@@ -19,7 +21,15 @@ exports[`DocumentTable renders properly 1`] = `
           "sorter": [Function],
           "title": "Category",
         },
+    Object {
         Object {
+      "DEC": "Decision Document",
+      "REC": "Recommendation Document",
+      "REQ": "Request Document",
+    }
+  }
+  documents={
+    Array [
           "dataIndex": "upload_date",
           "defaultSortOrder": "descend",
           "key": "upload_date",
@@ -28,10 +38,24 @@ exports[`DocumentTable renders properly 1`] = `
           "title": "Uploaded",
         },
         Object {
+        "created_at": "2019-05-02",
+        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
           "key": "actions",
           "render": [Function],
+        "document_name": "test.pdf",
+        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
         },
       ]
+  }
+  isViewOnly={true}
+  removeDocument={[MockFunction]}
+  userInfo={
+    Object {
+      "client_roles": Array [
+        "mds_minespace_proponents",
+      ],
+    }
     }
   />
 </div>

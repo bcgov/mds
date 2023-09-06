@@ -2163,6 +2163,7 @@ __metadata:
     babel-preset-stage-2: 6.24.1
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 10.1.0
+    flagsmith: 3.19.1
     hard-source-webpack-plugin: 0.13.1
     html-webpack-plugin: 5.5.3
     image-webpack-loader: 8.1.0
@@ -2170,7 +2171,6 @@ __metadata:
     postcss-loader: 7.3.3
     prettier: 1.19.1
     query-string: 5.1.1
-    react: 16.13.1
     react-hot-loader: 4.12.21
     style-loader: 3.3.3
     terser-webpack-plugin: 5.3.9
@@ -2182,6 +2182,9 @@ __metadata:
     webpack-manifest-plugin: 5.0.0
     webpack-merge: 5.9.0
     webpack-node-externals: 3.0.0
+  peerDependencies:
+    react: 16.13.1
+    react-dom: 16.13.1
   languageName: unknown
   linkType: soft
 
@@ -10346,6 +10349,13 @@ __metadata:
   dependencies:
     semver-regex: ^2.0.0
   checksum: f010e00f9dedd5b83206762d668b4b3b86bbb81f3c2d957e2559969b9eadb6124297c4a2a1d51c5efea3d79557b19660a2758c77bb6a5ba5ce7750fba9847082
+  languageName: node
+  linkType: hard
+
+"flagsmith@npm:3.19.1":
+  version: 3.19.1
+  resolution: "flagsmith@npm:3.19.1"
+  checksum: df96b650a73354eb1fcba44ff94fe28c69dbb5b58061fa8782b69b8e959817a9f821070c211bbcb807bda7c9317fc954811ba055718845fb2da7cbd0028da07b
   languageName: node
   linkType: hard
 

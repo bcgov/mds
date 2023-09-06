@@ -10,7 +10,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { useHistory, useParams } from "react-router-dom";
 
-import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import PropTypes from "prop-types";
 import React from "react";
 import { bindActionCreators } from "redux";
@@ -22,6 +21,8 @@ import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CoreTable from "@/components/common/CoreTable";
+import { Feature } from "@mds/common";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -37,6 +38,8 @@ const propTypes = {
 export const TailingsTable = (props) => {
   const history = useHistory();
   const { id: mineGuid } = useParams();
+  const { isFeatureEnabled } = useFeatureFlag();
+
   // const [expandedRows, setExpandedRows] = React.useState([]);
   const {
     editTailings,
@@ -46,6 +49,8 @@ export const TailingsTable = (props) => {
     TSFOperatingStatusCodeHash,
     itrmExemptionStatusCodeHash,
   } = props;
+
+  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   const handleEditDam = (event, dam) => {
     event.preventDefault();
@@ -153,8 +158,7 @@ export const TailingsTable = (props) => {
         return (
           <div title="" align="right">
             <AuthorizationWrapper>
-              {/* FEATURE FLAG: TSF */}
-              {!IN_PROD() ? (
+              {tsfV2Enabled ? (
                 <Button type="link" onClick={(event) => editTailings(event, record)}>
                   <img src={EDIT_PENCIL} alt="Edit" />
                 </Button>
@@ -222,7 +226,7 @@ export const TailingsTable = (props) => {
       dataSource={tailings}
       // FEATURE FLAG: TSF
       expandProps={
-        !IN_PROD()
+        tsfV2Enabled
           ? {
               recordDescription: "associated dams",
               getDataSource: (record) => record.dams,

@@ -12,10 +12,11 @@ import DocumentsPage from "./DocumentsPage";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -28,20 +29,14 @@ const propTypes = {
   }).isRequired,
   project: customPropTypes.project.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func.isFeatureEnabled,
   refreshData: PropTypes.func.isRequired,
   mineDocuments: PropTypes.arrayOf(customPropTypes.mineDocument),
 };
 
-const tabs = [
-  "project-description",
-  "information-requirements-table",
-  "major-mine-application",
-  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && "archived-documents",
-].filter(Boolean);
-
 export class DocumentsTab extends Component {
   state = {
-    activeTab: tabs[0],
+    activeTab: "project-description",
   };
 
   allDocuments = [];
@@ -70,6 +65,13 @@ export class DocumentsTab extends Component {
   };
 
   render() {
+    const tabs = [
+      "project-description",
+      "information-requirements-table",
+      "major-mine-application",
+      this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && "archived-documents",
+    ].filter(Boolean);
+
     const documentColumns = [documentNameColumn(), uploadDateColumn()];
     const renderAllDocuments = (docs) => (
       <Row>
@@ -99,16 +101,14 @@ export class DocumentsTab extends Component {
           <ArchivedDocumentsSection
             titleLevel={3}
             additionalColumns={[
-              renderCategoryColumn(
-                "category_code",
-                "Category",
-                Strings.CATEGORY_CODE,
-                true
-              ),
+              renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
             ]}
             documentColumns={documentColumns}
-            documents={this.props.mineDocuments && this.props.mineDocuments.length > 0
-              ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+            documents={
+              this.props.mineDocuments && this.props.mineDocuments.length > 0
+                ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+                : []
+            }
           />
         </Col>
       </Row>
@@ -160,4 +160,6 @@ const mapDispatchToProps = (dispatch) =>
 
 DocumentsTab.propTypes = propTypes;
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocumentsTab));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withFeatureFlag(DocumentsTab))
+);

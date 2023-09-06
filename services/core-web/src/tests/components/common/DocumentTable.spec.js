@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { DocumentTable } from "@/components/common/DocumentTable";
+import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
 
 let props = {};
 let dispatchProps = {};
@@ -21,7 +22,15 @@ beforeEach(() => {
 
 describe("DocumentTable", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<DocumentTable {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <DocumentTable {...props} {...dispatchProps} />
+      </FeatureFlagContext.Provider>
+    );
+    expect(component).toMatchSnapshot();
   });
 });
