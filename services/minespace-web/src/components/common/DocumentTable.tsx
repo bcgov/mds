@@ -27,8 +27,11 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { Dropdown, Button, MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 interface DocumentTableProps {
+  enableBulkActions: boolean;
   documents: MineDocument[];
   isLoaded: boolean;
   isViewOnly: boolean;
@@ -54,6 +57,7 @@ interface DocumentTableProps {
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable = ({
+  enableBulkActions = true,
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -101,6 +105,8 @@ export const DocumentTable = ({
   };
 
   const [documents, setDocuments] = useState<MineDocument[]>();
+  const [rowSelection, setRowSelection] = useState([]);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
 
   useEffect(() => {
     if (props.documents) {
@@ -164,6 +170,36 @@ export const DocumentTable = ({
     });
   };
 
+  const handleRowSelectionChange = (value) => {
+    if (documentTypeCode === "") {
+      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
+    }
+
+    setRowSelection(value);
+  };
+
+  const rowSelectionObject = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
+
+  const renderBulkActions = () => {
+    let element = (
+      <Dropdown
+        menu={{ items: bulkItems }}
+        placement="bottomLeft"
+        disabled={rowSelection.length === 0}
+      >
+        <Button className="ant-btn ant-btn-primary">
+          Action
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -201,6 +237,24 @@ export const DocumentTable = ({
       clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
+
+  const bulkItems: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <DeleteOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full actions-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
+  ];
 
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
@@ -263,20 +317,47 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
-  return showVersionHistory ? (
-    <CoreTable
-      condition={isLoaded}
-      dataSource={documents}
-      columns={columns}
-      expandProps={{
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      }}
-    />
-  ) : (
-    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
+  const renderCoreTable = () => {
+    let element = (
+      <CoreTable columns={columns}  {...(enableBulkActions
+        ? {
+          rowSelection: {
+            type: "checkbox",
+            ...rowSelectionObject,
+          },
+        }
+        : {})} dataSource={documents} {...minimalProps} />
+    );
+    if (showVersionHistory) {
+      element = (
+        <CoreTable
+          condition={isLoaded}
+          dataSource={documents}
+          columns={columns}
+          {...(enableBulkActions
+            ? {
+              rowSelection: {
+                type: "checkbox",
+                ...rowSelectionObject,
+              },
+            }
+            : {})}
+          expandProps={{
+            childrenColumnName: "versions",
+            matchChildColumnsToParent: true,
+            recordDescription: "version history",
+            rowExpandable: (record) => record.number_prev_versions > 0,
+          }}
+        />
+      );
+    }
+    return element;
+  };
+  return (
+    <div>
+      {renderBulkActions()}
+      {renderCoreTable()}
+    </div>
   );
 };
 
