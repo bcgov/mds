@@ -1,377 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProjectDocumentsTab renders properly 1`] = `
-<Fragment>
-  <div
-    className="side-menu"
-  >
-    <withRouter(ScrollSideMenu)
-      featureUrlRoute={[Function]}
-      featureUrlRouteArguments={
-        Array [
-          "35633148-57f8-4967-be35-7f89abfbd02e",
-        ]
-      }
-      menuOptions={
-        Array [
-          Object {
-            "href": "basic-information",
-            "title": "Basic Information",
-          },
-          Object {
-            "href": "primary-documents",
-            "title": "Primary Documents",
-          },
-          Object {
-            "href": "spatial-components",
-            "title": "Spatial Components",
-          },
-          Object {
-            "href": "supporting-documents",
-            "title": "Supporting Documents",
-          },
-          Object {
-            "href": "ministry-decision-documents",
-            "title": "Ministry Decision Documents",
-          },
-          Object {
-            "href": "archived-documents",
-            "title": "Archived Documents",
-          },
-        ]
-      }
-    />
-  </div>
-  <div
-    className="side-menu--content"
-  >
-    <Row>
-      <Col
-        lg={18}
-      >
-        <Connect(ReduxForm)
-          displayValues={
-            Object {
-              "majorMineAppStatusCodesHash": Object {
-                "APV": "Approved",
-                "CHR": "Change Requested",
-                "DFT": "Draft",
-                "SUB": "Submitted",
-                "UNR": "In review - with reviewers",
-              },
-              "statusCode": undefined,
-              "updateDate": undefined,
-              "updateUser": undefined,
-            }
-          }
-          handleSubmit={[Function]}
-          initialValues={
-            Object {
-              "status_code": undefined,
-            }
-          }
-        />
-      </Col>
-    </Row>
-    <Row
-      id="basic-information"
-    >
-      <Col
-        lg={
-          Object {
-            "span": 14,
-          }
-        }
-        xl={
-          Object {
-            "span": 16,
-          }
-        }
-      >
-        <ForwardRef
-          level={3}
-        >
-          Basic Information
-        </ForwardRef>
-      </Col>
-    </Row>
-    <Row>
-      <Col
-        md={12}
-        xs={24}
-      >
-        <Descriptions
-          colon={false}
-          layout="vertical"
-          style={
-            Object {
-              "maxWidth": "95%",
-            }
-          }
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Primary Contact"
-          >
-            <ForwardRef
-              disabled={true}
-              value="N/A"
-            />
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-      <Col
-        md={12}
-        xs={24}
-      >
-        <Descriptions
-          colon={false}
-          layout="vertical"
-          style={
-            Object {
-              "maxWidth": "95%",
-            }
-          }
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Ministry Contact"
-          >
-            <ForwardRef
-              disabled={true}
-              value="N/A"
-            />
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-    </Row>
-    <Row>
-      <Col
-        md={12}
-        xs={24}
-      >
-        <Descriptions
-          colon={false}
-          layout="vertical"
-          style={
-            Object {
-              "maxWidth": "95%",
-            }
-          }
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Submitted"
-          >
-            <ForwardRef
-              disabled={true}
-            />
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-      <Col
-        md={12}
-        xs={24}
-      >
-        <Descriptions
-          colon={false}
-          layout="vertical"
-          style={
-            Object {
-              "maxWidth": "95%",
-            }
-          }
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Status"
-          >
-            <ForwardRef
-              disabled={true}
-              value="N/A"
-            />
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-    </Row>
-    <br />
-    <Connect(DocumentCompression)
-      documentType="all"
-      isCompressionModalVisible={false}
-      rows={Array []}
-      setCompressionModalVisible={[Function]}
-    />
-    <Button
-      className="ant-btn ant-btn-primary"
-      disabled={true}
-      onClick={[Function]}
-      style={
-        Object {
-          "float": "right",
-        }
-      }
-    >
-      <div>
-        <ForwardRef(DownloadOutlined) />
-          Download All Application Files
-      </div>
-    </Button>
-    <ForwardRef
-      id="major-mine-application"
-      level={4}
-    >
-      Application Files
-    </ForwardRef>
-    <div
-      id="primary-documents"
-    >
-      <ForwardRef(Text)
-        strong={true}
-        style={
-          Object {
-            "fontSize": "20px",
-            "textTransform": "uppercase",
-          }
-        }
-      >
-        Primary Documents
-      </ForwardRef(Text)>
-      <Connect(DocumentTable)
-        additionalColumnProps={
-          Array [
-            Object {
-              "colProps": Object {
-                "width": "80%",
-              },
-              "key": "document_name",
-            },
-          ]
-        }
-        canArchiveDocuments={true}
-        documents={Array []}
-        enableBulkActions={true}
-        isLoaded={false}
-        onArchivedDocuments={[Function]}
-        showVersionHistory={true}
-      />
-    </div>
-    <br />
-    <div
-      id="spatial-components"
-    >
-      <ForwardRef(Text)
-        strong={true}
-        style={
-          Object {
-            "fontSize": "20px",
-            "textTransform": "uppercase",
-          }
-        }
-      >
-        Spatial Components
-      </ForwardRef(Text)>
-      <Connect(DocumentTable)
-        additionalColumnProps={
-          Array [
-            Object {
-              "colProps": Object {
-                "width": "80%",
-              },
-              "key": "document_name",
-            },
-          ]
-        }
-        canArchiveDocuments={true}
-        documents={Array []}
-        enableBulkActions={true}
-        isLoaded={false}
-        onArchivedDocuments={[Function]}
-        showVersionHistory={true}
-      />
-    </div>
-    <br />
-    <div
-      id="supporting-documents"
-    >
-      <ForwardRef(Text)
-        strong={true}
-        style={
-          Object {
-            "fontSize": "20px",
-            "textTransform": "uppercase",
-          }
-        }
-      >
-        Supporting Documents
-      </ForwardRef(Text)>
-      <Connect(DocumentTable)
-        additionalColumnProps={
-          Array [
-            Object {
-              "colProps": Object {
-                "width": "80%",
-              },
-              "key": "document_name",
-            },
-          ]
-        }
-        canArchiveDocuments={true}
-        documents={Array []}
-        enableBulkActions={true}
-        isLoaded={false}
-        onArchivedDocuments={[Function]}
-        showVersionHistory={true}
-      />
-    </div>
-    <br />
-    <div
-      id="ministry-decision-documents"
-    >
-      <ForwardRef(Text)
-        strong={true}
-        style={
-          Object {
-            "fontSize": "20px",
-            "textTransform": "uppercase",
-          }
-        }
-      >
-        Ministry Decision Documents
-      </ForwardRef(Text)>
-      <Connect(DocumentTable)
-        additionalColumnProps={
-          Array [
-            Object {
-              "colProps": Object {
-                "width": "80%",
-              },
-              "key": "document_name",
-            },
-          ]
-        }
-        canArchiveDocuments={true}
-        documents={Array []}
-        enableBulkActions={true}
-        isLoaded={false}
-        onArchivedDocuments={[Function]}
-        showVersionHistory={true}
-      />
-    </div>
-    <br />
-    <ArchivedDocumentsSection
-      additionalColumns={
-        Array [
-          Object {
-            "dataIndex": "category_code",
-            "key": "category_code",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Category",
-          },
-        ]
-      }
-      documents={Array []}
-    />
-  </div>
-</Fragment>
+<MajorMineApplicationTab
+  fetchProjectById={[MockFunction]}
+  majorMineAppStatusCodesHash={
+    Object {
+      "APV": "Approved",
+      "CHR": "Change Requested",
+      "DFT": "Draft",
+      "SUB": "Submitted",
+      "UNR": "In review - with reviewers",
+    }
+  }
+  match={
+    Object {
+      "params": Object {
+        "projectGuid": "1234-4567-xwqy",
+      },
+    }
+  }
+  project={
+    Object {
+      "contacts": Array [],
+      "information_requirements_table": Object {
+        "documents": Array [],
+      },
+      "major_mine_application": Object {
+        "documents": Array [],
+      },
+      "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+      "mine_name": "Sample Mine",
+      "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+      "project_summary": Object {
+        "documents": Array [],
+      },
+      "project_title": "Test Project Title",
+    }
+  }
+/>
 `;

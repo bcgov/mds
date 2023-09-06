@@ -13,7 +13,6 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { bindActionCreators } from "redux";
 import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
@@ -26,6 +25,8 @@ import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 import { FixedType } from "rc-table/lib/interface";
 import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { Feature } from "@mds/common";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -52,6 +53,10 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     handleEditTailings,
     tailings,
   } = props;
+
+  const { isFeatureEnabled } = useFeatureFlag();
+
+  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   const transformRowData = (items: ITailingsStorageFacility[]) => {
     return items?.map((tailing) => {
@@ -151,8 +156,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
               >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
               </Button>
-              {/* FEATURE FLAG: TSF */}
-              {!IN_PROD() && (
+              {tsfV2Enabled && (
                 <Button
                   type="primary"
                   size="small"
@@ -217,7 +221,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       rowKey="mine_tailings_storage_facility_guid"
       classPrefix="tailings"
       expandProps={
-        IN_PROD()
+        !tsfV2Enabled
           ? null
           : {
               rowKey: "dam_guid",

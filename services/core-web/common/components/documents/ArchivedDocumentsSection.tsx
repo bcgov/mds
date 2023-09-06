@@ -2,9 +2,10 @@ import React from "react";
 import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { MineDocument } from "@common/models/documents/document";
 import { ColumnType } from "antd/es/table";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];
@@ -14,6 +15,8 @@ interface ArchivedDocumentsSectionProps {
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   if (!isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)) {
     return <></>;
   }
