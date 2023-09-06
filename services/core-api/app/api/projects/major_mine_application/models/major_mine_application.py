@@ -17,6 +17,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.activity.utils import trigger_notification
 from app.api.activity.utils import ActivityRecipients
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'major_mine_application'
@@ -174,14 +175,14 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         if add_to_session:
             self.save(commit=False)
 
+        if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
             if len(documents) > 0:
-                if Config.ENVIRONMENT_NAME != 'prod':
-                    mine_document_guid = documents[0].mine_document_guid
-                    project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
-                    renotify_hours = 24
-                    mine = Mine.find_by_mine_guid(project.mine_guid)
-                    trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                        ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+                mine_document_guid = documents[0].mine_document_guid
+                project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
+                renotify_hours = 24
+                mine = Mine.find_by_mine_guid(project.mine_guid)
+                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                    ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
 
         return self
 

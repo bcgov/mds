@@ -29,6 +29,7 @@ from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import ActivityRecipients
 from app.api.projects.project.models.project import Project
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
@@ -138,30 +139,31 @@ class MineDocumentArchiveResource(Resource, UserMixin):
 
         MineDocument.mark_as_archived_many(mine_document_guids)
 
-        if len(mine_document_guids) > 0:
-            project = None
-            doc = documents[0]
-            mine_document_guid = doc.mine_document_guid
-            isNotifiableDoc = False
+        if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
+            if len(mine_document_guids) > 0:
+                project = None
+                doc = documents[0]
+                mine_document_guid = doc.mine_document_guid
+                isNotifiableDoc = False
 
-            if doc.major_mine_application_document_xref:
-                project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
-            elif doc.project_summary_document_xref:
-                project = ProjectSummary.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
-            elif doc.project_decision_package_document_xref:
-                project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
-            elif doc.information_requirements_table_document_xref:
-                project = InformationRequirementsTable.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                if doc.major_mine_application_document_xref:
+                    project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
+                    isNotifiableDoc = True
+                elif doc.project_summary_document_xref:
+                    project = ProjectSummary.find_by_mine_document_guid(mine_document_guid).project
+                    isNotifiableDoc = True
+                elif doc.project_decision_package_document_xref:
+                    project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
+                    isNotifiableDoc = True
+                elif doc.information_requirements_table_document_xref:
+                    project = InformationRequirementsTable.find_by_mine_document_guid(mine_document_guid).project
+                    isNotifiableDoc = True
 
-            # If one of the *xref value is not None that means the notification should be sent.
-            if isNotifiableDoc:
-                renotifiy_hours = 24
-                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                        ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)
+                # If one of the *xref value is not None that means the notification should be sent.
+                if isNotifiableDoc:
+                    renotifiy_hours = 24
+                    trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
+                            ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project.project_guid, None, None, ActivityRecipients.core_users, True, renotifiy_hours*60)
 
         return None, 204
 
