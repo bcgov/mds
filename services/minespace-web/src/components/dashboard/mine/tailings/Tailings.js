@@ -14,10 +14,11 @@ import { resetForm } from "@common/utils/helpers";
 import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
-import { detectProdEnvironment as IN_PROD } from "@mds/common";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import TailingsTable from "./TailingsTable";
+import { Feature } from "@mds/common";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -35,6 +36,11 @@ const propTypes = {
 export const Tailings = (props) => {
   const history = useHistory();
   const { mine } = props;
+
+  const { isFeatureEnabled } = useFeatureFlag();
+
+  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
+
   const handleEditTailings = (values) => {
     return props
       .updateTailingsStorageFacility(
@@ -80,8 +86,7 @@ export const Tailings = (props) => {
   return (
     <Row>
       <Col span={24}>
-        {/* FEATURE FLAG: TSF */}
-        <Row justify={!IN_PROD() ? "space-between" : "start"}>
+        <Row justify={tsfV2Enabled ? "space-between" : "start"}>
           <Col>
             <Title level={4}>Tailings Storage Facilities</Title>
             <Paragraph>
@@ -93,8 +98,7 @@ export const Tailings = (props) => {
             </Paragraph>
             <br />
           </Col>
-          {/* FEATURE FLAG: TSF */}
-          {!IN_PROD() && (
+          {tsfV2Enabled && (
             <Col>
               <Button type="primary" onClick={navigateToCreateTailings}>
                 <PlusCircleFilled />

@@ -1,13 +1,22 @@
-import { detectProdEnvironment as IN_PROD } from "./environmentUtils";
+import flagsmith from "flagsmith";
 
+// Name of feature flags. These correspond to feature flags defined in flagsmith.
 export enum Feature {
-  MAJOR_PROJECT_ARCHIVE_FILE,
-  DOCUMENTS_REPLACE_FILE,
+  MAJOR_PROJECT_ARCHIVE_FILE = "major_project_archive_file",
+  DOCUMENTS_REPLACE_FILE = "major_project_replace_file",
+  MAJOR_PROJECT_ALL_DOCUMENTS = "major_project_all_documents",
+  MAJOR_PROJECT_DECISION_PACKAGE = "major_project_decision_package",
+  FLAGSMITH = "flagsmith",
+  TSF_V2 = "tsf_v2",
 }
 
-const Flags = {
-  [Feature.MAJOR_PROJECT_ARCHIVE_FILE]: !IN_PROD(),
-  [Feature.DOCUMENTS_REPLACE_FILE]: !IN_PROD(),
+export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
+  await flagsmith.init({
+    api: flagsmithUrl,
+    environmentID: flagsmithKey,
+    cacheFlags: true,
+    enableAnalytics: true,
+  });
 };
 
 /**
@@ -16,9 +25,5 @@ const Flags = {
  * @returns true if the given feature is enabled
  */
 export const isFeatureEnabled = (feature: Feature) => {
-  if (feature in Flags) {
-    return Flags[feature];
-  }
-
-  return false;
+  return flagsmith.hasFeature(feature);
 };

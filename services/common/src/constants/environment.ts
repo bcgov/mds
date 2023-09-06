@@ -11,6 +11,8 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
+  flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
+  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
 };
 
 export const ENVIRONMENT = {
@@ -19,6 +21,9 @@ export const ENVIRONMENT = {
   matomoUrl: "<MATOMO_URL>",
   filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
   environment: "<ENV>",
+  flagsmithKey: "<FLAGSMITH_KEY>",
+  flagsmithUrl: "<FLAGSMITH_URL>",
+  _loaded: false,
 };
 
 export const KEYCLOAK = {
@@ -43,7 +48,15 @@ export const KEYCLOAK = {
   userInfoURL: "<URL>",
 };
 
-export function setupEnvironment(apiUrl, docManUrl, filesystemProviderUrl, matomoUrl, environment) {
+export function setupEnvironment(
+  apiUrl,
+  docManUrl,
+  filesystemProviderUrl,
+  matomoUrl,
+  environment,
+  flagsmithKey,
+  flagsmithUrl
+) {
   if (!apiUrl) {
     throw new Error("apiUrl Is Mandatory");
   }
@@ -63,12 +76,22 @@ export function setupEnvironment(apiUrl, docManUrl, filesystemProviderUrl, matom
   if (!environment) {
     throw new Error("environment Is Mandatory");
   }
+  if (!flagsmithKey) {
+    throw new Error("flagsmithKey Is Mandatory");
+  }
+  if (!flagsmithUrl) {
+    throw new Error("flagsmithUrl Is Mandatory");
+  }
 
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;
   ENVIRONMENT.matomoUrl = matomoUrl;
   ENVIRONMENT.environment = environment || "development";
+  ENVIRONMENT.flagsmithKey = flagsmithKey;
+  ENVIRONMENT.flagsmithUrl = flagsmithUrl;
+
+  ENVIRONMENT._loaded = true;
 }
 
 export function setupKeycloak(

@@ -17,12 +17,12 @@ import { storeDam } from "@common/actions/damActions";
 import { storeTsf } from "@common/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "./DamForm";
-import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import { ADD_EDIT_DAM } from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
 import { ICreateDam, ITailingsStorageFacility } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { RootState } from "@/App";
+import { Feature } from "@mds/common";
+import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 
 interface DamsPageProps {
   tsf: ITailingsStorageFacility;
@@ -165,5 +165,4 @@ export default compose(
       resetForm(ADD_EDIT_DAM);
     },
   })
-  // FEATURE FLAG: TSF
-)(withRouter(AuthorizationGuard(Permission.IN_TESTING)(DamsPage)) as any) as FC<DamsPageProps>;
+)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any) as FC<DamsPageProps>;

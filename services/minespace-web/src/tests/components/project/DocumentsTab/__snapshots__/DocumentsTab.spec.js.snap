@@ -1,293 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentsTab renders properly 1`] = `
-<Row
-  gutter={16}
->
-  <Col
-    span={24}
-  >
-    <ForwardRef
-      level={2}
-    >
-      All Project Documents
-    </ForwardRef>
-  </Col>
-  <Col
-    span={24}
-  >
-    <Tabs
-      activeKey="project-description"
-      className="vertical-tabs"
-      defaultActiveKey="project-description"
-      onChange={[Function]}
-      tabPosition="left"
-    >
-      <DeprecatedTabPane
-        className="vertical-tabs--tabpane"
-        key="project-description"
-        tab="Project Description"
-      >
-        <Row>
-          <Col
-            span={24}
-          >
-            <div
-              id="project-description"
-            >
-              <withRouter(DocumentsPage)
-                title="Project Description"
-              />
-            </div>
-            <div
-              id="information-requirements-table"
-            >
-              <withRouter(DocumentsPage)
-                title="Information Requirements Table"
-              />
-            </div>
-            <div
-              id="major-mine-application"
-            >
-              <withRouter(DocumentsPage)
-                title="Major Mine Application"
-              />
-            </div>
-            <ArchivedDocumentsSection
-              additionalColumns={
-                Array [
-                  Object {
-                    "dataIndex": "category_code",
-                    "key": "category_code",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Category",
-                  },
-                ]
-              }
-              documentColumns={
-                Array [
-                  Object {
-                    "dataIndex": "document_name",
-                    "key": "document_name",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "File Name",
-                  },
-                  Object {
-                    "dataIndex": "upload_date",
-                    "key": "upload_date",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Uploaded",
-                  },
-                ]
-              }
-              documents={Array []}
-              titleLevel={3}
-            />
-          </Col>
-        </Row>
-      </DeprecatedTabPane>
-      <DeprecatedTabPane
-        className="vertical-tabs--tabpane"
-        key="information-requirements-table"
-        tab="Information Requirements Table"
-      >
-        <Row>
-          <Col
-            span={24}
-          >
-            <div
-              id="project-description"
-            >
-              <withRouter(DocumentsPage)
-                title="Project Description"
-              />
-            </div>
-            <div
-              id="information-requirements-table"
-            >
-              <withRouter(DocumentsPage)
-                title="Information Requirements Table"
-              />
-            </div>
-            <div
-              id="major-mine-application"
-            >
-              <withRouter(DocumentsPage)
-                title="Major Mine Application"
-              />
-            </div>
-            <ArchivedDocumentsSection
-              additionalColumns={
-                Array [
-                  Object {
-                    "dataIndex": "category_code",
-                    "key": "category_code",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Category",
-                  },
-                ]
-              }
-              documentColumns={
-                Array [
-                  Object {
-                    "dataIndex": "document_name",
-                    "key": "document_name",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "File Name",
-                  },
-                  Object {
-                    "dataIndex": "upload_date",
-                    "key": "upload_date",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Uploaded",
-                  },
-                ]
-              }
-              documents={Array []}
-              titleLevel={3}
-            />
-          </Col>
-        </Row>
-      </DeprecatedTabPane>
-      <DeprecatedTabPane
-        className="vertical-tabs--tabpane"
-        key="major-mine-application"
-        tab="Major Mine Application"
-      >
-        <Row>
-          <Col
-            span={24}
-          >
-            <div
-              id="project-description"
-            >
-              <withRouter(DocumentsPage)
-                title="Project Description"
-              />
-            </div>
-            <div
-              id="information-requirements-table"
-            >
-              <withRouter(DocumentsPage)
-                title="Information Requirements Table"
-              />
-            </div>
-            <div
-              id="major-mine-application"
-            >
-              <withRouter(DocumentsPage)
-                title="Major Mine Application"
-              />
-            </div>
-            <ArchivedDocumentsSection
-              additionalColumns={
-                Array [
-                  Object {
-                    "dataIndex": "category_code",
-                    "key": "category_code",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Category",
-                  },
-                ]
-              }
-              documentColumns={
-                Array [
-                  Object {
-                    "dataIndex": "document_name",
-                    "key": "document_name",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "File Name",
-                  },
-                  Object {
-                    "dataIndex": "upload_date",
-                    "key": "upload_date",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Uploaded",
-                  },
-                ]
-              }
-              documents={Array []}
-              titleLevel={3}
-            />
-          </Col>
-        </Row>
-      </DeprecatedTabPane>
-      <DeprecatedTabPane
-        className="vertical-tabs--tabpane"
-        key="archived-documents"
-        tab="Archived Documents"
-      >
-        <Row>
-          <Col
-            span={24}
-          >
-            <div
-              id="project-description"
-            >
-              <withRouter(DocumentsPage)
-                title="Project Description"
-              />
-            </div>
-            <div
-              id="information-requirements-table"
-            >
-              <withRouter(DocumentsPage)
-                title="Information Requirements Table"
-              />
-            </div>
-            <div
-              id="major-mine-application"
-            >
-              <withRouter(DocumentsPage)
-                title="Major Mine Application"
-              />
-            </div>
-            <ArchivedDocumentsSection
-              additionalColumns={
-                Array [
-                  Object {
-                    "dataIndex": "category_code",
-                    "key": "category_code",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Category",
-                  },
-                ]
-              }
-              documentColumns={
-                Array [
-                  Object {
-                    "dataIndex": "document_name",
-                    "key": "document_name",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "File Name",
-                  },
-                  Object {
-                    "dataIndex": "upload_date",
-                    "key": "upload_date",
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Uploaded",
-                  },
-                ]
-              }
-              documents={Array []}
-              titleLevel={3}
-            />
-          </Col>
-        </Row>
-      </DeprecatedTabPane>
-    </Tabs>
-  </Col>
-</Row>
+<DocumentsTab
+  fetchProjectById={[MockFunction]}
+  history={
+    Object {
+      "push": [MockFunction],
+    }
+  }
+  match={
+    Object {
+      "params": Object {
+        "projectGuid": "dca276c0-acb8-4b13-a9d4-3781c0aa13f0",
+      },
+    }
+  }
+  project={
+    Object {
+      "contacts": Array [],
+      "information_requirements_table": Object {
+        "irt_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+      },
+      "major_mine_application": Object {
+        "major_mine_application_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+      },
+      "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+      "project_guid": "8132462392222",
+      "project_summary": Object {},
+      "proponent_project_id": "Test-ID",
+    }
+  }
+/>
 `;
