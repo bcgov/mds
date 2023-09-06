@@ -14,6 +14,7 @@ import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
+import FeatureFlagProvider from "@common/providers/featureFlags/featureFlag.provider";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
@@ -79,24 +80,26 @@ export const Index = () => {
   };
 
   return environment ? (
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={keycloakInitConfig}
-      onTokens={() => {
-        handleUpdateToken();
-      }}
-      onTokenExpired={() => {
-        if (!isIdle()) {
-          keycloak.updateToken();
-        }
-      }}
-      LoadingComponent={<Loading />}
-      isLoadingCheck={(kc) => !kc || !environment}
-    >
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ReactKeycloakProvider>
+    <FeatureFlagProvider>
+      <ReactKeycloakProvider
+        authClient={keycloak}
+        initOptions={keycloakInitConfig}
+        onTokens={() => {
+          handleUpdateToken();
+        }}
+        onTokenExpired={() => {
+          if (!isIdle()) {
+            keycloak.updateToken();
+          }
+        }}
+        LoadingComponent={<Loading />}
+        isLoadingCheck={(kc) => !kc || !environment}
+      >
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ReactKeycloakProvider>
+    </FeatureFlagProvider>
   ) : (
     <Loading />
   );

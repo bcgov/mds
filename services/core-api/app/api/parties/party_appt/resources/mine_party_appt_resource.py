@@ -23,6 +23,8 @@ from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_T
 from app.config import Config
 from app.api.activity.utils import trigger_notification
 
+from app.api.utils.feature_flag import is_feature_enabled, Feature
+
 
 class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -202,8 +204,7 @@ class MinePartyApptResource(Resource, UserMixin):
                     data.get('mine_party_appt_type_code')).description
                 raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap')
 
-        if Config.ENVIRONMENT_NAME != 'prod':
-            # TODO: Remove this once TSF functionality is ready to go live
+        if is_feature_enabled(Feature.TSF_V2):
             if mine_party_appt_type_code == "EOR":
 
                 trigger_notification(

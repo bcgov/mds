@@ -9,6 +9,7 @@ module.exports = (opts) => {
   const mode = opts.development ? "development" : "production";
   console.log(`\n============= Webpack Mode : ${mode} =============\n`);
   return {
+    watch: mode === "development",
     mode,
     entry: "./src/index.ts",
     output: {
@@ -23,7 +24,7 @@ module.exports = (opts) => {
       // Increase file change poll interval to reduce
       // CPU usage on some operating systems.
       poll: 2500,
-      ignored: /node_modules/,
+      ignored: /node_modules|dist/,
     },
     module: {
       rules: [
