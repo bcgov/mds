@@ -291,7 +291,7 @@ export const DocumentTable = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
     }
     return columns;
   };

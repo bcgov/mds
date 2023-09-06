@@ -82,6 +82,7 @@ export interface ITableAction {
 export const renderActionsColumn = (
   actions: ITableAction[],
   recordActionsFilter: (record, actions) => ITableAction[],
+  isRowSelected = false,
   text = "Actions",
   classPrefix = "",
   dropdownAltText = "Menu"
