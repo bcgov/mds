@@ -23,6 +23,7 @@ export const DocumentsPage = (props) => {
           canArchiveDocuments={true}
           onArchivedDocuments={props.onArchivedDocuments}
           showVersionHistory={true}
+          enableBulkActions={true}
         />
       </Col>
     </Row>

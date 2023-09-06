@@ -57,7 +57,7 @@ interface DocumentTableProps {
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable = ({
-  enableBulkActions = true,
+  enableBulkActions = false,
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -197,7 +197,7 @@ export const DocumentTable = ({
         </Button>
       </Dropdown>
     );
-    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+    return enableBulkActions && <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>;
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

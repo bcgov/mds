@@ -204,6 +204,7 @@ export class MajorMineApplicationForm extends Component {
               documentParent="Major Mine Application"
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
+              enableBulkActions={true}
             />
           )}
 
@@ -250,6 +251,7 @@ export class MajorMineApplicationForm extends Component {
               documentParent="Major Mine Application"
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
+              enableBulkActions={true}
             />
           )}
           <br />
@@ -303,6 +305,7 @@ export class MajorMineApplicationForm extends Component {
               documentColumns={documentColumns}
               canArchiveDocuments={true}
               onArchivedDocuments={() => this.props.refreshData()}
+              enableBulkActions={true}
             />
           )}
 
