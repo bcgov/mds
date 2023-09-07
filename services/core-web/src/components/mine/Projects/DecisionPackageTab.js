@@ -155,6 +155,7 @@ export class DecisionPackageTab extends Component {
         <br />
         <p>{sectionText}</p>
         <DocumentTable
+          enableBulkActions={true}
           documents={sectionDocuments?.reduce(
             (docs, doc) => [
               {

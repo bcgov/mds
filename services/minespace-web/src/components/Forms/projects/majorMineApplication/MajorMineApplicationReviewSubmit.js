@@ -157,6 +157,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            enableBulkActions={true}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
@@ -168,6 +169,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            enableBulkActions={true}
           />
           <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
@@ -179,6 +181,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             canArchiveDocuments={true}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
+            enableBulkActions={true}
           />
 
           <ArchivedDocumentsSection
