@@ -112,7 +112,7 @@ export const renderActionsColumn = (
       return (
         <div>
           {items.length > 0 && (
-            <Dropdown menu={{ items }} placement="bottomLeft">
+            <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
               {/* // TODO: change button classname to something generic */}
               <Button className="permit-table-button">
                 {text}
