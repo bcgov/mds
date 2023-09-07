@@ -172,14 +172,10 @@ export const DocumentTable = ({
   };
 
   const handleRowSelectionChange = (value) => {
-    if (documentTypeCode === "") {
-      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
-    }
-
     setRowSelection(value);
   };
 
-  const rowSelectionObject = {
+  const rowSelectionObject: any = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
       handleRowSelectionChange(selectedRows);
     },
@@ -242,7 +238,7 @@ export const DocumentTable = ({
   const bulkItems: MenuProps["items"] = [
     {
       key: "0",
-      icon: <DeleteOutlined />,
+      icon: <InboxOutlined />,
       label: (
         <button
           type="button"
@@ -318,40 +314,49 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
+
+  const bulkActionsProps = enableBulkActions
+    ? {
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
+    : {};
+
+  const versionProps = showVersionHistory
+    ? {
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
+    : {};
+
   const renderCoreTable = () => {
     let element = (
-      <CoreTable columns={columns}  {...(enableBulkActions
-        ? {
-          rowSelection: {
-            type: "checkbox",
-            ...rowSelectionObject,
-          },
-        }
-        : {})} dataSource={documents} {...minimalProps} />
+      <CoreTable
+        columns={columns}
+        dataSource={documents}
+        {...bulkActionsProps}
+        {...minimalProps}
+      />
     );
+
     if (showVersionHistory) {
       element = (
         <CoreTable
           condition={isLoaded}
           dataSource={documents}
           columns={columns}
-          {...(enableBulkActions
-            ? {
-              rowSelection: {
-                type: "checkbox",
-                ...rowSelectionObject,
-              },
-            }
-            : {})}
-          expandProps={{
-            childrenColumnName: "versions",
-            matchChildColumnsToParent: true,
-            recordDescription: "version history",
-            rowExpandable: (record) => record.number_prev_versions > 0,
-          }}
+          {...bulkActionsProps}
+          {...versionProps}
         />
       );
     }
+
     return element;
   };
   return (
