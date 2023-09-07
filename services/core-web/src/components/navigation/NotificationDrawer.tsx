@@ -7,7 +7,7 @@ import {
   fetchActivities,
   markActivitiesAsRead,
 } from "@common/actionCreators/activityActionCreator";
-import { formatDateTimeTz } from "@common/utils/helpers";
+import { formatDateTimeUserTz } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
@@ -227,7 +227,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
                     )}
                     <Col>
                       <Typography.Text className="notification-info-text">
-                        {formatDateTimeTz(activity.create_timestamp)}
+                        {formatDateTimeUserTz(activity.create_timestamp)}
                       </Typography.Text>
                     </Col>
                   </Row>
