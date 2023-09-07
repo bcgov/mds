@@ -11,6 +11,7 @@ const setupProps = () => {
   props.mineGuid = "52783475";
   props.change = jest.fn();
   props.arrayPush = jest.fn();
+  props.infoText = "some info";
 };
 
 beforeEach(() => {
