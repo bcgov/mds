@@ -43,9 +43,13 @@ export class DocumentsTab extends Component {
 
   componentDidMount() {
     this.handleFetchData();
-    this.allDocuments.push(this.props.project?.project_summary?.documents);
-    this.allDocuments.push(this.props.project?.information_requirements_table?.documents);
-    this.allDocuments.push(this.props.project?.major_mine_application?.documents);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.allDocuments = [];
+    this.allDocuments.push(nextProps.project?.project_summary?.documents);
+    this.allDocuments.push(nextProps.project?.information_requirements_table?.documents);
+    this.allDocuments.push(nextProps.project?.major_mine_application?.documents);
   }
 
   handleFetchData = () => {

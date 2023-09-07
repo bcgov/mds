@@ -156,6 +156,7 @@ export class ProjectDocumentsTab extends Component {
           removeDocument={this.handleDeleteDocument}
           showVersionHistory={true}
           isLoaded={this.state.isLoaded}
+          enableBulkActions={true}
         />
       </div>
     );
