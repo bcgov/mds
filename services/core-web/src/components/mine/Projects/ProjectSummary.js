@@ -41,7 +41,8 @@ import Loading from "@/components/common/Loading";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -76,6 +77,7 @@ const propTypes = {
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -126,7 +128,12 @@ export class ProjectSummary extends Component {
       return this.props
         .fetchProjectById(projectGuid)
         .then((res) => {
-          this.setState({ isLoaded: true, isValid: true, isNewProject: false, uploadedDocuments: res.project_summary.documents });
+          this.setState({
+            isLoaded: true,
+            isValid: true,
+            isNewProject: false,
+            uploadedDocuments: res.project_summary.documents,
+          });
           this.props.fetchMineDocuments(res.mine_guid, {
             project_summary_guid: projectSummaryGuid,
             is_archived: true,
@@ -169,13 +176,13 @@ export class ProjectSummary extends Component {
 
   removeUploadedDocument = (payload, uploadedDocuments) => {
     if (Array.isArray(payload.documents)) {
-      const uploadedGUIDs = new Set(uploadedDocuments.map(doc => doc.document_manager_guid));
-      payload.documents = payload.documents.filter(doc =>
-        !uploadedGUIDs.has(doc.document_manager_guid)
+      const uploadedGUIDs = new Set(uploadedDocuments.map((doc) => doc.document_manager_guid));
+      payload.documents = payload.documents.filter(
+        (doc) => !uploadedGUIDs.has(doc.document_manager_guid)
       );
     }
     return payload;
-  }
+  };
 
   handleTransformPayload = (payload) => {
     let values = this.removeUploadedDocument(payload, this.state.uploadedDocuments);
@@ -255,9 +262,8 @@ export class ProjectSummary extends Component {
           { mrc_review_required, contacts, project_lead_party_guid },
           "Successfully updated project.",
           false
-        )
-      }
-      )
+        );
+      })
       .then(() => {
         this.handleFetchData(this.props.match.params);
         this.setState((prevState) => ({
@@ -328,10 +334,11 @@ export class ProjectSummary extends Component {
                   : "New Project Description"}
                 <span className="padding-sm--left">
                   <Tag
-                    title={`Mine: ${this.props.formattedProjectSummary.mine_name
-                      ? this.props.formattedProjectSummary.mine_name
-                      : this.props.match?.params?.mineGuid
-                      }`}
+                    title={`Mine: ${
+                      this.props.formattedProjectSummary.mine_name
+                        ? this.props.formattedProjectSummary.mine_name
+                        : this.props.match?.params?.mineGuid
+                    }`}
                   >
                     <Link
                       style={{ textDecoration: "none" }}
@@ -372,7 +379,7 @@ export class ProjectSummary extends Component {
                   { href: "project-dates", title: "Project dates" },
                   { href: "project-contacts", title: "Project contacts" },
                   { href: "document-details", title: "Documents" },
-                  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                  this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
                     href: "archived-documents",
                     title: "Archived Documents",
                   },
@@ -410,23 +417,23 @@ export class ProjectSummary extends Component {
                       initialValues={
                         !this.state.isNewProject
                           ? {
-                            ...this.props.formattedProjectSummary,
-                            mrc_review_required: this.props.project.mrc_review_required,
-                          }
+                              ...this.props.formattedProjectSummary,
+                              mrc_review_required: this.props.project.mrc_review_required,
+                            }
                           : {
-                            contacts: [
-                              {
-                                is_primary: true,
-                                name: null,
-                                job_title: null,
-                                company_name: null,
-                                email: null,
-                                phone_number: null,
-                                phone_extension: null,
-                              },
-                            ],
-                            documents: [],
-                          }
+                              contacts: [
+                                {
+                                  is_primary: true,
+                                  name: null,
+                                  job_title: null,
+                                  company_name: null,
+                                  email: null,
+                                  phone_number: null,
+                                  phone_extension: null,
+                                },
+                              ],
+                              documents: [],
+                            }
                       }
                       reset={this.props.reset}
                       handleSaveData={this.handleSaveData}
@@ -468,7 +475,7 @@ const mapStateToProps = (state) => {
     ),
     projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
     projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
-    onSubmit: () => { },
+    onSubmit: () => {},
   };
 };
 
@@ -491,4 +498,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectSummary));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withFeatureFlag(ProjectSummary)));

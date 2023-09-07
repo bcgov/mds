@@ -18,7 +18,7 @@ class DocumentVersion(Base):
         db.DateTime, nullable=True, default=datetime.utcnow)
     upload_completed_date = db.Column(db.DateTime, nullable=True)
     object_store_version_id = db.Column(db.String(256), nullable=True)
-    file_display_name = db.Column(db.String(40), nullable=False)
+    file_display_name = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
         return '<DocumentVersion %r>' % self.id

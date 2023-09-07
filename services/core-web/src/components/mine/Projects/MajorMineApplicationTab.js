@@ -22,12 +22,13 @@ import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import DocumentCompression from "@/components/common/DocumentCompression";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -40,36 +41,8 @@ const propTypes = {
   majorMineAppStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   updateMajorMineApplication: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
-
-const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
-
-const menuOptions = [
-  {
-    href: "basic-information",
-    title: "Basic Information",
-  },
-  {
-    href: "primary-documents",
-    title: "Primary Documents",
-  },
-  {
-    href: "spatial-components",
-    title: "Spatial Components",
-  },
-  {
-    href: "supporting-documents",
-    title: "Supporting Documents",
-  },
-  {
-    href: "ministry-decision-documents",
-    title: "Ministry Decision Documents",
-  },
-  canArchiveDocuments && {
-    href: "archived-documents",
-    title: "Archived Documents",
-  },
-].filter(Boolean);
 
 export class MajorMineApplicationTab extends Component {
   state = {
@@ -149,12 +122,13 @@ export class MajorMineApplicationTab extends Component {
     ) : (
       <Typography.Title level={4}>{sectionTitle}</Typography.Title>
     );
+
     return (
       <div id={sectionHref}>
         {titleElement}
         <DocumentTable
           documents={sectionDocuments}
-          canArchiveDocuments={true}
+          canArchiveDocuments={this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE)}
           onArchivedDocuments={() => this.fetchData()}
           additionalColumnProps={[{ key: "document_name", colProps: { width: "80%" } }]}
           isLoaded={this.state.isLoaded}
@@ -197,6 +171,33 @@ export class MajorMineApplicationTab extends Component {
           entity_title: this.props.project.project_title,
         })
     );
+
+    const menuOptions = [
+      {
+        href: "basic-information",
+        title: "Basic Information",
+      },
+      {
+        href: "primary-documents",
+        title: "Primary Documents",
+      },
+      {
+        href: "spatial-components",
+        title: "Spatial Components",
+      },
+      {
+        href: "supporting-documents",
+        title: "Supporting Documents",
+      },
+      {
+        href: "ministry-decision-documents",
+        title: "Ministry Decision Documents",
+      },
+      this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+        href: "archived-documents",
+        title: "Archived Documents",
+      },
+    ].filter(Boolean);
 
     return (
       <>
@@ -358,4 +359,6 @@ const mapDispatchToProps = (dispatch) =>
 
 MajorMineApplicationTab.propTypes = propTypes;
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MajorMineApplicationTab));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withFeatureFlag(MajorMineApplicationTab))
+);

@@ -18,10 +18,11 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -199,7 +200,7 @@ export class ProjectDocumentsTab extends Component {
               { href: "project-description", title: "Project Description" },
               { href: "irt", title: "IRT" },
               { href: "major-mine-application", title: "Major Mine Application" },
-              isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+              this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
                 href: "archived-documents",
                 title: "Archived Documents",
               },
@@ -281,4 +282,6 @@ const mapDispatchToProps = (dispatch) =>
 
 ProjectDocumentsTab.propTypes = propTypes;
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectDocumentsTab));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withFeatureFlag(ProjectDocumentsTab))
+);

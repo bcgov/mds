@@ -4,6 +4,7 @@ import {
   MajorMineApplicationDocument,
   MineDocument,
 } from "@common/models/documents/document";
+import * as common from "@mds/common";
 
 // Document model testing
 
@@ -45,6 +46,11 @@ const mockDocumentData = {
     },
   ],
 };
+
+jest.mock("@mds/common", () => ({
+  ...jest.requireActual("@mds/common"),
+  isFeatureEnabled: () => true,
+}));
 
 describe("MineDocument model", () => {
   it("Base document model versions", () => {

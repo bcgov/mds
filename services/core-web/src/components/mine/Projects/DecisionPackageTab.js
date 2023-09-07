@@ -26,10 +26,11 @@ import * as FORM from "@/constants/forms";
 import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
 import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   match: PropTypes.shape({
@@ -43,6 +44,7 @@ const propTypes = {
   fetchMineDocuments: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func.isRequired,
   updateProjectDecisionPackage: PropTypes.func.isRequired,
   createProjectDecisionPackage: PropTypes.func.isRequired,
   removeDocumentFromProjectDecisionPackage: PropTypes.func.isRequired,
@@ -260,7 +262,7 @@ export class DecisionPackageTab extends Component {
       Boolean(projectDecisionPackage?.project_decision_package_guid) &&
       projectDecisionPackage?.status_code !== "NTS";
 
-    const canArchiveDocuments = isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+    const canArchiveDocuments = this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
 
     return (
       <>
@@ -422,4 +424,4 @@ DecisionPackageTab.propTypes = propTypes;
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(DecisionPackageTab);
+)(withFeatureFlag(DecisionPackageTab));

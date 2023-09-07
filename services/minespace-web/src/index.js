@@ -14,6 +14,7 @@ import fetchEnv from "./fetchEnv";
 import configureStore from "./store/configureStore";
 import keycloak, { keycloakInitConfig } from "./keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
+import FeatureFlagProvider from "@common/providers/featureFlags/featureFlag.provider";
 
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore();
@@ -83,29 +84,31 @@ const Index = () => {
   };
 
   return environment ? (
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={keycloakInitConfig}
-      onTokens={() => {
-        handleUpdateToken();
-      }}
-      onTokenExpired={() => {
-        if (!isIdle()) {
-          keycloak.updateToken();
-        }
-      }}
-      onReady={() => {
-        handleUpdateToken();
-      }}
-      onAuthLogout={(err = "") => handleAuthErrors(err)}
-      onAuthError={(err = "") => handleAuthErrors(err)}
-      onAuthRefreshError={(err = "") => handleAuthErrors(err)}
-      onInitError={(err = "") => handleAuthErrors(err)}
-    >
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ReactKeycloakProvider>
+    <FeatureFlagProvider>
+      <ReactKeycloakProvider
+        authClient={keycloak}
+        initOptions={keycloakInitConfig}
+        onTokens={() => {
+          handleUpdateToken();
+        }}
+        onTokenExpired={() => {
+          if (!isIdle()) {
+            keycloak.updateToken();
+          }
+        }}
+        onReady={() => {
+          handleUpdateToken();
+        }}
+        onAuthLogout={(err = "") => handleAuthErrors(err)}
+        onAuthError={(err = "") => handleAuthErrors(err)}
+        onAuthRefreshError={(err = "") => handleAuthErrors(err)}
+        onInitError={(err = "") => handleAuthErrors(err)}
+      >
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ReactKeycloakProvider>
+    </FeatureFlagProvider>
   ) : (
     <div />
   );

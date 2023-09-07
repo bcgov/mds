@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { MajorMineApplicationTab } from "@/components/mine/Projects/MajorMineApplicationTab";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 
@@ -22,7 +23,16 @@ beforeEach(() => {
 
 describe("ProjectDocumentsTab", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorMineApplicationTab {...props} />);
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <MajorMineApplicationTab {...props} />
+      </FeatureFlagContext.Provider>
+    );
+
     expect(component).toMatchSnapshot();
   });
 });

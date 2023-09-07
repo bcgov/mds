@@ -14,7 +14,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
 import { FileOperations, MineDocument } from "@common/models/documents/document";
@@ -30,6 +30,7 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -84,6 +85,8 @@ export const DocumentTable = ({
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
   const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
+
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const allowedTableActions = {
     [FileOperations.View]: true,

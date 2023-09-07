@@ -4,6 +4,8 @@ export const DEFAULT_ENVIRONMENT = {
   docManUrl: "http://localhost:5001",
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
+  flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
+  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
   environment: "development",
   keycloak_resource: "mines-digital-services-mds-public-client-4414",
   keycloak_clientId: "mines-digital-services-mds-public-client-4414",

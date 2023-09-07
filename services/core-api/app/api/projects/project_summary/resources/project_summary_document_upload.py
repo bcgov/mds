@@ -8,6 +8,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine.models.mine import Mine
 from app.api.services.document_manager_service import DocumentManagerService
 from app.config import Config
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
     @api.doc(
@@ -26,9 +27,7 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found')
 
-        # FEATURE FLAG: DOCUMENTS_REPLACE_FILE
-        if Config.ENVIRONMENT_NAME != 'prod':
-             # TODO: Remove the ENV check and else part when 5273 is ready to go live
+        if is_feature_enabled(Feature.MAJOR_PROJECT_REPLACE_FILE):
             return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
                 request, mine, project_guid, 'project_summaries')
         else:

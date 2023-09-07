@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { DocumentTable } from "@/components/common/DocumentTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 const dispatchProps = {};
@@ -24,7 +25,15 @@ beforeEach(() => {
 
 describe("DocumentTable", () => {
   it("renders properly", () => {
-    const component = shallow(<DocumentTable {...props} {...dispatchProps} />);
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <DocumentTable {...props} {...dispatchProps} />
+      </FeatureFlagContext.Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });
