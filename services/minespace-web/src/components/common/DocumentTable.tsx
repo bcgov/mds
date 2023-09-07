@@ -335,34 +335,19 @@ export const DocumentTable = ({
     }
     : {};
 
-  const renderCoreTable = () => {
-    let element = (
-      <CoreTable
-        columns={columns}
-        dataSource={documents}
-        {...bulkActionsProps}
-        {...minimalProps}
-      />
-    );
-
-    if (showVersionHistory) {
-      element = (
-        <CoreTable
-          condition={isLoaded}
-          dataSource={documents}
-          columns={columns}
-          {...bulkActionsProps}
-          {...versionProps}
-        />
-      );
-    }
-
-    return element;
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
   };
+
   return (
     <div>
       {renderBulkActions()}
-      {renderCoreTable()}
+      {<CoreTable {...coreTableProps} />}
     </div>
   );
 };

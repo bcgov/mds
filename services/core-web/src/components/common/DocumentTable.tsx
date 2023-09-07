@@ -345,6 +345,15 @@ export const DocumentTable = ({
     }
     : {};
 
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
+  };
+
   const renderBulkActions = () => {
     let element = (
       <Button
@@ -375,31 +384,6 @@ export const DocumentTable = ({
     return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
   };
 
-  const renderCoreTable = () => {
-    let element = (
-      <CoreTable
-        columns={columns}
-        dataSource={documents}
-        {...bulkActionsProps}
-        {...minimalProps}
-      />
-    );
-
-    if (showVersionHistory) {
-      element = (
-        <CoreTable
-          condition={isLoaded}
-          dataSource={documents}
-          columns={columns}
-          {...bulkActionsProps}
-          {...versionProps}
-        />
-      );
-    }
-
-    return element;
-  };
-
   return (
     <div>
       <DocumentCompression
@@ -410,7 +394,7 @@ export const DocumentTable = ({
         compressionInProgress={setCompressionInProgress}
       />
       {renderBulkActions()}
-      {renderCoreTable()}
+      {<CoreTable {...coreTableProps} />}
     </div>
   );
 };
