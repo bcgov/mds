@@ -82,6 +82,15 @@ export class ProjectDocumentsTab extends Component {
     });
   };
 
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "documents"
+    ) {
+      this.handleFetchData();
+    }
+  }
+
   handleDeleteDocument = (event, key, documentParent) => {
     event.preventDefault();
     const {
@@ -164,15 +173,13 @@ export class ProjectDocumentsTab extends Component {
     return (
       <ArchivedDocumentsSection
         additionalColumns={[
-          renderCategoryColumn(
-            "category_code",
-            "Category",
-            Strings.CATEGORY_CODE,
-            true
-          ),
+          renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
         ]}
-        documents={archivedDocuments && archivedDocuments.length > 0
-          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+        documents={
+          archivedDocuments && archivedDocuments.length > 0
+            ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+            : []
+        }
       />
     );
   };

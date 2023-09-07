@@ -81,16 +81,19 @@ export class ProjectPage extends Component {
   fetchArchivedDocuments(activeTab = this.state.activeTab) {
     let filters = { project_guid: this.props?.project?.project_guid, is_archived: true };
     if (activeTab === "major-mine-application") {
-      filters = {
-        ...(this.props?.project?.major_mine_application?.major_mine_application_guid && {
-          major_mine_application_guid: this.props?.project?.major_mine_application
-            ?.major_mine_application_guid,
-        }),
-        is_archived: true,
-      };
-    }
+      const majorMineApplicationGuid = this.props?.project?.major_mine_application
+        ?.major_mine_application_guid;
+      if (majorMineApplicationGuid) {
+        filters = {
+          major_mine_application_guid: majorMineApplicationGuid,
+          is_archived: true,
+        };
 
-    this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+        this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+      }
+    } else {
+      this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+    }
   }
 
   componentWillReceiveProps(nextProps) {

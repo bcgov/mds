@@ -76,14 +76,23 @@ export class DecisionPackageTab extends Component {
   handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
     const project = await this.props.fetchProjectById(projectGuid);
-    await this.props.fetchMineDocuments(project.mine_guid, {
-      is_archived: true,
-      ...(project?.project_decision_package?.project_decision_package_guid && {
-        project_decision_package_guid:
-          project?.project_decision_package?.project_decision_package_guid,
-      }),
-    });
+    const decisionPackageGuid = project?.project_decision_package?.project_decision_package_guid;
+    if (decisionPackageGuid) {
+      await this.props.fetchMineDocuments(project.mine_guid, {
+        is_archived: true,
+        project_decision_package_guid: decisionPackageGuid,
+      });
+    }
   };
+
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "project-decision-package"
+    ) {
+      this.handleFetchData();
+    }
+  }
 
   handleUpdateProjectDecisionPackage = (event, values) => {
     event.preventDefault();
@@ -129,15 +138,13 @@ export class DecisionPackageTab extends Component {
     return (
       <ArchivedDocumentsSection
         additionalColumns={[
-          renderCategoryColumn(
-            "category_code",
-            "Category",
-            Strings.CATEGORY_CODE,
-            true
-          ),
+          renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
         ]}
-        documents={archivedDocuments && archivedDocuments.length > 0
-          ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc)) : []}
+        documents={
+          archivedDocuments && archivedDocuments.length > 0
+            ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+            : []
+        }
       />
     );
   };
@@ -215,7 +222,7 @@ export class DecisionPackageTab extends Component {
         modalType,
         closeModal: this.props.closeModal,
         handleSubmit: submitHandler,
-        afterClose: () => { },
+        afterClose: () => {},
         optionalProps,
       },
       content,
