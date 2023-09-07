@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { remove } from "lodash";
 import { bindActionCreators } from "redux";
-import { Col, Row, Popconfirm } from "antd";
+import { Col, Row, Popconfirm, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Field, FieldArray, change, formValueSelector, arrayPush } from "redux-form";
@@ -22,6 +22,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   change: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
+  infoText: PropTypes.string,
 };
 
 export class DocumentCategoryForm extends Component {
@@ -108,6 +109,7 @@ export class DocumentCategoryForm extends Component {
           <div className="inputs">
             <FieldArray name="documents" component={this.DocumentCategories} />
           </div>
+          <Typography.Text>{this.props.infoText}</Typography.Text>
           <Field
             id="DocumentFileUpload"
             name="DocumentFileUpload"

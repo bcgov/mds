@@ -307,6 +307,7 @@ export const ExplosivesPermitForm = (props) => {
             categories={props.documentTypeDropdownOptions}
             mineGuid={props.mineGuid}
             isProcessed={disabled}
+            infoText="Please upload any documents that support this explosives storage and use permit. Documents uploaded here will be viewable by Minespace users."
           />
         </Col>
         <Col md={12} sm={24} className="border--left--layout">

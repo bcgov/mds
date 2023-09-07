@@ -16,6 +16,9 @@ exports[`DocumentCategoryForm renders properly 1`] = `
         name="documents"
       />
     </div>
+    <ForwardRef(Text)>
+      some info
+    </ForwardRef(Text)>
     <Field
       allowMultiple={true}
       component={[Function]}
