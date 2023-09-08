@@ -22,8 +22,8 @@ class TractionService():
 
     def get_new_token(self):
         payload = {"api_key":Config.TRACTION_WALLET_API_KEY}
-
         token_resp = requests.post(traction_token_url,json=payload)
+        token_resp.raise_for_status()
         return token_resp.json()["token"]
     
     def create_oob_connection_invitation(self,mine_guid: Union[str,UUID], mine_name: str):
@@ -31,8 +31,9 @@ class TractionService():
 
         https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md"""
 
-        existing_invitation = MineVerifiableCredentialConnection.find_by_mine_guid(mine_guid)
-        if existing_invitation.connection_state == "completed": 
+        mine_invitations = MineVerifiableCredentialConnection.find_by_mine_guid(mine_guid)
+        active_invitation = [inv for inv in mine_invitations if inv.connection_state == "completed"]
+        if active_invitation: 
             current_app.logger.error(f"mine_guid={mine_guid} already has wallet connection, do not create another one")
             raise VerificableCredentialWorkflowError("cannot make invitation if mine already has active connection")
         
