@@ -8,4 +8,4 @@ api = Namespace('verifiable-credentials', description='Variances actions/options
 
 api.add_resource(VerifiableCredentialResource, '')
 api.add_resource(VerifiableCredentialWebhookResource, '/webhook')
-api.add_resource(VerifiableCredentialConnectionResource, '/connections')
+api.add_resource(VerifiableCredentialConnectionResource, '/oob-invitation/<string:mine_guid>')
