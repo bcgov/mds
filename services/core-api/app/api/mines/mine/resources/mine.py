@@ -122,6 +122,7 @@ class MineListResource(Resource, UserMixin):
         },
         description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
 
         paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
