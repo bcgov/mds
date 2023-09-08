@@ -7,6 +7,6 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
 
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
-    @api.doc(description='Get a list of all active variance application status codes.', params={})
+    @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self,request):
-        current_app.logger.warning(f"WEBHOOK: {request}")
+        current_app.logger.warning(f"TRACTION WEBHOOK: {request}")

@@ -1,9 +1,11 @@
 import requests
-
+from typing import Union
+from flask import current_app
+from uuid import UUID
 from app.config import Config
 
 traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTION_TENANT_ID+"/token"
-traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create_invitation/"
+traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
 
 class TractionService():
     token: str
@@ -20,7 +22,11 @@ class TractionService():
         token_resp = requests.post(traction_token_url,json=payload)
         return token_resp.json()["token"]
     
-    def create_oob_connection_invitation(self,mine_guid,):
+    def create_oob_connection_invitation(self,mine_guid: Union[str,UUID], mine_name: str):
+        """Create connnection invitation to send to mine proponent, aries-rfc#0023.
+
+        https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md"""
+
         payload = {
             "accept": [
                 "didcomm/aip1",
@@ -28,13 +34,12 @@ class TractionService():
             ],
             "alias": mine_guid,
             "attachments": [],
-            "goal": "To issue a Faber College Graduate credential",
+            "goal": f"To establish a secure connection between BC Government Mines Permitting and the mining company ({mine_name})",
             "goal_code": "issue-vc",
             "handshake_protocols": [
                 "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0"
             ],
             "my_label": f"Invitation to {mine_guid}",
-            "protocol_version": "1.1",
             "use_public_did": False
         }
 
