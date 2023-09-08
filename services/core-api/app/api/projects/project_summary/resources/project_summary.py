@@ -15,9 +15,7 @@ from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import trigger_notification
-from app.api.activity.utils import ActivityRecipients
-
-from app.api.utils.feature_flag import is_feature_enabled, Feature
+from app.api.projects.project.project_util import ProjectUtil
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -167,12 +165,9 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('contacts', []))
         project.save()
 
-        if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
-            if len(data.get('documents')) > 0:
-                project = Project.find_by_project_guid(project_guid)
-                renotify_hours = 24
-                trigger_notification(f'File(s) in project {project.project_title} has been updated for mine {mine.mine_name}.',
-                    ActivityType.mine_project_documents_updated, mine, 'DocumentManagement', project_guid, None, None, ActivityRecipients.core_users, True, renotify_hours*60)
+        if len(data.get('documents')) > 0:
+            project = Project.find_by_project_guid(project_guid)
+            ProjectUtil.notifiy_file_updates(project, mine)
 
         return project_summary
 
