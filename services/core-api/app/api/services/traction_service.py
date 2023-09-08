@@ -3,9 +3,13 @@ from typing import Union
 from flask import current_app
 from uuid import UUID
 from app.config import Config
+from app.api.verifiable_credentials.models.connection import MineVerifiableCredentialConnection
 
 traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTION_TENANT_ID+"/token"
 traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
+
+class VerificableCredentialWorkflowError(Exception):
+    pass
 
 class TractionService():
     token: str
@@ -27,6 +31,11 @@ class TractionService():
 
         https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md"""
 
+        existing_invitation = MineVerifiableCredentialConnection.find_by_mine_guid(mine_guid)
+        if existing_invitation.connection_state == "completed": 
+            current_app.logger.error(f"mine_guid={mine_guid} already has wallet connection, do not create another one")
+            raise VerificableCredentialWorkflowError("cannot make invitation if mine already has active connection")
+        
         payload = {
             "accept": [
                 "didcomm/aip1",
@@ -44,4 +53,10 @@ class TractionService():
         }
 
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
-        return oob_create_resp.json()["invitation"]
+
+        invitation = oob_create_resp.json()["invitation"]
+        new_traction_connection = MineVerifiableCredentialConnection(mine_guid = mine_guid, invitation_id = invitation["invitation_id"])
+        new_traction_connection.save()
+
+
+        return invitation
