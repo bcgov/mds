@@ -201,8 +201,8 @@ class Config(object):
     }
     #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
     TRACTION_HOST = os.environ.get("TRACTION_HOST","https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
-    TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KET","GET_WALLET_API_KEY_FROM_TRACTION")
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID","GET_TENANT_ID_FROM_TRACTION")
+    TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY","GET_WALLET_API_KEY_FROM_TRACTION")
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
