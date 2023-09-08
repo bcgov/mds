@@ -56,8 +56,7 @@ class TractionService():
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
 
         invitation = oob_create_resp.json()["invitation"]
-        new_traction_connection = MineVerifiableCredentialConnection(mine_guid = mine_guid, invitation_id = invitation["invitation_id"])
+        new_traction_connection = MineVerifiableCredentialConnection(mine_guid = mine_guid, invitation_id = invitation["@id"])
         new_traction_connection.save()
-
 
         return invitation
