@@ -6,12 +6,16 @@ echo "post-finish hook called"
 # Set the AWS credentials
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+export S3_PREFIX=$S3_PREFIX
 
 # Read the JSON-encoded object from stdin
 read -r stdin_data
 
 # Extract the Upload object from the JSON-encoded object
 upload=$(echo "$stdin_data" | jq -r '.Upload')
+
+# check if the upload object has version_guid in MetaData
+version_guid=$(echo "$upload" | jq -r '.MetaData."version_guid"')
 
 # Extract all the HTTP headers from the JSON-encoded object
 headers=$(echo "$stdin_data" | jq -r '.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
@@ -22,18 +26,22 @@ size=$(echo "$upload" | jq -r '.Size')
 
 echo "Upload ID $id ($size bytes) finished"
 
-storageKey=$(echo "$upload" | jq -r '.Storage.Key')
+S3_PREFIX_CLEAN=$(echo $S3_PREFIX | sed 's/\/$//')
+storageKey="$S3_PREFIX_CLEAN$(echo "$upload" | jq -r '.MetaData.path')"
 
-versions=$(aws s3api list-object-versions --bucket $S3_BUCKET_ID --prefix $storageKey --endpoint-url "https://$S3_ENDPOINT" --output json)
+# only get versions if metaData contains version_guid
+if [ $version_guid != "null" ]; then
+  versions=$(aws s3api list-object-versions --bucket $S3_BUCKET_ID --prefix $storageKey --endpoint-url "https://$S3_ENDPOINT" --output json | jq -c '.Versions')
 
-# Retrieve the version number of the uploaded file and the last modified date
-version=$(echo "$versions" | jq -r --arg storageKey "$storageKey" '{ versionId: (.Versions[] | select(.Key == $storageKey and .IsLatest == true) | .VersionId), timestamp: (.Versions[] | select(.Key == $storageKey and .IsLatest == true) | .LastModified) }')
+  aws_exit_code=$?
+  if [ $aws_exit_code -ne 0 ]; then
+    echo "aws command failed with exit code $aws_exit_code"
+  fi
 
-aws_exit_code=$?
-if [ $aws_exit_code -ne 0 ]; then
-  echo "aws command failed with exit code $aws_exit_code"
+  # Forward the request through the hooks-http option
+  json_data=$(echo "{\"Upload\": $upload, \"versions\": $versions}" | tr -d '\r\n' | tr -d '\0')
+else
+  json_data=$(echo "{\"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 fi
 
-# Forward the request through the hooks-http option
-json_data=$(echo "{\"version\": $version, \"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 curl -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks

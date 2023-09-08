@@ -68,20 +68,37 @@ class ObjectStoreStorageService():
             aws_secret_access_key=Config.OBJECT_STORE_ACCESS_KEY,
             endpoint_url=f'https://{Config.OBJECT_STORE_HOST}')
 
-    def download_file(self, path, display_name, as_attachment):
+    def download_file(self, path, display_name, as_attachment, version_id=None):
         def generate(result):
             for chunk in iter(lambda: result['Body'].read(1048576), b''):
                 yield chunk
+        try:
+            s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
 
-        s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
-        resp = Response(
-            generate(s3_response),
-            mimetype='application/pdf' if '.pdf' in display_name.lower() else 'application/zip',
-            headers={
-                'Content-Disposition':
-                    ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
-            })
-        return resp
+            if version_id:
+                s3_response = self._client.get_object(
+                    Bucket=Config.OBJECT_STORE_BUCKET,
+                    Key=path,
+                    VersionId=version_id
+                )
+            else:
+                s3_response = self._client.get_object(
+                    Bucket=Config.OBJECT_STORE_BUCKET,
+                    Key=path
+                )
+
+            resp = Response(
+                generate(s3_response),
+                mimetype='application/pdf' if '.pdf' in display_name.lower() else 'application/zip',
+                headers={
+                    'Content-Disposition':
+                        ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
+                })
+
+            return resp
+
+        except ClientError as e:
+            raise Exception(f'Failed to download the file: {e}')
 
     def upload_file(self, filename, progress=False):
         key = f'{Config.S3_PREFIX}{filename[1:]}'

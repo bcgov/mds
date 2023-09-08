@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -13,7 +13,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
 import { FileOperations, MineDocument } from "@common/models/documents/document";
@@ -27,8 +27,12 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { Dropdown, Button, MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 interface DocumentTableProps {
+  enableBulkActions: boolean;
   documents: MineDocument[];
   isLoaded: boolean;
   isViewOnly: boolean;
@@ -49,10 +53,12 @@ interface DocumentTableProps {
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userInfo: any;
+  replaceAlertMessage?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable = ({
+  enableBulkActions = false,
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -68,8 +74,12 @@ export const DocumentTable = ({
   closeModal,
   removeDocument,
   openDocument,
+  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
+
   ...props
 }: DocumentTableProps) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
@@ -82,6 +92,7 @@ export const DocumentTable = ({
   const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
+    if (!docs) return [];
     let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
       parsedDocs = docs;
@@ -95,7 +106,14 @@ export const DocumentTable = ({
       return doc;
     });
   };
-  const documents = parseDocuments(props.documents ?? []);
+
+  const [documents, setDocuments] = useState<MineDocument[]>();
+  const [rowSelection, setRowSelection] = useState([]);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
+
+  useEffect(() => {
+    setDocuments(parseDocuments(props.documents ?? []));
+  }, [props.documents]);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -134,6 +152,51 @@ export const DocumentTable = ({
     });
   };
 
+  const openReplaceModal = (event, doc: MineDocument) => {
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Replace File`,
+        closeModal: closeModal,
+        handleSubmit: async (document: MineDocument) => {
+          const newDocuments = documents.map((d) =>
+            d.mine_document_guid === document.mine_document_guid ? document : d
+          );
+          setDocuments(newDocuments);
+        },
+        document: doc,
+        alertMessage: replaceAlertMessage,
+      },
+      content: modalConfig.REPLACE_DOCUMENT,
+    });
+  };
+
+  const handleRowSelectionChange = (value) => {
+    setRowSelection(value);
+  };
+
+  const rowSelectionObject: any = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
+
+  const renderBulkActions = () => {
+    let element = (
+      <Dropdown
+        menu={{ items: bulkItems }}
+        placement="bottomLeft"
+        disabled={rowSelection.length === 0}
+      >
+        <Button className="ant-btn ant-btn-primary">
+          Action
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+    return enableBulkActions && <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>;
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -155,7 +218,7 @@ export const DocumentTable = ({
       key: "replace",
       label: FileOperations.Replace,
       icon: <SyncOutlined />,
-      clickFunction: (_event, _record: MineDocument) => alert("Not implemented"),
+      clickFunction: (_event, _record: MineDocument) => openReplaceModal(_event, _record),
     },
     {
       key: "archive",
@@ -171,6 +234,24 @@ export const DocumentTable = ({
       clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
+
+  const bulkItems: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <InboxOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full actions-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
+  ];
 
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
@@ -207,7 +288,7 @@ export const DocumentTable = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
     }
     return columns;
   };
@@ -233,20 +314,41 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
-  return showVersionHistory ? (
-    <CoreTable
-      condition={isLoaded}
-      dataSource={documents}
-      columns={columns}
-      expandProps={{
+
+  const bulkActionsProps = enableBulkActions
+    ? {
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
+    : {};
+
+  const versionProps = showVersionHistory
+    ? {
+      expandProps: {
         childrenColumnName: "versions",
         matchChildColumnsToParent: true,
         recordDescription: "version history",
         rowExpandable: (record) => record.number_prev_versions > 0,
-      }}
-    />
-  ) : (
-    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
+      },
+    }
+    : {};
+
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
+  };
+
+  return (
+    <div>
+      {renderBulkActions()}
+      {<CoreTable {...coreTableProps} />}
+    </div>
   );
 };
 

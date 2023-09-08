@@ -19,7 +19,9 @@ export default function fetchEnv() {
         env.docManUrl,
         env.filesystemProviderUrl,
         env.matomoUrl,
-        env.environment
+        env.environment,
+        env.flagsmithKey,
+        env.flagsmithUrl
       );
 
       setupKeycloak(

@@ -293,13 +293,13 @@ export class MajorMineApplicationPage extends Component {
   handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
     const project = await this.props.fetchProjectById(projectGuid);
-
-    this.props.fetchMineDocuments(project.mine_guid, {
-      is_archived: true,
-      ...(project.major_mine_application?.major_mine_application_guid && {
-        major_mine_application_guid: project.major_mine_application?.major_mine_application_guid,
-      }),
-    });
+    const majorMineApplicationGuid = project?.major_mine_application?.major_mine_application_guid;
+    if (majorMineApplicationGuid) {
+      this.props.fetchMineDocuments(project.mine_guid, {
+        is_archived: true,
+        major_mine_application_guid: majorMineApplicationGuid,
+      });
+    }
   };
 
   handleCreateMajorMineApplication = (values, isDraft) => {

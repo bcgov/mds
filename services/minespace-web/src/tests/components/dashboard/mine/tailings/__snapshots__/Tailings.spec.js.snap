@@ -1,84 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Tailings renders properly 1`] = `
-<Row>
-  <Col
-    span={24}
-  >
-    <Row
-      justify="space-between"
-    >
-      <Col>
-        <ForwardRef
-          level={4}
-        >
-          Tailings Storage Facilities
-        </ForwardRef>
-        <ForwardRef>
-          This table shows 
-          <ForwardRef(Text)
-            className="color-primary"
-            strong={true}
-          >
-            Tailings Storage Facilities
-          </ForwardRef(Text)>
-           for your mine.
-        </ForwardRef>
-        <br />
-      </Col>
-      <Col>
-        <Button
-          onClick={[Function]}
-          type="primary"
-        >
-          <ForwardRef(PlusCircleFilled) />
-          Create New Facility
-        </Button>
-      </Col>
-    </Row>
-    <Row
-      gutter={
-        Array [
-          16,
-          32,
-        ]
-      }
-    >
-      <Col
-        span={24}
-      >
-        <Connect(TailingsTable)
-          editTailings={[Function]}
-          handleEditTailings={[Function]}
-          openEditTailingsModal={[Function]}
-          tailings={
-            Array [
-              Object {
-                "dams": Array [
-                  Object {
-                    "consequence_classification": "low",
-                    "current_dam_height": "123",
-                    "current_elevation": "123",
-                    "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "dam_name": "MockDam",
-                    "dam_type": "dam",
-                    "latitude": "123",
-                    "longitude": "123",
-                    "max_pond_elevation": "123",
-                    "min_freeboard_required": "123",
-                    "operating_status": "operation",
-                    "permitted_dam_crest_elevation": "123",
-                  },
-                ],
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "mine_tailings_storage_facility_name": "MockTSF",
-              },
-            ]
-          }
-        />
-      </Col>
-    </Row>
-  </Col>
-</Row>
+<Tailings
+  TSFOperatingStatusCodeHash={Object {}}
+  closeModal={[MockFunction]}
+  consequenceClassificationStatusCodeHash={Object {}}
+  fetchMineRecordById={[MockFunction]}
+  mine={
+    Object {
+      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+      "mine_location": Object {
+        "latitude": null,
+        "longitude": null,
+      },
+      "mine_name": "mine3",
+      "mine_no": "BLAH9091",
+      "mine_permit": Array [],
+      "mine_region": "NE",
+      "mine_status": Object {
+        "effective_date": "2018-10-16",
+        "expiry_date": "9999-12-31",
+        "status_labels": Array [
+          "Closed",
+          "Care & Maintenance",
+        ],
+        "statusvalue": Array [
+          "CLD",
+          "CM",
+        ],
+      },
+      "mine_tailings_storage_facilities": Array [
+        Object {
+          "dams": Array [
+            Object {
+              "consequence_classification": "low",
+              "current_dam_height": "123",
+              "current_elevation": "123",
+              "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "dam_name": "MockDam",
+              "dam_type": "dam",
+              "latitude": "123",
+              "longitude": "123",
+              "max_pond_elevation": "123",
+              "min_freeboard_required": "123",
+              "operating_status": "operation",
+              "permitted_dam_crest_elevation": "123",
+            },
+          ],
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+          "mine_tailings_storage_facility_name": "MockTSF",
+        },
+      ],
+      "mine_type": Array [
+        Object {
+          "mine_tenure_type_code": "PLR",
+        },
+        Object {
+          "mine_tenure_type_code": "MIN",
+        },
+      ],
+    }
+  }
+  openModal={[MockFunction]}
+  updateTailingsStorageFacility={[MockFunction]}
+/>
 `;

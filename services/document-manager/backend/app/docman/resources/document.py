@@ -17,6 +17,7 @@ from flask import request, current_app, send_file, make_response, jsonify
 from flask_restx import Resource, reqparse, marshal_with
 
 from app.docman.models.document import Document
+from app.docman.models.document_version import DocumentVersion
 from app.extensions import api, cache
 from app.docman.response_models import DOCUMENT_MODEL
 from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
@@ -78,9 +79,16 @@ class DocumentListResource(Resource):
         as_attachment = request.args.get('as_attachment', None)
         document_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
+        document_manager_version_guid = request.args.get(
+            'document_manager_version_guid', None)
 
         if not document_guid:
             raise BadRequest('Valid token required for download')
+
+        document_version = DocumentVersion.query.filter_by(
+            id=document_manager_version_guid).one_or_none()
+
+        version_id = document_version.object_store_version_id if document_version else None
 
         document = Document.query.filter_by(document_guid=document_guid).one_or_none()
         if not document:
@@ -94,7 +102,9 @@ class DocumentListResource(Resource):
             return ObjectStoreStorageService().download_file(
                 path=document.object_store_path,
                 display_name=quote(document.file_display_name),
-                as_attachment=as_attachment)
+                as_attachment=as_attachment,
+                version_id=version_id
+            )
         else:
             return send_file(
                 filename_or_fp=document.full_storage_path,
@@ -324,10 +334,12 @@ class DocumentResource(Resource):
                 }
             elif task.state == 'SUCCESS':
                 success_docs = json.loads(task.info).get('success_docs', '[]')
+                error = json.loads(task.info).get('errors', '[]')
                 response = {
                     'state': task.state,
                     'progress': 100,
                     'success_docs': success_docs,
+                    'error': error
                 }
             elif task.state == 'FAILURE':
                 response = {

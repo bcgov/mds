@@ -40,6 +40,8 @@ Cypress.Commands.add("login", () => {
     keycloak_url: Cypress.env("CYPRESS_KEYCLOAK_URL"),
     keycloak_idpHint: Cypress.env("CYPRESS_KEYCLOAK_IDP_HINT"),
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
+    flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
+    flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
   };
 
   cy.intercept("GET", environmentUrl, (req) => {

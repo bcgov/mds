@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReplaceDocumentModal renders properly 1`] = `
+<form
+  class="ant-form ant-form-vertical"
+>
+  <div
+    class="ant-alert ant-alert-warning"
+    data-show="true"
+    role="alert"
+  >
+    <span
+      aria-label="exclamation-circle"
+      class="anticon anticon-exclamation-circle ant-alert-icon"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="exclamation-circle"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+        />
+      </svg>
+    </span>
+    <div
+      class="ant-alert-content"
+    />
+  </div>
+  <div
+    class="ant-typography margin-large--top"
+  >
+    <strong>
+      Original Document
+    </strong>
+  </div>
+  <div
+    class="ant-row ant-row-space-between padding-md--sides padding-sm--y"
+  >
+    <div
+      class="ant-col ant-col-10"
+    >
+      <span
+        class="ant-typography"
+      />
+    </div>
+    <div
+      class="ant-col"
+    >
+      <span
+        class="ant-typography"
+      />
+    </div>
+    <div
+      class="ant-col"
+    >
+      <span
+        class="ant-typography"
+      />
+    </div>
+    <div
+      class="ant-col"
+    >
+      <span
+        class="ant-typography"
+      />
+    </div>
+  </div>
+  <div
+    class="whirlpool-container"
+  >
+    <button
+      aria-checked="false"
+      class="ant-switch ant-switch-overlay"
+      role="switch"
+      type="button"
+    >
+      <div
+        class="ant-switch-handle"
+      />
+      <span
+        class="ant-switch-inner"
+      >
+        <span
+          aria-label="funnel-plot"
+          class="anticon anticon-funnel-plot"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="funnel-plot"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M880.1 154H143.9c-24.5 0-39.8 26.7-27.5 48L349 607.4V838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V607.4L907.7 202c12.2-21.3-3.1-48-27.6-48zM603.4 798H420.6V650h182.9v148zm9.6-226.6l-8.4 14.6H419.3l-8.4-14.6L334.4 438h355.2L613 571.4zM726.3 374H297.7l-85-148h598.6l-85 148z"
+            />
+          </svg>
+        </span>
+      </span>
+    </button>
+    <div
+      class="filepond--wrapper"
+    >
+      <input
+        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+        multiple=""
+        name="file"
+        type="file"
+      />
+    </div>
+  </div>
+  <div
+    class="ant-modal-footer"
+  >
+    <button
+      class="ant-btn ant-btn-default full-mobile"
+      type="button"
+    >
+      <span>
+        Cancel
+      </span>
+    </button>
+    <button
+      class="ant-btn ant-btn-primary full-mobile"
+      disabled=""
+      type="button"
+    >
+      <span>
+        Replace
+      </span>
+    </button>
+  </div>
+</form>
+`;

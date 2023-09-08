@@ -4,6 +4,7 @@ import {
   MajorMineApplicationDocument,
   MineDocument,
 } from "@common/models/documents/document";
+import * as common from "@mds/common";
 
 // Document model testing
 
@@ -46,17 +47,24 @@ const mockDocumentData = {
   ],
 };
 
+jest.mock("@mds/common", () => ({
+  ...jest.requireActual("@mds/common"),
+  isFeatureEnabled: () => true,
+}));
+
 describe("MineDocument model", () => {
   it("Base document model versions", () => {
     const mineDocumentRecord = new MineDocument(mockDocumentData);
 
-    const expectedNumPreviousVersions = mockDocumentData.versions.length - 1;
+    const expectedNumPreviousVersions = mockDocumentData.versions.length;
     expect(mineDocumentRecord.number_prev_versions).toEqual(expectedNumPreviousVersions);
     expect(mineDocumentRecord.versions.length).toEqual(expectedNumPreviousVersions);
     expect(typeof mineDocumentRecord).toEqual(typeof mineDocumentRecord.versions[0]);
 
-    const latestVersionKey = mineDocumentRecord.key;
-    const childKeys = mineDocumentRecord.versions.map((version) => version.key);
+    const latestVersionKey = mineDocumentRecord.document_manager_version_guid;
+    const childKeys = mineDocumentRecord.versions.map(
+      (version) => version.document_manager_version_guid
+    );
     expect(childKeys).not.toContain(latestVersionKey);
   });
   it("Base document model with no previous versions", () => {
@@ -95,16 +103,6 @@ describe("MineDocument model", () => {
 });
 
 describe("MajorMineApplicationDocument model", () => {
-  it("MajorMineApplicationDocument versions", () => {
-    const appDocRecord = new MajorMineApplicationDocument(mockDocumentData);
-    const prevVersion = appDocRecord.versions[0];
-    const docTypeCode = mockDocumentData.major_mine_application_document_type_code;
-
-    expect(typeof appDocRecord).toEqual(typeof prevVersion);
-    expect(appDocRecord.major_mine_application_document_type_code).toEqual(docTypeCode);
-    expect(prevVersion.major_mine_application_document_type_code).toEqual(docTypeCode);
-  });
-
   it("MajorMineApplicationDocument permissions", () => {
     const appDocRecord = new MajorMineApplicationDocument(mockDocumentData);
 

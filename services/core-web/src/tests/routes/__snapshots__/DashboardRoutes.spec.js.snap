@@ -258,7 +258,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(withRouter(ProjectSummary))",
+        "displayName": "Connect(withRouter(WrappedComponent))",
         "type": [Function],
       }
     }
@@ -272,7 +272,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(withRouter(ProjectSummary))",
+        "displayName": "Connect(withRouter(WrappedComponent))",
         "type": [Function],
       }
     }
@@ -286,7 +286,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Project)",
+        "displayName": "Connect(WrappedComponent)",
         "type": [Function],
       }
     }
@@ -395,6 +395,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/mines/:mineGuid/incidents/:mineIncidentGuid"
     path="/mines/:mineGuid/incidents/:mineIncidentGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/pre-applications/:projectGuid/documents"
+    path="/pre-applications/:projectGuid/documents"
   />
   <Route
     component={[Function]}

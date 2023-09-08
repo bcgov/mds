@@ -41,7 +41,8 @@ import Loading from "@/components/common/Loading";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -76,6 +77,7 @@ const propTypes = {
   removeDocumentFromProjectSummary: PropTypes.func.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -91,6 +93,7 @@ export class ProjectSummary extends Component {
     fixedTop: false,
     isValid: true,
     activeTab: "project-descriptions",
+    uploadedDocuments: [],
   };
 
   componentDidMount() {
@@ -125,7 +128,12 @@ export class ProjectSummary extends Component {
       return this.props
         .fetchProjectById(projectGuid)
         .then((res) => {
-          this.setState({ isLoaded: true, isValid: true, isNewProject: false });
+          this.setState({
+            isLoaded: true,
+            isValid: true,
+            isNewProject: false,
+            uploadedDocuments: res.project_summary.documents,
+          });
           this.props.fetchMineDocuments(res.mine_guid, {
             project_summary_guid: projectSummaryGuid,
             is_archived: true,
@@ -166,7 +174,18 @@ export class ProjectSummary extends Component {
     return null;
   };
 
-  handleTransformPayload = (values) => {
+  removeUploadedDocument = (payload, uploadedDocuments) => {
+    if (Array.isArray(payload.documents)) {
+      const uploadedGUIDs = new Set(uploadedDocuments.map((doc) => doc.document_manager_guid));
+      payload.documents = payload.documents.filter(
+        (doc) => !uploadedGUIDs.has(doc.document_manager_guid)
+      );
+    }
+    return payload;
+  };
+
+  handleTransformPayload = (payload) => {
+    let values = this.removeUploadedDocument(payload, this.state.uploadedDocuments);
     let payloadValues = {};
     const updatedAuthorizations = [];
     // eslint-disable-next-line array-callback-return
@@ -237,14 +256,14 @@ export class ProjectSummary extends Component {
         this.handleTransformPayload({ ...this.props.formValues }),
         message
       )
-      .then(() =>
+      .then(() => {
         this.props.updateProject(
           { projectGuid },
           { mrc_review_required, contacts, project_lead_party_guid },
           "Successfully updated project.",
           false
-        )
-      )
+        );
+      })
       .then(() => {
         this.handleFetchData(this.props.match.params);
         this.setState((prevState) => ({
@@ -360,7 +379,7 @@ export class ProjectSummary extends Component {
                   { href: "project-dates", title: "Project dates" },
                   { href: "project-contacts", title: "Project contacts" },
                   { href: "document-details", title: "Documents" },
-                  isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+                  this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
                     href: "archived-documents",
                     title: "Archived Documents",
                   },
@@ -479,4 +498,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectSummary));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withFeatureFlag(ProjectSummary)));

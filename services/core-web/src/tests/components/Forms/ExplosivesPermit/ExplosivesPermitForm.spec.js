@@ -23,6 +23,7 @@ const setupProps = () => {
   props.allPartyRelationships = [];
   props.mines_permit_guid = "13461346";
   props.userRoles = [];
+  props.infoText = "some info";
 };
 
 beforeEach(() => {

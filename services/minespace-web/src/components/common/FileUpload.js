@@ -44,6 +44,7 @@ const propTypes = {
   replaceFileUploadUrl: PropTypes.string,
   file: PropTypes.object,
   shouldAbortUpload: PropTypes.bool,
+  onAfterResponse: PropTypes.func,
 };
 
 const defaultProps = {

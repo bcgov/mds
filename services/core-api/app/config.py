@@ -105,6 +105,7 @@ class Config(object):
     NROS_NOW_CLIENT_ID = os.environ.get('NROS_NOW_CLIENT_ID', None)
     NROS_NOW_TOKEN_URL = os.environ.get('NROS_NOW_TOKEN_URL', None)
     NROS_NOW_CLIENT_SECRET = os.environ.get('NROS_NOW_CLIENT_SECRET', None)
+    
 
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
@@ -121,6 +122,13 @@ class Config(object):
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
+
+    # Flagsmith
+    FLAGSMITH_URL=os.environ.get('FLAGSMITH_URL', 'https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/')
+    FLAGSMITH_KEY=os.environ.get('FLAGSMITH_KEY', '4Eu9eEMDmWVEHKDaKoeWY7')
+
+    # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
+    FLAGSMITH_ENABLE_LOCAL_EVALUTION=os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUTION', 'false') == 'true'
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)

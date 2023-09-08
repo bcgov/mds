@@ -7,7 +7,7 @@ import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { detectProdEnvironment as IN_PROD } from "@mds/common";
+import { Feature } from "@mds/common";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -17,6 +17,7 @@ import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplica
 import NullScreen from "@/components/common/NullScreen";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDocumentsTab from "./ProjectDocumentsTab";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -29,6 +30,7 @@ const propTypes = {
     replace: PropTypes.func,
   }).isRequired,
   fetchProjectById: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
 
 export class Project extends Component {
@@ -182,24 +184,24 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
-          {/* FEATURE FLAG: PROJECTS */}
-          {!IN_PROD() && (
-            <>
-              <Tabs.TabPane tab="Decision Package" key="decision-package">
-                <LoadingWrapper condition={this.state.isLoaded}>
-                  <div className="padding-lg">
-                    <DecisionPackageTab initialValues={{}} />
-                  </div>
-                </LoadingWrapper>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="All Documents" key="documents">
-                <LoadingWrapper condition={this.state.isLoaded}>
-                  <div className="padding-lg">
-                    <ProjectDocumentsTab />
-                  </div>
-                </LoadingWrapper>
-              </Tabs.TabPane>
-            </>
+          {this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_DECISION_PACKAGE) && (
+            <Tabs.TabPane tab="Decision Package" key="decision-package">
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <div className="padding-lg">
+                  <DecisionPackageTab initialValues={{}} />
+                </div>
+              </LoadingWrapper>
+            </Tabs.TabPane>
+          )}
+
+          {this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ALL_DOCUMENTS) && (
+            <Tabs.TabPane tab="All Documents" key="documents">
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <div className="padding-lg">
+                  <ProjectDocumentsTab />
+                </div>
+              </LoadingWrapper>
+            </Tabs.TabPane>
           )}
         </Tabs>
       </div>
@@ -223,4 +225,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Project);
+export default connect(mapStateToProps, mapDispatchToProps)(withFeatureFlag(Project));

@@ -35,20 +35,23 @@ class MineDocumentSearchUtil():
             # - Project Summary
             # - Project Decision Package
             # - Information Requirements Table
-            qy.join(MajorMineApplicationDocumentXref)\
+            application_docs = qy.join(MajorMineApplicationDocumentXref)\
                 .join(MajorMineApplication)\
-                .join(ProjectSummaryDocumentXref)\
+                .filter(MajorMineApplication.project_guid == project_guid)
+            
+            summary_docs = qy.join(ProjectSummaryDocumentXref)\
                 .join(ProjectSummary)\
-                .join(ProjectDecisionPackageDocumentXref)\
+                .filter(ProjectSummary.project_guid == project_guid)
+            
+            decision_docs = qy.join(ProjectDecisionPackageDocumentXref)\
                 .join(ProjectDecisionPackage)\
-                .join(InformationRequirementsTableDocumentXref)\
+                .filter(ProjectDecisionPackage.project_guid == project_guid)
+            
+            irt_docs = qy.join(InformationRequirementsTableDocumentXref)\
                 .join(InformationRequirementsTable)\
-                .filter(or_(
-                    MajorMineApplication.project_guid == project_guid,
-                    ProjectSummary.project_guid == project_guid,
-                    ProjectDecisionPackage.project_guid == project_guid,
-                    InformationRequirementsTable.project_guid == project_guid,
-                ))
+                .filter(InformationRequirementsTable.project_guid == project_guid)
+            
+            qy = application_docs.union(summary_docs, decision_docs, irt_docs)
 
         if major_mine_application_guid is not None:
             qy = qy.join(MajorMineApplicationDocumentXref)\
@@ -64,7 +67,7 @@ class MineDocumentSearchUtil():
             qy = qy.join(ProjectDecisionPackageDocumentXref)\
                 .join(ProjectDecisionPackage)\
                 .filter(ProjectDecisionPackage.project_decision_package_guid == project_decision_package_guid)
-
+            
         return qy.all()
 
     @classmethod

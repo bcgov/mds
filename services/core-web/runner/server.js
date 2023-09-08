@@ -47,6 +47,8 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_url: process.env.KEYCLOAK_URL,
     keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
     environment: process.env.NODE_ENV,
+    flagsmithKey: process.env.FLAGSMITH_KEY,
+    flagsmithUrl: process.env.FLAGSMITH_URL,
   });
 });
 

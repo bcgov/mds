@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { detectProdEnvironment as IN_PROD } from "@mds/common";
+import { Feature } from "@mds/common";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getProject } from "@common/selectors/projectSelectors";
 import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
@@ -20,6 +20,7 @@ import InformationRequirementsTableEntryTab from "./InformationRequirementsTable
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
+import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -28,6 +29,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchEMLIContactsByRegion: PropTypes.func.isRequired,
   fetchMineDocuments: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       mineGuid: PropTypes.string,
@@ -62,7 +64,8 @@ export class ProjectPage extends Component {
           }
           return null;
         })
-        .then(({ data }) => {
+        .then((response) => {
+          const { data = {} } = response || { data: {} };
           this.props.fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind);
           this.setState({
             isLoaded: true,
@@ -79,17 +82,20 @@ export class ProjectPage extends Component {
 
   fetchArchivedDocuments(activeTab = this.state.activeTab) {
     let filters = { project_guid: this.props?.project?.project_guid, is_archived: true };
-    if (activeTab == "major-mine-application") {
-      filters = {
-        ...(this.props?.project?.major_mine_application?.major_mine_application_guid && {
-          major_mine_application_guid: this.props?.project?.major_mine_application
-            ?.major_mine_application_guid,
-        }),
-        is_archived: true,
-      };
-    }
+    if (activeTab === "major-mine-application") {
+      const majorMineApplicationGuid = this.props?.project?.major_mine_application
+        ?.major_mine_application_guid;
+      if (majorMineApplicationGuid) {
+        filters = {
+          major_mine_application_guid: majorMineApplicationGuid,
+          is_archived: true,
+        };
 
-    this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+        this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+      }
+    } else {
+      this.props.fetchMineDocuments(this.props?.project?.mine_guid, filters);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -236,8 +242,7 @@ export class ProjectPage extends Component {
                 <Tabs.TabPane tab="Application" key="major-mine-application">
                   {majorMineApplicationTabContent}
                 </Tabs.TabPane>
-                {/* FEATURE FLAG: PROJECTS */}
-                {!IN_PROD() && (
+                {this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ALL_DOCUMENTS) && (
                   <Tabs.TabPane tab="Documents" key="documents">
                     <DocumentsTab
                       project={this.props.project}
@@ -272,4 +277,4 @@ const mapDispatchToProps = (dispatch) =>
 
 ProjectPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withFeatureFlag(ProjectPage));

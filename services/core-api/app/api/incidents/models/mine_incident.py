@@ -129,10 +129,10 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
-    documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
+    documents = db.relationship('MineIncidentDocumentXref', lazy='selectin')
     mine_documents = db.relationship(
         'MineDocument',
-        lazy='joined',
+        lazy='selectin',
         secondary='mine_incident_document_xref',
         secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
     )

@@ -60,9 +60,12 @@ class DocumentVersionListResource(Resource):
             document_guid=document.document_guid,
             created_by='mds',
             created_date=datetime.utcnow(),
-            file_display_name=filename,
+            file_display_name=document.file_display_name,
             upload_started_date=datetime.utcnow(),
         )
         new_version.save()
+
+        document.file_display_name = filename
+        document.save()
 
         return response

@@ -10,6 +10,7 @@ from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
+from app.api.mines.documents.models.mine_document import MineDocument
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -28,8 +29,10 @@ class DocumentManagerService():
         file_name = metadata.get('filename')
         mine_document = MineDocumentSearchUtil.find_by_document_name_and_project_guid(file_name, project_guid)
 
+        resp = None
+
         if not mine_document: # No existing file found in this application hence continuing the file uploading
-          return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
+          resp = DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
 
         elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
             content = {
@@ -43,7 +46,7 @@ class DocumentManagerService():
                 "update_user": mine_document.update_user,
                 "mine_document_guid": str(mine_document.mine_document_guid)
             }
-            return Response(json.dumps(content), 409, content_type='application/json')
+            resp = Response(json.dumps(content), 409, content_type='application/json')
 
         else: # The found file with the same name in this application is not archived.
             content = {
@@ -57,7 +60,9 @@ class DocumentManagerService():
                 "update_user": mine_document.update_user,
                 "mine_document_guid": str(mine_document.mine_document_guid)
             }
-            return Response(json.dumps(content), 409, content_type='application/json')
+            resp = Response(json.dumps(content), 409, content_type='application/json')
+
+        return resp
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
@@ -89,6 +94,7 @@ class DocumentManagerService():
             'filename': metadata.get('filename')
         }
 
+
         version_url = f'{cls.document_manager_document_resource_url}/{mine_document.document_manager_guid}/versions'
 
         resp = requests.post(
@@ -97,6 +103,10 @@ class DocumentManagerService():
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
             cookies=request.cookies)
+
+        if resp.status_code == 201:
+            mine_document.document_name = metadata.get('filename')
+            mine_document.save()
 
         return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
@@ -209,6 +219,7 @@ class DocumentManagerService():
             - The progress of the zip operation
             - The current state of the operation
             - If successful, the newly created document_guid
+            - An array of errors, empty if none
         """
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip/{task_id}',

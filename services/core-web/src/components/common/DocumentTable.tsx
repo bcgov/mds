@@ -14,7 +14,7 @@ import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
 import { FileOperations, MineDocument } from "@common/models/documents/document";
@@ -30,6 +30,7 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 interface DocumentTableProps {
   documents: MineDocument[];
@@ -46,6 +47,7 @@ interface DocumentTableProps {
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
   archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments: (docs?: MineDocument[]) => void;
+  onReplaceDocument: (document: MineDocument) => void;
   documentColumns: ColumnType<unknown>[];
   additionalColumns: ColumnType<MineDocument>[];
   defaultSortKeys: string[];
@@ -54,6 +56,7 @@ interface DocumentTableProps {
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
   handleRowSelectionChange: (arg1: MineDocument[]) => void;
+  replaceAlertMessage?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -74,6 +77,7 @@ export const DocumentTable = ({
   closeModal,
   removeDocument,
   openDocument,
+  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
   ...props
 }: DocumentTableProps) => {
   const [rowSelection, setRowSelection] = useState([]);
@@ -81,6 +85,8 @@ export const DocumentTable = ({
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
   const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
+
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const allowedTableActions = {
     [FileOperations.View]: true,
@@ -106,7 +112,7 @@ export const DocumentTable = ({
     });
   };
 
-  const documents = parseDocuments(props.documents ?? []);
+  const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
 
   useEffect(() => {
     const isBulkArchive = documents.every((doc) =>
@@ -115,6 +121,10 @@ export const DocumentTable = ({
 
     setDocumentsCanBulkDropDown(isBulkArchive);
   }, []);
+
+  useEffect(() => {
+    setDocuments(parseDocuments(props.documents ?? []));
+  }, [props.documents]);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -153,6 +163,25 @@ export const DocumentTable = ({
     });
   };
 
+  const openReplaceModal = (event, doc: MineDocument) => {
+    event.preventDefault();
+    openModal({
+      props: {
+        title: `Replace File`,
+        closeModal: closeModal,
+        handleSubmit: async (document: MineDocument) => {
+          const newDocuments = documents.map((d) =>
+            d.mine_document_guid === document.mine_document_guid ? document : d
+          );
+          setDocuments(newDocuments);
+        },
+        document: doc,
+        alertMessage: replaceAlertMessage,
+      },
+      content: modalConfig.REPLACE_DOCUMENT,
+    });
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -174,7 +203,7 @@ export const DocumentTable = ({
       key: "replace",
       label: FileOperations.Replace,
       icon: <SyncOutlined />,
-      clickFunction: (_event, _record: MineDocument) => alert("Not implemented"),
+      clickFunction: (_event, _record: MineDocument) => openReplaceModal(_event, _record),
     },
     {
       key: "archive",
@@ -254,10 +283,6 @@ export const DocumentTable = ({
     : null;
 
   const handleRowSelectionChange = (value) => {
-    if (documentTypeCode === "") {
-      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
-    }
-
     setRowSelection(value);
   };
 
@@ -277,12 +302,56 @@ export const DocumentTable = ({
         </button>
       ),
     },
+    {
+      key: "1",
+      icon: <InboxOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
   ];
 
-  const rowSelectionObject = {
+  const rowSelectionObject: any = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
       handleRowSelectionChange(selectedRows);
     },
+  };
+
+  const bulkActionsProps = enableBulkActions
+    ? {
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
+    : {};
+
+  const versionProps = showVersionHistory
+    ? {
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
+    : {};
+
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
   };
 
   const renderBulkActions = () => {
@@ -315,52 +384,6 @@ export const DocumentTable = ({
     return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
   };
 
-  const renderCoreTable = () => {
-    let element = (
-      <CoreTable
-        columns={columns}
-        {...(enableBulkActions
-          ? {
-              rowSelection: {
-                type: "checkbox",
-                ...rowSelectionObject,
-              },
-            }
-          : {})}
-        dataSource={documents}
-        {...minimalProps}
-      />
-    );
-
-    if (showVersionHistory) {
-      element = (
-        <div>
-          <CoreTable
-            condition={isLoaded}
-            dataSource={documents}
-            columns={columns}
-            {...(enableBulkActions
-              ? {
-                  rowSelection: {
-                    type: "checkbox",
-                    ...rowSelectionObject,
-                  },
-                }
-              : {})}
-            expandProps={{
-              childrenColumnName: "versions",
-              matchChildColumnsToParent: true,
-              recordDescription: "version history",
-              rowExpandable: (record) => record.number_prev_versions > 0,
-            }}
-          />
-        </div>
-      );
-    }
-
-    return element;
-  };
-
   return (
     <div>
       <DocumentCompression
@@ -371,7 +394,7 @@ export const DocumentTable = ({
         compressionInProgress={setCompressionInProgress}
       />
       {renderBulkActions()}
-      {renderCoreTable()}
+      {<CoreTable {...coreTableProps} />}
     </div>
   );
 };
