@@ -83,6 +83,15 @@ export class ProjectDocumentsTab extends Component {
     });
   };
 
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "documents"
+    ) {
+      this.handleFetchData();
+    }
+  }
+
   handleDeleteDocument = (event, key, documentParent) => {
     event.preventDefault();
     const {
