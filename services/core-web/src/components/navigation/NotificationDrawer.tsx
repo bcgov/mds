@@ -7,7 +7,7 @@ import {
   fetchActivities,
   markActivitiesAsRead,
 } from "@common/actionCreators/activityActionCreator";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDateTimeUserTz } from "@common/utils/helpers";
 import { getActivities } from "@common/selectors/activitySelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
@@ -19,6 +19,7 @@ import {
   PRE_APPLICATIONS,
   PROJECTS,
   VIEW_MINE_INCIDENT,
+  PROJECT_DOCUMENT_MANAGEMENT,
 } from "@/constants/routes";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
@@ -137,6 +138,10 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
           notification.notification_document.metadata.mine.mine_guid,
           "qualified-person"
         );
+      case "DocumentManagement":
+        return PROJECT_DOCUMENT_MANAGEMENT.dynamicRoute(
+          notification.notification_document.metadata.entity_guid
+        );
       default:
         return null;
     }
@@ -222,7 +227,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
                     )}
                     <Col>
                       <Typography.Text className="notification-info-text">
-                        {formatDateTime(activity.create_timestamp)}
+                        {formatDateTimeUserTz(activity.create_timestamp)}
                       </Typography.Text>
                     </Col>
                   </Row>

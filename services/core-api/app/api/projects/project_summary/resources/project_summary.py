@@ -14,6 +14,9 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
+from app.api.activity.utils import trigger_notification
+from app.api.projects.project.project_util import ProjectUtil
+
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
@@ -161,6 +164,10 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('project_lead_party_guid'), data.get('mrc_review_required', False),
             data.get('contacts', []))
         project.save()
+
+        if len(data.get('documents')) > 0:
+            project = Project.find_by_project_guid(project_guid)
+            ProjectUtil.notifiy_file_updates(project, mine)
 
         return project_summary
 

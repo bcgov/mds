@@ -9,10 +9,10 @@ from app.extensions import db
 from app.config import Config
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.services.email_service import EmailService
-from app.api.projects.project.models.project import Project
 from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-
+from app.api.mines.mine.models.mine import Mine
+from app.api.projects.project.project_util import ProjectUtil
 
 class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'major_mine_application'
@@ -65,6 +65,21 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             return cls.query.filter_by(
                 project_guid=_id,
                 deleted_ind=False).order_by(cls.major_mine_application_id.desc()).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(MajorMineApplication)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(MajorMineApplication.major_mine_application_id == MajorMineApplicationDocumentXref.major_mine_application_id)\
+                    .filter(MajorMineApplicationDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
         except ValueError:
             return None
 
@@ -154,6 +169,12 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
 
         if add_to_session:
             self.save(commit=False)
+
+        if len(documents) > 0:
+            mine_document_guid = documents[0].mine_document_guid
+            project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
+            mine = Mine.find_by_mine_guid(project.mine_guid)
+            ProjectUtil.notifiy_file_updates(project, mine)
 
         return self
 
