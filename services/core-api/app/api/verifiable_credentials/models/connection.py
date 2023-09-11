@@ -6,12 +6,12 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
-class MineVerifiableCredentialConnection(AuditMixin, Base):
+class PartyVerifiableCredentialConnection(AuditMixin, Base):
     """Verificable Credential reference to Traction, a Multi-tenant Hyperledger Aries Wallet"""
-    __tablename__ = "mine_verifiable_credential_connection"
+    __tablename__ = "party_verifiable_credential_connection"
     invitation_id = db.Column(db.String, primary_key=True)
 
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
 
     connection_id = db.Column(db.String)
     connection_state = db.Column(db.String, server_default=FetchedValue()) 
@@ -19,9 +19,9 @@ class MineVerifiableCredentialConnection(AuditMixin, Base):
 
     
     def __repr__(self):
-        return '<MineVerifiableCredentialConnection mine_guid=%r, connection_state=%r>' % self.mine_guid, self.connection_state or "UNKNOWN"
+        return '<MineVerifiableCredentialConnection party_guid=%r, connection_state=%r>' % self.party_guid, self.connection_state or "UNKNOWN"
 
     @classmethod
-    def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).all()
+    def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
+        return cls.query.filter_by(mine_guid=party_guid).all()
         

@@ -3,21 +3,24 @@ from flask_restplus import Resource
 from werkzeug.exceptions import NotFound
 from app.extensions import api
 
-from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 from app.api.services.traction_service import TractionService
 
 from app.api.utils.resources_mixins import UserMixin
 
 class VerifiableCredentialConnectionResource(Resource, UserMixin):
     @api.doc(description='Create a connection invitation for a mine by guid', params={})
-    def post(self, mine_guid: str):
+    def post(self, party_guid: str):
         #mine_guid will be param. just easy this way for development
-        mine = Mine.find_by_mine_guid(mine_guid)
-        if not mine:
-            raise NotFound(f"mine not found with mine_guid {mine_guid}")
+        party = Party.find_by_party_guid(party_guid)
+        if not party:
+            raise NotFound(f"party not found with party_guid {party_guid}")
         
+        #TODO Validate the party is an organization? 
+        #TODO Validate the party is related to orgbook entity?
+
         traction_svc=TractionService()
-        invitation = traction_svc.create_oob_connection_invitation(mine_guid, mine.mine_name)
+        invitation = traction_svc.create_oob_connection_invitation(party)
         
         current_app.logger.warn(invitation)
         return invitation
