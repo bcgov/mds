@@ -4,6 +4,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref
 
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 from app.extensions import db
 
@@ -90,6 +91,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return self.project.mine_guid
         return None
 
+    @mine_guid.expression
+    def mine_guid(cls):
+        return case(
+            [(cls.project.has(Project.mine_guid.isnot(None)), Project.mine_guid)],
+            else_=None
+        )
+
+
     @hybrid_property
     def mine_name(self):
         if self.project.mine_guid:
@@ -118,11 +127,30 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
+    def find_by_mine_guid(cls, mine_guid_to_search):
+        return cls.query.filter(cls.mine_guid == mine_guid_to_search).all()
+
+    @classmethod
     def find_by_project_guid(cls, project_guid, is_minespace_user):
         if is_minespace_user:
             return cls.query.filter_by(project_guid=project_guid, deleted_ind=False).all()
         return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
             project_guid=project_guid, deleted_ind=False).all()
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(ProjectSummary)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
+                    .filter(ProjectSummaryDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
 
     @classmethod
     def create(cls,

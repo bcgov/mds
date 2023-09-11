@@ -28,8 +28,11 @@ import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { Dropdown, Button, MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 interface DocumentTableProps {
+  enableBulkActions: boolean;
   documents: MineDocument[];
   isLoaded: boolean;
   isViewOnly: boolean;
@@ -55,6 +58,7 @@ interface DocumentTableProps {
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable = ({
+  enableBulkActions = false,
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -104,11 +108,11 @@ export const DocumentTable = ({
   };
 
   const [documents, setDocuments] = useState<MineDocument[]>();
+  const [rowSelection, setRowSelection] = useState([]);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
 
   useEffect(() => {
-    if (props.documents) {
-      setDocuments(parseDocuments(props.documents));
-    }
+    setDocuments(parseDocuments(props.documents ?? []));
   }, [props.documents]);
 
   const openArchiveModal = (event, docs: MineDocument[]) => {
@@ -167,6 +171,32 @@ export const DocumentTable = ({
     });
   };
 
+  const handleRowSelectionChange = (value) => {
+    setRowSelection(value);
+  };
+
+  const rowSelectionObject: any = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
+
+  const renderBulkActions = () => {
+    let element = (
+      <Dropdown
+        menu={{ items: bulkItems }}
+        placement="bottomLeft"
+        disabled={rowSelection.length === 0}
+      >
+        <Button className="ant-btn ant-btn-primary">
+          Action
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+    return enableBulkActions && <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>;
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
@@ -205,6 +235,24 @@ export const DocumentTable = ({
     },
   ].filter((action) => allowedTableActions[action.label]);
 
+  const bulkItems: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <InboxOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full actions-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
+  ];
+
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
     return tableActions.filter((action) => allowedDocumentActions.includes(action.label));
@@ -240,7 +288,7 @@ export const DocumentTable = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
     }
     return columns;
   };
@@ -266,20 +314,41 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
-  return showVersionHistory ? (
-    <CoreTable
-      condition={isLoaded}
-      dataSource={documents}
-      columns={columns}
-      expandProps={{
+
+  const bulkActionsProps = enableBulkActions
+    ? {
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
+    : {};
+
+  const versionProps = showVersionHistory
+    ? {
+      expandProps: {
         childrenColumnName: "versions",
         matchChildColumnsToParent: true,
         recordDescription: "version history",
         rowExpandable: (record) => record.number_prev_versions > 0,
-      }}
-    />
-  ) : (
-    <CoreTable columns={columns} dataSource={documents} {...minimalProps} />
+      },
+    }
+    : {};
+
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
+  };
+
+  return (
+    <div>
+      {renderBulkActions()}
+      {<CoreTable {...coreTableProps} />}
+    </div>
   );
 };
 

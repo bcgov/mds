@@ -199,6 +199,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
       <br />
       <Connect(DocumentCategoryForm)
         categories={Array []}
+        infoText="Please upload any documents that support this explosives storage and use permit. Documents uploaded here will be viewable by Minespace users."
         isProcessed={false}
         mineGuid="523642546"
       />

@@ -29,8 +29,10 @@ class DocumentManagerService():
         file_name = metadata.get('filename')
         mine_document = MineDocumentSearchUtil.find_by_document_name_and_project_guid(file_name, project_guid)
 
+        resp = None
+
         if not mine_document: # No existing file found in this application hence continuing the file uploading
-          return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
+          resp = DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
 
         elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
             content = {
@@ -44,7 +46,7 @@ class DocumentManagerService():
                 "update_user": mine_document.update_user,
                 "mine_document_guid": str(mine_document.mine_document_guid)
             }
-            return Response(json.dumps(content), 409, content_type='application/json')
+            resp = Response(json.dumps(content), 409, content_type='application/json')
 
         else: # The found file with the same name in this application is not archived.
             content = {
@@ -58,7 +60,9 @@ class DocumentManagerService():
                 "update_user": mine_document.update_user,
                 "mine_document_guid": str(mine_document.mine_document_guid)
             }
-            return Response(json.dumps(content), 409, content_type='application/json')
+            resp = Response(json.dumps(content), 409, content_type='application/json')
+
+        return resp
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):

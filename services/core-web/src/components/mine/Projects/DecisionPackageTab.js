@@ -78,14 +78,23 @@ export class DecisionPackageTab extends Component {
   handleFetchData = async () => {
     const { projectGuid } = this.props.match?.params;
     const project = await this.props.fetchProjectById(projectGuid);
-    await this.props.fetchMineDocuments(project.mine_guid, {
-      is_archived: true,
-      ...(project?.project_decision_package?.project_decision_package_guid && {
-        project_decision_package_guid:
-          project?.project_decision_package?.project_decision_package_guid,
-      }),
-    });
+    const decisionPackageGuid = project?.project_decision_package?.project_decision_package_guid;
+    if (decisionPackageGuid) {
+      await this.props.fetchMineDocuments(project.mine_guid, {
+        is_archived: true,
+        project_decision_package_guid: decisionPackageGuid,
+      });
+    }
   };
+
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "project-decision-package"
+    ) {
+      this.handleFetchData();
+    }
+  }
 
   handleUpdateProjectDecisionPackage = (event, values) => {
     event.preventDefault();
@@ -155,6 +164,7 @@ export class DecisionPackageTab extends Component {
         <br />
         <p>{sectionText}</p>
         <DocumentTable
+          enableBulkActions={true}
           documents={sectionDocuments?.reduce(
             (docs, doc) => [
               {

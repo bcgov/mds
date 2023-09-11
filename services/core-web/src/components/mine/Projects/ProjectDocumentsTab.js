@@ -83,6 +83,15 @@ export class ProjectDocumentsTab extends Component {
     });
   };
 
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "documents"
+    ) {
+      this.handleFetchData();
+    }
+  }
+
   handleDeleteDocument = (event, key, documentParent) => {
     event.preventDefault();
     const {
@@ -156,6 +165,7 @@ export class ProjectDocumentsTab extends Component {
           removeDocument={this.handleDeleteDocument}
           showVersionHistory={true}
           isLoaded={this.state.isLoaded}
+          enableBulkActions={true}
         />
       </div>
     );

@@ -297,6 +297,12 @@ export const VIEW_MINE_INCIDENT = {
   component: MineIncident,
 };
 
+export const PROJECT_DOCUMENT_MANAGEMENT = {
+  route: "/pre-applications/:projectGuid/documents",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
+  component: ProjectDocumentsTab,
+};
+
 export const CREATE_MINE_INCIDENT = {
   route: "/mines/:mineGuid/new-incident",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/new-incident`,

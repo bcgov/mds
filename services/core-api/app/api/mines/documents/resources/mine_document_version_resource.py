@@ -20,7 +20,6 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VERSION_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
 
-
 class MineDocumentVersionUploadResource(Resource, UserMixin):
 
     @api.doc(
@@ -51,7 +50,6 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
 
         return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
             request, mine_document)
-
 
 class MineDocumentVersionListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()

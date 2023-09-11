@@ -63,10 +63,23 @@ export class MajorMineApplicationTab extends Component {
   async fetchData() {
     const { projectGuid } = this.props.match.params;
     const project = await this.props.fetchProjectById(projectGuid);
-    this.props.fetchMineDocuments(project.mine_guid, {
-      is_archived: true,
-      project_guid: projectGuid,
-    });
+
+    const majorMineApplicationGuid = project?.major_mine_application?.major_mine_application_guid;
+    if (majorMineApplicationGuid) {
+      this.props.fetchMineDocuments(project.mine_guid, {
+        is_archived: true,
+        major_mine_application_guid: majorMineApplicationGuid,
+      });
+    }
+  }
+
+  componentDidUpdate(nextProps) {
+    if (
+      nextProps.match.params.tab !== this.props.match.params.tab &&
+      this.props.match.params.tab === "final-app"
+    ) {
+      this.fetchData();
+    }
   }
 
   componentWillUnmount() {

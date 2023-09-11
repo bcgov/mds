@@ -37,25 +37,25 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
         'MajorMineApplicationDocumentXref',
         lazy='select',
         uselist=False,
-        primaryjoin='and_(MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+        primaryjoin='and_(MajorMineApplicationDocumentXref.mine_document_guid == MineDocument.mine_document_guid)'
     )
     project_summary_document_xref = db.relationship(
         'ProjectSummaryDocumentXref',
         lazy='select',
         uselist=False,
-        primaryjoin='and_(ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+        primaryjoin='and_(ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid)'
     )
     project_decision_package_document_xref = db.relationship(
         'ProjectDecisionPackageDocumentXref',
         lazy='select',
         uselist=False,
-        primaryjoin='and_(ProjectDecisionPackageDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+        primaryjoin='and_(ProjectDecisionPackageDocumentXref.mine_document_guid == MineDocument.mine_document_guid)'
     )
     information_requirements_table_document_xref = db.relationship(
         'InformationRequirementsTableDocumentXref',
         lazy='select',
         uselist=False,
-        primaryjoin='and_(InformationRequirementsTableDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == True)'
+        primaryjoin='and_(InformationRequirementsTableDocumentXref.mine_document_guid == MineDocument.mine_document_guid)'
     )
 
     mine_name = association_proxy('mine', 'mine_name')
