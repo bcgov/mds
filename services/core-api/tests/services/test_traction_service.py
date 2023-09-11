@@ -21,7 +21,9 @@ def test_create_oob_connection_invitation(test_client, db_session, auth_headers)
         "app.api.services.traction_service.TractionService.get_new_token"
     ) as mock_get_token, patch(
         "requests.post"
-    ) as mock_post:
+    ) as mock_post, patch(
+        "app.api.utils.models_mixins.Base.save"
+    ) as mock_save:
         mock_post.return_value = MagicMock(json=MagicMock(return_value={"invitation":{"@id":"id-value"}}))
         traction_svc = TractionService()
         mock_get_token.assert_called_once()
