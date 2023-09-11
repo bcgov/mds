@@ -8,5 +8,7 @@ describe("Mines Page", () => {
     cy.visit(`${url}/mines`);
     // Assert that landing on the home page is successful
     cy.url({ timeout: 10000 }).should("include", "/mines");
+    cy.get("h1.ant-typography").should("have.text", "My Mines");
+    cy.get("h4.ant-typography").should("have.text", "Welcome, cypress@bceid.");
   });
 });
