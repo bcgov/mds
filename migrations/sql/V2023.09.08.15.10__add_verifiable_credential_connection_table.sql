@@ -1,5 +1,5 @@
 
-CREATE TABLE mine_verifiable_credential_connection
+CREATE TABLE party_verifiable_credential_connection
 (
     invitation_id uuid PRIMARY KEY,
     party_guid uuid NOT NULL,

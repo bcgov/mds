@@ -43,22 +43,22 @@ class TractionService():
                 "didcomm/aip1",
                 "didcomm/aip2;env=rfc19"
             ],
-            "alias": party.party_guid,
+            "alias": str(party.party_guid),
             "attachments": [],
             "goal": f"To establish a secure connection between BC Government Mines Permitting and the mining company ({party.party_name})",
             "goal_code": "issue-vc",
             "handshake_protocols": [
                 "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0"
             ],
-            "my_label": f"Invitation to {party.party_guid}",
+            "my_label": f"Invitation to {str(party.party_guid)}",
             "use_public_did": False
         }
 
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
 
-        invitation = oob_create_resp.json()["invitation"]
-        current_app.logger.info = oob_create_resp.json()
-        new_traction_connection = PartyVerifiableCredentialConnection(party_guid = party.party_guid, invitation_id = invitation["invitation"]["@id"])
+        response = oob_create_resp.json()
+        current_app.logger.info(response)
+        new_traction_connection = PartyVerifiableCredentialConnection(party_guid = party.party_guid, invitation_id = response["invitation"]["@id"])
         new_traction_connection.save()
 
-        return invitation
+        return response
