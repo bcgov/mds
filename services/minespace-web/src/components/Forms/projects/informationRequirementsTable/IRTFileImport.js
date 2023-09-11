@@ -70,13 +70,14 @@ export class IRTFileImport extends Component {
 
   render() {
     const acceptFileTypeArray = Object.keys(this.acceptedFileTypesMap);
-    const documents = this.props.project?.information_requirements_table?.documents.map(
-      (doc) =>
-        new MineDocument({
-          ...doc,
-          category: doc.information_requirements_table_document_type_code,
-        })
-    );
+    const documents =
+      this.props.project?.information_requirements_table?.documents?.map(
+        (doc) =>
+          new MineDocument({
+            ...doc,
+            category: doc.information_requirements_table_document_type_code,
+          })
+      ) || [];
     const documentColumns = [
       documentNameColumn(),
       renderCategoryColumn(
