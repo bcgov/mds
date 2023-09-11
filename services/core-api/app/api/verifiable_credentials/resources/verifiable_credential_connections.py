@@ -9,7 +9,7 @@ from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
 
 class VerifiableCredentialConnectionResource(Resource, UserMixin):
-    @api.doc(description='Create a connection invitation for a mine by guid', params={})
+    @api.doc(description='Create a connection invitation for a party by guid', params={})
     def post(self, party_guid: str):
         #mine_guid will be param. just easy this way for development
         party = Party.find_by_party_guid(party_guid)

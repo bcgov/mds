@@ -23,5 +23,5 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
 
     @classmethod
     def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
-        return cls.query.filter_by(mine_guid=party_guid).all()
+        return cls.query.filter_by(party_guid=party_guid).all()
         
