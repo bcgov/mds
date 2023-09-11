@@ -22,7 +22,7 @@ def test_create_oob_connection_invitation(test_client, db_session, auth_headers)
     ) as mock_get_token, patch(
         "requests.post"
     ) as mock_post:
-        mock_post.return_value = MagicMock(json=MagicMock(return_value={"invitation":{"key":"value"}}))
+        mock_post.return_value = MagicMock(json=MagicMock(return_value={"invitation":{"@id":"id-value"}}))
         traction_svc = TractionService()
         mock_get_token.assert_called_once()
         traction_svc.create_oob_connection_invitation(mine.mine_guid, mine.mine_name)
