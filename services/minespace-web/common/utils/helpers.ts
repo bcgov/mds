@@ -85,6 +85,13 @@ export const formatDateTimeTz = (
 ): string =>
   moment(dateTime, true).isValid() && moment.tz(dateTime, timezone).format(DATETIME_TZ_FORMAT);
 
+export const formatDateTimeUserTz = (dateTime: Date | string): string => {
+  return (
+    moment(dateTime, true).isValid() &&
+    moment.tz(dateTime, moment.tz.guess() ?? DEFAULT_TIMEZONE).format(DATETIME_TZ_FORMAT)
+  );
+};
+
 export const timeAgo = (dateTime, unit = "day") => {
   const startDate = dateTime;
   const endDate = new Date().toUTCString();

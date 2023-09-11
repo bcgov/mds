@@ -10,6 +10,8 @@ from app.api.projects.project.models.project import Project
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
+from app.api.mines.mine.models.mine import Mine
+from app.api.projects.project.project_util import ProjectUtil
 
 class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "information_requirements_table"
@@ -62,6 +64,21 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(InformationRequirementsTable)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(InformationRequirementsTable.irt_id == InformationRequirementsTableDocumentXref.irt_id)\
+                    .filter(InformationRequirementsTableDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
+        except ValueError:
+            return None
+
     def send_irt_submit_email(self):
         project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email
@@ -85,6 +102,8 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
     def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
+        mine_doc = None
+        project = None
         if import_file and document_guid:
             self.status_code = 'DFT'
             for requirement in self.requirements:
@@ -136,6 +155,10 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         if add_to_session:
             self.save()
+
+        if mine_doc and project:
+            mine = Mine.find_by_mine_guid(mine_doc.mine_guid)
+            ProjectUtil.notifiy_file_updates(project, mine)
 
         return self
 

@@ -7,6 +7,7 @@ from flask import current_app
 class Feature(Enum):
     TSF_V2='tsf_v2'
     MAJOR_PROJECT_REPLACE_FILE='major_project_replace_file'
+    MINE_APPLICATION_FILE_UDPATE_ALERTS='mine_application_file_update_alerts'
 
     def __str__(self):
         return self.value

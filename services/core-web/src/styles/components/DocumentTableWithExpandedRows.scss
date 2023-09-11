@@ -20,8 +20,14 @@
     }
 }
 
-.ant-table-row-level-1.no-sub-table-expandable-rows>td {
-    border: none;
+.ant-table-row-level-1.no-sub-table-expandable-rows {
+    &>td {
+        border: none;
+    }
+
+    .ant-checkbox-wrapper {
+        display: none;
+    }
 }
 
 .file-name-container {

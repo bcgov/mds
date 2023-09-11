@@ -8,6 +8,8 @@ from app.api.projects.project.models.project import Project
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 
+from app.api.mines.mine.models.mine import Mine
+from app.api.projects.project.project_util import ProjectUtil
 
 class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_decision_package'
@@ -60,6 +62,21 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
             return cls.query.filter_by(
                 project_guid=_id,
                 deleted_ind=False).order_by(cls.project_decision_package_id.desc()).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        qy = db.session.query(ProjectDecisionPackage)
+        try:
+            if mine_document_guid is not None:
+                query = qy\
+                    .filter(ProjectDecisionPackage.project_decision_package_id == ProjectDecisionPackageDocumentXref.project_decision_package_id)\
+                    .filter(ProjectDecisionPackageDocumentXref.mine_document_guid == mine_document_guid)
+                return query.first()
+
+            raise ValueError("Missing 'mine_document_guid'")
+
         except ValueError:
             return None
 
@@ -123,6 +140,12 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
 
         if add_to_session:
             self.save(commit=False)
+
+        if len(documents) > 0:
+            mine_document_guid = documents[0].mine_document_guid
+            project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
+            mine = Mine.find_by_mine_guid(project.mine_guid)
+            ProjectUtil.notifiy_file_updates(project, mine)
 
         return self
 

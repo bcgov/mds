@@ -283,10 +283,6 @@ export const DocumentTable = ({
     : null;
 
   const handleRowSelectionChange = (value) => {
-    if (documentTypeCode === "") {
-      setDocumentTypeCode(value[0].major_mine_application_document_type_code);
-    }
-
     setRowSelection(value);
   };
 
@@ -306,12 +302,56 @@ export const DocumentTable = ({
         </button>
       ),
     },
+    {
+      key: "1",
+      icon: <InboxOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
   ];
 
-  const rowSelectionObject = {
+  const rowSelectionObject: any = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
       handleRowSelectionChange(selectedRows);
     },
+  };
+
+  const bulkActionsProps = enableBulkActions
+    ? {
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
+    : {};
+
+  const versionProps = showVersionHistory
+    ? {
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
+    : {};
+
+  const coreTableProps = {
+    condition: isLoaded,
+    dataSource: documents,
+    columns: columns,
+    ...bulkActionsProps,
+    ...versionProps,
+    ...minimalProps,
   };
 
   const renderBulkActions = () => {
@@ -344,52 +384,6 @@ export const DocumentTable = ({
     return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
   };
 
-  const renderCoreTable = () => {
-    let element = (
-      <CoreTable
-        columns={columns}
-        {...(enableBulkActions
-          ? {
-              rowSelection: {
-                type: "checkbox",
-                ...rowSelectionObject,
-              },
-            }
-          : {})}
-        dataSource={documents}
-        {...minimalProps}
-      />
-    );
-
-    if (showVersionHistory) {
-      element = (
-        <div>
-          <CoreTable
-            condition={isLoaded}
-            dataSource={documents}
-            columns={columns}
-            {...(enableBulkActions
-              ? {
-                  rowSelection: {
-                    type: "checkbox",
-                    ...rowSelectionObject,
-                  },
-                }
-              : {})}
-            expandProps={{
-              childrenColumnName: "versions",
-              matchChildColumnsToParent: true,
-              recordDescription: "version history",
-              rowExpandable: (record) => record.number_prev_versions > 0,
-            }}
-          />
-        </div>
-      );
-    }
-
-    return element;
-  };
-
   return (
     <div>
       <DocumentCompression
@@ -400,7 +394,7 @@ export const DocumentTable = ({
         compressionInProgress={setCompressionInProgress}
       />
       {renderBulkActions()}
-      {renderCoreTable()}
+      {<CoreTable {...coreTableProps} />}
     </div>
   );
 };
