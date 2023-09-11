@@ -11,5 +11,8 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require("./cypress/plugins/index.js")(on, config);
     },
+    // Enable Cypress Studio
+    // https://docs.cypress.io/guides/references/cypress-studio
+    experimentalStudio: true,
   },
 });

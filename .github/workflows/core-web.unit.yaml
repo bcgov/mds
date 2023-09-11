@@ -47,8 +47,8 @@ jobs:
       - name: Run cypress tests
         run: yarn workspace @mds/core-web cypress run
         env:
-          CYPRESS_TEST_USER: ${{ secrets.CYPRESS_TEST_USER }}
-          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+          CYPRESS_TEST_USER: ${{ secrets.CYPRESS_CORE_USER }}
+          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_CORE_PASSWORD }}
           CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
           CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
           CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
