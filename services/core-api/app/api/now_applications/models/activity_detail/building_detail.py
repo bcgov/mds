@@ -10,7 +10,7 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 
 class BuildingDetail(ActivityDetailBase):
     __tablename__ = 'building_detail'
-    __mapper_args__ = {'polymorphic_identity': 'building'}
+    __mapper_args__ = {'polymorphic_identity': 'camp'}
 
     activity_detail_id = db.Column(
         db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
