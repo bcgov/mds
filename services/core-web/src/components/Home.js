@@ -96,15 +96,7 @@ export class Home extends Component {
             toggleHamburgerMenu={this.toggleHamburgerMenu}
           />
           <div id="menu-loadingbar-background" />
-          <LoadingBar
-            style={{
-              backgroundColor: Styles.COLOR.violet,
-              position: "fixed",
-              top: 53,
-              zIndex: 999,
-              height: 8,
-            }}
-          />
+          <LoadingBar className="menu-loadingbar-loading" />
         </div>
         {this.state.isTest && <WarningBanner type={WARNING_TYPES.TEST} />}
         {this.state.isIE && <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />}

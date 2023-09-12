@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import HomeBanner from "./HomeBanner";
 import HomeTopLinks from "./HomeTopLinks";
@@ -6,34 +6,26 @@ import HomeInfographs from "./HomeInfographs";
 import HomeMineActivity from "./HomeMineActivity";
 import HomeSidePanel from "./HomeSidePanel";
 
-import { Skeleton, Layout } from "antd";
+import { Row, Col } from "antd";
 
-const HomePageNew = () => {
-  const [loading, setLoading] = useState(true);
-
-  setTimeout(() => {
-    setLoading(false);
-  }, 3000);
-
-  const { Header, Sider, Content } = Layout;
-
+const HomePage = () => {
   return (
-    <Skeleton loading={loading}>
-      <Layout>
-        <HomeBanner />
-        <Layout>
-          <Content>
+    <>
+      <HomeBanner />
+      <Row className="home-content">
+        <Col span={16} className="home-main-content">
+          <div className="home-main-content-container">
             <HomeTopLinks />
             <HomeInfographs />
             <HomeMineActivity />
-          </Content>
-          <Sider theme={"light"}>
-            <HomeSidePanel />
-          </Sider>
-        </Layout>
-      </Layout>
-    </Skeleton>
+          </div>
+        </Col>
+        <Col span={7}>
+          <HomeSidePanel />
+        </Col>
+      </Row>
+    </>
   );
 };
 
-export default HomePageNew;
+export default HomePage;

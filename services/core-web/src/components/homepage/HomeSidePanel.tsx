@@ -1,64 +1,67 @@
 import React from "react";
 
-import { Row, Col, Card, Typography, Divider } from "antd";
-import { Link } from "react-router-dom";
+import { Typography } from "antd";
+import { HSRC_PDF, MEMP_PDF } from "@/constants/assets";
 
 const linkWidget = (title, links) => {
   return (
-    <Card>
-      <Typography.Title level={2}>{title}</Typography.Title>
-      {/* key should not be link.title */}
+    <div className="home-bordered-content">
+      <Typography.Title level={4}>{title}</Typography.Title>
       {links.map((link) => (
-        <li key={link.title}>
-          <Link to={link.url} target="_blank" rel="noopener noreferrer">
+        <div key={link.title}>
+          <a href={link.url} target="_blank" rel="noopener noreferrer">
             {link.title}
-          </Link>
-        </li>
+          </a>
+        </div>
       ))}
-    </Card>
+    </div>
   );
 };
 const ExternalLinksSection = () => {
   const links = [
     {
       title: "Inspections (NRIS)",
-      url: "www.google.ca",
+      url: "https://a100.gov.bc.ca/int/cvis/nris/nris.html",
     },
     {
       title: "iMapBC",
-      url: "www.google.ca",
+      url:
+        "https://www2.gov.bc.ca/gov/content/data/geographic-data-services/web-based-mapping/imapbc",
     },
     {
       title: "Mineral Titles Online (MTO)",
-      url: "www.google.ca",
+      url:
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline",
     },
     {
       title: "LAMP",
-      url: "www.google.ca",
+      url: "https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training",
     },
     {
       title: "Mineral Inventory (MINFILE)",
-      url: "www.google.ca",
+      url: "https://minfile.gov.bc.ca/",
     },
     {
       title: "EMLI Inspection Mapper",
-      url: "www.google.ca",
+      url:
+        "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6",
     },
     {
-      title: "EMLI Sharepoint Requests Portal",
-      url: "www.google.ca",
+      title: "Mining GIS Request Portal",
+      url:
+        "https://bcgov.sharepoint.com/sites/EMLI-MINESGIS/SitePages/Mining-GIS-Requests-Portal-Home.aspx",
     },
     {
       title: "EPIC (EAO)",
-      url: "www.google.ca",
+      url: "https://projects.eao.gov.bc.ca/",
     },
     {
       title: "Mines Certification Registry",
-      url: "www.google.ca",
+      url: "https://mines.qp.gov.bc.ca/mines/app",
     },
     {
-      title: "First Nation Consultation System", // Nation or Nations?
-      url: "www.google.ca",
+      title: "First Nation Consultation System",
+      url: "https://apps.nrs.gov.bc.ca/int/fncs",
     },
   ];
   return linkWidget("External Links", links);
@@ -68,11 +71,12 @@ const MapsSection = () => {
   const links = [
     {
       title: "Active ESUP",
-      url: "www.google.ca",
+      url:
+        "https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2569-active-explosives-permits-in-bc-map",
     },
     {
       title: "Tailings Storage Facility",
-      url: "www.google.ca",
+      url: "https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2610-mine-tsf-map",
     },
   ];
   return linkWidget("Maps", links);
@@ -82,19 +86,21 @@ const DocumentsSection = () => {
   const links = [
     {
       title: "Health, Safety and Reclamation Code",
-      url: "www.google.ca",
+      url: HSRC_PDF,
     },
     {
       title: "Chief Inspector's Annual Reports",
-      url: "www.google.ca",
+      url:
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports",
     },
     {
       title: "Chief Inspector's Directives",
-      url: "www.google.ca",
+      url:
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/directives-alerts-incident-information/chief-inspector-directives",
     },
     {
       title: "Mine Emergency Management Plan",
-      url: "www.google.ca",
+      url: MEMP_PDF,
     },
   ];
   return linkWidget("Documents", links);
@@ -102,8 +108,8 @@ const DocumentsSection = () => {
 
 const FeedbackSection = () => {
   return (
-    <Card>
-      <Typography.Title level={2}>We Need Your Feedback!</Typography.Title>
+    <div className="home-bordered-content">
+      <Typography.Title level={4}>We Need Your Feedback!</Typography.Title>
       <Typography.Paragraph>
         We are always open to feedback for CORE and Minespace to improve your experience. Have you
         encountered a bug that prevents you from working? Get in touch with us.
@@ -111,12 +117,12 @@ const FeedbackSection = () => {
       <Typography.Paragraph>
         Contact the <a href="mailto: mds@gov.bc.ca">MDS Team</a>
       </Typography.Paragraph>
-    </Card>
+    </div>
   );
 };
 const HomeSidePanel = () => {
   return (
-    <div style={{ border: "1px solid goldenrod", color: "white" }}>
+    <div id="home-side-panel-container">
       <ExternalLinksSection />
       <MapsSection />
       <DocumentsSection />
