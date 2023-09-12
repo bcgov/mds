@@ -28,3 +28,16 @@ flower==2.0.0
 
 zipstream==1.1.4
 stream-zip==0.0.67
+
+opentelemetry-distro==0.33b0
+opentelemetry-exporter-otlp==1.12.0
+opentelemetry-instrumentation-dbapi==0.33b0
+opentelemetry-instrumentation-logging==0.33b0
+opentelemetry-instrumentation-urllib==0.33b0
+opentelemetry-instrumentation-wsgi==0.33b0
+opentelemetry-instrumentation-celery==0.33b0
+opentelemetry-instrumentation-flask==0.33b0
+opentelemetry-instrumentation-redis==0.33b0
+opentelemetry-instrumentation-requests==0.33b0
+opentelemetry-instrumentation-sqlalchemy==0.33b0
+opentelemetry-instrumentation-urllib3==0.33b0

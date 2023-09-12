@@ -83,7 +83,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
                 jurl.read().decode('utf-8'))
 
             self.jwks_uri = self.well_known_obj_cache['jwks_uri']
-            self.issuer = self.well_known_obj_cache['issuer']
+            self.issuer = self.issuer or self.well_known_obj_cache['issuer']
         else:
             # TODO: Raise exception
             print('jwks_uri and issuer must be set when creating the jwt manager')

@@ -17,4 +17,4 @@ EXPOSE 5001
 
 RUN mkdir -p /tmp/celery && chmod 777 /tmp/celery
 
-ENTRYPOINT [ "./init.sh" ]
+CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]

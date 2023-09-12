@@ -37,7 +37,7 @@ from app.api.verifiable_credentials.namespace import api as verifiable_credentia
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
-from app.extensions import db, jwtv2, jwt, jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, jwt_docman_celery, api as root_api_namespace, cache
+from app.extensions import db, jwtv2, jwt, jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, jwt_docman_celery, jwt_cypress, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from sqlalchemy.sql import text
@@ -124,6 +124,10 @@ def register_extensions(app, test_config=None):
             jwt_docman_celery.init_app(app)
         else:
             jwt.init(app)
+
+        if os.environ.get('ALLOW_CYPRESS_AUTH') == 'true':
+            jwt_cypress.init_app(app)
+
     except Exception as error:
         app.logger.error("Failed to initialize JWT library: " + str(error))
 
