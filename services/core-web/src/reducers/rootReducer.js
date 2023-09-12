@@ -89,6 +89,7 @@ export const reducerObject = {
   ...tailingsReducer,
   ...damReducer,
   ...mineAlertReducer,
+  [reducerTypes.GET_GLOBAL_ALERTS]: createReducer(networkReducer, reducerTypes.GET_GLOBAL_ALERTS),
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),

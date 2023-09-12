@@ -16,15 +16,7 @@ exports[`Home renders properly 1`] = `
       id="menu-loadingbar-background"
     />
     <Connect(LoadingBar)
-      style={
-        Object {
-          "backgroundColor": "#5e46a1",
-          "height": 8,
-          "position": "fixed",
-          "top": 53,
-          "zIndex": 999,
-        }
-      }
+      className="menu-loadingbar-loading"
     />
   </div>
   <MediaQuery

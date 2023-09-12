@@ -301,3 +301,6 @@ export const DAMS = "DAMS";
 export const CREATE_DAM = "CREATE_DAM";
 export const UPDATE_DAM = "UPDATE_DAM";
 export const GET_DAM = "GET_DAM";
+
+// Alerts
+export const GET_GLOBAL_ALERTS = "GET_GLOBAL_ALERTS";

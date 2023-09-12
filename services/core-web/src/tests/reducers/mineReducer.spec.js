@@ -16,7 +16,7 @@ const baseExpectedValue = {
   mineGuid: "",
   mineBasicInfoList: [],
   mineDocuments: [],
-  subscribedMines: [],
+  subscribedMines: { records: [], loaded: false },
   mineComments: [],
   currentUserVerifiedMines: [],
   currentUserUnverifiedMinesMines: [],
@@ -77,7 +77,10 @@ describe("mineReducer", () => {
 
   it("receives STORE_SUBSCRIBED_MINES", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.subscribedMines = [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }];
+    expectedValue.subscribedMines = {
+      records: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }],
+      loaded: true,
+    };
     const result = mineReducer(
       undefined,
       storeSubscribedMines({ mines: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }] })
