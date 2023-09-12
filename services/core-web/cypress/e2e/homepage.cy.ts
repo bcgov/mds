@@ -6,6 +6,6 @@ describe("Home Page", () => {
 
   it("should navigate to the home page successfully", () => {
     cy.url({ timeout: 10000 }).should("include", "/home");
-    cy.get("h1").should("have.text", "Welcome!");
+    cy.get("h1").should("have.text", "Welcome back to CORE");
   });
 });
