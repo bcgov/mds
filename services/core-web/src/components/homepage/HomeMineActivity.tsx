@@ -12,6 +12,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import { IMine, IMineAlert } from "@mds/common";
 import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface HomeMineActivityProps {
   subscribedMines: IMine[];
@@ -19,9 +20,8 @@ interface HomeMineActivityProps {
   mines: IMine[];
   alerts: IMineAlert[];
   alertsLoaded: boolean;
-  fetchSubscribedMinesByUser: any;
-  fetchMineRecords: any;
-  fetchGlobalMineAlerts: any;
+  fetchSubscribedMinesByUser: ActionCreator<typeof fetchSubscribedMinesByUser>;
+  fetchGlobalMineAlerts: ActionCreator<typeof fetchGlobalMineAlerts>;
 }
 
 const SubscribedMine = ({ mine }) => {
