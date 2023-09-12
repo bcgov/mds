@@ -23,7 +23,6 @@ export const mineAlertReducer = (state: AlertState = initialState, action) => {
       return {
         ...state,
         globalMineAlerts: { records: action.payload.records, loaded: true },
-        globalMineAlertsLoaded: true,
       };
     default:
       return state;
