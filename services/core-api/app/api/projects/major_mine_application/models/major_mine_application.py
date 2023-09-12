@@ -171,8 +171,6 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=False)
 
         if len(documents) > 0:
-            mine_document_guid =  documents[0]["mine_document_guid"]
-            project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
             mine = Mine.find_by_mine_guid(str(project.mine_guid))
             if not mine:
                 raise NotFound('Mine not found.')
