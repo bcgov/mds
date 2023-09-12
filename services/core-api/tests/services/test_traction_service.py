@@ -16,7 +16,7 @@ def test_get_token_on_init(test_client, db_session, auth_headers):
 
 
 def test_create_oob_connection_invitation(test_client, db_session, auth_headers):
-    party = PartyFactory(person=False)
+    party = PartyFactory(company=True, party_name='CompanyInc')
     with current_app.test_request_context() as a, patch(
         "app.api.services.traction_service.TractionService.get_new_token"
     ) as mock_get_token, patch(
