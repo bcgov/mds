@@ -18,6 +18,7 @@ import { useKey } from "@/App";
 import { ISearchResult } from "@mds/common";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 // any attribute that can be passed to antd Input can be passed in here without being explicitly named
 interface SearchBarProps extends InputProps {
@@ -25,7 +26,7 @@ interface SearchBarProps extends InputProps {
   placeholderText: string;
   showFocusButton: boolean;
   searchBarResults: ISearchResult[];
-  fetchSearchBarResults;
+  fetchSearchBarResults: ActionCreator<typeof fetchSearchBarResults>;
 }
 
 const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
