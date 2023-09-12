@@ -14,7 +14,7 @@ export const fetchGlobalMineAlerts = (): AppThunk<Promise<AxiosResponse<IMineAle
   dispatch
 ): Promise<AxiosResponse<IMineAlert>> => {
   dispatch(request(reducerTypes.GET_GLOBAL_MINE_ALERTS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.GLOBAL_MINE_ALERTS}`, createRequestHeader())
     .then((response: AxiosResponse<IMineAlert>) => {
