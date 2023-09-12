@@ -12,7 +12,7 @@ const HomeBanner = () => {
     >
       <Col>
         <Typography.Title
-          level={2}
+          level={1}
           style={{ color: "white", fontSize: "28px", textAlign: "center" }}
         >
           Welcome back to CORE
