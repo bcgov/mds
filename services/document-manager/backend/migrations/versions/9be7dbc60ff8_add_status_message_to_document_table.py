@@ -20,6 +20,12 @@ def upgrade():
     with op.batch_alter_table("document") as batch_op:
         batch_op.add_column(sa.Column('status', sa.String(length=255), server_default=text("'In Progress'"), nullable=True))
 
+    # Set the status of all existing records to "Success"
+    op.execute(
+        '''
+        UPDATE document SET status = 'Success';
+        '''
+    )
 
 def downgrade():
     with op.batch_alter_table("document") as batch_op:
