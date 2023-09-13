@@ -16,7 +16,7 @@ export const postNewDocumentVersion = ({
   mineGuid: string;
   mineDocumentGuid: string;
   documentManagerVersionGuid: string;
-}): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => async (
+}): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
   dispatch
 ): Promise<AxiosResponse<IMineDocumentVersion>> => {
   dispatch(request(reducerTypes.POST_NEW_DOCUMENT_VERSION));
@@ -24,26 +24,27 @@ export const postNewDocumentVersion = ({
 
   const payload = { document_manager_version_guid: documentManagerVersionGuid };
 
-  try {
-    try {
-      const response = await CustomAxios().post(
-        `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
-        payload,
-        createRequestHeader()
-      );
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IMineDocumentVersion>) => {
       notification.success({
         message: "Successfully created new document version",
         duration: 10,
       });
       dispatch(success(reducerTypes.POST_NEW_DOCUMENT_VERSION));
       return response;
-    } catch (err) {
+    })
+    .catch((err) => {
       dispatch(error(reducerTypes.POST_NEW_DOCUMENT_VERSION));
       throw new Error(err);
-    }
-  } finally {
-    dispatch(hideLoading());
-  }
+    })
+    .finally(() => {
+      dispatch(hideLoading());
+    });
 };
 
 export const pollDocumentUploadStatus = (
