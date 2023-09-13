@@ -21,7 +21,15 @@ exports[`ExplosivesPermitFileUpload renders properly 1`] = `
     }
     allowMultiple={true}
     allowRevert={true}
-    component={[Function]}
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(FileUpload)",
+        "type": [Function],
+      }
+    }
     id="fileUpload"
     name="fileUpload"
     onFileLoad={[MockFunction]}

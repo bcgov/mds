@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 
 from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
-from flask import request
+from flask import request, current_app
 from flask_restx import Resource
 
 from app.extensions import api, db
@@ -14,6 +14,12 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
 
+def handle_status_and_update_doc(status, doc_guid):
+    doc = Document.find_by_document_guid(doc_guid)
+    db.session.rollback()
+    doc.status = str(status)
+    db.session.add(doc)
+    db.session.commit()
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
@@ -54,13 +60,15 @@ class TusdHooks(Resource):
             if (path in key):
                 return ('', 204)
         except Exception as e:
-            raise BadRequest(f'Failed to parse data: {e}')
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
 
         # Copy the file to its new location
         try:
             ObjectStoreStorageService().copy_file(source_key=key, key=new_key)
         except Exception as e:
-            raise BadGateway(f'Object store copy request failed: {e}')
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
 
         # Update the document's object store path and create a new version
         try:
@@ -97,14 +105,18 @@ class TusdHooks(Resource):
             db.session.commit()
 
         except Exception as e:
-            raise InternalServerError(
-                f'Failed to update the document\'s object store path: {e}')
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
 
         # Delete the old file and its .info file
         try:
             ObjectStoreStorageService().delete_file(key)
             ObjectStoreStorageService().delete_file(info_key)
         except Exception as e:
-            raise BadGateway(f'Object store delete request failed: {e}')
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
+
+        # If there are no exceptions up to this point, set the status to 'Success'
+        handle_status_and_update_doc('Success', doc_guid)
 
         return ('', 204)

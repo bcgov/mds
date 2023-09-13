@@ -12,6 +12,9 @@ import * as tus from "tus-js-client";
 import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@common/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { bindActionCreators } from "redux";
+import { pollDocumentUploadStatus } from "@common/actionCreators/documentActionCreator";
+import { connect } from "react-redux";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -45,6 +48,7 @@ const propTypes = {
   file: PropTypes.object,
   shouldAbortUpload: PropTypes.bool,
   onAfterResponse: PropTypes.func,
+  pollDocumentUploadStatus: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -144,30 +148,52 @@ class FileUpload extends React.Component {
           onAfterResponse: this.props.onAfterResponse,
           onSuccess: async () => {
             const documentGuid = upload.url.split("/").pop();
-            loadFn(documentGuid);
-            this.props.onFileLoad(fileToUpload.name, documentGuid);
-            // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
-            if (this.props?.afterSuccess?.action) {
-              try {
-                if (this.props.afterSuccess?.irtGuid) {
-                  await this.props.afterSuccess.action[1](
-                    this.props.afterSuccess?.projectGuid,
-                    this.props.afterSuccess?.irtGuid,
-                    file,
-                    documentGuid
-                  );
+
+            const pollUploadStatus = async () => {
+              const response = await props.pollDocumentUploadStatus(documentGuid);
+              if (response.data.status !== "In Progress") {
+                clearInterval(intervalId);
+                if (response.data.status === "Success") {
+                  loadFn(documentGuid);
+                  this.props.onFileLoad(fileToUpload.name, documentGuid);
+                  // Call an additional action on file blob after success(only one use case so far, may need to be extended/structured better in the future)
+                  if (this.props?.afterSuccess?.action) {
+                    try {
+                      if (this.props.afterSuccess?.irtGuid) {
+                        await this.props.afterSuccess.action[1](
+                          this.props.afterSuccess?.projectGuid,
+                          this.props.afterSuccess?.irtGuid,
+                          file,
+                          documentGuid
+                        );
+                      } else {
+                        await this.props.afterSuccess.action[0](
+                          this.props.afterSuccess?.projectGuid,
+                          file,
+                          documentGuid
+                        );
+                      }
+                      this.props.importIsSuccessful(true);
+                    } catch (err) {
+                      this.props.importIsSuccessful(false, err);
+                    }
+                  }
                 } else {
-                  await this.props.afterSuccess.action[0](
-                    this.props.afterSuccess?.projectGuid,
-                    file,
-                    documentGuid
-                  );
+                  if (this.props.onError) {
+                    this.props.onError(file && fileToUpload.name ? fileToUpload.name : "", err);
+                  }
+                  notification.error({
+                    message: `Failed to upload ${
+                      file && fileToUpload.name ? fileToUpload.name : ""
+                    }: ${response.data.status}`,
+                    duration: 10,
+                  });
+
+                  abort();
                 }
-                this.props.importIsSuccessful(true);
-              } catch (err) {
-                this.props.importIsSuccessful(false, err);
               }
-            }
+            };
+            const intervalId = setInterval(pollUploadStatus, 1000);
           },
         });
         upload.start();
@@ -243,4 +269,12 @@ class FileUpload extends React.Component {
 FileUpload.propTypes = propTypes;
 FileUpload.defaultProps = defaultProps;
 
-export default FileUpload;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      pollDocumentUploadStatus,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(FileUpload);

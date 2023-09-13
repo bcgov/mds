@@ -9,7 +9,15 @@ exports[`MajorMineApplicationFileUpload renders properly 1`] = `
   }
   allowMultiple={true}
   allowRevert={true}
-  component={[Function]}
+  component={
+    Object {
+      "$$typeof": Symbol(react.memo),
+      "WrappedComponent": [Function],
+      "compare": null,
+      "displayName": "Connect(FileUpload)",
+      "type": [Function],
+    }
+  }
   id="primary_document"
   label="Upload primary application document"
   labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"

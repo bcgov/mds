@@ -227,4 +227,12 @@ class DocumentManagerService():
                     for (key, value) in request.headers if key != 'Host'})
 
         return resp.json()
+
+    @classmethod
+    def poll_upload_progress(cls, request, document_manager_guid):
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/upload-status',
+            headers={key: value
+                    for (key, value) in request.headers if key != 'Host'})
+        return resp.json()
     
