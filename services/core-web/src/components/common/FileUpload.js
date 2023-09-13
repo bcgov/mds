@@ -14,6 +14,9 @@ import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { pollDocumentUploadStatus } from "@common/actionCreators/documentActionCreator";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -96,11 +99,30 @@ class FileUpload extends React.Component {
           onAfterResponse: this.props.onAfterResponse,
           onSuccess: () => {
             const documentGuid = upload.url.split("/").pop();
-            load(documentGuid);
-            this.props.onFileLoad(file.name, documentGuid);
-            if (this.state.showWhirlpool) {
-              this.flushSound.play();
-            }
+
+            const pollUploadStatus = async () => {
+              const response = await props.pollDocumentUploadStatus(documentGuid);
+              if (response.data.status !== "In Progress") {
+                clearInterval(intervalId);
+                if (response.data.status === "Success") {
+                  load(documentGuid);
+                  this.props.onFileLoad(file.name, documentGuid);
+                  if (this.state.showWhirlpool) {
+                    this.flushSound.play();
+                  }
+                } else {
+                  notification.error({
+                    message: `Failed to upload ${file && file.name ? file.name : ""}: ${
+                      response.data.status
+                    }`,
+                    duration: 10,
+                  });
+
+                  abort();
+                }
+              }
+            };
+            const intervalId = setInterval(pollUploadStatus, 1000);
           },
         });
         upload.start();
@@ -191,4 +213,12 @@ class FileUpload extends React.Component {
 FileUpload.propTypes = propTypes;
 FileUpload.defaultProps = defaultProps;
 
-export default FileUpload;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      pollDocumentUploadStatus,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(FileUpload);

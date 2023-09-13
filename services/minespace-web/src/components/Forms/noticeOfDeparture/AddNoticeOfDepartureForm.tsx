@@ -174,7 +174,7 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
-    if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
+    if (removedDoc?.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
       change("self-assessment", null);
     }

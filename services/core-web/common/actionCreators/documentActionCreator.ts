@@ -16,7 +16,7 @@ export const postNewDocumentVersion = ({
   mineGuid: string;
   mineDocumentGuid: string;
   documentManagerVersionGuid: string;
-}): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
+}): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => async (
   dispatch
 ): Promise<AxiosResponse<IMineDocumentVersion>> => {
   dispatch(request(reducerTypes.POST_NEW_DOCUMENT_VERSION));
@@ -24,22 +24,47 @@ export const postNewDocumentVersion = ({
 
   const payload = { document_manager_version_guid: documentManagerVersionGuid };
 
-  return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response: AxiosResponse<IMineDocumentVersion>) => {
+  try {
+    try {
+      const response = await CustomAxios().post(
+        `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
+        payload,
+        createRequestHeader()
+      );
       notification.success({
         message: "Successfully created new document version",
         duration: 10,
       });
       dispatch(success(reducerTypes.POST_NEW_DOCUMENT_VERSION));
       return response;
+    } catch (err) {
+      dispatch(error(reducerTypes.POST_NEW_DOCUMENT_VERSION));
+      throw new Error(err);
+    }
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const pollDocumentUploadStatus = (
+  mine_document_guid: string
+): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
+  dispatch
+): Promise<AxiosResponse<IMineDocumentVersion>> => {
+  dispatch(request(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+  dispatch(showLoading());
+
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}/mines/documents/upload/${mine_document_guid}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IMineDocumentVersion>) => {
+      dispatch(success(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+      return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.POST_NEW_DOCUMENT_VERSION));
+      dispatch(error(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
       throw new Error(err);
     })
     .finally(() => {

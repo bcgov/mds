@@ -152,11 +152,17 @@ class ObjectStoreStorageService():
         return s3_etag == fs_etag
 
     def copy_file(self, source_key, key):
-        copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': source_key}
-        self._client.copy(CopySource=copy_source, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        try:
+            copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': source_key}
+            self._client.copy(CopySource=copy_source, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        except ClientError as e:
+            raise Exception(f'copy_file: {e}')
 
     def delete_file(self, key):
-        self._client.delete_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        try:
+            self._client.delete_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        except ClientError as e:
+            raise Exception(f'delete_file: {e}')
 
     def file_exists(self, key):
         try:

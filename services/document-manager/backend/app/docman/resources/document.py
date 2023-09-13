@@ -355,3 +355,12 @@ class DocumentResource(Resource):
                     'progress': progress,
                 }
             return jsonify(response)
+
+    @api.route('/documents/<string:document_guid>/upload-status', methods=['GET'])
+    class DocumentUploadStatusResource(Resource):
+        def get(self, document_guid):
+            document = Document.find_by_document_guid(document_guid)
+            if not document:
+                raise NotFound('Document not found')
+            return {'status': document.status}
+
