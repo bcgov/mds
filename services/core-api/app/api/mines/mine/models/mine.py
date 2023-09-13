@@ -99,12 +99,6 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
 
-    explosives_permit_amendments = db.relationship(
-        'ExplosivesPermitAmendment',
-        backref='mine',
-        lazy='select',
-        primaryjoin='and_(ExplosivesPermitAmendment.mine_guid == Mine.mine_guid, ExplosivesPermitAmendment.deleted_ind == False)')
-
     projects = db.relationship(
         'Project',
         backref='mine',
