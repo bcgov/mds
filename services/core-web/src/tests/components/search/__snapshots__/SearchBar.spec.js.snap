@@ -1,67 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchBar renders properly 1`] = `
-<div
-  id=""
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <Dropdown
-    getPopupContainer=""
-    overlay={
-      <ForwardRef
-        className="search-bar"
-      >
-        <SearchBarDropdown
-          history={
-            Object {
-              "location": Object {},
-              "push": [MockFunction],
-            }
-          }
-          searchBarResults={
-            Object {
-              "search_results": Array [
-                Object {
-                  "result": Object {
-                    "id": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
-                    "value": "Abbott Inc",
-                  },
-                  "score": 375,
-                  "type": "mine",
-                },
-                Object {
-                  "result": Object {
-                    "id": "5a993f02-1006-4a07-a448-f4064294de11",
-                    "value": "Abbott PLC",
-                  },
-                  "score": 375,
-                  "type": "mine",
-                },
-              ],
-              "search_terms": Array [
-                "Abb",
-              ],
-            }
-          }
-          searchTerm=""
-          searchTermHistory={Array []}
-        />
-      </ForwardRef>
+  <Connect(withRouter(SearchBar))
+    clearSearchBarResults={[MockFunction]}
+    fetchSearchBarResults={[MockFunction]}
+    history={
+      Object {
+        "location": Object {},
+        "push": [MockFunction],
+      }
     }
-    trigger={
-      Array [
-        "focus",
-      ]
+    searchBarResults={
+      Object {
+        "search_results": Array [
+          Object {
+            "result": Object {
+              "id": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+              "value": "Abbott Inc",
+            },
+            "score": 375,
+            "type": "mine",
+          },
+          Object {
+            "result": Object {
+              "id": "5a993f02-1006-4a07-a448-f4064294de11",
+              "value": "Abbott PLC",
+            },
+            "score": 375,
+            "type": "mine",
+          },
+        ],
+        "search_terms": Array [
+          "Abb",
+        ],
+      }
     }
-    visible={false}
-  >
-    <Search
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onSearch={[Function]}
-      placeholder="Search"
-      value=""
-    />
-  </Dropdown>
-</div>
+  />
+</ContextProvider>
 `;
