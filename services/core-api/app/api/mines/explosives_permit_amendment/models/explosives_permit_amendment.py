@@ -157,7 +157,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
-               explosives_permit_guid,
                issuing_inspector_party_guid,
                mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id,
@@ -172,15 +171,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                longitude,
                application_date,
                description,
-               letter_date,
-               letter_body,
-               explosive_magazines=[],
-               detonator_magazines=[],
-               documents=[],
                add_to_session=True):
 
         # Update simple properties.
-        self.explosives_permit_guid = explosives_permit_guid,
         self.issuing_inspector_party_guid = issuing_inspector_party_guid
         self.mine_manager_mine_party_appt_id = mine_manager_mine_party_appt_id
         self.permittee_mine_party_appt_id = permittee_mine_party_appt_id

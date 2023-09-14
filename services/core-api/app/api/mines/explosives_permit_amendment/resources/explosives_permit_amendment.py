@@ -139,26 +139,20 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         })
     @requires_role_edit_explosives_permit
     @api.marshal_with(EXPLOSIVES_PERMIT_AMENDMENT_MODEL, code=200)
-    def put(self, mine_guid, explosives_permit_amendment_guid):
+    def put(self,mine_guid, explosives_permit_amendment_guid):
         explosives_permit_amendment = ExplosivesPermitAmendment.find_by_explosives_permit_amendment_guid(explosives_permit_amendment_guid)
         if explosives_permit_amendment is None:
             raise NotFound('Explosives Permit Amendment not found')
 
         data = self.parser.parse_args()
 
-        letter_date = str(datetime.utcnow())
-        letter_body = ""
-
         explosives_permit_amendment.update(
-            data.get('explosives_permit_guid'),
-            data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
             data.get('permittee_mine_party_appt_id'), data.get('application_status'),
             data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
             data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
-            data.get('description'),
-            letter_date, letter_body)
+            data.get('description'))
 
         explosives_permit_amendment.save()
         return explosives_permit_amendment
