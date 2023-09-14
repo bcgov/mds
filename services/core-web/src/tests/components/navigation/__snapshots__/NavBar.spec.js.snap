@@ -5,29 +5,36 @@ exports[`NavBar renders properly 1`] = `
   <div
     className="menu"
   >
-    <Link
-      to="/home/"
+    <Row
+      id="menu--image--search"
     >
-      <img
-        alt="Home"
-        className="menu__img"
-        src={
-          Object {
-            "process": [Function],
+      <Link
+        to="/home/"
+      >
+        <img
+          alt="Home"
+          className="menu__img"
+          src={
+            Object {
+              "process": [Function],
+            }
           }
-        }
-      />
-    </Link>
-    <div
-      className="inline-flex"
-    >
+        />
+      </Link>
       <div
         className="menu--search"
       >
         <Connect(withRouter(SearchBar))
-          containerId="navBar"
+          iconPlacement="prefix"
+          placeholderText="Search Core..."
+          showFocusButton={true}
         />
       </div>
+    </Row>
+    <div
+      className="inline-flex"
+      id="menu--navbar-items"
+    >
       <MediaQuery
         maxWidth={1079}
       >
