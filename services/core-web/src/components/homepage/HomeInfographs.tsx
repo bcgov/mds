@@ -10,7 +10,9 @@ const HomeInfographs = () => {
 
   useEffect(() => {
     (async () => {
-      const newGraphUrls = await Promise.all(graphIds.map((id) => fetchMetabaseDashboard(id)));
+      const newGraphUrls = await Promise.all(
+        graphIds.map((id) => fetchMetabaseDashboard(id, "question"))
+      );
       setInfographUrls(newGraphUrls);
     })();
   }, []);

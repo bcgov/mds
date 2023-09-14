@@ -6,10 +6,9 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
 // This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
-export const fetchMetabaseDashboard = (dashboardId) =>
+export const fetchMetabaseDashboard = (dashboardId, type = "dashboard") =>
   CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
-    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD(dashboardId)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD(dashboardId, type)}`, createRequestHeader())
     .then((response) => {
       const { dashboard_url } = response.data || {};
       return dashboard_url;
