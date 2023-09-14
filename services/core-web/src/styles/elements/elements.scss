@@ -98,9 +98,7 @@ p,
 }
 
 a,
-link,
-a.ant-typography,
-.ant-typography a {
+link {
   @extend p;
   color: $a-color;
   text-decoration: underline;

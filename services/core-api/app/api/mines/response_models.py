@@ -551,8 +551,6 @@ MINE_ALERT_MODEL = api.model(
         'mine_alert_id': fields.Integer,
         'mine_alert_guid': fields.String,
         'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'mine_no': fields.String,
         'start_date': fields.DateTime,
         'end_date': fields.DateTime,
         'contact_name': fields.String,
