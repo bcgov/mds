@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 
 import { Row, Col, Typography } from "antd";
-import ReactIframeResizer from "react-iframe-resizer-super";
 
 const HomeInfographs = () => {
   const graphIds = ["2846", "2140", "2845"];
@@ -17,13 +16,6 @@ const HomeInfographs = () => {
     })();
   }, []);
 
-  const iframeResizerOptions = { checkOrigin: false };
-  const xs = 22;
-  const sm = 20;
-  const md = 10;
-  const lg = 8;
-  const xl = 6;
-
   return (
     <div>
       <Typography.Title level={4}>Key Insights</Typography.Title>
@@ -35,10 +27,16 @@ const HomeInfographs = () => {
         </a>
         .
       </Typography.Paragraph>
-      <Row justify={"space-between"}>
+      <Row gutter={16} style={{ minHeight: "350px" }}>
         {infographUrls.map((url, index) => (
-          <Col xs={xs} sm={sm} md={md} lg={lg} xl={xl} key={`home-infograph-${index}`}>
-            <ReactIframeResizer src={url} key={url} iframeResizerOptions={iframeResizerOptions} />
+          <Col key={`home-infograph-${index}`} xs={24} md={12} lg={8}>
+            <div>
+              <iframe
+                src={url}
+                key={url}
+                style={{ width: "100%", minWidth: "100%", minHeight: "320px" }}
+              />
+            </div>
           </Col>
         ))}
       </Row>
