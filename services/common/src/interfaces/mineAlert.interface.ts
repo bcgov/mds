@@ -12,6 +12,4 @@ export interface IMineAlert {
   create_timestamp: string;
   update_user: string;
   update_timestamp: string;
-  mine_name?: string;
-  mine_no?: string;
 }

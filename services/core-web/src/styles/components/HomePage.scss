@@ -5,167 +5,59 @@
   overflow: hidden;
 }
 
-#home-banner-search-container {
-  width: 100%;
-  justify-content: center;
-  > .ant-col {
-    flex-basis: 709px;
-  }
-  .ant-input-affix-wrapper-lg {
-   height: $nav-height; 
-  }
-}
+.link-card {
+  background-color: $pure-white;
+  border-top: 6px solid $violet;
+  border-radius: 5px;
 
-.home-bordered-content {
-  box-shadow: none;
-  border: 1px solid $light-grey;
-  border-radius: 4px;
-  padding: 16px;
-}
-
-.home-link-button {
-  @extend .home-bordered-content;
-  height: unset;
-  flex: 1 0 100px;
-  margin: 0;  
-
-  &:hover, &:active {
-      border-color: $violet;
-      color: $darkest-grey;
-
-      .home-link-button-icon {
-        color: $hover-violet;
-      }
-    }
-
-  &:active {
-    background-color: rgba(189, 179, 216, 0.15);
-  }
-
-  .home-link-button-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;    
-  }
-
-    .home-link-button-icon {
-      color: $violet;
-      font-size: 24px;
-    }
-}
-
-.home-container-gutter {
-  gap: 16px;
-}
-
-.home-content {
-  gap: 23px;
-  width: 100%;
-  padding: 24px 32px;
-
-  div.ant-typography, .ant-typography p, a {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .global-mine-alert {
-    padding: 16px 5px 0 5px;
-    &:hover {
-      cursor: pointer;
-      background-color: rgba(189, 179, 216, 0.15);
-    }
-  }
-
-  .mine-alert-message {
-    line-height: 20px;
-    letter-spacing: -0.41px;
-    margin-bottom: 8px;
-  }
-
-  .mine-alert-details {
-    color: $medium-grey;
-    font-size: 14px;
-    line-height: 24px;
-  }
-
-  .mine-alert-date {
-    display: inline-block;
-  }
-
-  .ant-divider-horizontal {
-    margin: 16px 0 0 0;
-  }
-
-  h4 {
+  ul {
     margin-bottom: 0;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 30px;
-  }
 
-  .home-main-content {
-    // antd has overflow sometimes when colspans total 24. 
-    // Rounded down to 23 and added these rules to fill any remaining space
-    max-width: unset;
-    flex-grow: 1;
+    li {
+      display: flex;
 
-    .home-main-content-container {
-        @extend .home-container-gutter;
-        display: flex;
-        flex-direction: column;
+      &:first-child {
+        color: $violet;
+        font-weight: $semi-bold;
+        text-transform: uppercase;
+        padding: 10px;
       }
-  } 
 
+      &:not(:last-child) {
+        border-bottom: 1px solid $light-grey;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $lightest-grey !important;
+        }
+      }
+    }
+  }
 }
 
-#home-side-panel-container {
-  @extend .home-container-gutter;
-  display: flex;
-  flex-direction: column;
+.metabase-card {
+  background-color: $pure-white;
+  border-top: 6px solid $violet;
+  border-radius: 5px;
 }
 
-#home-subscribed-mines-container {
-  .home-subscribed-mine {
-    padding: 10px 16px;
+.search-container {
+  padding-top: 60px;
+  padding-bottom: 20px;
+
+  h1,
+  p {
+    color: $pure-white;
   }
-
-  .home-subscribed-mine-name {
-    color: $darkest-grey;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
-    text-decoration: underline;
-
-    span {
-      color: $violet;
-      margin-right: 5px;
-    }
-    
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  .home-subscribed-mine-no {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 22px;
-  }
-  .no-subscribed-mines {
-    color: $medium-grey;
-    opacity: 0.5;
-    margin-top: 66px;
-    margin-bottom: 80px;
-
-    .no-subscribed-mines-icon {
-      font-size: 36px;
-    }
+  a:hover {
+    color: $light-grey;
   }
 }
 

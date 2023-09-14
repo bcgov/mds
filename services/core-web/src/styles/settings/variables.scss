@@ -4,11 +4,10 @@
 
 // Primary Colours
 $black: #161616;
-$darkest-grey: #313132;
-$medium-grey: #606060;
+$darkest-grey: #3c3636;
+$medium-grey: #6b6363;
 $violet: #5e46a1;
 $light-violet: #7c66ad;
-$hover-violet: #392B62;
 $hover-blue: #3d6de7;
 $btn-red: #bc2929;
 
@@ -55,8 +54,6 @@ $danger-btn-color-hover: darken($danger-btn-color, 20%);
 // Nav
 $nav-color: $darkest-grey;
 $nav-border-color: $medium-grey;
-$nav-height: 62px;
-$loading-bar-height: 2px;
 
 // Ant Component Overrides
 $h-divider-color: $darkest-grey;

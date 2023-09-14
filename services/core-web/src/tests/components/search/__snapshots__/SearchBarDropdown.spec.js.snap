@@ -1,64 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchBarDropdown renders properly 1`] = `
-<Dropdown
-  menu={
-    Object {
-      "items": Array [
-        Object {
-          "key": "/search?q=Abb",
-          "label": <p
-            className="btn--middle"
-          >
-            <ForwardRef(FileSearchOutlined)
-              className="icon-lg icon-svg-filter"
-            />
-            See All
-          </p>,
-        },
-        Object {
-          "type": "divider",
-        },
-        Object {
-          "children": Array [
+<Menu
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  selectable={false}
+>
+  <MenuItem
+    key="/search?q=Abb"
+  >
+    <p
+      className="btn--middle"
+    >
+      <ForwardRef(FileSearchOutlined)
+        className="icon-lg icon-svg-filter"
+      />
+      See All
+    </p>
+  </MenuItem>
+  <MenuDivider />
+  <MenuItemGroup
+    title="Quick results"
+  >
+    <MenuItem
+      key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
+    >
+      <p>
+        <img
+          className="icon-svg-filter"
+          height={25}
+          src={
             Object {
-              "key": "/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general",
-              "label": <p>
-                <img
-                  className="icon-svg-filter"
-                  height={25}
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-                Abbott Inc
-              </p>,
-            },
+              "process": [Function],
+            }
+          }
+        />
+        Abbott Inc
+      </p>
+    </MenuItem>
+    <MenuItem
+      key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
+    >
+      <p>
+        <img
+          className="icon-svg-filter"
+          height={25}
+          src={
             Object {
-              "key": "/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general",
-              "label": <p>
-                <img
-                  className="icon-svg-filter"
-                  height={25}
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-                Abbott PLC
-              </p>,
-            },
-          ],
-          "key": "search-dd-quick",
-          "label": "Quick results",
-          "type": "group",
-        },
-      ],
-      "onClick": [Function],
-    }
-  }
-/>
+              "process": [Function],
+            }
+          }
+        />
+        Abbott PLC
+      </p>
+    </MenuItem>
+  </MenuItemGroup>
+</Menu>
 `;

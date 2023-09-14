@@ -5,80 +5,12 @@
   z-index: 1000;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
   background-color: $nav-color;
-  padding: 10px 32px;
-  height: $nav-height;
-
-  #menu--image--search {
-    flex-wrap: nowrap;
-    flex-grow: 1;
-
-    a {
-      flex-basis: 175px;
-      flex-shrink: 1;
-      flex-grow: 0;
-      margin: auto 0; // vertically center
-    }
-
-    .searchbar {
-      transition: none;
-      color: $white;
-      border-color: #8C8C8C;
-      input {
-        flex-basis: 115px;
-      }
-      &.search-not-focussed {
-        input, .ant-input-prefix {
-          opacity: 0.6;
-        }
-      }
-    }
-
-    button.ant-btn.search-bar-button {
-      margin: 0;
-      background: transparent;
-      color: #8C8C8C;
-      border-color: #8C8C8C;
-      padding: 6px 8px;
-      height: 26px;
-      font-size: 11px;
-      line-height: 14px;
-      transition: none;
-
-      @media (max-width: $tablet-width) {
-        display: none;
-      }
-
-      span {
-        font-size: 11px;
-        font-weight: 400;
-        line-height: 14px;
-      }
-    }
-  }
-
-  .ant-input-affix-wrapper {
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    border-left: 1px solid #F2F2F2;
-    color: inherit;
-
-    &-focused {
-      box-shadow: none;
-    }
-    .ant-input {
-      background-color: transparent;
-      color: inherit;
-      
-      &::placeholder {
-        color: $white;
-      }
-    }
-  }
+  padding: 0 25px 0 $default-padding-md;
 
   &--search {
+    margin-top: 3px;
+    padding: $default-padding-sm;
 
     .ant-card-body {
       padding: 0;
@@ -86,11 +18,12 @@
   }
 
   &__img {
-    height: 32px;
+    margin: $default-margin-sm;
   }
 
   &__btn {
     margin: 0;
+    padding: $default-padding-sm;
     color: $pure-white;
     height: 100%;
 
@@ -131,18 +64,10 @@
 #menu-loadingbar-background {
   background-color: $nav-border-color;
   position: fixed;
-  top: $nav-height;
+  top: 53px;
   z-index: 998;
   width: 100%;
-  height: $loading-bar-height;
-}
-
-.menu-loadingbar-loading {
-  background-color: $violet;
-  position: fixed;
-  top: $nav-height;
-  z-index: 999;
-  height: $loading-bar-height;
+  height: 8px;
 }
 
 .menu--hamburger {
