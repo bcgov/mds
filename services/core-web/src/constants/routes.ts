@@ -37,7 +37,7 @@ import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
 import MineProject from "@/components/mine/Projects/MineProject";
 import ProjectSummary from "@/components/mine/Projects/ProjectSummary";
 import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
-import HomePage from "@/components/dashboard/HomePage";
+import HomePage from "@/components/homepage/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
@@ -426,7 +426,7 @@ export const ADMIN_CONTACT_MANAGEMENT = {
 
 export const SEARCH_RESULTS = {
   route: "/search",
-  dynamicRoute: ({ q, t }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
+  dynamicRoute: ({ q, t = null }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
 };
 
