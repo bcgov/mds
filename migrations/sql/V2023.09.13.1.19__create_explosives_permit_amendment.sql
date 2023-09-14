@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS explosives_permit_amendment (
     explosives_permit_amendment_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     explosives_permit_amendment_id serial UNIQUE NOT NULL,
-    explosives_permit_guid uuid NOT NULL,    
+    explosives_permit_id integer NOT NULL,    
     mine_manager_mine_party_appt_id integer,
     permittee_mine_party_appt_id integer,
     issuing_inspector_party_guid uuid,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS explosives_permit_amendment (
     update_user varchar(60) NOT NULL,
     update_timestamp timestamptz DEFAULT now() NOT NULL,
 
-    FOREIGN KEY (explosives_permit_guid) REFERENCES explosives_permit(explosives_permit_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (explosives_permit_id) REFERENCES explosives_permit(explosives_permit_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_manager_mine_party_appt_id) REFERENCES mine_party_appt(mine_party_appt_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permittee_mine_party_appt_id) REFERENCES mine_party_appt(mine_party_appt_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (issuing_inspector_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,

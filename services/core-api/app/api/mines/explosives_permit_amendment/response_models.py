@@ -1,3 +1,4 @@
+from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.extensions import api
 from flask_restplus import fields
 
@@ -5,7 +6,7 @@ EXPLOSIVES_PERMIT_AMENDMENT_MODEL = api.model(
     'ExplosivesPermitAmendment', {
         'explosives_permit_amendment_id': fields.Integer,
         'explosives_permit_amendment_guid': fields.String,
-        'explosives_permit_guid': fields.String,
+        'explosives_permit_id': fields.Integer,
         'now_application_guid': fields.String,
         'issuing_inspector_party_guid': fields.String,
         'issuing_inspector_name': fields.String,
@@ -31,6 +32,5 @@ EXPLOSIVES_PERMIT_AMENDMENT_MODEL = api.model(
         'total_detonator_quantity': fields.Integer,
         'total_explosive_quantity': fields.Integer,
         'description': fields.String,
-        'mines_permit_number': fields.String(attribute='mines_act_permit.permit_no'),
-        'now_number': fields.String(attribute='now_application_identity.now_number')
+        'explosives_permit': fields.Nested(EXPLOSIVES_PERMIT_MODEL)
     })
