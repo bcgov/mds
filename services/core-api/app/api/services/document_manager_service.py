@@ -135,7 +135,7 @@ class DocumentManagerService():
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
             'folder': folder,
-            'pretty_folder': pretty_folder,
+            'prettyFolder': pretty_folder,
             'filename': filename,
             'authorization': authorization_header
         }
