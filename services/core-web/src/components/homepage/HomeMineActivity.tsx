@@ -13,6 +13,7 @@ import { IMine, IMineAlert } from "@mds/common";
 import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
 import { ActionCreator } from "@/interfaces/actionCreator";
+import * as router from "@/constants/routes";
 
 interface HomeMineActivityProps {
   subscribedMines: IMine[];
@@ -112,17 +113,22 @@ const HomeMineActivity: FC<HomeMineActivityProps> = ({
     <Row gutter={16}>
       <Col span={12}>
         <div className="home-bordered-content" id="home-subscribed-mines-container">
-          <Typography.Title level={4}>Subscribed Mines</Typography.Title>
+          <Typography.Title level={4}>My Subscribed Mines</Typography.Title>
           <Typography.Paragraph>
             Your subscribed mines. To subscribe to more mines, go to the mine&apos;s overview page
             and select &quot;Subscribe to Mine&quot; from the options menu.
           </Typography.Paragraph>
-          {userMines.map((mine) => (
+          {userMines.slice(0, 10).map((mine) => (
             <Skeleton loading={!subscribedMinesLoaded} active key={`subscribed-${mine.mine_guid}`}>
               <SubscribedMine mine={mine} />
             </Skeleton>
           ))}
-          {subscribedMinesLoaded && userMines.length === 0 && <NoSubscribedMines />}
+
+          {subscribedMinesLoaded && userMines.length === 0 ? (
+            <NoSubscribedMines />
+          ) : (
+            <Link to={router.CUSTOM_HOME_PAGE.route}>View all subscribed mines</Link>
+          )}
         </div>
       </Col>
 
