@@ -64,11 +64,6 @@ export const exactLength = memoize((min) => (value) =>
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
-export const positiveNumber = (value) =>
-  value && (Number.isNaN(Number(value)) || Number(value) <= 0)
-    ? "Input must be a positive number"
-    : undefined;
-
 export const lat = (value) =>
   value && !Validate.checkLat(value) ? "Invalid latitude coordinate e.g. 53.7267" : undefined;
 
