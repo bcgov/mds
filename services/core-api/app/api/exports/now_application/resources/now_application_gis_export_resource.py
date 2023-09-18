@@ -19,7 +19,6 @@ class NowApplicationGisExportResource(Resource):
     def get(self):
         model = inspect(NowApplicationGisExport)
         headers = [c.name or "" for c in model.columns]
-        cache.clear()
 
         def generate():
             data = StringIO()
@@ -29,7 +28,7 @@ class NowApplicationGisExportResource(Resource):
             data.seek(0)
             data.truncate(0)
 
-            for r in NowApplicationGisExport.query.yield_per(250):
+            for r in NowApplicationGisExport.query.yield_per(50):
                 writer.writerow(r.csv_row())
                 yield data.getvalue()
                 data.seek(0)
