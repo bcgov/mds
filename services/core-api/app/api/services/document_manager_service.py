@@ -1,10 +1,11 @@
+import time
 import requests
 import base64
 import io
 import json
 from tusclient import client
 
-from flask import Response, current_app
+from flask import Response, current_app, request as flask_request
 from flask_restplus import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
@@ -145,7 +146,11 @@ class DocumentManagerService():
             file_stream=io.BytesIO(file_content),
             chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)
         uploader.upload()
+
         document_manager_guid = uploader.url.rsplit('/', 1)[-1]
+
+        cls.wait_for_document_upload(document_manager_guid, timeout=60)
+
         return document_manager_guid
 
     @classmethod
@@ -236,3 +241,31 @@ class DocumentManagerService():
                     for (key, value) in request.headers if key != 'Host'})
         return resp.json()
     
+
+    @classmethod
+    def wait_for_document_upload(cls, document_manager_guid, timeout=60):
+        """
+        Waits for a document upload to finish - Happens when it no longer has the "In Progress" status.
+        This is necessary in order to check the status of an upload performed using the Tusd client, seeing
+        as the post-finish hook which copies the file to its final destination happens asynchronously.
+
+        :param document_manager_guid: GUID of docman document to check status for
+        :timeout: How long the method should wait for before timing out
+        """
+        status = "In Progress"
+        current_time = time.time()
+
+        while status == "In Progress":
+            resp = cls.poll_upload_progress(flask_request, document_manager_guid)
+
+            status = resp["status"]
+
+            if status == "Success":
+                return document_manager_guid
+            elif status != "In Progress":
+                raise Exception(status)
+
+            if timeout is not None and time.time() > current_time + timeout:
+                raise Exception('Timed out while waiting for file upload to finish')
+
+            time.sleep(1)
