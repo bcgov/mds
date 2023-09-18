@@ -59,7 +59,6 @@ export class MagazineForm extends Component {
 
   renderInputs = (field, type) => {
     const unit = type === "EXP" ? "(Kg)" : "(Unit)";
-    const quantityValidators =  type === "EXP" ? [positiveNumber, required] : [required]
     const showDetonatorType = type === "DET";
     return (
       <>
@@ -109,7 +108,7 @@ export class MagazineForm extends Component {
                 id={`${field}quantity`}
                 name={`${field}quantity`}
                 component={renderConfig.FIELD}
-                validate={quantityValidators}
+                validate={[positiveNumber, required]}
                 disabled={this.props.isProcessed}
               />
             </Form.Item>
