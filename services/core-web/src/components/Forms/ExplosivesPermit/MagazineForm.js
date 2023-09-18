@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
-import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
+import { required, maxLength, number, lat, lonNegative, positiveNumber } from "@common/utils/Validate";
 
 import "@ant-design/compatible/assets/index.css";
 import { Collapse, Button, Popconfirm, Col, Row, Divider } from "antd";
@@ -59,6 +59,7 @@ export class MagazineForm extends Component {
 
   renderInputs = (field, type) => {
     const unit = type === "EXP" ? "(Kg)" : "(Unit)";
+    const quantityValidators =  type === "EXP" ? [positiveNumber, required] : [required]
     const showDetonatorType = type === "DET";
     return (
       <>
@@ -108,7 +109,7 @@ export class MagazineForm extends Component {
                 id={`${field}quantity`}
                 name={`${field}quantity`}
                 component={renderConfig.FIELD}
-                validate={[number, required]}
+                validate={quantityValidators}
                 disabled={this.props.isProcessed}
               />
             </Form.Item>
@@ -134,7 +135,7 @@ export class MagazineForm extends Component {
                 label="Longitude *"
                 id={`${field}longitude`}
                 name={`${field}longitude`}
-                validate={[number, maxLength(12), lon, required]}
+                validate={[number, maxLength(12), lonNegative, required]}
                 component={renderConfig.FIELD}
                 disabled={this.props.isProcessed}
               />
@@ -165,7 +166,7 @@ export class MagazineForm extends Component {
                 id={`${field}distance_road`}
                 name={`${field}distance_road`}
                 component={renderConfig.FIELD}
-                validate={[number, required]}
+                validate={[positiveNumber, required]}
                 disabled={this.props.isProcessed}
               />
             </Form.Item>
@@ -177,7 +178,7 @@ export class MagazineForm extends Component {
                 id={`${field}distance_dwelling`}
                 name={`${field}distance_dwelling`}
                 component={renderConfig.FIELD}
-                validate={[number, required]}
+                validate={[positiveNumber, required]}
                 disabled={this.props.isProcessed}
               />
             </Form.Item>
@@ -190,7 +191,7 @@ export class MagazineForm extends Component {
               id={`${field}length`}
               name={`${field}length`}
               component={renderConfig.FIELD}
-              validate={[number, required]}
+              validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
@@ -200,7 +201,7 @@ export class MagazineForm extends Component {
               id={`${field}width`}
               name={`${field}width`}
               component={renderConfig.FIELD}
-              validate={[number, required]}
+              validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
@@ -210,7 +211,7 @@ export class MagazineForm extends Component {
               id={`${field}height`}
               name={`${field}height`}
               component={renderConfig.FIELD}
-              validate={[number, required]}
+              validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>

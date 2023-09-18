@@ -108,6 +108,11 @@ export const exactLength = memoize((min) => (value) =>
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
+export const positiveNumber = (value) =>
+  value && (Number.isNaN(Number(value)) || Number(value) <= 0)
+    ? "Input must be a positive number"
+    : undefined;
+
 export const date = (value) =>
   value && Number.isNaN(Date.parse(value)) ? "Input must be a date" : undefined;
 
