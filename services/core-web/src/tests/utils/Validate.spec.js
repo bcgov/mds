@@ -4,6 +4,7 @@ import {
   minLength,
   exactLength,
   number,
+  positiveNumber,
   lat,
   lon,
   phoneNumber,
@@ -81,6 +82,20 @@ describe("Validate class", () => {
       const valueTwo = "385192451257";
       expect(number(value)).toEqual(`Input must be a number`);
       expect(number(valueTwo)).toEqual(undefined);
+    });
+  });
+
+  describe("`positiveNumber` function", () => {
+    it("returns `undefined` if `value` is a positive number", () => {
+      const value = 10;
+      expect(positiveNumber(value)).toEqual(undefined);
+    });
+
+    it("returns `Input must be a positive number` if `value` is not a positive number", () => {
+      const value = -2;
+      const valueTwo = 0.001;
+      expect(positiveNumber(value)).toEqual(`Input must be a positive number`);
+      expect(positiveNumber(valueTwo)).toEqual(undefined);
     });
   });
 
