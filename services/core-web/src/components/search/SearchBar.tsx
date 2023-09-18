@@ -48,7 +48,14 @@ const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
   });
 
   if (showFocusButton) {
-    useKey((event) => event.ctrlKey && event.key === "k", hotKeyRef);
+    useKey((event) => {
+      const platform: string = window.navigator.platform.toLowerCase();
+      const isMac = platform.includes("mac");
+
+      const actionKeyPressed = isMac ? event.metaKey : event.ctrlKey;
+
+      return actionKeyPressed && event.key === "k";
+    }, hotKeyRef);
   }
 
   const changeSearchTerm = (event) => {
