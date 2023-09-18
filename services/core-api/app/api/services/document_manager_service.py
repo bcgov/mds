@@ -1,10 +1,11 @@
+import time
 import requests
 import base64
 import io
 import json
 from tusclient import client
 
-from flask import Response, current_app
+from flask import Response, current_app, request as flask_request
 from flask_restplus import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
@@ -145,7 +146,28 @@ class DocumentManagerService():
             file_stream=io.BytesIO(file_content),
             chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)
         uploader.upload()
+
         document_manager_guid = uploader.url.rsplit('/', 1)[-1]
+
+        status = "In Progress"
+
+        current_time = time.time()
+
+        while status == "In Progress":
+            resp = DocumentManagerService.poll_upload_progress(flask_request, document_manager_guid)
+
+            status = resp["status"]
+
+            if status == "Success":
+                return document_manager_guid
+            elif status != "In Progress":
+                raise Exception(status)
+
+            if time.time() > current_time + 60:
+                raise Exception('Timed out while waiting for file upload to finish')
+
+            time.sleep(1)
+
         return document_manager_guid
 
     @classmethod
