@@ -8,11 +8,13 @@
 #home-banner-search-container {
   width: 100%;
   justify-content: center;
-  > .ant-col {
+
+  >.ant-col {
     flex-basis: 709px;
   }
+
   .ant-input-affix-wrapper-lg {
-   height: $nav-height; 
+    height: $nav-height;
   }
 }
 
@@ -27,16 +29,17 @@
   @extend .home-bordered-content;
   height: unset;
   flex: 1 0 100px;
-  margin: 0;  
+  margin: 0;
 
-  &:hover, &:active {
-      border-color: $violet;
-      color: $darkest-grey;
+  &:hover,
+  &:active {
+    border-color: $violet;
+    color: $darkest-grey;
 
-      .home-link-button-icon {
-        color: $hover-violet;
-      }
+    .home-link-button-icon {
+      color: $hover-violet;
     }
+  }
 
   &:active {
     background-color: rgba(189, 179, 216, 0.15);
@@ -46,13 +49,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;    
+    gap: 8px;
   }
 
-    .home-link-button-icon {
-      color: $violet;
-      font-size: 24px;
-    }
+  .home-link-button-icon {
+    color: $violet;
+    font-size: 24px;
+  }
 }
 
 .home-container-gutter {
@@ -64,7 +67,9 @@
   width: 100%;
   padding: 24px 32px;
 
-  div.ant-typography, .ant-typography p, a {
+  div.ant-typography,
+  .ant-typography p,
+  a {
     font-size: 14px;
     font-weight: 400;
     line-height: 22px;
@@ -76,6 +81,7 @@
 
   .global-mine-alert {
     padding: 16px 5px 0 5px;
+
     &:hover {
       cursor: pointer;
       background-color: rgba(189, 179, 216, 0.15);
@@ -116,11 +122,11 @@
     flex-grow: 1;
 
     .home-main-content-container {
-        @extend .home-container-gutter;
-        display: flex;
-        flex-direction: column;
-      }
-  } 
+      @extend .home-container-gutter;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 
 }
 
@@ -146,7 +152,7 @@
       color: $violet;
       margin-right: 5px;
     }
-    
+
     &:hover {
       cursor: pointer;
     }
@@ -157,6 +163,7 @@
     font-weight: 600;
     line-height: 22px;
   }
+
   .no-subscribed-mines {
     color: $medium-grey;
     opacity: 0.5;
@@ -187,8 +194,18 @@
 
   .anticon-close {
     color: rgba(0, 0, 0, 0.45);
+
     &:hover {
       color: rgba(0, 0, 0, 0.75);
     }
   }
+}
+
+#homepage-banner {
+  padding: 64px 32px;
+  background-size: cover !important;
+  background-position-y: 60% !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.04) 100%),
+    linear-gradient(0deg, rgba(94, 70, 161, 0.4), rgba(94, 70, 161, 0.4)),
+    var(--img);
 }

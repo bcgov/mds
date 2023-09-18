@@ -13,14 +13,14 @@ const HomePage = () => {
     <>
       <HomeBanner />
       <Row className="home-content">
-        <Col span={16} className="home-main-content">
+        <Col xs={24} lg={16} className="home-main-content">
           <div className="home-main-content-container">
             <HomeTopLinks />
             <HomeInfographs />
             <HomeMineActivity />
           </div>
         </Col>
-        <Col span={7}>
+        <Col lg={7} xs={24}>
           <HomeSidePanel />
         </Col>
       </Row>

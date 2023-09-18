@@ -7,7 +7,12 @@ import { BACKGROUND } from "@/constants/assets";
 const HomeBanner = () => {
   return (
     <div
-      style={{ backgroundImage: `url(${BACKGROUND})`, padding: "64px 32px" }}
+      style={
+        {
+          "--img": `url(${BACKGROUND})`,
+          position: "relative",
+        } as React.CSSProperties
+      }
       id="homepage-banner"
     >
       <Col>
@@ -26,6 +31,21 @@ const HomeBanner = () => {
           </Col>
         </Row>
       </Col>
+
+      <Typography.Paragraph
+        type="secondary"
+        style={{
+          position: "absolute",
+          right: "10px",
+          bottom: "10px",
+          margin: "0",
+          fontSize: "14px",
+          color: "#fff",
+          opacity: 0.8,
+        }}
+      >
+        Photo Credit: Dominic Yague
+      </Typography.Paragraph>
     </div>
   );
 };

@@ -111,8 +111,12 @@ const HomeMineActivity: FC<HomeMineActivityProps> = ({
 
   return (
     <Row gutter={16}>
-      <Col span={12}>
-        <div className="home-bordered-content" id="home-subscribed-mines-container">
+      <Col xs={24} lg={12}>
+        <div
+          className="home-bordered-content"
+          id="home-subscribed-mines-container"
+          style={{ minHeight: userMines?.length >= 10 ? "838px" : "inherit" }}
+        >
           <Typography.Title level={4}>My Subscribed Mines</Typography.Title>
           <Typography.Paragraph>
             Your subscribed mines. To subscribe to more mines, go to the mine&apos;s overview page
@@ -132,8 +136,8 @@ const HomeMineActivity: FC<HomeMineActivityProps> = ({
         </div>
       </Col>
 
-      <Col span={12}>
-        <div className="home-bordered-content">
+      <Col xs={24} lg={12}>
+        <div className="home-bordered-content" style={{ maxHeight: "838px", overflowY: "scroll" }}>
           <Typography.Title level={4}>Latest Mine Alerts</Typography.Title>
           <Typography.Paragraph>
             Here are the latest mine alerts from across CORE.
