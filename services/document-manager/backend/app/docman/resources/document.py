@@ -53,7 +53,8 @@ class DocumentListResource(Resource):
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get(
-            'pretty_folder') or request.headers.get('Pretty-Folder')
+            'pretty_folder') or request.headers.get('Pretty-Folder') or request.headers.get('Prettyfolder')
+
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
         response, object_store_path = DocumentUploadHelper.initiate_document_upload(
@@ -107,8 +108,8 @@ class DocumentListResource(Resource):
             )
         else:
             return send_file(
-                filename_or_fp=document.full_storage_path,
-                attachment_filename=document.file_display_name,
+                path_or_file=document.full_storage_path,
+                download_name=document.file_display_name,
                 as_attachment=as_attachment)
 
 
@@ -363,4 +364,3 @@ class DocumentResource(Resource):
             if not document:
                 raise NotFound('Document not found')
             return {'status': document.status}
-
