@@ -63,6 +63,8 @@ const columns = (LinkButton): ColumnsType<IParty> => [
 export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
   const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading, mines } = props;
 
+  const [openPopConfirm, setOpenPopConfirm] = useState(false);
+
   const {
     renderConfig,
     components,
@@ -103,7 +105,9 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
   }, [partyRelationships]);
 
   const openCreateEORModal = (event) => {
-    event.preventDefault();
+    event?.preventDefault();
+    setOpenPopConfirm(false);
+
     props.openModal({
       props: {
         onSubmit: handleCreateEOR,
@@ -178,6 +182,22 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending
   );
 
+  const hasCurrentEOR = formValues?.engineers_of_record?.some(
+    (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS
+  );
+
+  const handleCreateEORModal = (newOpen: boolean) => {
+    if (!newOpen) {
+      setOpenPopConfirm(newOpen);
+      return;
+    }
+    if (hasCurrentEOR || hasPendingEOR) {
+      setOpenPopConfirm(true);
+    } else {
+      openCreateEORModal(undefined);
+    }
+  };
+
   return (
     <>
       <Row>
@@ -190,11 +210,14 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 {canAssignEor && (
                   <Popconfirm
                     style={{ maxWidth: "150px" }}
+                    open={openPopConfirm}
                     placement="top"
                     title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
                     okText="Yes"
                     cancelText="No"
+                    onOpenChange={handleCreateEORModal}
                     onConfirm={openCreateEORModal}
+                    onCancel={() => setOpenPopConfirm(false)}
                   >
                     <Button style={{ display: "inline", float: "right" }} type="primary">
                       <PlusCircleFilled />
@@ -320,6 +343,10 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           <Typography.Title level={4} className="margin-large--top">
             Engineer of Record Term
           </Typography.Title>
+          <Typography.Paragraph>
+            Enter the start, and if known, the end date of the Engineer of Record including a
+            termination date if applicable.
+          </Typography.Paragraph>
           <Row gutter={16}>
             <Col span={12}>
               <Field

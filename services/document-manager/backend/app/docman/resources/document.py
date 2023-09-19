@@ -189,6 +189,9 @@ class DocumentResource(Resource):
                 with open(file_path, 'r+b') as f:
                     f.seek(file_offset)
                     f.write(request.data)
+                document = Document.find_by_document_guid(document_guid)
+                document.status = 'Success'
+                document.save()
             except IOError as e:
                 current_app.logger.error(e)
                 raise InternalServerError('Unable to write to file')
