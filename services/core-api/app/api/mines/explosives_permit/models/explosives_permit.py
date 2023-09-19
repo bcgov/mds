@@ -47,19 +47,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
     mines_act_permit = db.relationship('Permit', lazy='select')
     now_application_identity = db.relationship('NOWApplicationIdentity', lazy='select')
-    # issuing_inspector = db.relationship(
-    #     'Party',
-    #     lazy='select',
-    #     primaryjoin='Party.party_guid == ExplosivesPermit.issuing_inspector_party_guid')
-    # mine_manager = db.relationship(
-    #     'MinePartyAppointment',
-    #     lazy='select',
-    #     primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.mine_manager_mine_party_appt_id'
-    # )
-    # permittee = db.relationship(
-    #     'MinePartyAppointment',
-    #     lazy='select',
-    #     primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.permittee_mine_party_appt_id')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
