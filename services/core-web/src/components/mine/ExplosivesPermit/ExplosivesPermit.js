@@ -232,7 +232,9 @@ export const ExplosivesPermit = (props) => {
         <h4 className="uppercase">{title}</h4>
         <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
           <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e, isPermitTab)}>
-            Add {title}
+            Add
+            {' '}
+            {title}
           </AddButton>
         </AuthorizationWrapper>
       </div>
@@ -263,9 +265,8 @@ const mapStateToProps = (state) => ({
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
   explosivesPermitDocumentTypeOptionsHash: getExplosivesPermitDocumentTypeOptionsHash(state),
-  explosivesPermitDocumentTypeDropdownOptions: getExplosivesPermitDocumentTypeDropdownOptions(
-    state
-  ),
+  explosivesPermitDocumentTypeDropdownOptions:
+    getExplosivesPermitDocumentTypeDropdownOptions(state),
   documentContextTemplate: getDocumentContextTemplate(state),
 });
 
