@@ -5,11 +5,9 @@ from pytz import timezone
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue, Sequence
-from sqlalchemy.orm import validates
 from sqlalchemy import and_, func
-from sqlalchemy.sql.functions import next_value
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
 from app.extensions import db
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
@@ -17,10 +15,8 @@ from app.api.mines.explosives_permit.models.explosives_permit_document_xref impo
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party.models.party import Party
 
-ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
-
-class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
+class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     __tablename__ = 'explosives_permit'
 
     explosives_permit_guid = db.Column(
@@ -97,44 +93,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
 
     @hybrid_property
-    def total_explosive_quantity(self):
-        if self.explosive_magazines:
-            total = sum(item.quantity if item.quantity else 0 for item in self.explosive_magazines)
-            return total if total else 0
-        return None
-
-    @hybrid_property
-    def total_detonator_quantity(self):
-        if self.detonator_magazines:
-            total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
-            return total if total else 0
-        return None
-
-    @hybrid_property
-    def mine_manager_name(self):
-        if self.mine_manager:
-            return self.mine_manager.party.name
-        return None
-
-    @hybrid_property
-    def permittee_name(self):
-        if self.permittee:
-            return self.permittee.party.name
-        return None
-
-    @hybrid_property
     def issuing_inspector_name(self):
         if self.issuing_inspector_party_guid:
             party = Party.find_by_party_guid(self.issuing_inspector_party_guid)
             return party.name
         return None
-
-    @validates('originating_system')
-    def validate_originating_system(self, key, val):
-        if val not in ORIGINATING_SYSTEMS:
-            raise AssertionError(
-                f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
-        return val
 
     def update(self,
                permit_guid,

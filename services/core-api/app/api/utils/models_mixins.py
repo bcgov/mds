@@ -4,6 +4,7 @@ from datetime import datetime, date
 from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
@@ -18,6 +19,9 @@ from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
 from flask_restplus import inputs
+
+# from ..parties.party.models.party import Party
+from sqlalchemy.orm import validates
 
 
 class UserBoundQuery(db.Query):
@@ -278,6 +282,40 @@ class Base(db.Model):
                 raise (e)
         return
 
+class PermitMixin(object):
+    ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
+    @hybrid_property
+    def total_explosive_quantity(self):
+        if self.explosive_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.explosive_magazines)
+            return total if total else 0
+        return None
+
+    @hybrid_property
+    def total_detonator_quantity(self):
+        if self.detonator_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
+            return total if total else 0
+        return None
+
+    @hybrid_property
+    def mine_manager_name(self):
+        if self.mine_manager:
+            return self.mine_manager.party.name
+        return None
+
+    @hybrid_property
+    def permittee_name(self):
+        if self.permittee:
+            return self.permittee.party.name
+        return None
+
+    @validates('originating_system')
+    def validate_originating_system(self, key, val):
+        if val not in self.ORIGINATING_SYSTEMS:
+            raise AssertionError(
+                f'Originating system must be one of: {"".join(self.ORIGINATING_SYSTEMS, ", ")}')
+        return val
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)

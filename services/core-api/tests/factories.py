@@ -7,6 +7,7 @@ import factory.fuzzy
 
 from app.api.dams import Dam
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -1418,3 +1419,42 @@ class ActivityFactory(BaseFactory):
     })
     notification_read = False
     notification_recipient = factory.SelfAttribute('user')
+
+class ExplosivesPermitAmendmentFactory(BaseFactory):
+    class Meta:
+        model = ExplosivesPermitAmendment
+
+    class Params:
+        mine = factory.SubFactory(MineFactory, minimal=True)
+        mines_act_permit = factory.SubFactory(PermitFactory)
+        issuing_inspector = factory.SubFactory(PartyBusinessRoleFactory)
+        mine_manager = factory.SubFactory(MinePartyAppointmentFactory)
+        permittee = factory.SubFactory(MinePartyAppointmentFactory)
+        explosives_permit = factory.SubFactory(ExplosivesPermitFactory)
+
+    explosives_permit_amendment_guid = GUID
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    permit_guid = factory.SelfAttribute('mines_act_permit.permit_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party_guid')
+    mine_manager_mine_party_appt_id = factory.SelfAttribute('mine_manager.mine_party_appt_id')
+    permittee_mine_party_appt_id = factory.SelfAttribute('permittee.mine_party_appt_id')
+    explosives_permit_id = factory.SelfAttribute('explosives_permit.explosives_permit_id')
+
+    originating_system = 'Core'
+    application_number = factory.Faker('sentence', nb_words=1)
+    received_timestamp = TODAY
+    application_status = 'REC'
+    application_date = TODAY
+    description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    latitude = factory.Faker('latitude')
+    longitude = factory.Faker('longitude')
+
+    permit_number = None
+    issue_date = None
+    expiry_date = None
+    is_closed = False
+    closed_reason = None
+    closed_timestamp = None
+
+    deleted_ind = False

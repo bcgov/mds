@@ -1,14 +1,17 @@
 CREATE TABLE IF NOT EXISTS explosives_permit_amendment (
     explosives_permit_amendment_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     explosives_permit_amendment_id serial UNIQUE NOT NULL,
-    explosives_permit_id integer NOT NULL,    
+    explosives_permit_id integer NOT NULL,  
+    mine_guid uuid NOT NULL,
+    permit_guid uuid NOT NULL,
+    now_application_guid uuid,
     mine_manager_mine_party_appt_id integer,
     permittee_mine_party_appt_id integer,
     issuing_inspector_party_guid uuid,
     application_status varchar NOT NULL,
     description varchar,
 
-    permit_number varchar UNIQUE,
+    permit_number varchar,
     issue_date date,
     expiry_date date,
 
@@ -33,6 +36,9 @@ CREATE TABLE IF NOT EXISTS explosives_permit_amendment (
     update_user varchar(60) NOT NULL,
     update_timestamp timestamptz DEFAULT now() NOT NULL,
 
+    FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (permit_guid) REFERENCES permit(permit_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (now_application_guid) REFERENCES now_application_identity(now_application_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (explosives_permit_id) REFERENCES explosives_permit(explosives_permit_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_manager_mine_party_appt_id) REFERENCES mine_party_appt(mine_party_appt_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permittee_mine_party_appt_id) REFERENCES mine_party_appt(mine_party_appt_id) DEFERRABLE INITIALLY DEFERRED,

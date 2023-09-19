@@ -147,6 +147,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         explosives_permit_amendment.update(
+            data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
             data.get('permittee_mine_party_appt_id'), data.get('application_status'),
             data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),

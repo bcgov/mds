@@ -16,6 +16,18 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument(
+        'permit_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
         'explosives_permit_id',
         type=str,
         store_missing=False,
@@ -139,7 +151,8 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-        explosives_permit_amendment = ExplosivesPermitAmendment.create(
+        explosives_permit_amendment = ExplosivesPermitAmendment.create(mine,
+            data.get('permit_guid'),
             data.get('explosives_permit_id'),
             data.get('application_date'),
             data.get('originating_system'),
@@ -152,7 +165,8 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('permittee_mine_party_appt_id'),
             data.get('is_closed'),
             data.get('closed_reason'),
-            data.get('closed_timestamp'))
+            data.get('closed_timestamp'),
+            data.get('now_application_guid'))
         explosives_permit_amendment.save()
 
         return explosives_permit_amendment, 201

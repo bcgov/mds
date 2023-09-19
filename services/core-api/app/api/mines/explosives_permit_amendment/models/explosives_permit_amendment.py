@@ -1,30 +1,31 @@
 from datetime import datetime
 from pytz import timezone
 
-from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue, Sequence
+from sqlalchemy.schema import Sequence
 
-from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
-from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin
-from sqlalchemy import and_, func
+from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin, PermitMixin
+from sqlalchemy import func
 
 from app.extensions import db
 
-ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
-class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
+class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     __tablename__ = 'explosives_permit_amendment'
 
     explosives_permit_amendment_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=db.FetchedValue())
     explosives_permit_amendment_id = db.Column(
         db.Integer, server_default=db.FetchedValue(), nullable=False, unique=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
+    now_application_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
 
     application_status = db.Column(
         db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
-    permit_number = db.Column(db.String, unique=True)
+    permit_number = db.Column(db.String)
     issue_date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
 
@@ -72,7 +73,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.permittee_mine_party_appt_id')
 
-
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_amendment_id}>'
 
@@ -86,7 +86,10 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         next_value = sequence.next_value()
         return func.concat(next_value, f'-{year}-{month}')
 
-    def create(
+    @classmethod
+    def create(cls,
+               mine,
+               permit_guid,
                explosives_permit_id,
                application_date,
                originating_system,
@@ -102,6 +105,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                is_closed,
                closed_reason,
                closed_timestamp,
+               now_application_guid=None,
                add_to_session=True):
 
         application_number = None
@@ -124,7 +128,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             closed_reason = None
             closed_timestamp = None
 
-        explosives_permit_amendment = ExplosivesPermitAmendment(
+        explosives_permit_amendment = cls(
+            permit_guid=permit_guid,
             explosives_permit_id=explosives_permit_id,
             application_status=application_status,
             application_number=application_number,
@@ -142,7 +147,10 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             permittee_mine_party_appt_id=permittee_mine_party_appt_id,
             is_closed=is_closed,
             closed_reason=closed_reason,
-            closed_timestamp=closed_timestamp)
+            closed_timestamp=closed_timestamp,
+            now_application_guid=now_application_guid)
+
+        mine.explosives_permits_amendments.append(explosives_permit_amendment)
 
         if add_to_session:
             explosives_permit_amendment.save(commit=False)
@@ -157,6 +165,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
+               permit_guid,
+               now_application_guid,
                issuing_inspector_party_guid,
                mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id,
@@ -174,6 +184,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
 
         # Update simple properties.
+        self.permit_guid = permit_guid
+        self.now_application_guid = now_application_guid
         self.issuing_inspector_party_guid = issuing_inspector_party_guid
         self.mine_manager_mine_party_appt_id = mine_manager_mine_party_appt_id
         self.permittee_mine_party_appt_id = permittee_mine_party_appt_id

@@ -6,6 +6,9 @@ EXPLOSIVES_PERMIT_AMENDMENT_MODEL = api.model(
     'ExplosivesPermitAmendment', {
         'explosives_permit_amendment_id': fields.Integer,
         'explosives_permit_amendment_guid': fields.String,
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'now_application_guid': fields.String,
         'explosives_permit_id': fields.Integer,
         'now_application_guid': fields.String,
         'issuing_inspector_party_guid': fields.String,
