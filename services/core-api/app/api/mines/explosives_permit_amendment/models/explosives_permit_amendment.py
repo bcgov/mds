@@ -17,61 +17,17 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=db.FetchedValue())
     explosives_permit_amendment_id = db.Column(
         db.Integer, server_default=db.FetchedValue(), nullable=False, unique=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
-    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
-    now_application_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
-
-    application_status = db.Column(
-        db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
     permit_number = db.Column(db.String)
-    issue_date = db.Column(db.Date)
-    expiry_date = db.Column(db.Date)
-
-    application_number = db.Column(db.String)
-    application_date = db.Column(db.Date, nullable=False)
-    originating_system = db.Column(db.String, nullable=False)
-    received_timestamp = db.Column(db.DateTime)
-    decision_timestamp = db.Column(db.DateTime)
-    decision_reason = db.Column(db.String)
-    description = db.Column(db.String)
-
-    latitude = db.Column(db.Numeric(9, 7), nullable=False)
-    longitude = db.Column(db.Numeric(11, 7), nullable=False)
-
-    is_closed = db.Column(db.Boolean)
-    closed_timestamp = db.Column(db.DateTime)
-    closed_reason = db.Column(db.String)
 
     explosives_permit_id = db.Column(
         db.Integer, db.ForeignKey('explosives_permit.explosives_permit_id'), nullable=False)
-
-    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    mine_manager_mine_party_appt_id = db.Column(db.Integer,
-                                                db.ForeignKey('mine_party_appt.mine_party_appt_id'))
-    permittee_mine_party_appt_id = db.Column(db.Integer,
-                                             db.ForeignKey('mine_party_appt.mine_party_appt_id'))
 
     explosives_permit = db.relationship(
         'ExplosivesPermit',
         primaryjoin='ExplosivesPermit.explosives_permit_id == ExplosivesPermitAmendment.explosives_permit_id',
         backref='explosives_permit_amendments'
     )
-
-    issuing_inspector = db.relationship(
-        'Party',
-        lazy='select',
-        primaryjoin='Party.party_guid == ExplosivesPermitAmendment.issuing_inspector_party_guid')
-    mine_manager = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.mine_manager_mine_party_appt_id'
-    )
-    permittee = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.permittee_mine_party_appt_id')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_amendment_id}>'
