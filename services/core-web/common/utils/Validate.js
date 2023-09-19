@@ -198,7 +198,7 @@ export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValue
 });
 
 export const dateInFuture = (value) =>
-  value && new Date(value) < new Date() ? "Date must be in the future" : undefined;
+  value && !moment(value).isAfter() ? "Date must be in the future" : undefined;
 
 export const dateNotBeforeOther = memoize((other) => (value) =>
   value && other && new Date(value) <= new Date(other)
