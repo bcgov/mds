@@ -136,7 +136,7 @@ exports[`AddContactFormDetails renders properly 1`] = `
     >
       <FormItem
         hasFeedback={false}
-        label="Company name (optional)"
+        label="Company Affiliation (optional)"
       >
         <Field
           component={[Function]}
