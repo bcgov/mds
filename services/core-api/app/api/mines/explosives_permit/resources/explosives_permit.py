@@ -175,9 +175,6 @@ class ExplosivesPermitResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        letter_date = str(datetime.utcnow())
-        letter_body = ""
-
         explosives_permit.update(
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
