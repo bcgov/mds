@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
-import { required, maxLength, number, lat, lonNegative, positiveNumber } from "@common/utils/Validate";
+import { required, maxLength, number, lat, lon, lonNegative, positiveNumber } from "@common/utils/Validate";
 
 import "@ant-design/compatible/assets/index.css";
 import { Collapse, Button, Popconfirm, Col, Row, Divider } from "antd";
@@ -134,7 +134,7 @@ export class MagazineForm extends Component {
                 label="Longitude *"
                 id={`${field}longitude`}
                 name={`${field}longitude`}
-                validate={[number, maxLength(12), lonNegative, required]}
+                validate={[number, maxLength(12), lon, lonNegative, required]}
                 component={renderConfig.FIELD}
                 disabled={this.props.isProcessed}
               />
