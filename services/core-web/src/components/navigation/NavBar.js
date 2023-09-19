@@ -471,13 +471,15 @@ export class NavBar extends Component {
     return (
       <div>
         <div className="menu">
-          <Link to={router.HOME_PAGE.route}>
-            <img alt="Home" className="menu__img" src={LOGO} />
-          </Link>
-          <div className="inline-flex">
+          <Row id="menu--image--search">
+            <Link to={router.HOME_PAGE.route}>
+              <img alt="Home" className="menu__img" src={LOGO} />
+            </Link>
             <div className="menu--search">
-              <SearchBar containerId="navBar" />
+              <SearchBar iconPlacement="prefix" placeholderText="Search Core..." showFocusButton />
             </div>
+          </Row>
+          <div className="inline-flex" id="menu--navbar-items">
             <MediaQuery maxWidth={fullNavMinWidth - 1}>
               <Button
                 ghost

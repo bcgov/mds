@@ -3,7 +3,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 from app.extensions import db
 
 from app.config import Config
@@ -171,9 +171,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=False)
 
         if len(documents) > 0:
-            mine_document_guid = documents[0].mine_document_guid
-            project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
-            mine = Mine.find_by_mine_guid(project.mine_guid)
+            mine = Mine.find_by_mine_guid(str(project.mine_guid))
+            if not mine:
+                raise NotFound('Mine not found.')
+
             ProjectUtil.notifiy_file_updates(project, mine)
 
         return self

@@ -2,6 +2,7 @@ from app.api.activity.models.activity_notification import ActivityRecipients
 from app.api.utils.feature_flag import is_feature_enabled, Feature
 from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType
+from flask import current_app
 
 class ProjectUtil:
 

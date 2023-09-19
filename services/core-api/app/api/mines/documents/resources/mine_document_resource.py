@@ -214,4 +214,14 @@ class ZipProgressResource(Resource, UserMixin):
             raise BadRequest('No task id provided')
                 
         return DocumentManagerService.poll_zip_progress(request, task_id)
+
+class DocumentUploadStatusResource(Resource, UserMixin):
+    api.doc(
+        'Returns the status of the document upload.',
+        )
+
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    def get(self, mine_document_guid):
+
+        return DocumentManagerService.poll_upload_progress(request, mine_document_guid)
     

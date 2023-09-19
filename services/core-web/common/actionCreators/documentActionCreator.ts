@@ -46,3 +46,29 @@ export const postNewDocumentVersion = ({
       dispatch(hideLoading());
     });
 };
+
+export const pollDocumentUploadStatus = (
+  mine_document_guid: string
+): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
+  dispatch
+): Promise<AxiosResponse<IMineDocumentVersion>> => {
+  dispatch(request(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+  dispatch(showLoading());
+
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}/mines/documents/upload/${mine_document_guid}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IMineDocumentVersion>) => {
+      dispatch(success(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+      throw new Error(err);
+    })
+    .finally(() => {
+      dispatch(hideLoading());
+    });
+};

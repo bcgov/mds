@@ -169,7 +169,8 @@ export class ProjectPage extends Component {
       if (["DFT", "CHR"].includes(status)) {
         return this.props.history.push({
           pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-            this.props.project.project_guid
+            this.props.project.project_guid,
+            this.props.project.major_mine_application?.major_mine_application_guid
           ),
           state: { current: 1 },
         });

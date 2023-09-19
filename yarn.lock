@@ -2278,7 +2278,6 @@ __metadata:
     hoist-non-react-statics: 3.3.1
     html-webpack-plugin: 5.5.3
     http-server-spa: 1.3.0
-    iframe-resizer: 4.2.9
     image-webpack-loader: 8.1.0
     jest: 24.8.0
     jest-canvas-mock: 2.1.0
@@ -2309,7 +2308,6 @@ __metadata:
     react-highlighter: 0.4.3
     react-hot-loader: 4.12.21
     react-idle-timer: 5.5.2
-    react-iframe-resizer-super: 0.2.2
     react-lottie: 1.2.3
     react-redux: 7.1.3
     react-redux-loading-bar: 5.0.0
@@ -5905,7 +5903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-runtime@npm:6.x, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.23.0, babel-runtime@npm:^6.26.0, babel-runtime@npm:^6.5.0":
+"babel-runtime@npm:6.x, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.23.0, babel-runtime@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-runtime@npm:6.26.0"
   dependencies:
@@ -11725,13 +11723,6 @@ __metadata:
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
   checksum: 5144c0c9815e54ada181d80a0b810221a253562422e7c6c3a60b1901154184f49326ec239d618c416c1c5945a2e197107aee8d986a3dd836b53dffefd99b5e7e
-  languageName: node
-  linkType: hard
-
-"iframe-resizer@npm:4.2.9":
-  version: 4.2.9
-  resolution: "iframe-resizer@npm:4.2.9"
-  checksum: 80ef705f33aafcf9f516c040d467d13d94c97a6893bea70cb69475bbe15f28f60af0b0d02e28ca898b1f71e58942523ab41377671351feaba967d4bf9c70af2c
   languageName: node
   linkType: hard
 
@@ -18315,18 +18306,6 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: 1c8cd281e4e5b0910451a01dc95c6f056c37e6ea9374ceb301ff37bb3f0f7dfbb48c72ea5aeb0b10f771d58ab97d3abc56c9ea56f8c6e27573dfd8065c3fe445
-  languageName: node
-  linkType: hard
-
-"react-iframe-resizer-super@npm:0.2.2":
-  version: 0.2.2
-  resolution: "react-iframe-resizer-super@npm:0.2.2"
-  dependencies:
-    babel-runtime: ^6.5.0
-  peerDependencies:
-    iframe-resizer: ^3.6.2
-    react: ^0.14.7 || ^15.0.0 || ^16.0
-  checksum: 22499a57cc39a76477e203ffa72c4e50c1d0ab39443e87b7754e91c8e0c889fc662d6783c235ca5dde0f7cbc9b0f9bd5f50552595e25fc53b7a920cc38a05287
   languageName: node
   linkType: hard
 

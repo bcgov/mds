@@ -9,13 +9,14 @@ from app.utils.models_mixins import AuditMixin, Base
 class Document(AuditMixin, Base):
     __tablename__ = 'document'
     document_id = db.Column(db.Integer, primary_key=True)
-    document_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    document_guid = db.Column(UUID(as_uuid=True), nullable=False, unique=True)
     full_storage_path = db.Column(db.String(4096), nullable=False)
     upload_started_date = db.Column(db.DateTime, nullable=False)
     upload_completed_date = db.Column(db.DateTime, nullable=True)
     file_display_name = db.Column(db.String(255), nullable=False)
     path_display_name = db.Column(db.String(4096), nullable=False)
     object_store_path = db.Column(db.String)
+    status = db.Column(db.String(255), nullable=False, default='In Progress')
     
 
     versions = db.relationship('DocumentVersion', backref='document', lazy=True)
@@ -32,7 +33,8 @@ class Document(AuditMixin, Base):
             str(self.upload_completed_date) if self.upload_completed_date else None,
             'file_display_name': self.file_display_name,
             'path_display_name': self.path_display_name,
-            'object_store_path': self.object_store_path
+            'object_store_path': self.object_store_path,
+            'status': self.status
         }
 
     def task_json(self):
