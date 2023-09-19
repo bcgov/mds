@@ -4,6 +4,7 @@ from datetime import datetime, date
 from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
@@ -18,6 +19,10 @@ from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
 from flask_restplus import inputs
+from sqlalchemy.ext.declarative import declared_attr
+
+# from ..parties.party.models.party import Party
+from sqlalchemy.orm import validates
 
 
 class UserBoundQuery(db.Query):
@@ -278,6 +283,129 @@ class Base(db.Model):
                 raise (e)
         return
 
+class PermitMixin(object):
+    ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
+    # mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    @declared_attr
+    def mine_guid(cls):
+        return db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+
+    @declared_attr
+    def permit_guid(cls):
+        return db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
+
+    @declared_attr
+    def now_application_guid(cls):
+        return db.Column(UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
+
+    @declared_attr
+    def application_status(cls):
+        return db.Column(db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
+
+    issue_date = db.Column(db.Date)
+    expiry_date = db.Column(db.Date)
+
+    application_number = db.Column(db.String)
+    application_date = db.Column(db.Date, nullable=False)
+    originating_system = db.Column(db.String, nullable=False)
+    received_timestamp = db.Column(db.DateTime)
+    decision_timestamp = db.Column(db.DateTime)
+    decision_reason = db.Column(db.String)
+    description = db.Column(db.String)
+
+    latitude = db.Column(db.Numeric(9, 7), nullable=False)
+    longitude = db.Column(db.Numeric(11, 7), nullable=False)
+
+    is_closed = db.Column(db.Boolean)
+    closed_timestamp = db.Column(db.DateTime)
+    closed_reason = db.Column(db.String)
+    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    mine_manager_mine_party_appt_id = db.Column(db.Integer,
+                                                db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+    permittee_mine_party_appt_id = db.Column(db.Integer,
+                                             db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+    issuing_inspector = db.relationship(
+        'Party',
+        lazy='select',
+        primaryjoin='Party.party_guid == ExplosivesPermitAmendment.issuing_inspector_party_guid')
+    mine_manager = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.mine_manager_mine_party_appt_id'
+    )
+    permittee = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.permittee_mine_party_appt_id')
+
+    @declared_attr
+    def issuing_inspector_party_guid(cls):
+        return db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+
+    @declared_attr
+    def mine_manager_mine_party_appt_id(cls):
+        return db.Column(db.Integer, db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+
+    @declared_attr
+    def permittee_mine_party_appt_id(cls):
+        return db.Column(db.Integer, db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+
+    @declared_attr
+    def issuing_inspector(cls):
+        return db.relationship(
+            'Party',
+            lazy='select',
+            primaryjoin=f'Party.party_guid == {cls.__name__}.issuing_inspector_party_guid'
+        )
+
+    @declared_attr
+    def mine_manager(cls):
+        return db.relationship(
+            'MinePartyAppointment',
+            lazy='select',
+            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.mine_manager_mine_party_appt_id'
+        )
+
+    @declared_attr
+    def permittee(cls):
+        return db.relationship(
+            'MinePartyAppointment',
+            lazy='select',
+            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.permittee_mine_party_appt_id'
+        )
+
+    @hybrid_property
+    def total_explosive_quantity(self):
+        if self.explosive_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.explosive_magazines)
+            return total if total else 0
+        return None
+
+    @hybrid_property
+    def total_detonator_quantity(self):
+        if self.detonator_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
+            return total if total else 0
+        return None
+
+    @hybrid_property
+    def mine_manager_name(self):
+        if self.mine_manager:
+            return self.mine_manager.party.name
+        return None
+
+    @hybrid_property
+    def permittee_name(self):
+        if self.permittee:
+            return self.permittee.party.name
+        return None
+
+    @validates('originating_system')
+    def validate_originating_system(self, key, val):
+        if val not in self.ORIGINATING_SYSTEMS:
+            raise AssertionError(
+                f'Originating system must be one of: {"".join(self.ORIGINATING_SYSTEMS, ", ")}')
+        return val
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
