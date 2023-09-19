@@ -5,11 +5,9 @@ from pytz import timezone
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue, Sequence
-from sqlalchemy.orm import validates
 from sqlalchemy import and_, func
-from sqlalchemy.sql.functions import next_value
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
 from app.extensions import db
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
@@ -17,46 +15,16 @@ from app.api.mines.explosives_permit.models.explosives_permit_document_xref impo
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party.models.party import Party
 
-ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
-
-class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
+class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     __tablename__ = 'explosives_permit'
 
     explosives_permit_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     explosives_permit_id = db.Column(
         db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
-    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
-    now_application_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
-    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    mine_manager_mine_party_appt_id = db.Column(db.Integer,
-                                                db.ForeignKey('mine_party_appt.mine_party_appt_id'))
-    permittee_mine_party_appt_id = db.Column(db.Integer,
-                                             db.ForeignKey('mine_party_appt.mine_party_appt_id'))
-    application_status = db.Column(
-        db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
     permit_number = db.Column(db.String, unique=True)
-    issue_date = db.Column(db.Date)
-    expiry_date = db.Column(db.Date)
-
-    application_number = db.Column(db.String)
-    application_date = db.Column(db.Date, nullable=False)
-    originating_system = db.Column(db.String, nullable=False)
-    received_timestamp = db.Column(db.DateTime)
-    decision_timestamp = db.Column(db.DateTime)
-    decision_reason = db.Column(db.String)
-    description = db.Column(db.String)
-
-    latitude = db.Column(db.Numeric(9, 7), nullable=False)
-    longitude = db.Column(db.Numeric(11, 7), nullable=False)
-
-    is_closed = db.Column(db.Boolean)
-    closed_timestamp = db.Column(db.DateTime)
-    closed_reason = db.Column(db.String)
 
     explosive_magazines = db.relationship(
         'ExplosivesPermitMagazine',
@@ -79,48 +47,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
     mines_act_permit = db.relationship('Permit', lazy='select')
     now_application_identity = db.relationship('NOWApplicationIdentity', lazy='select')
-    issuing_inspector = db.relationship(
-        'Party',
-        lazy='select',
-        primaryjoin='Party.party_guid == ExplosivesPermit.issuing_inspector_party_guid')
-    mine_manager = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.mine_manager_mine_party_appt_id'
-    )
-    permittee = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.permittee_mine_party_appt_id')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
-
-    @hybrid_property
-    def total_explosive_quantity(self):
-        if self.explosive_magazines:
-            total = sum(item.quantity if item.quantity else 0 for item in self.explosive_magazines)
-            return total if total else 0
-        return None
-
-    @hybrid_property
-    def total_detonator_quantity(self):
-        if self.detonator_magazines:
-            total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
-            return total if total else 0
-        return None
-
-    @hybrid_property
-    def mine_manager_name(self):
-        if self.mine_manager:
-            return self.mine_manager.party.name
-        return None
-
-    @hybrid_property
-    def permittee_name(self):
-        if self.permittee:
-            return self.permittee.party.name
-        return None
 
     @hybrid_property
     def issuing_inspector_name(self):
@@ -128,13 +57,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             party = Party.find_by_party_guid(self.issuing_inspector_party_guid)
             return party.name
         return None
-
-    @validates('originating_system')
-    def validate_originating_system(self, key, val):
-        if val not in ORIGINATING_SYSTEMS:
-            raise AssertionError(
-                f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
-        return val
 
     def update(self,
                permit_guid,
