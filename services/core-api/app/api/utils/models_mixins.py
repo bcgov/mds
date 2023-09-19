@@ -319,11 +319,7 @@ class PermitMixin(object):
     is_closed = db.Column(db.Boolean)
     closed_timestamp = db.Column(db.DateTime)
     closed_reason = db.Column(db.String)
-    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    mine_manager_mine_party_appt_id = db.Column(db.Integer,
-                                                db.ForeignKey('mine_party_appt.mine_party_appt_id'))
-    permittee_mine_party_appt_id = db.Column(db.Integer,
-                                             db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+
     issuing_inspector = db.relationship(
         'Party',
         lazy='select',
