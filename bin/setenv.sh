@@ -72,7 +72,8 @@ function loadExternalSecrets() {
     
     # Update yarn config with token
     yarn config set 'npmScopes["fortawesome"].npmAuthToken' "$FONT_AWESOME_PACKAGE_TOKEN" -H
-
+    yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
+    yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/" -H
 }
 
 if [ -z "$INPUT" ];
