@@ -232,7 +232,7 @@ export const ExplosivesPermit = (props) => {
         <h4 className="uppercase">{title}</h4>
         <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
           <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e, isPermitTab)}>
-            Add 
+            Add
             {' '}
             {title}
           </AddButton>

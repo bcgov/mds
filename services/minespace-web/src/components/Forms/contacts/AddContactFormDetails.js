@@ -188,7 +188,7 @@ export const AddContactFormDetails = (props) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Company name (optional)">
+          <Form.Item label="Company Affiliation (optional)">
             <Field
               id="organization_guid"
               name="organization_guid"

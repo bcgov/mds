@@ -3,6 +3,10 @@ from flask_restplus import Namespace
 from app.api.mines.documents.resources.mine_document_version_resource import MineDocumentVersionListResource, MineDocumentVersionUploadResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource, MineDocumentArchiveResource, ZipResource, ZipProgressResource, DocumentUploadStatusResource
+from app.api.mines.explosives_permit_amendment.resources.explosives_permit_amendment import \
+    ExplosivesPermitAmendmentResource
+from app.api.mines.explosives_permit_amendment.resources.explosives_permit_amendment_list import \
+    ExplosivesPermitAmendmentListResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
@@ -172,6 +176,10 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
+api.add_resource(ExplosivesPermitAmendmentResource,
+                 '/<string:mine_guid>/explosives-permits-amendment/<string:explosives_permit_amendment_guid>')
+api.add_resource(ExplosivesPermitAmendmentListResource,
+                 '/<string:mine_guid>/explosives-permits-amendment')
 api.add_resource(ExplosivesPermitResource,
                  '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>')
 api.add_resource(ExplosivesPermitListResource, '/<string:mine_guid>/explosives-permits')

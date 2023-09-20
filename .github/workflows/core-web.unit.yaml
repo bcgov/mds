@@ -28,6 +28,9 @@ jobs:
       - name: Upgrade yarn
         run: npm install -g yarn
 
+      - name: Set Fontawesome token
+        run: yarn config set 'npmScopes["fortawesome"].npmAuthToken' "${{ secrets.FONT_AWESOME_PACKAGE_TOKEN }}"
+
       - name: Install Dependencies
         run: yarn install
 
