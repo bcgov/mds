@@ -61,7 +61,9 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();
@@ -114,7 +116,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     <Row>
       <Col span={24}>
         <Row justify="space-between">
-          <Typography.Title level={3}>Qualified Person</Typography.Title>
+          <Typography.Title level={3}>TSF Qualified Person</Typography.Title>
           {isCore ? (
             <Col span={12}>
               <Row justify="end">
@@ -203,7 +205,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           </Row>
         )}
         <Typography.Title level={4} className="margin-large--top">
-          Qualified Person Term
+          TSF Qualified Person Term
         </Typography.Title>
         <Row gutter={16}>
           <Col span={12}>
