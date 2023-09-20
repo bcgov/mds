@@ -4,10 +4,16 @@ FROM node:14.21.3 as builder
 RUN mkdir /app
 WORKDIR /app
 
+ARG FONT_AWESOME_PACKAGE_TOKEN
+
 # Copy all files to the working directory
 COPY . .
 
 ENV NODE_OPTIONS="--max-old-space-size=6144"
+
+RUN yarn config set 'npmScopes["fortawesome"].npmAuthToken' "$FONT_AWESOME_PACKAGE_TOKEN"
+RUN yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
+RUN yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/"
 
 # Install Dependencies
 RUN yarn install
