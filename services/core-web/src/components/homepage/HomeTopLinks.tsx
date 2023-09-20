@@ -2,15 +2,17 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 import * as routes from "@/constants/routes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import {
+  faTrianglePersonDigging,
+  faBrakeWarning,
+  faDiamondTurnRight,
+  faClipboardList,
+  faMountains,
+} from "@fortawesome/pro-light-svg-icons";
 
 import { Button, Typography, Row } from "antd";
-import {
-  ExclamationCircleOutlined,
-  ReconciliationOutlined,
-  RotateRightOutlined,
-  ProjectOutlined,
-  HeatMapOutlined,
-} from "@ant-design/icons";
 
 interface HomeLinkButtonProps {
   title: string;
@@ -42,31 +44,31 @@ const HomeTopLinks = () => {
       title: "Notices of Work",
       route: routes.NOTICE_OF_WORK_APPLICATIONS.route,
       key: "now",
-      icon: HeatMapOutlined,
+      icon: () => <FontAwesomeIcon icon={faTrianglePersonDigging} />,
     },
     {
       title: "Incidents",
       route: routes.INCIDENTS_DASHBOARD.route,
       key: "incidents",
-      icon: ExclamationCircleOutlined,
+      icon: () => <FontAwesomeIcon icon={faBrakeWarning} />,
     },
     {
       title: "Variances",
       route: routes.VARIANCE_DASHBOARD.route,
       key: "variances",
-      icon: RotateRightOutlined,
+      icon: () => <FontAwesomeIcon icon={faDiamondTurnRight} />,
     },
     {
       title: "Reports",
       route: routes.REPORTS_DASHBOARD.route,
       key: "reports",
-      icon: ReconciliationOutlined,
+      icon: () => <FontAwesomeIcon icon={faClipboardList} />,
     },
     {
       title: "Major Projects",
       route: routes.MAJOR_PROJECTS_DASHBOARD.route,
       key: "major-projects",
-      icon: ProjectOutlined,
+      icon: () => <FontAwesomeIcon icon={faMountains} />,
     },
   ];
   return (

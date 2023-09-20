@@ -36,7 +36,7 @@
     border-color: $violet;
     color: $darkest-grey;
 
-    .home-link-button-icon {
+    svg {
       color: $hover-violet;
     }
   }
@@ -52,9 +52,10 @@
     gap: 8px;
   }
 
-  .home-link-button-icon {
+  svg {
     color: $violet;
-    font-size: 24px;
+    font-size: 36px;
+    line-height: 24px;
   }
 }
 
