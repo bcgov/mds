@@ -9,6 +9,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import { KEYCLOAK } from "@mds/common";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import { authenticateUser } from "@/actionCreators/authenticationActionCreator";
+import { storeUserAccessData } from "@common/actions/authenticationActions";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
 import * as route from "@/constants/routes";
@@ -22,6 +23,7 @@ import * as ENV from "@/constants/environment";
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   authenticateUser: PropTypes.func.isRequired,
+  storeUserAccessData: PropTypes.func.isRequired,
 };
 
 export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
@@ -50,15 +52,18 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       const authenticationInProgressFlag = localStorage.getItem("authenticationInProgressFlag");
       const token = keycloak.tokenParsed ?? null;
       const { type } = queryString.parse(window.location.search);
+      const clientRoles = token?.client_roles || [];
 
       if (keycloak.authenticated && !authenticationInProgressFlag && !type) {
         localStorage.setItem("authenticationInProgressFlag", true);
         props.authenticateUser(token);
+        props.storeUserAccessData(clientRoles);
       }
       // standard Authentication flow on initial load,
       // if token exists, authenticate user.
       if (token && !props.isAuthenticated) {
         props.authenticateUser(token);
+        props.storeUserAccessData(clientRoles);
       }
     };
 
@@ -89,6 +94,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     bindActionCreators(
       {
         authenticateUser,
+        storeUserAccessData,
       },
       dispatch
     );

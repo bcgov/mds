@@ -63,7 +63,7 @@ const authenticationReducerObject = {
 };
 
 export const isAuthenticated = (state) => state[AUTHENTICATION].isAuthenticated;
-export const getUserAccessData = (state) => state[AUTHENTICATION].userInfo.client_roles;
+export const getUserAccessData = (state) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state) => state[AUTHENTICATION].userInfo;
 
 export default authenticationReducerObject;
