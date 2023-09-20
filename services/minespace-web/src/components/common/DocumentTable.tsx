@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
@@ -52,7 +52,7 @@ interface DocumentTableProps {
   excludedColumnKeys: string[];
   additionalColumnProps: { key: string; colProps: any }[];
   fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
-  userInfo: any;
+  userRoles: string[];
   replaceAlertMessage?: string;
 }
 
@@ -100,16 +100,13 @@ export const DocumentTable = ({
       parsedDocs = docs.map((doc) => new MineDocument(doc));
     }
     return parsedDocs.map((doc) => {
-      // TODO: getUserAccessData is broken, but the correct function to use here
-      const { client_roles = [] } = props.userInfo;
-      doc.setAllowedActions(client_roles);
+      doc.setAllowedActions(props.userRoles);
       return doc;
     });
   };
 
   const [documents, setDocuments] = useState<MineDocument[]>();
   const [rowSelection, setRowSelection] = useState([]);
-  const [documentTypeCode, setDocumentTypeCode] = useState("");
 
   useEffect(() => {
     setDocuments(parseDocuments(props.documents ?? []));
@@ -181,23 +178,6 @@ export const DocumentTable = ({
     },
   };
 
-  const renderBulkActions = () => {
-    let element = (
-      <Dropdown
-        menu={{ items: bulkItems }}
-        placement="bottomLeft"
-        disabled={rowSelection.length === 0}
-      >
-        <Button className="ant-btn ant-btn-primary">
-          Action
-          <DownOutlined />
-        </Button>
-      </Dropdown>
-    );
-    return enableBulkActions && <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>;
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
       key: "view",
@@ -252,6 +232,26 @@ export const DocumentTable = ({
       ),
     },
   ];
+
+  const renderBulkActions = () => {
+    const element = (
+      <Dropdown
+        menu={{ items: bulkItems }}
+        placement="bottomLeft"
+        disabled={rowSelection.length === 0}
+      >
+        <Button className="ant-btn ant-btn-primary">
+          Action
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+    return (
+      enableBulkActions && (
+        <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>
+      )
+    );
+  };
 
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
@@ -317,22 +317,22 @@ export const DocumentTable = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-      rowSelection: {
-        type: "checkbox",
-        ...rowSelectionObject,
-      },
-    }
+        rowSelection: {
+          type: "checkbox",
+          ...rowSelectionObject,
+        },
+      }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-      expandProps: {
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      },
-    }
+        expandProps: {
+          childrenColumnName: "versions",
+          matchChildColumnsToParent: true,
+          recordDescription: "version history",
+          rowExpandable: (record) => record.number_prev_versions > 0,
+        },
+      }
     : {};
 
   const coreTableProps = {
@@ -353,7 +353,7 @@ export const DocumentTable = ({
 };
 
 const mapStateToProps = (state) => ({
-  userInfo: getUserInfo(state),
+  userRoles: getUserAccessData(state),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
