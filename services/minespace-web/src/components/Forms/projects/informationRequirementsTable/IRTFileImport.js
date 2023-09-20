@@ -121,6 +121,7 @@ export class IRTFileImport extends Component {
                 documents={documents}
                 documentParent="Information Requirements Table"
                 documentColumns={documentColumns}
+                isViewOnly
               />
               <br />
               {this.props.project?.information_requirements_table?.status_code === "SUB" && (
