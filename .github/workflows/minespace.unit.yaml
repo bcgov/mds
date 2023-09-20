@@ -25,6 +25,12 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: Set Fontawesome token
+        run: |
+          yarn config set 'npmScopes["fortawesome"].npmAuthToken' "${{ secrets.FONT_AWESOME_PACKAGE_TOKEN }}"
+          yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
+          yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/"
+
       - name: Install Dependencies
         run: yarn install
 
