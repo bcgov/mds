@@ -53,7 +53,6 @@ interface DocumentTableProps {
   defaultSortKeys: string[];
   excludedColumnKeys: string[];
   additionalColumnProps: { key: string; colProps: any }[];
-  fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
   userRoles: string[];
   handleRowSelectionChange: (arg1: MineDocument[]) => void;
   replaceAlertMessage?: string;
@@ -83,7 +82,6 @@ export const DocumentTable = ({
   const [rowSelection, setRowSelection] = useState([]);
   const [isCompressionModal, setCompressionModal] = useState(false);
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
-  const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
 
   const { isFeatureEnabled } = useFeatureFlag();
@@ -182,7 +180,6 @@ export const DocumentTable = ({
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
       key: "view",
@@ -327,22 +324,22 @@ export const DocumentTable = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-      rowSelection: {
-        type: "checkbox",
-        ...rowSelectionObject,
-      },
-    }
+        rowSelection: {
+          type: "checkbox",
+          ...rowSelectionObject,
+        },
+      }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-      expandProps: {
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      },
-    }
+        expandProps: {
+          childrenColumnName: "versions",
+          matchChildColumnsToParent: true,
+          recordDescription: "version history",
+          rowExpandable: (record) => record.number_prev_versions > 0,
+        },
+      }
     : {};
 
   const coreTableProps = {
@@ -387,7 +384,7 @@ export const DocumentTable = ({
   return (
     <div>
       <DocumentCompression
-        documentType={documentTypeCode}
+        documentType=""
         rows={rowSelection}
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}
