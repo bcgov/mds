@@ -336,43 +336,48 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               />
             </>
           )}
-          <h3>Engineer of Record Term</h3>
-          <Typography.Paragraph>
-            Enter the start, and if known, the end date of the Engineer of Record including a
-            termination date if applicable.
-          </Typography.Paragraph>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Field
-                id="engineer_of_record.start_date"
-                name="engineer_of_record.start_date"
-                label="Start Date *"
-                disabled={fieldsDisabled}
-                component={renderConfig.DATE}
-                validate={
-                  !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
-                }
-              />
-            </Col>
-            <Col span={12}>
-              <Field
-                id="engineer_of_record.end_date"
-                name="engineer_of_record.end_date"
-                label="End Date (Optional)"
-                disabled={fieldsDisabled}
-                validate={!fieldsDisabled && [dateInFuture]}
-                component={renderConfig.DATE}
-              />
-            </Col>
-          </Row>
+
+          <div className="margin-large--top">
+            <h3>Engineer of Record Term</h3>
+            <Typography.Paragraph>
+              Enter the start, and if known, the end date of the Engineer of Record including a
+              termination date if applicable.
+            </Typography.Paragraph>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Field
+                  id="engineer_of_record.start_date"
+                  name="engineer_of_record.start_date"
+                  label="Start Date *"
+                  disabled={fieldsDisabled}
+                  component={renderConfig.DATE}
+                  validate={
+                    !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
+                  }
+                />
+              </Col>
+              <Col span={12}>
+                <Field
+                  id="engineer_of_record.end_date"
+                  name="engineer_of_record.end_date"
+                  label="End Date (Optional)"
+                  disabled={fieldsDisabled}
+                  validate={!fieldsDisabled && [dateInFuture]}
+                  component={renderConfig.DATE}
+                />
+              </Col>
+            </Row>
+          </div>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <PartyAppointmentTable
-            columns={eorHistoryColumns}
-            partyRelationships={formValues?.engineers_of_record}
-          />
+          <div className="margin-large--top">
+            <PartyAppointmentTable
+              columns={eorHistoryColumns}
+              partyRelationships={formValues?.engineers_of_record}
+            />
+          </div>
         </Col>
       </Row>
     </>

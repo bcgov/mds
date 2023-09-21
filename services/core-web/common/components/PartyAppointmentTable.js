@@ -180,9 +180,7 @@ const PartyAppointmentTable = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Typography.Title level={4} className="margin-large--top">
-          Historical Engineer of Record List
-        </Typography.Title>
+        <h3>Historical Engineer of Record List</h3>
 
         <FieldArray
           name="engineers_of_record"
