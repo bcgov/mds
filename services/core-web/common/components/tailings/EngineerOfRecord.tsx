@@ -203,7 +203,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
       <Row>
         <Col span={24}>
           <Row justify="space-between">
-            <Typography.Title level={3}>Engineer of Record</Typography.Title>
+            <Typography.Title level={4}>Engineer of Record</Typography.Title>
 
             <Col span={12}>
               <Row justify="end">
@@ -280,9 +280,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             />
           )}
 
-          <Typography.Title level={4} className="margin-large--top">
-            Contact Information
-          </Typography.Title>
+          <h3>Contact Information (Optional)</h3>
 
           {formValues?.engineer_of_record?.party_guid ? (
             <ContactDetails contact={formValues.engineer_of_record.party} />
@@ -301,9 +299,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           )}
           {currentEor && currentEor.documents.length > 0 && (
             <div>
-              <Typography.Title level={4} className="margin-large--top">
-                Acceptance Letter
-              </Typography.Title>
+              <h3>Acceptance Letter</h3>
               <CoreTable
                 columns={columns(LinkButton)}
                 dataSource={currentEor.documents}
@@ -315,7 +311,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           {!formValues?.engineer_of_record?.mine_party_appt_guid && (
             <>
               <div className="margin-large--top margin-large--bottom">
-                <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+                <h3>Upload Acceptance Letter *</h3>
                 <Typography.Text>
                   Letter must be officially signed. A notification will be sent to the Mine Manager
                   upon upload.
@@ -340,9 +336,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               />
             </>
           )}
-          <Typography.Title level={4} className="margin-large--top">
-            Engineer of Record Term
-          </Typography.Title>
+          <h3>Engineer of Record Term</h3>
           <Typography.Paragraph>
             Enter the start, and if known, the end date of the Engineer of Record including a
             termination date if applicable.
@@ -352,7 +346,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
-                label="Start Date"
+                label="Start Date *"
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
                 validate={

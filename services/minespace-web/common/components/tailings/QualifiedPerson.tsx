@@ -116,7 +116,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     <Row>
       <Col span={24}>
         <Row justify="space-between">
-          <Typography.Title level={3}>TSF Qualified Person</Typography.Title>
+          <Typography.Title level={4}>TSF Qualified Person</Typography.Title>
           {isCore ? (
             <Col span={12}>
               <Row justify="end">
@@ -185,9 +185,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             type="error"
           />
         )}
-        <Typography.Title level={4} className="margin-large--top">
-          Contact Information
-        </Typography.Title>
+        <h3>Contact Information</h3>
 
         {props.formValues?.qualified_person?.party_guid ? (
           <ContactDetails contact={props.formValues.qualified_person.party} />
@@ -204,15 +202,13 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             <Typography.Paragraph>No Data</Typography.Paragraph>
           </Row>
         )}
-        <Typography.Title level={4} className="margin-large--top">
-          TSF Qualified Person Term
-        </Typography.Title>
+        <h3>TSF Qualified Person Term</h3>
         <Row gutter={16}>
           <Col span={12}>
             <Field
               id="qualified_person.start_date"
               name="qualified_person.start_date"
-              label="Start Date"
+              label="Start Date *"
               disabled={fieldsDisabled}
               component={renderConfig.DATE}
               validate={!fieldsDisabled && [required, dateNotInFuture, validateQPStartDateOverlap]}
