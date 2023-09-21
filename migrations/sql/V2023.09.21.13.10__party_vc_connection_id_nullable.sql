@@ -1,2 +1,2 @@
 
-ALTER TABLE party_verifiable_credential_connection ALTER COLUMN party_guid DROP NOT NULL;
+ALTER TABLE party_verifiable_credential_connection ALTER COLUMN connection_id DROP NOT NULL;
