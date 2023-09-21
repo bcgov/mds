@@ -280,7 +280,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             />
           )}
 
-          <h3>Contact Information (Optional)</h3>
+          <h3>Contact Information</h3>
 
           {formValues?.engineer_of_record?.party_guid ? (
             <ContactDetails contact={formValues.engineer_of_record.party} />
