@@ -32,12 +32,14 @@ from app.api.projects.namespace import api as projects_api
 from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 from app.api.activity.namespace import api as activity_api
 from app.api.dams.namespace import api as dams_api
+from app.api.verifiable_credentials.namespace import api as verifiable_credential_api
 
 from app.commands import register_commands
 from app.config import Config
 # alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
 from app.extensions import db, jwtv2, jwt, jwt_bcmi, jwt_fncs, jwt_gentax, jwt_nris, jwt_vfcbc, jwt_bcgw, jwt_docman_celery, jwt_cypress, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
 from app.tasks.celery_health_check import HealthCheckProbe
@@ -163,6 +165,8 @@ def register_routes(app):
     root_api_namespace.add_namespace(notice_of_departure_api)
     root_api_namespace.add_namespace(activity_api)
     root_api_namespace.add_namespace(dams_api)
+    if is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
+        root_api_namespace.add_namespace(verifiable_credential_api)
 
     @root_api_namespace.route('/version/')
     class VersionCheck(Resource):
