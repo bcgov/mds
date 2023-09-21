@@ -6,7 +6,7 @@ exports[`BasicInformation renders properly 1`] = `
     justify="space-between"
   >
     <ForwardRef
-      level={4}
+      level={3}
     >
       Basic Information
     </ForwardRef>

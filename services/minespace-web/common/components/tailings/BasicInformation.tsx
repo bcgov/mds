@@ -57,7 +57,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   return (
     <>
       <Row justify="space-between">
-        <Typography.Title level={4}>Basic Information</Typography.Title>
+        <Typography.Title level={3}>Basic Information</Typography.Title>
         {props.showUpdateTimestamp && props.tsf?.update_timestamp && (
           <Typography.Paragraph style={{ textAlign: "right" }}>
             <b>Last Updated</b>

@@ -115,7 +115,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     <div>
       <Row justify="space-between" align="middle" className="associated-dams-header">
         <Col>
-          <Typography.Title level={4} className="gov-blue-title">
+          <Typography.Title level={3} className="gov-blue-title">
             Associated Dams
           </Typography.Title>
           <Typography.Text>
