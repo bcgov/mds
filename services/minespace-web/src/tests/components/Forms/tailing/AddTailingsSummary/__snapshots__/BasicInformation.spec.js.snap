@@ -6,7 +6,7 @@ exports[`BasicInformation renders properly 1`] = `
     justify="space-between"
   >
     <ForwardRef
-      level={3}
+      level={4}
     >
       Basic Information
     </ForwardRef>
@@ -23,7 +23,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="facility_type"
-    label="Facility Type"
+    label="Facility Type *"
     name="facility_type"
     validate={
       Array [
@@ -37,7 +37,7 @@ exports[`BasicInformation renders properly 1`] = `
     data={Array []}
     disabled={false}
     id="mines_act_permit_no"
-    label="Mines Act Permit Number"
+    label="Mines Act Permit Number *"
     name="mines_act_permit_no"
     validate={
       Array [
@@ -74,7 +74,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="tailings_storage_facility_type"
-    label="Tailings Storage Facility Type"
+    label="Tailings Storage Facility Type *"
     name="tailings_storage_facility_type"
     validate={
       Array [
@@ -99,7 +99,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="storage_location"
-    label="Underground or Above Ground?"
+    label="Underground or Above Ground? *"
     name="storage_location"
     validate={
       Array [
@@ -112,7 +112,7 @@ exports[`BasicInformation renders properly 1`] = `
     component={[Function]}
     disabled={false}
     id="mine_tailings_storage_facility_name"
-    label="Facility Name"
+    label="Facility Name *"
     name="mine_tailings_storage_facility_name"
     validate={
       Array [
@@ -131,7 +131,7 @@ exports[`BasicInformation renders properly 1`] = `
         component={[Function]}
         disabled={false}
         id="latitude"
-        label="Latitude"
+        label="Latitude *"
         name="latitude"
         validate={
           Array [
@@ -148,10 +148,11 @@ exports[`BasicInformation renders properly 1`] = `
         component={[Function]}
         disabled={false}
         id="longitude"
-        label="Longitude"
+        label="Longitude *"
         name="longitude"
         validate={
           Array [
+            [Function],
             [Function],
             [Function],
           ]
@@ -191,7 +192,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="consequence_classification_status_code"
-    label="Consequence Classification"
+    label="Consequence Classification *"
     name="consequence_classification_status_code"
     validate={
       Array [
@@ -232,7 +233,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="tsf_operating_status_code"
-    label="Operating Status"
+    label="Operating Status *"
     name="tsf_operating_status_code"
     validate={
       Array [
@@ -257,7 +258,7 @@ exports[`BasicInformation renders properly 1`] = `
     }
     disabled={false}
     id="itrb_exemption_status_code"
-    label="Independent Tailings Review Board Member"
+    label="Independent Tailings Review Board Member *"
     name="itrb_exemption_status_code"
     validate={
       Array [
