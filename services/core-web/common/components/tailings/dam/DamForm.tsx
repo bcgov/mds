@@ -50,7 +50,7 @@ const DamForm: FC<DamFormProps> = (props) => {
   return (
     <div>
       <div className="margin-large--bottom">
-        <Typography.Title level={3}>Associated Dams - {dam.dam_name}</Typography.Title>
+        <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
           title={`Are you sure you want to cancel ${
             tailingsStorageFacilityGuid ? "updating this" : "creating a new"

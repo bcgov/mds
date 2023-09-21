@@ -64,9 +64,9 @@ exports[`SteppedForm renders properly 1`] = `
           <Button
             disabled={false}
             onClick={[Function]}
-            type="secondary"
+            type="primary"
           >
-            Next 
+            Save & Continue 
             <ForwardRef(RightOutlined) />
           </Button>
         </div>

@@ -180,7 +180,7 @@ const PartyAppointmentTable = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Typography.Title level={3} className="margin-large--top">
+        <Typography.Title level={4} className="margin-large--top">
           Historical Engineer of Record List
         </Typography.Title>
 
