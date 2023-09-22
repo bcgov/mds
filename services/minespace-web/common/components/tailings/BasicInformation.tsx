@@ -13,6 +13,7 @@ import React, { FC, useEffect, useState } from "react";
 import {
   lat,
   lon,
+  lonNegative,
   maxLength,
   required,
   requiredList,
@@ -68,14 +69,14 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="facility_type"
         name="facility_type"
-        label="Facility Type"
+        label="Facility Type *"
         component={renderConfig.SELECT}
         disabled={viewOnly}
         data={FACILITY_TYPES}
         validate={[requiredList, validateSelectOptions(FACILITY_TYPES)]}
       />
       <Field
-        label="Mines Act Permit Number"
+        label="Mines Act Permit Number *"
         id="mines_act_permit_no"
         name="mines_act_permit_no"
         component={renderConfig.SELECT}
@@ -86,7 +87,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="tailings_storage_facility_type"
         name="tailings_storage_facility_type"
-        label="Tailings Storage Facility Type"
+        label="Tailings Storage Facility Type *"
         component={renderConfig.SELECT}
         disabled={viewOnly}
         validate={[requiredList, validateSelectOptions(TSF_TYPES)]}
@@ -95,7 +96,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="storage_location"
         name="storage_location"
-        label="Underground or Above Ground?"
+        label="Underground or Above Ground? *"
         component={renderConfig.SELECT}
         disabled={viewOnly}
         data={STORAGE_LOCATION}
@@ -104,7 +105,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="mine_tailings_storage_facility_name"
         name="mine_tailings_storage_facility_name"
-        label="Facility Name"
+        label="Facility Name *"
         component={renderConfig.FIELD}
         disabled={viewOnly}
         validate={[maxLength(60), required]}
@@ -114,7 +115,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude"
+            label="Latitude *"
             component={renderConfig.FIELD}
             disabled={viewOnly}
             validate={[lat, required]}
@@ -124,17 +125,17 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude"
+            label="Longitude *"
             component={renderConfig.FIELD}
             disabled={viewOnly}
-            validate={[lon, required]}
+            validate={[lonNegative, lon, required]}
           />
         </Col>
       </Row>
       <Field
         id="consequence_classification_status_code"
         name="consequence_classification_status_code"
-        label="Consequence Classification"
+        label="Consequence Classification *"
         component={renderConfig.SELECT}
         disabled={viewOnly}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
@@ -143,7 +144,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
-        label="Operating Status"
+        label="Operating Status *"
         data={statusCodeOptions}
         component={renderConfig.SELECT}
         disabled={viewOnly}
@@ -152,7 +153,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="itrb_exemption_status_code"
         name="itrb_exemption_status_code"
-        label="Independent Tailings Review Board Member"
+        label="Independent Tailings Review Board Member *"
         component={renderConfig.SELECT}
         disabled={viewOnly}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
