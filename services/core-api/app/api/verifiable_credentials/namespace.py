@@ -7,5 +7,5 @@ from app.api.verifiable_credentials.resources.verifiable_credential_webhook impo
 api = Namespace('verifiable-credentials', description='Variances actions/options')
 
 api.add_resource(VerifiableCredentialResource, '')
-api.add_resource(VerifiableCredentialWebhookResource, '/webhook/<string:topic>')
+api.add_resource(VerifiableCredentialWebhookResource, '/webhook/topic/<string:topic>')
 api.add_resource(VerifiableCredentialConnectionResource, '/oob-invitation/<string:party_guid>')
