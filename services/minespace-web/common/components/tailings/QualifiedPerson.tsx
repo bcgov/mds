@@ -129,7 +129,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
                 >
                   <Button style={{ whiteSpace: "normal" }} type="primary">
                     <PlusCircleFilled />
-                    Update Qualified Person
+                    Update TSF Qualified Person
                   </Button>
                 </Popconfirm>
                 {formValues?.qualified_person?.update_timestamp && (
