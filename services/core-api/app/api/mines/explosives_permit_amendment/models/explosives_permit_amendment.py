@@ -271,7 +271,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                 explosives_permit_amendment_doc = ExplosivesPermitAmendmentDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     explosives_permit_amendment_id=self.explosives_permit_id,
-                    explosives_permit_document_type_code=explosives_permit_amendment_document_type_code)
+                    explosives_permit_amendment_document_type_code=explosives_permit_amendment_document_type_code)
                 explosives_permit_amendment_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_amendment_doc)
 
@@ -302,12 +302,12 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         'is_draft': False
                     }
                     explosives_permit_amendment_document_type = ExplosivesPermitDocumentType.get_with_context(
-                        'LET', self.explosives_permit_guid)
+                        'LET', self.explosives_permit_amendment_guid)
                     template_data = explosives_permit_amendment_document_type.transform_template_data(
                         template_data, self)
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_amendment_document_type.explosives_permit_document_type_code,
-                        self.explosives_permit_guid, template_data)
+                        self.explosives_permit_amendment_guid, template_data)
                     # TODO: Remove Logs for generate document
                     current_app.logger.debug(
                         f'explosives_permit_amendment_document_type: {explosives_permit_amendment_document_type}, token (create_permit_enclosed_letter): {token}'
