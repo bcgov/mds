@@ -17,8 +17,7 @@ exports[`ExplosivesPermit renders properly 1`] = `
       <AddButton
         onClick={[Function]}
       >
-        Add
-         
+        Add 
         Explosives Storage & Use Permit Applications
       </AddButton>
     </Connect(AuthorizationWrapper)>
@@ -173,7 +172,6 @@ exports[`ExplosivesPermit renders properly 1`] = `
         },
       ]
     }
-    expandedRowKeys={Array []}
     explosivesPermitDocumentTypeOptionsHash={Object {}}
     explosivesPermitStatusOptionsHash={Object {}}
     handleDeleteExplosivesPermit={[Function]}
@@ -184,7 +182,6 @@ exports[`ExplosivesPermit renders properly 1`] = `
     handleOpenViewMagazineModal={[Function]}
     isLoaded={true}
     isPermitTab={false}
-    onExpand={[Function]}
   />
 </div>
 `;
