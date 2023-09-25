@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineExplosivesPermitTable } from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
+import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
