@@ -20,8 +20,8 @@ from .include.user_info import User
 from sqlalchemy.inspection import inspect
 from flask_restplus import inputs
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.ext.associationproxy import association_proxy
 
-# from ..parties.party.models.party import Party
 from sqlalchemy.orm import validates
 
 
@@ -285,7 +285,7 @@ class Base(db.Model):
 
 class PermitMixin(object):
     ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
-    # mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+
     @declared_attr
     def mine_guid(cls):
         return db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
@@ -320,19 +320,26 @@ class PermitMixin(object):
     closed_timestamp = db.Column(db.DateTime)
     closed_reason = db.Column(db.String)
 
-    issuing_inspector = db.relationship(
-        'Party',
-        lazy='select',
-        primaryjoin='Party.party_guid == ExplosivesPermitAmendment.issuing_inspector_party_guid')
-    mine_manager = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.mine_manager_mine_party_appt_id'
-    )
-    permittee = db.relationship(
-        'MinePartyAppointment',
-        lazy='select',
-        primaryjoin='MinePartyAppointment.mine_party_appt_id == ExplosivesPermitAmendment.permittee_mine_party_appt_id')
+    @declared_attr
+    def issuing_inspector(cls):
+        return db.relationship(
+            'Party',
+            lazy='select',
+            primaryjoin='Party.party_guid == cls.issuing_inspector_party_guid')
+
+    @declared_attr
+    def mine_manager(cls):
+        return db.relationship(
+            'MinePartyAppointment',
+            lazy='select',
+            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.mine_manager_mine_party_appt_id')
+
+    @declared_attr
+    def permittee(cls):
+        return db.relationship(
+            'MinePartyAppointment',
+            lazy='select',
+            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.permittee_mine_party_appt_id')
 
     @declared_attr
     def issuing_inspector_party_guid(cls):
@@ -402,6 +409,37 @@ class PermitMixin(object):
             raise AssertionError(
                 f'Originating system must be one of: {"".join(self.ORIGINATING_SYSTEMS, ", ")}')
         return val
+
+class PermitDocumentMixin(object):
+    @declared_attr
+    def mine_document_guid(cls):
+        return db.Column(
+            UUID(as_uuid=True),
+            db.ForeignKey('mine_document.mine_document_guid'),
+            nullable=False,
+            unique=True)
+
+    @declared_attr
+    def mine_document(cls):
+        return db.relationship('MineDocument', lazy='select')
+    mine_guid = association_proxy('mine_document', 'mine_guid')
+    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
+    document_name = association_proxy('mine_document', 'document_name')
+    upload_date = association_proxy('mine_document', 'upload_date')
+
+class PermitMagazineMixin(object):
+    type_no = db.Column(db.String, nullable=False)
+    tag_no = db.Column(db.String, nullable=False)
+    construction = db.Column(db.String)
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    length = db.Column(db.Numeric)
+    width = db.Column(db.Numeric)
+    height = db.Column(db.Numeric)
+    quantity = db.Column(db.Integer)
+    distance_road = db.Column(db.Numeric)
+    distance_dwelling = db.Column(db.Numeric)
+    detonator_type = db.Column(db.String)
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)

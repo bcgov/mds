@@ -1,27 +1,25 @@
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMagazineMixin, Base
+from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base, PermitMagazineMixin
-from app.extensions import db
+class ExplosivesPermitAmendmentMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin, Base):
+    __tablename__ = 'explosives_permit_amendment_magazine'
 
-
-class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin, Base):
-    __tablename__ = 'explosives_permit_magazine'
-
-    explosives_permit_magazine_id = db.Column(
+    explosives_permit_amendment_magazine_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
-    explosives_permit_id = db.Column(
-        db.Integer, db.ForeignKey('explosives_permit.explosives_permit_id'), nullable=False)
-    explosives_permit_magazine_type_code = db.Column(
+    explosives_permit_amendment_id = db.Column(
+        db.Integer, db.ForeignKey('explosives_permit_amendment.explosives_permit_amendment_id'), nullable=False)
+    explosives_permit_amendment_magazine_type_code = db.Column(
         db.String,
         db.ForeignKey('explosives_permit_magazine_type.explosives_permit_magazine_type_code'),
         nullable=False)
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} {self.explosives_permit_magazine_id}>'
+        return f'<{self.__class__.__name__} {self.explosives_permit_amendment_magazine_id}>'
 
     def update_from_data(self, data):
         return self.update(
-            explosives_permit_magazine_type_code=self.explosives_permit_magazine_type_code,
+            explosives_permit_amendment_magazine_type_code=self.explosives_permit_amendment_magazine_type_code,
             type_no=data.get('type_no'),
             tag_no=data.get('tag_no'),
             construction=data.get('construction'),
@@ -36,7 +34,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
             detonator_type=data.get('detonator_type'))
 
     def update(self,
-               explosives_permit_magazine_type_code,
+               explosives_permit_amendment_magazine_type_code,
                type_no,
                tag_no,
                construction,
@@ -50,7 +48,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
                distance_dwelling,
                detonator_type,
                add_to_session=True):
-        self.explosives_permit_magazine_type_code = explosives_permit_magazine_type_code
+        self.explosives_permit_amendment_magazine_type_code = explosives_permit_amendment_magazine_type_code
         self.type_no = type_no
         self.tag_no = tag_no
         self.construction = construction
@@ -70,7 +68,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
     @classmethod
     def create_from_data(cls, type, data):
         return cls.create(
-            explosives_permit_magazine_type_code=type,
+            explosives_permit_amendment_magazine_type_code=type,
             type_no=data.get('type_no'),
             tag_no=data.get('tag_no'),
             construction=data.get('construction'),
@@ -86,7 +84,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
 
     @classmethod
     def create(cls,
-               explosives_permit_magazine_type_code,
+               explosives_permit_amendment_magazine_type_code,
                type_no,
                tag_no,
                construction,
@@ -100,8 +98,8 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
                distance_dwelling,
                detonator_type,
                add_to_session=True):
-        explosives_permit_magazine = cls(
-            explosives_permit_magazine_type_code=explosives_permit_magazine_type_code,
+        explosives_permit_amendment_magazine = cls(
+            explosives_permit_amendment_magazine_type_code=explosives_permit_amendment_magazine_type_code,
             type_no=type_no,
             tag_no=tag_no,
             construction=construction,
@@ -116,11 +114,11 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, PermitMagazineMixin,
             detonator_type=detonator_type)
 
         if add_to_session:
-            explosives_permit_magazine.save(commit=False)
-        return explosives_permit_magazine
+            explosives_permit_amendment_magazine.save(commit=False)
+        return explosives_permit_amendment_magazine
 
     @classmethod
-    def find_by_explosives_permit_magazine_id(cls, explosives_permit_magazine_id):
+    def find_by_explosives_permit_amendment_magazine_id(cls, explosives_permit_amendment_magazine_id):
         return cls.query.filter_by(
-            explosives_permit_magazine_id=explosives_permit_magazine_id,
+            explosives_permit_amendment_magazine_id=explosives_permit_amendment_magazine_id,
             deleted_ind=False).one_or_none()
