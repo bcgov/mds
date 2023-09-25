@@ -288,7 +288,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
                 def create_permit_enclosed_letter():
                     mine = self.mine
-                    # TODO: Implement a method in the document type to automatically get all read-only context values.
                     template_data = {
                         'letter_date': letter_date,
                         'letter_body': letter_body,
@@ -308,7 +307,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_amendment_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_amendment_guid, template_data)
-                    # TODO: Remove Logs for generate document
                     current_app.logger.debug(
                         f'explosives_permit_amendment_document_type: {explosives_permit_amendment_document_type}, token (create_permit_enclosed_letter): {token}'
                     )
@@ -324,7 +322,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_amendment_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_amendment_guid, template_data)
-                    # TODO: Remove Logs for generate document
                     current_app.logger.debug(
                         f'explosives_permit_amendment_document_type: {explosives_permit_amendment_document_type}, token (create_issued_permit): {token}'
                     )
