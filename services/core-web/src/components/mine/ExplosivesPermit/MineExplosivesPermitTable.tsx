@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React, { FC } from "react";
 import { Badge, Tooltip, Button, Menu, Popconfirm, Dropdown } from "antd";
-import { withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { WarningOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import {
   getExplosivesPermitBadgeStatusType,
@@ -17,108 +15,104 @@ import DocumentLink from "@/components/common/DocumentLink";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { IExplosivesPermit } from "@mds/common";
+import { ColumnType } from "antd/lib/table";
+import moment from "moment-timezone";
 
-/**
- * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
- */
-const propTypes = {
-  data: PropTypes.arrayOf(CustomPropTypes.explosivesPermit),
-  isLoaded: PropTypes.bool.isRequired,
-  onExpand: PropTypes.func.isRequired,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-  handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
-  handleOpenExplosivesPermitStatusModal: PropTypes.func.isRequired,
-  handleDeleteExplosivesPermit: PropTypes.func.isRequired,
-  isPermitTab: PropTypes.bool,
-  explosivesPermitDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  explosivesPermitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  handleOpenAddExplosivesPermitModal: PropTypes.func.isRequired,
-  handleOpenViewMagazineModal: PropTypes.func.isRequired,
-  handleOpenExplosivesPermitCloseModal: PropTypes.func.isRequired,
-};
+interface MineExplosivesPermitTableProps {
+  data: IExplosivesPermit[];
+  isLoaded: boolean;
+  handleOpenExplosivesPermitDecisionModal: (event, record: IExplosivesPermit) => void;
+  handleOpenExplosivesPermitStatusModal: (event, record: IExplosivesPermit) => void;
+  handleDeleteExplosivesPermit: (event, record: IExplosivesPermit) => void;
+  isPermitTab: boolean;
+  explosivesPermitDocumentTypeOptionsHash: any;
+  explosivesPermitStatusOptionsHash: any;
+  handleOpenAddExplosivesPermitModal: (
+    event,
+    isPermitTab: boolean,
+    record: IExplosivesPermit
+  ) => void;
+  handleOpenViewMagazineModal: (event, record: IExplosivesPermit, type: string) => void;
+  handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
+}
 
-const defaultProps = {
-  data: [],
-  isPermitTab: false,
-};
-
-const transformRowData = (permits) => {
+const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
     return {
       ...permit,
       key: permit.explosives_permit_guid,
       documents: permit.documents,
-      isExpired: permit.expiry_date && Date.parse(permit.expiry_date) < new Date(),
+      isExpired: permit.expiry_date && moment(permit.expiry_date).isBefore(),
     };
   });
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-export class MineExplosivesPermitTable extends Component {
-  columns = [
+const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTableProps> = ({
+  data,
+  isLoaded,
+  isPermitTab,
+  explosivesPermitDocumentTypeOptionsHash,
+  explosivesPermitStatusOptionsHash,
+  ...props
+}) => {
+  const columns: ColumnType<IExplosivesPermit>[] = [
     {
       title: "Permit #",
       dataIndex: "permit_number",
-      sortField: "permit_number",
       render: (text) => (
-        <div title="Permit #" className={hideColumn(!this.props.isPermitTab)}>
+        <div title="Permit #" className={hideColumn(!isPermitTab)}>
           {text}
         </div>
       ),
       sorter: false,
-      className: hideColumn(!this.props.isPermitTab),
+      className: hideColumn(!isPermitTab),
     },
     {
       title: "Application #",
       dataIndex: "application_number",
-      sortField: "application_number",
       render: (text) => (
-        <div title="Application #" className={hideColumn(this.props.isPermitTab)}>
+        <div title="Application #" className={hideColumn(isPermitTab)}>
           {text}
         </div>
       ),
       sorter: false,
-      className: hideColumn(this.props.isPermitTab),
+      className: hideColumn(isPermitTab),
     },
     {
       title: "Mines Act Permit #",
       dataIndex: "mines_permit_number",
-      sortField: "mines_permit_number",
       render: (text) => <div title="Mines Act Permit #">{text}</div>,
       sorter: false,
     },
     {
       title: "Notice of Work #",
       dataIndex: "now_number",
-      sortField: "now_number",
       render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
     {
       title: "Status",
       dataIndex: "application_status",
-      sortField: "application_status",
       render: (text) => (
-        <div title="Status" className={hideColumn(this.props.isPermitTab)}>
+        <div title="Status" className={hideColumn(isPermitTab)}>
           <Badge
-            status={getExplosivesPermitBadgeStatusType(
-              this.props.explosivesPermitStatusOptionsHash[text]
-            )}
+            status={getExplosivesPermitBadgeStatusType(explosivesPermitStatusOptionsHash[text])}
             style={{ marginRight: 5 }}
           />
-          {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
+          {explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
-      className: hideColumn(this.props.isPermitTab),
+      className: hideColumn(isPermitTab),
       sorter: false,
     },
     {
       title: "Status",
       dataIndex: "is_closed",
-      sortField: "is_closed",
       render: (text) => (
-        <div title="Status" className={hideColumn(!this.props.isPermitTab)}>
+        <div title="Status" className={hideColumn(!isPermitTab)}>
           <Badge
             status={getExplosivesPermitClosedBadgeStatusType(text)}
             style={{ marginRight: 5 }}
@@ -126,36 +120,34 @@ export class MineExplosivesPermitTable extends Component {
           {text ? "Closed" : "Open" || Strings.EMPTY_FIELD}
         </div>
       ),
-      className: hideColumn(!this.props.isPermitTab),
+      className: hideColumn(!isPermitTab),
       sorter: false,
     },
     {
       title: "Decision Reason",
       dataIndex: "decision_reason",
-      sortField: "decision_reason",
       render: (text) => (
-        <div title="Decision Reason" className={hideColumn(this.props.isPermitTab)}>
+        <div title="Decision Reason" className={hideColumn(isPermitTab)}>
           {text || Strings.EMPTY_FIELD}
         </div>
       ),
-      className: hideColumn(this.props.isPermitTab),
+      className: hideColumn(isPermitTab),
       sorter: false,
     },
     {
       title: "Issuing Inspector",
       dataIndex: "issuing_inspector_name",
       render: (text) => (
-        <div title="Issuing Inspector" className={hideColumn(!this.props.isPermitTab)}>
+        <div title="Issuing Inspector" className={hideColumn(!isPermitTab)}>
           {text || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: false,
-      className: hideColumn(!this.props.isPermitTab),
+      className: hideColumn(!isPermitTab),
     },
     {
       title: "Source",
       dataIndex: "originating_system",
-      sortField: "originating_system",
       render: (text) => <div title="Source">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
@@ -168,7 +160,6 @@ export class MineExplosivesPermitTable extends Component {
     {
       title: "Application Date",
       dataIndex: "application_date",
-      sortField: "application_date",
       render: (text) => (
         <div title="Application Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>
       ),
@@ -177,21 +168,19 @@ export class MineExplosivesPermitTable extends Component {
     {
       title: "Issue Date",
       dataIndex: "issue_date",
-      sortField: "issue_date",
       render: (text) => (
-        <div title="Issue Date" className={hideColumn(!this.props.isPermitTab)}>
+        <div title="Issue Date" className={hideColumn(!isPermitTab)}>
           {formatDate(text) || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: dateSorter("issue_date"),
-      className: hideColumn(!this.props.isPermitTab),
+      className: hideColumn(!isPermitTab),
     },
     {
       title: "Expiry Date",
       dataIndex: "expiry_date",
-      sortField: "expiry_date",
       render: (text, record) => (
-        <div title="Expiry Date" className={hideColumn(!this.props.isPermitTab)}>
+        <div title="Expiry Date" className={hideColumn(!isPermitTab)}>
           {record.isExpired && (
             <Tooltip placement="topLeft" title="Permit has Expired.">
               <WarningOutlined className="icon-lg red" />
@@ -201,7 +190,7 @@ export class MineExplosivesPermitTable extends Component {
         </div>
       ),
       sorter: dateSorter("expiry_date"),
-      className: hideColumn(!this.props.isPermitTab),
+      className: hideColumn(!isPermitTab),
     },
     {
       title: (
@@ -211,13 +200,11 @@ export class MineExplosivesPermitTable extends Component {
         </span>
       ),
       dataIndex: "total_explosive_quantity",
-      sortField: "total_explosive_quantity",
       render: (text, record) => (
-        /* eslint-disable-next-line */
         <div
           title="Explosive Quantity"
           className="underline"
-          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "EXP")}
+          onClick={(event) => props.handleOpenViewMagazineModal(event, record, "EXP")}
         >
           {text || "0"} kg
         </div>
@@ -232,25 +219,23 @@ export class MineExplosivesPermitTable extends Component {
         </span>
       ),
       dataIndex: "total_detonator_quantity",
-      sortField: "total_detonator_quantity",
       render: (text, record) => (
-        /* eslint-disable-next-line */
         <div
           title="Detonator Quantity"
           className="underline"
-          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "DET")}
+          onClick={(event) => props.handleOpenViewMagazineModal(event, record, "DET")}
         >
           {text || "0"} units
         </div>
       ),
       sorter: false,
     },
+
     {
       title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
-      render: (text, record) => {
+      render: (record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
         const hasDocuments =
@@ -265,11 +250,7 @@ export class MineExplosivesPermitTable extends Component {
                 type="button"
                 className="full add-permit-dropdown-button"
                 onClick={(event) =>
-                  this.props.handleOpenAddExplosivesPermitModal(
-                    event,
-                    this.props.isPermitTab,
-                    record
-                  )
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record)
                 }
               >
                 <img
@@ -285,7 +266,7 @@ export class MineExplosivesPermitTable extends Component {
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) => this.props.handleOpenExplosivesPermitCloseModal(event, record)}
+                onClick={(event) => props.handleOpenExplosivesPermitCloseModal(event, record)}
               >
                 <img
                   alt="document"
@@ -305,9 +286,7 @@ export class MineExplosivesPermitTable extends Component {
                 <button
                   type="button"
                   className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    this.props.handleOpenExplosivesPermitDecisionModal(event, record)
-                  }
+                  onClick={(event) => props.handleOpenExplosivesPermitDecisionModal(event, record)}
                 >
                   <img
                     alt="document"
@@ -324,9 +303,7 @@ export class MineExplosivesPermitTable extends Component {
                 <button
                   type="button"
                   className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    this.props.handleOpenExplosivesPermitStatusModal(event, record)
-                  }
+                  onClick={(event) => props.handleOpenExplosivesPermitStatusModal(event, record)}
                 >
                   <img
                     alt="document"
@@ -343,11 +320,7 @@ export class MineExplosivesPermitTable extends Component {
                 type="button"
                 className="full add-permit-dropdown-button"
                 onClick={(event) =>
-                  this.props.handleOpenAddExplosivesPermitModal(
-                    event,
-                    this.props.isPermitTab,
-                    record
-                  )
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record)
                 }
               >
                 <img
@@ -361,21 +334,18 @@ export class MineExplosivesPermitTable extends Component {
             </Menu.Item>
           </Menu>
         );
-        const showActions = !isApproved || (isApproved && this.props.isPermitTab);
+        const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
-          (record.application_status !== "APP" && !this.props.isPermitTab) ||
-          (isApproved && this.props.isPermitTab);
+          (record.application_status !== "APP" && !isPermitTab) || (isApproved && isPermitTab);
         return (
           <div className="btn--middle flex">
             {isApproved && !hasDocuments && isCoreSource && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
                 <Button
-                  type="secondary"
+                  type="default"
                   className="full-mobile"
                   htmlType="submit"
-                  onClick={(event) =>
-                    this.props.handleOpenExplosivesPermitDecisionModal(event, record)
-                  }
+                  onClick={(event) => props.handleOpenExplosivesPermitDecisionModal(event, record)}
                 >
                   Re-generate docs
                 </Button>
@@ -388,7 +358,7 @@ export class MineExplosivesPermitTable extends Component {
                   overlay={isApproved ? approvedMenu : menu}
                   placement="bottomLeft"
                 >
-                  <Button type="secondary" className="permit-table-button">
+                  <Button type="default" className="permit-table-button">
                     <div className="padding-sm">
                       <img
                         className="padding-sm--right icon-svg-filter"
@@ -412,14 +382,14 @@ export class MineExplosivesPermitTable extends Component {
                 <Popconfirm
                   placement="topLeft"
                   title={`Are you sure you want to delete the Explosives Storage & Use ${
-                    this.props.isPermitTab ? "Permit" : "Permit Application"
+                    isPermitTab ? "Permit" : "Permit Application"
                   }?`}
-                  onConfirm={(event) => this.props.handleDeleteExplosivesPermit(event, record)}
+                  onConfirm={(event) => props.handleDeleteExplosivesPermit(event, record)}
                   okText="Delete"
                   cancelText="Cancel"
                 >
                   <Button ghost type="primary" size="small">
-                    <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+                    <img src={TRASHCAN} alt="Remove Permit" />
                   </Button>
                 </Popconfirm>
               </AuthorizationWrapper>
@@ -430,14 +400,14 @@ export class MineExplosivesPermitTable extends Component {
     },
   ];
 
-  documentDetailColumns = [
+  const documentDetailColumns: ColumnType<IExplosivesPermit>[] = [
     {
       title: "Category",
       dataIndex: "explosives_permit_document_type_code",
       key: "explosives_permit_document_type_code",
       render: (text) => (
         <div title="Upload Date">
-          {this.props.explosivesPermitDocumentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
+          {explosivesPermitDocumentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
     },
@@ -460,27 +430,22 @@ export class MineExplosivesPermitTable extends Component {
     },
   ];
 
-  render() {
-    return (
-      <CoreTable
-        condition={this.props.isLoaded}
-        dataSource={transformRowData(this.props.data)}
-        rowKey={(record) => record.explosives_permit_guid}
-        classPrefix="explosives-permits"
-        columns={this.columns}
-        expandProps={{
-          rowKey: (document) => document.mine_document_guid,
-          rowExpandable: (record) => record.documents.length > 0,
-          recordDescription: "document details",
-          getDataSource: (record) => record.documents,
-          subTableColumns: this.documentDetailColumns,
-        }}
-      />
-    );
-  }
-}
-
-MineExplosivesPermitTable.propTypes = propTypes;
-MineExplosivesPermitTable.defaultProps = defaultProps;
+  return (
+    <CoreTable
+      condition={isLoaded}
+      dataSource={transformRowData(data)}
+      rowKey={(record: IExplosivesPermit) => record.explosives_permit_guid}
+      classPrefix="explosives-permits"
+      columns={columns}
+      expandProps={{
+        rowKey: (document) => document.mine_document_guid,
+        rowExpandable: (record) => record.documents.length > 0,
+        recordDescription: "document details",
+        getDataSource: (record) => record.documents,
+        subTableColumns: documentDetailColumns,
+      }}
+    />
+  );
+};
 
 export default withRouter(MineExplosivesPermitTable);

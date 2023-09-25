@@ -62,7 +62,7 @@ const RenderSelect = (props) => {
         placeholder={props.placeholder}
         optionFilterProp="children"
         filterOption={(input, option) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         id={props.id}
         defaultValue={props.input.value}
