@@ -57,7 +57,7 @@ class TractionService():
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
 
         response = oob_create_resp.json()
-        current_app.logger.info(response)
+        current_app.logger.info(f"oob invitation create reponse from traction = {response}")
         new_traction_connection = PartyVerifiableCredentialConnection(party_guid = party.party_guid, invitation_id = response["invitation"]["@id"])
         new_traction_connection.save()
 
