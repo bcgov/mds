@@ -81,12 +81,7 @@ class Validator {
 
 export const Validate = new Validator();
 
-export const required = (value) => {
-  // console.log('hi tara', value);
-  const temp = value || value === 0 ? undefined : "Thisi is a required field";
-  // console.log('hi agaiin', temp);
-  return value || value === 0 ? undefined : "This is a required field";
-};
+export const required = (value) => (value || value === 0 ? undefined : "This is a required field");
 
 export const requiredRadioButton = (value) =>
   value !== null && value !== undefined ? undefined : "This is a required field";
