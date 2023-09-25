@@ -246,7 +246,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               />
             ) : (
               <Alert
-                description="There's no Engineer of Record (EOR) on file for this facility. Click above to assign a new Engineer of Record. A notification will be sent to the Ministry whereby their acknowledgment is required before the Engineer of Record is considered Active."
+                description="Assigning a new Engineer of Record (EoR) will replace the current listed contact and set their status to Inactive. When a new EoR is assigned, a notification will be sent to the Ministry of changes in the record, and must include an acknowledgement by the EoR to be active."
                 showIcon
                 type="info"
                 message={""}
@@ -315,7 +315,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           {!formValues?.engineer_of_record?.mine_party_appt_guid && (
             <>
               <div className="margin-large--top margin-large--bottom">
-                <Typography.Title level={4}>Upload Acceptance Letter</Typography.Title>
+                <Typography.Title level={4}>{!fieldsDisabled? "Upload Acceptance Letter *" : "Upload Acceptance Letter"}</Typography.Title>
                 <Typography.Text>
                   Letter must be officially signed. A notification will be sent to the Mine Manager
                   upon upload.
@@ -340,6 +340,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               />
             </>
           )}
+
           <Typography.Title level={4} className="margin-large--top">
             Engineer of Record Term
           </Typography.Title>
@@ -352,7 +353,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
-                label="Start Date"
+                label={!fieldsDisabled? "Start Date *" : "Start Date"}
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
                 validate={

@@ -61,7 +61,9 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date)
+      .startOf("day")
+      .diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();
@@ -114,7 +116,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     <Row>
       <Col span={24}>
         <Row justify="space-between">
-          <Typography.Title level={3}>Qualified Person</Typography.Title>
+          <Typography.Title level={3}>TSF Qualified Person</Typography.Title>
           {isCore ? (
             <Col span={12}>
               <Row justify="end">
@@ -127,7 +129,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
                 >
                   <Button style={{ whiteSpace: "normal" }} type="primary">
                     <PlusCircleFilled />
-                    Update Qualified Person
+                    Update TSF Qualified Person
                   </Button>
                 </Popconfirm>
                 {formValues?.qualified_person?.update_timestamp && (
@@ -203,14 +205,14 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           </Row>
         )}
         <Typography.Title level={4} className="margin-large--top">
-          Qualified Person Term
+          TSF Qualified Person Term
         </Typography.Title>
         <Row gutter={16}>
           <Col span={12}>
             <Field
               id="qualified_person.start_date"
               name="qualified_person.start_date"
-              label="Start Date"
+              label={!fieldsDisabled ? "Start Date *" : "Start Date"}
               disabled={fieldsDisabled}
               component={renderConfig.DATE}
               validate={!fieldsDisabled && [required, dateNotInFuture, validateQPStartDateOverlap]}
