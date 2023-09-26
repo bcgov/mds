@@ -115,6 +115,39 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'explosive_magazines',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'detonator_magazines',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'documents',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'letter_date',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'letter_body',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get an Explosives Permit Amendment.',
@@ -153,7 +186,10 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
             data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
-            data.get('description'))
+            data.get('description'),data.get('letter_date'),
+            data.get('letter_body'),
+            data.get('explosive_magazines', []),
+            data.get('detonator_magazines', []), data.get('documents', []))
 
         explosives_permit_amendment.save()
         return explosives_permit_amendment
