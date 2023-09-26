@@ -180,7 +180,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenExplosivesPermitDecisionModal = (event, record) => {
-    console.log("hi tara from handleOpenExplosivesPermitDecisionModal");
     event.preventDefault();
     return props
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
