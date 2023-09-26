@@ -22,6 +22,7 @@ export class MineNavigation extends Component {
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <Menu.SubMenu
           id={this.ifActiveButton("mine-information")}
+          key="mine-information"
           title={
             <span>
               Mine Information
@@ -47,6 +48,7 @@ export class MineNavigation extends Component {
         </Menu.SubMenu>
         <Menu.SubMenu
           id={this.ifActiveButton("permits-and-approvals")}
+          key="permits-and-approvals"
           title={
             <span>
               Permits & Approvals
@@ -101,6 +103,7 @@ export class MineNavigation extends Component {
         </Menu.SubMenu>
         <Menu.SubMenu
           id={this.ifActiveButton("oversight")}
+          key="oversight"
           title={
             <span>
               Oversight
@@ -123,6 +126,7 @@ export class MineNavigation extends Component {
         </Menu.SubMenu>
         <Menu.SubMenu
           id={this.ifActiveButton("reports")}
+          key="reports"
           title={
             <span>
               Reports

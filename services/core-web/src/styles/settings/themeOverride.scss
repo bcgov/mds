@@ -137,7 +137,8 @@
 // BUTTON
 .ant-btn,
 .ant-btn-sm,
-.ant-btn-secondary {
+// secondary is deprecated --> move to default
+.ant-btn-secondary, .ant-btn-default {
   position: inherit;
   margin: 10px;
   padding: 0 11px;
@@ -288,8 +289,7 @@
 }
 
 // POPUP CONFIRM
-.ant-popover-inner-content,
-.ant-popover-arrow {
+.ant-popover-inner-content {
   background-color: $pure-white;
 }
 
