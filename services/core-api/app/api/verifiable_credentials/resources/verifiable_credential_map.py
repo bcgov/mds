@@ -7,6 +7,7 @@ from app.config import Config
 from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
@@ -80,6 +81,9 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         else:    # raise BadRequest(f"not a active connection")
             traction_svc = TractionService()
             response = traction_svc.offer_mines_act_permit(vc_conn.connection_id, attributes)
+            PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["cred_exch_id"],party_guid = party_guid, permit_amendment_guid=permit_amendment_guid)
+
+
 
 
         return response

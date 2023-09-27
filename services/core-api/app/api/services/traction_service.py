@@ -66,14 +66,12 @@ class TractionService():
     
     def offer_mines_act_permit(self, connection_id, attributes):
 
-        cred_def_id = Config.CRED_DEF_ID_MINES_ACT_PERMIT or ""
-
         payload = {
             "auto_issue": True,
             "auto_remove": True,
             "comment": "VC to provide proof of a permit and some basic details",
             "connection_id": connection_id,
-            "cred_def_id": cred_def_id,
+            "cred_def_id": Config.CRED_DEF_ID_MINES_ACT_PERMIT,
             "credential_preview": {
                 "@type": "issue-credential/1.0/credential-preview",
                 "attributes":attributes,
@@ -81,7 +79,7 @@ class TractionService():
             "trace": True
         }
 
-        #STORE LOCAL RECORD THAT THIS CREDENTIAL WAS OFFERED/ISSUED
+        # TODO STORE LOCAL RECORD THAT THIS CREDENTIAL WAS OFFERED/ISSUED
 
         current_app.logger.warning("CREDENTIAL TO BE ISSUED")
         current_app.logger.warning(payload)
@@ -90,4 +88,4 @@ class TractionService():
         current_app.logger.warning("CREDENTIAL_OFFER response")
         current_app.logger.warning(cred_offer_resp.json())
 
-        return cred_offer_resp.json()
+        return str(cred_offer_resp.json())
