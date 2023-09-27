@@ -5,6 +5,7 @@ from flask import current_app
 
 
 class Feature(Enum):
+    ESUP_PERMIT_AMENDMENT='esup_permit_amendment'
     TSF_V2='tsf_v2'
     MAJOR_PROJECT_REPLACE_FILE='major_project_replace_file'
     MINE_APPLICATION_FILE_UDPATE_ALERTS='mine_application_file_update_alerts'

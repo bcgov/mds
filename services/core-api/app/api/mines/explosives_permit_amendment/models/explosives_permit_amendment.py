@@ -6,6 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import Sequence
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_document_xref import \
@@ -16,6 +17,7 @@ from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin, Permi
 from sqlalchemy import func
 
 from app.extensions import db
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 
 class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
@@ -117,6 +119,11 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             closed_reason = None
             closed_timestamp = None
 
+        if is_feature_enabled(Feature.ESUP_PERMIT_AMENDMENT):
+            permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
+        else:
+            permit_number = permit_number
+
         explosives_permit_amendment = cls(
             permit_guid=permit_guid,
             explosives_permit_id=explosives_permit_id,
@@ -175,6 +182,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
+               explosives_permit_id,
                permit_guid,
                now_application_guid,
                issuing_inspector_party_guid,
@@ -327,8 +335,14 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     )
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
+
                 if self.application_status == 'REC' and application_status == 'APP':
                     self.permit_number = ExplosivesPermitAmendment.get_next_permit_number()
+
+                if is_feature_enabled(Feature.ESUP_PERMIT_AMENDMENT):
+                    self.permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id)
+                    print("self.permit_number", self.permit_number)
+
                 create_permit_enclosed_letter()
                 create_issued_permit()
 

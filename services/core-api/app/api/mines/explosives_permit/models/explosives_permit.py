@@ -352,3 +352,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     def find_by_explosives_permit_guid(cls, explosives_permit_guid):
         return cls.query.filter_by(
             explosives_permit_guid=explosives_permit_guid, deleted_ind=False).one_or_none()
+
+    @classmethod
+    def find_by_explosives_permit_id(cls, explosives_permit_id):
+        obj = cls.query.filter_by(
+            explosives_permit_id=explosives_permit_id, deleted_ind=False).one_or_none()
+        return obj.permit_number if obj else None
