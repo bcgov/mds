@@ -64,7 +64,6 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         credential_attrs["tsf_operation_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "OPT"])
         credential_attrs["tsf_care_and_maintainence_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "CAM"])
 
-
         # offer credential
         attributes = [{
             "mime-type":"text/plain",
@@ -74,8 +73,10 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
         
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
-        if not (vc_conn and vc_conn[0].connnection_state == "active"):
+        active_connections = [con for con in vc_conn if con.connection_state == "active"]
+        if not (vc_conn and active_connections[0]):
             current_app.logger.error("NO ACTIVE CONNECTION")
+            current_app.logger.warning(vc_conn)
             current_app.logger.warning("returning credentials_attrs")
             return attributes
         else:    # raise BadRequest(f"not a active connection")
