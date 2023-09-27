@@ -74,7 +74,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
         active_connections = [con for con in vc_conn if con.connection_state == "active"]
-        if not (vc_conn and active_connections[0]):
+        if not active_connections[0]:
             current_app.logger.error("NO ACTIVE CONNECTION")
             current_app.logger.warning(vc_conn)
             current_app.logger.warning("returning credentials_attrs")
