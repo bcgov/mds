@@ -1,4 +1,5 @@
 import * as Strings from "@common/constants/strings";
+import { IOption } from "@mds/common";
 
 import { memoize } from "lodash";
 import moment from "moment-timezone";
@@ -237,13 +238,19 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
-// eslint-disable-next-line consistent-return
-export const validateSelectOptions = memoize((data, allowEmptyData = false) => (value) => {
+/**
+ * @param data: options to choose from
+ * @param allowEmptyData: perform validation with empty data array (free text on empty data set will be invalid)
+ */
+export const validateSelectOptions = memoize((data: IOption[], allowEmptyData = false) => (value):
+  | string
+  | undefined => {
   if (value && (data?.length > 0 || allowEmptyData)) {
     return data?.find((opt) => opt.value === value) !== undefined
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
   }
+  return undefined;
 });
 
 export const decimalPlaces = memoize((places) => (value) => {
@@ -279,7 +286,7 @@ export const validateDateRanges = (
   apptType,
   isCurrentAppointment
 ) => {
-  const errorMessages = {};
+  const errorMessages: any = {};
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
   const MAX_DATE = new Date(8640000000000000);
   const MIN_DATE = new Date(-8640000000000000);
