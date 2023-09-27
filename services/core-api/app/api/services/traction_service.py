@@ -71,7 +71,7 @@ class TractionService():
             "auto_issue": True,
             "auto_remove": True,
             "comment": "VC to provide proof of a permit and some basic details",
-            "connection_id": connection_id,
+            "connection_id": str(connection_id),
             "cred_def_id": Config.CRED_DEF_ID_MINES_ACT_PERMIT,
             "credential_preview": {
                 "@type": "issue-credential/1.0/credential-preview",
