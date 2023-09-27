@@ -204,6 +204,8 @@ class Config(object):
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID","GET_TENANT_ID_FROM_TRACTION")
     TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY","GET_WALLET_API_KEY_FROM_TRACTION")
 
+    CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT","CRED_DEF_ID_MINES_ACT_PERMIT")
+
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     TESTING = os.environ.get('TESTING', True)
