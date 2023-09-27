@@ -124,11 +124,32 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
             def transform_magazines(magazines):
                 def get_type_label(magazine):
-                    return 'Explosive Magazine Type' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Type'
+                    if hasattr(magazine,
+                               'explosives_permit_magazine_type_code') and magazine.explosives_permit_magazine_type_code == 'EXP':
+                        return 'Explosive Magazine Type'
+
+                    elif hasattr(magazine,
+                                 'explosives_permit_amendment_magazine_type_code') and magazine.explosives_permit_amendment_magazine_type_code == 'EXP':
+                        return 'Explosive Magazine Type'
+
+                    # Default return value if neither condition is met
+                    else:
+                        return 'Detonator Magazine Type'
 
                 def get_quantity_label(magazine):
-                    label = 'Explosive Magazine Capacity' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Capacity'
-                    unit = 'kg' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonators'
+                    def is_explosive_type(mag):
+                        if hasattr(mag,
+                                   'explosives_permit_magazine_type_code') and mag.explosives_permit_magazine_type_code == 'EXP':
+                            return True
+                        if hasattr(mag,
+                                   'explosives_permit_amendment_magazine_type_code') and mag.explosives_permit_amendment_magazine_type_code == 'EXP':
+                            return True
+                        return False
+
+                    label = 'Explosive Magazine Capacity' if is_explosive_type(
+                        magazine) else 'Detonator Magazine Capacity'
+                    unit = 'kg' if is_explosive_type(magazine) else 'Detonators'
+
                     return f'{label} {magazine.quantity} {unit}'
 
                 transformed_magazines = []

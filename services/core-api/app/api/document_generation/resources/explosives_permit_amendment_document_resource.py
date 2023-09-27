@@ -91,8 +91,8 @@ class ExplosivesPermitAmendmentDocumentResource(Resource, UserMixin):
                 update_user=username)
             doc = ExplosivesPermitAmendmentDocumentXref(
                 mine_document=mine_doc,
-                explosives_permit_document_type_code=document_type_code,
-                explosives_permit_id=explosives_permit_amendment.explosives_permit_amendment_id)
+                explosives_permit_amendment_document_type_code=document_type_code,
+                explosives_permit_amendment_id=explosives_permit_amendment.explosives_permit_amendment_id)
             explosives_permit_amendment.documents.append(doc)
             explosives_permit_amendment.save(commit)
 
