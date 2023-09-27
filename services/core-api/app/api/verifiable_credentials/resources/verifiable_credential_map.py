@@ -77,7 +77,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if not active_connections[0]:
             current_app.logger.error("NO ACTIVE CONNECTION")
             current_app.logger.warning(vc_conn)
-            current_app.logger.warning("returning credentials_attrs")
+            current_app.logger.warning("returning credentials_attributes")
             return attributes
         else:    # raise BadRequest(f"not a active connection")
             traction_svc = TractionService()
