@@ -10,6 +10,6 @@ CREATE TABLE party_verifiable_credential_mines_act_permit
     update_user character varying(60) NOT NULL,
     update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
     
-    FOREIGN KEY (party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permit_amendment_guid) REFERENCES permit_amendment(permit_amendment_guid) DEFERRABLE INITIALLY DEFERRED
 );

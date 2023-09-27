@@ -6,6 +6,7 @@ from app.config import Config
 from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
+
 traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTION_TENANT_ID+"/token"
 traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
 traction_offer_credential = Config.TRACTION_HOST+"/issue-credential/send-offer"
@@ -86,6 +87,8 @@ class TractionService():
         cred_offer_resp = requests.post(traction_offer_credential, json=payload,headers=self.get_headers())
 
         current_app.logger.warning("CREDENTIAL_OFFER response")
-        current_app.logger.warning(cred_offer_resp.json())
+        resp = cred_offer_resp.json()
+        current_app.logger.warning(resp)
 
-        return str(cred_offer_resp.json())
+
+        return cred_offer_resp.json()
