@@ -341,8 +341,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
                 if is_feature_enabled(Feature.ESUP_PERMIT_AMENDMENT):
                     self.permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id)
-                    print("self.permit_number", self.permit_number)
-
                 create_permit_enclosed_letter()
                 create_issued_permit()
 
