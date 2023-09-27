@@ -16,8 +16,8 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
         current_app.logger.warning(f"TRACTION WEBHOOK: {request.__dict__}")
-        invitation_id = request["invi_msg_id"]
         if topic == CONNECTIONS:
+            invitation_id = request.args.get("invi_msg_id")
             vc_conn = PartyVerifiableCredentialConnection.find_by_invitation_id(invitation_id)
             assert vc_conn, f"{invitation_id} not found"
             new_state = request["state"]
