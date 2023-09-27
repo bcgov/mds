@@ -20,7 +20,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         current_app.logger.warning(f"TRACTION WEBHOOK: {request.__dict__}")
         if topic == CONNECTIONS:
             invitation_id = request.args.get("invi_msg_id")
-            vc_conn = PartyVerifiableCredentialConnection.find_by_invitation_id(invitation_id)
+            vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
             assert vc_conn, f"{invitation_id} not found"
             new_state = request.args["state"]
             if new_state != vc_conn.connection_state:
@@ -29,7 +29,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 current_app.logger.debug(f"Updated party_vc_conn invitation_id={invitation_id} with state={new_state}")
         if topic == CREDENTIAL_OFFER:
             cred_exch_id = request.args.get("cred_exch_id")
-            cred_exch_record = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(cred_exch_id=cred_exch_id)
+            cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
             assert cred_exch_record
             new_state = request.args["state"]
             if new_state != cred_exch_record.cred_exch_state:

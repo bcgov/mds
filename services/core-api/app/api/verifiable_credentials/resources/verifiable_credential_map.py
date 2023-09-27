@@ -81,9 +81,9 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             return attributes
         else:    # raise BadRequest(f"not a active connection")
             traction_svc = TractionService()
-            response = traction_svc.offer_mines_act_permit(vc_conn.connection_id, attributes)
-            PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["cred_exch_id"],party_guid = party_guid, permit_amendment_guid=permit_amendment_guid)
-
+            response = traction_svc.offer_mines_act_permit(active_connections[0].connection_id, attributes)
+            map_vc = PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["cred_exch_id"],party_guid = party_guid, permit_amendment_guid=permit_amendment_guid)
+            map_vc.save()
 
 
 
