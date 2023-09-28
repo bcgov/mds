@@ -17,7 +17,6 @@ from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin, Permi
 from sqlalchemy import func
 
 from app.extensions import db
-from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 
 class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
@@ -119,10 +118,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             closed_reason = None
             closed_timestamp = None
 
-        if is_feature_enabled(Feature.ESUP_PERMIT_AMENDMENT):
-            permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
-        else:
-            permit_number = permit_number
+        permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
 
         explosives_permit_amendment = cls(
             permit_guid=permit_guid,
@@ -336,11 +332,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
-                if self.application_status == 'REC' and application_status == 'APP':
-                    self.permit_number = ExplosivesPermitAmendment.get_next_permit_number()
-
-                if is_feature_enabled(Feature.ESUP_PERMIT_AMENDMENT):
-                    self.permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id)
+                permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
                 create_permit_enclosed_letter()
                 create_issued_permit()
 
