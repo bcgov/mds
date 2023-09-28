@@ -108,7 +108,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             application_number = ExplosivesPermitAmendment.get_next_application_number()
             received_timestamp = datetime.utcnow()
             is_closed = False
-            permit_number = None
             issue_date = None
             expiry_date = None
         if is_closed:
