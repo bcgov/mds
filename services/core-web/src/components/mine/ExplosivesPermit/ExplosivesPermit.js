@@ -104,7 +104,8 @@ export const ExplosivesPermit = (props) => {
     props.openModal({
       props: {
         onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
-        title: "Add Explosives Storage & Use Permit",
+        // title: "Add Explosives Storage & Use Permit",
+        title: "Add Permit",
         initialValues,
         mineGuid,
         isProcessed,
@@ -112,7 +113,7 @@ export const ExplosivesPermit = (props) => {
         isPermitTab: permitTab,
         inspectors,
       },
-      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
+      content: modalConfig.ESUP_PERMIT_MODAL,
       width: "75vw",
     });
   };

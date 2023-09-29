@@ -41,6 +41,7 @@ import EditSitePropertiesModal from "./EditSitePropertiesModal";
 import UploadPermitDocumentModal from "./UploadPermitDocumentModal";
 import NoPermitRequiredSelectionModal from "./NoPermitRequiredSelectionModal";
 import AddExplosivesPermitModal from "./AddExplosivesPermitModal";
+import AddESUPPermitModal from "./AddESUPPermitModal"
 import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicationDecisionModal";
 import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
@@ -109,6 +110,7 @@ export const modalConfig = {
   DELETE_DRAFT_PERMIT_MODAL: DeleteDraftPermitModal,
   NO_PERMIT_REQUIRED_SELECTION_MODAL: NoPermitRequiredSelectionModal,
   EXPLOSIVES_PERMIT_MODAL: AddExplosivesPermitModal,
+  ESUP_PERMIT_MODAL: AddESUPPermitModal,
   EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
   EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
