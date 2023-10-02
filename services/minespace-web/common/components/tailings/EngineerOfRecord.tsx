@@ -315,7 +315,9 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           {!formValues?.engineer_of_record?.mine_party_appt_guid && (
             <>
               <div className="margin-large--top margin-large--bottom">
-                <Typography.Title level={4}>{!fieldsDisabled? "Upload Acceptance Letter *" : "Upload Acceptance Letter"}</Typography.Title>
+                <Typography.Title level={4}>
+                  {!fieldsDisabled ? "Upload Acceptance Letter *" : "Upload Acceptance Letter"}
+                </Typography.Title>
                 <Typography.Text>
                   Letter must be officially signed. A notification will be sent to the Mine Manager
                   upon upload.
@@ -353,7 +355,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
-                label={!fieldsDisabled? "Start Date *" : "Start Date"}
+                label={!fieldsDisabled ? "Start Date *" : "Start Date"}
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
                 validate={

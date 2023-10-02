@@ -21,7 +21,7 @@ const propTypes = {
   data: CustomPropTypes.groupOptions,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
-  usedOptions: PropTypes.objectOf(PropTypes.any).isRequired,
+  usedOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 };
 
 const defaultProps = {
@@ -31,6 +31,7 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSelect: () => {},
+  usedOptions: [],
 };
 
 const RenderGroupedSelect = (props) => (
