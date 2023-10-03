@@ -1080,6 +1080,7 @@ class ExplosivesPermitFactory(BaseFactory):
     mine_manager_mine_party_appt_id = factory.SelfAttribute('mine_manager.mine_party_appt_id')
     permittee_mine_party_appt_id = factory.SelfAttribute('permittee.mine_party_appt_id')
 
+    explosives_permit_id = factory.Faker('random_int', min=1000, max=9999)
     originating_system = 'Core'
     application_number = factory.Faker('sentence', nb_words=1)
     received_timestamp = TODAY
