@@ -85,7 +85,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                description,
                issue_date,
                expiry_date,
-               permit_number,
                issuing_inspector_party_guid,
                mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id,
@@ -117,7 +116,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             closed_reason = None
             closed_timestamp = None
 
-        permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
+        permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
 
         explosives_permit_amendment = cls(
             permit_guid=permit_guid,
@@ -331,7 +330,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
-                permit_number = ExplosivesPermit.find_by_explosives_permit_id(explosives_permit_id);
+                permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
                 create_permit_enclosed_letter()
                 create_issued_permit()
 
