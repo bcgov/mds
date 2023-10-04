@@ -26,7 +26,7 @@ import { ColumnsType } from "antd/lib/table";
 import { FixedType } from "rc-table/lib/interface";
 import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 import { Feature } from "@mds/common";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];

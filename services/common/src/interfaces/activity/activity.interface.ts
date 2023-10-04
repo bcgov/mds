@@ -1,4 +1,4 @@
-import { INotificationDocument } from "@/index";
+import { INotificationDocument } from "@mds/common/index";
 
 export interface IActivity {
   notification_guid: string;

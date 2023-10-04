@@ -14,12 +14,11 @@ import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
-import FeatureFlagProvider from "@common/providers/featureFlags/featureFlag.provider";
+import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
 
-// eslint-disable-next-line import/prefer-default-export
 export const Index = () => {
   const [environment, setEnvironment] = useState(false);
 

@@ -1,4 +1,4 @@
-import { MinePartyAppointmentTypeCodeEnum } from "@/index";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/index";
 
 export interface ICreateParty {
   end_current: boolean;

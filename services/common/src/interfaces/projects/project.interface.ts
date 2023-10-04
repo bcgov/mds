@@ -4,7 +4,7 @@ import {
   IMajorMinesApplication,
   IProjectContact,
   IProjectDecisionPackage,
-} from "@/index";
+} from "@mds/common/index";
 
 export interface IProject {
   project_guid: string;

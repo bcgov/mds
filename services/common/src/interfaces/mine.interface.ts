@@ -3,7 +3,7 @@ import {
   IMineVerifiedStatus,
   IMineWorkInformation,
   ITailingsStorageFacility,
-} from "@/index";
+} from "@mds/common/index";
 
 export interface IMine {
   mine_guid: string;

@@ -3,9 +3,9 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Feature } from "@mds/common";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 import { ColumnType } from "antd/es/table";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];

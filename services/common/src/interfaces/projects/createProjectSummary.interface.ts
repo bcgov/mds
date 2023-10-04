@@ -1,4 +1,4 @@
-import { IProjectSummaryAuthorization } from "@/index";
+import { IProjectSummaryAuthorization } from "@mds/common/index";
 
 export interface ICreateProjectSummary {
   authorizations: IProjectSummaryAuthorization[];

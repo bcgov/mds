@@ -43,9 +43,10 @@ import {
   getEngineersOfRecordOptions,
   getQualifiedPersons,
 } from "@common/selectors/partiesSelectors";
-import { ICreateTSF, IMine, ActionCreator } from "@mds/common";
+import { ICreateTSF, IMine } from "@mds/common";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface TailingsSummaryPageProps {
   form: string;

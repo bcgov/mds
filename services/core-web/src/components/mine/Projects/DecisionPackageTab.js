@@ -29,8 +29,8 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { Feature } from "@mds/common";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 import * as Strings from "@common/constants/strings";
-import { MajorMineApplicationDocument } from "@common/models/documents/document";
-import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
+import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   match: PropTypes.shape({

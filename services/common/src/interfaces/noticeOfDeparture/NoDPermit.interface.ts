@@ -1,4 +1,4 @@
-import { IAmendment } from "@/index";
+import { IAmendment } from "@mds/common/index";
 
 export interface INoDPermit {
   permit_guid: string;

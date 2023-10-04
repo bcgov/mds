@@ -1,4 +1,4 @@
-import { IDocument } from "@/interfaces";
+import { IDocument } from "@mds/common/interfaces";
 
 export interface IMineReportSubmission {
   recieved_date: string;

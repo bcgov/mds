@@ -1,4 +1,4 @@
-import { IMineDocument } from "@/index";
+import { IMineDocument } from "@mds/common/index";
 
 export interface IProjectDecisionPackageDocument extends IMineDocument {
   project_decision_package_id: number;

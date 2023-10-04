@@ -1,4 +1,4 @@
-import { IMajorMinesApplicationDocument, IMajorMinesApplication } from "@/index";
+import { IMajorMinesApplicationDocument, IMajorMinesApplication } from "@mds/common/index";
 
 export interface ICreateMajorMinesApplication extends IMajorMinesApplication {
   mine_name: string;

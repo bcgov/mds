@@ -20,7 +20,7 @@ import Loading from "@/components/common/Loading";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
-import IMineIncident from "@mds/common";
+import { IMineIncident } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 export interface MineIncidentProps {
