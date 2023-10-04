@@ -2,7 +2,7 @@ import {
   ConsequenceClassificationStatusCodeEnum,
   DamTypeEnum,
   OperatingStatusEnum,
-} from "@/constants";
+} from "@mds/common/constants";
 
 export interface ICreateDam {
   consequence_classification: ConsequenceClassificationStatusCodeEnum;

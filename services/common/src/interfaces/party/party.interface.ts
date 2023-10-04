@@ -1,4 +1,9 @@
-import { IMinePartyAppt, IPartyAddress, IPartyOrgBookEntity, PartyTypeCodeEnum } from "@/index";
+import {
+  IMinePartyAppt,
+  IPartyAddress,
+  IPartyOrgBookEntity,
+  PartyTypeCodeEnum,
+} from "@mds/common/index";
 
 export interface IParty {
   address: IPartyAddress;

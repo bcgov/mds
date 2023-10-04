@@ -7,7 +7,7 @@ import {
   TSFOperatingStatusCodeEnum,
   TailingsStorageFacilityTypeEnum,
   IPartyAppt,
-} from "@/index";
+} from "@mds/common/index";
 
 export interface ICreateTailingsStorageFacility {
   mine_tailings_storage_facility_name: string;

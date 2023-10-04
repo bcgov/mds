@@ -2,7 +2,7 @@ import {
   IProjectSummaryDocument,
   IProjectSummaryContact,
   IProjectSummaryAuthorization,
-} from "@/index";
+} from "@mds/common/index";
 
 export interface IProjectSummary {
   project_guid: string;

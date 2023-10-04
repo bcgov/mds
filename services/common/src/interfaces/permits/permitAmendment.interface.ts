@@ -3,7 +3,7 @@ import {
   IPermitAmendmentDocument,
   INoWImportedApplicationDocument,
   IPermitCondition,
-} from "@/index";
+} from "@mds/common/index";
 
 export interface IPermitAmendment {
   permit_amendment_id: number;

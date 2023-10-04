@@ -1,4 +1,4 @@
-import { NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@/constants";
+import { NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@mds/common/constants";
 
 export interface ICreateNoD {
   nod_title: string;

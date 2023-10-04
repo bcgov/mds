@@ -15,7 +15,7 @@ import { getSearchBarResults } from "@common/reducers/searchReducer";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";
-import { ISearchResult } from "@mds/common";
+import { ISearchResult } from "@mds/common/interfaces/search/searchResult.interface";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
 import { ActionCreator } from "@/interfaces/actionCreator";

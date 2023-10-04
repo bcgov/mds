@@ -1,4 +1,4 @@
-import { IMineDocument } from "@/index";
+import { IMineDocument } from "@mds/common/index";
 
 export interface IIRTDocument extends IMineDocument {
   irt_id: number;

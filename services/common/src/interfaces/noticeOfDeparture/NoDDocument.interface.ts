@@ -1,5 +1,5 @@
-import { NoDTypeSaveEnum } from "@/constants";
-import { IDocument } from "@/index";
+import { NoDTypeSaveEnum } from "@mds/common/constants";
+import { IDocument } from "@mds/common/index";
 
 export interface INoDDocument extends IDocument {
   create_timestamp: string;

@@ -58,7 +58,7 @@ import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPa
 import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
-import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
+import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
 
 export const modalConfig = {

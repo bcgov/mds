@@ -5,7 +5,7 @@ import {
   StorageLocationEnum,
   TailingsStorageFacilityTypeEnum,
   TSFOperatingStatusCodeEnum,
-} from "@/constants";
+} from "@mds/common/constants";
 
 export interface ICreateTSF {
   mine_tailings_storage_facility_name: string;

@@ -8,7 +8,7 @@ import { nullableStringSorter } from "@common/utils/helpers";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import DocumentLink from "./DocumentLink";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 const documentWithTag = (
   record: MineDocument,

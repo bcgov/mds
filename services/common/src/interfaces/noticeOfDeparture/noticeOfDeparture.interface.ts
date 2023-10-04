@@ -1,6 +1,6 @@
-import { NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@/constants";
-import { IMine } from "@/interfaces/mine.interface";
-import { INoDPermit, INoDDocument } from "@/index";
+import { NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@mds/common/constants";
+import { IMine } from "@mds/common/interfaces/mine.interface";
+import { INoDPermit, INoDDocument } from "@mds/common/index";
 
 export interface INoticeOfDeparture {
   nod_guid: string;

@@ -21,9 +21,9 @@ import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 
-import INoticeOfWorkApplication from "@mds/common";
-import INoticeOfWork from "@mds/common";
-import INoticeOfWorkDraftPermit from "@mds/common";
+import { INoticeOfWorkApplication } from "@mds/common";
+import { INoticeOfWork } from "@mds/common";
+import { INoticeOfWorkDraftPermit } from "@mds/common";
 
 /**
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.

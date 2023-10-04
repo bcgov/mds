@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import FeatureFlagContext from "./featureFlag.context";
-import { initializeFlagsmith, isFeatureEnabled } from "@mds/common";
-import { ENVIRONMENT } from "@mds/common";
+import { initializeFlagsmith, isFeatureEnabled } from "@mds/common/utils/featureFlag";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import flagsmith from "flagsmith";
 
 const FeatureFlagProvider = ({ children }) => {

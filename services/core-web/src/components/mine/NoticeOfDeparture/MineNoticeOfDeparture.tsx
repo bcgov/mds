@@ -12,12 +12,13 @@ import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { useLocation } from "react-router-dom";
-import { IMine, INoticeOfDeparture, USER_ROLES, ActionCreator } from "@mds/common";
+import { IMine, INoticeOfDeparture, USER_ROLES } from "@mds/common";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 import * as Permission from "@/constants/permissions";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface IMineNoticeOfDepartureProps {
   mines: IMine[];
