@@ -6,8 +6,10 @@ from app.config import Config
 from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
+
 traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTION_TENANT_ID+"/token"
 traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
+traction_offer_credential = Config.TRACTION_HOST+"/issue-credential/send-offer"
 
 class VerificableCredentialWorkflowError(Exception):
     pass
@@ -57,8 +59,36 @@ class TractionService():
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
 
         response = oob_create_resp.json()
-        current_app.logger.info(response)
+        current_app.logger.info(f"oob invitation create reponse from traction = {response}")
         new_traction_connection = PartyVerifiableCredentialConnection(party_guid = party.party_guid, invitation_id = response["invitation"]["@id"])
         new_traction_connection.save()
 
         return response
+    
+    def offer_mines_act_permit(self, connection_id, attributes):
+
+        payload = {
+            "auto_issue": True,
+            "auto_remove": True,
+            "comment": "VC to provide proof of a permit and some basic details",
+            "connection_id": str(connection_id),
+            "cred_def_id": Config.CRED_DEF_ID_MINES_ACT_PERMIT,
+            "credential_preview": {
+                "@type": "issue-credential/1.0/credential-preview",
+                "attributes":attributes,
+            },
+            "trace": True
+        }
+
+        # TODO STORE LOCAL RECORD THAT THIS CREDENTIAL WAS OFFERED/ISSUED
+
+        current_app.logger.warning("CREDENTIAL TO BE ISSUED")
+        current_app.logger.warning(payload)
+        cred_offer_resp = requests.post(traction_offer_credential, json=payload,headers=self.get_headers())
+
+        current_app.logger.warning("CREDENTIAL_OFFER response")
+        resp = cred_offer_resp.json()
+        current_app.logger.warning(resp)
+
+
+        return cred_offer_resp.json()

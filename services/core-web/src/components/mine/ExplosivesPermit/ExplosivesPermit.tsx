@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { FC } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import {
   fetchExplosivesPermits,
   createExplosivesPermit,
@@ -25,54 +24,42 @@ import {
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
-import CustomPropTypes from "@/customPropTypes";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
+import { IGroupedDropdownList, IMine, IExplosivesPermit, IOption } from "@mds/common";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
-const propTypes = {
-  isPermitTab: PropTypes.bool,
-  mineGuid: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  updateExplosivesPermit: PropTypes.func.isRequired,
-  createExplosivesPermit: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  fetchExplosivesPermits: PropTypes.func.isRequired,
-  deleteExplosivesPermit: PropTypes.func.isRequired,
-  fetchExplosivesPermitDocumentContextTemplate: PropTypes.func.isRequired,
-  generateExplosivesPermitDocument: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  documentContextTemplate: PropTypes.objectOf(PropTypes.string).isRequired,
-  explosivesPermits: PropTypes.arrayOf(CustomPropTypes.explosivesPermit).isRequired,
-  explosivesPermitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  explosivesPermitDocumentTypeDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
-    .isRequired,
-  explosivesPermitDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-};
+interface ExplosivesPermitProps {
+  isPermitTab: boolean;
+  mineGuid: string;
+  inspectors: IGroupedDropdownList[];
+  updateExplosivesPermit: ActionCreator<typeof updateExplosivesPermit>;
+  createExplosivesPermit: ActionCreator<typeof createExplosivesPermit>;
+  openModal: (value: any) => void;
+  closeModal: () => void;
+  fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
+  deleteExplosivesPermit: ActionCreator<typeof deleteExplosivesPermit>;
+  fetchExplosivesPermitDocumentContextTemplate: ActionCreator<
+    typeof fetchExplosivesPermitDocumentContextTemplate
+  >;
+  generateExplosivesPermitDocument: ActionCreator<typeof generateExplosivesPermitDocument>;
+  mines: IMine[];
+  documentContextTemplate: any;
+  explosivesPermits: IExplosivesPermit[];
+  explosivesPermitStatusOptionsHash: any;
+  explosivesPermitDocumentTypeDropdownOptions: IOption[];
+  explosivesPermitDocumentTypeOptionsHash: any;
+}
 
-const defaultProps = {
-  isPermitTab: false,
-};
-
-export const ExplosivesPermit = (props) => {
-  const {
-    mineGuid,
-    mines,
-    inspectors,
-    isPermitTab,
-    explosivesPermits,
-    explosivesPermitDocumentTypeDropdownOptions,
-  } = props;
-
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-
-  const onExpand = (expanded, record) => {
-    const newExpandedRowKeys = expanded
-      ? expandedRowKeys.concat(record.key)
-      : expandedRowKeys.filter((key) => key !== record.key);
-    setExpandedRowKeys(newExpandedRowKeys);
-  };
-
+export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
+  isPermitTab = false,
+  mineGuid,
+  mines,
+  inspectors,
+  explosivesPermits,
+  explosivesPermitDocumentTypeDropdownOptions,
+  ...props
+}) => {
   const handleAddExplosivesPermit = (values) => {
     const system = values.permit_tab ? "MMS" : "Core";
     const payload = {
@@ -99,7 +86,7 @@ export const ExplosivesPermit = (props) => {
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
     const initialValues = record || { permit_tab: permitTab };
-    const isProcessed = record && record?.application_status !== "REC";
+    const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
       props: {
@@ -199,8 +186,7 @@ export const ExplosivesPermit = (props) => {
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
       .then(() => {
         const initialValues = {};
-        props.documentContextTemplate.document_template.form_spec.map(
-          // eslint-disable-next-line no-return-assign
+        props.documentContextTemplate.document_template.form_spec.forEach(
           (item) => (initialValues[item.id] = item["context-value"])
         );
         return props.openModal({
@@ -233,16 +219,12 @@ export const ExplosivesPermit = (props) => {
         <h4 className="uppercase">{title}</h4>
         <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
           <AddButton onClick={(e) => handleOpenAddExplosivesPermitModal(e, isPermitTab)}>
-            Add
-            {' '}
-            {title}
+            Add {title}
           </AddButton>
         </AuthorizationWrapper>
       </div>
       <br />
       <MineExplosivesPermitTable
-        onExpand={onExpand}
-        expandedRowKeys={expandedRowKeys}
         isLoaded
         data={data}
         isPermitTab={isPermitTab}
@@ -266,8 +248,9 @@ const mapStateToProps = (state) => ({
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
   explosivesPermitDocumentTypeOptionsHash: getExplosivesPermitDocumentTypeOptionsHash(state),
-  explosivesPermitDocumentTypeDropdownOptions:
-    getExplosivesPermitDocumentTypeDropdownOptions(state),
+  explosivesPermitDocumentTypeDropdownOptions: getExplosivesPermitDocumentTypeDropdownOptions(
+    state
+  ),
   documentContextTemplate: getDocumentContextTemplate(state),
 });
 
@@ -285,8 +268,5 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
-
-ExplosivesPermit.propTypes = propTypes;
-ExplosivesPermit.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExplosivesPermit);

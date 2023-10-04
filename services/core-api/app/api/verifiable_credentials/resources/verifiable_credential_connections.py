@@ -22,6 +22,5 @@ class VerifiableCredentialConnectionResource(Resource, UserMixin):
         traction_svc=TractionService()
         invitation = traction_svc.create_oob_connection_invitation(party)
         
-        current_app.logger.warn(invitation)
         return invitation
  

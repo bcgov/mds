@@ -16,13 +16,17 @@ import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/Expl
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  documents: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
-  categories: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
+  documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  categories: CustomPropTypes.options.isRequired,
   isProcessed: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   change: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
   infoText: PropTypes.string,
+};
+
+const defaultProps = {
+  documents: [],
 };
 
 export class DocumentCategoryForm extends Component {
@@ -126,6 +130,7 @@ export class DocumentCategoryForm extends Component {
 }
 
 DocumentCategoryForm.propTypes = propTypes;
+DocumentCategoryForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({

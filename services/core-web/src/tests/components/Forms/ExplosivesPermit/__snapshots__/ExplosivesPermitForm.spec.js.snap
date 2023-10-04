@@ -38,6 +38,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
               validate={
                 Array [
                   [Function],
+                  [Function],
                 ]
               }
             />
@@ -55,6 +56,11 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
           label="Notice of Work Number"
           name="now_application_guid"
           placeholder="Select a NoW"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
       <Row
@@ -78,6 +84,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
               validate={
                 Array [
                   [Function],
+                  [Function],
                 ]
               }
             />
@@ -99,6 +106,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
               placeholder="Select Permittee"
               validate={
                 Array [
+                  [Function],
                   [Function],
                 ]
               }
@@ -232,7 +240,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
     >
       <Button
         className="full-mobile"
-        type="secondary"
+        type="default"
       >
         Cancel
       </Button>

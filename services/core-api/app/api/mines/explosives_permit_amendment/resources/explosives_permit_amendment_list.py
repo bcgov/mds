@@ -119,12 +119,6 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'permit_number',
-        type=str,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
         'detonator_magazines',
         type=list,
         location='json',
@@ -159,13 +153,15 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('latitude'), data.get('longitude'),
             data.get('description'), data.get('issue_date'),
             data.get('expiry_date'),
-            data.get('permit_number'),
             data.get('issuing_inspector_party_guid'),
             data.get('mine_manager_mine_party_appt_id'),
             data.get('permittee_mine_party_appt_id'),
             data.get('is_closed'),
             data.get('closed_reason'),
             data.get('closed_timestamp'),
+            data.get('explosive_magazines', []),
+            data.get('detonator_magazines', []),
+            data.get('documents', []),
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
 
