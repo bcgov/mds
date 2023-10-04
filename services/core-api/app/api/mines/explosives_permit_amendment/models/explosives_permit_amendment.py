@@ -6,6 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import Sequence
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_document_xref import \
@@ -84,7 +85,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                description,
                issue_date,
                expiry_date,
-               permit_number,
                issuing_inspector_party_guid,
                mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id,
@@ -107,7 +107,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             application_number = ExplosivesPermitAmendment.get_next_application_number()
             received_timestamp = datetime.utcnow()
             is_closed = False
-            permit_number = None
             issue_date = None
             expiry_date = None
         if is_closed:
@@ -116,6 +115,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         else:
             closed_reason = None
             closed_timestamp = None
+
+        permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
 
         explosives_permit_amendment = cls(
             permit_guid=permit_guid,
@@ -175,6 +176,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
+               explosives_permit_id,
                permit_guid,
                now_application_guid,
                issuing_inspector_party_guid,
@@ -327,8 +329,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     )
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
-                if self.application_status == 'REC' and application_status == 'APP':
-                    self.permit_number = ExplosivesPermitAmendment.get_next_permit_number()
+
+                permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
                 create_permit_enclosed_letter()
                 create_issued_permit()
 
