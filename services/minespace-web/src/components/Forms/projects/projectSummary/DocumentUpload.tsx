@@ -13,7 +13,7 @@ import { documentNameColumn, uploadDateColumn } from "@/components/common/Docume
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";
 import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";

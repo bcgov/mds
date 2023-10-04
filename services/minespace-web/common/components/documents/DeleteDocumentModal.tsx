@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import DocumentTable from "@/components/common/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 interface DeleteDocumentModalProps {
   documents: MineDocument[];

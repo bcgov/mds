@@ -14,9 +14,8 @@ import fetchEnv from "./fetchEnv";
 import configureStore from "./store/configureStore";
 import keycloak, { keycloakInitConfig } from "./keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
-import FeatureFlagProvider from "@common/providers/featureFlags/featureFlag.provider";
+import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 
-// eslint-disable-next-line import/prefer-default-export
 export const store = configureStore();
 
 // 5 minutes before user is inactive- across tabs

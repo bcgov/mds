@@ -1,12 +1,13 @@
 /* eslint-disable */
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const threadLoader = require('thread-loader');
+const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
@@ -30,6 +31,7 @@ const PATHS = {
   build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
   commonPackage: path.join(__dirname, "common"),
+  sharedPackage: path.join(__dirname, "..", "common", "src"),
 };
 
 const BUILD_FILE_NAMES = {
@@ -42,7 +44,7 @@ const BUILD_FILE_NAMES = {
 const PATH_ALIASES = {
   "@": PATHS.src,
   "@common": PATHS.commonPackage,
-  // Put your aliases here
+  "@mds/common": `${PATHS.sharedPackage}`,
 };
 
 const envFile: any = {};
@@ -62,12 +64,7 @@ if (dotenv.parsed) {
   });
 }
 
-threadLoader.warmup({}, [
-  'style-loader',
-  'css-loader',
-  'sass-loader',
-  MiniCssExtractPlugin.loader
-]);
+threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
 
 const commonConfig = merge([
   {
@@ -87,7 +84,7 @@ const commonConfig = merge([
   },
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
-    include: [PATHS.src, PATHS.commonPackage],
+    include: [PATHS.src, PATHS.commonPackage, PATHS.sharedPackage],
     exclude: [PATHS.node_modules],
   }),
   parts.loadFonts({
@@ -106,12 +103,15 @@ const commonConfig = merge([
       // Increase file change poll interval to reduce
       // CPU usage on some operating systems.
       poll: 2500,
-      ignored: /node_modules/
-    }
-  }
+      ignored: /node_modules/,
+    },
+  },
 ]);
 
 const devConfig = merge([
+  {
+    plugins: [new ForkTsCheckerWebpackPlugin()],
+  },
   {
     output: {
       path: PATHS.build,
@@ -141,7 +141,7 @@ const devConfig = merge([
       poll: 2500,
       ignored: /node_modules/,
     },
-  }
+  },
 ]);
 
 const prodConfig = merge([

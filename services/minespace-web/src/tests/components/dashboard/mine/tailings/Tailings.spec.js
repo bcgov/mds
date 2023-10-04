@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { Tailings } from "@/components/dashboard/mine/tailings/Tailings";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
