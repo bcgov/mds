@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { DocumentTable } from "@/components/common/DocumentTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 const dispatchProps = {};

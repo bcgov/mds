@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@common/utils/helpers";
 import FileUpload from "@/components/common/FileUpload";
 import { NEW_VERSION_DOCUMENTS } from "@common/constants/API";

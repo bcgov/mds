@@ -18,7 +18,7 @@ import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@
 import * as FORM from "@/constants/forms";
 import TailingsTable from "./TailingsTable";
 import { Feature } from "@mds/common";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 const { Paragraph, Title, Text } = Typography;
 

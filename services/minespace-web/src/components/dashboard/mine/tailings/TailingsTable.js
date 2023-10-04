@@ -22,7 +22,7 @@ import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CoreTable from "@/components/common/CoreTable";
 import { Feature } from "@mds/common";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,

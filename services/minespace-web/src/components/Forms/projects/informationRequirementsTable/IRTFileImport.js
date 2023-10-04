@@ -27,7 +27,7 @@ import {
 } from "@/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 const propTypes = {
   change: PropTypes.func.isRequired,

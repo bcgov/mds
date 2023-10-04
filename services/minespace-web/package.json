@@ -44,6 +44,7 @@
     "filepond-plugin-file-validate-size": "2.2.8",
     "filepond-plugin-file-validate-type": "1.2.8",
     "filepond-polyfill": "1.0.4",
+    "fork-ts-checker-webpack-plugin": "6",
     "hoist-non-react-statics": "3.3.1",
     "jsonwebtoken": "8.5.1",
     "keycloak-js": "20.0.1",
