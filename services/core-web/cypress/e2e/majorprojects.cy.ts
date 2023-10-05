@@ -1,3 +1,4 @@
+import 'cypress-file-upload';
 describe("Major Projects", () => {
     beforeEach(() => {
         cy.login();
@@ -12,5 +13,20 @@ describe("Major Projects", () => {
             .find('button')
             .contains('Open')
             .click({ force: true }); // The force option is needed because the button is hidden in the DOM
+
+        // Find the row with "Project description", then find the "View" button within that row and click on it.
+        cy.get('tbody.ant-table-tbody')
+            .contains('td', 'Project description')
+            .siblings() // get the sibling columns
+            .find('button:contains("View")') // find the button with text "View"
+            .click();
+        // Directly target the button by its ID and click on it.
+        cy.get('#project-summary-submit').click({ force: true });
+
+        // Access the file input element and attach a file from the fixtures directory.
+        cy.get('input[type="file"]').attachFile('dummy.pdf');
+        cy.get('label[id^="filepond--drop-label-"]').invoke('attr', 'for').then((inputId) => {
+            cy.get(`input[id="${inputId}"]`).attachFile('dummy.pdf');
+        });
     });
 });
