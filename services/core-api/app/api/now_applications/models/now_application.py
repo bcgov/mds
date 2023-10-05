@@ -188,7 +188,7 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)',
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentIdentityXref.deleted_ind==False)',
         order_by='asc(NOWApplicationDocumentIdentityXref.create_timestamp)')
 
     contacts = db.relationship(

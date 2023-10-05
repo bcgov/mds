@@ -83,20 +83,30 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     @requires_role_edit_permit
     def delete(self, application_guid, mine_document_guid):
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-        if not mine_document or application_guid != str(
-                mine_document.now_application_document_xref.now_application.now_application_guid):
-            raise NotFound('No mine_document found for this application guid.')
+        now_app_doc_xref_exists = mine_document.now_application_document_xref is not None
+        now_app_doc_id_xref_exists = mine_document.now_application_document_identity_xref is not None
 
-        if mine_document.now_application_document_xref.is_final_package:
+        if not mine_document or (now_app_doc_xref_exists 
+                                 and application_guid != str(
+                                     mine_document.now_application_document_xref.now_application.now_application_guid)):
+             raise NotFound('No mine_document found for this application guid.')
+
+        if (now_app_doc_xref_exists and mine_document.now_application_document_xref.is_final_package) or(
+            now_app_doc_id_xref_exists and mine_document.now_application_document_identity_xref.is_final_package):
             raise BadRequest(
                 'You cannot remove a document that is a part of the Final Application Package.')
-        elif mine_document.now_application_document_xref.is_referral_package:
+        elif (now_app_doc_xref_exists and mine_document.now_application_document_xref.is_referral_package) or (
+            now_app_doc_id_xref_exists and mine_document.now_application_document_identity_xref.is_referral_package):
             raise BadRequest('You cannot remove a document that is a part of the Referral Package.')
-        elif mine_document.now_application_document_xref.is_consultation_package:
+        elif (now_app_doc_xref_exists and mine_document.now_application_document_xref.is_consultation_package) or (
+            now_app_doc_id_xref_exists and mine_document.now_application_document_identity_xref.is_consultation_package):
             raise BadRequest(
                 'You cannot remove a document that is a part of the Consultation Package.')
 
-        mine_document.now_application_document_xref.delete(True)
+        if now_app_doc_xref_exists:
+            mine_document.now_application_document_xref.delete(True)
+        elif now_app_doc_id_xref_exists:
+            mine_document.now_application_document_identity_xref.delete(True)
 
         return None, 204
 
