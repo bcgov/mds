@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -34,32 +34,37 @@ import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 
 interface DocumentTableProps {
   documents: MineDocument[];
-  isLoaded: boolean;
-  isViewOnly: boolean;
-  canArchiveDocuments: boolean;
-  showVersionHistory: boolean;
-  enableBulkActions: boolean;
-  documentParent: string;
-  view: string;
-  openModal: (arg) => void;
+  isLoaded?: boolean;
+  isViewOnly?: boolean;
+  canArchiveDocuments?: boolean;
+  showVersionHistory?: boolean;
+  enableBulkActions?: boolean;
+  documentParent?: string;
+  view?: "standard" | "minimal";
+  openModal?: (arg) => void;
   openDocument: any;
-  closeModal: () => void;
+  closeModal?: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
-  onArchivedDocuments: (docs?: MineDocument[]) => void;
-  onReplaceDocument: (document: MineDocument) => void;
+  archiveMineDocuments?: (mineGuid: string, mineDocumentGuids: string[]) => void;
+  onArchivedDocuments?: (docs?: MineDocument[]) => void;
+  onReplaceDocument?: (document: MineDocument) => void;
   documentColumns: ColumnType<unknown>[];
-  additionalColumns: ColumnType<MineDocument>[];
-  defaultSortKeys: string[];
-  excludedColumnKeys: string[];
-  additionalColumnProps: { key: string; colProps: any }[];
+  additionalColumns?: ColumnType<MineDocument>[];
+  defaultSortKeys?: string[];
+  excludedColumnKeys?: string[];
+  additionalColumnProps?: { key: string; colProps: any }[];
   userRoles: string[];
-  handleRowSelectionChange: (arg1: MineDocument[]) => void;
+  handleRowSelectionChange?: (arg1: MineDocument[]) => void;
   replaceAlertMessage?: string;
 }
 
+const defaultProps = {
+  openModal: () => {},
+  closeModal: () => {},
+};
+
 // eslint-disable-next-line @typescript-eslint/no-shadow
-export const DocumentTable = ({
+export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -395,6 +400,8 @@ export const DocumentTable = ({
     </div>
   );
 };
+
+DocumentTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),

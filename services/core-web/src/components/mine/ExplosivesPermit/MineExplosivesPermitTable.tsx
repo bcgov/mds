@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { Badge, Tooltip, Button, Menu, Popconfirm, Dropdown } from "antd";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { WarningOutlined } from "@ant-design/icons";
-import { formatDate, dateSorter } from "@common/utils/helpers";
+import { Badge, Button, Dropdown, Popconfirm, Tooltip, Menu } from "antd";
+import { EyeOutlined, WarningOutlined } from "@ant-design/icons";
+import { dateSorter, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import {
@@ -15,9 +15,12 @@ import DocumentLink from "@/components/common/DocumentLink";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { IExplosivesPermit } from "@mds/common";
+import { IExplosivesPermit, isFeatureEnabled, Feature } from "@mds/common";
 import { ColumnType } from "antd/lib/table";
 import moment from "moment-timezone";
+import { ITableAction } from "@/components/common/CoreTableCommonColumns";
+import VioletEditIcon from "@/assets/icons/violet-edit";
+import ActionMenu from "@/components/common/ActionMenu";
 
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
@@ -35,6 +38,7 @@ interface MineExplosivesPermitTableProps {
   ) => void;
   handleOpenViewMagazineModal: (event, record: IExplosivesPermit, type: string) => void;
   handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
+  handleOpenViewExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
 
 const transformRowData = (permits: IExplosivesPermit[]) => {
@@ -56,6 +60,8 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
   isPermitTab,
   explosivesPermitDocumentTypeOptionsHash,
   explosivesPermitStatusOptionsHash,
+  handleOpenViewMagazineModal,
+  handleOpenViewExplosivesPermitModal,
   ...props
 }) => {
   const columns: ColumnType<IExplosivesPermit>[] = [
@@ -204,7 +210,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         <div
           title="Explosive Quantity"
           className="underline"
-          onClick={(event) => props.handleOpenViewMagazineModal(event, record, "EXP")}
+          onClick={(event) => handleOpenViewMagazineModal(event, record, "EXP")}
         >
           {text || "0"} kg
         </div>
@@ -223,19 +229,19 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         <div
           title="Detonator Quantity"
           className="underline"
-          onClick={(event) => props.handleOpenViewMagazineModal(event, record, "DET")}
+          onClick={(event) => handleOpenViewMagazineModal(event, record, "DET")}
         >
           {text || "0"} units
         </div>
       ),
       sorter: false,
     },
-
     {
       title: "",
+      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
-      render: (record) => {
+      render: (text, record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
         const hasDocuments =
@@ -243,97 +249,113 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
             ["LET", "PER"].includes(doc.explosives_permit_document_type_code)
           )?.length > 0;
         const isCoreSource = record.originating_system === "Core";
-        const approvedMenu = (
-          <Menu>
-            <Menu.Item key="0">
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record)
-                }
-              >
-                <img
-                  alt="document"
-                  className="padding-sm"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Edit Documents
-              </button>
-            </Menu.Item>
-            <Menu.Item key="edit">
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) => props.handleOpenExplosivesPermitCloseModal(event, record)}
-              >
-                <img
-                  alt="document"
-                  className="padding-sm"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Close Explosives Permit
-              </button>
-            </Menu.Item>
-          </Menu>
-        );
-        const menu = (
-          <Menu>
-            {!isProcessed && (
-              <Menu.Item key="process">
-                <button
-                  type="button"
-                  className="full add-permit-dropdown-button"
-                  onClick={(event) => props.handleOpenExplosivesPermitDecisionModal(event, record)}
-                >
+        const approvedMenu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+          ? [
+              {
+                key: "view",
+                label: "View",
+                clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
+                icon: <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />,
+              },
+              {
+                key: "0",
+                label: "Edit Documents",
+                clickFunction: (event, record) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: <VioletEditIcon className="padding-sm" />,
+              },
+              {
+                key: "edit",
+                label: "Edit Permit",
+                clickFunction: (event, record) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: <VioletEditIcon className="padding-sm" />,
+              },
+            ]
+          : [
+              {
+                key: "0",
+                label: "Edit Documents",
+                clickFunction: (event, record) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: <VioletEditIcon className="padding-sm" />,
+              },
+              {
+                key: "edit",
+                label: "Edit Permit",
+                clickFunction: (event, record) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: <VioletEditIcon className="padding-sm" />,
+              },
+            ];
+        const menu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+          ? [
+              ...(!isProcessed
+                ? [
+                    {
+                      key: "view",
+                      label: "View",
+                      clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
+                      icon: <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />,
+                    },
+                    {
+                      key: "process",
+                      label: "Process",
+                      clickFunction: (event) =>
+                        props.handleOpenExplosivesPermitDecisionModal(event, record),
+                      icon: <VioletEditIcon className="padding-sm" />,
+                    },
+                    {
+                      key: "edit",
+                      label: "Edit",
+                      clickFunction: (event) =>
+                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                      icon: <VioletEditIcon className="padding-sm" />,
+                    },
+                  ]
+                : []),
+              {
+                key: "0",
+                label: "Edit Documents",
+                clickFunction: (event) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: (
                   <img
                     alt="document"
                     className="padding-sm"
                     src={EDIT_OUTLINE_VIOLET}
                     style={{ paddingRight: "15px" }}
                   />
-                  Approve
-                </button>
-              </Menu.Item>
-            )}
-            {!isProcessed && (
-              <Menu.Item key="edit">
-                <button
-                  type="button"
-                  className="full add-permit-dropdown-button"
-                  onClick={(event) => props.handleOpenExplosivesPermitStatusModal(event, record)}
-                >
-                  <img
-                    alt="document"
-                    className="padding-sm"
-                    src={EDIT_OUTLINE_VIOLET}
-                    style={{ paddingRight: "15px" }}
-                  />
-                  Withdraw/Reject
-                </button>
-              </Menu.Item>
-            )}
-            <Menu.Item key="0">
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record)
-                }
-              >
-                <img
-                  alt="document"
-                  className="padding-sm"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Edit
-              </button>
-            </Menu.Item>
-          </Menu>
-        );
+                ),
+              },
+            ]
+          : [
+              ...(!isProcessed
+                ? [
+                    {
+                      key: "process",
+                      label: "Process",
+                      clickFunction: (event) =>
+                        props.handleOpenExplosivesPermitDecisionModal(event, record),
+                      icon: <VioletEditIcon className="padding-sm" />,
+                    },
+                    {
+                      key: "edit",
+                      label: "Edit",
+                      clickFunction: (event) =>
+                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                      icon: <VioletEditIcon className="padding-sm" />,
+                    },
+                  ]
+                : []),
+              {
+                key: "0",
+                label: "Edit Documents",
+                clickFunction: (event) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: <VioletEditIcon className="padding-sm" />,
+              },
+            ];
         const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
           (record.application_status !== "APP" && !isPermitTab) || (isApproved && isPermitTab);
@@ -341,40 +363,52 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           <div className="btn--middle flex">
             {isApproved && !hasDocuments && isCoreSource && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
-                <Button
-                  type="default"
-                  className="full-mobile"
-                  htmlType="submit"
-                  onClick={(event) => props.handleOpenExplosivesPermitDecisionModal(event, record)}
-                >
-                  Re-generate docs
-                </Button>
+                {!isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && (
+                  <Button
+                    type="text"
+                    className="full-mobile"
+                    htmlType="submit"
+                    onClick={(event) =>
+                      props.handleOpenExplosivesPermitDecisionModal(event, record)
+                    }
+                  >
+                    Re-generate docs
+                  </Button>
+                )}
               </AuthorizationWrapper>
             )}
             {showActions && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
-                <Dropdown
-                  className="full-height full-mobile"
-                  overlay={isApproved ? approvedMenu : menu}
-                  placement="bottomLeft"
-                >
-                  <Button type="default" className="permit-table-button">
-                    <div className="padding-sm">
-                      <img
-                        className="padding-sm--right icon-svg-filter"
-                        src={EDIT}
-                        alt="Add/Edit"
-                      />
-                      {isApproved ? "Edit" : "Process/Edit"}
-                      <img
-                        className="padding-sm--right icon-svg-filter"
-                        src={CARAT}
-                        alt="Menu"
-                        style={{ paddingLeft: "5px" }}
-                      />
-                    </div>
-                  </Button>
-                </Dropdown>
+                {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
+                  <ActionMenu
+                    record={record}
+                    actionItems={isApproved ? approvedMenu : menu}
+                    category="ESUP"
+                  />
+                ) : (
+                  <Dropdown
+                    className="full-height full-mobile"
+                    menu={isApproved ? { items: approvedMenu } : { items: menu }}
+                    placement="bottomLeft"
+                  >
+                    <Button className="permit-table-button">
+                      <div className="padding-sm">
+                        <img
+                          className="padding-sm--right icon-svg-filter"
+                          src={EDIT}
+                          alt="Add/Edit"
+                        />
+                        {isApproved ? "Edit" : "Process/Edit"}
+                        <img
+                          className="padding-sm--right icon-svg-filter"
+                          src={CARAT}
+                          alt="Menu"
+                          style={{ paddingLeft: "5px" }}
+                        />
+                      </div>
+                    </Button>
+                  </Dropdown>
+                )}
               </AuthorizationWrapper>
             )}
             {showDelete && (

@@ -6,6 +6,7 @@ export enum Feature {
   DOCUMENTS_REPLACE_FILE = "major_project_replace_file",
   MAJOR_PROJECT_ALL_DOCUMENTS = "major_project_all_documents",
   MAJOR_PROJECT_DECISION_PACKAGE = "major_project_decision_package",
+  ESUP_PERMIT_AMENDMENT = "esup_permit_amendment",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
 }
