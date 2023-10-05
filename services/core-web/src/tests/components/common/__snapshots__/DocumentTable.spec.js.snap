@@ -2,8 +2,10 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <DocumentTable
+  closeModal={[Function]}
   documents={Array []}
   isViewOnly={true}
+  openModal={[Function]}
   removeDocument={[MockFunction]}
 />
 `;
