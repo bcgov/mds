@@ -16,6 +16,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.now_submissions.models.document import Document
 
 
 class NOWApplicationDocumentUploadResource(Resource, UserMixin):
@@ -83,8 +84,8 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     @requires_role_edit_permit
     def delete(self, application_guid, mine_document_guid):
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-        now_app_doc_xref_exists = mine_document.now_application_document_xref is not None
-        now_app_doc_id_xref_exists = mine_document.now_application_document_identity_xref is not None
+        now_app_doc_xref_exists = mine_document and mine_document.now_application_document_xref is not None
+        now_app_doc_id_xref_exists = mine_document and mine_document.now_application_document_identity_xref is not None
 
         if not mine_document or (now_app_doc_xref_exists 
                                  and application_guid != str(
@@ -106,6 +107,13 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         if now_app_doc_xref_exists:
             mine_document.now_application_document_xref.delete(True)
         elif now_app_doc_id_xref_exists:
+            now_submission_document = Document.find_by_messageid_and_filename(
+                mine_document.now_application_document_identity_xref.messageid,
+                mine_document.now_application_document_identity_xref.filename
+            )
+
+            if now_submission_document is not None:
+                now_submission_document.delete(True)
             mine_document.now_application_document_identity_xref.delete(True)
 
         return None, 204
