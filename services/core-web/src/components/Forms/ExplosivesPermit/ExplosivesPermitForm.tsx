@@ -196,9 +196,9 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
               onChange={handleRadioChange}>
                   <Radio value={1}>Add an existing explosive storage and Use permit</Radio><br/>
                   <Radio value={2}>Create new explosive storage and use permit</Radio><br/>
-                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
+                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio><br/>
             </Radio.Group>
-          </div>
+          </div><br/>
         </div>
         <div>
           {isAmend && (
