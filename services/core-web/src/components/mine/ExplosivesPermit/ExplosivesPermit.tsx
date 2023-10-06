@@ -91,7 +91,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
-        // title: "Add Explosives Storage & Use Permit",
         title: "Add Permit",
         initialValues,
         mineGuid,

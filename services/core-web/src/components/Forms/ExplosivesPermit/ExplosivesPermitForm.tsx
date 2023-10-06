@@ -386,13 +386,13 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
             />
           </Form.Item>
           <Form.Item>
-              <Field
+            <Field
               id="description"
               name="description"
               label="Other Information"
               component={renderConfig.AUTO_SIZE_FIELD}
               disabled={disabled}
-              />
+            />
           </Form.Item>
           <h4>Storage Details</h4>
           <Row gutter={6}>
