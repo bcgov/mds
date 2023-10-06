@@ -117,8 +117,8 @@ class DocumentTemplate(Base, AuditMixin):
                             raise Exception('Image data is not a valid Base64 string')
 
                         image_bytes = io.BytesIO(image_data)
-                        width = Inches(image['width']) if image['width'] else None
-                        height = Inches(image['height']) if image['height'] else None
+                        width = Inches(image['width']) if image['width'] else Inches(7.5)
+                        height = Inches(image['height']) if image['height'] else Inches(11)
                         paragraph.clear()
                         run = paragraph.add_run()
                         run.add_picture(image_bytes, width=width, height=height)
