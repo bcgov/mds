@@ -169,7 +169,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     <div>
       To make changes to an existing explosive storage and use permit,\u2022 follow these steps:
       <br />
-      <ul>
+      <ul className="landing-list">
         <li>Open the permit that you want to amend from the applications page of the mine in CORE.</li>
         <li>Click on the “Amend Permit” button at the top right corner of the permit details page.</li>
         <li>Fill out the amendment form with the required information and documents.</li>
@@ -191,23 +191,23 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           <h4 className="uppercase">DEFAULT TO "ADD EXISTING" FROM PERMIT PAGE / "CREATE NEW" FROM APPLICATION PAGE</h4><br/>
           <Typography.Text>Select an action below to get started:</Typography.Text>
           <div  className="landing-list">
-            <Radio.Group
+            <Radio.Group className="vertical-radio-group"
               value={radioSelection}
               onChange={handleRadioChange}>
-                  <Radio value={1}>Add an existing explosive storage and Use permit</Radio><br/>
-                  <Radio value={2}>Create new explosive storage and use permit</Radio><br/>
-                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio><br/>
+                  <Radio value={1}>Add an existing explosive storage and Use permit</Radio>
+                  <Radio value={2}>Create new explosive storage and use permit</Radio>
+                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
             </Radio.Group>
-          </div><br/>
+          </div>
         </div>
-        <div>
+        <div style={{ paddingTop: "16px" }}>
           {isAmend && (
             <Alert
               message="Amend an existing permit"
               description={amendDescriptionListElement}
               type="info"
               showIcon
-              />
+            />
           )}
         </div>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>

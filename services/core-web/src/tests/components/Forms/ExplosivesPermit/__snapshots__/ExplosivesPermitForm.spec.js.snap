@@ -1,258 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[MockFunction]}
->
-  <br />
-  <Row
-    gutter={48}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <h4>
-        Explosives Permit Details
-      </h4>
-      <Row
-        gutter={6}
-      >
-        <Col
-          span={24}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              data={Array []}
-              disabled={false}
-              id="permit_guid"
-              label="Mines Act Permit*"
-              name="permit_guid"
-              placeholder="Select a Permit"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-      </Row>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          disabled={false}
-          id="now_application_guid"
-          label="Notice of Work Number"
-          name="now_application_guid"
-          placeholder="Select a NoW"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <Row
-        gutter={6}
-      >
-        <Col
-          span={12}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              data={Array []}
-              disabled={false}
-              id="mine_manager_mine_party_appt_id"
-              label="Mine Manager*"
-              name="mine_manager_mine_party_appt_id"
-              partyLabel="Mine Manager"
-              placeholder="Select Mine Manager"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-        <Col
-          span={12}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              data={Array []}
-              disabled={false}
-              id="permittee_mine_party_appt_id"
-              label="Permittee*"
-              name="permittee_mine_party_appt_id"
-              placeholder="Select Permittee"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-      </Row>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          disabled={false}
-          id="application_date"
-          label="Application Date*"
-          name="application_date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          disabled={false}
-          id="description"
-          label="Other Information"
-          name="description"
-        />
-      </FormItem>
-      <h4>
-        Storage Details
-      </h4>
-      <Row
-        gutter={6}
-      >
-        <Col
-          span={12}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              id="latitude"
-              label="Latitude*"
-              name="latitude"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-        <Col
-          span={12}
-        >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              id="longitude"
-              label="Longitude*"
-              name="longitude"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                  [Function],
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
-        </Col>
-      </Row>
-      <ExplosivesPermitMap
-        pin={
-          Array [
-            undefined,
-            undefined,
-          ]
-        }
-      />
-      <br />
-      <Connect(DocumentCategoryForm)
-        categories={Array []}
-        infoText="Please upload any documents that support this explosives storage and use permit. Documents uploaded here will be viewable by Minespace users."
-        isProcessed={false}
-        mineGuid="523642546"
-      />
-    </Col>
-    <Col
-      className="border--left--layout"
-      md={12}
-      sm={24}
-    >
-      <br />
-      <MagazineForm
-        isProcessed={false}
-      />
-    </Col>
-  </Row>
-  <div
-    className="right center-mobile"
-    style={
-      Object {
-        "paddingTop": "14px",
-      }
-    }
+<Fragment>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[Function]}
   >
     <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
+      level={3}
     >
-      <Button
-        className="full-mobile"
-        type="default"
-      >
-        Cancel
-      </Button>
+      Add Permit
     </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
+    <div>
+      <ForwardRef>
+        Let's get your permit started, in CORE you can...
+      </ForwardRef>
+      <div>
+        <ForwardRef>
+          <ul
+            className="landing-list"
+          >
+            <li>
+              <ForwardRef(Text)
+                strong={true}
+              >
+                Add an existing permit 
+              </ForwardRef(Text)>
+              <ForwardRef(Text)>
+                that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your past permits and activities.
+              </ForwardRef(Text)>
+            </li>
+            <li>
+              <ForwardRef(Text)
+                strong={true}
+              >
+                Create a new permit 
+              </ForwardRef(Text)>
+              <ForwardRef(Text)>
+                this is meant for new explosive storage and use permits.
+              </ForwardRef(Text)>
+            </li>
+            <li>
+              <ForwardRef(Text)
+                strong={true}
+              >
+                Amend an existing permit 
+              </ForwardRef(Text)>
+              <ForwardRef(Text)>
+                that has already been added to CORE and Minespace. This will allow you to make changes to your permit conditions, such as the dates, amount of explosives.
+              </ForwardRef(Text)>
+            </li>
+          </ul>
+        </ForwardRef>
+      </div>
+    </div>
+    <div
+      className="landing-list"
     >
-      Submit
-    </Button>
-  </div>
-</Form>
+      <h4
+        className="uppercase"
+      >
+        DEFAULT TO "ADD EXISTING" FROM PERMIT PAGE / "CREATE NEW" FROM APPLICATION PAGE
+      </h4>
+      <br />
+      <ForwardRef(Text)>
+        Select an action below to get started:
+      </ForwardRef(Text)>
+      <div
+        className="landing-list"
+      >
+        <Memo([object Object])
+          className="vertical-radio-group"
+          onChange={[Function]}
+          value={2}
+        >
+          <Radio
+            value={1}
+          >
+            Add an existing explosive storage and Use permit
+          </Radio>
+          <Radio
+            value={2}
+          >
+            Create new explosive storage and use permit
+          </Radio>
+          <Radio
+            value={3}
+          >
+            Amend an existing explosive storage and use permit
+          </Radio>
+        </Memo([object Object])>
+      </div>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingTop": "16px",
+        }
+      }
+    />
+    <div
+      className="right center-mobile"
+      style={
+        Object {
+          "paddingTop": "14px",
+        }
+      }
+    >
+      <ForwardRef
+        cancelText="No"
+        okText="Yes"
+        onConfirm={[MockFunction]}
+        placement="topRight"
+        title="Are you sure you want to cancel?"
+      >
+        <Button
+          className="full-mobile"
+        >
+          Cancel
+        </Button>
+      </ForwardRef>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        type="primary"
+      >
+        Next
+      </Button>
+    </div>
+  </Form>
+</Fragment>
 `;
