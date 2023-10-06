@@ -100,7 +100,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         isPermitTab: permitTab,
         inspectors,
       },
-      content: modalConfig.ESUP_PERMIT_MODAL,
+      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
     });
   };
