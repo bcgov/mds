@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import {
@@ -11,7 +11,7 @@ import {
 } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert, Typography, List, Radio } from "antd";
+import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
   USER_ROLES,
@@ -131,56 +131,39 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
 
   const handleRadioChange = (e) => {
     setRadioSelection(e.target.value);
-    setIsHistoric(e.target.value == 1); //remove this and try
+    setIsHistoric(e.target.value == 1);
     setIsAmend(e.target.value==3);
   };
-
-  // useEffect(() => {}, [isHistoric]);
 
   const handleOpenAddExplosivesPermitModal = () => {
     setParentView(false)
   }
 
-  
-  // const descriptionListElement = (
-  //   <ul>
-  //           <li>
-  //             <Typography.Text strong> * Add an existing permit </Typography.Text>
-  //             <Typography.Text>
-  //               that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your
-  //               past permits and activities.
-  //             </Typography.Text>
-  //           </li>
-  //           <li>
-  //             <Typography.Text strong> * Create a new permit </Typography.Text>
-  //             <Typography.Text>this is meant for new explosive storage and use permits.</Typography.Text>
-  //           </li>
-  //           <li>
-  //             <Typography.Text strong> * Amend an existing permit </Typography.Text>
-  //             <Typography.Text>
-  //               that has already been added to CORE and Minespace. This will allow you to make changes to your permit
-  //               conditions, such as the dates, amount of explosives.</Typography.Text>
-  //           </li>
-  //         </ul>
-  // );
   const descriptionListElement = (
     <div>
-      <ul>
-        <li>
-          <b>- Add an existing permit</b> that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your
-            past permits and activities.
-        </li>
-        <li>
-          <b>- Create a new permit</b> this is meant for new explosive storage and use permits.
-        </li>
-        <li>
-          <b>- Amend an existing permit</b> that has already been added to CORE and Minespace. This will allow you to make changes to your permit
-            conditions, such as the dates, amount of explosives.
-        </li>
-      </ul>
+      <Typography.Paragraph>
+        <ul className="landing-list">
+          <li>
+            <Typography.Text strong>Add an existing permit </Typography.Text>
+            <Typography.Text>
+              that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your
+              past permits and activities.
+            </Typography.Text>
+          </li>
+          <li>
+            <Typography.Text strong>Create a new permit </Typography.Text>
+            <Typography.Text>this is meant for new explosive storage and use permits.</Typography.Text>
+          </li>
+          <li>
+            <Typography.Text strong>Amend an existing permit </Typography.Text>
+            <Typography.Text>
+              that has already been added to CORE and Minespace. This will allow you to make changes to your permit
+              conditions, such as the dates, amount of explosives.</Typography.Text>
+          </li>
+        </ul>
+      </Typography.Paragraph>
     </div>
   );
-  
 
   const amendDescriptionListElement = (
     <div>
@@ -204,21 +187,17 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           <Typography.Paragraph>Let's get your permit started, in CORE you can...</Typography.Paragraph>
           {descriptionListElement}
         </div>
-        <div>
-          
-          <h4 className="uppercase">Default to "add existing" from permit page / "Create New" from application page</h4>
-          {/* <Typography.Text className="h1.ant-typography">Default to "add existing" from permit page / "Create New" from application page</Typography.Text> */}
+        <div  className="landing-list">
+          <h4 className="uppercase">DEFAULT TO "ADD EXISTING" FROM PERMIT PAGE / "CREATE NEW" FROM APPLICATION PAGE</h4><br/>
           <Typography.Text>Select an action below to get started:</Typography.Text>
-          <div>
-          <Radio.Group
-            value={radioSelection}
-            onChange={handleRadioChange}>
-              <div>
-              <Radio value={1}>Add an existing explosive storage and Use permit</Radio><br/>
-              <Radio value={2}>Create new explosive storage and use permit</Radio><br/>
-              <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
-              </div>
-          </Radio.Group>
+          <div  className="landing-list">
+            <Radio.Group
+              value={radioSelection}
+              onChange={handleRadioChange}>
+                  <Radio value={1}>Add an existing explosive storage and Use permit</Radio><br/>
+                  <Radio value={2}>Create new explosive storage and use permit</Radio><br/>
+                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
+            </Radio.Group>
           </div>
         </div>
         <div>
