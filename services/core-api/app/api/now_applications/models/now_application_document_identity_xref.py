@@ -3,13 +3,13 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 from app.api.mines.documents.models.mine_document import MineDocument
 
 
-class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
+class NOWApplicationDocumentIdentityXref(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'now_application_document_identity_xref'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
@@ -53,3 +53,7 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
     @classmethod
     def find_by_guid(cls, guid):
         return cls.query.filter_by(now_application_document_xref_guid=guid).one_or_none()
+    
+    def delete(self, commit=True):
+        self.mine_document.delete(commit)
+        super(NOWApplicationDocumentIdentityXref, self).delete(commit)
