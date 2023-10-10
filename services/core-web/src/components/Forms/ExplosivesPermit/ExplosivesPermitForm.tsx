@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import {
@@ -11,7 +11,7 @@ import {
 } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
   USER_ROLES,
@@ -46,6 +46,8 @@ import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 import * as Permission from "@/constants/permissions";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
 
 interface StateProps {
   permits: IPermit[];
@@ -117,13 +119,119 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     "now_application_guid"
   );
 
-  const isHistoric = !initialValues?.explosives_permit_id && props.isPermitTab;
+  const [isHistoric, setIsHistoric] = useState<boolean>(!initialValues?.explosives_permit_id && props.isPermitTab);
   const isESUP = props.userRoles.includes(USER_ROLES[Permission.EDIT_EXPLOSIVES_PERMITS]);
   // eslint-disable-next-line no-unused-vars
   const hasEditPermission = isESUP;
   // TODO: See MDS-5201- editing currently disabled
   const disabled = isProcessed; // isProcessed && !hasEditPermission;
+
+  const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
+  const [parentView, setParentView] = useState<boolean>(true);
+  const [isAmend, setIsAmend] = useState<boolean>(false);
+  const { isFeatureEnabled } = useFeatureFlag();
+
+  const handleRadioChange = (e) => {
+    setRadioSelection(e.target.value);
+    setIsHistoric(e.target.value == 1);
+    setIsAmend(e.target.value==3);
+  };
+
+  const handleOpenAddExplosivesPermitModal = () => {
+    setParentView(false)
+  }
+
+  const descriptionListElement = (
+    <div>
+      <Typography.Paragraph>
+        <ul className="landing-list">
+          <li>
+            <Typography.Text strong>Add an existing permit </Typography.Text>
+            <Typography.Text>
+              that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your
+              past permits and activities.
+            </Typography.Text>
+          </li>
+          <li>
+            <Typography.Text strong>Create a new permit </Typography.Text>
+            <Typography.Text>this is meant for new explosive storage and use permits.</Typography.Text>
+          </li>
+          <li>
+            <Typography.Text strong>Amend an existing permit </Typography.Text>
+            <Typography.Text>
+              that has already been added to CORE and Minespace. This will allow you to make changes to your permit
+              conditions, such as the dates, amount of explosives.</Typography.Text>
+          </li>
+        </ul>
+      </Typography.Paragraph>
+    </div>
+  );
+
+  const amendDescriptionListElement = (
+    <div>
+      To make changes to an existing explosive storage and use permit, follow these steps:
+      <br />
+      <ul className="landing-list">
+        <li>Open the permit that you want to amend from the applications page of the mine in CORE.</li>
+        <li>Click on the “Amend Permit” button at the top right corner of the permit details page.</li>
+        <li>Fill out the amendment form with the required information and documents.</li>
+        <li>Complete the amendment and issue the permit.</li>
+      </ul>
+    </div>
+  );
+
   return (
+    isFeatureEnabled(Feature.ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
+    <>
+      <Form layout="vertical">
+        <Typography.Title level={3}>Add Permit</Typography.Title>
+        <div>
+          <Typography.Paragraph>Let's get your permit started, in CORE you can...</Typography.Paragraph>
+          {descriptionListElement}
+        </div>
+        <div  className="landing-list">
+          <h4 className="uppercase">DEFAULT TO "ADD EXISTING" FROM PERMIT PAGE / "CREATE NEW" FROM APPLICATION PAGE</h4><br/>
+          <Typography.Text>Select an action below to get started:</Typography.Text>
+          <div  className="landing-list">
+            <Radio.Group className="vertical-radio-group"
+              value={radioSelection}
+              onChange={handleRadioChange}>
+                  <Radio value={1}>Add an existing explosive storage and use permit</Radio>
+                  <Radio value={2}>Create new explosive storage and use permit</Radio>
+                  <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
+            </Radio.Group>
+          </div>
+        </div>
+        <div style={{ paddingTop: "16px" }}>
+          {isAmend && (
+            <Alert
+              message="Amend an existing permit"
+              description={amendDescriptionListElement}
+              type="info"
+              showIcon
+            />
+          )}
+        </div>
+        <div className="right center-mobile" style={{ paddingTop: "14px" }}>
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure you want to cancel?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={props.closeModal}
+          >
+            <Button className="full-mobile">
+              Cancel
+            </Button>
+          </Popconfirm>
+          <Button disabled={isAmend} type="primary" onClick={(e) => handleOpenAddExplosivesPermitModal()}>
+            Next
+          </Button>
+        </div>
+      </Form>
+    </>)
+    :
+    (<>
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {isHistoric && (
         <Alert
@@ -387,6 +495,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
         </Button>
       </div>
     </Form>
+    </>)
   );
 };
 

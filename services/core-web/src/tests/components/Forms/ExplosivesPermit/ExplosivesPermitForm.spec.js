@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ExplosivesPermitForm } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
+import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 
@@ -32,7 +33,15 @@ beforeEach(() => {
 
 describe("ExplosivesPermitForm", () => {
   it("renders properly", () => {
-    const component = shallow(<ExplosivesPermitForm {...props} />);
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <ExplosivesPermitForm {...props} />
+      </FeatureFlagContext.Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });
