@@ -15,6 +15,12 @@ import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import {
+  documentNameColumn,
+  removeFunctionColumn,
+  uploadDateColumn,
+} from "@/components/common/DocumentColumns";
+import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -53,6 +59,8 @@ export class ReclamationInvoiceForm extends Component {
     }));
   };
 
+  // TODO: this function will have to remove the file through a BE call
+  // before it can be used with the Actions menu. Currently only on submit, and unlikely they're deleted
   onRemoveExistingFile = (event, mineDocumentGuid) => {
     event.preventDefault();
     this.setState((prevState) => ({
@@ -80,10 +88,18 @@ export class ReclamationInvoiceForm extends Component {
       []
     );
 
+    const documentColumns = [
+      documentNameColumn(),
+      renderTextColumn("category", "Category"),
+      uploadDateColumn(),
+      removeFunctionColumn(this.onRemoveExistingFile),
+    ];
+
     return (
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit((values) => {
+          // TODO: move document deletion to BE call in onRemoveExistingFile
           // Create the invoice's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.invoice.documents || [];
           const newDocuments = currentDocuments
@@ -157,7 +173,8 @@ export class ReclamationInvoiceForm extends Component {
           <Col xs={24}>
             <DocumentTable
               documents={documentTableRecords}
-              removeDocument={this.onRemoveExistingFile}
+              documentColumns={documentColumns}
+              excludedColumnKeys={["actions"]}
             />
           </Col>
         </Row>
