@@ -179,6 +179,7 @@ exports[`ExplosivesPermit renders properly 1`] = `
     handleOpenExplosivesPermitCloseModal={[Function]}
     handleOpenExplosivesPermitDecisionModal={[Function]}
     handleOpenExplosivesPermitStatusModal={[Function]}
+    handleOpenViewExplosivesPermitModal={[Function]}
     handleOpenViewMagazineModal={[Function]}
     isLoaded={true}
     isPermitTab={false}

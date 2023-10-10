@@ -14,6 +14,7 @@ exports[`ModalWrapper renders properly 1`] = `
   >
     <ForwardRef
       cancelText="No"
+      className="modal__close"
       okText="Yes"
       onConfirm={[Function]}
       placement="bottomRight"
@@ -21,26 +22,13 @@ exports[`ModalWrapper renders properly 1`] = `
     >
       <Button
         className="modal__close"
-        ghost={true}
+        type="text"
       >
         <ForwardRef(CloseOutlined)
           className="icon-sm"
         />
       </Button>
     </ForwardRef>
-    <Connect(LoadingBar)
-      scope="modal"
-      style={
-        Object {
-          "backgroundColor": "#5e46a1",
-          "height": "3px",
-          "left": 0,
-          "position": "absolute",
-          "top": "54px",
-          "zIndex": 100,
-        }
-      }
-    />
     <Connect(AddPartyComponentWrapper)
       childProps={
         Object {
