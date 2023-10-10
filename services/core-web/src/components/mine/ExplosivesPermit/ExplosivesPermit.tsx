@@ -200,8 +200,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
       .then(() => {
         const initialValues = {};
-        props.documentContextTemplate.document_template.form_spec.map(
-          // eslint-disable-next-line no-return-assign
+        props.documentContextTemplate.document_template.form_spec.forEach(
           (item) => (initialValues[item.id] = item["context-value"])
         );
         return props.openModal({
