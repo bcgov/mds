@@ -46,7 +46,8 @@ import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 import * as Permission from "@/constants/permissions";
-import { UnorderedListOutlined } from "@ant-design/icons";
+import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
 
 interface StateProps {
   permits: IPermit[];
@@ -128,6 +129,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
   const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
   const [parentView, setParentView] = useState<boolean>(true);
   const [isAmend, setIsAmend] = useState<boolean>(false);
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const handleRadioChange = (e) => {
     setRadioSelection(e.target.value);
@@ -167,7 +169,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
 
   const amendDescriptionListElement = (
     <div>
-      To make changes to an existing explosive storage and use permit,\u2022 follow these steps:
+      To make changes to an existing explosive storage and use permit, follow these steps:
       <br />
       <ul className="landing-list">
         <li>Open the permit that you want to amend from the applications page of the mine in CORE.</li>
@@ -179,7 +181,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
   );
 
   return (
-    parentView ? (
+    isFeatureEnabled(Feature.ONE_WINDOW_FORCREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
     <>
       <Form layout="vertical">
         <Typography.Title level={3}>Add Permit</Typography.Title>
@@ -194,7 +196,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
             <Radio.Group className="vertical-radio-group"
               value={radioSelection}
               onChange={handleRadioChange}>
-                  <Radio value={1}>Add an existing explosive storage and Use permit</Radio>
+                  <Radio value={1}>Add an existing explosive storage and use permit</Radio>
                   <Radio value={2}>Create new explosive storage and use permit</Radio>
                   <Radio value={3}>Amend an existing explosive storage and use permit</Radio>
             </Radio.Group>

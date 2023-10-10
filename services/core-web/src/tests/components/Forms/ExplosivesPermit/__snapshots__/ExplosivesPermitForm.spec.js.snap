@@ -79,7 +79,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
           <Radio
             value={1}
           >
-            Add an existing explosive storage and Use permit
+            Add an existing explosive storage and use permit
           </Radio>
           <Radio
             value={2}
