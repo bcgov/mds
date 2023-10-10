@@ -238,7 +238,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     },
     {
       title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
