@@ -181,7 +181,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
   );
 
   return (
-    isFeatureEnabled(Feature.ONE_WINDOW_FORCREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
+    isFeatureEnabled(Feature.ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
     <>
       <Form layout="vertical">
         <Typography.Title level={3}>Add Permit</Typography.Title>

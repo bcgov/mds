@@ -8,7 +8,7 @@ export enum Feature {
   MAJOR_PROJECT_DECISION_PACKAGE = "major_project_decision_package",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
-  ONE_WINDOW_FORCREATING_NEW_OR_HISTORICAL_ESUP='one_window_for_creating_new_or_historical_esup',
+  ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP='one_window_for_creating_new_or_historical_esup',
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
