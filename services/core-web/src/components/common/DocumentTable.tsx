@@ -58,11 +58,6 @@ interface DocumentTableProps {
   replaceAlertMessage?: string;
 }
 
-const defaultProps = {
-  openModal: () => {},
-  closeModal: () => {},
-};
-
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
@@ -400,8 +395,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     </div>
   );
 };
-
-DocumentTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),
