@@ -43,7 +43,7 @@ export const ScrollContentWrapper: FC<ScrollContentWrapperProps> = (props) => {
 
   useEffect(() => {
     if (props.data !== undefined && isEmpty(props.data)) {
-      // setIsVisible(false);
+      setIsVisible(false);
     }
   }, []);
 
