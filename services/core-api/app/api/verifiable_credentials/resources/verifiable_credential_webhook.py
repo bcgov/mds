@@ -12,7 +12,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
-CREDENTIAL_OFFER = "credential_offer"
+CREDENTIAL_OFFER = "issue_credential"
 
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
@@ -28,7 +28,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 vc_conn.save()
                 current_app.logger.debug(f"Updated party_vc_conn invitation_id={invitation_id} with state={new_state}")
         if topic == CREDENTIAL_OFFER:
-            cred_exch_id = request.args.get("cred_exch_id")
+            cred_exch_id = request.args.get("credential_exchange_id")
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
             assert cred_exch_record
             new_state = request.args["state"]
