@@ -2,19 +2,17 @@ import React, { useEffect, useRef } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Modal, Button, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { closeModal } from "@common/actions/modalActions";
 import {
-  getIsModalOpen,
-  getProps,
-  getContent,
   getClearOnSubmit,
-  getWidth,
+  getContent,
+  getIsModalOpen,
   getIsViewOnly,
+  getProps,
+  getWidth,
 } from "@common/selectors/modalSelectors";
-import LoadingBar from "react-redux-loading-bar";
-import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
 const propTypes = {
@@ -93,33 +91,23 @@ export const ModalWrapper = (props) => {
         destroyOnClose={true}
       >
         {isViewOnly ? (
-          <Button ghost className="modal__close" onClick={(event) => closeModal(event)}>
+          <Button type="text" className="modal__close" onClick={(event) => closeModal(event)}>
             <CloseOutlined className="icon-sm" />
           </Button>
         ) : (
           <Popconfirm
             placement="bottomRight"
+            className="modal__close"
             title="Are you sure you want to cancel?"
             okText="Yes"
             cancelText="No"
             onConfirm={(event) => closeModal(event)}
           >
-            <Button ghost className="modal__close">
+            <Button type="text" className="modal__close">
               <CloseOutlined className="icon-sm" />
             </Button>
           </Popconfirm>
         )}
-        <LoadingBar
-          scope="modal"
-          style={{
-            position: "absolute",
-            top: "54px",
-            left: 0,
-            backgroundColor: Styles.COLOR.violet,
-            height: "3px",
-            zIndex: 100,
-          }}
-        />
         {content && (
           <AddPartyComponentWrapper
             closeModal={handleCloseModal}

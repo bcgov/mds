@@ -122,7 +122,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                 if explosives_permit_magazine_id:
                     magazine = ExplosivesPermitMagazine.find_by_explosives_permit_magazine_id(
                         explosives_permit_magazine_id)
-                    magazine.update_from_data(magazine_data)
+                    if magazine:
+                        magazine.update_from_data(magazine_data)
                 else:
                     magazine = ExplosivesPermitMagazine.create_from_data(type, magazine_data)
                     magazines.append(magazine)
@@ -352,3 +353,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     def find_by_explosives_permit_guid(cls, explosives_permit_guid):
         return cls.query.filter_by(
             explosives_permit_guid=explosives_permit_guid, deleted_ind=False).one_or_none()
+
+    @classmethod
+    def find_permit_number_by_explosives_permit_id(cls, explosives_permit_id):
+        obj = cls.query.filter_by(
+            explosives_permit_id=explosives_permit_id, deleted_ind=False).one_or_none()
+        return obj.permit_number if obj else None

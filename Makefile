@@ -68,7 +68,7 @@ ms:
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
-	@docker-compose $(DC_FILE) up -d minespace docgen-api
+	@docker-compose $(DC_FILE) up -d docgen-api
 
 # Simply for legacy support, this command will be retired shortly
 fe:
