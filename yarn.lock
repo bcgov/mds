@@ -1983,7 +1983,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-pro@npm:6.4.2, @fortawesome/fontawesome-pro@npm:^6.4.2":
+"@fortawesome/fontawesome-pro@npm:6.4.2":
   version: 6.4.2
   resolution: "@fortawesome/fontawesome-pro@npm:6.4.2::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-fontawesome-pro-6.4.2.tgz"
   checksum: 8af23532c35c189ef9b5a6d6fc59e8ede0446f0e26dc80fe5665d69c6694f0195b906bf0d9b041276ca29cb274080abc946b89c3e89e41498149b184ff207180
@@ -14982,7 +14982,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mds@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-pro": ^6.4.2
     "@typescript-eslint/eslint-plugin": ^5.59.1
     "@typescript-eslint/parser": ^5.59.1
     eslint: 7.27.0
