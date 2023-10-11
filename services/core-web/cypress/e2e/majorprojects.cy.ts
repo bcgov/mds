@@ -28,5 +28,26 @@ describe("Major Projects", () => {
         cy.get('label[id^="filepond--drop-label-"]').invoke('attr', 'for').then((inputId) => {
             cy.get(`input[id="${inputId}"]`).attachFile('dummy.pdf');
         });
+
+        cy.get('button').each(button => {
+            cy.wrap(button).invoke('text').then(text => {
+                if (text.trim() === 'Save Changes') {
+                    cy.wrap(button).click({ force: true });
+
+                    // Add any assertions or additional commands if needed after each click
+                }
+            });
+        });
+
+        // Hover over the first caret-down icon
+        cy.get('.anticon-caret-down').first().trigger('mouseover', { force: true });
+
+        // Assuming the dropdown has a class name "dropdown-menu" and the option "Download File" is a list item
+        // You might need to adjust this depending on the actual structure of your dropdown
+        cy.get('.dropdown-menu').should('be.visible').within(() => {
+            cy.contains('Download file').click({ force: true });
+        });
+
     });
+
 });
