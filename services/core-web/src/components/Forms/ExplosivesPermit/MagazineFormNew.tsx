@@ -46,7 +46,7 @@ export const MagazineForm = (props) => {
           </Typography.Text>
         }
       />
-      <div onClick={(event) => event.preventDefault()}>
+      <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
           title={`Are you sure you want to remove Role ${index + 1}?`}
