@@ -314,8 +314,40 @@ exports[`BondForm renders properly 1`] = `
       xs={24}
     >
       <Connect(DocumentTable)
+        documentColumns={
+          Array [
+            Object {
+              "dataIndex": "document_name",
+              "key": "document_name",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "File Name",
+            },
+            Object {
+              "dataIndex": "category",
+              "key": "category",
+              "render": [Function],
+              "title": "Category",
+            },
+            Object {
+              "dataIndex": "upload_date",
+              "key": "upload_date",
+              "render": [Function],
+              "sorter": [Function],
+              "title": "Uploaded",
+            },
+            Object {
+              "key": "remove",
+              "render": [Function],
+            },
+          ]
+        }
         documents={Array []}
-        removeDocument={[Function]}
+        excludedColumnKeys={
+          Array [
+            "actions",
+          ]
+        }
       />
     </Col>
   </Row>
