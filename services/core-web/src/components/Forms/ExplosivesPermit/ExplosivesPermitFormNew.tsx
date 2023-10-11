@@ -1,12 +1,20 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form";
+import { Field, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Alert, Button, Col, Popconfirm, Row, Table, Typography } from "antd";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import {
+  USER_ROLES,
+  IPermit,
+  IExplosivesPermit,
+  IPermitPartyRelationship,
+  IimportedNOWApplication,
+  IOption,
+  IGroupedDropdownList,
+} from "@mds/common";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {
   dateNotInFuture,
@@ -16,6 +24,7 @@ import {
   maxLength,
   number,
   required,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers";
 import {
@@ -39,28 +48,37 @@ const defaultProps = {
   mines_permit_guid: null,
 };
 
-interface ExplosivesPermitFormNewProps {
-  handleSubmit?: any;
-  closeModal?: any;
+interface ExplosivesPermitFormProps {
+  closeModal: () => void;
   initialValues: any;
   mineGuid: string;
-  isProcessed?: boolean;
-  documentTypeDropdownOptions: any;
+  isProcessed: boolean;
+  documentTypeDropdownOptions: IOption[];
   isPermitTab: boolean;
-  inspectors: any;
-  submitting?: boolean;
-  noticeOfWorkApplications?: any;
-  permits?: any;
-  formValues?: any;
-  partyRelationships?: any;
-  allPartyRelationships?: any;
-  mines_permit_guid?: string;
-  userRoles?: any;
+  inspectors: IGroupedDropdownList[];
 }
 
-export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props) => {
-  const { initialValues } = props;
+interface StateProps {
+  permits: IPermit[];
+  documents: any[];
+  mines_permit_guid: string;
+  formValues: IExplosivesPermit;
+  partyRelationships: IPermitPartyRelationship[];
+  allPartyRelationships: IPermitPartyRelationship[];
+  noticeOfWorkApplications: IimportedNOWApplication[];
+  userRoles: string[];
+  submitting: boolean;
+  handleSubmit: any;
+}
 
+export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
+  StateProps &
+  InjectedFormProps<any>> = ({
+  initialValues = {},
+  mines_permit_guid = null,
+  isProcessed = false,
+  ...props
+}) => {
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
 
@@ -70,7 +88,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
   );
   const permittee = partiesData.filter(
     ({ mine_party_appt_type_code, related_guid }) =>
-      mine_party_appt_type_code === "PMT" && related_guid === props.mines_permit_guid
+      mine_party_appt_type_code === "PMT" && related_guid === mines_permit_guid
   );
 
   useEffect(() => {
@@ -108,10 +126,10 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
     "now_application_guid"
   );
 
-  const isHistoric = !props.initialValues?.explosives_permit_id && props.isPermitTab;
+  const isHistoric = !initialValues?.explosives_permit_id && props.isPermitTab;
   const isESUP = props.userRoles.includes(USER_ROLES[Permission.EDIT_EXPLOSIVES_PERMITS]);
 
-  const disabled = props.isProcessed; // props.isProcessed && !hasEditPermission;
+  const disabled = isProcessed; // props.isProcessed && !hasEditPermission;
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Alert
@@ -195,7 +213,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
                     placeholder="Explosives Permit Number"
                     label="Explosives Permit Number*"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, validateSelectOptions(permitDropdown, true)]}
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -210,7 +228,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
                   label="Mines Act Permit*"
                   component={renderConfig.SELECT}
                   data={permitDropdown}
-                  validate={[required]}
+                  validate={[required, validateSelectOptions(nowDropdown, true)]}
                   disabled={disabled}
                 />
               </Form.Item>
@@ -236,7 +254,11 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
                   label={props.isPermitTab ? "Mine Manager" : "Mine Manager*"}
                   placeholder="Select Mine Manager"
                   partyLabel="Mine Manager"
-                  validate={props.isPermitTab ? [] : [required]}
+                  validate={
+                    props.isPermitTab
+                      ? [validateSelectOptions(mineManagersDropdown, true)]
+                      : [required, validateSelectOptions(mineManagersDropdown, true)]
+                  }
                   component={renderConfig.SELECT}
                   data={mineManagersDropdown}
                   disabled={disabled}
@@ -251,9 +273,9 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
                   label="Permittee*"
                   component={renderConfig.SELECT}
                   placeholder="Select Permittee"
-                  validate={[required]}
+                  validate={[required, validateSelectOptions(permitteeDropdown, true)]}
                   data={permitteeDropdown}
-                  disabled={disabled || !props.mines_permit_guid}
+                  disabled={disabled || !mines_permit_guid}
                 />
               </Form.Item>
             </Col>
@@ -360,7 +382,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
                     Permit Status
                   </Typography.Paragraph>
                   <Typography.Paragraph>
-                    {props.initialValues?.is_closed ? "Closed" : "-"}
+                    {initialValues?.is_closed ? "Closed" : "-"}
                   </Typography.Paragraph>
                 </Col>
               </Row>
@@ -388,8 +410,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
   );
 };
 
-ExplosivesPermitFormNew.defaultProps = defaultProps;
-
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
@@ -409,4 +429,4 @@ export default compose(
     touchOnBlur: true,
     onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
   })
-)(ExplosivesPermitFormNew as any) as FC<ExplosivesPermitFormNewProps>;
+)(ExplosivesPermitFormNew as any) as FC<ExplosivesPermitFormProps>;
