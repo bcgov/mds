@@ -2,19 +2,19 @@ import React, { FC } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
-  fetchExplosivesPermits,
   createExplosivesPermit,
-  updateExplosivesPermit,
   deleteExplosivesPermit,
+  fetchExplosivesPermits,
+  updateExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import {
-  getExplosivesPermitStatusOptionsHash,
-  getExplosivesPermitDocumentTypeOptionsHash,
   getExplosivesPermitDocumentTypeDropdownOptions,
+  getExplosivesPermitDocumentTypeOptionsHash,
+  getExplosivesPermitStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@common/actions/modalActions";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
@@ -26,8 +26,8 @@ import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
-import { IGroupedDropdownList, IMine, IExplosivesPermit, IOption } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
+import { IGroupedDropdownList, IMine, IExplosivesPermit, IOption } from "@mds/common";
 
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
@@ -91,7 +91,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
-        title: "Add Explosives Storage & Use Permit",
+        title: "Add Permit",
         initialValues,
         mineGuid,
         isProcessed,
@@ -145,6 +145,21 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         mine,
       },
       content: modalConfig.VIEW_MAGAZINE_MODAL,
+      isViewOnly: true,
+    });
+  };
+
+  const handleOpenViewExplosivesPermitModal = (event, record) => {
+    event.preventDefault();
+    const mine = mines[mineGuid];
+    props.openModal({
+      props: {
+        title: "View Explosives Storage & Use Permit",
+        explosivesPermit: record,
+        mine,
+        closeModal: props.closeModal,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_VIEW_MODAL,
       isViewOnly: true,
     });
   };
@@ -230,6 +245,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         handleOpenExplosivesPermitDecisionModal={handleOpenExplosivesPermitDecisionModal}
         handleOpenAddExplosivesPermitModal={handleOpenAddExplosivesPermitModal}
         handleOpenViewMagazineModal={handleOpenViewMagazineModal}
+        handleOpenViewExplosivesPermitModal={handleOpenViewExplosivesPermitModal}
         explosivesPermitStatusOptionsHash={props.explosivesPermitStatusOptionsHash}
         explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
         handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
