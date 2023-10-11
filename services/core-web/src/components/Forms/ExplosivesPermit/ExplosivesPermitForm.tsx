@@ -181,15 +181,15 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           Open the permit that you want to amend from the applications page of the mine in CORE.
         </li>
         <li>
-          Click on the &quot;Amend Permit&quot; button at the top right corner of the permit details
-          page.
+          Click on the “Amend Permit” button at the top right corner of the permit details page.
         </li>
         <li>Fill out the amendment form with the required information and documents.</li>
         <li>Complete the amendment and issue the permit.</li>
       </ul>
     </div>
   );
-  //Below ESUP_PERMIT_AMENDMENT Feature section is unreaachable code as it's moved to ExplosivesPermitFormNew component.
+
+  //Below ESUP_PERMIT_AMENDMENT feature is unreachable code as it's moved to ExplosivesPermitFormNew component.
   return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
     <>
       <Form layout="vertical">
@@ -242,7 +242,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           <Button
             disabled={isAmend}
             type="primary"
-            onClick={(e) => handleOpenAddExplosivesPermitModal()}
+            onClick={() => handleOpenAddExplosivesPermitModal()}
           >
             Next
           </Button>

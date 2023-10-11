@@ -41,20 +41,18 @@ interface DocumentTableProps {
   enableBulkActions?: boolean;
   documentParent?: string;
   view?: "standard" | "minimal";
-  openModal?: (arg) => void;
+  openModal: (arg) => void;
   openDocument: any;
-  closeModal?: () => void;
+  closeModal: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments?: (mineGuid: string, mineDocumentGuids: string[]) => void;
+  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments?: (docs?: MineDocument[]) => void;
-  onReplaceDocument?: (document: MineDocument) => void;
-  documentColumns: ColumnType<unknown>[];
+  documentColumns?: ColumnType<unknown>[];
   additionalColumns?: ColumnType<MineDocument>[];
   defaultSortKeys?: string[];
   excludedColumnKeys?: string[];
   additionalColumnProps?: { key: string; colProps: any }[];
   userRoles: string[];
-  handleRowSelectionChange?: (arg1: MineDocument[]) => void;
   replaceAlertMessage?: string;
 }
 
@@ -83,13 +81,13 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const [isCompressionModal, setCompressionModal] = useState(false);
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
-
   const { isFeatureEnabled } = useFeatureFlag();
 
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
-    [FileOperations.Replace]: !isViewOnly,
+    // don't allow changes to version history where history is not shown
+    [FileOperations.Replace]: !isViewOnly && showVersionHistory,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
     [FileOperations.Delete]: !isViewOnly && removeDocument !== undefined,
@@ -279,10 +277,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
 
-  const handleRowSelectionChange = (value) => {
-    setRowSelection(value);
-  };
-
   const bulkItems: MenuProps["items"] = [
     {
       key: "0",
@@ -315,6 +309,40 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       ),
     },
   ];
+
+  const renderBulkActions = () => {
+    let element = (
+      <Button
+        className="ant-btn ant-btn-primary"
+        disabled={rowSelection.length === 0 || isCompressionInProgress}
+        onClick={() => {
+          setCompressionModal(true);
+        }}
+      >
+        <div>Download</div>
+      </Button>
+    );
+    if (documentsCanBulkDropDown) {
+      element = (
+        <Dropdown
+          menu={{ items: bulkItems }}
+          placement="bottomLeft"
+          disabled={rowSelection.length === 0 || isCompressionInProgress}
+        >
+          <Button className="ant-btn ant-btn-primary">
+            Action
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+  };
+
+  const handleRowSelectionChange = (value) => {
+    setRowSelection(value);
+  };
 
   const rowSelectionObject: any = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
@@ -349,36 +377,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     ...bulkActionsProps,
     ...versionProps,
     ...minimalProps,
-  };
-
-  const renderBulkActions = () => {
-    let element = (
-      <Button
-        className="ant-btn ant-btn-primary"
-        disabled={rowSelection.length === 0 || isCompressionInProgress}
-        onClick={() => {
-          setCompressionModal(true);
-        }}
-      >
-        <div>Download</div>
-      </Button>
-    );
-    if (documentsCanBulkDropDown) {
-      element = (
-        <Dropdown
-          menu={{ items: bulkItems }}
-          placement="bottomLeft"
-          disabled={rowSelection.length === 0 || isCompressionInProgress}
-        >
-          <Button className="ant-btn ant-btn-primary">
-            Action
-            <DownOutlined />
-          </Button>
-        </Dropdown>
-      );
-    }
-
-    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
   };
 
   return (
