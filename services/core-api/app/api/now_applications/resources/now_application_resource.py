@@ -37,7 +37,7 @@ class NOWApplicationResource(Resource, UserMixin):
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
-
+        submission_docs = []
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
@@ -49,6 +49,11 @@ class NOWApplicationResource(Resource, UserMixin):
             application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
+        for doc in application.submission_documents:
+            if doc.deleted_ind == False:
+                submission_docs.append(doc)
+
+        application.submission_documents = submission_docs
         application.is_historic = ApplicationsView.query.filter_by(
             now_application_guid=application.now_application_guid).one().is_historic
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
