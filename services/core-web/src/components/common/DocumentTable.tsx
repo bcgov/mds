@@ -41,13 +41,13 @@ interface DocumentTableProps {
   enableBulkActions?: boolean;
   documentParent?: string;
   view?: "standard" | "minimal";
-  openModal?: (arg) => void;
+  openModal: (arg) => void;
   openDocument: any;
-  closeModal?: () => void;
+  closeModal: () => void;
   removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments?: (mineGuid: string, mineDocumentGuids: string[]) => void;
+  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
   onArchivedDocuments?: (docs?: MineDocument[]) => void;
-  documentColumns: ColumnType<unknown>[];
+  documentColumns?: ColumnType<unknown>[];
   additionalColumns?: ColumnType<MineDocument>[];
   defaultSortKeys?: string[];
   excludedColumnKeys?: string[];
