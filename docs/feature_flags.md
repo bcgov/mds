@@ -59,6 +59,7 @@ export default withFeatureFlag(ThisIsAReactComponent);
 ```
 
 ### Using FeatureFlagGuard
+
 Need to restrict a route based on a feature flag?
 
 You can use the `FeatureFlagGuard` and pass along the feature you want to check for.
@@ -68,13 +69,8 @@ If it's not enabled, you get a nice little "you don't have access" notice.
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 
-
 const DamsPage: React.FC<DamsPageProps> = (props) => {
-  return (
-    <div>
-      ALL THE DAMS
-    </div>
-  );
+  return <div>ALL THE DAMS</div>;
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -88,9 +84,9 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)));
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage))
+);
 ```
 
 ### Using FeatureFlag directly (discouraged)
@@ -109,10 +105,11 @@ console.log(isFeatureEnabled(Feature.TSF_V2));
 ## Core API
 
 How to use:
+
 1. Define a feature flag in the `Feature` enum (feature_flag.py). The value of the enum must match a feature flag defined in Flagsmith.
 2. You can use the `is_feature_enabled` function to check if the given flag is enabled.
 
-```python 
+```python
 from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 if is_feature_enabled(Feature.TSF_V2):

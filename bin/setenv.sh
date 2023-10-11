@@ -67,13 +67,13 @@ function loadExternalSecrets() {
         fi
     fi
 
-    # Read FONT_AWESOME_PACKAGE_TOKEN from local-dev-secrets ocp secret
-    FONT_AWESOME_PACKAGE_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.FONT_AWESOME_PACKAGE_TOKEN | base64decode}}')
+    # Read ARTIFACTORY_TOKEN from local-dev-secrets ocp secret
+    ARTIFACTORY_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.ARTIFACTORY_TOKEN | base64decode}}')
     
     # Update yarn config with token
-    yarn config set 'npmScopes["fortawesome"].npmAuthToken' "$FONT_AWESOME_PACKAGE_TOKEN" -H
+    yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN" -H
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
-    yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/" -H
+    yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/" -H
 }
 
 if [ -z "$INPUT" ];
