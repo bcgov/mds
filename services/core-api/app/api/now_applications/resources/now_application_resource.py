@@ -37,7 +37,7 @@ class NOWApplicationResource(Resource, UserMixin):
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
-        
+  
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
