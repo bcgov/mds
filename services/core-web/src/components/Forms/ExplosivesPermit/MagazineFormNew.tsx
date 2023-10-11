@@ -26,6 +26,7 @@ const propTypes = {
 const defaultProps = {};
 
 export const MagazineForm = (props) => {
+  const [activeKeys, setActiveKeys] = React.useState(["0"]);
   const addField = (event, fields) => {
     event.preventDefault();
     fields.push({});
@@ -72,123 +73,105 @@ export const MagazineForm = (props) => {
       <>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label="Type No. *"
-                id={`${field}type_no`}
-                name={`${field}type_no`}
-                component={renderConfig.FIELD}
-                validate={[required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Type No. *"
+              id={`${field}type_no`}
+              name={`${field}type_no`}
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled={props.isProcessed}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label="Tag No. *"
-                id={`${field}tag_no`}
-                name={`${field}tag_no`}
-                component={renderConfig.FIELD}
-                validate={[required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Tag No. *"
+              id={`${field}tag_no`}
+              name={`${field}tag_no`}
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled={props.isProcessed}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label="Construction *"
-                id={`${field}construction`}
-                name={`${field}construction`}
-                component={renderConfig.FIELD}
-                validate={[required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Construction *"
+              id={`${field}construction`}
+              name={`${field}construction`}
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled={props.isProcessed}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label={`Quantity ${unit}*`}
-                id={`${field}quantity`}
-                name={`${field}quantity`}
-                component={renderConfig.FIELD}
-                validate={[positiveNumber, required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label={`Quantity ${unit}*`}
+              id={`${field}quantity`}
+              name={`${field}quantity`}
+              component={renderConfig.FIELD}
+              validate={[positiveNumber, required]}
+              disabled={props.isProcessed}
+            />
           </Col>
         </Row>
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label="Latitude *"
-                id={`${field}latitude`}
-                name={`${field}latitude`}
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(10), lat, required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Latitude *"
+              id={`${field}latitude`}
+              name={`${field}latitude`}
+              component={renderConfig.FIELD}
+              validate={[number, maxLength(10), lat, required]}
+              disabled={props.isProcessed}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                label="Longitude *"
-                id={`${field}longitude`}
-                name={`${field}longitude`}
-                validate={[number, maxLength(12), lon, lonNegative, required]}
-                component={renderConfig.FIELD}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Longitude *"
+              id={`${field}longitude`}
+              name={`${field}longitude`}
+              validate={[number, maxLength(12), lon, lonNegative, required]}
+              component={renderConfig.FIELD}
+              disabled={props.isProcessed}
+            />
           </Col>
         </Row>
         {showDetonatorType && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  label="Type of Detonator*"
-                  id={`${field}detonator_type`}
-                  name={`${field}detonator_type`}
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                  validate={[required]}
-                  disabled={props.isProcessed}
-                />
-              </Form.Item>
+              <Field
+                label="Type of Detonator*"
+                id={`${field}detonator_type`}
+                name={`${field}detonator_type`}
+                component={renderConfig.AUTO_SIZE_FIELD}
+                validate={[required]}
+                disabled={props.isProcessed}
+              />
             </Col>
           </Row>
         )}
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                label="Distance from Road or Work Area (m)*"
-                id={`${field}distance_road`}
-                name={`${field}distance_road`}
-                component={renderConfig.FIELD}
-                validate={[positiveNumber, required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Distance from Road or Work Area (m)*"
+              id={`${field}distance_road`}
+              name={`${field}distance_road`}
+              component={renderConfig.FIELD}
+              validate={[positiveNumber, required]}
+              disabled={props.isProcessed}
+            />
           </Col>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                label="Distance from Dwelling or Flammable Material Storage Area (m)*"
-                id={`${field}distance_dwelling`}
-                name={`${field}distance_dwelling`}
-                component={renderConfig.FIELD}
-                validate={[positiveNumber, required]}
-                disabled={props.isProcessed}
-              />
-            </Form.Item>
+            <Field
+              label="Distance from Dwelling or Flammable Material Storage Area (m)*"
+              id={`${field}distance_dwelling`}
+              name={`${field}distance_dwelling`}
+              component={renderConfig.FIELD}
+              validate={[positiveNumber, required]}
+              disabled={props.isProcessed}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -233,11 +216,16 @@ export const MagazineForm = (props) => {
         <Row gutter={48}>
           <Col md={24}>
             {fields.map((field, index) => (
-              <Collapse key={index} className="magazine-collapse margin-large--bottom">
+              <Collapse
+                defaultActiveKey={activeKeys}
+                key={index}
+                className="magazine-collapse margin-large--bottom"
+                onChange={(key) => setActiveKeys(Array.isArray(key) ? key : [key])}
+              >
                 <Collapse.Panel
                   header={panelHeader(index, fields, "EXP")}
                   className="magazine-collapse"
-                  key={index}
+                  key={`${index}EXP`}
                 >
                   {renderInputs(field, "EXP")}
                 </Collapse.Panel>
@@ -263,11 +251,16 @@ export const MagazineForm = (props) => {
         <Row gutter={48}>
           <Col md={24}>
             {fields.map((field, index) => (
-              <Collapse key={index} className="magazine-collapse margin-large--bottom">
+              <Collapse
+                defaultActiveKey={activeKeys}
+                onChange={(key) => setActiveKeys(Array.isArray(key) ? key : [key])}
+                key={index}
+                className="magazine-collapse margin-large--bottom"
+              >
                 <Collapse.Panel
                   className="magazine-collapse"
                   header={panelHeader(index, fields, "DET")}
-                  key={index}
+                  key={`${index}DET`}
                 >
                   {renderInputs(field, "DET")}
                 </Collapse.Panel>

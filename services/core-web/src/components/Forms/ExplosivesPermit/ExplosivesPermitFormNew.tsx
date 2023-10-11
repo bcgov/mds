@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { change, Field, formValueSelector, getFormValues, reduxForm } from "redux-form";
+import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Alert, Button, Col, Popconfirm, Row, Table, Typography } from "antd";
@@ -413,20 +413,12 @@ const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, null),
   reduxForm({
-    form: FORM.EXPLOSIVES_PERMIT,
+    form: FORM.EXPLOSIVES_PERMIT_NEW,
     touchOnBlur: true,
     validate: validateBusinessRules,
-    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
+    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
   })
 )(ExplosivesPermitFormNew as any) as FC<ExplosivesPermitFormNewProps>;
