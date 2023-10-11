@@ -39,17 +39,6 @@ const defaultProps = {
   mines_permit_guid: null,
 };
 
-const validateBusinessRules = (values) => {
-  const errors: any = {};
-  if (!values.mine_manager_mine_party_appt_id) {
-    errors.mine_manager_mine_party_appt_id = "The Site must have a Mine Manager on record.";
-  }
-  if (!values.permittee_mine_party_appt_id) {
-    errors.permittee_mine_party_appt_id = "The Permit must have a Permittee on record.";
-  }
-  return errors;
-};
-
 interface ExplosivesPermitFormNewProps {
   handleSubmit?: any;
   closeModal?: any;
@@ -418,7 +407,6 @@ export default compose(
   reduxForm({
     form: FORM.EXPLOSIVES_PERMIT_NEW,
     touchOnBlur: true,
-    validate: validateBusinessRules,
     onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
   })
 )(ExplosivesPermitFormNew as any) as FC<ExplosivesPermitFormNewProps>;
