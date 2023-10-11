@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Badge, Button, Dropdown, Popconfirm, Tooltip, Menu } from "antd";
+import { Badge, Button, Dropdown, Popconfirm, Tooltip } from "antd";
 import { EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -240,7 +240,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       title: "",
       key: "addEditButton",
       align: "right",
-      render: (text, record) => {
+      render: (record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
         const hasDocuments =
