@@ -189,8 +189,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
       </ul>
     </div>
   );
-
-  return isFeatureEnabled(Feature.ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
+  //Below ESUP_PERMIT_AMENDMENT Feature section is unreaachable code as it's moved to ExplosivesPermitFormNew component.
+  return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
     <>
       <Form layout="vertical">
         <Typography.Title level={3}>Add Permit</Typography.Title>

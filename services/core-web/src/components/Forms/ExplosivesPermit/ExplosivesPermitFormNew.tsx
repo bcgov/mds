@@ -33,8 +33,6 @@ import {
   generatedDocColumns,
   supportingDocColumns,
 } from "@/components/modalContent/ExplosivesPermitViewModal";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
 
 const defaultProps = {
   initialValues: {},
@@ -131,7 +129,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
   const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
   const [parentView, setParentView] = useState<boolean>(true);
   const [isAmend, setIsAmend] = useState<boolean>(false);
-  const { isFeatureEnabled } = useFeatureFlag();
 
   const handleRadioChange = (e) => {
     setRadioSelection(e.target.value);
@@ -190,7 +187,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormNewProps> = (props)
     </div>
   );
 
-  return isFeatureEnabled(Feature.ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
+  return parentView ? (
     <>
       <Form layout="vertical">
         <Typography.Title level={3}>Add Permit</Typography.Title>
