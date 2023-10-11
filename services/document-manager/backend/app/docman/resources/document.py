@@ -79,7 +79,6 @@ class DocumentListResource(Resource):
         token_guid = request.args.get('token', '')
         as_attachment = request.args.get('as_attachment', None)
         document_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
-        cache.delete(DOWNLOAD_TOKEN(token_guid))
         document_manager_version_guid = request.args.get(
             'document_manager_version_guid', None)
 
@@ -111,6 +110,7 @@ class DocumentListResource(Resource):
                 path_or_file=document.full_storage_path,
                 download_name=document.file_display_name,
                 as_attachment=as_attachment)
+        cache.delete(DOWNLOAD_TOKEN(token_guid))
 
 
 @api.route(f'/documents/<string:document_guid>')

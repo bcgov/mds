@@ -29,11 +29,16 @@
 }
 
 .add-permit-dropdown-button {
+  border: none;
   div {
     display: flex;
     align-items: center;
     padding-right: 10px;
   }
+}
+
+.add-permit-dropdown-button:hover {
+  border: none;
 }
 
 .add-permit-dropdown-button-icon {
