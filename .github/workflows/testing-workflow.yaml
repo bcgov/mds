@@ -20,3 +20,6 @@ jobs:
       - name: Restart SchemaSpy pods
         run: |
           oc -n 4c2ba9-dev rollout restart deployment/schemaspy
+      
+      - name: Notification
+        run: ./gitops/watch-deployment.sh schemaspy dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
