@@ -1,4 +1,3 @@
-import 'cypress-file-upload';
 describe("Major Projects", () => {
     beforeEach(() => {
         cy.login();
@@ -21,6 +20,10 @@ describe("Major Projects", () => {
         // Access the file input element and attach a file from the fixtures directory.
         cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
 
+        // Verify that the "Upload complete" message is displayed
+        cy.get('.filepond--file-status-main', { timeout: 15000 }).should('have.text', 'Upload complete');
+
+        // Save the changes
         cy.get('button').each((button: any) => {
             cy.wrap(button).invoke('text').then((text: string) => {
                 if (text.trim() === 'Save Changes') {
@@ -32,6 +35,15 @@ describe("Major Projects", () => {
 
     it('should download a document successfully', () => {
         cy.get('table tbody.ant-table-tbody tr:first-child a').scrollIntoView().click({ force: true });
+
+        // Get the URL of the downloaded file
+        cy.url().then((url) => {
+            // Make an HTTP request to the URL
+            cy.request(url).then((response) => {
+                // Check the response status code
+                expect(response.status).to.eq(301);
+            });
+        });
     });
 
 });
