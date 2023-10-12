@@ -74,6 +74,7 @@ function loadExternalSecrets() {
     yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN" -H
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
     yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/" -H
+    yarn config unset 'npmScopes["fortawesome"].npmAuthToken' -H # Remove previous token used for authentication
 }
 
 if [ -z "$INPUT" ];
