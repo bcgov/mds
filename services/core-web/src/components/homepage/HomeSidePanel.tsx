@@ -6,7 +6,7 @@ import { HSRC_PDF, MEMP_PDF } from "@/constants/assets";
 const linkWidget = (title, links) => {
   return (
     <div className="home-bordered-content">
-      <Typography.Title level={4}>{title}</Typography.Title>
+      <Typography.Title level={4}>{title}test</Typography.Title>
       {links.map((link) => (
         <div key={link.title}>
           <a href={link.url} target="_blank" rel="noopener noreferrer">
