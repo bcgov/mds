@@ -17,6 +17,9 @@ jobs:
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
 
+      - name: Checkout
+        uses: actions/checkout@v3
+        
       - name: Restart SchemaSpy pods
         run: |
           oc -n 4c2ba9-dev rollout restart deployment/schemaspy
