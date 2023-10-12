@@ -2412,8 +2412,8 @@ __metadata:
     "@testing-library/react": 9.5.0
     "@types/jest": 29.5.1
     "@types/lodash": 4.14.194
-    "@types/react": 18.2.0
-    "@types/react-dom": 18.2.0
+    "@types/react": 16.9.49
+    "@types/react-dom": 16.9.8
     "@types/react-router-dom": 5.3.3
     "@types/redux": ^3.6.0
     "@types/redux-form": 8.2.6
@@ -2582,10 +2582,10 @@ __metadata:
     "@syncfusion/ej2-splitbuttons": 19.1.54
     "@types/jest": 24.9.1
     "@types/lodash": 4.14.192
-    "@types/react": 18.0.34
-    "@types/react-dom": 18.0.11
+    "@types/react": 16.9.49
+    "@types/react-dom": 16.9.8
     "@types/react-router-dom": 5.3.3
-    "@types/redux": ^3.6.0
+    "@types/redux": 3.6.0
     "@types/redux-form": 8.2.6
     "@types/styled-components": 5.1.26
     acorn: 6.4.1
@@ -4136,30 +4136,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:*":
-  version: 18.2.13
-  resolution: "@types/react-dom@npm:18.2.13"
+"@types/react-dom@npm:16.9.8":
+  version: 16.9.8
+  resolution: "@types/react-dom@npm:16.9.8"
   dependencies:
     "@types/react": "*"
-  checksum: 22ba066b141dca5a5a9227fae0afc7c94b470fff8e8a38ade72649da57a8ea04d0cb2ba3e22005e7d8e772d49bddd28855b1dd98e6defd033bba6afb6edff883
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:18.0.11":
-  version: 18.0.11
-  resolution: "@types/react-dom@npm:18.0.11"
-  dependencies:
-    "@types/react": "*"
-  checksum: 579691e4d5ec09688087568037c35edf8cfb1ab3e07f6c60029280733ee7b5c06d66df6fcc90786702c93ac8cb13bc7ff16c79ddfc75d082938fbaa36e1cdbf4
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:18.2.0":
-  version: 18.2.0
-  resolution: "@types/react-dom@npm:18.2.0"
-  dependencies:
-    "@types/react": "*"
-  checksum: 9212b3793707a763f10e2c608f6ccb5f729029da6cb84204f333634d3d7baafbc1b20b7faf7cf788a8fd385050a1fb579902031f9462473ef10607116f33f33c
+  checksum: eef9f4ef0c297dd621fc4ab9aa7100ad7d7ccb4a1b8ec04170779b131aa9ea50d76a9ee9cd052cba6ef8389da7e8e8ab718e29fb6662a37d74862794a42094ec
   languageName: node
   linkType: hard
 
@@ -4184,36 +4166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
-  version: 18.2.28
-  resolution: "@types/react@npm:18.2.28"
+"@types/react@npm:16.9.49":
+  version: 16.9.49
+  resolution: "@types/react@npm:16.9.49"
   dependencies:
     "@types/prop-types": "*"
-    "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 81381bedeba83278f4c9febb0b83e0bd3f42a25897a50b9cb36ef53651d34b3d50f87ebf11211ea57ea575131f85d31e93e496ce46478a00b0f9bf7b26b5917a
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.0.34":
-  version: 18.0.34
-  resolution: "@types/react@npm:18.0.34"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 60d2766e7644ec480075bbb154bf8fb8476089466b643662ef59964e27cae2d8c71fd9c717a4dfa9627c3e050fa2ae866d10d16f66b4509058d1bfe2a564b18c
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.2.0":
-  version: 18.2.0
-  resolution: "@types/react@npm:18.2.0"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: db3d92b423150222a666329f7aa3023e3e942044700557b8a7d161530847e621aec9f56c9e7f71761b06dd164c8a7b17ad52355863efe80963dffa5537e8e5fd
+  checksum: e69493838c7395c2d8af70c307dc2571d603153095d7406a71282352f561c6c50403a32140d41eb1f03bedc0716f55f120d826b3fd621a4e2f0d47a3e55541ff
   languageName: node
   linkType: hard
 
@@ -4224,6 +4183,15 @@ __metadata:
     "@types/react": "*"
     redux: ^3.6.0 || ^4.0.0
   checksum: c06b430e545e3eddd5c8cf36eb1f7950e4c7a93eb470702d9a449207309d4bdbcd21cec4c8d932fd3c6de3665a1e86b3e499116f2b12d568e400db260325de41
+  languageName: node
+  linkType: hard
+
+"@types/redux@npm:3.6.0":
+  version: 3.6.0
+  resolution: "@types/redux@npm:3.6.0"
+  dependencies:
+    redux: "*"
+  checksum: 3eeccc4977160b5c059d3472a95e567f7c957a7e4a036504d9f1ac0c5a4b03eca67b1361b7e7158a7549a60548a6afa3d8b7ecac66c7bef6e61995fd184b273a
   languageName: node
   linkType: hard
 
@@ -4247,13 +4215,6 @@ __metadata:
   version: 0.12.0
   resolution: "@types/retry@npm:0.12.0"
   checksum: 61a072c7639f6e8126588bf1eb1ce8835f2cb9c2aba795c4491cf6310e013267b0c8488039857c261c387e9728c1b43205099223f160bb6a76b4374f741b5603
-  languageName: node
-  linkType: hard
-
-"@types/scheduler@npm:*":
-  version: 0.16.4
-  resolution: "@types/scheduler@npm:0.16.4"
-  checksum: a57b0f10da1b021e6bd5eeef8a1917dd3b08a8715bd8029e2ded2096d8f091bb1bb1fef2d66e139588a983c4bfbad29b59e48011141725fa83c76e986e1257d7
   languageName: node
   linkType: hard
 
@@ -8708,9 +8669,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.535":
-  version: 1.4.549
-  resolution: "electron-to-chromium@npm:1.4.549"
-  checksum: 6aa2a71fa359642e8cc77c0bbf4ded752ff769405173fdb91f790ae3b29cc076eb98579622a87fda86d087ef6f18ca13fa05d229083756c546761b1258c3dd48
+  version: 1.4.550
+  resolution: "electron-to-chromium@npm:1.4.550"
+  checksum: facf2b568b60ad2a86eb7d2daf289afc10b4d4b5ae7739c2a4e6950836422428d5ea7c16f8902359d79e9638cdc9c304bf3c04d746ea9adec6dfb60f0c65d4d0
   languageName: node
   linkType: hard
 
@@ -19052,6 +19013,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"redux@npm:*, redux@npm:^3.6.0 || ^4.0.0":
+  version: 4.2.1
+  resolution: "redux@npm:4.2.1"
+  dependencies:
+    "@babel/runtime": ^7.9.2
+  checksum: f63b9060c3a1d930ae775252bb6e579b42415aee7a23c4114e21a0b4ba7ec12f0ec76936c00f546893f06e139819f0e2855e0d55ebfce34ca9c026241a6950dd
+  languageName: node
+  linkType: hard
+
 "redux@npm:4.0.5":
   version: 4.0.5
   resolution: "redux@npm:4.0.5"
@@ -19059,15 +19029,6 @@ __metadata:
     loose-envify: ^1.4.0
     symbol-observable: ^1.2.0
   checksum: 23689ba4318bfffd4517c8c8d49c5e9a7df1b864b3cf4a4784e10060652e28054586a4a64053d1252ae5f105da61cda03fe01a422b05a053c8604b1be1689d16
-  languageName: node
-  linkType: hard
-
-"redux@npm:^3.6.0 || ^4.0.0":
-  version: 4.2.1
-  resolution: "redux@npm:4.2.1"
-  dependencies:
-    "@babel/runtime": ^7.9.2
-  checksum: f63b9060c3a1d930ae775252bb6e579b42415aee7a23c4114e21a0b4ba7ec12f0ec76936c00f546893f06e139819f0e2855e0d55ebfce34ca9c026241a6950dd
   languageName: node
   linkType: hard
 
