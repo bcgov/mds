@@ -19,13 +19,16 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Restart SchemaSpy pods
         run: |
           oc -n 4c2ba9-dev rollout restart deployment/schemaspy
       
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+        with:
+          version: v2.7.9 # optional
+          
       - name: Notification
         run: |
-          pwd
-          ls -a
           ./gitops/watch-deployment.sh schemaspy dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
