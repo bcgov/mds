@@ -32,6 +32,10 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
+      
+      - name: Restart SchemaSpy pods
+        run: |
+          oc -n 4c2ba9-test rollout restart deployment/schemaspy
 
   trigger-gitops:
     runs-on: ubuntu-20.04

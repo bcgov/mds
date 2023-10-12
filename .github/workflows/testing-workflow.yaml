@@ -1,0 +1,22 @@
+name: Testing this as part of a workflow
+
+on:
+  pull_request:
+
+jobs:
+  test-schemaspy-rollout:
+    name: test-schemaspy-rollout
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+
+      - name: Restart SchemaSpy pods
+        run: |
+          oc -n 4c2ba9-dev rollout restart deployment/schemaspy
