@@ -135,8 +135,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
 
   const handleRadioChange = (e) => {
     setRadioSelection(e.target.value);
-    setIsHistoric(e.target.value == 1);
-    setIsAmend(e.target.value == 3);
+    setIsHistoric(e.target.value === 1);
+    setIsAmend(e.target.value === 3);
   };
 
   const handleOpenAddExplosivesPermitModal = () => {
@@ -189,7 +189,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     </div>
   );
 
-  return isFeatureEnabled(Feature.ONE_WINDOW_FOR_CREATING_NEW_OR_HISTORICAL_ESUP) && parentView ? (
+  //Below ESUP_PERMIT_AMENDMENT feature is unreachable code as it's moved to ExplosivesPermitFormNew component.
+  return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
     <>
       <Form layout="vertical">
         <Typography.Title level={3}>Add Permit</Typography.Title>
