@@ -4,6 +4,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
+import * as verfiableCredentialActions from "@/actions/verfiableCredentialActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as API from "@/constants/API";
 import { createRequestHeader } from "@/utils/RequestHeaders";
@@ -44,6 +45,26 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_RECORD));
+      dispatch(hideLoading());
+    });
+};
+
+export const createVCWalletInvitation = (party_guid) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
+  return axios
+    .get(`${ENVIRONMENT.apiUrl}/oob-invitation/${party_guid}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
+      dispatch(verfiableCredentialActions.storeVCConnectionInvitation(response.data));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
       dispatch(hideLoading());
     });
 };
