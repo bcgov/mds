@@ -12,9 +12,6 @@ from .helper import Api
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from jose import jwt as jwt_jose
 
-def JWT_ROLE_CALLBACK(jwt_dict):
-    return (jwt_dict.get('client_roles') or [])
-
 def get_jwt_by_audience(aud):
     audience_jwt_map = {
         'JWT_OIDC_AUDIENCE': jwt_main,
@@ -32,18 +29,18 @@ def get_jwt_by_audience(aud):
 db = SQLAlchemy()
 migrate = Migrate()
 
-jwt_main = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_main = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, Config.JWT_ROLE_CALLBACK, None)
 
 # Cypress JWT Config
 
 # Note: When using Cypress locally, JWT_OIDC_WELL_KNOWN_CONFIG_CYPRESS is available at http://keycloak:8080 seeing as it's running within docker,
 # whereas the ISSUER check must happen with http://localhost:8080. Hence we require both JWT_OIDC_WELL_KNOWN_CONFIG_CYPRESS and JWT_OIDC_ISSUER_CYPRESS in this case.
-jwt_cypress = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_CYPRESS'), None, 'RS256', None, os.environ.get('JWT_OIDC_ISSUER_CYPRESS'), os.environ.get('JWT_OIDC_AUDIENCE_CYPRESS'), None, None, False, False, None, JWT_ROLE_CALLBACK, None)
+jwt_cypress = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG_CYPRESS'), None, 'RS256', None, os.environ.get('JWT_OIDC_ISSUER_CYPRESS'), os.environ.get('JWT_OIDC_AUDIENCE_CYPRESS'), None, None, False, False, None, Config.JWT_ROLE_CALLBACK, None)
 
 # Test JWT Config for integration tests
 test_config = TestConfig()
 
-jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
+jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', None, None, test_config.JWT_OIDC_TEST_AUDIENCE, None, None, False, True, test_config.JWT_OIDC_TEST_KEYS, Config.JWT_ROLE_CALLBACK, test_config.JWT_OIDC_TEST_PRIVATE_KEY_PEM)
 def getJwtManager():
     legacy_token_issuer = 'oidc.gov.bc.ca'
     auth_header = jwt.get_token_auth_header()
