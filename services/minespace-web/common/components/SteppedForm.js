@@ -10,7 +10,7 @@ import { indexOf } from "lodash";
 const { Item } = Menu;
 
 const propTypes = {
-  children: PropTypes.arrayOf(PropTypes.node).isRequired,
+  children: PropTypes.arrayOf(PropTypes.any).isRequired,
   handleTabChange: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func,
   handleSaveData: PropTypes.func,

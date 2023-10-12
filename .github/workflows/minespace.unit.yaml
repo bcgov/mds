@@ -27,9 +27,9 @@ jobs:
 
       - name: Set Fontawesome token
         run: |
-          yarn config set 'npmScopes["fortawesome"].npmAuthToken' "${{ secrets.FONT_AWESOME_PACKAGE_TOKEN }}"
+          yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "${{ secrets.ARTIFACTORY_TOKEN }}"
           yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
-          yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/"
+          yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
 
       - name: Install Dependencies
         run: yarn install
