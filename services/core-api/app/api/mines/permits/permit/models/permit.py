@@ -94,6 +94,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return ""
 
     @hybrid_property
+    def current_permittee_guid(self):
+        if len(self.permittee_appointments) > 0:
+            return self.permittee_appointments[0].party.party_guid
+        else:
+            return ""
+
+    @hybrid_property
     def permit_amendments(self):
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')

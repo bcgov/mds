@@ -53,6 +53,7 @@ NOD_MODEL = api.model(
                     'permit_no': fields.String,
                     'permit_status_code': fields.String,
                     'current_permittee': fields.String,
+                    'current_permittee_guid': fields.String,
                 })),
         'nod_status':
         fields.String(enum=NodStatus, attribute='nod_status.name'),
