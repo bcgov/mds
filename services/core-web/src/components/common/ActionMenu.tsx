@@ -1,5 +1,5 @@
-import { Button, Dropdown, MenuProps } from "antd";
-import { CARAT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { Button, Dropdown } from "antd";
+import { CARAT } from "@/constants/assets";
 import React, { FC } from "react";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
 

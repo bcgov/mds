@@ -183,7 +183,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id,
                application_status,
-               issue_date,
                expiry_date,
                decision_reason,
                is_closed,
@@ -208,7 +207,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         self.permittee_mine_party_appt_id = permittee_mine_party_appt_id
         self.application_date = application_date
         self.description = description
-        self.issue_date = issue_date
         self.expiry_date = expiry_date
         self.latitude = latitude
         self.longitude = longitude

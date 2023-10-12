@@ -62,12 +62,6 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'issue_date',
-        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
         'expiry_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
@@ -190,7 +184,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
             data.get('permittee_mine_party_appt_id'), data.get('application_status'),
-            data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
+            data.get('expiry_date'), data.get('decision_reason'),
             data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
             data.get('description'),data.get('letter_date'),
