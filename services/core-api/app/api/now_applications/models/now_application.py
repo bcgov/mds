@@ -180,7 +180,7 @@ class NOWApplication(Base, AuditMixin):
         'join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid), remote(Document.deleted_ind)==False)',
-        secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
+        secondaryjoin='and_(foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid),remote(Document.deleted_ind)==False)',
         viewonly=True,
         order_by='asc(Document.id)')
 
