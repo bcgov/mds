@@ -77,6 +77,7 @@ interface ExplosivesPermitViewModalProps {
   title: string;
   closeModal: () => void;
   openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
+  handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
 }
 
 const permitAmendmentLike = (permit: IExplosivesPermit): IExplosivesPermitAmendment => ({
@@ -345,7 +346,13 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                     {formatDate(currentPermit.closed_timestamp)}
                   </Typography.Paragraph>
                 ) : (
-                  <Button type="ghost" className="close-permit-button">
+                  <Button
+                    onClick={(event) =>
+                      props.handleOpenExplosivesPermitCloseModal(event, explosivesPermit)
+                    }
+                    type="ghost"
+                    className="close-permit-button"
+                  >
                     Close Permit
                   </Button>
                 )}

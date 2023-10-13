@@ -82,6 +82,12 @@ class ExplosivesPermitResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
+        'closed_by',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
         'closed_timestamp',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
@@ -187,6 +193,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
             data.get('letter_body'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []), data.get('documents', []))
+        
 
         explosives_permit.save()
         return explosives_permit

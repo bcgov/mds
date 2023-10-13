@@ -120,12 +120,15 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenExplosivesPermitCloseModal = (event, record = null) => {
-    const initialValues = record || {};
+    let initialValues = record || {};
     event.preventDefault();
+    if (Object.keys(initialValues).length > 0) {
+      initialValues = { ...initialValues, is_closed: true };
+    }
     props.openModal({
       props: {
         onSubmit: handleUpdateExplosivesPermit,
-        title: "Update Explosives Permit Status",
+        title: "Close Permit",
         initialValues,
         mineGuid,
       },
@@ -162,6 +165,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         parentPermit,
         mine,
         closeModal: props.closeModal,
+        handleOpenExplosivesPermitCloseModal,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_VIEW_MODAL,
       isViewOnly: true,
@@ -255,7 +259,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
         handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
         handleDeleteExplosivesPermit={handleDeleteExplosivesPermit}
-        handleOpenExplosivesPermitCloseModal={handleOpenExplosivesPermitCloseModal}
       />
     </div>
   );

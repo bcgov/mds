@@ -46,7 +46,6 @@ interface MineExplosivesPermitTableProps {
     record: IExplosivesPermit
   ) => void;
   handleOpenViewMagazineModal: (event, record: IExplosivesPermit, type: string) => void;
-  handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
   handleOpenViewExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
 

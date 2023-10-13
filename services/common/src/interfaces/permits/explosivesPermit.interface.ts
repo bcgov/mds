@@ -63,6 +63,7 @@ export interface IExplosivesPermit {
   documents: IExplosivesPermitDocument[];
   mines_permit_number: string;
   now_number: string;
+  closed_by: string;
   explosives_permit_amendments: IExplosivesPermitAmendment[];
 }
 
