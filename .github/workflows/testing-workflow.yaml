@@ -3,9 +3,12 @@ name: Testing this as part of a workflow
 on:
   pull_request:
 
+env:
+  ENVIRONMENT: dev
+
 jobs:
   test-schemaspy-rollout:
-    name: test-schemaspy-rollout
+    name: test-schemaspy-rollout    
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
@@ -22,11 +25,17 @@ jobs:
 
       - name: Restart SchemaSpy pods
         run: |
-          oc -n 4c2ba9-dev rollout restart deployment/schemaspy
+          oc -n 4c2ba9-${{ env.ENVIRONMENT }} rollout restart deployment/schemaspy
 
-      - name: Watch Rollout Status
+      - name: Watch Rollout Status        
         run: |
-          oc -n 4c2ba9-dev rollout status deployment/schemaspy
+          oc -n 4c2ba9-{{ env.ENVIRONMENT }} rollout status deployment/schemaspy
+        timeout-minutes: 10
       
-      - name: Notification
-        run: ./gitops/notify_discord.sh schemaspy dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 0
+      - name: Notify Discord of Rollout success
+        if: ${{ success() }} 
+        run: ./gitops/notify_discord.sh schemaspy {{ env.ENVIRONMENT }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 0
+
+      - name: Notify Discord of Rollout failure
+        if: ${{ failure() }} 
+        run: ./gitops/notify_discord.sh schemaspy {{ env.ENVIRONMENT }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
