@@ -43,11 +43,6 @@ import {
   supportingDocColumns,
 } from "@/components/modalContent/ExplosivesPermitViewModal";
 
-const defaultProps = {
-  initialValues: {},
-  mines_permit_guid: null,
-};
-
 interface ExplosivesPermitFormProps {
   closeModal: () => void;
   initialValues: any;
@@ -551,7 +546,7 @@ const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
   mines_permit_guid: selector(state, "permit_guid"),
-  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
+  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
   partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
