@@ -8,8 +8,9 @@ interface ActionMenuProps {
   actionItems: ITableAction[];
   category: string;
 }
-const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
-  const items = actionItems.map((action) => {
+
+export const generateActionMenuItems = (actionItems: ITableAction[], record) => {
+  return actionItems.map((action) => {
     return {
       key: action.key,
       icon: action.icon,
@@ -24,6 +25,10 @@ const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
       ),
     };
   });
+};
+
+const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
+  const items = generateActionMenuItems(actionItems, record);
   return (
     <Dropdown menu={{ items }} placement="bottomLeft">
       <Button
