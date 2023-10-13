@@ -43,11 +43,6 @@ import {
   supportingDocColumns,
 } from "@/components/modalContent/ExplosivesPermitViewModal";
 
-const defaultProps = {
-  initialValues: {},
-  mines_permit_guid: null,
-};
-
 interface ExplosivesPermitFormProps {
   closeModal: () => void;
   initialValues: any;
@@ -339,7 +334,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                       placeholder="Explosives Permit Number"
                       label="Explosives Permit Number*"
                       component={renderConfig.FIELD}
-                      validate={[required, validateSelectOptions(permitDropdown, true)]}
+                      validate={[required]}
                       disabled={disabled}
                     />
                   </Form.Item>
@@ -354,7 +349,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                     label="Mines Act Permit*"
                     component={renderConfig.SELECT}
                     data={permitDropdown}
-                    validate={[required, validateSelectOptions(nowDropdown, true)]}
+                    validate={[required, validateSelectOptions(permitDropdown, true)]}
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -367,6 +362,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 placeholder="Select a NoW"
                 label="Notice of Work Number"
                 component={renderConfig.SELECT}
+                validate={[validateSelectOptions(nowDropdown, true)]}
                 data={nowDropdown}
                 disabled={disabled}
               />
@@ -551,7 +547,7 @@ const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
   mines_permit_guid: selector(state, "permit_guid"),
-  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
+  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
   partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
