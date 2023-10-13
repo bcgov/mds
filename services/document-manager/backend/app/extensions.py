@@ -3,8 +3,7 @@ import os
 from flask_caching import Cache
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, MigrateCommand
-from flask import current_app
+from flask_migrate import Migrate
 
 from .config import Config, TestConfig
 from .flask_jwt_oidc_local import JwtManager

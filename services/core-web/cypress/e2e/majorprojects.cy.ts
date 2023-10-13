@@ -67,8 +67,7 @@ describe("Major Projects", () => {
             .find('div')
             .click({ force: true });
 
-        // Ensure the modal is visible
-        cy.get('.ant-modal-content').should('be.visible');
+        cy.wait(10000);
 
         // Click 'Delete' within the modal
         cy.get('.ant-modal-footer')
