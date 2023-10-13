@@ -334,7 +334,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                       placeholder="Explosives Permit Number"
                       label="Explosives Permit Number*"
                       component={renderConfig.FIELD}
-                      validate={[required, validateSelectOptions(permitDropdown, true)]}
+                      validate={[required]}
                       disabled={disabled}
                     />
                   </Form.Item>
@@ -349,7 +349,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                     label="Mines Act Permit*"
                     component={renderConfig.SELECT}
                     data={permitDropdown}
-                    validate={[required, validateSelectOptions(nowDropdown, true)]}
+                    validate={[required, validateSelectOptions(permitDropdown, true)]}
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -362,6 +362,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 placeholder="Select a NoW"
                 label="Notice of Work Number"
                 component={renderConfig.SELECT}
+                validate={[validateSelectOptions(nowDropdown, true)]}
                 data={nowDropdown}
                 disabled={disabled}
               />
