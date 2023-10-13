@@ -542,7 +542,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
 };
 
-const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
+const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_NEW);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
