@@ -4,6 +4,7 @@ import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/help
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
 import { CARAT } from "@/constants/assets";
+import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
   dataIndex: string,
@@ -84,30 +85,13 @@ export const renderActionsColumn = (
   recordActionsFilter: (record, actions) => ITableAction[],
   isRowSelected = false,
   text = "Actions",
-  classPrefix = "",
   dropdownAltText = "Menu"
 ) => {
-  const labelClass = classPrefix ? `${classPrefix}-dropdown-button` : "actions-dropdown-button";
-
   return {
     key: "actions",
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
-      const items = filteredActions.map((action) => {
-        return {
-          key: action.key,
-          icon: action.icon,
-          label: (
-            <button
-              type="button"
-              className={`full ${labelClass}`}
-              onClick={(event) => action.clickFunction(event, record)}
-            >
-              <div>{action.label}</div>
-            </button>
-          ),
-        };
-      });
+      const items = generateActionMenuItems(filteredActions, record);
 
       return (
         <div>
