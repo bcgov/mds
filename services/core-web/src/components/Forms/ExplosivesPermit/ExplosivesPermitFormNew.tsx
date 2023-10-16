@@ -138,7 +138,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     setIsAmend(e.target.value === 3);
   };
 
-  const handleOpenAddExplosivesPermitModal = () => {
+  const handleOpenAddExplosivesPermitModal = (e) => {
+    e.preventDefault();
     setParentView(false);
   };
 
@@ -234,14 +235,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           >
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button
-            disabled={isAmend}
-            type="primary"
-            onClick={(e) => {
-              e.preventDefault();
-              handleOpenAddExplosivesPermitModal();
-            }}
-          >
+          <Button disabled={isAmend} type="primary" onClick={handleOpenAddExplosivesPermitModal}>
             Next
           </Button>
         </div>
