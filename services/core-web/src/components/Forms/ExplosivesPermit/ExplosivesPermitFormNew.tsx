@@ -200,10 +200,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           {descriptionListElement}
         </div>
         <div className="landing-list">
-          <h4 className="uppercase">
-            DEFAULT TO &quot;ADD EXISTING&quot; FROM PERMIT PAGE / &quot;CREATE NEW&quot; FROM
-            APPLICATION PAGE
-          </h4>
           <br />
           <Typography.Text>Select an action below to get started:</Typography.Text>
           <div className="landing-list">
@@ -241,7 +237,10 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           <Button
             disabled={isAmend}
             type="primary"
-            onClick={() => handleOpenAddExplosivesPermitModal()}
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenAddExplosivesPermitModal();
+            }}
           >
             Next
           </Button>
