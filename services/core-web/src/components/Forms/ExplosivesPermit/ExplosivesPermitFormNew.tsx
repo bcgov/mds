@@ -138,7 +138,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     setIsAmend(e.target.value === 3);
   };
 
-  const handleOpenAddExplosivesPermitModal = () => {
+  const handleOpenAddExplosivesPermitModal = (e) => {
+    e.preventDefault();
     setParentView(false);
   };
 
@@ -200,10 +201,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           {descriptionListElement}
         </div>
         <div className="landing-list">
-          <h4 className="uppercase">
-            DEFAULT TO &quot;ADD EXISTING&quot; FROM PERMIT PAGE / &quot;CREATE NEW&quot; FROM
-            APPLICATION PAGE
-          </h4>
           <br />
           <Typography.Text>Select an action below to get started:</Typography.Text>
           <div className="landing-list">
@@ -238,11 +235,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           >
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button
-            disabled={isAmend}
-            type="primary"
-            onClick={() => handleOpenAddExplosivesPermitModal()}
-          >
+          <Button disabled={isAmend} type="primary" onClick={handleOpenAddExplosivesPermitModal}>
             Next
           </Button>
         </div>
