@@ -20,7 +20,7 @@ import { ColumnType } from "antd/lib/table";
 import moment from "moment-timezone";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
-import ActionMenu from "@/components/common/ActionMenu";
+import ActionMenu, { generateActionMenuItems } from "@/components/common/ActionMenu";
 
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
@@ -387,7 +387,11 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 ) : (
                   <Dropdown
                     className="full-height full-mobile"
-                    menu={isApproved ? { items: approvedMenu } : { items: menu }}
+                    menu={
+                      isApproved
+                        ? { items: generateActionMenuItems(approvedMenu, record) }
+                        : { items: generateActionMenuItems(menu, record) }
+                    }
                     placement="bottomLeft"
                   >
                     <Button className="permit-table-button">
