@@ -17,7 +17,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
-import { FileOperations, MineDocument } from "@common/models/documents/document";
+import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
 import {
   DeleteOutlined,
   DownloadOutlined,
@@ -30,31 +30,8 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
-
-interface DocumentTableProps {
-  documents: MineDocument[];
-  isLoaded?: boolean;
-  isViewOnly?: boolean;
-  canArchiveDocuments?: boolean;
-  showVersionHistory?: boolean;
-  enableBulkActions?: boolean;
-  documentParent?: string;
-  view?: "standard" | "minimal";
-  openModal: (arg) => void;
-  openDocument: any;
-  closeModal: () => void;
-  removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
-  onArchivedDocuments?: (docs?: MineDocument[]) => void;
-  documentColumns?: ColumnType<unknown>[];
-  additionalColumns?: ColumnType<MineDocument>[];
-  defaultSortKeys?: string[];
-  excludedColumnKeys?: string[];
-  additionalColumnProps?: { key: string; colProps: any }[];
-  userRoles: string[];
-  replaceAlertMessage?: string;
-}
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable: FC<DocumentTableProps> = ({
@@ -80,6 +57,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const [rowSelection, setRowSelection] = useState([]);
   const [isCompressionModal, setCompressionModal] = useState(false);
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
+  const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -148,6 +126,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     event.preventDefault();
     openModal({
       props: {
+        DocumentTable,
         title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
         closeModal: closeModal,
         handleSubmit: async () => {
@@ -178,6 +157,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actions = [
     {
       key: "view",
@@ -382,7 +362,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   return (
     <div>
       <DocumentCompression
-        documentType=""
+        documentType={documentTypeCode}
         rows={rowSelection}
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}

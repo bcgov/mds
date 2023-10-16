@@ -10,8 +10,9 @@ import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
 import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 
-export const getGeneratedDocCategory = (doc: IExplosivesPermit) => {
+export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {
   switch (doc.explosives_permit_document_type_code) {
     case "LET":
       return "Permit Enclosed Letter";

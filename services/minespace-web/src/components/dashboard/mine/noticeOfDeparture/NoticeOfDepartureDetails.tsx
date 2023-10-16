@@ -10,7 +10,7 @@ import {
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
-import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import { INoDDocument, INodDocument, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 
 interface NoticeOfDepartureDetailsProps {
   noticeOfDeparture: INoticeOfDeparture;
@@ -20,7 +20,7 @@ export const documentSection = ({
   documentArray,
   title,
 }: {
-  documentArray: INodDocumentPayload[];
+  documentArray: INodDocument[];
   title: string;
 }) => {
   return (
@@ -76,7 +76,7 @@ export const NoticeOfDepartureDetails: React.FC<NoticeOfDepartureDetailsProps> =
 
   const checklist =
     documents.find((doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) ||
-    {};
+    ({} as INoDDocument);
   const otherDocuments = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
   );

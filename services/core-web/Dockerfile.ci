@@ -18,10 +18,6 @@ RUN yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifa
 # Install Dependencies
 RUN yarn install
 
-# Build Common Package
-RUN yarn workspace @mds/common build
-
-
 # Build Core Web Only
 RUN yarn workspace @mds/core-web build
 

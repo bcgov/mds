@@ -43,7 +43,12 @@ import {
   getEngineersOfRecordOptions,
   getQualifiedPersons,
 } from "@common/selectors/partiesSelectors";
-import { ICreateTSF, IMine } from "@mds/common";
+import {
+  ICreateTailingsStorageFacility,
+  IMine,
+  ITailingsStorageFacility,
+  MinePartyAppointmentTypeCodeEnum,
+} from "@mds/common";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 import { ActionCreator } from "@/interfaces/actionCreator";
@@ -63,18 +68,17 @@ interface TailingsSummaryPageProps {
   updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
   createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
   addPartyRelationship?: ActionCreator<typeof addPartyRelationship>;
-  formValues?: Partial<ICreateTSF>;
+  formValues?: Partial<ITailingsStorageFacility>;
   fetchPermits?: ActionCreator<typeof fetchPermits>;
   fetchMineRecordById?: ActionCreator<typeof fetchMineRecordById>;
   storeTsf?: typeof storeTsf;
   clearTsf?: typeof clearTsf;
   isDirty?: (form: string) => boolean;
-  initialValues?: Partial<ICreateTSF>;
+  initialValues?: Partial<ITailingsStorageFacility>;
 }
 
-export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTSF> & TailingsSummaryPageProps> = (
-  props
-) => {
+export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility> &
+  TailingsSummaryPageProps> = (props) => {
   const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
@@ -149,7 +153,10 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTSF> & TailingsSum
             await props.updateTailingsStorageFacility(mineGuid, tsfGuid, formValues);
           }
         } else {
-          newTsf = await props.createTailingsStorageFacility(mineGuid, formValues);
+          newTsf = await props.createTailingsStorageFacility(
+            mineGuid,
+            formValues as ICreateTailingsStorageFacility
+          );
           await props.clearTsf();
         }
         break;
@@ -162,12 +169,12 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTSF> & TailingsSum
         const { attr, apptType, successMessage } = {
           "engineer-of-record": {
             attr: "engineer_of_record",
-            apptType: "EOR",
+            apptType: MinePartyAppointmentTypeCodeEnum.EOR,
             successMessage: "Successfully assigned Engineer of Record",
           },
           "qualified-person": {
             attr: "qualified_person",
-            apptType: "TQP",
+            apptType: MinePartyAppointmentTypeCodeEnum.TQP,
             successMessage: "Successfully assigned Qualified Person",
           },
         }[tab];

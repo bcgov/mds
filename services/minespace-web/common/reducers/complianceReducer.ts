@@ -13,7 +13,7 @@ interface IComplianceReducerState {
 }
 
 const initialState: IComplianceReducerState = {
-  mineComplianceInfo: {},
+  mineComplianceInfo: {} as IComplianceArticle,
 };
 
 export const complianceReducer = (state = initialState, action) => {

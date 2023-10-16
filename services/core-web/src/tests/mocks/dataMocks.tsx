@@ -1,3 +1,11 @@
+import {
+  IMineIncident,
+  INoticeOfDeparture,
+  INoticeOfWork,
+  NoDTypeSaveEnum,
+  NodStatusSaveEnum,
+} from "@mds/common";
+
 export const createMockHeader = () => ({
   headers: {
     "Access-Control-Allow-Origin": "*",
@@ -433,6 +441,7 @@ export const PAGE_DATA = {
   prev_num: null,
   total: 9000,
   total_pages: 360,
+  records: [],
 };
 
 export const COORDINATES = [48.70707, -122.489504];
@@ -1748,6 +1757,8 @@ export const INCIDENT = {
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
   status_code: "CLD",
+  mine_name: "Test Mine",
+  categories: [{ mine_incident_category_code: "ENV" }],
 };
 
 export const INCIDENTS = {
@@ -2777,7 +2788,7 @@ export const ADD_PARTY_FORM_STATE = {
   partyLabel: "contact",
 };
 
-export const NOW = {
+export const NOW: { applications: INoticeOfWork[] } = {
   applications: [
     {
       now_application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",
@@ -2785,11 +2796,19 @@ export const NOW = {
       mine_name: "Hamilton, Herrera and Mccormick",
       mine_no: "brother",
       notice_of_work_type_description: "choice",
-      now_number: 44,
+      now_number: "44",
       now_application_status_description: "Approved",
       received_date: "2019-08-14",
       application_documents: [],
       is_historic: false,
+      imported_to_core: true,
+      lead_inspector_party_guid: "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
+      notice_of_work_type_code: "MIN",
+      mine_region: "SW",
+      lead_inspector_name: "Test Inspector",
+      issuing_inspector_name: "Inspector Gadget",
+      issuing_inspector_party_guid: "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
+      originating_system: "MMS",
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
@@ -2797,11 +2816,19 @@ export const NOW = {
       mine_name: "Thompson-Sullivan",
       mine_no: "other",
       notice_of_work_type_description: "technology",
-      now_number: 52,
+      now_number: "52",
       now_application_status_description: "Approved",
       received_date: "2019-07-21",
       application_documents: [],
       is_historic: true,
+      imported_to_core: false,
+      lead_inspector_party_guid: "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
+      notice_of_work_type_code: "MIN",
+      mine_region: "SW",
+      lead_inspector_name: "Test Inspector",
+      issuing_inspector_name: "Inspector Gadget",
+      issuing_inspector_party_guid: "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
+      originating_system: "MMS",
     },
   ],
 };
@@ -7228,9 +7255,11 @@ export const MINE_EPIC_INFO = {
   },
 };
 
-export const NOTICES_OF_DEPARTURE = {
+export const NOTICES_OF_DEPARTURE: { records: INoticeOfDeparture[] } = {
   records: [
     {
+      mine: null,
+      documents: [],
       nod_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
       nod_no: "NOD-X-45564456-01",
       nod_title: "Some title",
@@ -7246,8 +7275,9 @@ export const NOTICES_OF_DEPARTURE = {
         current_permittee: "Haynes, Park and Brown",
         permit_prefix: "M",
       },
-      nod_status: "pending_review",
-      nod_type: "potentially_substaintial",
+      nod_status: NodStatusSaveEnum.pending_review,
+      nod_type: NoDTypeSaveEnum.potentially_substantial,
+      mine_manager_name: "Maaanager",
     },
   ],
 };

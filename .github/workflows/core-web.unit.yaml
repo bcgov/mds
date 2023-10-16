@@ -37,9 +37,6 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Build Common Package
-        run: yarn workspace @mds/common build
-
       - name: Run frontend tests
         run: cd services/core-web/ && yarn && yarn test
 

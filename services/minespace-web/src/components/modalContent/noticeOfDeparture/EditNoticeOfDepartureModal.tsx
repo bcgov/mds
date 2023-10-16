@@ -3,7 +3,7 @@ import EditNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/Edit
 import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 
 interface EditNoticeOfDepartureModalProps {
-  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload) => any;
+  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
   initialValues: INoticeOfDeparture;
   afterClose: () => void;
   closeModal: () => void;

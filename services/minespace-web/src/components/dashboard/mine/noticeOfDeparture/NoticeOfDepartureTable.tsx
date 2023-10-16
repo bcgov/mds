@@ -6,7 +6,7 @@ import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/st
 
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
-import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeDisplayEnum } from "@mds/common";
+import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";
 
@@ -28,7 +28,7 @@ const NoticeOfDepartureTable: React.FC<NoticeOfDepartureTableProps> = (props) =>
     props.openEditNoticeOfDepartureModal(noticeOfDeparture);
   };
 
-  interface NodColumn {
+  interface NodColumn extends INoticeOfDeparture {
     key: React.Key;
     nod_title: string;
     nod_no: string;
@@ -36,7 +36,7 @@ const NoticeOfDepartureTable: React.FC<NoticeOfDepartureTableProps> = (props) =>
       permit_no: string;
     };
     submitted_at: string;
-    nod_type: NoDTypeDisplayEnum;
+    nod_type: NoDTypeSaveEnum;
     nod_status: NoDStatusDisplayEnum;
   }
 

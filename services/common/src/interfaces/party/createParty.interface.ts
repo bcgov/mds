@@ -9,4 +9,6 @@ export interface ICreateParty {
   start_date: string;
   end_date?: string;
   union_rep_company?: string;
+  first_name?: string;
+  party_name: string;
 }

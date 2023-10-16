@@ -46,8 +46,9 @@ import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 import * as Permission from "@/constants/permissions";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+
 import { Feature } from "@mds/common";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface StateProps {
   permits: IPermit[];

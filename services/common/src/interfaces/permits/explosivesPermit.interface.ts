@@ -1,4 +1,5 @@
 import { IMagazine } from "@mds/common/index";
+import { IExplosivesPermitDocument } from "../explosivesPermitMagazine.interface";
 
 export interface IExplosivesPermit {
   explosives_permit_id: number;
@@ -32,7 +33,7 @@ export interface IExplosivesPermit {
   description: string;
   explosive_magazines: IMagazine[];
   detonator_magazines: IMagazine[];
-  documents: any[];
+  documents: IExplosivesPermitDocument[];
   mines_permit_number: string;
   now_number: string;
 }

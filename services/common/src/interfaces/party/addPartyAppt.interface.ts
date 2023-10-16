@@ -9,3 +9,7 @@ export interface IAddPartyAppointment {
   end_date?: string;
   end_current?: boolean;
 }
+
+export interface IUpdatePartyAppointment extends IAddPartyAppointment {
+  mine_party_appt_guid: string;
+}

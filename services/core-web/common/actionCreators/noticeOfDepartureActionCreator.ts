@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT, INoticeOfDeparture, ICreateNoD, INodDocumentPayload } from "@mds/common";
-import { error, request, success } from "../actions/genericActions";
+import { IDispatchError, error, request, success } from "../actions/genericActions";
 import {
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
   CREATE_NOTICE_OF_DEPARTURE,
@@ -49,7 +49,9 @@ export const createNoticeOfDeparture = (
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchNoticesOfDeparture = (mine_guid): AppThunk => (dispatch) => {
+export const fetchNoticesOfDeparture = (
+  mine_guid
+): AppThunk<Promise<AxiosResponse<INoticeOfDeparture> | IDispatchError>> => (dispatch) => {
   dispatch(request(GET_NOTICES_OF_DEPARTURE));
   dispatch(showLoading());
   const headers = {

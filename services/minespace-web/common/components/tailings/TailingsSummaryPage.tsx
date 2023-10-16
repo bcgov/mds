@@ -43,7 +43,7 @@ import {
   getEngineersOfRecordOptions,
   getQualifiedPersons,
 } from "@common/selectors/partiesSelectors";
-import { ICreateTSF, IMine } from "@mds/common";
+import { ICreateTailingsStorageFacility, IMine } from "@mds/common";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 import { ActionCreator } from "@/interfaces/actionCreator";
@@ -63,18 +63,17 @@ interface TailingsSummaryPageProps {
   updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
   createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
   addPartyRelationship?: ActionCreator<typeof addPartyRelationship>;
-  formValues?: Partial<ICreateTSF>;
+  formValues?: Partial<ICreateTailingsStorageFacility>;
   fetchPermits?: ActionCreator<typeof fetchPermits>;
   fetchMineRecordById?: ActionCreator<typeof fetchMineRecordById>;
   storeTsf?: typeof storeTsf;
   clearTsf?: typeof clearTsf;
   isDirty?: (form: string) => boolean;
-  initialValues?: Partial<ICreateTSF>;
+  initialValues?: Partial<ICreateTailingsStorageFacility>;
 }
 
-export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTSF> & TailingsSummaryPageProps> = (
-  props
-) => {
+export const TailingsSummaryPage: FC<InjectedFormProps<ICreateTailingsStorageFacility> &
+  TailingsSummaryPageProps> = (props) => {
   const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);

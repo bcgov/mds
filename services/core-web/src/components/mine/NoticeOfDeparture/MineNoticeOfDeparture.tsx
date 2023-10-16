@@ -51,7 +51,7 @@ export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps> = (pro
 
   const openNoticeOfDepartureModal = async (
     event,
-    selectedNoticeOfDeparture: INoticeOfDeparture
+    selectedNoticeOfDeparture: { nod_guid: string }
   ) => {
     if (event) {
       event.preventDefault();

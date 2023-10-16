@@ -14,13 +14,13 @@ import { storeDam } from "@common/actions/damActions";
 import { useHistory } from "react-router-dom";
 import { EditIcon } from "@/assets/icons";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
-import { IDam, INoticeOfDeparture } from "@mds/common";
+import { IDam, INoticeOfDeparture, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";
 
 interface AssociatedDamsProps {
-  tsf: INoticeOfDeparture;
+  tsf: ITailingsStorageFacility;
   storeDam: typeof storeDam;
   isCore?: boolean;
 }

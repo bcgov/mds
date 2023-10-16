@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import queryString from "query-string";
-import { ENVIRONMENT, removeNullValues } from "@mds/common";
+import { ENVIRONMENT, IUpdatePartyAppointment, removeNullValues } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as partyActions from "../actions/partyActions";
@@ -131,7 +131,7 @@ export const addPartyRelationship = (
 };
 
 export const updatePartyRelationship = (
-  payload: Partial<IAddPartyAppointment>,
+  payload: Partial<IUpdatePartyAppointment>,
   successMessage?: string
 ): AppThunk<Promise<AxiosResponse<IPartyAppt>>> => (
   dispatch
@@ -254,7 +254,7 @@ export const setAddPartyFormState = (
   addPartyFormState: IAddPartyFormState
 ): AppThunk<Promise<IAddPartyFormState>> => (dispatch): Promise<IAddPartyFormState> => {
   dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
-  return addPartyFormState;
+  return Promise.resolve(addPartyFormState);
 };
 
 export const addDocumentToRelationship = (

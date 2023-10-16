@@ -32,7 +32,7 @@ import { connect } from "react-redux";
 
 interface EditNoticeOfDepartureFormProps {
   initialValues: INoticeOfDeparture;
-  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload) => any;
+  onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
   closeModal: () => void;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;

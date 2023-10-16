@@ -17,6 +17,7 @@ export interface IPermit {
   bonds: IPermitBond[];
   exemption_fee_status_code: string;
   exemption_fee_status_note: string;
-  site_properties: IMineType[];
+  site_properties: IMineType;
   permit_prefix: string;
+  mine_guid?: string;
 }

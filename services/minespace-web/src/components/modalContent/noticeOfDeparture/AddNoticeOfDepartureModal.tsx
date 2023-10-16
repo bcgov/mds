@@ -11,7 +11,7 @@ interface AddNoticeOfDepartureModalProps {
   onSubmit: (
     permitNumber: string,
     values: ICreateNoD,
-    documentArray: INodDocumentPayload
+    documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   initialValues: ICreateNoD;
   afterClose: () => void;

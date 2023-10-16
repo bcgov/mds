@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ExplosivesPermitForm } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
-import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 

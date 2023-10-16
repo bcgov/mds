@@ -1,6 +1,6 @@
 import * as ActionTypes from "../constants/actionTypes";
 
-export const success = (reducer, data) => ({
+export const success = (reducer, data = null) => ({
   name: reducer,
   type: ActionTypes.SUCCESS,
   data,
@@ -11,7 +11,13 @@ export const request = (reducer) => ({
   type: ActionTypes.REQUEST,
 });
 
-export const error = (reducer, err) => ({
+export interface IDispatchError {
+  name: any;
+  type: string;
+  errorMessage: string;
+}
+
+export const error = (reducer, err = null): IDispatchError => ({
   name: reducer,
   type: ActionTypes.ERROR,
   errorMessage: err,

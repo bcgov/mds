@@ -20,7 +20,7 @@ import CoreTable from "@/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
-import { IPermit, IPermitPartyRelationship, IPermitAmendment } from "@mds/common";
+import { IPermit, IPermitPartyRelationship, IPermitAmendment, IMineDocument } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 
 /**
@@ -30,7 +30,8 @@ import { ColumnsType } from "antd/lib/table";
 const draftAmendment = "DFT";
 
 interface MinePermitTableProps {
-  permits: IPermit[];
+  permits?: IPermit[];
+  permit?: IPermit;
   partyRelationships?: IPermitPartyRelationship[];
   permitStatusOptionsHash?: any;
   major_mine_ind: boolean;
@@ -49,6 +50,25 @@ interface MinePermitTableProps {
   openEditSitePropertiesModal: (arg1: any, arg2: IPermit) => any;
   openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
   match: any;
+}
+
+interface MinePermitColumnType {
+  permit: IPermit | IPermitAmendment;
+  permitAmendmentDocuments: IMineDocument[];
+  is_generated_in_core: boolean;
+  amendmentNumber: string;
+  conditions: any;
+  openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
+  openEditAmendmentModal: (arg1: any, arg2: any, arg3: IPermit) => any;
+  permitAmendmentTypeOptionsHash: any;
+  handleDeletePermit(permit_guid: any): void;
+  openEditSitePropertiesModal: (arg1: any, arg2: IPermit | IPermitAmendment) => any;
+  description: string;
+  openAddPermitAmendmentModal: (arg1: any, arg2: IPermitAmendment) => any;
+  openAddPermitHistoricalAmendmentModal: (arg1: any, arg2: IPermitAmendment) => any;
+  openAddAmalgamatedPermitModal: (arg1: any, arg2: IPermit | IPermitAmendment) => any;
+  openEditPermitModal: (arg1: any, arg2: IPermit | IPermitAmendment, arg3: any) => any;
+  permitStatusOptionsHash: any;
 }
 
 const renderDocumentLink = (document, linkTitleOverride = null) => (
@@ -169,7 +189,7 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
-const columns: ColumnsType<IPermit> = [
+const columns: ColumnsType<MinePermitColumnType> = [
   {
     title: "Permit No.",
     dataIndex: "permitNo",
@@ -225,7 +245,9 @@ const columns: ColumnsType<IPermit> = [
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
+                onClick={(event) =>
+                  record.openAddPermitAmendmentModal(event, record.permit as IPermitAmendment)
+                }
               >
                 <div>
                   <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
@@ -240,7 +262,10 @@ const columns: ColumnsType<IPermit> = [
                 type="button"
                 className="full add-permit-dropdown-button"
                 onClick={(event) =>
-                  record.openAddPermitHistoricalAmendmentModal(event, record.permit)
+                  record.openAddPermitHistoricalAmendmentModal(
+                    event,
+                    record.permit as IPermitAmendment
+                  )
                 }
               >
                 <div>
@@ -290,11 +315,11 @@ const columns: ColumnsType<IPermit> = [
       );
 
       const isLinkedToNowApplication =
-        record.permit.permit_amendments.filter(
+        (record.permit as IPermit).permit_amendments.filter(
           (amendment) => !isEmpty(amendment.now_application_guid) && amendment.is_generated_in_core
         ).length > 0;
 
-      const isAnyBondsAssociatedTo = record.permit.bonds && record.permit.bonds.length > 0;
+      const isAnyBondsAssociatedTo = (record.permit as IPermit)?.bonds?.length > 0;
 
       const isDeletionAllowed = !isAnyBondsAssociatedTo && !isLinkedToNowApplication;
 
@@ -331,7 +356,7 @@ const columns: ColumnsType<IPermit> = [
           }
           onConfirm={
             isDeletionAllowed
-              ? () => record.handleDeletePermit(record.permit.permit_guid)
+              ? () => record.handleDeletePermit((record.permit as IPermit).permit_guid)
               : () => {}
           }
           okText={isDeletionAllowed ? "Delete" : "Ok"}
@@ -372,7 +397,7 @@ const columns: ColumnsType<IPermit> = [
   },
 ];
 
-const childColumns: ColumnsType<IPermit> = [
+const childColumns: ColumnsType<MinePermitColumnType> = [
   {
     title: "#",
     dataIndex: "amendmentNumber",
@@ -459,7 +484,9 @@ const childColumns: ColumnsType<IPermit> = [
                 <button
                   type="button"
                   className="full add-permit-dropdown-button"
-                  onClick={(event) => record.openEditAmendmentModal(event, record, record.permit)}
+                  onClick={(event) =>
+                    record.openEditAmendmentModal(event, record, record.permit as IPermit)
+                  }
                 >
                   <img
                     src={EDIT_OUTLINE_VIOLET}
@@ -545,6 +572,7 @@ const transformRowData = (
   );
 
   return {
+    ...permit,
     key: permit.permit_guid,
     lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
