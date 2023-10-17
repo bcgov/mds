@@ -2,7 +2,7 @@ import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import { Feature } from "@mds/common";
-import { useFeatureFlag } from "../../../common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 /**
  * @constant FeatureFlagGuard - Higher Order Component that provides "feature flagging", in order to hide routes that

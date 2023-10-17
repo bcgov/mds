@@ -25,7 +25,7 @@ interface DocumentTableProps {
   replaceAlertMessage?: string;
   showVersionHistory?: boolean;
   userRoles?: string[];
-  view?: string;
+  view?: "standard" | "minimal";
 }
 
 export default DocumentTableProps;
