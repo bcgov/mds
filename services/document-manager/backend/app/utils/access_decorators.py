@@ -1,5 +1,7 @@
 from functools import wraps
-from app.extensions import jwt
+from app.extensions import getJwtManager
+from app.flask_jwt_oidc_local import AuthError
+from werkzeug.exceptions import Forbidden
 
 VIEW_ALL = "core_view_all"
 MINE_EDIT = "core_edit_mines"
@@ -49,7 +51,12 @@ def requires_any_of(roles):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwds):
-            return jwt.has_one_of_roles(roles)(func)(*args, **kwds)
+            try:
+                return getJwtManager().has_one_of_roles(roles)(func)(*args, **kwds)
+            except AuthError as e:
+                print("required: ", roles)
+                print("found: ", getJwtManager().get_all_roles())
+                raise Forbidden(e.error['description'])
 
         wrapper.required_roles = _combine_role_flags(func, roles)
         return wrapper
@@ -60,7 +67,12 @@ def requires_any_of(roles):
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
-        return jwt.requires_roles([role])(func)(*args, **kwds)
+            try:
+                return getJwtManager().requires_roles([role])(func)(*args, **kwds)
+            except AuthError as e:
+                print("required: ", role)
+                print("found: ", getJwtManager().get_all_roles())
+                raise Forbidden(e.error['description'])
 
     wrapper.required_roles = _combine_role_flags(func, [role])
     return wrapper
