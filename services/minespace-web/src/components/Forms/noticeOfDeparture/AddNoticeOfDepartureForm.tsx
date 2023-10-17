@@ -41,6 +41,10 @@ interface RenderContactsProps {
   fields: FieldArrayFieldsProps<INoDContactInterface>;
 }
 
+export interface AddNoticeOfDepartureFormProps {
+  initialValues: { nod_contacts: [{ is_primary: boolean }] };
+}
+
 interface AddNoticeOfDepartureProps {
   permits: INoDPermit[];
   onSubmit: (
@@ -52,7 +56,7 @@ interface AddNoticeOfDepartureProps {
   mineGuid: string;
   handleSubmit?: any;
   change?: (fieldName: string, value: any) => void;
-  initialValues: { nod_contacts: [{ is_primary: boolean }] };
+  initialValues: AddNoticeOfDepartureFormProps;
 }
 
 export const renderContacts: React.FC<RenderContactsProps> = (props) => {

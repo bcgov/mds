@@ -26,7 +26,13 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import { ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import {
+  ICreateNoD,
+  INodDocumentPayload,
+  INoticeOfDeparture,
+  NoDStatusDisplayEnum,
+  NodStatusSaveEnum,
+} from "@mds/common";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 
@@ -119,7 +125,7 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
   const handleWithdraw = () => {
     onSubmit(
       nod_guid,
-      { ...noticeOfDeparture, nod_status: NOTICE_OF_DEPARTURE_STATUS_VALUES.withdrawn },
+      { ...noticeOfDeparture, nod_status: NodStatusSaveEnum.withdrawn },
       []
     ).finally(() => setSubmitting(false));
   };
@@ -136,7 +142,7 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
 
   return (
     <div>
-      <NoticeOfDepartureCallout nodStatus={nod_status} />
+      <NoticeOfDepartureCallout nodStatus={nod_status as NodStatusSaveEnum} />
       <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
@@ -285,7 +291,7 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
             title: "Ministry Decision Documentation",
             documentArray: decision,
           })}
-        {nod_status === NOTICE_OF_DEPARTURE_STATUS_VALUES.pending_review && (
+        {nod_status === NodStatusSaveEnum.pending_review && (
           <div className="content--light-grey padding-lg margin-large--bottom">
             <h4 className="nod-modal-section-header">Withdraw Submission</h4>
             <Typography.Text>

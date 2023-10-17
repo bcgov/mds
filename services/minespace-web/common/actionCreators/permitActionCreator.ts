@@ -11,7 +11,7 @@ import {
   IPatchPermitNumber,
   IStandardPermitCondition,
 } from "@mds/common";
-import { request, success, error } from "../actions/genericActions";
+import { request, success, error, IDispatchError } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as permitActions from "../actions/permitActions";
 import * as String from "../constants/strings";
@@ -44,7 +44,9 @@ export const createPermit = (
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchPermits = (mineGuid: string): AppThunk => (dispatch) => {
+export const fetchPermits = (mineGuid: string): AppThunk<Promise<void | IDispatchError>> => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.GET_PERMITS));
   dispatch(showLoading("modal"));
   return CustomAxios({ errorToastMessage: String.ERROR })
@@ -204,9 +206,7 @@ export const updatePermitAmendment = (
 export const getPermitAmendment = (
   mineGuid: string,
   permitAmdendmentGuid: string
-): AppThunk<Promise<AxiosResponse<IPermitAmendment>>> => (
-  dispatch
-): Promise<AxiosResponse<IPermitAmendment>> => {
+): AppThunk<Promise<IPermitAmendment>> => (dispatch): Promise<IPermitAmendment> => {
   dispatch(request(reducerTypes.GET_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
@@ -330,9 +330,9 @@ export const fetchPermitConditions = (permitAmdendmentGuid: string): AppThunk =>
 export const createPermitCondition = (
   permitAmdendmentGuid: string,
   payload: IPermitCondition
-): AppThunk<Promise<AxiosResponse<IPermitCondition>>> => (
+): AppThunk<Promise<IPermitCondition | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IPermitCondition>> => {
+): Promise<IPermitCondition | IDispatchError> => {
   dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()
@@ -356,7 +356,9 @@ export const createPermitCondition = (
 export const deletePermitCondition = (
   permitAmdendmentGuid: string,
   permitConditionGuid: string
-): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
+): AppThunk<Promise<IPermitCondition | IDispatchError>> => (
+  dispatch
+): Promise<IPermitCondition | IDispatchError> => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -389,9 +391,9 @@ export const updatePermitCondition = (
   permitConditionGuid: string,
   permitAmdendmentGuid: string,
   payload: IPermitCondition
-): AppThunk<Promise<AxiosResponse<IPermitCondition>>> => (
+): AppThunk<Promise<IPermitCondition | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IPermitCondition>> => {
+): Promise<IPermitCondition | IDispatchError> => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()
@@ -421,9 +423,9 @@ export const patchPermitNumber = (
   permitGuid: string,
   mineGuid: string,
   payload: { now_application_guid: string }
-): AppThunk<Promise<AxiosResponse<IPatchPermitNumber>>> => (
+): AppThunk<Promise<IPatchPermitNumber | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IPatchPermitNumber>> => {
+): Promise<IPatchPermitNumber | IDispatchError> => {
   dispatch(request(reducerTypes.PATCH_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -464,9 +466,9 @@ export const fetchStandardPermitConditions = (noticeOfWorkType: string): AppThun
 export const createStandardPermitCondition = (
   type: string,
   payload: IStandardPermitCondition
-): AppThunk<Promise<AxiosResponse<IStandardPermitCondition>>> => (
+): AppThunk<Promise<IStandardPermitCondition | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IStandardPermitCondition>> => {
+): Promise<IStandardPermitCondition | IDispatchError> => {
   const newPayload = {
     ...payload,
     notice_of_work_type: type,
@@ -494,9 +496,9 @@ export const createStandardPermitCondition = (
 
 export const deleteStandardPermitCondition = (
   permitConditionGuid: string
-): AppThunk<Promise<AxiosResponse<IStandardPermitCondition>>> => (
+): AppThunk<Promise<IStandardPermitCondition | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IStandardPermitCondition>> => {
+): Promise<IStandardPermitCondition | IDispatchError> => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -519,9 +521,9 @@ export const deleteStandardPermitCondition = (
 export const updateStandardPermitCondition = (
   permitConditionGuid: string,
   payload: IStandardPermitCondition
-): AppThunk<Promise<AxiosResponse<IStandardPermitCondition>>> => (
+): AppThunk<Promise<IStandardPermitCondition | IDispatchError>> => (
   dispatch
-): Promise<AxiosResponse<IStandardPermitCondition>> => {
+): Promise<IStandardPermitCondition | IDispatchError> => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()

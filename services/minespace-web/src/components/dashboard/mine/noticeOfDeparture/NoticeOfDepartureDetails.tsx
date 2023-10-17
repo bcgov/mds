@@ -10,7 +10,13 @@ import {
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
-import { INoDDocument, INodDocument, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import {
+  INoDDocument,
+  INodDocument,
+  INodDocumentPayload,
+  INoticeOfDeparture,
+  NodStatusSaveEnum,
+} from "@mds/common";
 
 interface NoticeOfDepartureDetailsProps {
   noticeOfDeparture: INoticeOfDeparture;
@@ -89,7 +95,7 @@ export const NoticeOfDepartureDetails: React.FC<NoticeOfDepartureDetailsProps> =
   return (
     <div>
       <div className="nod-section-padding">
-        <NoticeOfDepartureCallout nodStatus={nod_status} />
+        <NoticeOfDepartureCallout nodStatus={nod_status as NodStatusSaveEnum} />
         <h4 className="nod-modal-section-header">Basic Information</h4>
         <div>
           <p className="field-title">Departure Project Title</p>

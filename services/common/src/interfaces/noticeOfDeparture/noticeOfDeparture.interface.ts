@@ -16,4 +16,7 @@ export interface INoticeOfDeparture {
   submission_timestamp: string;
   update_timestamp: string;
   mine_manager_name: string;
+
+  // TODO: This needs a type.
+  nod_contacts?: any[];
 }

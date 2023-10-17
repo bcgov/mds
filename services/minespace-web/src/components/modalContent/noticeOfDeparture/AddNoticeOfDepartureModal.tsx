@@ -2,7 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import * as FORM from "@/constants/forms";
-import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
+import AddNoticeOfDepartureForm, {
+  AddNoticeOfDepartureFormProps,
+} from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 import { INoDPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
 import { AxiosResponse } from "axios";
 import { RootState } from "@/App";
@@ -13,7 +15,7 @@ interface AddNoticeOfDepartureModalProps {
     values: ICreateNoD,
     documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  initialValues: ICreateNoD;
+  initialValues: AddNoticeOfDepartureFormProps;
   afterClose: () => void;
   closeModal: () => void;
   mineGuid: string;
