@@ -2437,6 +2437,7 @@ __metadata:
     css-minimizer-webpack-plugin: ^5.0.1
     cssnano: 6.0.1
     cypress: 12.13.0
+    cypress-file-upload: ^5.0.8
     date-fns: 2.28.0
     dotenv: 8.2.0
     enzyme: 3.11.0
@@ -7912,6 +7913,15 @@ __metadata:
   bin:
     cwebp: cli.js
   checksum: 89cdf06ee069161571b43153bbeeb1835b6dba1fcef12d19f8a9c289be74e035ff5679b2f45bdef8ee42a4cf71e3fb0d80f8a51d1b19c9c523bf3252685f667f
+  languageName: node
+  linkType: hard
+
+"cypress-file-upload@npm:^5.0.8":
+  version: 5.0.8
+  resolution: "cypress-file-upload@npm:5.0.8"
+  peerDependencies:
+    cypress: ">3.0.0"
+  checksum: 9c70ca7e0bb137d0ec0b8d38987219ce15b26ac3a40e3ed4e78e6ad4690392eab905586848eec6ad8edd42ee480e68ccc63007b2ebd0a02f4b3eca116ff017e3
   languageName: node
   linkType: hard
 

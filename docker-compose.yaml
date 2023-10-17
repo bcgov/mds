@@ -119,6 +119,7 @@ services:
       - redis
       - jaeger
       - otelcollector
+      - keycloak
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
