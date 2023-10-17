@@ -37,7 +37,7 @@ function loadExternalSecrets() {
         echo -e "Make sure you download the OpenShift cli binary (oc) from https://github.com/openshift/okd/releases ?"
 
         if [ "$CODESPACES" = "true" ]; then
-            echo -e "${bold}Do you want to download and install oc? (only accepts 'yes')${normal}"
+            echo -e "${bold}Do you want to download and install oc? (answering anything except 'yes' will bypass this step)${normal}"
             read INSTALL_OC
 
             if [ "$INSTALL_OC" = "yes" ]; then

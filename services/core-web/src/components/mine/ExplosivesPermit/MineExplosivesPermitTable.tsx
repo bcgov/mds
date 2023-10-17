@@ -43,11 +43,15 @@ interface MineExplosivesPermitTableProps {
 
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
+    const mostRecentVersion =
+      permit.explosives_permit_amendments.length > 0
+        ? permit.explosives_permit_amendments[permit.explosives_permit_amendments.length - 1]
+        : permit;
     return {
-      ...permit,
-      key: permit.explosives_permit_guid,
-      documents: permit.documents,
-      isExpired: permit.expiry_date && moment(permit.expiry_date).isBefore(),
+      ...mostRecentVersion,
+      key: mostRecentVersion.explosives_permit_guid,
+      documents: mostRecentVersion.documents,
+      isExpired: mostRecentVersion.expiry_date && moment(mostRecentVersion.expiry_date).isBefore(),
     };
   });
 };
