@@ -67,22 +67,6 @@
         },
         "notBefore": 0,
         "groups": []
-      },
-      {
-        "username": "cypress",
-        "enabled": true,
-        "credentials": [
-          {
-            "type": "password",
-            "secretData": "{\"value\":\"j5W46+jmf0/Y0jxXl3wBGVYAcEp4+GJ/5qQ7NIKeIv8h1Z2r6Qzy/vV3boEYdupOPk2r6rq+bqDNz7ggmQk/8w==\",\"salt\":\"8yJzJ8GEgIlmIpYxKo+5Cg==\",\"additionalParameters\":{}}",
-            "credentialData": "{\"hashIterations\":100000,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
-          }
-        ],
-        "clientRoles": {
-          "realm-management": [
-            "realm-admin"
-          ]
-        }
       }
     ]
   },
