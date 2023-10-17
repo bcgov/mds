@@ -43,11 +43,6 @@ import {
   supportingDocColumns,
 } from "@/components/modalContent/ExplosivesPermitViewModal";
 
-const defaultProps = {
-  initialValues: {},
-  mines_permit_guid: null,
-};
-
 interface ExplosivesPermitFormProps {
   closeModal: () => void;
   initialValues: any;
@@ -143,7 +138,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     setIsAmend(e.target.value === 3);
   };
 
-  const handleOpenAddExplosivesPermitModal = () => {
+  const handleOpenAddExplosivesPermitModal = (e) => {
+    e.preventDefault();
     setParentView(false);
   };
 
@@ -205,10 +201,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           {descriptionListElement}
         </div>
         <div className="landing-list">
-          <h4 className="uppercase">
-            DEFAULT TO &quot;ADD EXISTING&quot; FROM PERMIT PAGE / &quot;CREATE NEW&quot; FROM
-            APPLICATION PAGE
-          </h4>
           <br />
           <Typography.Text>Select an action below to get started:</Typography.Text>
           <div className="landing-list">
@@ -243,11 +235,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           >
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button
-            disabled={isAmend}
-            type="primary"
-            onClick={() => handleOpenAddExplosivesPermitModal()}
-          >
+          <Button disabled={isAmend} type="primary" onClick={handleOpenAddExplosivesPermitModal}>
             Next
           </Button>
         </div>
@@ -339,7 +327,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                       placeholder="Explosives Permit Number"
                       label="Explosives Permit Number*"
                       component={renderConfig.FIELD}
-                      validate={[required, validateSelectOptions(permitDropdown, true)]}
+                      validate={[required]}
                       disabled={disabled}
                     />
                   </Form.Item>
@@ -354,7 +342,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                     label="Mines Act Permit*"
                     component={renderConfig.SELECT}
                     data={permitDropdown}
-                    validate={[required, validateSelectOptions(nowDropdown, true)]}
+                    validate={[required, validateSelectOptions(permitDropdown, true)]}
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -367,6 +355,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 placeholder="Select a NoW"
                 label="Notice of Work Number"
                 component={renderConfig.SELECT}
+                validate={[validateSelectOptions(nowDropdown, true)]}
                 data={nowDropdown}
                 disabled={disabled}
               />
@@ -546,12 +535,12 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
 };
 
-const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
+const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_NEW);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
   mines_permit_guid: selector(state, "permit_guid"),
-  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
+  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
   partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
