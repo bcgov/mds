@@ -44,7 +44,7 @@ interface MineExplosivesPermitTableProps {
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
     const mostRecentVersion =
-      permit.explosives_permit_amendments.length > 0
+      permit.explosives_permit_amendments?.length > 0
         ? permit.explosives_permit_amendments[permit.explosives_permit_amendments.length - 1]
         : permit;
     return {
