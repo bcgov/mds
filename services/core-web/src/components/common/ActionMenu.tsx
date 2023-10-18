@@ -1,8 +1,7 @@
-import { Button, Dropdown, Modal, ModalFuncProps } from "antd";
+import { Button, Dropdown, Modal } from "antd";
 import { CARAT } from "@/constants/assets";
 import React, { FC } from "react";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
-import Icon from "@ant-design/icons/lib/components/Icon";
 
 interface ActionMenuProps {
   record: any;
