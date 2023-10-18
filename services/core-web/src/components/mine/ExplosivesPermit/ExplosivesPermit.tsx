@@ -196,17 +196,17 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenExplosivesPermitDecisionModal = (event, record) => {
     event.preventDefault();
-    return props
+    props
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
-      .then(() => {
+      .then((documentContextTemplate) => {
         const initialValues = {};
-        props.documentContextTemplate.document_template.form_spec.forEach(
+        documentContextTemplate.document_template.form_spec.forEach(
           (item) => (initialValues[item.id] = item["context-value"])
         );
-        return props.openModal({
+        props.openModal({
           props: {
             initialValues,
-            documentType: props.documentContextTemplate,
+            documentType: documentContextTemplate,
             inspectors,
             onSubmit: (values) => handleIssueExplosivesPermit(values, record),
             previewDocument: (documentTypeCode, values) =>
