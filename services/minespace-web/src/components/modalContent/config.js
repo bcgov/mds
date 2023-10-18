@@ -16,6 +16,7 @@ import UploadIncidentDocumentModal from "@/components/modalContent/incidents/Upl
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
+import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/createInvitationModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -36,6 +37,7 @@ export const modalConfig = {
   IMPORT_IRT_FAILURE: ImportIRTErrorModal,
   VIEW_FILE_HISTORY: ViewFileHistoryModal,
   UPLOAD_INCIDENT_DOCUMENT: UploadIncidentDocumentModal,
+  VC_WALLET_INVITATION: CreateInvitationModal,
 };
 
 export default modalConfig;

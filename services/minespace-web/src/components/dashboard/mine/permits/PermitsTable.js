@@ -1,14 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
+import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
+import { Button } from "antd";
 
 const draftAmendment = "DFT";
 
@@ -24,6 +28,26 @@ const columns = [
     dataIndex: "number",
     key: "number",
     sorter: (a, b) => (a.number > b.number ? -1 : 1),
+  },
+  {
+    title: "Permitee",
+    dataIndex: "permitee",
+    key: "permitee",
+  },
+  {
+    title: "",
+    dataIndex: "permitee_guid",
+    render: (text, record) => (
+      <div title="">
+        <Button
+          style={{ display: "inline" }}
+          type="secondary"
+          onClick={(event) => record.openVCWalletInvitationModal(event, text, record.permitee)}
+        >
+          Wallet Connection Info
+        </Button>
+      </div>
+    ),
   },
   {
     title: "Permit Status",
@@ -64,7 +88,7 @@ const finalApplicationPackage = (amendment) => {
   return finalAppPackageCore.concat(finalAppPackageImported);
 };
 
-const transformRowData = (permit, permitStatusOptions) => {
+const transformRowData = (permit, permitStatusOptions, openVCWalletInvitationModal) => {
   const filteredAmendments = permit.permit_amendments.filter(
     (a) => a.permit_amendment_status_code !== draftAmendment
   );
@@ -73,6 +97,9 @@ const transformRowData = (permit, permitStatusOptions) => {
   return {
     key: permit.permit_no || Strings.EMPTY_FIELD,
     number: permit.permit_no || Strings.EMPTY_FIELD,
+    permitee: permit.current_permittee || Strings.EMPTY_FIELD,
+    permitee_guid: permit.current_permittee_guid || Strings.EMPTY_FIELD,
+    openVCWalletInvitationModal: openVCWalletInvitationModal,
     status:
       (permit.permit_status_code &&
         permitStatusOptions.find((item) => item.value === permit.permit_status_code).label) ||
@@ -100,8 +127,20 @@ const transformExpandedRowData = (amendment, amendmentNumber) => ({
 });
 
 export const PermitsTable = (props) => {
+  const openVCWalletInvitationModal = (event, partyGuid, partyName) => {
+    event.preventDefault();
+    props.openModal({
+      props: {
+        title: "Digital Wallet Connection Invitation",
+        partyGuid: partyGuid,
+        partyName: partyName,
+      },
+      content: modalConfig.VC_WALLET_INVITATION,
+    });
+  };
+
   const rowData = props.permits.map((permit) =>
-    transformRowData(permit, props.permitStatusOptions)
+    transformRowData(permit, props.permitStatusOptions, openVCWalletInvitationModal)
   );
 
   const getExpandedRowData = (permit) =>
@@ -169,6 +208,17 @@ export const PermitsTable = (props) => {
         </div>
       ),
     },
+    {
+      title: "",
+      dataIndex: "",
+      render: (text, record) => (
+        <div title="">
+          <Button style={{ display: "inline" }} type="primary">
+            Issue Digital Credential
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -191,4 +241,13 @@ const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
-export default connect(mapStateToProps)(PermitsTable);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openModal,
+      closeModal,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);

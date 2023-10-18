@@ -2,6 +2,7 @@ from flask import current_app
 from flask_restplus import Resource
 from werkzeug.exceptions import NotFound
 from app.extensions import api
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
 from app.api.parties.party.models.party import Party
 from app.api.services.traction_service import TractionService
@@ -10,6 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 class VerifiableCredentialConnectionResource(Resource, UserMixin):
     @api.doc(description='Create a connection invitation for a party by guid', params={})
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def post(self, party_guid: str):
         #mine_guid will be param. just easy this way for development
         party = Party.find_by_party_guid(party_guid)
