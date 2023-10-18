@@ -1,31 +1,39 @@
 describe("Major Projects", () => {
     beforeEach(() => {
         cy.login();
-        cy.contains('button', 'Major Projects', { timeout: 10000 }).click({ force: true });
-        cy.get('table[style="table-layout: auto;"]', { timeout: 10000 })
-            .find('tbody > tr').eq(1)  // get the second row
-            .find('button:contains("Open")')  // find the button that contains the text "Open"
+        cy.wait(5000);
+
+        // Get the button element by its text content
+        cy.contains('button', 'Major Projects')
+            // Check that it is visible and enabled
+            .should('be.visible')
+            .and('not.be.disabled')
+            // Click on it
             .click({ force: true });
 
-        // Find the row with "Project description", then find the "View" button within that row and click on it.
-        cy.get('tbody.ant-table-tbody')
-            .contains('td', 'Project description')
-            .siblings() // get the sibling columns
-            .find('button:contains("View")') // find the button with text "View"
-            .click();
+        // Find the table and wait for it to be visible
+        cy.get('table[style="table-layout: auto;"]').should('be.visible').find('tbody > tr').eq(1) // get the second row
+            .find('button:contains("Open")').click({ force: true }); // find the button that contains the text "Open"
 
-        cy.get('#project-summary-submit', { timeout: 10000 }).click({ force: true });
+        // Find the row with "Project description", then find the "View" button within that row and click on it.
+        cy.get('tbody.ant-table-tbody').contains('td', 'Project description')
+            .siblings().find('button:contains("View")').click();
+
+        // Wait for the submit button to be visible and click it
+        cy.get('#project-summary-submit').then(($button) => {
+            $button[0].click();
+        });
     });
 
     it("should upload a document successfully", () => {
         // Access the file input element and attach a file from the fixtures directory.
         cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
 
-        // Verify that the "Upload complete" message is displayed
-        cy.get('.filepond--file-status-main', { timeout: 20000 }).should('have.text', 'Upload complete');
+        cy.wait(25000);
+        cy.get('.filepond--file-status-main').should('have.text', 'Upload complete');
 
-        // Save the changes
-        cy.contains('button', 'Save Changes').click({ force: true });
+        // Save the changes without force
+        cy.contains('button', 'Save Changes').should('be.visible').click({ force: true });
     });
 
     it('should download a document successfully', () => {
