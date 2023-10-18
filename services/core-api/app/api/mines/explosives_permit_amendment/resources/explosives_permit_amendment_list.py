@@ -2,8 +2,8 @@ from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound
 from decimal import Decimal
 
+from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
-from app.api.mines.explosives_permit_amendment.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser

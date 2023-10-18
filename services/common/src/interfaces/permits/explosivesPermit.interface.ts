@@ -1,4 +1,4 @@
-import { IMagazine } from "@/index";
+import { IExplosivesPermitAmendment, IMagazine } from "./";
 
 export interface IExplosivesPermit {
   explosives_permit_id: number;
@@ -35,4 +35,5 @@ export interface IExplosivesPermit {
   documents: any[];
   mines_permit_number: string;
   now_number: string;
+  explosives_permit_amendments: IExplosivesPermitAmendment[];
 }

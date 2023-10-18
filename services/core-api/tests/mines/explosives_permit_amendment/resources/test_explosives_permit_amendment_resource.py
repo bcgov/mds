@@ -2,7 +2,7 @@ import json
 
 from tests.factories import ExplosivesPermitAmendmentFactory
 from flask_restplus import marshal
-from app.api.mines.explosives_permit_amendment.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
+from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 
 
 def test_get_explosives_permit_amendment_by_explosives_permit_amendment_guid(test_client, db_session, auth_headers):

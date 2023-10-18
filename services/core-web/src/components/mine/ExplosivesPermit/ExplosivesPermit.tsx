@@ -152,15 +152,20 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   const handleOpenViewExplosivesPermitModal = (event, record) => {
     event.preventDefault();
     const mine = mines[mineGuid];
+    const parentPermit = explosivesPermits.find(
+      ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
+    );
     props.openModal({
       props: {
         title: "View Explosives Storage & Use Permit",
         explosivesPermit: record,
+        parentPermit,
         mine,
         closeModal: props.closeModal,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_VIEW_MODAL,
       isViewOnly: true,
+      width: "75vw",
     });
   };
 
