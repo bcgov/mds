@@ -1,4 +1,4 @@
-name: SchemaSpy - DEV restart rollout
+name: SchemaSpy - PROD restart rollout
 
 on:
   workflow_call:
@@ -8,5 +8,5 @@ jobs:
   dev-schemaspy-rollout:
     uses: ./.github/workflows/schemaspy-rollout.yaml    
     with: 
-      environment: dev
+      environment: prod
     secrets: inherit

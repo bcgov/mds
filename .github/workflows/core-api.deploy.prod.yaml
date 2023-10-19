@@ -33,9 +33,8 @@ jobs:
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
 
-      - name: Restart SchemaSpy pods
-        run: |
-          oc -n 4c2ba9-prod rollout restart deployment/schemaspy
+      - name: SchemaSpy Rollout
+        uses: ./.github/workflows/schemaspy-rollout-prod.yaml
 
   trigger-gitops:
     runs-on: ubuntu-20.04
@@ -61,8 +60,8 @@ jobs:
 
   run-if-failed:
     runs-on: ubuntu-20.04
-    needs: [trigger-gitops]
-    if: always() && (needs.trigger-gitops.result == 'failure')
+    needs: [promote-image-to-prod, trigger-gitops]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
       - name: Notification
         run: ./gitops/watch-deployment.sh core-api prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1

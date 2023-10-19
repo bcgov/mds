@@ -8,8 +8,8 @@ on:
         type: string
 
 jobs:
-  test-schemaspy-rollout:
-    name: test-schemaspy-rollout    
+  schemaspy-rollout:
+    name: schemaspy-rollout    
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
