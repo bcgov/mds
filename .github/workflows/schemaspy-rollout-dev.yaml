@@ -1,0 +1,17 @@
+name: SchemaSpy - DEV restart rollout
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - migrations/sql
+
+jobs:
+  dev-schemaspy-rollout:
+    uses: ./.github/workflows/schemaspy-rollout.yaml    
+    with: 
+      environment: dev
+    secrets: inherit

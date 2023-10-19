@@ -1,10 +1,11 @@
 name: Testing this as part of a workflow
 
 on:
-  pull_request:
-
-env:
-  ENVIRONMENT: dev
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 jobs:
   test-schemaspy-rollout:
@@ -25,17 +26,17 @@ jobs:
 
       - name: Restart SchemaSpy pods
         run: |
-          oc -n 4c2ba9-${{ env.ENVIRONMENT }} rollout restart deployment/schemaspy
+          oc -n 4c2ba9-${{ inputs.environment }} rollout restart deployment/schemaspy
 
       - name: Watch Rollout Status        
         run: |
-          oc -n 4c2ba9-${{ env.ENVIRONMENT }} rollout status deployment/schemaspy
+          oc -n 4c2ba9-${{ inputs.environment }} rollout status deployment/schemaspy
         timeout-minutes: 10
       
       - name: Notify Discord of Rollout success
         if: ${{ success() }} 
-        run: ./gitops/notify_discord.sh schemaspy ${{ env.ENVIRONMENT }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 0
+        run: ./gitops/notify_discord.sh schemaspy ${{ inputs.environment }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 0
 
       - name: Notify Discord of Rollout failure
         if: ${{ failure() }} 
-        run: ./gitops/notify_discord.sh schemaspy ${{ env.ENVIRONMENT }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
+        run: ./gitops/notify_discord.sh schemaspy ${{ inputs.environment }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
