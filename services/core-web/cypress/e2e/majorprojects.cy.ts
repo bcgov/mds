@@ -1,25 +1,19 @@
 describe("Major Projects", () => {
     beforeEach(() => {
         cy.login();
-        cy.wait(5000);
 
-        // Get the button element by its text content
-        cy.contains('button', 'Major Projects')
-            // Check that it is visible and enabled
-            .should('be.visible')
-            .and('not.be.disabled')
-            // Click on it
-            .click({ force: true });
+        cy.get('[data-cy="home-link-button-major-projects"]', { timeout: 5000 }).click();
 
-        // Find the table and wait for it to be visible
-        cy.get('table[style="table-layout: auto;"]').should('be.visible').find('tbody > tr').eq(1) // get the second row
-            .find('button:contains("Open")').click({ force: true }); // find the button that contains the text "Open"
+        // .eq(1) selects the second row (0-based index).
+        cy.get("[data-cy=major-projects-table-open-button]", { timeout: 5000 })
+            .eq(1)
+            .find("button")
+            .click();
 
-        // Find the row with "Project description", then find the "View" button within that row and click on it.
-        cy.get('tbody.ant-table-tbody').contains('td', 'Project description')
-            .siblings().find('button:contains("View")').click();
 
-        // Wait for the submit button to be visible and click it
+        cy.get('a[data-cy="project-description-view-link"]', { timeout: 5000 }).click();
+
+        // Wait for the edit button to be visible and click it
         cy.get('#project-summary-submit').then(($button) => {
             $button[0].click();
         });
@@ -29,7 +23,9 @@ describe("Major Projects", () => {
         // Access the file input element and attach a file from the fixtures directory.
         cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
 
+        // This long time is required because it takes quite a while for the file (11kb) to upload.
         cy.wait(25000);
+
         cy.get('.filepond--file-status-main').should('have.text', 'Upload complete');
 
         // Save the changes without force
@@ -43,7 +39,7 @@ describe("Major Projects", () => {
             .scrollIntoView()
             .within(() => {
                 // Hover over the 'Actions' button within the row
-                cy.get('.ant-btn.ant-btn-default.ant-dropdown-trigger.permit-table-button')
+                cy.get('[data-cy=menu-actions-button]')
                     .trigger('mouseover', { force: true });
             });
         // Wait here for dropdown to appear
@@ -65,6 +61,7 @@ describe("Major Projects", () => {
 
         // Wait for file to download before continuing
         cy.wait(5000);
+
         /**
          * Clean up by deleting file after downloading. This is to ensure that the 
          * upload file runs multiple times without any issue
@@ -75,10 +72,8 @@ describe("Major Projects", () => {
             .find('div')
             .click({ force: true });
 
-        cy.wait(10000);
-
         // Click 'Delete' within the modal
-        cy.get('.ant-modal-footer')
+        cy.get('.ant-modal-footer', { timeout: 5000 })
             .contains('button', 'Delete')
             .click({ force: true });
     });

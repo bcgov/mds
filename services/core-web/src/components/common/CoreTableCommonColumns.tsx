@@ -98,7 +98,7 @@ export const renderActionsColumn = (
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
               {/* // TODO: change button classname to something generic */}
-              <Button className="permit-table-button">
+              <Button data-cy="menu-actions-button" className="permit-table-button">
                 {text}
                 <img
                   className="padding-sm--right icon-svg-filter"
