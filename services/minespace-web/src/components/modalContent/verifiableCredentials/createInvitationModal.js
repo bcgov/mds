@@ -9,16 +9,17 @@ import CreateInvitationForm from "@/components/Forms/verifiableCredentials/Creat
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createVCWalletInvitation: PropTypes.func.isRequired,
+  invitation: PropTypes.any,
   partyGuid: PropTypes.string.isRequired,
   partyName: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
-  variance: {},
+  invitation: {},
 };
 
 export class CreateInvitationModal extends Component {
-  state = { isLoaded: false, invitation: {} };
+  state = { isLoaded: false };
 
   render() {
     return (
@@ -28,7 +29,7 @@ export class CreateInvitationModal extends Component {
           closeModal={this.props.closeModal}
           partyGuid={this.props.partyGuid}
           partyName={this.props.partyName}
-          invitation={this.state.invitation}
+          invitation={this.props.invitation}
         />
       </div>
     );

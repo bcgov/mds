@@ -14,7 +14,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   partyGuid: PropTypes.string.isRequired,
   partyName: PropTypes.string.isRequired,
-  invitation: PropTypes.any.isRequired,
+  invitation: PropTypes.any,
 };
 
 export class CreateInvitationForm extends Component {
@@ -42,7 +42,8 @@ export class CreateInvitationForm extends Component {
           Copy to Clipboard
         </Button>
         <br />
-        <p></p>
+        <br />
+        <p>{this.props.invitation.invitation_url}</p>
 
         <Popconfirm
           placement="topRight"
