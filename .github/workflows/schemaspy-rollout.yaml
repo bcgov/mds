@@ -1,4 +1,4 @@
-name: Testing this as part of a workflow
+name: SchemaSpy Rollout
 
 on:
   workflow_call:
