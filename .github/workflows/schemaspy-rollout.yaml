@@ -25,20 +25,18 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Restart SchemaSpy pods
-        if: false
         run: |
           oc -n 4c2ba9-${{ inputs.environment }} rollout restart deployment/schemaspy
 
       - name: Watch Rollout Status
-        if: false     
         run: |
           oc -n 4c2ba9-${{ inputs.environment }} rollout status deployment/schemaspy
         timeout-minutes: 10
       
       - name: Notify Discord of Rollout success
-        if: false
+        if: ${{ success() }}
         run: ./gitops/notify_discord.sh schemaspy ${{ inputs.environment }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 0
 
       - name: Notify Discord of Rollout failure
-        if: false
+        if: ${{ failure() }}
         run: ./gitops/notify_discord.sh schemaspy ${{ inputs.environment }} ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1

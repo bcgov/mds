@@ -3,11 +3,10 @@ name: SchemaSpy - DEV restart rollout
 on:
   workflow_call:
   workflow_dispatch:
-  pull_request:
 
 jobs:
   dev-schemaspy-rollout:
     uses: ./.github/workflows/schemaspy-rollout.yaml    
     with: 
       environment: dev
-    # secrets: inherit
+    secrets: inherit

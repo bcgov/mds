@@ -52,8 +52,10 @@ jobs:
       - name: Push
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}
-      - name: SchemaSpy Rollout
-        uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+
+  schemaspy-rollout:
+    uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+    secrets: inherit
         
 
   trigger-gitops:

@@ -33,8 +33,9 @@ jobs:
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
       
-      - name: SchemaSpy Rollout
-        uses: ./.github/workflows/schemaspy-rollout-test.yaml
+  schemaspy-rollout:
+    uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+    secrets: inherit
 
   trigger-gitops:
     runs-on: ubuntu-20.04
