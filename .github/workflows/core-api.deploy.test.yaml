@@ -34,7 +34,8 @@ jobs:
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
       
   schemaspy-rollout:
-    uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+    uses: ./.github/workflows/schemaspy-rollout-test.yaml
+    needs: [promote-image-to-test]
     secrets: inherit
 
   trigger-gitops:

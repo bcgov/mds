@@ -35,6 +35,7 @@ jobs:
 
   schemaspy-rollout:
     uses: ./.github/workflows/schemaspy-rollout-prod.yaml
+    needs: [promote-image-to-prod]
     secrets: inherit
 
   trigger-gitops:

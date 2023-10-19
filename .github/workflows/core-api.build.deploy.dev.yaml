@@ -55,6 +55,7 @@ jobs:
 
   schemaspy-rollout:
     uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+    needs: [build-flyway]
     secrets: inherit
         
 
