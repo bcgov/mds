@@ -75,7 +75,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleUpdateExplosivesPermit = (values) => {
-    console.log("values", values);
     const payload = {
       ...values,
     };
