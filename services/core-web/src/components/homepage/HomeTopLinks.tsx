@@ -17,9 +17,8 @@ import { Button, Typography, Row } from "antd";
 interface HomeLinkButtonProps {
   title: string;
   route: string;
-  key: string;
+  id: string;
   icon: any;
-  datacy: string
 }
 const HomeLinkButton = (props: HomeLinkButtonProps) => {
   const IconComponent = props.icon;
@@ -30,7 +29,7 @@ const HomeLinkButton = (props: HomeLinkButtonProps) => {
 
   return (
     <Button className="home-link-button" onClick={() => handleNavigate(props.route)}>
-      <div className="home-link-button-inner" data-cy={props.datacy}>
+      <div className="home-link-button-inner" data-cy={`home-link-button-${props.id}`}>
         <IconComponent className="home-link-button-icon" />
         {props.title}
       </div>
@@ -43,37 +42,32 @@ const HomeTopLinks = () => {
     {
       title: "Notices of Work",
       route: routes.NOTICE_OF_WORK_APPLICATIONS.route,
-      key: "now",
+      id: "now",
       icon: () => <FontAwesomeIcon icon={faTrianglePersonDigging} />,
-      datacy: "home-link-button-now",
     },
     {
       title: "Incidents",
       route: routes.INCIDENTS_DASHBOARD.route,
-      key: "incidents",
+      id: "incidents",
       icon: () => <FontAwesomeIcon icon={faBrakeWarning} />,
-      datacy: "home-link-button-incidents",
     },
     {
       title: "Variances",
       route: routes.VARIANCE_DASHBOARD.route,
-      key: "variances",
+      id: "variances",
       icon: () => <FontAwesomeIcon icon={faDiamondTurnRight} />,
-      datacy: "home-link-button-variances",
     },
     {
       title: "Reports",
       route: routes.REPORTS_DASHBOARD.route,
-      key: "reports",
+      id: "reports",
       icon: () => <FontAwesomeIcon icon={faClipboardList} />,
-      datacy: "home-link-button-reports",
     },
     {
       title: "Major Projects",
       route: routes.MAJOR_PROJECTS_DASHBOARD.route,
-      key: "major-projects",
+      id: "major-projects",
       icon: () => <FontAwesomeIcon icon={faMountains} />,
-      datacy: "home-link-button-major-projects",
     },
   ];
   return (
@@ -82,7 +76,7 @@ const HomeTopLinks = () => {
       <Typography.Paragraph>Browse and filter the latest submissions.</Typography.Paragraph>
       <Row className="home-container-gutter">
         {links.map((link) => (
-          <HomeLinkButton {...link} key={link.key} />
+          <HomeLinkButton {...link} key={link.id} />
         ))}
       </Row>
     </div>

@@ -20,11 +20,15 @@ describe("Major Projects", () => {
     });
 
     it("should upload a document successfully", () => {
+
+        cy.intercept("PATCH", "/documents/**").as("patchRequest");
+        cy.intercept("GET", "/mines/documents/upload/**").as("getRequest1");
+        cy.intercept("GET", "/mines/documents/upload/**").as("getRequest2");
+
         // Access the file input element and attach a file from the fixtures directory.
         cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
 
-        // This long time is required because it takes quite a while for the file (11kb) to upload.
-        cy.wait(25000);
+        cy.wait(["@patchRequest", "@getRequest1", "@getRequest2"], { timeout: 25000 });
 
         cy.get('.filepond--file-status-main').should('have.text', 'Upload complete');
 
