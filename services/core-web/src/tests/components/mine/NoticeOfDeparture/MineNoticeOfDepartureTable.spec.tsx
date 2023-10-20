@@ -6,6 +6,7 @@ import {
 } from "@/components/mine/NoticeOfDeparture/MineNoticeOfDepartureTable";
 import { NOTICES_OF_DEPARTURE } from "@/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
+import { mine } from "@/customPropTypes/mines";
 
 const props: MineNoticeOfDepartureTableProps = {
   nods: [],

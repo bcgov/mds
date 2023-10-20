@@ -617,6 +617,7 @@ exports[`Dashboard renders properly 1`] = `
                 "mines": Array [],
                 "next_num": 2,
                 "prev_num": null,
+                "records": Array [],
                 "total": 9000,
                 "total_pages": 360,
               }

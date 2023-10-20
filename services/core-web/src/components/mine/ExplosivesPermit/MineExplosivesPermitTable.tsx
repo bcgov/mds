@@ -21,9 +21,10 @@ import moment from "moment-timezone";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
 import ActionMenu, {
-  deleteConfirmWrapper,
   generateActionMenuItems,
+  deleteConfirmWrapper,
 } from "@/components/common/ActionMenu";
+import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 import { userHasRole } from "@common/reducers/authenticationReducer";
 
 interface MineExplosivesPermitTableProps {
@@ -44,6 +45,12 @@ interface MineExplosivesPermitTableProps {
   handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
   handleOpenViewExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
+
+type MineExplosivesTableItem = IExplosivesPermit & {
+  documents: IExplosivesPermitDocument;
+  key: string;
+  isExpired: boolean;
+};
 
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
@@ -84,7 +91,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />
   );
 
-  const columns: ColumnType<IExplosivesPermit>[] = [
+  const columns: ColumnType<MineExplosivesTableItem>[] = [
     {
       title: "Permit #",
       dataIndex: "permit_number",
@@ -461,7 +468,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     },
   ];
 
-  const documentDetailColumns: ColumnType<IExplosivesPermit>[] = [
+  const documentDetailColumns: ColumnType<IExplosivesPermitDocument>[] = [
     {
       title: "Category",
       dataIndex: "explosives_permit_document_type_code",
@@ -495,7 +502,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     <CoreTable
       condition={isLoaded}
       dataSource={transformRowData(data)}
-      rowKey={(record: IExplosivesPermit) => record.explosives_permit_guid}
+      rowKey={(record) => record.explosives_permit_guid}
       classPrefix="explosives-permits"
       columns={columns}
       expandProps={{

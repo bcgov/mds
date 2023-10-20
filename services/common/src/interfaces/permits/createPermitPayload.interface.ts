@@ -1,4 +1,4 @@
-import { ICreatePermitSiteProperties, IPermitUploadedFile } from "@/index";
+import { ICreatePermitSiteProperties, IPermitUploadedFile } from "@mds/common/index";
 
 export interface ICreatePermitPayload {
   permittee_party_guid: string;

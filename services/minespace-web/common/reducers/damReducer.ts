@@ -8,7 +8,7 @@ interface DamState {
 }
 
 const initialState: DamState = {
-  dam: {},
+  dam: {} as IDam,
 };
 
 export const damReducer = (state = initialState, action) => {

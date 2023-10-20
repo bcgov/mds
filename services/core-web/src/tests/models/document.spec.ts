@@ -3,8 +3,7 @@ import {
   FileOperations,
   MajorMineApplicationDocument,
   MineDocument,
-} from "@common/models/documents/document";
-import * as common from "@mds/common";
+} from "@mds/common/models/documents/document";
 
 // Document model testing
 

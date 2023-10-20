@@ -16,7 +16,7 @@ interface IAuthenticationReducerState {
 const initialState: IAuthenticationReducerState = {
   isAuthenticated: false,
   userAccessData: [],
-  userInfo: {},
+  userInfo: {} as IUserInfo,
 };
 
 const getUserName = (tokenParsed) => {

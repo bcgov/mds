@@ -1,4 +1,4 @@
-import { Feature, USER_ROLES, isFeatureEnabled } from "@mds/common";
+import { Feature, IMineDocument, USER_ROLES, isFeatureEnabled } from "@mds/common/index";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -52,7 +52,7 @@ by the table should be *set* to the specific object, cannot expect to be able to
 
 include "user_roles" property in the json used in the constructor to set allowed actions based on the user
 */
-export class MineDocument {
+export class MineDocument implements IMineDocument {
   public category_code: string;
 
   public mine_document_guid: string;

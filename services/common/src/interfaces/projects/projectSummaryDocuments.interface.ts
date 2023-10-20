@@ -1,4 +1,4 @@
-import { IMineDocument } from "@/index";
+import { IMineDocument } from "@mds/common/index";
 
 export interface IProjectSummaryDocument extends IMineDocument {
   user_id?: string;

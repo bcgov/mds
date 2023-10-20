@@ -7,7 +7,7 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-import 'cypress-file-upload';
+import "cypress-file-upload";
 
 Cypress.Commands.add("login", () => {
   const url = Cypress.env("CYPRESS_CORE_WEB_TEST_URL") || "http://localhost:3000";

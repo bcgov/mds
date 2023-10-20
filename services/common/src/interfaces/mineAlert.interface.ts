@@ -1,3 +1,8 @@
+export interface IMineAlertList {
+  records: IMineAlert[];
+  loaded: boolean;
+}
+
 export interface IMineAlert {
   mine_alert_id: number;
   mine_alert_guid: string;

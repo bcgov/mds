@@ -1,4 +1,4 @@
-import { IIRTDocument, IIRTRequirementsXref } from "@/index";
+import { IIRTDocument, IIRTRequirementsXref } from "@mds/common/index";
 
 export interface IInformationRequirementsTable {
   irt_id: number;

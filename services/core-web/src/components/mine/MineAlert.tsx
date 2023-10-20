@@ -79,8 +79,8 @@ export class MineAlert extends Component<MineAlertProps, MineAlertState> {
   submitCreateMineAlarmForm = () => (values: IMineAlert) => {
     const payload = {
       ...values,
-      start_date: moment(values.start_date),
-      end_date: values.end_date ? moment(values.end_date) : null,
+      start_date: moment(values.start_date).toISOString(),
+      end_date: values.end_date ? moment(values.end_date).toISOString() : null,
     };
     return this.handleCreateMineAlert(payload);
   };
@@ -88,8 +88,8 @@ export class MineAlert extends Component<MineAlertProps, MineAlertState> {
   submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: IMineAlert) => {
     const payload = {
       ...values,
-      start_date: moment(values.start_date),
-      end_date: values.end_date ? moment(values.end_date) : null,
+      start_date: moment(values.start_date).toISOString(),
+      end_date: values.end_date ? moment(values.end_date).toISOString() : null,
     };
     if (mineAlertGuid) {
       return this.handleUpdateMineAlert(payload);

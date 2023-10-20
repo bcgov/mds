@@ -86,7 +86,7 @@ export const updateProject = (
   payload: Partial<IProjectSummary>,
   message = "Successfully updated project.",
   showSuccessMessage = true
-): AppThunk<Promise<AxiosResponse<IProject>>> => (dispatch): Promise<AxiosResponse<IProject>> => {
+): AppThunk<Promise<IProject>> => (dispatch): Promise<IProject> => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
   return CustomAxios()
@@ -201,9 +201,9 @@ export const fetchProjectsByMine = ({ mineGuid }): AppThunk => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProjectById = (
-  projectGuid: string
-): AppThunk<Promise<AxiosResponse<IProject>>> => (dispatch): Promise<AxiosResponse<IProject>> => {
+export const fetchProjectById = (projectGuid: string): AppThunk<Promise<IProject>> => (
+  dispatch
+): Promise<IProject> => {
   dispatch(request(reducerTypes.GET_PROJECT));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -277,7 +277,7 @@ export const createInformationRequirementsTable = (
 ): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
   dispatch
 ): Promise<AxiosResponse<IInformationRequirementsTable[]>> => {
-  const formData = new FormData();
+  const formData: any = new FormData();
   formData.append("file", file);
   formData.append("document_guid", documentGuid);
   const customContentType = { "Content-Type": "multipart/form-data" };
@@ -308,7 +308,7 @@ export const updateInformationRequirementsTableByFile = (
 ): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
   dispatch
 ): Promise<AxiosResponse<IInformationRequirementsTable[]>> => {
-  const formData = new FormData();
+  const formData: any = new FormData();
   formData.append("file", file);
   if (documentGuid) {
     formData.append("document_guid", documentGuid);

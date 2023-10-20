@@ -1,3 +1,4 @@
+import { IExplosivesPermitDocument } from "../explosivesPermitMagazine.interface";
 import { IExplosivesPermitAmendment, IMagazine } from "./";
 
 export interface IExplosivesPermit {
@@ -32,7 +33,7 @@ export interface IExplosivesPermit {
   description: string;
   explosive_magazines: IMagazine[];
   detonator_magazines: IMagazine[];
-  documents: any[];
+  documents: IExplosivesPermitDocument[];
   mines_permit_number: string;
   now_number: string;
   explosives_permit_amendments: IExplosivesPermitAmendment[];

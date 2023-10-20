@@ -6,7 +6,8 @@
     "outDir": "build" /* Redirect output structure to the directory. */,
     "paths": {
       "@common/*": ["common/*"],
-      "@mds/common/*": ["../common/"],
+      "@mds/common": ["../common/src"],
+      "@mds/common/*": ["../common/src/*"],
       "@/*": ["src/*"]
     },
     "moduleResolution": "node",

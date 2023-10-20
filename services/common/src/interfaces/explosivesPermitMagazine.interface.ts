@@ -19,6 +19,7 @@ export interface IExplosivesPermitMagazine {
 export interface IExplosivesPermitDocument {
   explosives_permit_id: number;
   explosives_permit_document_type_code: string;
+  document_manager_guid: string;
 }
 
 export interface IExplosivesPermit {

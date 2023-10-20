@@ -6,4 +6,5 @@ export interface IPartyApptFetchParams {
   start_date?: string;
   end_date?: string;
   relationships?: string;
+  include_permit_contacts?: string;
 }

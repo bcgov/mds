@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Col, Collapse, Row, Typography } from "antd";
-import { IExplosivesPermitMagazine } from "@mds/common";
+import { IExplosivesPermitMagazine } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 
 interface IMagazineProps {
   label: string;

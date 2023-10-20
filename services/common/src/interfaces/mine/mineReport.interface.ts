@@ -1,4 +1,4 @@
-import { IMineReportSubmission } from "@/interfaces/mine/mineReportSubmission.interface";
+import { IMineReportSubmission } from "@mds/common/interfaces/mine/mineReportSubmission.interface";
 
 export interface IMineReport {
   mine_report_id: string;

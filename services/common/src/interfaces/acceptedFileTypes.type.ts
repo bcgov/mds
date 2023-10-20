@@ -7,7 +7,7 @@ import {
   APPLICATION_OCTET_STREAM,
   UNIQUELY_SPATIAL,
   SPATIAL,
-} from "@/constants";
+} from "@mds/common/constants";
 
 export type IAcceptedFileTypes =
   | typeof DOCUMENT

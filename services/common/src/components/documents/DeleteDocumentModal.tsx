@@ -1,16 +1,19 @@
-import React, { FC } from "react";
+import React, { FC, FunctionComponent, ReactElement } from "react";
 
-import DocumentTable from "@/components/common/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
+import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 
 interface DeleteDocumentModalProps {
+  DocumentTable: FunctionComponent<DocumentTableProps>;
   documents: MineDocument[];
   handleSubmit(documents: MineDocument[]): Promise<void>;
   closeModal(): void;
 }
 
 const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocumentModalProps) => {
+  const DocumentTable = props.DocumentTable;
+
   return (
     <Form
       layout="vertical"
@@ -32,7 +35,6 @@ const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocument
       <DocumentTable
         documents={props.documents}
         view="minimal"
-        uploadDateIndex="upload_date"
         excludedColumnKeys={["actions", "category"]}
       />
 

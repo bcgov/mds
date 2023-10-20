@@ -1,4 +1,4 @@
-import { ActivityTypeEnum, INotificationDocumentMetadata } from "@/index";
+import { ActivityTypeEnum, INotificationDocumentMetadata } from "@mds/common/index";
 
 export interface INotificationDocument {
   message: string;

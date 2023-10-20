@@ -30,11 +30,16 @@ export const SearchBarDropdown: FC<SearchBarDropdownProps> = ({
 
   const IconFor = (item: ISearchResult) =>
     ({
-      mine: <img className="icon-svg-filter" src={MINE} alt={item.value} height={25} />,
+      mine: <img className="icon-svg-filter" src={MINE} alt={item.result?.value} height={25} />,
       party: (
-        <img className="icon-svg-filter" src={PROFILE_NOCIRCLE} alt={item.value} height={25} />
+        <img
+          className="icon-svg-filter"
+          src={PROFILE_NOCIRCLE}
+          alt={item.result?.value}
+          height={25}
+        />
       ),
-      permit: <img className="icon-svg-filter" src={DOC} alt={item.value} height={25} />,
+      permit: <img className="icon-svg-filter" src={DOC} alt={item.result?.value} height={25} />,
     }[item.type]);
 
   const getDropdownMenuItems = () => {
