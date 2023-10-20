@@ -20,6 +20,7 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  majorMineInd: PropTypes.bool.isRequired,
 };
 
 const columns = [
@@ -39,13 +40,15 @@ const columns = [
     dataIndex: "permitee_guid",
     render: (text, record) => (
       <div title="">
-        <Button
-          style={{ display: "inline" }}
-          type="secondary"
-          onClick={(event) => record.openVCWalletInvitationModal(event, text, record.permitee)}
-        >
-          Wallet Connection Info
-        </Button>
+        {record.majorMineInd && (
+          <Button
+            style={{ display: "inline" }}
+            type="secondary"
+            onClick={(event) => record.openVCWalletInvitationModal(event, text, record.permitee)}
+          >
+            Wallet Connection Info
+          </Button>
+        )}
       </div>
     ),
   },
@@ -88,7 +91,12 @@ const finalApplicationPackage = (amendment) => {
   return finalAppPackageCore.concat(finalAppPackageImported);
 };
 
-const transformRowData = (permit, permitStatusOptions, openVCWalletInvitationModal) => {
+const transformRowData = (
+  permit,
+  permitStatusOptions,
+  openVCWalletInvitationModal,
+  majorMineInd
+) => {
   const filteredAmendments = permit.permit_amendments.filter(
     (a) => a.permit_amendment_status_code !== draftAmendment
   );
@@ -99,6 +107,7 @@ const transformRowData = (permit, permitStatusOptions, openVCWalletInvitationMod
     number: permit.permit_no || Strings.EMPTY_FIELD,
     permitee: permit.current_permittee || Strings.EMPTY_FIELD,
     permitee_guid: permit.current_permittee_guid || Strings.EMPTY_FIELD,
+    majorMineInd: majorMineInd,
     openVCWalletInvitationModal: openVCWalletInvitationModal,
     status:
       (permit.permit_status_code &&
@@ -134,13 +143,19 @@ export const PermitsTable = (props) => {
         title: "Digital Wallet Connection Invitation",
         partyGuid: partyGuid,
         partyName: partyName,
+        connectionState: "active",
       },
       content: modalConfig.VC_WALLET_INVITATION,
     });
   };
 
   const rowData = props.permits.map((permit) =>
-    transformRowData(permit, props.permitStatusOptions, openVCWalletInvitationModal)
+    transformRowData(
+      permit,
+      props.permitStatusOptions,
+      openVCWalletInvitationModal,
+      props.majorMineInd
+    )
   );
 
   const getExpandedRowData = (permit) =>
