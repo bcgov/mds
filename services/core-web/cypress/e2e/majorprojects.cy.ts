@@ -21,14 +21,12 @@ describe("Major Projects", () => {
 
     it("should upload a document successfully", () => {
 
-        cy.intercept("PATCH", "/documents/**").as("patchRequest");
-        cy.intercept("GET", "/mines/documents/upload/**").as("getRequest1");
-        cy.intercept("GET", "/mines/documents/upload/**").as("getRequest2");
+        cy.intercept("GET", `${Cypress.env("CYPRESS_API_URL")}/mines/documents/upload/**`).as("getRequest");
 
         // Access the file input element and attach a file from the fixtures directory.
         cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
 
-        cy.wait(["@patchRequest", "@getRequest1", "@getRequest2"], { timeout: 25000 });
+        cy.wait("@getRequest", { timeout: 25000 });
 
         cy.get('.filepond--file-status-main').should('have.text', 'Upload complete');
 
