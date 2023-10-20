@@ -53,6 +53,12 @@ jobs:
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.MIG }}
 
+  schemaspy-rollout:
+    uses: ./.github/workflows/schemaspy-rollout-dev.yaml
+    needs: [build-flyway]
+    secrets: inherit
+        
+
   trigger-gitops:
     runs-on: ubuntu-20.04
     timeout-minutes: 15
@@ -77,8 +83,8 @@ jobs:
 
   run-if-failed:
     runs-on: ubuntu-20.04
-    needs: [trigger-gitops]
-    if: always() && (needs.trigger-gitops.result == 'failure')
+    needs: [build-backend, build-flyway, trigger-gitops]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
       - name: Notification
         run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
