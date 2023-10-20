@@ -1,7 +1,12 @@
 import "@ant-design/compatible/assets/index.css";
 
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import { IExplosivesPermit, IMine } from "@mds/common";
+import {
+  IExplosivesPermit,
+  IExplosivesPermitAmendment,
+  IExplosivesPermitDocument,
+  IMine,
+} from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
@@ -10,7 +15,6 @@ import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
 import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
 
 export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {
@@ -75,6 +79,12 @@ interface ExplosivesPermitViewModalProps {
   openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
 }
 
+const permitAmendmentLike = (permit: IExplosivesPermit): IExplosivesPermitAmendment => ({
+  explosives_permit_amendment_id: undefined,
+  explosives_permit_amendment_guid: undefined,
+  ...permit,
+});
+
 export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (props) => {
   const { explosivesPermit, parentPermit, mine, title } = props;
   const amendmentsCount = parentPermit?.explosives_permit_amendments?.length || 0;
@@ -114,9 +124,12 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       key: "action",
       render: (text, record) => {
         const recordGuid = record.explosives_permit_guid || record.explosives_permit_amendment_guid;
+
+        const currentPermitAsAmendment = permitAmendmentLike(currentPermit);
+
         if (
-          recordGuid === currentPermit?.explosives_permit_guid ||
-          recordGuid === currentPermit?.explosives_permit_amendment_guid
+          recordGuid === currentPermitAsAmendment?.explosives_permit_guid ||
+          recordGuid === currentPermitAsAmendment?.explosives_permit_amendment_guid
         )
           return null;
         return (
@@ -147,7 +160,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       };
     });
     permitHistory.unshift({
-      ...parentPermit,
+      ...permitAmendmentLike(parentPermit),
       issue_date: parentPermit.issue_date,
       expiry_date: parentPermit.expiry_date,
       is_closed: parentPermit.is_closed ? "Closed" : "Open",

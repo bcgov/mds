@@ -1,8 +1,8 @@
 import { Button, Modal, Table, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
-import { IExplosivesPermit } from "@mds/common";
 import { formatDateTime } from "@common/utils/helpers";
 import { isDate, isEqual } from "lodash";
+import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
 
 interface ExplosivesPermitDiffModalProps {
   explosivesPermit: IExplosivesPermit;
@@ -28,7 +28,12 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
   const [differences, setDifferences] = useState<IPermitDifferencesByAmendment>({});
 
   const getPermitDifferences = (permit: IExplosivesPermit): IPermitDifferencesByAmendment => {
-    const permitVersions = [permit, ...permit.explosives_permit_amendments].sort(
+    const comparablePermit = {
+      explosives_permit_amendment_id: undefined,
+      ...permit,
+    };
+
+    const permitVersions = [comparablePermit, ...permit.explosives_permit_amendments].sort(
       (a, b) => a.explosives_permit_amendment_id - b.explosives_permit_amendment_id
     );
 
