@@ -40,15 +40,19 @@ const columns = [
     dataIndex: "permitee_guid",
     render: (text, record) => (
       <div title="">
-        {record.majorMineInd && (
-          <Button
-            style={{ display: "inline" }}
-            type="secondary"
-            onClick={(event) => record.openVCWalletInvitationModal(event, text, record.permitee)}
-          >
-            Wallet Connection Info
-          </Button>
-        )}
+        {record.majorMineInd &&
+          record.status ==
+            "Open"(
+              <Button
+                style={{ display: "inline" }}
+                type="secondary"
+                onClick={(event) =>
+                  record.openVCWalletInvitationModal(event, text, record.permitee)
+                }
+              >
+                Wallet Connection Info
+              </Button>
+            )}
       </div>
     ),
   },
