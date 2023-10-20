@@ -18,11 +18,12 @@ from flask_restx import Resource, reqparse, marshal_with
 
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
-from app.extensions import api, cache
+from app.extensions import api, cache, getJwtManager
 from app.docman.response_models import DOCUMENT_MODEL
 from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
+from app.utils.include.user_info import User
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -49,6 +50,11 @@ class DocumentListResource(Resource):
         # Create the path string for this file
         document_guid = str(uuid.uuid4())
         base_folder = Config.UPLOADED_DOCUMENT_DEST
+
+        # create dedicated folder for cypress test user
+        if User().get_user_username() == 'idir\\core-admin':
+            base_folder = os.path.join(base_folder, "cypress")
+
         folder = data.get('folder') or request.headers.get('Folder')
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)

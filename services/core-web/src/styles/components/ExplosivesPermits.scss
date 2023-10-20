@@ -25,11 +25,32 @@
 }
 
 .esup-alert {
-  background-color: #F4F0F0;
-  border: 1px solid #6B6363;
+  background-color: $lightest-grey;
+  border: 1px solid $medium-grey;
+  margin-bottom: 56px;
+}
+
+.esup-alert .ant-alert-content .ant-alert-description div {
+  position: relative;
+}
+
+.esup-history-button {
+  background-color: transparent;
+  color: black !important;
+  border: 2px solid $violet;
+}
+
+.esup-alert .ant-alert-content .ant-alert-description div button {
+  position: absolute;
+  right: 0;
+  top: -75%;
+}
+
+.esup-history-button:hover {
+  background-color: white;
 }
 
 .esup-alert > span > svg {
-  fill: #6B6363;
-  background-color: #F4F0F0;
+  fill: #6b6363;
+  background-color: #f4f0f0;
 }

@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Badge, Button, Dropdown, Popconfirm, Tooltip } from "antd";
-import { EyeOutlined, WarningOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
@@ -12,16 +13,19 @@ import {
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
-import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
-
+import { EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { IExplosivesPermit, isFeatureEnabled, Feature } from "@mds/common";
 import { ColumnType } from "antd/lib/table";
 import moment from "moment-timezone";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
-import ActionMenu, { generateActionMenuItems } from "@/components/common/ActionMenu";
+import ActionMenu, {
+  generateActionMenuItems,
+  deleteConfirmWrapper,
+} from "@/components/common/ActionMenu";
 import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
+import { userHasRole } from "@common/reducers/authenticationReducer";
 
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
@@ -50,11 +54,15 @@ type MineExplosivesTableItem = IExplosivesPermit & {
 
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
+    const mostRecentVersion =
+      permit.explosives_permit_amendments?.length > 0
+        ? permit.explosives_permit_amendments[permit.explosives_permit_amendments.length - 1]
+        : permit;
     return {
-      ...permit,
-      key: permit.explosives_permit_guid,
-      documents: permit.documents,
-      isExpired: permit.expiry_date && moment(permit.expiry_date).isBefore(),
+      ...mostRecentVersion,
+      key: mostRecentVersion.explosives_permit_guid,
+      documents: mostRecentVersion.documents,
+      isExpired: mostRecentVersion.expiry_date && moment(mostRecentVersion.expiry_date).isBefore(),
     };
   });
 };
@@ -71,6 +79,18 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
   handleOpenViewExplosivesPermitModal,
   ...props
 }) => {
+  const isAdmin = useSelector((state) => userHasRole(state, Permission.ADMIN));
+  const editIcon = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
+    <EditOutlined />
+  ) : (
+    <VioletEditIcon className="padding-sm" />
+  );
+  const viewIcon = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
+    <EyeOutlined />
+  ) : (
+    <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />
+  );
+
   const columns: ColumnType<MineExplosivesTableItem>[] = [
     {
       title: "Permit #",
@@ -261,21 +281,21 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 key: "view",
                 label: "View",
                 clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-                icon: <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />,
+                icon: viewIcon,
               },
               {
                 key: "0",
                 label: "Edit Documents",
                 clickFunction: (event, record) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: <VioletEditIcon className="padding-sm" />,
+                icon: editIcon,
               },
               {
                 key: "edit",
                 label: "Edit Permit",
                 clickFunction: (event, record) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: <VioletEditIcon className="padding-sm" />,
+                icon: editIcon,
               },
             ]
           : [
@@ -284,14 +304,14 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 label: "Edit Documents",
                 clickFunction: (event, record) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: <VioletEditIcon className="padding-sm" />,
+                icon: editIcon,
               },
               {
                 key: "edit",
                 label: "Edit Permit",
                 clickFunction: (event, record) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: <VioletEditIcon className="padding-sm" />,
+                icon: editIcon,
               },
             ];
         const menu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
@@ -302,21 +322,21 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                       key: "view",
                       label: "View",
                       clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-                      icon: <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />,
+                      icon: viewIcon,
                     },
                     {
                       key: "process",
                       label: "Process",
                       clickFunction: (event) =>
                         props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: <VioletEditIcon className="padding-sm" />,
+                      icon: editIcon,
                     },
                     {
                       key: "edit",
                       label: "Edit",
                       clickFunction: (event) =>
                         props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: <VioletEditIcon className="padding-sm" />,
+                      icon: editIcon,
                     },
                   ]
                 : []),
@@ -325,14 +345,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 label: "Edit Documents",
                 clickFunction: (event) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: (
-                  <img
-                    alt="document"
-                    className="padding-sm"
-                    src={EDIT_OUTLINE_VIOLET}
-                    style={{ paddingRight: "15px" }}
-                  />
-                ),
+                icon: editIcon,
               },
             ]
           : [
@@ -343,14 +356,14 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                       label: "Process",
                       clickFunction: (event) =>
                         props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: <VioletEditIcon className="padding-sm" />,
+                      icon: editIcon,
                     },
                     {
                       key: "edit",
                       label: "Edit",
                       clickFunction: (event) =>
                         props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: <VioletEditIcon className="padding-sm" />,
+                      icon: editIcon,
                     },
                   ]
                 : []),
@@ -359,12 +372,31 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 label: "Edit Documents",
                 clickFunction: (event) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: <VioletEditIcon className="padding-sm" />,
+                icon: editIcon,
               },
             ];
+        const deleteAction: ITableAction = {
+          key: "delete",
+          label: "Delete",
+          clickFunction: (event) => {
+            deleteConfirmWrapper(
+              `Explosives Storage & Use Permit${isPermitTab ? "" : " Application"}`,
+              () => props.handleDeleteExplosivesPermit(event, record)
+            );
+          },
+          icon: <DeleteOutlined />,
+        };
+
+        const currentMenu = isApproved ? approvedMenu : menu;
         const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
-          (record.application_status !== "APP" && !isPermitTab) || (isApproved && isPermitTab);
+          (isAdmin && record.application_status !== "APP" && !isPermitTab) ||
+          (isApproved && isPermitTab);
+
+        if (showDelete && isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)) {
+          currentMenu.push(deleteAction);
+        }
+
         return (
           <div className="btn--middle flex">
             {isApproved && !hasDocuments && isCoreSource && (
@@ -386,19 +418,11 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
             {showActions && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
                 {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
-                  <ActionMenu
-                    record={record}
-                    actionItems={isApproved ? approvedMenu : menu}
-                    category="ESUP"
-                  />
+                  <ActionMenu record={record} actionItems={currentMenu} category="ESUP" />
                 ) : (
                   <Dropdown
                     className="full-height full-mobile"
-                    menu={
-                      isApproved
-                        ? { items: generateActionMenuItems(approvedMenu, record) }
-                        : { items: generateActionMenuItems(menu, record) }
-                    }
+                    menu={{ items: generateActionMenuItems(currentMenu, record) }}
                     placement="bottomLeft"
                   >
                     <Button className="permit-table-button">
@@ -421,7 +445,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 )}
               </AuthorizationWrapper>
             )}
-            {showDelete && (
+            {showDelete && !isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && (
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Popconfirm
                   placement="topLeft"

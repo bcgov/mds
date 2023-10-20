@@ -1,4 +1,4 @@
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, Modal } from "antd";
 import { CARAT } from "@/constants/assets";
 import React, { FC } from "react";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
@@ -8,6 +8,18 @@ interface ActionMenuProps {
   actionItems: ITableAction[];
   category: string;
 }
+
+export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void) => {
+  const title = `Confirm Deletion`;
+  const content = `Are you sure you want to delete this ${recordDescription}?`;
+  const modalContent = {
+    title,
+    content,
+    onOk,
+    okText: "Delete",
+  };
+  return Modal.confirm(modalContent);
+};
 
 export const generateActionMenuItems = (actionItems: ITableAction[], record) => {
   return actionItems.map((action) => {
@@ -31,19 +43,14 @@ const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
   const items = generateActionMenuItems(actionItems, record);
   return (
     <Dropdown menu={{ items }} placement="bottomLeft">
-      <Button
-        icon={
-          <img
-            className="padding-sm--right icon-svg-filter"
-            src={CARAT}
-            alt={`${category} Actions`}
-            style={{ paddingLeft: "5px" }}
-          />
-        }
-        type="text"
-        className="permit-table-button"
-      >
+      <Button type="text" className="permit-table-button">
         Actions
+        <img
+          className="padding-sm--right icon-svg-filter"
+          src={CARAT}
+          alt={`${category} Actions`}
+          style={{ paddingLeft: "5px" }}
+        />
       </Button>
     </Dropdown>
   );

@@ -85,7 +85,7 @@ class Config(object):
 
 class TestConfig(Config):
     TESTING = os.environ.get('TESTING', True)
-    CACHE_TYPE = "null"
+    CACHE_TYPE = "simple"
 
     DB_NAME = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = f"postgresql://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"

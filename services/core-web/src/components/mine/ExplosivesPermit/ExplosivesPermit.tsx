@@ -152,15 +152,20 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   const handleOpenViewExplosivesPermitModal = (event, record) => {
     event.preventDefault();
     const mine = mines[mineGuid];
+    const parentPermit = explosivesPermits.find(
+      ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
+    );
     props.openModal({
       props: {
         title: "View Explosives Storage & Use Permit",
         explosivesPermit: record,
+        parentPermit,
         mine,
         closeModal: props.closeModal,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_VIEW_MODAL,
       isViewOnly: true,
+      width: "75vw",
     });
   };
 
@@ -196,17 +201,17 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenExplosivesPermitDecisionModal = (event, record) => {
     event.preventDefault();
-    return props
+    props
       .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
-      .then(() => {
+      .then((documentContextTemplate) => {
         const initialValues = {};
-        props.documentContextTemplate.document_template.form_spec.forEach(
+        documentContextTemplate.document_template.form_spec.forEach(
           (item) => (initialValues[item.id] = item["context-value"])
         );
-        return props.openModal({
+        props.openModal({
           props: {
             initialValues,
-            documentType: props.documentContextTemplate,
+            documentType: documentContextTemplate,
             inspectors,
             onSubmit: (values) => handleIssueExplosivesPermit(values, record),
             previewDocument: (documentTypeCode, values) =>
