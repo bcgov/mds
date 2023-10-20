@@ -348,7 +348,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 ) : (
                   <Button
                     onClick={(event) =>
-                      props.handleOpenExplosivesPermitCloseModal(event, explosivesPermit)
+                      props.handleOpenExplosivesPermitCloseModal(event, currentPermit)
                     }
                     type="ghost"
                     className="close-permit-button"

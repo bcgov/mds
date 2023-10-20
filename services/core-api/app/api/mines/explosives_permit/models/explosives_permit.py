@@ -48,7 +48,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     )
     explosives_permit_amendments = db.relationship('ExplosivesPermitAmendment', lazy='select',
         primaryjoin='ExplosivesPermit.explosives_permit_id == ExplosivesPermitAmendment.explosives_permit_id',
-        back_populates='explosives_permit')
+        back_populates='explosives_permit',
+        order_by='ExplosivesPermitAmendment.explosives_permit_amendment_id')
 
     explosive_magazines = db.relationship('ExplosivesPermitMagazine', lazy='select',
         primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)')

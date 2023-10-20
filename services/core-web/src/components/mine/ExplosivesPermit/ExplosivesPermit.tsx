@@ -7,6 +7,7 @@ import {
   fetchExplosivesPermits,
   updateExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
+import { updateExplosivesPermitAmendment } from "@common/actionCreators/explosivesPermitAmendmentActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import {
@@ -35,6 +36,7 @@ interface ExplosivesPermitProps {
   inspectors: IGroupedDropdownList[];
   updateExplosivesPermit: ActionCreator<typeof updateExplosivesPermit>;
   createExplosivesPermit: ActionCreator<typeof createExplosivesPermit>;
+  updateExplosivesPermitAmendment: ActionCreator<typeof updateExplosivesPermitAmendment>;
   openModal: (value: any) => void;
   closeModal: () => void;
   fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
@@ -73,15 +75,25 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleUpdateExplosivesPermit = (values) => {
+    console.log("values", values);
     const payload = {
       ...values,
     };
-    return props
-      .updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
-      .then(() => {
-        props.fetchExplosivesPermits(mineGuid);
-        props.closeModal();
-      });
+    if (values.explosives_permit_guid) {
+      return props
+        .updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
+        .then(() => {
+          props.fetchExplosivesPermits(mineGuid);
+          props.closeModal();
+        });
+    } else {
+      return props
+        .updateExplosivesPermitAmendment(mineGuid, values.explosives_permit_amendment_guid, payload)
+        .then(() => {
+          props.fetchExplosivesPermits(mineGuid);
+          props.closeModal();
+        });
+    }
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
@@ -285,6 +297,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchExplosivesPermits,
       updateExplosivesPermit,
+      updateExplosivesPermitAmendment,
       fetchExplosivesPermitDocumentContextTemplate,
       generateExplosivesPermitDocument,
       deleteExplosivesPermit,
