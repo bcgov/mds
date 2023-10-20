@@ -1,7 +1,12 @@
 import "@ant-design/compatible/assets/index.css";
 
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import { IExplosivesPermit, IMine } from "@mds/common";
+import {
+  IExplosivesPermit,
+  IExplosivesPermitDocument,
+  IExplosivesPermitAmendment,
+  IMine,
+} from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
@@ -10,7 +15,6 @@ import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
 import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
 
 export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {
@@ -67,8 +71,8 @@ export const supportingDocColumns = [
 ];
 
 interface ExplosivesPermitViewModalProps {
-  explosivesPermit: IExplosivesPermit;
-  parentPermit: IExplosivesPermit;
+  explosivesPermit: IExplosivesPermit | IExplosivesPermitAmendment;
+  parentPermit: IExplosivesPermit | IExplosivesPermitAmendment;
   mine: IMine;
   title: string;
   closeModal: () => void;
@@ -81,7 +85,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermit>(explosivesPermit);
+  const [currentPermit, setCurrentPermit] = useState<
+    IExplosivesPermit | IExplosivesPermitAmendment
+  >(explosivesPermit);
   const [openDiffModal, setOpenDiffModal] = useState(false);
 
   const permitHistoryColumns = [
@@ -112,13 +118,12 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
     {
       title: "",
       key: "action",
-      render: (text, record) => {
+      render: (record: IExplosivesPermitAmendment) => {
         const recordGuid = record.explosives_permit_guid || record.explosives_permit_amendment_guid;
-        if (
-          recordGuid === currentPermit?.explosives_permit_guid ||
-          recordGuid === currentPermit?.explosives_permit_amendment_guid
-        )
-          return null;
+        const currentPermitGuid =
+          currentPermit.explosives_permit_guid ||
+          (currentPermit as IExplosivesPermitAmendment)?.explosives_permit_amendment_guid;
+        if (recordGuid === currentPermitGuid) return null;
         return (
           <Button
             type="ghost"
@@ -138,18 +143,16 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   ];
 
   const transformPermitHistoryData = () => {
-    const permitHistory = parentPermit.explosives_permit_amendments?.map((permit) => {
-      return {
-        ...permit,
-        issue_date: permit.issue_date,
-        expiry_date: permit.expiry_date,
-        is_closed: permit.is_closed ? "Closed" : "Open",
-      };
-    });
+    const permitHistory: any[] = parentPermit.explosives_permit_amendments?.map(
+      (permit: IExplosivesPermitAmendment) => {
+        return {
+          ...permit,
+          is_closed: permit.is_closed ? "Closed" : "Open",
+        };
+      }
+    );
     permitHistory.unshift({
       ...parentPermit,
-      issue_date: parentPermit.issue_date,
-      expiry_date: parentPermit.expiry_date,
       is_closed: parentPermit.is_closed ? "Closed" : "Open",
     });
     return permitHistory
@@ -402,7 +405,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       <ExplosivesPermitDiffModal
         open={openDiffModal}
         onCancel={() => setOpenDiffModal(false)}
-        explosivesPermit={parentPermit}
+        explosivesPermit={parentPermit as IExplosivesPermitAmendment}
       />
     </div>
   );

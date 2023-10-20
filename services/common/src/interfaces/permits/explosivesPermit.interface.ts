@@ -1,5 +1,32 @@
-import { IExplosivesPermitDocument } from "../explosivesPermitMagazine.interface";
-import { IExplosivesPermitAmendment, IMagazine } from "./";
+import { IMineDocument } from "../mineDocument.interface";
+
+export interface IExplosivesPermitMagazine {
+  explosives_permit_magazine_id: number;
+  explosives_permit_id: number;
+  explosives_permit_magazine_type_code: string;
+  type_no: string;
+  tag_no: string;
+  construction: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  height: number;
+  quantity: number;
+  distance_road: number;
+  distance_dwelling: number;
+  detonator_type: string;
+}
+
+export interface IExplosivesPermitDocument extends IMineDocument {
+  explosives_permit_id: number;
+  explosives_permit_document_type_code: string;
+}
+
+export interface IExplosivesPermitAmendment extends IExplosivesPermit {
+  explosives_permit_amendment_id: number;
+  explosives_permit_amendment_guid: string;
+}
 
 export interface IExplosivesPermit {
   explosives_permit_id: number;
@@ -31,10 +58,45 @@ export interface IExplosivesPermit {
   total_detonator_quantity: number;
   total_explosive_quantity: number;
   description: string;
-  explosive_magazines: IMagazine[];
-  detonator_magazines: IMagazine[];
+  explosive_magazines: IExplosivesPermitMagazine[];
+  detonator_magazines: IExplosivesPermitMagazine[];
   documents: IExplosivesPermitDocument[];
   mines_permit_number: string;
   now_number: string;
   explosives_permit_amendments: IExplosivesPermitAmendment[];
+}
+
+export interface IExplosivesPermitStatus {
+  explosives_permit_status_code: string;
+  description: string;
+  active_ind: boolean;
+  display_order: number;
+}
+
+export interface IExplosivesPermitDocumentType {
+  explosives_permit_document_type_code: string;
+  description: string;
+  active_ind: boolean;
+  display_order: number;
+  document_template: IDocumentTemplate;
+}
+
+export interface IExplosivesPermitMagazineType {
+  explosives_permit_magazine_type_code: string;
+  description: string;
+}
+
+export interface IDocumentTemplateField {
+  id: string;
+  label: string;
+  type: string;
+  placeholder: string;
+  required: boolean;
+  "context-value": string;
+  "read-only": boolean;
+}
+
+export interface IDocumentTemplate {
+  document_template_code: string;
+  form_spec: IDocumentTemplateField[];
 }

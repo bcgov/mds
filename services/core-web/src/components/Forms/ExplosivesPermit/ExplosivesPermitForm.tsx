@@ -182,7 +182,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           Open the permit that you want to amend from the applications page of the mine in CORE.
         </li>
         <li>
-          Click on the “Amend Permit” button at the top right corner of the permit details page.
+          Click on the “Create Amendment” button at the bottom left corner of the permit details
+          page.
         </li>
         <li>Fill out the amendment form with the required information and documents.</li>
         <li>Complete the amendment and issue the permit.</li>
