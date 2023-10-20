@@ -164,7 +164,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       ...permitAmendmentLike(parentPermit),
       issue_date: parentPermit.issue_date,
       expiry_date: parentPermit.expiry_date,
-      is_closed: parentPermit.is_closed ? "Closed" : "Open",
+      status: parentPermit.is_closed ? "Closed" : "Open",
     });
     return permitHistory
       .map((amendment, index) => {
