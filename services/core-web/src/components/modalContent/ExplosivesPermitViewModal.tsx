@@ -143,14 +143,13 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   ];
 
   const transformPermitHistoryData = () => {
-    const permitHistory: any[] = parentPermit.explosives_permit_amendments?.map(
-      (permit: IExplosivesPermitAmendment) => {
+    const permitHistory: any[] =
+      parentPermit.explosives_permit_amendments?.map((permit: IExplosivesPermitAmendment) => {
         return {
           ...permit,
           is_closed: permit.is_closed ? "Closed" : "Open",
         };
-      }
-    );
+      }) ?? [];
     permitHistory.unshift({
       ...parentPermit,
       is_closed: parentPermit.is_closed ? "Closed" : "Open",
