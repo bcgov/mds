@@ -1,4 +1,5 @@
 describe("Major Projects", () => {
+    const fileName = "dummy.pdf";
     beforeEach(() => {
         cy.login();
 
@@ -21,14 +22,16 @@ describe("Major Projects", () => {
 
     it("should upload a document successfully", () => {
 
-        cy.intercept("GET", `${Cypress.env("CYPRESS_API_URL")}/mines/documents/upload/**`).as("getRequest");
+        cy.fixture(fileName).then(fileContent => {
+            cy.get('input[type="file"]').attachFile({
+                fileContent: fileContent,
+                fileName: fileName,
+                mimeType: 'application/pdf'
+            });
 
-        // Access the file input element and attach a file from the fixtures directory.
-        cy.get('input[type="file"]').scrollIntoView().attachFile('dummy.pdf');
-
-        cy.wait("@getRequest", { timeout: 25000 });
-
-        cy.get('.filepond--file-status-main').should('have.text', 'Upload complete');
+            // Wait for the "Upload complete" text to appear within a maximum of 25 seconds.
+            cy.contains('.filepond--file-status-main', 'Upload complete', { timeout: 25000 });
+        });
 
         // Save the changes without force
         cy.contains('button', 'Save Changes').should('be.visible').click({ force: true });
@@ -37,7 +40,7 @@ describe("Major Projects", () => {
     it('should download a document successfully', () => {
 
         // Find the row with 'dummy.pdf', scroll it into view, and hover over its 'Actions' button
-        cy.contains('tr', 'dummy.pdf')
+        cy.contains('tr', fileName)
             .scrollIntoView()
             .within(() => {
                 // Hover over the 'Actions' button within the row
