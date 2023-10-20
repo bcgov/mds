@@ -13,28 +13,51 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
     <Col
       span={24}
     >
+      <ForwardRef
+        level={2}
+      >
+        Close Permit
+      </ForwardRef>
+      <ForwardRef>
+        If you perform this action there will no longer be an active explosive use and storage permit for this notice of work. If you still want to have an amendment active, consider creating an amendment for this permit before performing this action.
+      </ForwardRef>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
+        label="Date Permit was Closed"
+        required={true}
       >
         <Field
-          component={[Function]}
-          customOptions={
-            Array [
-              Object {
-                "label": "Open",
-                "value": false,
-              },
-              Object {
-                "label": "Closed",
-                "value": true,
-              },
-            ]
+          component={
+            Object {
+              "$$typeof": Symbol(react.memo),
+              "WrappedComponent": [Function],
+              "compare": null,
+              "displayName": "Connect(RenderDateTimeTz)",
+              "type": [Function],
+            }
           }
-          id="is_closed"
-          label="Permit Status*"
-          name="is_closed"
+          id="closed_timestamp"
+          name="closed_timestamp"
+          normalize={[Function]}
+          props={
+            Object {
+              "timezoneFieldProps": Object {
+                "name": "esup_permit_close_timezone",
+              },
+            }
+          }
           validate={
             Array [
+              [Function],
+              [Function],
               [Function],
             ]
           }
@@ -53,26 +76,8 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          id="closed_timestamp"
-          label="Date Permit was Closed"
-          name="closed_timestamp"
-        />
-      </FormItem>
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      span={24}
-    >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
           id="closed_reason"
-          label="Reason"
+          label="Reason for closure"
           name="closed_reason"
         />
       </FormItem>

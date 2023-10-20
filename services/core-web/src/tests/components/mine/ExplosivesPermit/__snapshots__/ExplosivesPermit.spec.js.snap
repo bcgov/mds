@@ -176,7 +176,6 @@ exports[`ExplosivesPermit renders properly 1`] = `
     explosivesPermitStatusOptionsHash={Object {}}
     handleDeleteExplosivesPermit={[Function]}
     handleOpenAddExplosivesPermitModal={[Function]}
-    handleOpenExplosivesPermitCloseModal={[Function]}
     handleOpenExplosivesPermitDecisionModal={[Function]}
     handleOpenExplosivesPermitStatusModal={[Function]}
     handleOpenViewExplosivesPermitModal={[Function]}
