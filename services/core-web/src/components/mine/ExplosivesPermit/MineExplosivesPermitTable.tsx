@@ -388,15 +388,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           icon: <DeleteOutlined />,
         };
 
-        const amendAction: ITableAction = {
-          key: "amend",
-          label: "AMEND!",
-          icon: <DeleteOutlined />,
-          clickFunction: (event) => {
-            props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record);
-          },
-        };
-
         const currentMenu = isApproved ? approvedMenu : menu;
         const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
@@ -405,10 +396,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
 
         if (showDelete && isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)) {
           currentMenu.push(deleteAction);
-        }
-
-        if (canAmend) {
-          currentMenu.push(amendAction);
         }
 
         return (
