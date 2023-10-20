@@ -33,14 +33,22 @@ exports[`ChangeNOWMineModal renders properly 1`] = `
     noticeOfWork={
       Object {
         "application_documents": Array [],
+        "imported_to_core": true,
         "is_historic": false,
+        "issuing_inspector_name": "Inspector Gadget",
+        "issuing_inspector_party_guid": "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
+        "lead_inspector_name": "Test Inspector",
+        "lead_inspector_party_guid": "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
         "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
         "mine_name": "Hamilton, Herrera and Mccormick",
         "mine_no": "brother",
+        "mine_region": "SW",
+        "notice_of_work_type_code": "MIN",
         "notice_of_work_type_description": "choice",
         "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
         "now_application_status_description": "Approved",
-        "now_number": 44,
+        "now_number": "44",
+        "originating_system": "MMS",
         "received_date": "2019-08-14",
       }
     }

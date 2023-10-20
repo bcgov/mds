@@ -57,7 +57,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const [rowSelection, setRowSelection] = useState([]);
   const [isCompressionModal, setCompressionModal] = useState(false);
   const [isCompressionInProgress, setCompressionInProgress] = useState(false);
-  const [documentTypeCode, setDocumentTypeCode] = useState("");
   const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -362,7 +361,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   return (
     <div>
       <DocumentCompression
-        documentType={documentTypeCode}
+        documentType={""}
         rows={rowSelection}
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}
