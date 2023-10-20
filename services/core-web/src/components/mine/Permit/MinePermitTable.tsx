@@ -52,7 +52,7 @@ interface MinePermitTableProps {
   match: any;
 }
 
-interface MinePermitColumnType {
+interface MinePermitTableItem {
   permit: IPermit | IPermitAmendment;
   permitAmendmentDocuments: IMineDocument[];
   is_generated_in_core: boolean;
@@ -189,7 +189,7 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
-const columns: ColumnsType<MinePermitColumnType> = [
+const columns: ColumnsType<MinePermitTableItem> = [
   {
     title: "Permit No.",
     dataIndex: "permitNo",
@@ -397,7 +397,7 @@ const columns: ColumnsType<MinePermitColumnType> = [
   },
 ];
 
-const childColumns: ColumnsType<MinePermitColumnType> = [
+const childColumns: ColumnsType<MinePermitTableItem> = [
   {
     title: "#",
     dataIndex: "amendmentNumber",
