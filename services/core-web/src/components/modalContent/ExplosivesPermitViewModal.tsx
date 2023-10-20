@@ -1,7 +1,12 @@
 import "@ant-design/compatible/assets/index.css";
 
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import { IExplosivesPermit, IExplosivesPermitAmendment, IMine } from "@mds/common";
+import {
+  IExplosivesPermit,
+  IExplosivesPermitAmendment,
+  IExplosivesPermitDocument,
+  IMine,
+} from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
@@ -10,7 +15,6 @@ import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
 import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
 
 export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {

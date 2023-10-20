@@ -15,7 +15,12 @@ import * as Permission from "@/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
 import { EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { IExplosivesPermit, isFeatureEnabled, Feature } from "@mds/common";
+import {
+  isFeatureEnabled,
+  Feature,
+  IExplosivesPermit,
+  IExplosivesPermitDocument,
+} from "@mds/common";
 import { ColumnType } from "antd/lib/table";
 import moment from "moment-timezone";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
@@ -24,7 +29,6 @@ import ActionMenu, {
   generateActionMenuItems,
   deleteConfirmWrapper,
 } from "@/components/common/ActionMenu";
-import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
 import { userHasRole } from "@common/reducers/authenticationReducer";
 
 interface MineExplosivesPermitTableProps {

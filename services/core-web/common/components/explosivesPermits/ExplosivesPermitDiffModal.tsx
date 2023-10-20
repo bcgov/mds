@@ -1,8 +1,8 @@
 import { Button, Modal, Table, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
-import { IExplosivesPermit } from "@mds/common";
 import { formatDateTime } from "@common/utils/helpers";
 import { isDate, isEqual } from "lodash";
+import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
 
 interface ExplosivesPermitDiffModalProps {
   explosivesPermit: IExplosivesPermit;

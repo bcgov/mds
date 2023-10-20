@@ -27,7 +27,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@/interfaces/actionCreator";
-import { IGroupedDropdownList, IMine, IExplosivesPermit, IOption } from "@mds/common";
+import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
 
 interface ExplosivesPermitProps {
   isPermitTab: boolean;

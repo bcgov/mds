@@ -18,9 +18,9 @@ import {
   IOption,
   IGroupedDropdownList,
   IPermit,
-  IExplosivesPermit,
   IimportedNOWApplication,
   IPermitPartyRelationship,
+  IExplosivesPermit,
 } from "@mds/common";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {

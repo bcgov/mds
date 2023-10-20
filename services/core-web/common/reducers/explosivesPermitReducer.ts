@@ -1,6 +1,6 @@
+import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
 import * as actionTypes from "../constants/actionTypes";
 import { EXPLOSIVES_PERMITS } from "../constants/reducerTypes";
-import { IExplosivesPermit } from "@mds/common";
 import { RootState } from "@/App";
 
 interface IExplosivesPermitReducerState {

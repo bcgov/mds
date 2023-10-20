@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import { Col, Row, Popconfirm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { IPermitAmendmentMineDocument } from "@mds/common";
+import { IPermitAmendmentDocument } from "@mds/common";
 
 interface PermitAmendmentUploadedFilesListProps {
-  relatedDocuments: IPermitAmendmentMineDocument[];
+  relatedDocuments: IPermitAmendmentDocument[];
   handleRemovePermitAmendmentDocument: (arg1: any[], arg2: string) => any;
 }
 
