@@ -42,11 +42,9 @@ describe("Major Projects", () => {
                 cy.get('[data-cy=menu-actions-button]')
                     .trigger('mouseover', { force: true });
             });
-        // Wait here for dropdown to appear
-        cy.wait(1000);
 
         // Click the Download file button in the dropdown
-        cy.contains('button', 'Download file')
+        cy.contains('button', 'Download file', { timeout: 1000 })
             .find('div')
             .click({ force: true });
 
