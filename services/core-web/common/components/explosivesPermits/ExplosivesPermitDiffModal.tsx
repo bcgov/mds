@@ -28,7 +28,12 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
   const [differences, setDifferences] = useState<IPermitDifferencesByAmendment>({});
 
   const getPermitDifferences = (permit: IExplosivesPermit): IPermitDifferencesByAmendment => {
-    const permitVersions = [permit, ...permit.explosives_permit_amendments].sort(
+    const comparablePermit = {
+      explosives_permit_amendment_id: undefined,
+      ...permit,
+    };
+
+    const permitVersions = [comparablePermit, ...permit.explosives_permit_amendments].sort(
       (a, b) => a.explosives_permit_amendment_id - b.explosives_permit_amendment_id
     );
 

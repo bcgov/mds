@@ -1,3 +1,5 @@
+import { IMineDocument } from "./mineDocument.interface";
+
 export interface IExplosivesPermitMagazine {
   explosives_permit_magazine_id: number;
   explosives_permit_id: number;
@@ -16,10 +18,9 @@ export interface IExplosivesPermitMagazine {
   detonator_type: string;
 }
 
-export interface IExplosivesPermitDocument {
+export interface IExplosivesPermitDocument extends IMineDocument {
   explosives_permit_id: number;
   explosives_permit_document_type_code: string;
-  document_manager_guid: string;
 }
 
 export interface IExplosivesPermit {
