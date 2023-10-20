@@ -9,7 +9,7 @@ import {
   renderTextColumn,
 } from "@/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 
 const propTypes = {

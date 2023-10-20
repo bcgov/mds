@@ -23,12 +23,12 @@ import { getMineDocuments } from "@common/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature } from "@mds/common";
-import { MajorMineApplicationDocument } from "@common/models/documents/document";
+import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,

@@ -25,6 +25,7 @@ exports[`SearchBarDropdown renders properly 1`] = `
               "key": "/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general",
               "label": <p>
                 <img
+                  alt="Abbott Inc"
                   className="icon-svg-filter"
                   height={25}
                   src={
@@ -40,6 +41,7 @@ exports[`SearchBarDropdown renders properly 1`] = `
               "key": "/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general",
               "label": <p>
                 <img
+                  alt="Abbott PLC"
                   className="icon-svg-filter"
                   height={25}
                   src={

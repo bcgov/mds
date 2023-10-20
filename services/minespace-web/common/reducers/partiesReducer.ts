@@ -27,14 +27,14 @@ interface PartiesState {
 }
 
 const initialState: PartiesState = {
-  parties: [],
+  parties: {},
   rawParties: [],
   partyIds: [],
   partyRelationships: [],
   allPartyRelationships: [],
-  partyPageData: {},
-  addPartyFormState: {},
-  lastCreatedParty: {},
+  partyPageData: {} as IPageData<IParty>,
+  addPartyFormState: {} as IAddPartyFormState,
+  lastCreatedParty: {} as IParty,
   inspectors: [],
   projectLeads: [],
   engineersOfRecordOptions: [],

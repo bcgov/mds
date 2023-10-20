@@ -27,7 +27,7 @@ export enum Feature {
 Preferred method if using feature flag in a functional React component.
 
 ```typescript
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common";
 
 const ThisIsAReactComponent = () => {
@@ -44,7 +44,7 @@ const ThisIsAReactComponent = () => {
 Alternative method if using feature flag in a React component and you cannot use hooks (for example in class components).
 
 ```typescript
-import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import { Feature } from "@mds/common";
 
 class ThisIsAReactComponent {

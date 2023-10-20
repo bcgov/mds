@@ -1,6 +1,6 @@
 import "@ant-design/compatible/assets/index.css";
 
-import { Button, Col, Row, Table, Typography } from "antd";
+import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import { IExplosivesPermit, IMine } from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -10,8 +10,10 @@ import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
 import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { IExplosivesPermitDocument } from "@mds/common/interfaces/explosivesPermitMagazine.interface";
+import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
 
-export const getGeneratedDocCategory = (doc: IExplosivesPermit) => {
+export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {
   switch (doc.explosives_permit_document_type_code) {
     case "LET":
       return "Permit Enclosed Letter";
@@ -66,6 +68,7 @@ export const supportingDocColumns = [
 
 interface ExplosivesPermitViewModalProps {
   explosivesPermit: IExplosivesPermit;
+  parentPermit: IExplosivesPermit;
   mine: IMine;
   title: string;
   closeModal: () => void;
@@ -73,29 +76,132 @@ interface ExplosivesPermitViewModalProps {
 }
 
 export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (props) => {
-  const { explosivesPermit, mine, title } = props;
+  const { explosivesPermit, parentPermit, mine, title } = props;
+  const amendmentsCount = parentPermit?.explosives_permit_amendments?.length || 0;
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
+  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermit>(explosivesPermit);
+  const [openDiffModal, setOpenDiffModal] = useState(false);
+
+  const permitHistoryColumns = [
+    {
+      title: "Issued",
+      dataIndex: "issue_date",
+      key: "issue_date",
+      render: (text) => <div>{formatDate(text)}</div>,
+    },
+    {
+      title: "Expiry",
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      render: (text) => <div>{formatDate(text)}</div>,
+    },
+    {
+      title: "Status",
+      dataIndex: "is_closed",
+      key: "is_closed",
+      render: (text) => <div>{text}</div>,
+    },
+    {
+      title: "Amendment",
+      key: "amendment_order",
+      dataIndex: "amendment_order",
+      render: (text) => <div>{text}</div>,
+    },
+    {
+      title: "",
+      key: "action",
+      render: (text, record) => {
+        const recordGuid = record.explosives_permit_guid || record.explosives_permit_amendment_guid;
+        if (
+          recordGuid === currentPermit?.explosives_permit_guid ||
+          recordGuid === currentPermit?.explosives_permit_amendment_guid
+        )
+          return null;
+        return (
+          <Button
+            type="ghost"
+            onClick={() => {
+              const permit =
+                parentPermit.explosives_permit_amendments.find(
+                  (amendment) => amendment.explosives_permit_amendment_guid === recordGuid
+                ) || parentPermit;
+              setCurrentPermit(permit);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
+  const transformPermitHistoryData = () => {
+    const permitHistory = parentPermit.explosives_permit_amendments?.map((permit) => {
+      return {
+        ...permit,
+        issue_date: permit.issue_date,
+        expiry_date: permit.expiry_date,
+        is_closed: permit.is_closed ? "Closed" : "Open",
+      };
+    });
+    permitHistory.unshift({
+      ...parentPermit,
+      issue_date: parentPermit.issue_date,
+      expiry_date: parentPermit.expiry_date,
+      is_closed: parentPermit.is_closed ? "Closed" : "Open",
+    });
+    return permitHistory
+      .map((amendment, index) => {
+        return { ...amendment, amendment_order: index };
+      })
+      .reverse();
+  };
 
   useEffect(() => {
-    if (explosivesPermit) {
+    if (currentPermit) {
       const generatedTypes = ["LET", "PER"];
+      const allDocs = [
+        ...parentPermit?.documents,
+        ...parentPermit?.explosives_permit_amendments
+          .map((amendment) => amendment.documents)
+          .flat(),
+      ];
       setGeneratedDocs(
-        explosivesPermit.documents.filter((doc) =>
-          generatedTypes.includes(doc.explosives_permit_document_type_code)
-        )
+        allDocs.filter((doc) => generatedTypes.includes(doc.explosives_permit_document_type_code))
       );
       setSupportingDocs(
-        explosivesPermit.documents.filter(
-          (doc) => !generatedTypes.includes(doc.explosives_permit_document_type_code)
-        )
+        allDocs.filter((doc) => !generatedTypes.includes(doc.explosives_permit_document_type_code))
       );
     }
-  }, [explosivesPermit]);
+  }, [currentPermit]);
 
   return (
     <div>
+      {amendmentsCount > 0 && (
+        <Alert
+          className="esup-alert"
+          message={`This Permit Contains ${amendmentsCount} Amended Version${
+            amendmentsCount > 1 ? "s" : ""
+          }`}
+          description={
+            <div>
+              <Typography.Text>Click View History to See all past versions</Typography.Text>
+
+              <Button
+                type="primary"
+                className="margin-large--left esup-history-button"
+                onClick={() => setOpenDiffModal(true)}
+              >
+                View History
+              </Button>
+            </div>
+          }
+          type="info"
+          showIcon
+        />
+      )}
       <Typography.Title level={3} className="margin-large--bottom">
         Explosive Storage and Use Permit
       </Typography.Title>
@@ -111,19 +217,17 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             <Row gutter={6}>
               <Col span={12}>
                 <Typography.Paragraph strong>Issue Date</Typography.Paragraph>
-                <Typography.Paragraph>{explosivesPermit.issue_date}</Typography.Paragraph>
+                <Typography.Paragraph>{currentPermit.issue_date}</Typography.Paragraph>
               </Col>
               <Col span={12}>
                 <Typography.Paragraph strong>Expiry Date</Typography.Paragraph>
-                <Typography.Paragraph>{explosivesPermit.expiry_date}</Typography.Paragraph>
+                <Typography.Paragraph>{currentPermit.expiry_date}</Typography.Paragraph>
               </Col>
             </Row>
             <Row gutter={6}>
               <Col span={24}>
                 <Typography.Paragraph strong>Issuing Inspector</Typography.Paragraph>
-                <Typography.Paragraph>
-                  {explosivesPermit.issuing_inspector_name}
-                </Typography.Paragraph>
+                <Typography.Paragraph>{currentPermit.issuing_inspector_name}</Typography.Paragraph>
               </Col>
             </Row>
           </>
@@ -131,7 +235,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Explosives Permit Number</Typography.Paragraph>
-              <Typography.Paragraph>{explosivesPermit.permit_number}</Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.permit_number}</Typography.Paragraph>
             </Col>
 
             <Col span={12}>
@@ -140,39 +244,39 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             </Col>
           </Row>
           <Typography.Paragraph strong>Notice of Work Number</Typography.Paragraph>
-          <Typography.Paragraph>{explosivesPermit.now_number}</Typography.Paragraph>
+          <Typography.Paragraph>{currentPermit.now_number}</Typography.Paragraph>
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
               <Typography.Paragraph>
-                {explosivesPermit.mine_manager_mine_party_appt_id}
+                {currentPermit.mine_manager_mine_party_appt_id}
               </Typography.Paragraph>
             </Col>
             <Col span={12}>
               <Typography.Paragraph strong>Permittee</Typography.Paragraph>
               <Typography.Paragraph>
-                {explosivesPermit.permittee_mine_party_appt_id}
+                {currentPermit.permittee_mine_party_appt_id}
               </Typography.Paragraph>
             </Col>
           </Row>
           <Typography.Paragraph strong>Application Date</Typography.Paragraph>
-          <Typography.Paragraph>{explosivesPermit.application_date}</Typography.Paragraph>
+          <Typography.Paragraph>{currentPermit.application_date}</Typography.Paragraph>
           <Typography.Paragraph strong>Other Information</Typography.Paragraph>
-          <Typography.Paragraph>{explosivesPermit.description}</Typography.Paragraph>
+          <Typography.Paragraph>{currentPermit.description}</Typography.Paragraph>
           <Typography.Title level={4} className="purple">
             Storage Details
           </Typography.Title>
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Latitude</Typography.Paragraph>
-              <Typography.Paragraph>{explosivesPermit?.latitude}</Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit?.latitude}</Typography.Paragraph>
             </Col>
             <Col span={12}>
               <Typography.Paragraph strong>Longitude</Typography.Paragraph>
-              <Typography.Paragraph>{explosivesPermit?.longitude}</Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit?.longitude}</Typography.Paragraph>
             </Col>
           </Row>
-          <ExplosivesPermitMap pin={[explosivesPermit.latitude, explosivesPermit.longitude]} />
+          <ExplosivesPermitMap pin={[currentPermit.latitude, currentPermit.longitude]} />
           <br />
           {supportingDocs.length > 0 && (
             <Row>
@@ -203,12 +307,12 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
               Permit Status
             </Typography.Title>
             <Row>
-              <Col span={explosivesPermit.is_closed ? 12 : 24}>
+              <Col span={currentPermit.is_closed ? 12 : 24}>
                 <Typography.Paragraph strong className="margin-none">
                   Permit Status
                 </Typography.Paragraph>
               </Col>
-              {explosivesPermit.is_closed && (
+              {currentPermit.is_closed && (
                 <Col span={12}>
                   <Typography.Paragraph strong className="margin-none">
                     Date Closed
@@ -217,15 +321,15 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
               )}
             </Row>
             <Row align="middle" justify="space-between">
-              <Col span={explosivesPermit.is_closed ? 12 : 8}>
+              <Col span={currentPermit.is_closed ? 12 : 8}>
                 <Typography.Paragraph className="margin-none">
-                  {explosivesPermit.is_closed ? "Closed" : "Open"}
+                  {currentPermit.is_closed ? "Closed" : "Open"}
                 </Typography.Paragraph>
               </Col>
-              <Col span={explosivesPermit.is_closed ? 12 : 16}>
-                {explosivesPermit.is_closed ? (
+              <Col span={currentPermit.is_closed ? 12 : 16}>
+                {currentPermit.is_closed ? (
                   <Typography.Paragraph className="margin-none">
-                    {formatDate(explosivesPermit.closed_timestamp)}
+                    {formatDate(currentPermit.closed_timestamp)}
                   </Typography.Paragraph>
                 ) : (
                   <Button type="ghost" className="close-permit-button">
@@ -234,21 +338,21 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 )}
               </Col>
             </Row>
-            {explosivesPermit.is_closed && (
+            {currentPermit.is_closed && (
               <Row className="margin-large--top">
                 <Col span={24}>
                   <Typography.Paragraph>Reason for Closure</Typography.Paragraph>
                 </Col>
                 <Col span={24}>
-                  <Typography.Paragraph>{explosivesPermit.closed_reason}</Typography.Paragraph>
+                  <Typography.Paragraph>{currentPermit.closed_reason}</Typography.Paragraph>
                 </Col>
               </Row>
             )}
             <Typography.Title level={4} className="purple margin-large--top">
               Explosives Magazines
             </Typography.Title>
-            {explosivesPermit?.explosive_magazines?.length > 0 &&
-              explosivesPermit.explosive_magazines.map((magazine, index) => (
+            {currentPermit?.explosive_magazines?.length > 0 &&
+              currentPermit.explosive_magazines.map((magazine, index) => (
                 <Magazine
                   key={magazine.explosives_permit_magazine_id}
                   label={`Explosives Magazine ${index + 1}`}
@@ -258,17 +362,35 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             <Typography.Title level={4} className="purple">
               Detonator Magazines
             </Typography.Title>
-            {explosivesPermit?.detonator_magazines?.length > 0 &&
-              explosivesPermit.detonator_magazines.map((magazine, index) => (
+            {currentPermit?.detonator_magazines?.length > 0 &&
+              currentPermit.detonator_magazines.map((magazine, index) => (
                 <Magazine
                   key={magazine.explosives_permit_magazine_id}
                   label={`Detonator Magazine ${index + 1}`}
                   magazine={magazine}
                 />
               ))}
-            <Typography.Title level={4} className="purple">
-              Permit History
-            </Typography.Title>
+            <Row align="middle" justify="space-between">
+              <Col>
+                <Typography.Title level={4} className="purple margin-none">
+                  Permit History
+                </Typography.Title>
+              </Col>
+              <Col>
+                <Button
+                  type="primary"
+                  className="margin-large--left esup-history-button"
+                  onClick={() => setOpenDiffModal(true)}
+                >
+                  View History
+                </Button>
+              </Col>
+            </Row>
+            <Table
+              dataSource={transformPermitHistoryData()}
+              pagination={false}
+              columns={permitHistoryColumns}
+            />
           </>
         </Col>
       </Row>
@@ -277,6 +399,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           Close
         </Button>
       </div>
+      <ExplosivesPermitDiffModal
+        open={openDiffModal}
+        onCancel={() => setOpenDiffModal(false)}
+        explosivesPermit={parentPermit}
+      />
     </div>
   );
 };

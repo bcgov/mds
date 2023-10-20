@@ -2367,8 +2367,11 @@ __metadata:
     webpack-merge: 5.9.0
     webpack-node-externals: 3.0.0
   peerDependencies:
+    "@types/react-router-dom": 5.3.3
+    antd: 4.24.10
     react: 16.13.1
     react-dom: 16.13.1
+    react-router-dom: 5.3.3
   languageName: unknown
   linkType: soft
 
@@ -2437,6 +2440,7 @@ __metadata:
     css-minimizer-webpack-plugin: ^5.0.1
     cssnano: 6.0.1
     cypress: 12.13.0
+    cypress-file-upload: ^5.0.8
     date-fns: 2.28.0
     dotenv: 8.2.0
     enzyme: 3.11.0
@@ -2524,6 +2528,7 @@ __metadata:
     ts-jest: 24.3.0
     ts-loader: 8.4.0
     ts-node: ^10.9.1
+    tsconfig-paths-webpack-plugin: ^4.1.0
     tus-js-client: 3.1.0
     typescript: 4.7.4
     url-loader: 2.3.0
@@ -2624,6 +2629,7 @@ __metadata:
     filepond-plugin-file-validate-size: 2.2.8
     filepond-plugin-file-validate-type: 1.2.8
     filepond-polyfill: 1.0.4
+    fork-ts-checker-webpack-plugin: 6
     fsevents: 2.3.2
     hard-source-webpack-plugin: 0.13.1
     hoist-non-react-statics: 3.3.1
@@ -7915,6 +7921,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cypress-file-upload@npm:^5.0.8":
+  version: 5.0.8
+  resolution: "cypress-file-upload@npm:5.0.8"
+  peerDependencies:
+    cypress: ">3.0.0"
+  checksum: 9c70ca7e0bb137d0ec0b8d38987219ce15b26ac3a40e3ed4e78e6ad4690392eab905586848eec6ad8edd42ee480e68ccc63007b2ebd0a02f4b3eca116ff017e3
+  languageName: node
+  linkType: hard
+
 "cypress@npm:12.13.0":
   version: 12.13.0
   resolution: "cypress@npm:12.13.0"
@@ -8755,7 +8770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.15.0":
+"enhanced-resolve@npm:^5.15.0, enhanced-resolve@npm:^5.7.0":
   version: 5.15.0
   resolution: "enhanced-resolve@npm:5.15.0"
   dependencies:
@@ -13864,7 +13879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:2.x, json5@npm:^2.1.2, json5@npm:^2.2.3":
+"json5@npm:2.x, json5@npm:^2.1.2, json5@npm:^2.2.2, json5@npm:^2.2.3":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
   bin:
@@ -21423,6 +21438,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tsconfig-paths-webpack-plugin@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "tsconfig-paths-webpack-plugin@npm:4.1.0"
+  dependencies:
+    chalk: ^4.1.0
+    enhanced-resolve: ^5.7.0
+    tsconfig-paths: ^4.1.2
+  checksum: f6e9a8a407e1a405b0f2531184296d9f033cb4fe5837282b757ab4a2f4cd82a3117e62c4b86d56c7d47749c7f1345aa438ec6417dbf64a0ec74a292fe9eae44d
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths@npm:^3.14.1":
   version: 3.14.2
   resolution: "tsconfig-paths@npm:3.14.2"
@@ -21432,6 +21458,17 @@ __metadata:
     minimist: ^1.2.6
     strip-bom: ^3.0.0
   checksum: a6162eaa1aed680537f93621b82399c7856afd10ec299867b13a0675e981acac4e0ec00896860480efc59fc10fd0b16fdc928c0b885865b52be62cadac692447
+  languageName: node
+  linkType: hard
+
+"tsconfig-paths@npm:^4.1.2":
+  version: 4.2.0
+  resolution: "tsconfig-paths@npm:4.2.0"
+  dependencies:
+    json5: ^2.2.2
+    minimist: ^1.2.6
+    strip-bom: ^3.0.0
+  checksum: 28c5f7bbbcabc9dabd4117e8fdc61483f6872a1c6b02a4b1c4d68c5b79d06896c3cc9547610c4c3ba64658531caa2de13ead1ea1bf321c7b53e969c4752b98c7
   languageName: node
   linkType: hard
 

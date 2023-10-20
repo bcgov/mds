@@ -1,6 +1,6 @@
-import { IPermitBond } from "@/interfaces/permits/permitBond.interface";
-import { IMineType } from "@/interfaces/mineType.interface";
-import { IPermitAmendment } from "@/interfaces/permits/permitAmendment.interface";
+import { IPermitBond } from "@mds/common/interfaces/permits/permitBond.interface";
+import { IMineType } from "@mds/common/interfaces/mineType.interface";
+import { IPermitAmendment } from "@mds/common/interfaces/permits/permitAmendment.interface";
 
 export interface IPermit {
   permit_id: string;
@@ -17,6 +17,7 @@ export interface IPermit {
   bonds: IPermitBond[];
   exemption_fee_status_code: string;
   exemption_fee_status_note: string;
-  site_properties: IMineType[];
+  site_properties: IMineType;
   permit_prefix: string;
+  mine_guid?: string;
 }

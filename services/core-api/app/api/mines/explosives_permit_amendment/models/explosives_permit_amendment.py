@@ -35,7 +35,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     explosives_permit = db.relationship(
         'ExplosivesPermit',
         primaryjoin='ExplosivesPermit.explosives_permit_id == ExplosivesPermitAmendment.explosives_permit_id',
-        backref='explosives_permit_amendments'
+        back_populates='explosives_permit_amendments'
     )
 
     documents = db.relationship('ExplosivesPermitAmendmentDocumentXref', lazy='select')

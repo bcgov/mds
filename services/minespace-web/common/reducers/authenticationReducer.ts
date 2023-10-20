@@ -1,6 +1,7 @@
 import * as ActionTypes from "../constants/actionTypes";
 import { AUTHENTICATION } from "../constants/reducerTypes";
 import { IUserInfo } from "@mds/common";
+import { USER_ROLES } from "@common/constants/environment";
 
 interface IAuthenticationReducerState {
   isAuthenticated: boolean;
@@ -15,7 +16,7 @@ interface IAuthenticationReducerState {
 const initialState: IAuthenticationReducerState = {
   isAuthenticated: false,
   userAccessData: [],
-  userInfo: {},
+  userInfo: {} as IUserInfo,
 };
 
 const getUserName = (tokenParsed) => {
@@ -65,5 +66,7 @@ const authenticationReducerObject = {
 export const isAuthenticated = (state) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state) => state[AUTHENTICATION].userInfo;
+export const userHasRole = (state, role: string) =>
+  state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role]);
 
 export default authenticationReducerObject;

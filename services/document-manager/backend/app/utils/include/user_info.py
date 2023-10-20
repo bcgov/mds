@@ -1,4 +1,4 @@
-from app.extensions import jwt
+from app.extensions import jwt, getJwtManager
 from jose import jwt as jwt_jose
 
 VALID_REALM = ['idir']
@@ -20,7 +20,7 @@ class User:
     def get_user_raw_info(self):
         if self._test_mode:
             return DUMMY_AUTH_CLAIMS
-        token = jwt.get_token_auth_header()
+        token = getJwtManager().get_token_auth_header()
         return jwt_jose.get_unverified_claims(token)
 
     def get_user_email(self):

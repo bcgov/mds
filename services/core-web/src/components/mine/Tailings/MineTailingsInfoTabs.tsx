@@ -65,7 +65,7 @@ const defaultParams = {
 
 export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mine, setMine] = useState<IMine>({});
+  const [mine, setMine] = useState<IMine>({} as IMine);
   const [params, setParams] = useState({ sort_field: "received_date", sort_dir: "desc" });
 
   useEffect(() => {

@@ -32,7 +32,7 @@ interface PermitConditionManagementProps {
   openModal: (arg1: any) => void;
   closeModal: () => void;
   conditions: any[];
-  permitConditionCategoryOptions: IOption[];
+  permitConditionCategoryOptions: any[];
   editingConditionFlag: boolean;
   fetchPermitConditions: ActionCreator<typeof fetchPermitConditions>;
   setEditingConditionFlag: ActionCreator<typeof setEditingConditionFlag>;

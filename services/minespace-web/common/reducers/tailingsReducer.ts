@@ -8,7 +8,7 @@ interface TailingsState {
 }
 
 const initialState: TailingsState = {
-  tsf: {},
+  tsf: {} as ITailingsStorageFacility,
 };
 
 export const tailingsReducer = (state = initialState, action) => {

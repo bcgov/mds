@@ -20,7 +20,7 @@ import InformationRequirementsTableEntryTab from "./InformationRequirementsTable
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
-import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,

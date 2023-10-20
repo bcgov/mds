@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation, useParams } from "react-router-dom";
 import {
-  ActionCreator,
   IMine,
   INodDocumentPayload,
   INoticeOfDeparture,
@@ -31,6 +30,7 @@ import {
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
+import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface NoticeOfDepartureProps {
   mine: IMine;

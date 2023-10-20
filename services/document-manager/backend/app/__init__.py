@@ -17,10 +17,10 @@ from app.docman.resources import *
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, migrate
+from app.extensions import api, cache, db, jwt, migrate, jwt_main, jwt_cypress
 from app.utils.celery_health_check import HealthCheckProbe
 
-from .config import Config
+from .config import Config, TestConfig
 
 from celery import Celery
 
@@ -32,7 +32,11 @@ def create_app(config_object=None):
     config = config_object if config_object else Config
     app.config.from_object(config)
 
-    register_extensions(app)
+    if isinstance(config, TestConfig):
+        register_extensions(app, config)
+    else:
+        register_extensions(app)
+
     register_routes(app)
     register_commands(app)
 
@@ -49,7 +53,7 @@ def create_app(config_object=None):
     return app
 
 
-def register_extensions(app):
+def register_extensions(app, test_config=None):
 
     api.app = app
     # Overriding swaggerUI base path to serve content under a prefix
@@ -58,7 +62,15 @@ def register_extensions(app):
 
     cache.init_app(app)
     db.init_app(app)
-    jwt.init_app(app)
+
+    if test_config is None:
+        jwt_main.init_app(app)
+    else:
+        jwt.init_app(app)
+
+    if os.environ.get('ALLOW_CYPRESS_AUTH') == 'true':
+        jwt_cypress.init_app(app)
+
     migrate.init_app(app, db)
     CORS(app)
 

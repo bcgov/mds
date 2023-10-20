@@ -20,7 +20,7 @@ import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/Notic
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import { PageTracker } from "@common/utils/trackers";
-import { INoticeOfWorkApplication, IPageData, IOption } from "@mds/common";
+import { INoticeOfWorkApplication, IPageData, IOption, INoticeOfWork } from "@mds/common";
 import { RootState } from "@/App";
 
 export interface NoWSearchParams {
@@ -41,9 +41,9 @@ export interface NoWSearchParams {
 }
 
 interface NoticeOfWorkHomePageProps {
-  fetchNoticeOfWorkApplications: (params: NoWSearchParams) => Promise<INoticeOfWorkApplication>;
-  pageData: IPageData<INoticeOfWorkApplication>;
-  noticeOfWorkApplications: INoticeOfWorkApplication[];
+  fetchNoticeOfWorkApplications: (params: NoWSearchParams) => Promise<INoticeOfWork>;
+  pageData: IPageData<INoticeOfWork>;
+  noticeOfWorkApplications: INoticeOfWork[];
   mineRegionHash: object;
   mineRegionOptions: IOption;
   applicationTypeOptions: IOption;

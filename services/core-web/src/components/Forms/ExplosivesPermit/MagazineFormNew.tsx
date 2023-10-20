@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FieldArray } from "redux-form";
 import { Form } from "@ant-design/compatible";
@@ -19,24 +19,31 @@ import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { COLOR } from "@/constants/styles";
 
-const propTypes = {
-  isProcessed: PropTypes.bool.isRequired,
+export type FormProps = {
+  isProcessed: boolean;
 };
 
-const defaultProps = {};
+class MagazineForm extends Component<FormProps> {
+  static propTypes = {
+    isProcessed: PropTypes.bool.isRequired,
+  };
 
-export const MagazineForm = (props) => {
-  const [activeKeys, setActiveKeys] = React.useState(["0"]);
-  const addField = (event, fields) => {
+  state = {
+    activeKeys: [],
+  };
+
+  static defaultProps = {};
+
+  addField = (event: React.MouseEvent, fields: any) => {
     event.preventDefault();
     fields.push({});
   };
 
-  const removeField = (index, fields) => () => {
+  removeField = (index: number, fields: any) => () => {
     fields.remove(index);
   };
 
-  const panelHeader = (index, fields, type) => (
+  panelHeader = (index: number, fields: any, type: string) => (
     <div className="inline-flex between horizontal-center">
       <Form.Item
         style={{ marginTop: "15px" }}
@@ -50,13 +57,13 @@ export const MagazineForm = (props) => {
         <Popconfirm
           placement="topRight"
           title={`Are you sure you want to remove Role ${index + 1}?`}
-          onConfirm={removeField(index, fields)}
+          onConfirm={this.removeField(index, fields)}
           okText="Yes"
           cancelText="No"
         >
-          <Button ghost disabled={props.isProcessed}>
+          <Button ghost disabled={this.props.isProcessed}>
             <img
-              className={props.isProcessed ? "disabled-icon" : ""}
+              className={this.props.isProcessed ? "disabled-icon" : ""}
               src={TRASHCAN}
               alt="Remove Activity"
             />
@@ -66,7 +73,7 @@ export const MagazineForm = (props) => {
     </div>
   );
 
-  const renderInputs = (field, type) => {
+  renderInputs = (field: string, type: string) => {
     const unit = type === "EXP" ? "(Kg)" : "(Unit)";
     const showDetonatorType = type === "DET";
     return (
@@ -79,7 +86,7 @@ export const MagazineForm = (props) => {
               name={`${field}type_no`}
               component={renderConfig.FIELD}
               validate={[required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
@@ -89,7 +96,7 @@ export const MagazineForm = (props) => {
               name={`${field}tag_no`}
               component={renderConfig.FIELD}
               validate={[required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -101,7 +108,7 @@ export const MagazineForm = (props) => {
               name={`${field}construction`}
               component={renderConfig.FIELD}
               validate={[required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
@@ -111,7 +118,7 @@ export const MagazineForm = (props) => {
               name={`${field}quantity`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -124,7 +131,7 @@ export const MagazineForm = (props) => {
               name={`${field}latitude`}
               component={renderConfig.FIELD}
               validate={[number, maxLength(10), lat, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
@@ -134,7 +141,7 @@ export const MagazineForm = (props) => {
               name={`${field}longitude`}
               validate={[number, maxLength(12), lon, lonNegative, required]}
               component={renderConfig.FIELD}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -147,7 +154,7 @@ export const MagazineForm = (props) => {
                 name={`${field}detonator_type`}
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[required]}
-                disabled={props.isProcessed}
+                disabled={this.props.isProcessed}
               />
             </Col>
           </Row>
@@ -160,7 +167,7 @@ export const MagazineForm = (props) => {
               name={`${field}distance_road`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={24}>
@@ -170,7 +177,7 @@ export const MagazineForm = (props) => {
               name={`${field}distance_dwelling`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -182,7 +189,7 @@ export const MagazineForm = (props) => {
               name={`${field}length`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
@@ -192,7 +199,7 @@ export const MagazineForm = (props) => {
               name={`${field}width`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
@@ -202,7 +209,7 @@ export const MagazineForm = (props) => {
               name={`${field}height`}
               component={renderConfig.FIELD}
               validate={[positiveNumber, required]}
-              disabled={props.isProcessed}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -210,31 +217,31 @@ export const MagazineForm = (props) => {
     );
   };
 
-  const renderExplosive = ({ fields }) => {
+  renderExplosive = ({ fields }) => {
     return (
       <div>
         <Row gutter={48}>
           <Col md={24}>
             {fields.map((field, index) => (
               <Collapse
-                defaultActiveKey={activeKeys}
-                key={index}
+                key={field.id}
+                defaultActiveKey={this.state.activeKeys}
                 className="magazine-collapse margin-large--bottom"
-                onChange={(key) => setActiveKeys(Array.isArray(key) ? key : [key])}
+                onChange={(key) => this.setState({ activeKeys: Array.isArray(key) ? key : [key] })}
               >
                 <Collapse.Panel
-                  header={panelHeader(index, fields, "EXP")}
+                  header={this.panelHeader(index, fields, "EXP")}
                   className="magazine-collapse"
-                  key={`${index}EXP`}
+                  key={`${field.id}EXP`}
                 >
-                  {renderInputs(field, "EXP")}
+                  {this.renderInputs(field, "EXP")}
                 </Collapse.Panel>
               </Collapse>
             ))}
             <Button
               className="add-magazine-button"
-              onClick={(event) => addField(event, fields)}
-              disabled={props.isProcessed}
+              onClick={(event) => this.addField(event, fields)}
+              disabled={this.props.isProcessed}
               icon={<PlusOutlined style={{ color: COLOR.violet }} />}
             >
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
@@ -245,31 +252,31 @@ export const MagazineForm = (props) => {
     );
   };
 
-  const renderDetonator = ({ fields }) => {
+  renderDetonator = ({ fields }) => {
     return (
       <div>
         <Row gutter={48}>
           <Col md={24}>
             {fields.map((field, index) => (
               <Collapse
-                defaultActiveKey={activeKeys}
-                onChange={(key) => setActiveKeys(Array.isArray(key) ? key : [key])}
-                key={index}
+                defaultActiveKey={this.state.activeKeys}
+                onChange={(key) => this.setState({ activeKeys: Array.isArray(key) ? key : [key] })}
+                key={field.id}
                 className="magazine-collapse margin-large--bottom"
               >
                 <Collapse.Panel
                   className="magazine-collapse"
-                  header={panelHeader(index, fields, "DET")}
-                  key={`${index}DET`}
+                  header={this.panelHeader(index, fields, "DET")}
+                  key={`${field.id}DET`}
                 >
-                  {renderInputs(field, "DET")}
+                  {this.renderInputs(field, "DET")}
                 </Collapse.Panel>
               </Collapse>
             ))}
             <Button
               className="add-magazine-button"
-              onClick={(event) => addField(event, fields)}
-              disabled={props.isProcessed}
+              onClick={(event) => this.addField(event, fields)}
+              disabled={this.props.isProcessed}
               icon={<PlusOutlined style={{ color: COLOR.violet }} />}
             >
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
@@ -280,22 +287,21 @@ export const MagazineForm = (props) => {
     );
   };
 
-  return (
-    <div>
-      <Typography.Title level={4} className="purple">
-        Explosives Magazines
-      </Typography.Title>
-      <FieldArray props={{}} name="explosive_magazines" component={renderExplosive} />
-      <Divider style={{ backgroundColor: COLOR.violet }} />
-      <Typography.Title level={4} className="purple">
-        Detonator Magazines
-      </Typography.Title>
-      <FieldArray props={{}} name="detonator_magazines" component={renderDetonator} />
-    </div>
-  );
-};
-
-MagazineForm.propTypes = propTypes;
-MagazineForm.defaultProps = defaultProps;
+  render() {
+    return (
+      <div>
+        <Typography.Title level={4} className="purple">
+          Explosives Magazines
+        </Typography.Title>
+        <FieldArray props={{}} name="explosive_magazines" component={this.renderExplosive} />
+        <Divider style={{ backgroundColor: COLOR.violet }} />
+        <Typography.Title level={4} className="purple">
+          Detonator Magazines
+        </Typography.Title>
+        <FieldArray props={{}} name="detonator_magazines" component={this.renderDetonator} />
+      </div>
+    );
+  }
+}
 
 export default MagazineForm;

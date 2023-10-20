@@ -2,13 +2,13 @@ import { RootState } from "@/App";
 import * as actionTypes from "../constants/actionTypes";
 import { MINES } from "../constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
-import { IMine, IMineComment, IMineDocument } from "@mds/common";
+import { IMine, IMineComment, IMineDocument, ItemMap } from "@mds/common";
 /**
  * @file mineReducer.js
  * all data associated with new mine/existing mine records is handled witnin this reducer.
  */
 interface MineState {
-  mines: IMine;
+  mines: ItemMap<IMine>;
   mineIds: string[];
   mineNameList: IMine[];
   minesPageData: IMine;
@@ -22,10 +22,10 @@ interface MineState {
 }
 
 const initialState: MineState = {
-  mines: {},
+  mines: {} as ItemMap<IMine>,
   mineIds: [],
   mineNameList: [],
-  minesPageData: {},
+  minesPageData: {} as IMine,
   mineGuid: "",
   mineBasicInfoList: [],
   mineDocuments: [],
@@ -94,7 +94,7 @@ const mineReducerObject = {
   [MINES]: mineReducer,
 };
 
-export const getMines = (state: RootState): IMine => state[MINES].mines;
+export const getMines = (state: RootState): ItemMap<IMine> => state[MINES].mines as ItemMap<IMine>;
 export const getMineIds = (state: RootState): string[] => state[MINES].mineIds;
 export const getMineNames = (state: RootState): IMine[] => state[MINES].mineNameList;
 export const getMinesPageData = (state: RootState): IMine => state[MINES].minesPageData;
