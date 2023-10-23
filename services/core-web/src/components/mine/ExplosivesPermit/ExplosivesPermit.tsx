@@ -173,7 +173,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       props: {
         title: "View Explosives Storage & Use Permit",
         explosivesPermit: record,
-        parentPermit,
+        parentPermit: { explosives_permit_amendments: [], ...parentPermit },
         mine,
         closeModal: props.closeModal,
         handleOpenExplosivesPermitCloseModal,
