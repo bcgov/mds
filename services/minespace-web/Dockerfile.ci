@@ -4,22 +4,19 @@ FROM node:14.21.3 as builder
 RUN mkdir /app
 WORKDIR /app
 
-ARG FONT_AWESOME_PACKAGE_TOKEN
+ARG ARTIFACTORY_TOKEN
 
 # Install app dependencies
 COPY . .
 
 ENV NODE_OPTIONS="--max-old-space-size=6144"
 
-RUN yarn config set 'npmScopes["fortawesome"].npmAuthToken' "$FONT_AWESOME_PACKAGE_TOKEN"
+RUN yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN"
 RUN yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
-RUN yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/"
+RUN yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
 
 # Install Dependencies
 RUN yarn
-
-# Build Common Package
-RUN yarn workspace @mds/common build
 
 # Build Core Web Only
 RUN yarn workspace @mds/minespace-web build

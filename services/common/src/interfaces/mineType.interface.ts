@@ -1,4 +1,4 @@
-import { IMineTypeDetail } from "@/index";
+import { IMineTypeDetail } from "@mds/common/index";
 
 export interface IMineType {
   mine_type_guid: string;

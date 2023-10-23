@@ -1,4 +1,4 @@
-import { IMine } from "@/index";
+import { IMine } from "@mds/common/index";
 
 export interface IPatchPermitNumber {
   permit_guid: string;

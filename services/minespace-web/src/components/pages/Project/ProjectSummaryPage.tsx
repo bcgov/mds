@@ -185,7 +185,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
           false
         );
       })
-      .then(() => {
+      .then(async () => {
         return handleFetchData();
       })
       .then(() => {

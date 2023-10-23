@@ -145,7 +145,7 @@ export const fetchExplosivesPermitDocumentContextTemplate = (
     .then((response) => {
       dispatch(success(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
       dispatch(documentActions.storeDocumentContextTemplate(response.data));
-      return response;
+      return response.data;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));

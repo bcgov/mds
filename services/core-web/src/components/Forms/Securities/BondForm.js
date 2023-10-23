@@ -28,6 +28,13 @@ import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import {
+  documentNameColumn,
+  documentNameColumnNew,
+  removeFunctionColumn,
+  uploadDateColumn,
+} from "@/components/common/DocumentColumns";
+import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -71,6 +78,8 @@ export class BondForm extends Component {
     }));
   };
 
+  // TODO: this function will have to remove the file through a BE call
+  // before it can be used with the Actions menu. Currently only on submit, and unlikely they're deleted
   onRemoveExistingFile = (event, mineDocumentGuid) => {
     event.preventDefault();
     this.setState((prevState) => ({
@@ -108,25 +117,30 @@ export class BondForm extends Component {
       this.props.bond.bond_status_code
     ];
 
+    const documentColumns = [
+      documentNameColumn(),
+      renderTextColumn("category", "Category"),
+      uploadDateColumn(),
+      removeFunctionColumn(this.onRemoveExistingFile),
+    ];
+
     return (
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
-          this.state.uploadedFiles.map(
-            // eslint-disable-next-line array-callback-return
-            (doc) => {
-              doc.bond_document_type_code = values.bond_document_type_code;
-              doc.document_date = values.document_date;
-              doc.mine_guid = this.props.mineGuid;
-            }
-          );
+          this.state.uploadedFiles.forEach((doc) => {
+            doc.bond_document_type_code = values.bond_document_type_code;
+            doc.document_date = values.document_date;
+            doc.mine_guid = this.props.mineGuid;
+          });
 
           // Delete this value from the bond, as it's not a valid property.
           // eslint-disable-next-line no-param-reassign
           delete values.bond_document_type_code;
           delete values.document_date;
 
+          // TODO: move document deletion to BE call in onRemoveExistingFile
           // Create the bond's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.bond.documents || [];
           const newDocuments = currentDocuments
@@ -339,7 +353,8 @@ export class BondForm extends Component {
           <Col xs={24}>
             <DocumentTable
               documents={documentTableRecords}
-              removeDocument={this.onRemoveExistingFile}
+              documentColumns={documentColumns}
+              excludedColumnKeys={["actions"]}
             />
           </Col>
         </Row>

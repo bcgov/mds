@@ -37,14 +37,14 @@ interface EngineerOfRecordProps {
   openModal: (value: any) => void;
   closeModal: () => void;
   uploadedFiles: IDocument[];
-  setUploadedFiles: (value: Partial<IDocument>) => void;
+  setUploadedFiles: (value: Partial<IDocument>[]) => void;
   mineGuid: string;
   partyRelationships: IMinePartyAppt[];
   loading?: boolean;
   mines: IMine[];
 }
 
-const columns = (LinkButton): ColumnsType<IParty> => [
+const columns = (LinkButton): ColumnsType<IDocument> => [
   {
     title: "File Name",
     dataIndex: "document_name",

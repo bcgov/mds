@@ -1,4 +1,4 @@
-import { MinePartyAppointmentTypeCodeEnum } from "@/index";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/index";
 
 export interface IAddPartyAppointment {
   mine_guid: string;
@@ -8,4 +8,8 @@ export interface IAddPartyAppointment {
   start_date: string;
   end_date?: string;
   end_current?: boolean;
+}
+
+export interface IUpdatePartyAppointment extends IAddPartyAppointment {
+  mine_party_appt_guid: string;
 }

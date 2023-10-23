@@ -7,7 +7,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import * as Strings from "@/constants/strings";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,

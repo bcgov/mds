@@ -39,7 +39,7 @@ describe("networkReducer", () => {
 
   it("receives ERROR", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.error = undefined;
+    expectedValue.error = null;
     expectedValue.requestType = "ERROR";
 
     const result = networkReducer(undefined, error());

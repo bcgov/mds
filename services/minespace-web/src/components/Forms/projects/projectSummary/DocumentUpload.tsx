@@ -13,7 +13,7 @@ import { documentNameColumn, uploadDateColumn } from "@/components/common/Docume
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import { MineDocument } from "@common/models/documents/document";
+import { MineDocument } from "@mds/common/models/documents/document";
 import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";
 import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";
@@ -33,6 +33,10 @@ const propTypes = {
   }).isRequired,
 };
 
+interface IProjectSummaryDocument extends IMineDocument {
+  project_summary_document_type_code: string;
+}
+
 export interface ProjectSummary {
   project_summary_id: number;
   mine_guid: string;
@@ -41,13 +45,13 @@ export interface ProjectSummary {
   submission_date: string;
   project_summary_description: string;
   project_guid: string;
-  documents: IMineDocument[];
+  documents: IProjectSummaryDocument[];
 }
 
 interface DocumentUploadProps {
   initialValues: ProjectSummary;
   change: any;
-  documents: IMineDocument[];
+  documents: IProjectSummaryDocument[];
   isEditMode: boolean;
   projectSummaryDocumentTypesHash: any;
   mineGuid: string;

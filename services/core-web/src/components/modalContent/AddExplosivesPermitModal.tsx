@@ -1,6 +1,8 @@
 import React, { FC } from "react";
-import ExplosivesPermitForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
 import { IOption, IGroupedDropdownList } from "@mds/common";
+import ExplosivesPermitForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
+import { Feature, isFeatureEnabled } from "@mds/common";
+import ExplosivesPermitFormNew from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
 
 interface ExplosivesPermitModalProps {
   title: string;
@@ -14,12 +16,14 @@ interface ExplosivesPermitModalProps {
   isProcessed: boolean;
 }
 
-export const AddExplosivesPermitModal: FC<ExplosivesPermitModalProps> = (props) => {
-  return (
-    <div>
+export const AddExplosivesPermitModal: FC<ExplosivesPermitModalProps> = (props) => (
+  <div>
+    {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
+      <ExplosivesPermitFormNew {...props} />
+    ) : (
       <ExplosivesPermitForm {...props} />
-    </div>
-  );
-};
+    )}
+  </div>
+);
 
 export default AddExplosivesPermitModal;

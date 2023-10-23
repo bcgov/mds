@@ -9,3 +9,5 @@ export * from "./partyFetchParams.interface";
 export * from "./createParty.interface";
 export * from "./addRelationshipDocument";
 export * from "./createPartyOrgBook.interface";
+export * from "./addPartyFormState.interface";
+export * from "./mergeParties.interface";

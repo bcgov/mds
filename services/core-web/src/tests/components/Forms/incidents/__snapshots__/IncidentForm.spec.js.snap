@@ -54,6 +54,11 @@ exports[`IncidentForm renders properly 1`] = `
     }
     incident={
       Object {
+        "categories": Array [
+          Object {
+            "mine_incident_category_code": "ENV",
+          },
+        ],
         "dangerous_occurrence_subparagraph_ids": Array [
           1747,
         ],
@@ -78,6 +83,7 @@ exports[`IncidentForm renders properly 1`] = `
         "mine_incident_id_year": 2019,
         "mine_incident_no": null,
         "mine_incident_report_no": "2019-48",
+        "mine_name": "Test Mine",
         "mms_inspector_initials": null,
         "number_of_fatalities": 0,
         "number_of_injuries": 0,

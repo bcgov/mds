@@ -37,7 +37,7 @@ function loadExternalSecrets() {
         echo -e "Make sure you download the OpenShift cli binary (oc) from https://github.com/openshift/okd/releases ?"
 
         if [ "$CODESPACES" = "true" ]; then
-            echo -e "${bold}Do you want to download and install oc? (only accepts 'yes')${normal}"
+            echo -e "${bold}Do you want to download and install oc? (answering anything except 'yes' will bypass this step)${normal}"
             read INSTALL_OC
 
             if [ "$INSTALL_OC" = "yes" ]; then
@@ -67,13 +67,14 @@ function loadExternalSecrets() {
         fi
     fi
 
-    # Read FONT_AWESOME_PACKAGE_TOKEN from local-dev-secrets ocp secret
-    FONT_AWESOME_PACKAGE_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.FONT_AWESOME_PACKAGE_TOKEN | base64decode}}')
+    # Read ARTIFACTORY_TOKEN from local-dev-secrets ocp secret
+    ARTIFACTORY_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.ARTIFACTORY_TOKEN | base64decode}}')
     
     # Update yarn config with token
-    yarn config set 'npmScopes["fortawesome"].npmAuthToken' "$FONT_AWESOME_PACKAGE_TOKEN" -H
+    yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN" -H
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
-    yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://npm.fontawesome.com/" -H
+    yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/" -H
+    yarn config unset 'npmScopes["fortawesome"].npmAuthToken' -H # Remove previous token used for authentication
 }
 
 if [ -z "$INPUT" ];

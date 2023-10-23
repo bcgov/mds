@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, FC } from "react";
 import CoreTable from "@/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -16,7 +16,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
-import { FileOperations, MineDocument } from "@common/models/documents/document";
 import {
   DeleteOutlined,
   DownloadOutlined,
@@ -27,38 +26,14 @@ import {
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { useFeatureFlag } from "@common/providers/featureFlags/useFeatureFlag";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-
-interface DocumentTableProps {
-  enableBulkActions: boolean;
-  documents: MineDocument[];
-  isLoaded: boolean;
-  isViewOnly: boolean;
-  canArchiveDocuments: boolean;
-  showVersionHistory: boolean;
-  documentParent: string;
-  view: string;
-  openModal: (arg) => void;
-  openDocument: any;
-  closeModal: () => void;
-  removeDocument: (event, doc_guid: string, mine_guid: string) => void;
-  archiveMineDocuments: (mineGuid: string, mineDocumentGuids: string[]) => void;
-  onArchivedDocuments: (docs?: MineDocument[]) => void;
-  documentColumns: ColumnType<unknown>[];
-  additionalColumns: ColumnType<MineDocument>[];
-  defaultSortKeys: string[];
-  excludedColumnKeys: string[];
-  additionalColumnProps: { key: string; colProps: any }[];
-  fileOperationPermissionMap: { operation: FileOperations; permission: string | boolean }[];
-  userRoles: string[];
-  replaceAlertMessage?: string;
-}
+import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
+import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
-export const DocumentTable = ({
-  enableBulkActions = false,
+export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
   excludedColumnKeys = [],
   additionalColumnProps = [],
@@ -67,6 +42,7 @@ export const DocumentTable = ({
   documentParent = null,
   isLoaded = true,
   showVersionHistory = false,
+  enableBulkActions = false,
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
@@ -75,15 +51,16 @@ export const DocumentTable = ({
   removeDocument,
   openDocument,
   replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
-
   ...props
 }: DocumentTableProps) => {
+  const [rowSelection, setRowSelection] = useState([]);
   const { isFeatureEnabled } = useFeatureFlag();
 
   const allowedTableActions = {
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
-    [FileOperations.Replace]: !isViewOnly,
+    // don't allow changes to version history where history is not shown
+    [FileOperations.Replace]: !isViewOnly && showVersionHistory,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
     [FileOperations.Delete]: !isViewOnly && removeDocument !== undefined,
@@ -92,7 +69,6 @@ export const DocumentTable = ({
   const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
-    if (!docs) return [];
     let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
       parsedDocs = docs;
@@ -105,8 +81,7 @@ export const DocumentTable = ({
     });
   };
 
-  const [documents, setDocuments] = useState<MineDocument[]>();
-  const [rowSelection, setRowSelection] = useState([]);
+  const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
 
   useEffect(() => {
     setDocuments(parseDocuments(props.documents ?? []));
@@ -168,16 +143,6 @@ export const DocumentTable = ({
     });
   };
 
-  const handleRowSelectionChange = (value) => {
-    setRowSelection(value);
-  };
-
-  const rowSelectionObject: any = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
-      handleRowSelectionChange(selectedRows);
-    },
-  };
-
   const actions = [
     {
       key: "view",
@@ -214,44 +179,6 @@ export const DocumentTable = ({
       clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
-
-  const bulkItems: MenuProps["items"] = [
-    {
-      key: "0",
-      icon: <InboxOutlined />,
-      label: (
-        <button
-          type="button"
-          className="full actions-dropdown-button"
-          onClick={(e) => {
-            openArchiveModal(e, rowSelection);
-          }}
-        >
-          <div>Archive File(s)</div>
-        </button>
-      ),
-    },
-  ];
-
-  const renderBulkActions = () => {
-    const element = (
-      <Dropdown
-        menu={{ items: bulkItems }}
-        placement="bottomLeft"
-        disabled={rowSelection.length === 0}
-      >
-        <Button className="ant-btn ant-btn-primary">
-          Action
-          <DownOutlined />
-        </Button>
-      </Dropdown>
-    );
-    return (
-      enableBulkActions && (
-        <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>
-      )
-    );
-  };
 
   const filterActions = (record: MineDocument, tableActions: ITableAction[]) => {
     const allowedDocumentActions: string[] = record.allowed_actions;
@@ -314,6 +241,54 @@ export const DocumentTable = ({
   const minimalProps = isMinimalView
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
+
+  const bulkItems: MenuProps["items"] = [
+    {
+      key: "0",
+      icon: <InboxOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full actions-dropdown-button"
+          onClick={(e) => {
+            openArchiveModal(e, rowSelection);
+          }}
+        >
+          <div>Archive File(s)</div>
+        </button>
+      ),
+    },
+  ];
+
+  const renderBulkActions = () => {
+    const element = (
+      <Dropdown
+        menu={{ items: bulkItems }}
+        placement="bottomLeft"
+        disabled={rowSelection.length === 0}
+      >
+        <Button className="ant-btn ant-btn-primary">
+          Action
+          <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+    return (
+      enableBulkActions && (
+        <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>
+      )
+    );
+  };
+
+  const handleRowSelectionChange = (value) => {
+    setRowSelection(value);
+  };
+
+  const rowSelectionObject: any = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      handleRowSelectionChange(selectedRows);
+    },
+  };
 
   const bulkActionsProps = enableBulkActions
     ? {

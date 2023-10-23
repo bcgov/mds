@@ -45,6 +45,7 @@ import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicat
 import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
+import ExplosivesPermitViewModal from "./ExplosivesPermitViewModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 import ViewAllConditionsModal from "./ViewAllConditionsModal";
 import UpdateNoWDateModal from "./UpdateNoWDateModal";
@@ -57,7 +58,7 @@ import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPa
 import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
-import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
+import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
 
 export const modalConfig = {
@@ -110,6 +111,7 @@ export const modalConfig = {
   NO_PERMIT_REQUIRED_SELECTION_MODAL: NoPermitRequiredSelectionModal,
   EXPLOSIVES_PERMIT_MODAL: AddExplosivesPermitModal,
   EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
+  EXPLOSIVES_PERMIT_VIEW_MODAL: ExplosivesPermitViewModal,
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
   EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
   EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,

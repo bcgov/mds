@@ -1,4 +1,4 @@
-import { IPermitParty } from "@/index";
+import { IPermitParty } from "@mds/common/index";
 
 export interface IPermitPartyRelationship {
   mine_party_appt_guid: string;

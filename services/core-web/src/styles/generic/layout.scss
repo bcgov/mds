@@ -42,7 +42,7 @@ html {
 }
 
 .horizontal-center {
-  align-items: center;
+  align-items: center !important;
 }
 
 .justify-center {
@@ -63,6 +63,10 @@ html {
 
 .red {
   color: $alert-red;
+}
+
+.green {
+  color: $ok-green;
 }
 
 .right {
@@ -116,7 +120,7 @@ html {
     height: 50%;
   }
 
-  &>div {
+  & > div {
     margin-right: 5px;
   }
 
@@ -405,7 +409,7 @@ html {
 }
 
 .margin-none {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .margin-small {

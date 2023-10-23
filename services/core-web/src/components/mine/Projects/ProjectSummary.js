@@ -42,7 +42,7 @@ import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSumma
 import NullScreen from "@/components/common/NullScreen";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { Feature } from "@mds/common";
-import withFeatureFlag from "@common/providers/featureFlags/withFeatureFlag";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(

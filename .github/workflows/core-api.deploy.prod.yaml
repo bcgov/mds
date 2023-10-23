@@ -33,6 +33,11 @@ jobs:
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
 
+  schemaspy-rollout:
+    uses: ./.github/workflows/schemaspy-rollout-prod.yaml
+    needs: [promote-image-to-prod]
+    secrets: inherit
+
   trigger-gitops:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
@@ -57,8 +62,8 @@ jobs:
 
   run-if-failed:
     runs-on: ubuntu-20.04
-    needs: [trigger-gitops]
-    if: always() && (needs.trigger-gitops.result == 'failure')
+    needs: [promote-image-to-prod, trigger-gitops]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
       - name: Notification
         run: ./gitops/watch-deployment.sh core-api prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1

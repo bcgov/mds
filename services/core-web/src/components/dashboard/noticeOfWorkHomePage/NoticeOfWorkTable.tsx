@@ -14,7 +14,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
-import { INoticeOfWorkApplication, IOption } from "@mds/common";
+import { INoticeOfWork, IOption } from "@mds/common";
 import { ColumnType } from "antd/es/table";
 import { SortOrder } from "antd/es/table/interface";
 import { NoWSearchParams } from "./NoticeOfWorkHomePage";
@@ -24,7 +24,7 @@ import { NoWSearchParams } from "./NoticeOfWorkHomePage";
  */
 
 interface NoticeOfWorkTableProps {
-  noticeOfWorkApplications: INoticeOfWorkApplication[];
+  noticeOfWorkApplications: INoticeOfWork[];
   isLoaded: boolean;
   handleSearch: (searchParams: NoWSearchParams) => void;
   sortField: string;
@@ -56,10 +56,10 @@ const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters,
 };
 
 const applySortIndicator = (
-  columns: ColumnType<INoticeOfWorkApplication>[],
+  columns: ColumnType<Partial<INoticeOfWork>>[],
   field: string,
   dir: string
-): ColumnType<INoticeOfWorkApplication>[] =>
+): ColumnType<Partial<INoticeOfWork>>[] =>
   columns.map((column) => {
     return {
       ...column,
@@ -88,7 +88,7 @@ const NoticeOfWorkTable: FC<RouteComponentProps & NoticeOfWorkTableProps> = ({
     return [];
   };
 
-  const createLinkTo = (route, record: INoticeOfWorkApplication) => {
+  const createLinkTo = (route, record: INoticeOfWork & { key: string }) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
@@ -100,7 +100,7 @@ const NoticeOfWorkTable: FC<RouteComponentProps & NoticeOfWorkTableProps> = ({
     };
   };
 
-  const transformRowData = (applications: INoticeOfWorkApplication[]) =>
+  const transformRowData = (applications: INoticeOfWork[]) =>
     applications.map((application) => ({
       key: application.now_application_guid,
       now_application_guid: application.now_application_guid,
@@ -179,7 +179,7 @@ const NoticeOfWorkTable: FC<RouteComponentProps & NoticeOfWorkTableProps> = ({
     ),
   });
 
-  const columns: ColumnType<INoticeOfWorkApplication>[] = [
+  const columns: ColumnType<INoticeOfWork>[] = [
     {
       title: "Number",
       key: "now_number",

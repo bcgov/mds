@@ -26,18 +26,16 @@ export const useKey = (test: (e: KeyboardEvent) => boolean, ref) => {
   });
 };
 
-const App = () => {
-  return (
-    <BrowserRouter basename={process.env.BASE_PATH}>
-      <ScrollToTopWrapper>
-        <>
-          <Routes />
-          <ModalWrapper />
-          <DocumentViewer />
-        </>
-      </ScrollToTopWrapper>
-    </BrowserRouter>
-  );
-};
+const App = () => (
+  <BrowserRouter basename={process.env.BASE_PATH}>
+    <ScrollToTopWrapper>
+      <>
+        <Routes />
+        <ModalWrapper />
+        <DocumentViewer />
+      </>
+    </ScrollToTopWrapper>
+  </BrowserRouter>
+);
 
 export default hot(module)(App);

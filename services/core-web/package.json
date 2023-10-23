@@ -34,7 +34,6 @@
     "@syncfusion/ej2-react-pdfviewer": "19.4.55",
     "@syncfusion/ej2-splitbuttons": "19.1.54",
     "@testing-library/react": "9.5.0",
-    "@types/react-router-dom": "5.3.3",
     "antd": "4.24.10",
     "array-move": "3.0.1",
     "axios": "0.21.1",
@@ -104,8 +103,9 @@
     "@babel/preset-react": "7.14.5",
     "@types/jest": "29.5.1",
     "@types/lodash": "4.14.194",
-    "@types/react": "18.2.0",
-    "@types/react-dom": "18.2.0",
+    "@types/react": "16.9.49",
+    "@types/react-dom": "16.9.8",
+    "@types/react-router-dom": "5.3.3",
     "@types/redux": "^3.6.0",
     "@types/redux-form": "8.2.6",
     "@types/styled-components": "5.1.26",
@@ -123,6 +123,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "cssnano": "6.0.1",
     "cypress": "12.13.0",
+    "cypress-file-upload": "^5.0.8",
     "enzyme-to-json": "3.3.5",
     "esbuild-loader": "^3.0.1",
     "eslint": "6.8.0",
@@ -153,6 +154,7 @@
     "thread-loader": "4.0.2",
     "ts-jest": "24.3.0",
     "ts-node": "^10.9.1",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "4.7.4",
     "url-loader": "2.3.0",
     "webpack": "5.88.1",
@@ -181,48 +183,9 @@
     "format:write-all": "prettier --config ../../.prettierrc.json src/*.{js,ts,jsx,tsx} --write && prettier --config ../../.prettierrc.json src/**/*.{js,ts,jsx,tsx} --write && prettier --config ../../.prettierrc.json src/**/**/*.{js,ts,jsx,tsx} --write",
     "test": "jest --env=jsdom --runInBand",
     "test:coverage": "jest --env=jsdom --runInBand src -- --testResultsProcessor=jest-junit --coverage",
-    "test:updateAll": "jest --env=jsdom --runInBand -u --",
-    "test:watch": "jest --env=jsdom --runInBand -- src --watch"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "verbose": true,
-    "testURL": "http://localhost",
-    "testEnvironment": "jest-environment-jsdom-global",
-    "setupFiles": [
-      "./src/setupTests.js",
-      "jest-localstorage-mock",
-      "jest-canvas-mock"
-    ],
-    "collectCoverageFrom": [
-      "**/common/**/*.{js,ts,tsx}",
-      "**/src/**/*.{js,ts,tsx}",
-      "!src/index.{js,ts,tsx}",
-      "!src/App.{js,ts,tsx}",
-      "!src/fetchEnv.{js,ts,tsx}",
-      "!src/assetsTransformer.{js,ts,tsx}",
-      "!src/setupTests.{js,ts,tsx}",
-      "!src/components/modalContent/config.{js,ts,tsx}",
-      "!src/manualReporting/renderReport.{js,ts,tsx}"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1",
-      "^@common/(.*)$": "<rootDir>/common/$1",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/assetsTransformer.js",
-      "\\.(css|less|scss)$": "<rootDir>/src/assetsTransformer.js",
-      "^vendor/(.*)$": "<rootDir>/vendor/$1"
-    },
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "test:updateAll": "jest --runInBand --env=jsdom -u --",
+    "test:watch": "jest --env=jsdom --runInBand -- src --watch",
+    "test:clear": "jest --clearCache"
   },
   "jestSonar": {
     "reportPath": "reports",

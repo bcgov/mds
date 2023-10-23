@@ -4,12 +4,12 @@ from datetime import datetime
 from werkzeug.exceptions import NotFound
 from flask_restplus import Resource, inputs
 
+from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.mine.models.mine import Mine
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, requires_role_edit_explosives_permit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.mines.explosives_permit_amendment.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 class ExplosivesPermitAmendmentResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -58,12 +58,6 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'application_status',
         type=str,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
-        'issue_date',
-        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
     )
@@ -190,7 +184,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
             data.get('permittee_mine_party_appt_id'), data.get('application_status'),
-            data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
+            data.get('expiry_date'), data.get('decision_reason'),
             data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
             data.get('description'),data.get('letter_date'),

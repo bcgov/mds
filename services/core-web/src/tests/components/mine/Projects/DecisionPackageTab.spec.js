@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { DecisionPackageTab } from "@/components/mine/Projects/DecisionPackageTab";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import FeatureFlagContext from "@common/providers/featureFlags/featureFlag.context";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 const props = {};
 

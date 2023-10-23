@@ -18,7 +18,7 @@ import { storeTsf } from "@common/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "./DamForm";
 import { ADD_EDIT_DAM } from "@/constants/forms";
-import { ICreateDam, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { RootState } from "@/App";
 import { Feature } from "@mds/common";
@@ -29,15 +29,15 @@ interface DamsPageProps {
   storeTsf: typeof storeTsf;
   storeDam: typeof storeDam;
   fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
-  formValues: ICreateDam;
+  formValues: IDam;
   formErrors: any;
   submit: () => void;
   createDam: ActionCreator<typeof createDam>;
   updateDam: ActionCreator<typeof updateDam>;
-  initialValues: ICreateDam;
+  initialValues: IDam;
 }
 
-const DamsPage: React.FC<InjectedFormProps<ICreateDam> & DamsPageProps> = (props) => {
+const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
   const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams<{

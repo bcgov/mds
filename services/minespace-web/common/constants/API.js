@@ -101,6 +101,9 @@ export const EXPLOSIVES_PERMIT_DOCUMENTS = (mineGuid, guid) =>
   `/mines/${mineGuid}/explosives-permits/${guid}/documents`;
 export const EXPLOSIVES_PERMIT_DOCUMENT_TYPE_OPTIONS = "/mines/explosives-permit-document-types";
 
+export const EXPLOSIVES_PERMIT_AMENDMENT = (mineGuid, explosivesPermitGuid) =>
+  `/mines/${mineGuid}/explosives-permits-amendment/${explosivesPermitGuid}`;
+
 // EPIC Mine Information
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 

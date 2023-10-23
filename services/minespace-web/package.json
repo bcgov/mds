@@ -31,7 +31,6 @@
     "@syncfusion/ej2-splitbuttons": "19.1.54",
     "@types/jest": "24.9.1",
     "@types/lodash": "4.14.192",
-    "@types/react-router-dom": "5.3.3",
     "antd": "4.24.10",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.17.0",
@@ -45,6 +44,7 @@
     "filepond-plugin-file-validate-size": "2.2.8",
     "filepond-plugin-file-validate-type": "1.2.8",
     "filepond-polyfill": "1.0.4",
+    "fork-ts-checker-webpack-plugin": "6",
     "hoist-non-react-statics": "3.3.1",
     "jsonwebtoken": "8.5.1",
     "keycloak-js": "20.0.1",
@@ -83,9 +83,10 @@
     "@babel/plugin-transform-runtime": "7.15.0",
     "@babel/preset-env": "7.15.0",
     "@babel/preset-react": "7.14.5",
-    "@types/react": "18.0.34",
-    "@types/react-dom": "18.0.11",
-    "@types/redux": "^3.6.0",
+    "@types/react": "16.9.49",
+    "@types/react-dom": "16.9.8",
+    "@types/react-router-dom": "5.3.3",
+    "@types/redux": "3.6.0",
     "@types/redux-form": "8.2.6",
     "@types/styled-components": "5.1.26",
     "acorn": "6.4.1",
@@ -162,43 +163,6 @@
     "test:updateAll": "jest --env=jsdom --runInBand -u --",
     "test:watch": "jest --env=jsdom --runInBand -- src --watch",
     "test:only": "jest"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "verbose": true,
-    "testURL": "http://localhost",
-    "testEnvironment": "jest-environment-jsdom-global",
-    "setupFiles": [
-      "./src/setupTests.js",
-      "jest-localstorage-mock",
-      "jest-canvas-mock"
-    ],
-    "collectCoverageFrom": [
-      "!**/common/**/*.{js,ts,tsx}",
-      "**/src/**/*.{js,ts,tsx}",
-      "!src/index.{js,ts,tsx}",
-      "!src/App.{js,ts,tsx}",
-      "!src/fetchEnv.{js,ts,tsx}",
-      "!src/assetsTransformer.{js,ts,tsx}",
-      "!src/setupTests.{js,ts,tsx}"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1",
-      "^@common/(.*)$": "<rootDir>/common/$1",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|doc|docx|pdf|xls|xlsm)$": "<rootDir>/src/assetsTransformer.js",
-      "\\.(css|less|scss)$": "<rootDir>/src/assetsTransformer.js"
-    },
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
   },
   "jestSonar": {
     "reportPath": "reports",

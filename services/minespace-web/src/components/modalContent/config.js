@@ -14,7 +14,7 @@ import ImportIRTErrorModal from "@/components/modalContent/informationRequiremen
 import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
 import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
-import DeleteDocumentModal from "@common/components/documents/DeleteDocumentModal";
+import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
 import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/createInvitationModal";
 
