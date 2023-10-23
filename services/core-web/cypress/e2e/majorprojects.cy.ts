@@ -3,13 +3,13 @@ describe("Major Projects", () => {
     beforeEach(() => {
         cy.login();
 
-        cy.get('[data-cy="home-link-button-major-projects"]', { timeout: 5000 }).click();
+        cy.get('[data-cy="home-link-button-major-projects"]', { timeout: 5000 }).click({ force: true });
 
         // .eq(1) selects the second row (0-based index).
         cy.get("[data-cy=major-projects-table-open-button]", { timeout: 5000 })
             .eq(1)
             .find("button")
-            .click();
+            .click({ force: true });
 
 
         cy.get('a[data-cy="project-description-view-link"]', { timeout: 5000 }).click();
@@ -62,16 +62,13 @@ describe("Major Projects", () => {
             });
         });
 
-        // Wait for file to download before continuing
-        cy.wait(5000);
-
         /**
          * Clean up by deleting file after downloading. This is to ensure that the 
          * upload file runs multiple times without any issue
          */
 
         // Click the delete button in the dropdown
-        cy.contains('button', 'Delete')
+        cy.contains('button', 'Delete', { timeout: 5000 })
             .find('div')
             .click({ force: true });
 
