@@ -23,122 +23,6 @@ const propTypes = {
   majorMineInd: PropTypes.bool.isRequired,
 };
 
-const columns = [
-  {
-    title: "Permit No.",
-    dataIndex: "number",
-    key: "number",
-    sorter: (a, b) => (a.number > b.number ? -1 : 1),
-  },
-  {
-    title: "Permitee",
-    dataIndex: "permitee",
-    key: "permitee",
-  },
-  {
-    title: "",
-    dataIndex: "permitee_guid",
-    render: (text, record) => (
-      <div title="">
-        {record.majorMineInd &&
-          record.status ==
-            "Open"(
-              <Button
-                style={{ display: "inline" }}
-                type="secondary"
-                onClick={(event) =>
-                  record.openVCWalletInvitationModal(event, text, record.permitee)
-                }
-              >
-                Wallet Connection Info
-              </Button>
-            )}
-      </div>
-    ),
-  },
-  {
-    title: "Permit Status",
-    dataIndex: "status",
-    key: "status",
-    sorter: (a, b) => (a.status > b.status ? -1 : 1),
-  },
-  {
-    title: "Authorization End Date",
-    dataIndex: "authorizationEndDate",
-    key: "authorizationEndDate",
-    sorter: dateSorter("authorizationEndDate"),
-  },
-  {
-    title: "First Issued",
-    dataIndex: "firstIssued",
-    key: "firstIssued",
-    sorter: dateSorter("firstIssued"),
-  },
-  {
-    title: "Last Amended",
-    dataIndex: "lastAmended",
-    key: "lastAmended",
-    sorter: dateSorter("lastAmended"),
-    defaultSortOrder: "ascend",
-  },
-];
-
-const finalApplicationPackage = (amendment) => {
-  const finalAppPackageCore =
-    amendment?.now_application_documents?.length > 0
-      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
-      : [];
-  const finalAppPackageImported =
-    amendment?.imported_now_application_documents?.length > 0
-      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
-      : [];
-  return finalAppPackageCore.concat(finalAppPackageImported);
-};
-
-const transformRowData = (
-  permit,
-  permitStatusOptions,
-  openVCWalletInvitationModal,
-  majorMineInd
-) => {
-  const filteredAmendments = permit.permit_amendments.filter(
-    (a) => a.permit_amendment_status_code !== draftAmendment
-  );
-  const latestAmendment = filteredAmendments[0];
-  const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
-  return {
-    key: permit.permit_no || Strings.EMPTY_FIELD,
-    number: permit.permit_no || Strings.EMPTY_FIELD,
-    permitee: permit.current_permittee || Strings.EMPTY_FIELD,
-    permitee_guid: permit.current_permittee_guid || Strings.EMPTY_FIELD,
-    majorMineInd: majorMineInd,
-    openVCWalletInvitationModal: openVCWalletInvitationModal,
-    status:
-      (permit.permit_status_code &&
-        permitStatusOptions.find((item) => item.value === permit.permit_status_code).label) ||
-      Strings.EMPTY_FIELD,
-    authorizationEndDate:
-      (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
-      Strings.EMPTY_FIELD,
-    firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    permit_amendments: filteredAmendments,
-  };
-};
-
-const transformExpandedRowData = (amendment, amendmentNumber) => ({
-  key: amendmentNumber,
-  amendmentNumber,
-  dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
-  authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
-  description: amendment.description || Strings.EMPTY_FIELD,
-  documents: amendment.related_documents,
-  maps: amendment.now_application_documents?.filter(
-    (doc) => doc.now_application_document_sub_type_code === "MDO"
-  ),
-  permitPackage: finalApplicationPackage(amendment),
-});
-
 export const PermitsTable = (props) => {
   const openVCWalletInvitationModal = (event, partyGuid, partyName) => {
     event.preventDefault();
@@ -153,13 +37,117 @@ export const PermitsTable = (props) => {
     });
   };
 
+  const columns = [
+    {
+      title: "Permit No.",
+      dataIndex: "number",
+      key: "number",
+      sorter: (a, b) => (a.number > b.number ? -1 : 1),
+    },
+    {
+      title: "Permitee",
+      dataIndex: "permitee",
+      key: "permitee",
+    },
+    {
+      title: "",
+      dataIndex: "permitee_guid",
+      render: (text, record) => {
+        return (
+          <div title="">
+            {record.majorMineInd && record.status === "Open" && (
+              <Button
+                style={{ display: "inline" }}
+                type="secondary"
+                onClick={(event) => openVCWalletInvitationModal(event, text, record.permitee)}
+              >
+                Wallet Connection Info
+              </Button>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Permit Status",
+      dataIndex: "status",
+      key: "status",
+      sorter: (a, b) => (a.status > b.status ? -1 : 1),
+    },
+    {
+      title: "Authorization End Date",
+      dataIndex: "authorizationEndDate",
+      key: "authorizationEndDate",
+      sorter: dateSorter("authorizationEndDate"),
+    },
+    {
+      title: "First Issued",
+      dataIndex: "firstIssued",
+      key: "firstIssued",
+      sorter: dateSorter("firstIssued"),
+    },
+    {
+      title: "Last Amended",
+      dataIndex: "lastAmended",
+      key: "lastAmended",
+      sorter: dateSorter("lastAmended"),
+      defaultSortOrder: "ascend",
+    },
+  ];
+
+  const finalApplicationPackage = (amendment) => {
+    const finalAppPackageCore =
+      amendment?.now_application_documents?.length > 0
+        ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
+        : [];
+    const finalAppPackageImported =
+      amendment?.imported_now_application_documents?.length > 0
+        ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
+        : [];
+    return finalAppPackageCore.concat(finalAppPackageImported);
+  };
+
+  const transformRowData = (permit, permitStatusOptions, majorMineInd) => {
+    const filteredAmendments = permit.permit_amendments.filter(
+      (a) => a.permit_amendment_status_code !== draftAmendment
+    );
+    const latestAmendment = filteredAmendments[0];
+    const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
+    return {
+      key: permit.permit_no || Strings.EMPTY_FIELD,
+      number: permit.permit_no || Strings.EMPTY_FIELD,
+      permitee: permit.current_permittee || Strings.EMPTY_FIELD,
+      permitee_guid: permit.current_permittee_guid || Strings.EMPTY_FIELD,
+      majorMineInd: majorMineInd,
+      status:
+        (permit.permit_status_code &&
+          permitStatusOptions.find((item) => item.value === permit.permit_status_code).label) ||
+        Strings.EMPTY_FIELD,
+      authorizationEndDate:
+        (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
+        Strings.EMPTY_FIELD,
+      firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
+      lastAmended:
+        (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
+      permit_amendments: filteredAmendments,
+    };
+  };
+
+  const transformExpandedRowData = (amendment, amendmentNumber) => ({
+    key: amendmentNumber,
+    amendmentNumber,
+    dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
+    authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
+    description: amendment.description || Strings.EMPTY_FIELD,
+    documents: amendment.related_documents,
+    maps: amendment.now_application_documents?.filter(
+      (doc) => doc.now_application_document_sub_type_code === "MDO"
+    ),
+    permitPackage: finalApplicationPackage(amendment),
+  });
+
   const rowData = props.permits.map((permit) =>
-    transformRowData(
-      permit,
-      props.permitStatusOptions,
-      openVCWalletInvitationModal,
-      props.majorMineInd
-    )
+    transformRowData(permit, props.permitStatusOptions, props.majorMineInd)
   );
 
   const getExpandedRowData = (permit) =>
@@ -229,8 +217,8 @@ export const PermitsTable = (props) => {
     },
     {
       title: "",
-      dataIndex: "",
-      render: (text, record) => (
+      key: "issue_digital_cred",
+      render: () => (
         <div title="">
           <Button style={{ display: "inline" }} type="primary">
             Issue Digital Credential

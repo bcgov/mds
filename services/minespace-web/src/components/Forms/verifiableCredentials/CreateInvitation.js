@@ -25,7 +25,7 @@ export class CreateInvitationForm extends Component {
           className="secondary"
           type="secondary"
           disabled={this.props.submitting}
-          onClick={this.props.createVCWalletInvitation(this.props.partyGuid)}
+          onClick={() => this.props.createVCWalletInvitation(this.props.partyGuid)}
         >
           Generate Invitation for {this.props.partyName}.
         </Button>
