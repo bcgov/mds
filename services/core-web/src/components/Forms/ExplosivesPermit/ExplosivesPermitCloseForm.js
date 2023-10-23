@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { requiredRadioButton } from "@common/utils/Validate";
+import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import { normalizeDatetime } from "@common/utils/helpers";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -18,42 +18,33 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-const options = [
-  {
-    value: false,
-    label: "Open",
-  },
-  {
-    value: true,
-    label: "Closed",
-  },
-];
-
 export const ExplosivesPermitCloseForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="is_closed"
-              name="is_closed"
-              label="Permit Status*"
-              component={RenderRadioButtons}
-              customOptions={options}
-              validate={[requiredRadioButton]}
-            />
-          </Form.Item>
+          <Typography.Title level={2}>Close Permit</Typography.Title>
+          <Typography.Paragraph>
+            If you perform this action there will no longer be an active explosive use and storage
+            permit for this notice of work. If you still want to have an amendment active, consider
+            creating an amendment for this permit before performing this action.
+          </Typography.Paragraph>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
+          <Form.Item label="Date Permit was Closed" required>
             <Field
               id="closed_timestamp"
               name="closed_timestamp"
-              label="Date Permit was Closed"
-              component={RenderDate}
+              normalize={normalizeDatetime}
+              component={RenderDateTimeTz}
+              validate={[
+                dateNotInFutureTZ,
+                required,
+                dateTimezoneRequired("esup_permit_close_timezone"),
+              ]}
+              props={{ timezoneFieldProps: { name: "esup_permit_close_timezone" } }}
             />
           </Form.Item>
         </Col>
@@ -64,7 +55,7 @@ export const ExplosivesPermitCloseForm = (props) => {
             <Field
               id="closed_reason"
               name="closed_reason"
-              label="Reason"
+              label="Reason for closure"
               component={RenderAutoSizeField}
             />
           </Form.Item>
@@ -84,7 +75,7 @@ export const ExplosivesPermitCloseForm = (props) => {
           </Button>
         </Popconfirm>
         <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          {props.title}
+          Close Permit
         </Button>
       </div>
     </Form>

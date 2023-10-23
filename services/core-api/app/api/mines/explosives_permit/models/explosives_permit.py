@@ -14,6 +14,16 @@ from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue, Sequence
+from sqlalchemy import and_, func
+
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
+from app.extensions import db
+from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
+from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
+from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.parties.party.models.party import Party
+from app.api.utils.include.user_info import User
 
 
 class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
@@ -24,9 +34,22 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
     permit_number = db.Column(db.String, unique=True)
 
+    closed_by = db.Column(db.String(60))
+
+    explosive_magazines = db.relationship(
+        'ExplosivesPermitMagazine',
+        lazy='select',
+        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)'
+    )
+    detonator_magazines = db.relationship(
+        'ExplosivesPermitMagazine',
+        lazy='select',
+        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)'
+    )
     explosives_permit_amendments = db.relationship('ExplosivesPermitAmendment', lazy='select',
         primaryjoin='ExplosivesPermit.explosives_permit_id == ExplosivesPermitAmendment.explosives_permit_id',
-        back_populates='explosives_permit')
+        back_populates='explosives_permit',
+        order_by='ExplosivesPermitAmendment.explosives_permit_amendment_id')
 
     explosive_magazines = db.relationship('ExplosivesPermitMagazine', lazy='select',
         primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)')
@@ -67,6 +90,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         self.expiry_date = expiry_date
         self.latitude = latitude
         self.longitude = longitude
+        self.closed_by = User().get_user_username()
 
         # Check for permit closed changes.
         self.is_closed = is_closed
