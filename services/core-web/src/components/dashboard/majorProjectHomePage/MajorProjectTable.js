@@ -124,7 +124,7 @@ export const MajorProjectTable = (props) => {
       key: "project",
       dataIndex: "project",
       render: (text, record) => (
-        <div title="" align="right">
+        <div title="" align="right" data-cy="major-projects-table-open-button">
           <Row gutter={1}>
             <Col span={12}>
               <Link to={router.PROJECTS.dynamicRoute(record.key)}>

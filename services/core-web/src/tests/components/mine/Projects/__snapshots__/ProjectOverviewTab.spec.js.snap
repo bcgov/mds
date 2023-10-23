@@ -102,6 +102,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           Object {
             "key": "ps-undefined",
             "link": <ForwardRef
+              data-cy="project-description-view-link"
               to="/pre-applications/undefined/project-description/undefined"
             >
               <ForwardRef(InternalButton)
@@ -131,6 +132,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
           Object {
             "key": "ps-undefined",
             "link": <ForwardRef
+              data-cy="final-application-view-link"
               to="/pre-applications/undefined/final-app"
             >
               <ForwardRef(InternalButton)
@@ -158,6 +160,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             "isOptional": true,
             "key": "irt-0",
             "link": <ForwardRef
+              data-cy="final-irt-view-link"
               to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"
             >
               <ForwardRef(InternalButton)
