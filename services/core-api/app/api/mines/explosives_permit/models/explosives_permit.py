@@ -15,6 +15,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue, Sequence
 from sqlalchemy import and_, func
+from sqlalchemy.sql import update
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
 from app.extensions import db
@@ -33,6 +34,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     explosives_permit_id = db.Column(db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
 
     permit_number = db.Column(db.String, unique=True)
+
+    is_closed = db.Column(db.Boolean)
 
     closed_by = db.Column(db.String(60))
 
@@ -236,6 +239,15 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         sequence = Sequence('explosives_permit_number_sequence')
         next_value = sequence.next_value()
         return func.concat(prefix, next_value)
+
+    @classmethod
+    def update_permit_status(self, explosives_permit_id, is_closed_status):
+        update_stmt = update(self)\
+            .where(self.explosives_permit_id == explosives_permit_id)\
+            .values(is_closed = is_closed_status)
+        update_result = db.session.execute(update_stmt)
+        db.session.commit()
+        return update_result.rowcount
 
     @classmethod
     def create(cls, mine, permit_guid, application_date, originating_system, latitude, longitude, description,

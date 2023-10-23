@@ -9,7 +9,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_explosives_permit
 from app.api.mines.mine.models.mine import Mine
-
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 
 
 class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
@@ -164,5 +164,13 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('documents', []),
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
+
+        # Updating the previous amendments' is_closed status to True.
+        updated_columns = ExplosivesPermitAmendment.update_amendment_status_by_explosives_permit_id(
+            data.get('explosives_permit_id'), True,
+            explosives_permit_amendment.explosives_permit_amendment_guid)
+
+        if updated_columns == 0: #Explosive Permit status need to be updated.
+            ExplosivesPermit.update_permit_status(explosives_permit_amendment.explosives_permit_id, True)
 
         return explosives_permit_amendment, 201
