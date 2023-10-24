@@ -24,14 +24,14 @@ const propTypes = {
 };
 
 export const PermitsTable = (props) => {
-  const openVCWalletInvitationModal = (event, partyGuid, partyName) => {
+  const openVCWalletInvitationModal = (event, partyGuid, partyName, connectionState) => {
     event.preventDefault();
     props.openModal({
       props: {
         title: "Digital Wallet Connection Invitation",
         partyGuid: partyGuid,
         partyName: partyName,
-        connectionState: "active",
+        connectionState: connectionState,
       },
       content: modalConfig.VC_WALLET_INVITATION,
     });
@@ -60,11 +60,8 @@ export const PermitsTable = (props) => {
                 style={{ display: "inline" }}
                 type="secondary"
                 onClick={(event) => {
-                  console.log("in evnet click");
-                  console.log(record.connectionState);
                   openVCWalletInvitationModal(event, text, record.permitee, record.connectionState);
-                }
-                }
+                }}
               >
                 Wallet Connection Info
               </Button>
@@ -118,7 +115,6 @@ export const PermitsTable = (props) => {
     );
     const latestAmendment = filteredAmendments[0];
     const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
-    console.log(permit.current_permittee_digital_wallet_connection_state);
     return {
       key: permit.permit_no || Strings.EMPTY_FIELD,
       number: permit.permit_no || Strings.EMPTY_FIELD,
@@ -160,8 +156,8 @@ export const PermitsTable = (props) => {
   const getExpandedRowData = (permit) =>
     permit.permit_amendments
       ? permit.permit_amendments.map((amendment, index) =>
-        transformExpandedRowData(amendment, permit.permit_amendments.length - index)
-      )
+          transformExpandedRowData(amendment, permit.permit_amendments.length - index)
+        )
       : [];
 
   const expandedColumns = [
