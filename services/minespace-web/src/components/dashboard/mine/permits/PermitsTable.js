@@ -218,17 +218,6 @@ export const PermitsTable = (props) => {
         </div>
       ),
     },
-    {
-      title: "",
-      key: "issue_digital_cred",
-      render: () => (
-        <div title="">
-          <Button style={{ display: "inline" }} type="primary">
-            Issue Digital Credential
-          </Button>
-        </div>
-      ),
-    },
   ];
 
   return (
