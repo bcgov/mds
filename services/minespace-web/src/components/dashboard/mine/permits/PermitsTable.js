@@ -59,7 +59,12 @@ export const PermitsTable = (props) => {
               <Button
                 style={{ display: "inline" }}
                 type="secondary"
-                onClick={(event) => openVCWalletInvitationModal(event, text, record.permitee)}
+                onClick={(event) => {
+                  console.log("in evnet click");
+                  console.log(record.connectionState);
+                  openVCWalletInvitationModal(event, text, record.permitee, record.connectionState);
+                }
+                }
               >
                 Wallet Connection Info
               </Button>
@@ -113,12 +118,14 @@ export const PermitsTable = (props) => {
     );
     const latestAmendment = filteredAmendments[0];
     const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
+    console.log(permit.current_permittee_digital_wallet_connection_state);
     return {
       key: permit.permit_no || Strings.EMPTY_FIELD,
       number: permit.permit_no || Strings.EMPTY_FIELD,
       permitee: permit.current_permittee || Strings.EMPTY_FIELD,
       permitee_guid: permit.current_permittee_guid,
       majorMineInd: majorMineInd,
+      connectionState: permit.current_permittee_digital_wallet_connection_state,
       status:
         (permit.permit_status_code &&
           permitStatusOptions.find((item) => item.value === permit.permit_status_code).label) ||
@@ -153,8 +160,8 @@ export const PermitsTable = (props) => {
   const getExpandedRowData = (permit) =>
     permit.permit_amendments
       ? permit.permit_amendments.map((amendment, index) =>
-          transformExpandedRowData(amendment, permit.permit_amendments.length - index)
-        )
+        transformExpandedRowData(amendment, permit.permit_amendments.length - index)
+      )
       : [];
 
   const expandedColumns = [

@@ -16,6 +16,7 @@ interface CreateInvitationFormProps {
   closeModal: () => void;
   partyGuid: string;
   partyName: string;
+  connectionState: string;
 }
 
 interface FormStateProps {
@@ -27,7 +28,14 @@ interface FormStateProps {
 
 export const CreateInvitationForm: FC<CreateInvitationFormProps &
   FormStateProps &
-  InjectedFormProps<any>> = ({ closeModal, partyGuid, partyName, invitation, ...props }) => {
+  InjectedFormProps<any>> = ({
+  closeModal,
+  partyGuid,
+  partyName,
+  connectionState,
+  invitation,
+  ...props
+}) => {
   const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
   const [loading, setLoading] = useState(isPreLoaded);
 
@@ -44,10 +52,13 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
   };
 
   const disableGenerateButton: boolean =
-    props.submitting || loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0;
-
+    connectionState === "active" ||
+    props.submitting ||
+    loading === LOADING_STATUS.sent ||
+    invitation.invitation_url?.length > 0;
   return (
     <Form layout="vertical">
+      <p>Current Connection Status: {connectionState}</p>
       <Button disabled={disableGenerateButton} onClick={getInvitation}>
         Generate Invitation for {partyName}.
       </Button>

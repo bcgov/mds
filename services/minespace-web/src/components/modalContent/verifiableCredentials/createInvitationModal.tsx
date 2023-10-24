@@ -5,16 +5,23 @@ interface CreateInvitationModalProps {
   closeModal: () => void;
   partyGuid: string;
   partyName: string;
+  connectionState: string;
 }
 
 export const CreateInvitationModal: FC<CreateInvitationModalProps> = ({
   partyName = "",
   partyGuid = "",
+  connectionState = "",
   closeModal,
 }) => {
   return (
     <div>
-      <CreateInvitationForm closeModal={closeModal} partyGuid={partyGuid} partyName={partyName} />
+      <CreateInvitationForm
+        closeModal={closeModal}
+        partyGuid={partyGuid}
+        partyName={partyName}
+        connectionState={connectionState}
+      />
     </div>
   );
 };

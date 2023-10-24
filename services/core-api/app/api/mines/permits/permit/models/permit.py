@@ -101,7 +101,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return ""
 
     @hybrid_property
-    def current_permittee_digital_wallet_connection_status(self):
+    def current_permittee_digital_wallet_connection_state(self):
         if len(self.permittee_appointments) > 0:
             return self.permittee_appointments[0].party.digital_wallet_connection_status
         else:
