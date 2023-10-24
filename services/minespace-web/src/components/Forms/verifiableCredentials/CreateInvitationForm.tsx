@@ -29,79 +29,83 @@ interface FormStateProps {
 export const CreateInvitationForm: FC<CreateInvitationFormProps &
   FormStateProps &
   InjectedFormProps<any>> = ({
-  closeModal,
-  partyGuid,
-  partyName,
-  connectionState,
-  invitation,
-  ...props
-}) => {
-  const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
-  const [loading, setLoading] = useState(isPreLoaded);
+    closeModal,
+    partyGuid,
+    partyName,
+    connectionState,
+    invitation,
+    ...props
+  }) => {
+    const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
+    const [loading, setLoading] = useState(isPreLoaded);
 
-  const getInvitation = () => {
-    setLoading(LOADING_STATUS.sent);
-    props
-      .createVCWalletInvitation(partyGuid)
-      .then(() => setLoading(LOADING_STATUS.success))
-      .catch(() => setLoading(LOADING_STATUS.error));
+    const getInvitation = () => {
+      setLoading(LOADING_STATUS.sent);
+      props
+        .createVCWalletInvitation(partyGuid)
+        .then(() => setLoading(LOADING_STATUS.success))
+        .catch(() => setLoading(LOADING_STATUS.error));
+    };
+
+    const copyTextToClipboard = () => {
+      navigator.clipboard.writeText(invitation.invitation_url);
+    };
+
+    const disableGenerateButton: boolean =
+      connectionState === "active" ||
+      props.submitting ||
+      loading === LOADING_STATUS.sent ||
+      invitation.invitation_url?.length > 0;
+    return (
+      <Form layout="vertical">
+        <p>Current Connection Status: {connectionState}</p>
+        {connectionState !== "active" && (
+          <div>
+            <Button disabled={disableGenerateButton} onClick={getInvitation}>
+              Generate Invitation for {partyName}.
+            </Button>
+            <br />
+          </div>
+        )}
+        <br />
+        {loading !== LOADING_STATUS.none && (
+          <Skeleton loading={loading === LOADING_STATUS.sent}>
+            {loading === LOADING_STATUS.success && (
+              <>
+                <p>
+                  <b>
+                    Accept this invitation url using the digital wallet of {partyName}. to establish a
+                    secure connection for the purposes of recieving Mines Act Permits
+                  </b>
+                </p>
+                <br />
+                <Button type="primary" onClick={copyTextToClipboard}>
+                  Copy to Clipboard
+                </Button>
+                <br />
+                <br />
+                <p>{invitation.invitation_url}</p>
+              </>
+            )}
+            {loading === LOADING_STATUS.error && (
+              <p>There was an error generating your invitation.</p>
+            )}
+          </Skeleton>
+        )}
+
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure?"
+          onConfirm={closeModal}
+          okText="Yes"
+          cancelText="No"
+          disabled={props.submitting}
+        >
+          <Button disabled={props.submitting}>Close</Button>
+        </Popconfirm>
+      </Form>
+    );
   };
-
-  const copyTextToClipboard = () => {
-    navigator.clipboard.writeText(invitation.invitation_url);
-  };
-
-  const disableGenerateButton: boolean =
-    connectionState === "active" ||
-    props.submitting ||
-    loading === LOADING_STATUS.sent ||
-    invitation.invitation_url?.length > 0;
-  return (
-    <Form layout="vertical">
-      <p>Current Connection Status: {connectionState}</p>
-      <Button disabled={disableGenerateButton} onClick={getInvitation}>
-        Generate Invitation for {partyName}.
-      </Button>
-      <br />
-      <br />
-      {loading !== LOADING_STATUS.none && (
-        <Skeleton loading={loading === LOADING_STATUS.sent}>
-          {loading === LOADING_STATUS.success && (
-            <>
-              <p>
-                <b>
-                  Accept this invitation url using the digital wallet of {partyName}. to establish a
-                  secure connection for the purposes of recieving Mines Act Permits
-                </b>
-              </p>
-              <br />
-              <Button type="primary" onClick={copyTextToClipboard}>
-                Copy to Clipboard
-              </Button>
-              <br />
-              <br />
-              <p>{invitation.invitation_url}</p>
-            </>
-          )}
-          {loading === LOADING_STATUS.error && (
-            <p>There was an error generating your invitation.</p>
-          )}
-        </Skeleton>
-      )}
-
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={closeModal}
-        okText="Yes"
-        cancelText="No"
-        disabled={props.submitting}
-      >
-        <Button disabled={props.submitting}>Cancel</Button>
-      </Popconfirm>
-    </Form>
-  );
-};
 
 const mapStateToProps = (state) => ({
   invitation: getVCWalletConnectionInvitation(state),
