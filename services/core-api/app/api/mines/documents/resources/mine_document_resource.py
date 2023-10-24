@@ -106,7 +106,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
             'mine_document_guids': 'The GUID of the Mine Documents to Archive.'
         }
     )
-    @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS])
+    @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, MINESPACE_PROPONENT])
     @api.expect(ARCHIVE_MINE_DOCUMENT)
     @api.response(204, 'Successfully archived documents')
     def patch(self, mine_guid):
