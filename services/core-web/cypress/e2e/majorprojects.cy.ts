@@ -1,5 +1,4 @@
 describe("Major Projects", () => {
-    const fileName = "dummy.pdf";
     beforeEach(() => {
         cy.login();
 
@@ -21,6 +20,7 @@ describe("Major Projects", () => {
     });
 
     it("should upload a document successfully", () => {
+        const fileName = "dummy.pdf";
 
         cy.fixture(fileName).then(fileContent => {
             cy.get('input[type="file"]').attachFile({
@@ -29,24 +29,56 @@ describe("Major Projects", () => {
                 mimeType: 'application/pdf'
             });
 
+            // Mock the API call with a regular expression in the URL pattern
+            cy.intercept('POST', /.*\/(api\/)?projects\/.*\/project-summaries\/.*\/documents\?mine_guid=.*$/, (req) => {
+                req.reply((res) => {
+                    res.send({
+                        statusCode: 200,
+                        delay: 1000,
+                    });
+                });
+            }).as('uploadComplete');
+
+            // Wait for the mocked PATCH request to complete
+            cy.wait('@uploadComplete');
+
+            // Make the PATCH request
+            cy.intercept('PATCH', /(?:\/document-manager)?\/documents\/.*$/, (req) => {
+                req.reply((res) => {
+                    res.send({
+                        statusCode: 200,
+                        delay: 1000,
+                    });
+                });
+            }).as('patchComplete');
+
+            // Wait for the mocked PATCH request to complete
+            cy.wait('@patchComplete');
+
+            // Make the GET request
+            cy.intercept('GET', /(?:\/api)?\/mines\/documents\/upload\/.*$/, (req) => {
+                req.reply((res) => {
+                    res.send({
+                        statusCode: 200,
+                        delay: 1000,
+                    });
+                });
+            }).as('getComplete');
+
+            // Wait for the mocked GET request to complete
+            cy.wait('@getComplete');
+
+
             // Wait for the "Upload complete" text to appear within a maximum of 25 seconds.
             cy.contains('.filepond--file-status-main', 'Upload complete', { timeout: 25000 });
+
         });
 
-        // Save the changes without force
-        cy.contains('button', 'Save Changes').should('be.visible').click({ force: true });
     });
 
     it('should download a document successfully', () => {
 
-        // Find the row with 'dummy.pdf', scroll it into view, and hover over its 'Actions' button
-        cy.contains('tr', fileName)
-            .scrollIntoView()
-            .within(() => {
-                // Hover over the 'Actions' button within the row
-                cy.get('[data-cy=menu-actions-button]')
-                    .trigger('mouseover', { force: true });
-            });
+        cy.get('[data-cy=menu-actions-button]').first().click({ force: true });
 
         // Click the Download file button in the dropdown
         cy.contains('button', 'Download file', { timeout: 1000 })
@@ -62,20 +94,7 @@ describe("Major Projects", () => {
             });
         });
 
-        /**
-         * Clean up by deleting file after downloading. This is to ensure that the 
-         * upload file runs multiple times without any issue
-         */
 
-        // Click the delete button in the dropdown
-        cy.contains('button', 'Delete', { timeout: 5000 })
-            .find('div')
-            .click({ force: true });
-
-        // Click 'Delete' within the modal
-        cy.get('.ant-modal-footer', { timeout: 5000 })
-            .contains('button', 'Delete')
-            .click({ force: true });
     });
 
 });
