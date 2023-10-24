@@ -117,7 +117,7 @@ export const PermitsTable = (props) => {
       key: permit.permit_no || Strings.EMPTY_FIELD,
       number: permit.permit_no || Strings.EMPTY_FIELD,
       permitee: permit.current_permittee || Strings.EMPTY_FIELD,
-      permitee_guid: permit.current_permittee_guid || Strings.EMPTY_FIELD,
+      permitee_guid: permit.current_permittee_guid,
       majorMineInd: majorMineInd,
       status:
         (permit.permit_status_code &&

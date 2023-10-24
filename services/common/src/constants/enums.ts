@@ -108,3 +108,10 @@ export enum ActivityTypeEnum {
   major_mine_app_submitted = "major_mine_app_submitted",
   major_mine_desc_submitted = "major_mine_desc_submitted",
 }
+
+export enum LOADING_STATUS {
+  none,
+  sent,
+  success,
+  error,
+}
