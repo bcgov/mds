@@ -34,3 +34,28 @@ export const createVCWalletInvitation = (
       throw new Error(err);
     });
 };
+
+export const fetchVCWalletInvitations = (
+  partyGuid: string
+): AppThunk<Promise<AxiosResponse<IVCInvitation>>> => (
+  dispatch
+): Promise<AxiosResponse<IVCInvitation>> => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/oob-invitation/${partyGuid}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
+      dispatch(verfiableCredentialActions.storeVCConnectionInvitation(response.data));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
+      dispatch(hideLoading("modal"));
+      throw new Error(err);
+    });
+};
