@@ -121,7 +121,8 @@ export const PermitsTable = (props) => {
       permitee: permit.current_permittee || Strings.EMPTY_FIELD,
       permitee_guid: permit.current_permittee_guid,
       majorMineInd: majorMineInd,
-      connectionState: permit.current_permittee_digital_wallet_connection_state,
+      connectionState:
+        permit.current_permittee_digital_wallet_connection_state || Strings.EMPTY_FIELD,
       status:
         (permit.permit_status_code &&
           permitStatusOptions.find((item) => item.value === permit.permit_status_code).label) ||
