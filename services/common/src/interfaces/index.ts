@@ -34,3 +34,4 @@ export * from "./now";
 export * from "./noticeOfWork.interface";
 export * from "./noticeOfWorkDraftPermit.interface";
 export * from "./search/searchResult.interface";
+export * from "./verifiableCredentials";
