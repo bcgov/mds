@@ -16,7 +16,6 @@ exports[`SettlingPonds renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -114,7 +113,6 @@ exports[`SettlingPonds renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -243,7 +241,6 @@ exports[`SettlingPonds renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -269,7 +266,6 @@ exports[`SettlingPonds renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field

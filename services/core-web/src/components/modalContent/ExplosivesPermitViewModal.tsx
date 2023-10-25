@@ -164,7 +164,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       ...permitAmendmentLike(parentPermit),
       issue_date: parentPermit.issue_date,
       expiry_date: parentPermit.expiry_date,
-      status: parentPermit.is_closed ? "Closed" : "Open",
+      is_closed: parentPermit.is_closed ? "Closed" : "Open",
     });
     return permitHistory
       .map((amendment, index) => {
@@ -293,7 +293,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <ExplosivesPermitMap pin={[currentPermit.latitude, currentPermit.longitude]} />
           <br />
           {supportingDocs.length > 0 && (
-            <Row>
+            <div>
               <Typography.Title level={4} className="purple">
                 Supporting Documents
               </Typography.Title>
@@ -303,7 +303,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 documents will be viewable by Minespace users
               </Typography.Paragraph>
               <Table dataSource={generatedDocs} pagination={false} columns={generatedDocColumns} />
-              <Typography.Paragraph strong>Uploaded Documents</Typography.Paragraph>
+              <Typography.Paragraph strong className="margin-large--top">
+                Uploaded Documents
+              </Typography.Paragraph>
               <Typography.Paragraph>
                 Documents uploaded here will be viewable by Minespace users
               </Typography.Paragraph>
@@ -312,7 +314,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 pagination={false}
                 columns={supportingDocColumns}
               />
-            </Row>
+            </div>
           )}
         </Col>
         <Col md={12} sm={24} className="border--left--layout">
