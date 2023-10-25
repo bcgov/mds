@@ -29,7 +29,6 @@ exports[`MineBondTable renders properly 1`] = `
         "title": <span>
           Assessed Liability
           <CoreTooltip
-            iconColor="#5e46a1"
             title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
           />
         </span>,
@@ -47,7 +46,6 @@ exports[`MineBondTable renders properly 1`] = `
         "title": <div>
           Confiscated Cash On Hand
           <CoreTooltip
-            iconColor="#5e46a1"
             title="Confiscated Cash On Hand: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds."
           />
         </div>,

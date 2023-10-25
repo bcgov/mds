@@ -39,6 +39,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
 import { EMPTY_FIELD } from "@common/constants/strings";
+import { ColumnsType } from "antd/es/table";
 
 interface amendmentsWithTotal extends IExplosivesPermitAmendment {
   totalAmendments: number;
@@ -492,37 +493,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     actionsColumn,
   ];
 
-  const columns: ColumnType<MineExplosivesTableItem>[] = [
-    {
-      title: "ESUP #",
-      key: "permit_number",
-      render: (record) => {
-        return (
-          <Row justify="space-between">
-            <Col>
-              <Typography.Text>{record.permit_number || Strings.EMPTY_FIELD}</Typography.Text>
-            </Col>
-            {record.explosives_permit_amendments.length > 1 && (
-              <Col className="amendments-badge">
-                <FontAwesomeIcon icon={faFiles} />
-                {record.explosives_permit_amendments.length - 1}
-              </Col>
-            )}
-          </Row>
-        );
-      },
-    },
-    renderTextColumn("mines_permit_number", "Mines Act Permit #", false, Strings.EMPTY_FIELD),
-    renderTextColumn("now_number", "Notice of Work #", false, Strings.EMPTY_FIELD),
-    {
-      title: "Amendments",
-      key: "explosives_permit_amendments",
-      render: (record) => {
-        return (
-          <Typography.Text>{record?.explosives_permit_amendments.length - 1 || 0}</Typography.Text>
-        );
-      },
-    },
+  const esupCommonColumns: ColumnsType<MineExplosivesTableItem | amendmentsWithTotal> = [
     {
       title: "Status",
       key: "is_closed",
@@ -578,6 +549,40 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     actionsColumn,
   ];
 
+  const columns: ColumnType<MineExplosivesTableItem>[] = [
+    {
+      title: "ESUP #",
+      key: "permit_number",
+      render: (record) => {
+        return (
+          <Row justify="space-between">
+            <Col>
+              <Typography.Text>{record.permit_number || Strings.EMPTY_FIELD}</Typography.Text>
+            </Col>
+            {record.explosives_permit_amendments.length > 1 && (
+              <Col className="amendments-badge">
+                <FontAwesomeIcon icon={faFiles} />
+                {record.explosives_permit_amendments.length - 1}
+              </Col>
+            )}
+          </Row>
+        );
+      },
+    },
+    renderTextColumn("mines_permit_number", "Mines Act Permit #", false, Strings.EMPTY_FIELD),
+    renderTextColumn("now_number", "Notice of Work #", false, Strings.EMPTY_FIELD),
+    {
+      title: "Amendments",
+      key: "explosives_permit_amendments",
+      render: (record) => {
+        return (
+          <Typography.Text>{record?.explosives_permit_amendments.length - 1 || 0}</Typography.Text>
+        );
+      },
+    },
+    ...esupCommonColumns,
+  ];
+
   const amendmentDetailColumns: ColumnType<amendmentsWithTotal>[] = [
     {
       title: "Amendment",
@@ -587,59 +592,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         return <Typography.Text>{amendmentIndex}</Typography.Text>;
       },
     },
-    {
-      title: "Status",
-      key: "is_closed",
-      render: (record) => {
-        return <Typography.Text>{record.is_closed ? "Closed" : "Open"}</Typography.Text>;
-      },
-    },
-    renderDateColumn("expiry_date", "Expiry Date", false, null, Strings.EMPTY_FIELD),
-    {
-      title: (
-        <Row>
-          <Typography.Text className="margin-medium--right">Explosives</Typography.Text>
-          <CoreTooltip
-            title="This is the total quantity stored on site. Click to view more details"
-            icon="question"
-            iconColor={COLOR.darkGrey}
-          />
-        </Row>
-      ),
-      key: "total_explosive_quantity",
-      dataIndex: "total_explosive_quantity",
-      render: (text, record) => (
-        <div
-          className="underline"
-          onClick={(event) => handleOpenViewMagazineModal(event, record, "DET")}
-        >
-          {text || "0"} kg
-        </div>
-      ),
-    },
-    {
-      title: (
-        <Row>
-          <Typography.Text className="margin-medium--right">Detonators</Typography.Text>
-          <CoreTooltip
-            title="This is the total quantity stored on site. Click to view more details"
-            icon="question"
-            iconColor={COLOR.darkGrey}
-          />
-        </Row>
-      ),
-      key: "total_detonator_quantity",
-      dataIndex: "total_detonator_quantity",
-      render: (text, record) => (
-        <div
-          className="underline"
-          onClick={(event) => handleOpenViewMagazineModal(event, record, "DET")}
-        >
-          {text || "0"} units
-        </div>
-      ),
-    },
-    actionsColumn,
+    ...esupCommonColumns,
   ];
 
   const documentDetailColumns: ColumnType<IExplosivesPermitDocument>[] = [
