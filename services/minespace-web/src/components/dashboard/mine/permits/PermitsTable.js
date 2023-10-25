@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { Feature, IMineDocument, USER_ROLES, isFeatureEnabled } from "@mds/common/index";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
@@ -53,21 +54,30 @@ export const PermitsTable = (props) => {
       title: "",
       dataIndex: "permitee_guid",
       render: (text, record) => {
-        return (
-          <div title="">
-            {record.majorMineInd && record.status === "Open" && (
-              <Button
-                style={{ display: "inline" }}
-                type="secondary"
-                onClick={(event) => {
-                  openVCWalletInvitationModal(event, text, record.permitee, record.connectionState);
-                }}
-              >
-                Wallet Connection Info
-              </Button>
-            )}
-          </div>
-        );
+        if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
+          return <div></div>;
+        } else {
+          return (
+            <div title="">
+              {record.majorMineInd && record.status === "Open" && (
+                <Button
+                  style={{ display: "inline" }}
+                  type="secondary"
+                  onClick={(event) => {
+                    openVCWalletInvitationModal(
+                      event,
+                      text,
+                      record.permitee,
+                      record.connectionState
+                    );
+                  }}
+                >
+                  Wallet Connection Info
+                </Button>
+              )}
+            </div>
+          );
+        }
       },
     },
     {
