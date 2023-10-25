@@ -68,6 +68,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         remote_side=[party_guid],
         foreign_keys=[organization_guid])
+    
+    digital_wallet_invitations = db.relationship(
+        'PartyVerifiableCredentialConnection',
+        lazy='select',
+        uselist=True,
+        remote_side=[party_guid],
+        order_by='desc(PartyVerifiableCredentialConnection.connection_state)',)
 
     @hybrid_property
     def name(self):
@@ -104,6 +111,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             x.party_business_role_code for x in self.business_role_appts
             if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
+
+    @hybrid_property
+    def digital_wallet_connection_status(self):
+        if self.digital_wallet_invitations:
+            return self.digital_wallet_invitations[0].connection_state # active >> invitation
+        else:
+            return None
 
     def __repr__(self):
         return '<Party %r>' % self.party_guid
