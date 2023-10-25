@@ -55,8 +55,6 @@ export const PermitsTable = (props) => {
       dataIndex: "permitee_guid",
       render: (text, record) => {
         if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
-          return <div></div>;
-        } else {
           return (
             <div title="">
               {record.majorMineInd && record.status === "Open" && (
@@ -77,6 +75,8 @@ export const PermitsTable = (props) => {
               )}
             </div>
           );
+        } else {
+          return <div></div>;
         }
       },
     },
