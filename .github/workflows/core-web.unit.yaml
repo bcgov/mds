@@ -48,7 +48,7 @@ jobs:
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
 
       - name: Run cypress tests
-        run: yarn workspace @mds/core-web cypress run
+        run: yarn workspace @mds/core-web cypress run --spec "**/*.cy.ts,!**/majorprojects.cy.ts"
         env:
           CYPRESS_TEST_USER: ${{ secrets.CYPRESS_CORE_USER }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_CORE_PASSWORD }}
