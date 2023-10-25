@@ -676,14 +676,11 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     <CoreTable
       condition={isLoaded}
       dataSource={transformRowData(data)}
-      rowKey={(record) => record.explosives_permit_guid}
       classPrefix="explosives-permits"
       columns={isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? columns : columnsOld}
       expandProps={
         isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
           ? {
-              rowKey: (amendment: amendmentsWithTotal) =>
-                amendment.explosives_permit_amendment_guid,
               rowExpandable: (record: IExplosivesPermit) =>
                 record.explosives_permit_amendments?.length > 1,
               recordDescription: "document details",
