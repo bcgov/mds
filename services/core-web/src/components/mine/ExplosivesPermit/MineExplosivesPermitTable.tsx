@@ -84,6 +84,7 @@ const transformRowData = (permits: IExplosivesPermit[]) => {
   });
 };
 
+// TODO: Remove this when we remove the Feature.ESUP_PERMIT_AMENDMENT feature flag
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTableProps> = ({
@@ -310,6 +311,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     },
   };
 
+  // TODO: Remove this when we remove the Feature.ESUP_PERMIT_AMENDMENT feature flag
   const columnsOld: ColumnType<MineExplosivesTableItem>[] = [
     {
       title: "Permit #",
