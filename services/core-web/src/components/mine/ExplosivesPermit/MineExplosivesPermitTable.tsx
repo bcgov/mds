@@ -24,7 +24,11 @@ import {
 } from "@mds/common";
 import { ColumnType } from "antd/lib/table";
 import moment from "moment-timezone";
-import { ITableAction, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  ITableAction,
+  renderDateColumn,
+  renderTextColumn,
+} from "@/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
 import ActionMenu, {
   deleteConfirmWrapper,
@@ -34,6 +38,7 @@ import { userHasRole } from "@common/reducers/authenticationReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
+import { EMPTY_FIELD } from "@common/constants/strings";
 
 interface amendmentsWithTotal extends IExplosivesPermitAmendment {
   totalAmendments: number;
@@ -525,15 +530,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         return <Typography.Text>{record.is_closed ? "Closed" : "Open"}</Typography.Text>;
       },
     },
-    {
-      title: "Expiry Date",
-      key: "expiry_date",
-      render: (record) => {
-        return (
-          <Typography.Text>{formatDate(record.expiry_date) || Strings.EMPTY_FIELD}</Typography.Text>
-        );
-      },
-    },
+    renderDateColumn("expiry_date", "Expiry Date", false, null, Strings.EMPTY_FIELD),
     {
       title: (
         <Row>
@@ -597,15 +594,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         return <Typography.Text>{record.is_closed ? "Closed" : "Open"}</Typography.Text>;
       },
     },
-    {
-      title: "Expiry Date",
-      key: "expiry_date",
-      render: (record) => {
-        return (
-          <Typography.Text>{formatDate(record.expiry_date) || Strings.EMPTY_FIELD}</Typography.Text>
-        );
-      },
-    },
+    renderDateColumn("expiry_date", "Expiry Date", false, null, Strings.EMPTY_FIELD),
     {
       title: (
         <Row>
