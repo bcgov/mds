@@ -1,6 +1,7 @@
 import enum
 from flask import current_app, request
 from flask_restplus import Resource
+from app.api.utils.include.user_info import User
 
 from app.extensions import api
 
@@ -18,6 +19,7 @@ OUT_OF_BAND = "out_of_band"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
+        User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
         if topic == CONNECTIONS:
