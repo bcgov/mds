@@ -114,8 +114,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def digital_wallet_connection_status(self):
-        if self.digital_wallet_invitations:
-            return self.digital_wallet_invitations[0].connection_state # active >> invitation
+        dwi = [i for i in self.digital_wallet_invitations if i.connection_status] # filter empty conn_state 
+        if dwi:
+            return dwi.connection_state # active >> invitation
         else:
             return None
 
