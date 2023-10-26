@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import current_app
 import re
 
 from sqlalchemy import func, case, and_
@@ -114,8 +115,10 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def digital_wallet_connection_status(self):
+        current_app.logger.warning(self.digital_wallet_invitations)
         dwi = [i for i in self.digital_wallet_invitations if i.connection_status] # filter empty conn_state 
         if dwi:
+            current_app.logger.warning(dwi)
             return dwi.connection_state # active >> invitation
         else:
             return None
