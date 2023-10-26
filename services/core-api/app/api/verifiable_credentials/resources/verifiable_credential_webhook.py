@@ -30,16 +30,18 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             if new_state != vc_conn.connection_state:
                 vc_conn.connection_state=new_state
                 vc_conn.save()
-                current_app.logger.debug(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
+                current_app.logger.info(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
         elif topic == OUT_OF_BAND:
             invitation_id = webhook_body["invi_msg_id"]
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
             assert vc_conn, f"out_of_band.invi_msg_id={invitation_id} not found"
             new_state = webhook_body["state"]
-            if new_state != vc_conn.connection_state:
+            if new_state == "await-response":
                 vc_conn.connection_state=new_state
                 vc_conn.save()
-                current_app.logger.debug(f"Updated party_vc_conn invitation_id={invitation_id} with state={new_state}")
+                current_app.logger.info(f"Updated party_vc_conn invitation_id={invitation_id} with state={new_state}")
+            else:
+                current_app.logger.debug(f"do not update connection_state with oob_message state")
         elif topic == CREDENTIAL_OFFER:
             cred_exch_id = webhook_body["credential_exchange_id"]
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
@@ -48,7 +50,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             if new_state != cred_exch_record.cred_exch_state:
                 cred_exch_record.cred_exch_state=new_state
                 cred_exch_record.save()
-                current_app.logger.debug(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
+                current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
 
         else:
             current_app.logger.info(f"unknown topic '{topic}'")
