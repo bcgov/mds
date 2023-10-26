@@ -127,14 +127,19 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           ["LET", "PER"].includes(doc.explosives_permit_document_type_code)
         )?.length > 0;
       const isCoreSource = record.originating_system === "Core";
+      const isAmendment = !!record.explosives_permit_amendment_guid;
+
+      const viewOnlyMenu: ITableAction[] = [
+        {
+          key: "view",
+          label: "View",
+          clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
+          icon: viewIcon,
+        },
+      ];
       const approvedMenu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
         ? [
-            {
-              key: "view",
-              label: "View",
-              clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-              icon: viewIcon,
-            },
+            ...viewOnlyMenu,
             {
               key: "0",
               label: "Edit Documents",
@@ -170,12 +175,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         ? [
             ...(!isProcessed
               ? [
-                  {
-                    key: "view",
-                    label: "View",
-                    clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-                    icon: viewIcon,
-                  },
+                  ...viewOnlyMenu,
                   {
                     key: "process",
                     label: "Process",
@@ -268,7 +268,11 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           {showActions && (
             <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
               {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
-                <ActionMenu record={record} actionItems={currentMenu} category="ESUP" />
+                <ActionMenu
+                  record={record}
+                  actionItems={isAmendment ? viewOnlyMenu : currentMenu}
+                  category="ESUP"
+                />
               ) : (
                 <Dropdown
                   className="full-height full-mobile"
