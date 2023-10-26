@@ -10,6 +10,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.address import Address
+from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
 MAX_NAME_LENGTH = 100
 
@@ -75,6 +76,15 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=True,
         remote_side=[party_guid],
         order_by='desc(PartyVerifiableCredentialConnection.connection_state)',)
+    
+        
+    active_digital_wallet_connection = db.relationship(
+        'PartyVerifiableCredentialConnection',
+        lazy='select',
+        uselist=False,
+        remote_side=[party_guid],
+        primaryjoin=
+        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')')
 
     @hybrid_property
     def name(self):
@@ -143,7 +153,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'postnominal_letters': self.postnominal_letters,
             'idir_username': self.idir_username,
             'organization_guid': str(self.organization_guid) if self.organization_guid else None,
-            'job_title_code': self.job_title_code
+            'job_title_code': self.job_title_code,
         }
 
         if self.party_type_code == 'PER':
@@ -160,6 +170,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             context.update({
                 'organization': self.organization.json()
             })
+
+        if "digital_wallet_connection" in relationships:
+            if self.active_digital_wallet_connection:
+                result = self.active_digital_wallet_connection.json()
+            else:
+                result = {}
+            context.update({'digital_wallet_connection':result})
 
         return context
         
