@@ -13,12 +13,23 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
 CREDENTIAL_OFFER = "issue_credential"
+OUT_OF_BAND = "out_of_band"
 
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
-        current_app.logger.warning(f"TRACTION WEBHOOK: {request.args}")
+        current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {request.args}")
         if topic == CONNECTIONS:
+            current_app.logger.warning(f"{request.args.keys()}")
+            connection_id = request.args['connection_id']
+            vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(connection_id=connection_id).first()
+            assert vc_conn, f"{connection_id} not found"
+            new_state = request.args["state"]
+            if new_state != vc_conn.connection_state:
+                vc_conn.connection_state=new_state
+                vc_conn.save()
+                current_app.logger.debug(f"Updated party_vc_conn connection_id={connection_id} with state={new_state}")
+        if topic == OUT_OF_BAND:
             invitation_id = request.args.get("invi_msg_id")
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
             assert vc_conn, f"{invitation_id} not found"
@@ -38,4 +49,4 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 current_app.logger.debug(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
 
         else:
-            current_app.logger.info(f"unknown topic={topic} received, payload ={request}")
+            current_app.logger.info(f"unknown topic={topic}")
