@@ -1,6 +1,7 @@
 import enum
 from flask import current_app, request
 from flask_restplus import Resource
+from app.api.utils.include.user_info import User
 
 from app.extensions import api
 
@@ -18,31 +19,32 @@ OUT_OF_BAND = "out_of_band"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
-        current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {request.args}")
+        User._test_mode = True  #webhook handling has no row level auth
+        webhook_body = request.get_json()
+        current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
         if topic == CONNECTIONS:
-            current_app.logger.warning(f"{request.args.keys()}")
-            connection_id = request.args['connection_id']
+            connection_id = webhook_body['connection_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(connection_id=connection_id).first()
             assert vc_conn, f"{connection_id} not found"
-            new_state = request.args["state"]
+            new_state = webhook_body["state"]
             if new_state != vc_conn.connection_state:
                 vc_conn.connection_state=new_state
                 vc_conn.save()
                 current_app.logger.debug(f"Updated party_vc_conn connection_id={connection_id} with state={new_state}")
         if topic == OUT_OF_BAND:
-            invitation_id = request.args.get("invi_msg_id")
+            invitation_id = webhook_body["invi_msg_id"]
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
             assert vc_conn, f"{invitation_id} not found"
-            new_state = request.args["state"]
+            new_state = webhook_body["state"]
             if new_state != vc_conn.connection_state:
                 vc_conn.connection_state=new_state
                 vc_conn.save()
                 current_app.logger.debug(f"Updated party_vc_conn invitation_id={invitation_id} with state={new_state}")
         if topic == CREDENTIAL_OFFER:
-            cred_exch_id = request.args.get("credential_exchange_id")
+            cred_exch_id = webhook_body["credential_exchange_id"]
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
             assert cred_exch_record
-            new_state = request.args["state"]
+            new_state = webhook_body["state"]
             if new_state != cred_exch_record.cred_exch_state:
                 cred_exch_record.cred_exch_state=new_state
                 cred_exch_record.save()
