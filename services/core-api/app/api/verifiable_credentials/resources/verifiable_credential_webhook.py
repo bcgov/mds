@@ -18,7 +18,11 @@ OUT_OF_BAND = "out_of_band"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
+<<<<<<< HEAD
         current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {request.args}")
+=======
+        current_app.logger.warning(f"TRACTION WEBHOOK: {request.args}")
+>>>>>>> develop
         if topic == CONNECTIONS:
             current_app.logger.warning(f"{request.args.keys()}")
             connection_id = request.args['connection_id']
