@@ -36,7 +36,7 @@ export const NOWFieldOriginTooltip = () => (
 interface NOWOriginalValueTooltipProps {
   originalValue: string;
   isVisible: boolean;
-  style: any;
+  style?: any;
 }
 
 export const NOWOriginalValueTooltip: FC<NOWOriginalValueTooltipProps> = ({
