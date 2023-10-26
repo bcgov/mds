@@ -28,3 +28,7 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
     @classmethod
     def find_by_invitation_id(cls, invitation_id) -> "PartyVerifiableCredentialConnection":
         return cls.query.filter_by(invitation_id=invitation_id).one_or_none()
+    
+    @classmethod
+    def find_by_connection_id(cls, connection_id) -> "PartyVerifiableCredentialConnection":
+        return cls.query.filter_by(connection_id=connection_id).one_or_none()
