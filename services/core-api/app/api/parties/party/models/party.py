@@ -117,8 +117,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def digital_wallet_connection_status(self):
-        current_app.logger.warning(dwi)
         dwi = list(set([i.connection_state for i in self.digital_wallet_invitations if i.connection_state])).sort() # filter empty conn_state 
+        current_app.logger.warning(dwi)
         if dwi:
             if "completed" in dwi or "active" in dwi:
                 return "active"
