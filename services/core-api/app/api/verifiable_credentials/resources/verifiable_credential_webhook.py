@@ -33,7 +33,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 vc_conn.save()
                 current_app.logger.info(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
         elif topic == OUT_OF_BAND:
-                current_app.logger.info(f"out-of-band message invi_msg_id={webhook_body['invi_mds_id']}, state={webhook_body['state']}")
+                current_app.logger.info(f"out-of-band message invi_msg_id={webhook_body['invi_msg_id']}, state={webhook_body['state']}")
         elif topic == CREDENTIAL_OFFER:
             cred_exch_id = webhook_body["credential_exchange_id"]
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
