@@ -241,7 +241,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             <Row gutter={6}>
               <Col span={24}>
                 <Typography.Paragraph strong>Issuing Inspector</Typography.Paragraph>
-                <Typography.Paragraph>{currentPermit.issuing_inspector_name}</Typography.Paragraph>
+                <Typography.Paragraph>
+                  {currentPermit.issuing_inspector_name || parentPermit.issuing_inspector_name}
+                </Typography.Paragraph>
               </Col>
             </Row>
           </>
@@ -262,15 +264,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.mine_manager_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.mine_manager_name}</Typography.Paragraph>
             </Col>
             <Col span={12}>
               <Typography.Paragraph strong>Permittee</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.permittee_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.permittee_name}</Typography.Paragraph>
             </Col>
           </Row>
           <Typography.Paragraph strong>Application Date</Typography.Paragraph>
