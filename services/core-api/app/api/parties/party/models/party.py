@@ -75,9 +75,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=True,
-        remote_side=[party_guid],
-        order_by='desc(PartyVerifiableCredentialConnection.connection_state)',)
-    
+        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',)
         
     active_digital_wallet_connection = db.relationship(
         'PartyVerifiableCredentialConnection',
@@ -86,6 +84,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         remote_side=[party_guid],
         primaryjoin=
         'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')')
+
+
+
 
     @hybrid_property
     def name(self):
@@ -125,10 +126,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def digital_wallet_connection_status(self):
-        dwi = [i for i in self.digital_wallet_invitations if i.connection_state] # filter empty conn_state 
+        dwi = list(set([i.connection_state for i in self.digital_wallet_invitations if i.connection_state]))
+        dwi.sort() 
         if dwi:
-            current_app.logger.warning(dwi)
-            return dwi.connection_state # active >> invitation
+            if "completed" in dwi or "active" in dwi:
+                return "active"
+            else:       
+                return dwi[0]
         else:
             return None
 

@@ -11,7 +11,7 @@ import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
-import { IExplosivesPermitDocument, IOption } from "@mds/common";
+import { Feature, IExplosivesPermitDocument, IOption, isFeatureEnabled } from "@mds/common";
 
 interface DocumentCategoryFormProps {
   documents: IExplosivesPermitDocument[];
@@ -33,15 +33,27 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
 }) => {
   // File upload handlers
   const onFileLoad = (fileName, document_manager_guid) => {
-    props.arrayPush(FORM.EXPLOSIVES_PERMIT, "documents", {
-      document_name: fileName,
-      document_manager_guid,
-    });
+    props.arrayPush(
+      isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+        ? FORM.EXPLOSIVES_PERMIT_NEW
+        : FORM.EXPLOSIVES_PERMIT,
+      "documents",
+      {
+        document_name: fileName,
+        document_manager_guid,
+      }
+    );
   };
 
   const onRemoveFile = (err, fileItem) => {
     remove(documents, { document_manager_guid: fileItem.serverId });
-    return props.change(FORM.EXPLOSIVES_PERMIT, "documents", documents);
+    return props.change(
+      isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+        ? FORM.EXPLOSIVES_PERMIT_NEW
+        : FORM.EXPLOSIVES_PERMIT,
+      "documents",
+      documents
+    );
   };
 
   const DocumentCategories = ({ fields }) => {
