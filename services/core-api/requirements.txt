@@ -49,3 +49,4 @@ opentelemetry-instrumentation-redis==0.33b0
 opentelemetry-instrumentation-requests==0.33b0
 opentelemetry-instrumentation-sqlalchemy==0.33b0
 opentelemetry-instrumentation-urllib3==0.33b0
+Pillow==8.4.0

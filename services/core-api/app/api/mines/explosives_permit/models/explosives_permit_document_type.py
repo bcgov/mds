@@ -1,3 +1,7 @@
+import base64
+from io import BytesIO
+
+from PIL import Image
 from flask import current_app
 from sqlalchemy.schema import FetchedValue
 
@@ -48,6 +52,27 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                 raise Exception('No signature for the Issuing Inspector has been provided')
 
         def create_image(source, width=None, height=None):
+
+            # If there is a prefix in the source, remove it
+            base64_source = source
+            if ';base64,' in base64_source:
+                prefix, base64_source = base64_source.split(';base64,', 1)
+
+            # Convert base64 string to PIL Image to get dimensions
+            img_data = base64.b64decode(base64_source)
+            img = Image.open(BytesIO(img_data))
+
+            # Use aspect ratio of image to calculate width if not provided
+            if height and not width:
+                aspect_ratio = img.width / img.height
+                # Convert height from inches to pixels (Word assumes 96 DPI)
+                height_in_pixels = height * 96
+
+                # Calculate width while maintaining aspect ratio
+                width = height_in_pixels * aspect_ratio
+                # Convert width from pixels back to inches
+                width = width / 96
+
             return {'source': source, 'width': width, 'height': height}
 
         is_draft = template_data.get('is_draft', True)
