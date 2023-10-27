@@ -19,7 +19,7 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
 
     
     def __repr__(self):
-        return '<PartyVerifiableCredentialConnection party_guid=%r, connection_state=%r>' % (self.party_guid, self.connection_state or "UNKNOWN")
+        return '<PartyVerifiableCredentialConnection party_guid=%r, connection_state=%r>' % (self.party_guid, self.connection_state)
 
     @classmethod
     def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
