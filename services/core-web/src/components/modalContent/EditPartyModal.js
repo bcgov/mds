@@ -50,7 +50,7 @@ export const EditPartyModal = (props) => {
     party.project_lead_start_date = moment(formatDate(projectLeadInfo.start_date)).format(
       "YYYY-MM-DD"
     );
-    party.project_end_date = projectLeadInfo.end_date
+    party.project_lead_end_date = projectLeadInfo.end_date
       ? moment(formatDate(projectLeadInfo.end_date)).format("YYYY-MM-DD")
       : null;
   }
