@@ -123,7 +123,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             if "completed" in dwi or "active" in dwi:
                 return "active"
             else:       
-                return dwi[0].connection_state
+                return dwi[0]
         else:
             return None
 
