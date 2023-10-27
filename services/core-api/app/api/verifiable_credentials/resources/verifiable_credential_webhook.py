@@ -23,9 +23,9 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         webhook_body = request.get_json()
         current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
         if topic == CONNECTIONS:
-            invitation_id = webhook_body['invitation_id']
+            invitation_id = webhook_body['invitation_msg_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
-            assert vc_conn, f"connection.invitation_id={invitation_id} not found"
+            assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found"
             new_state = webhook_body["state"]
             if new_state != vc_conn.connection_state:
                 vc_conn.connection_state=new_state
