@@ -243,4 +243,5 @@ input[type="number"]::-webkit-outer-spin-button {
 // use correct bullet type for lists. Too many lists to target: use class
 .bullet li {
   list-style-type: disc;
+  list-style-position: inside;
 }
