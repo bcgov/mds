@@ -89,6 +89,10 @@ p,
   color: $violet !important;
 }
 
+.dark-grey {
+  color: $darkest-grey !important;
+}
+
 .p-white {
   color: $pure-white;
 }
@@ -234,4 +238,9 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+// use correct bullet type for lists. Too many lists to target: use class
+.bullet li {
+  list-style-type: disc;
 }

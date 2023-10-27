@@ -115,6 +115,25 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
+  const handleOpenAmendExplosivesPermitModal = (event, record: IExplosivesPermit = null) => {
+    event.preventDefault();
+    props.openModal({
+      props: {
+        title: "Amend Explosives Storage and Use Permit",
+        onSubmit: handleUpdateExplosivesPermit,
+        initialValues: record,
+        isAmendment: true,
+        mineGuid,
+        isProcessed: false,
+        documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
+        isPermitTab: true,
+        inspectors,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
+      width: "75vw",
+    });
+  };
+
   const handleOpenExplosivesPermitStatusModal = (event, record = null) => {
     const initialValues = record || {};
     delete initialValues.application_status;
@@ -165,7 +184,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenViewExplosivesPermitModal = (event, record) => {
     event.preventDefault();
-    const mine = mines[mineGuid];
     const parentPermit = explosivesPermits.find(
       ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
     );
@@ -174,7 +192,8 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         title: "View Explosives Storage & Use Permit",
         explosivesPermit: record,
         parentPermit: { explosives_permit_amendments: [], ...parentPermit },
-        mine,
+        openAmendModal: handleOpenAmendExplosivesPermitModal,
+        openModal: props.openModal,
         closeModal: props.closeModal,
         handleOpenExplosivesPermitCloseModal,
       },
@@ -270,6 +289,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
         handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
         handleDeleteExplosivesPermit={handleDeleteExplosivesPermit}
+        handleOpenAmendExplosivesPermitModal={handleOpenAmendExplosivesPermitModal}
       />
     </div>
   );
