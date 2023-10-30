@@ -26,7 +26,7 @@ import {
   getPartyRelationshipTypeHash,
   getPartyBusinessRoleOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { formatDate, dateSorter } from "@common/utils/helpers";
+import { formatDate, dateSorter, formatSnakeCaseToSentenceCase } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
@@ -310,6 +310,10 @@ export class PartyProfile extends Component {
               ) : (
                 <p>No Signature Provided</p>
               )}
+            </div>
+            <div className="padding-md--top">
+              Digital Wallet Connection Status:{" "}
+              {formatSnakeCaseToSentenceCase(party?.digital_wallet_connection_status ?? "None")}
             </div>
           </div>
           <div className="profile__content">
