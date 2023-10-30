@@ -16,7 +16,7 @@ const propTypes = {
 };
 
 const RenderCheckbox = (props) => {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(props.input.value || false);
   const onChange = (e) => {
     setChecked(e.target.checked);
   };
