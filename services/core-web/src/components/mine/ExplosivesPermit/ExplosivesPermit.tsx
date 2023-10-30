@@ -109,6 +109,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
         isPermitTab: permitTab,
         inspectors,
+        isAmendment: !!record?.explosives_permit_amendment_guid,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
@@ -187,7 +188,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   const handleIssueExplosivesPermit = (values, record) => {
     const payload = { ...record, ...values, application_status: "APP" };
     return props
-      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload)
+      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload, true)
       .then(() => {
         props.fetchExplosivesPermits(mineGuid);
         props.closeModal();

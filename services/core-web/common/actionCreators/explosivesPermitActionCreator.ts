@@ -60,7 +60,8 @@ export const fetchExplosivesPermits = (
 export const updateExplosivesPermit = (
   mineGuid: string,
   explosivesPermitGuid: string,
-  payload: Partial<IExplosivesPermit>
+  payload: Partial<IExplosivesPermit>,
+  generate_documents = false
 ): AppThunk<Promise<AxiosResponse<IExplosivesPermit>>> => (
   dispatch
 ): Promise<AxiosResponse<IExplosivesPermit>> => {
@@ -69,7 +70,7 @@ export const updateExplosivesPermit = (
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMIT(mineGuid, explosivesPermitGuid),
-      payload,
+      { ...payload, generate_documents },
       createRequestHeader()
     )
     .then((response) => {
